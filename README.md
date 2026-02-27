@@ -1,23 +1,23 @@
 # Docusign (docusign)
-
-Docusign, Inc. is an American software company headquartered in San Francisco,
-California, that provides products for organizations to manage electronic
-agreements with electronic signatures on different devices.
+DocuSign helps organizations connect and automate how they prepare, sign, act on, and manage agreements. As part of the DocuSign Agreement Cloud, DocuSign offers eSignature, the world's
 
 **URL:** [Visit APIs.json URL](
 https://raw.githubusercontent.com/api-search/documents/main/_apis/docusign/apis.md)
 
 ## Scope
 
+- **Type:** Contract 
+- **Position:** Consuming 
+- **Access:** 3rd-Party 
 
 ## Tags:
 
- - Documents
+ - Agreements, Contracts, Digital Transaction Management, Documents, Electronic Signatures, eSignature
 
 ## Timestamps
 
-- **Created:** 2024-06-07 
-- **Modified:** 2024-06-07 
+- **Created:** 2024-06-07T00:00:00.000Z 
+- **Modified:** 2024-12-30 
 
 ## APIs
 
@@ -26,92 +26,55 @@ Needs description.
 
 **Human URL:** [https://developers.docusign.com/docs/esign-rest-api/reference/](https://developers.docusign.com/docs/esign-rest-api/reference/)
 
-**Base URL:** [https://api.example.com](https://api.example.com)
-
-
-#### Tags:
-
- - No Tags
-
 #### Properties
 
 - [Documentation](https://developers.docusign.com/docs/esign-rest-api/reference/)
 - [OpenAPI](openapi/docusign-openapi-original.yml)
+
 ### Docusign Admin API
 Needs description.
 
 **Human URL:** [https://developers.docusign.com/docs/esign-rest-api/reference/](https://developers.docusign.com/docs/esign-rest-api/reference/)
 
-**Base URL:** [https://api.hellosign.com](https://api.hellosign.com)
-
-
-#### Tags:
-
- - No Tags
-
 #### Properties
 
 - [Documentation](https://developers.docusign.com/docs/esign-rest-api/reference/)
 - [OpenAPI](openapi/docusign-admin-openapi-original.yml)
+
 ### Docusign Click API
 Needs description.
 
 **Human URL:** [https://developers.docusign.com/docs/esign-rest-api/reference/](https://developers.docusign.com/docs/esign-rest-api/reference/)
 
-**Base URL:** [https://api.hellosign.com](https://api.hellosign.com)
-
-
-#### Tags:
-
- - No Tags
-
 #### Properties
 
 - [Documentation](https://developers.docusign.com/docs/esign-rest-api/reference/)
 - [OpenAPI](openapi/docusign-click-openapi-original.yml)
+
 ### Docusign Maestro API
 Needs description.
 
 **Human URL:** [https://developers.docusign.com/docs/esign-rest-api/reference/](https://developers.docusign.com/docs/esign-rest-api/reference/)
 
-**Base URL:** [https://api.hellosign.com](https://api.hellosign.com)
-
-
-#### Tags:
-
- - No Tags
-
 #### Properties
 
 - [Documentation](https://developers.docusign.com/docs/esign-rest-api/reference/)
 - [OpenAPI](openapi/docusign-maestro-openapi-original.yml)
+
 ### Docusign Monitor API
 Needs description.
 
 **Human URL:** [https://developers.docusign.com/docs/esign-rest-api/reference/](https://developers.docusign.com/docs/esign-rest-api/reference/)
 
-**Base URL:** [https://api.hellosign.com](https://api.hellosign.com)
-
-
-#### Tags:
-
- - No Tags
-
 #### Properties
 
 - [Documentation](https://developers.docusign.com/docs/esign-rest-api/reference/)
 - [OpenAPI](openapi/docusign-monitor-openapi-original.yml)
+
 ### Docusign Rooms API
 Needs description.
 
 **Human URL:** [https://developers.docusign.com/docs/esign-rest-api/reference/](https://developers.docusign.com/docs/esign-rest-api/reference/)
-
-**Base URL:** [https://api.hellosign.com](https://api.hellosign.com)
-
-
-#### Tags:
-
- - No Tags
 
 #### Properties
 
@@ -141,10 +104,18 @@ Needs description.
 - [Resources](https://www.docusign.com/resources)
 - [Terms of Service](https://www.docusign.com/company/terms-and-conditions/developers)
 - [Privacy](https://www.docusign.com/company/privacy-policy)
+- [Getting Started](https://developers.docusign.com/docs/esign-rest-api/quickstart/)
+- [Code Examples](https://developers.docusign.com/docs/esign-rest-api/code-examples/)
+- [Status](https://status.docusign.com/)
+- [Blog](https://www.docusign.com/blog/developers)
+- [GitHub](https://github.com/docusign)
+- [Privacy Policy](https://www.docusign.com/company/privacy-policy)
 
 ## Maintainers
 
 **FN:** API Evangelist
 
 **Email:** info@apievangelist.com
+**FN:** DocuSign
 
+**Email:** devcenter@docusign.com
