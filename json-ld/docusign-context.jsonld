@@ -1,0 +1,621 @@
+{
+  "@context": {
+    "@version": 1.1,
+    "@vocab": "https://developers.docusign.com/ns/",
+    "docusign": "https://developers.docusign.com/ns/",
+    "schema": "https://schema.org/",
+    "xsd": "http://www.w3.org/2001/XMLSchema#",
+    "dcterms": "http://purl.org/dc/terms/",
+    "foaf": "http://xmlns.com/foaf/0.1/",
+    "prov": "http://www.w3.org/ns/prov#",
+
+    "Envelope": {
+      "@id": "docusign:Envelope",
+      "@context": {
+        "envelopeId": {
+          "@id": "docusign:envelopeId",
+          "@type": "xsd:string"
+        },
+        "envelopeUri": {
+          "@id": "docusign:envelopeUri",
+          "@type": "@id"
+        },
+        "status": {
+          "@id": "docusign:envelopeStatus",
+          "@type": "xsd:string"
+        },
+        "statusChangedDateTime": {
+          "@id": "docusign:statusChangedDateTime",
+          "@type": "xsd:dateTime"
+        },
+        "emailSubject": {
+          "@id": "docusign:emailSubject",
+          "@type": "xsd:string"
+        },
+        "emailBlurb": {
+          "@id": "docusign:emailBlurb",
+          "@type": "xsd:string"
+        },
+        "createdDateTime": {
+          "@id": "dcterms:created",
+          "@type": "xsd:dateTime"
+        },
+        "sentDateTime": {
+          "@id": "docusign:sentDateTime",
+          "@type": "xsd:dateTime"
+        },
+        "deliveredDateTime": {
+          "@id": "docusign:deliveredDateTime",
+          "@type": "xsd:dateTime"
+        },
+        "completedDateTime": {
+          "@id": "docusign:completedDateTime",
+          "@type": "xsd:dateTime"
+        },
+        "declinedDateTime": {
+          "@id": "docusign:declinedDateTime",
+          "@type": "xsd:dateTime"
+        },
+        "voidedDateTime": {
+          "@id": "docusign:voidedDateTime",
+          "@type": "xsd:dateTime"
+        },
+        "voidedReason": {
+          "@id": "docusign:voidedReason",
+          "@type": "xsd:string"
+        },
+        "sender": {
+          "@id": "docusign:sender",
+          "@type": "docusign:UserInfo"
+        },
+        "recipients": {
+          "@id": "docusign:recipients",
+          "@type": "docusign:Recipients"
+        },
+        "documents": {
+          "@id": "docusign:documents",
+          "@type": "docusign:Document",
+          "@container": "@set"
+        },
+        "customFields": {
+          "@id": "docusign:customFields",
+          "@type": "docusign:CustomFields"
+        },
+        "notification": {
+          "@id": "docusign:notification",
+          "@type": "docusign:Notification"
+        },
+        "purgeState": {
+          "@id": "docusign:purgeState",
+          "@type": "xsd:string"
+        },
+        "brandId": {
+          "@id": "docusign:brandId",
+          "@type": "xsd:string"
+        },
+        "signingLocation": {
+          "@id": "docusign:signingLocation",
+          "@type": "xsd:string"
+        },
+        "expireEnabled": {
+          "@id": "docusign:expireEnabled",
+          "@type": "xsd:boolean"
+        },
+        "expireDateTime": {
+          "@id": "docusign:expireDateTime",
+          "@type": "xsd:dateTime"
+        }
+      }
+    },
+
+    "Document": {
+      "@id": "docusign:Document",
+      "@context": {
+        "documentId": {
+          "@id": "docusign:documentId",
+          "@type": "xsd:string"
+        },
+        "name": {
+          "@id": "schema:name",
+          "@type": "xsd:string"
+        },
+        "fileExtension": {
+          "@id": "docusign:fileExtension",
+          "@type": "xsd:string"
+        },
+        "documentBase64": {
+          "@id": "docusign:documentBase64",
+          "@type": "xsd:base64Binary"
+        },
+        "remoteUrl": {
+          "@id": "schema:url",
+          "@type": "@id"
+        },
+        "order": {
+          "@id": "schema:position",
+          "@type": "xsd:integer"
+        },
+        "pages": {
+          "@id": "schema:numberOfPages",
+          "@type": "xsd:integer"
+        },
+        "display": {
+          "@id": "docusign:display",
+          "@type": "xsd:string"
+        },
+        "includeInDownload": {
+          "@id": "docusign:includeInDownload",
+          "@type": "xsd:boolean"
+        },
+        "transformPdfFields": {
+          "@id": "docusign:transformPdfFields",
+          "@type": "xsd:boolean"
+        }
+      }
+    },
+
+    "Recipients": {
+      "@id": "docusign:Recipients",
+      "@context": {
+        "signers": {
+          "@id": "docusign:signers",
+          "@type": "docusign:Signer",
+          "@container": "@set"
+        },
+        "carbonCopies": {
+          "@id": "docusign:carbonCopies",
+          "@type": "docusign:CarbonCopy",
+          "@container": "@set"
+        },
+        "certifiedDeliveries": {
+          "@id": "docusign:certifiedDeliveries",
+          "@type": "docusign:CertifiedDelivery",
+          "@container": "@set"
+        },
+        "inPersonSigners": {
+          "@id": "docusign:inPersonSigners",
+          "@type": "docusign:InPersonSigner",
+          "@container": "@set"
+        },
+        "agents": {
+          "@id": "docusign:agents",
+          "@type": "docusign:Agent",
+          "@container": "@set"
+        },
+        "editors": {
+          "@id": "docusign:editors",
+          "@type": "docusign:Editor",
+          "@container": "@set"
+        },
+        "intermediaries": {
+          "@id": "docusign:intermediaries",
+          "@type": "docusign:Intermediary",
+          "@container": "@set"
+        },
+        "witnesses": {
+          "@id": "docusign:witnesses",
+          "@type": "docusign:Witness",
+          "@container": "@set"
+        },
+        "recipientCount": {
+          "@id": "docusign:recipientCount",
+          "@type": "xsd:integer"
+        },
+        "currentRoutingOrder": {
+          "@id": "docusign:currentRoutingOrder",
+          "@type": "xsd:integer"
+        }
+      }
+    },
+
+    "Signer": {
+      "@id": "docusign:Signer",
+      "@context": {
+        "recipientId": {
+          "@id": "docusign:recipientId",
+          "@type": "xsd:string"
+        },
+        "recipientIdGuid": {
+          "@id": "docusign:recipientIdGuid",
+          "@type": "xsd:string"
+        },
+        "name": {
+          "@id": "schema:name",
+          "@type": "xsd:string"
+        },
+        "email": {
+          "@id": "schema:email",
+          "@type": "xsd:string"
+        },
+        "routingOrder": {
+          "@id": "docusign:routingOrder",
+          "@type": "xsd:integer"
+        },
+        "roleName": {
+          "@id": "docusign:roleName",
+          "@type": "xsd:string"
+        },
+        "clientUserId": {
+          "@id": "docusign:clientUserId",
+          "@type": "xsd:string"
+        },
+        "status": {
+          "@id": "docusign:recipientStatus",
+          "@type": "xsd:string"
+        },
+        "signedDateTime": {
+          "@id": "docusign:signedDateTime",
+          "@type": "xsd:dateTime"
+        },
+        "deliveredDateTime": {
+          "@id": "docusign:deliveredDateTime",
+          "@type": "xsd:dateTime"
+        },
+        "declinedDateTime": {
+          "@id": "docusign:declinedDateTime",
+          "@type": "xsd:dateTime"
+        },
+        "declinedReason": {
+          "@id": "docusign:declinedReason",
+          "@type": "xsd:string"
+        },
+        "tabs": {
+          "@id": "docusign:tabs",
+          "@type": "docusign:RecipientTabs"
+        },
+        "accessCode": {
+          "@id": "docusign:accessCode",
+          "@type": "xsd:string"
+        },
+        "note": {
+          "@id": "docusign:note",
+          "@type": "xsd:string"
+        }
+      }
+    },
+
+    "CarbonCopy": {
+      "@id": "docusign:CarbonCopy",
+      "@context": {
+        "recipientId": {
+          "@id": "docusign:recipientId",
+          "@type": "xsd:string"
+        },
+        "name": {
+          "@id": "schema:name",
+          "@type": "xsd:string"
+        },
+        "email": {
+          "@id": "schema:email",
+          "@type": "xsd:string"
+        },
+        "routingOrder": {
+          "@id": "docusign:routingOrder",
+          "@type": "xsd:integer"
+        },
+        "status": {
+          "@id": "docusign:recipientStatus",
+          "@type": "xsd:string"
+        }
+      }
+    },
+
+    "InPersonSigner": {
+      "@id": "docusign:InPersonSigner",
+      "@context": {
+        "recipientId": {
+          "@id": "docusign:recipientId",
+          "@type": "xsd:string"
+        },
+        "hostName": {
+          "@id": "docusign:hostName",
+          "@type": "xsd:string"
+        },
+        "hostEmail": {
+          "@id": "docusign:hostEmail",
+          "@type": "xsd:string"
+        },
+        "signerName": {
+          "@id": "docusign:signerName",
+          "@type": "xsd:string"
+        },
+        "signerEmail": {
+          "@id": "docusign:signerEmail",
+          "@type": "xsd:string"
+        },
+        "routingOrder": {
+          "@id": "docusign:routingOrder",
+          "@type": "xsd:integer"
+        },
+        "status": {
+          "@id": "docusign:recipientStatus",
+          "@type": "xsd:string"
+        }
+      }
+    },
+
+    "RecipientTabs": {
+      "@id": "docusign:RecipientTabs",
+      "@context": {
+        "signHereTabs": {
+          "@id": "docusign:signHereTabs",
+          "@type": "docusign:SignHereTab",
+          "@container": "@set"
+        },
+        "initialHereTabs": {
+          "@id": "docusign:initialHereTabs",
+          "@type": "docusign:Tab",
+          "@container": "@set"
+        },
+        "dateSignedTabs": {
+          "@id": "docusign:dateSignedTabs",
+          "@type": "docusign:Tab",
+          "@container": "@set"
+        },
+        "textTabs": {
+          "@id": "docusign:textTabs",
+          "@type": "docusign:TextTab",
+          "@container": "@set"
+        },
+        "fullNameTabs": {
+          "@id": "docusign:fullNameTabs",
+          "@type": "docusign:Tab",
+          "@container": "@set"
+        },
+        "checkboxTabs": {
+          "@id": "docusign:checkboxTabs",
+          "@type": "docusign:CheckboxTab",
+          "@container": "@set"
+        },
+        "radioGroupTabs": {
+          "@id": "docusign:radioGroupTabs",
+          "@type": "docusign:RadioGroupTab",
+          "@container": "@set"
+        },
+        "listTabs": {
+          "@id": "docusign:listTabs",
+          "@type": "docusign:ListTab",
+          "@container": "@set"
+        },
+        "formulaTabs": {
+          "@id": "docusign:formulaTabs",
+          "@type": "docusign:FormulaTab",
+          "@container": "@set"
+        }
+      }
+    },
+
+    "Tab": {
+      "@id": "docusign:Tab",
+      "@context": {
+        "tabId": {
+          "@id": "docusign:tabId",
+          "@type": "xsd:string"
+        },
+        "tabLabel": {
+          "@id": "docusign:tabLabel",
+          "@type": "xsd:string"
+        },
+        "documentId": {
+          "@id": "docusign:documentId",
+          "@type": "xsd:string"
+        },
+        "pageNumber": {
+          "@id": "docusign:pageNumber",
+          "@type": "xsd:integer"
+        },
+        "recipientId": {
+          "@id": "docusign:recipientId",
+          "@type": "xsd:string"
+        },
+        "xPosition": {
+          "@id": "docusign:xPosition",
+          "@type": "xsd:integer"
+        },
+        "yPosition": {
+          "@id": "docusign:yPosition",
+          "@type": "xsd:integer"
+        },
+        "anchorString": {
+          "@id": "docusign:anchorString",
+          "@type": "xsd:string"
+        },
+        "value": {
+          "@id": "schema:value",
+          "@type": "xsd:string"
+        }
+      }
+    },
+
+    "EnvelopeTemplate": {
+      "@id": "docusign:EnvelopeTemplate",
+      "@context": {
+        "templateId": {
+          "@id": "docusign:templateId",
+          "@type": "xsd:string"
+        },
+        "name": {
+          "@id": "schema:name",
+          "@type": "xsd:string"
+        },
+        "description": {
+          "@id": "schema:description",
+          "@type": "xsd:string"
+        },
+        "created": {
+          "@id": "dcterms:created",
+          "@type": "xsd:dateTime"
+        },
+        "lastModified": {
+          "@id": "dcterms:modified",
+          "@type": "xsd:dateTime"
+        },
+        "lastUsed": {
+          "@id": "docusign:lastUsed",
+          "@type": "xsd:dateTime"
+        },
+        "shared": {
+          "@id": "docusign:shared",
+          "@type": "xsd:boolean"
+        },
+        "owner": {
+          "@id": "docusign:owner",
+          "@type": "docusign:UserInfo"
+        },
+        "emailSubject": {
+          "@id": "docusign:emailSubject",
+          "@type": "xsd:string"
+        },
+        "documents": {
+          "@id": "docusign:documents",
+          "@type": "docusign:Document",
+          "@container": "@set"
+        },
+        "recipients": {
+          "@id": "docusign:recipients",
+          "@type": "docusign:Recipients"
+        }
+      }
+    },
+
+    "Notification": {
+      "@id": "docusign:Notification",
+      "@context": {
+        "useAccountDefaults": {
+          "@id": "docusign:useAccountDefaults",
+          "@type": "xsd:boolean"
+        },
+        "reminders": {
+          "@id": "docusign:reminders",
+          "@type": "docusign:ReminderSettings"
+        },
+        "expirations": {
+          "@id": "docusign:expirations",
+          "@type": "docusign:ExpirationSettings"
+        }
+      }
+    },
+
+    "CustomFields": {
+      "@id": "docusign:CustomFields",
+      "@context": {
+        "textCustomFields": {
+          "@id": "docusign:textCustomFields",
+          "@container": "@set"
+        },
+        "listCustomFields": {
+          "@id": "docusign:listCustomFields",
+          "@container": "@set"
+        }
+      }
+    },
+
+    "EventNotification": {
+      "@id": "docusign:EventNotification",
+      "@context": {
+        "url": {
+          "@id": "docusign:webhookUrl",
+          "@type": "@id"
+        },
+        "loggingEnabled": {
+          "@id": "docusign:loggingEnabled",
+          "@type": "xsd:boolean"
+        },
+        "envelopeEvents": {
+          "@id": "docusign:envelopeEvents",
+          "@container": "@set"
+        },
+        "recipientEvents": {
+          "@id": "docusign:recipientEvents",
+          "@container": "@set"
+        },
+        "includeDocuments": {
+          "@id": "docusign:includeDocuments",
+          "@type": "xsd:boolean"
+        },
+        "includeHMAC": {
+          "@id": "docusign:includeHMAC",
+          "@type": "xsd:boolean"
+        }
+      }
+    },
+
+    "UserInfo": {
+      "@id": "docusign:UserInfo",
+      "@context": {
+        "userName": {
+          "@id": "schema:name",
+          "@type": "xsd:string"
+        },
+        "email": {
+          "@id": "schema:email",
+          "@type": "xsd:string"
+        },
+        "userId": {
+          "@id": "docusign:userId",
+          "@type": "xsd:string"
+        },
+        "accountId": {
+          "@id": "docusign:accountId",
+          "@type": "xsd:string"
+        }
+      }
+    },
+
+    "ConnectEvent": {
+      "@id": "docusign:ConnectEvent",
+      "@context": {
+        "event": {
+          "@id": "docusign:eventType",
+          "@type": "xsd:string"
+        },
+        "apiVersion": {
+          "@id": "docusign:apiVersion",
+          "@type": "xsd:string"
+        },
+        "configurationId": {
+          "@id": "docusign:configurationId",
+          "@type": "xsd:string"
+        },
+        "uri": {
+          "@id": "docusign:resourceUri",
+          "@type": "@id"
+        },
+        "retryCount": {
+          "@id": "docusign:retryCount",
+          "@type": "xsd:integer"
+        },
+        "generatedDateTime": {
+          "@id": "prov:generatedAtTime",
+          "@type": "xsd:dateTime"
+        },
+        "data": {
+          "@id": "docusign:eventData",
+          "@type": "docusign:ConnectEventData"
+        }
+      }
+    },
+
+    "ConnectEventData": {
+      "@id": "docusign:ConnectEventData",
+      "@context": {
+        "accountId": {
+          "@id": "docusign:accountId",
+          "@type": "xsd:string"
+        },
+        "userId": {
+          "@id": "docusign:userId",
+          "@type": "xsd:string"
+        },
+        "envelopeId": {
+          "@id": "docusign:envelopeId",
+          "@type": "xsd:string"
+        },
+        "envelopeSummary": {
+          "@id": "docusign:envelopeSummary",
+          "@type": "docusign:Envelope"
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,750 @@
+asyncapi: 3.0.0
+info:
+  title: DocuSign Connect Webhooks
+  version: 2.0.0
+  description: >-
+    DocuSign Connect is a webhook notification service that sends real-time
+    updates about envelope and recipient events to your application. Connect
+    pushes notifications to your listener endpoint when envelope status changes,
+    recipients complete actions, or other configured events occur. This enables
+    event-driven integrations without the need to poll the eSignature REST API
+    for status updates.
+  termsOfService: https://www.docusign.com/company/terms-and-conditions/developers
+  contact:
+    name: DocuSign Developer Center
+    url: https://developers.docusign.com/
+    email: devcenter@docusign.com
+  license:
+    name: DocuSign Developer Terms
+    url: https://www.docusign.com/company/terms-and-conditions/developers
+  externalDocs:
+    description: DocuSign Connect Documentation
+    url: https://developers.docusign.com/platform/webhooks/connect/
+  tags:
+    - name: envelope-events
+      description: Events related to envelope status changes.
+    - name: recipient-events
+      description: Events related to recipient actions and status changes.
+    - name: template-events
+      description: Events related to template modifications.
+
+defaultContentType: application/json
+
+servers:
+  production:
+    host: '{listenerHost}'
+    protocol: https
+    description: >-
+      Your application webhook listener endpoint. DocuSign Connect sends
+      HTTP POST requests with JSON or XML payloads to this URL when
+      configured events occur. The listener must respond with an HTTP 200
+      status to acknowledge receipt.
+    variables:
+      listenerHost:
+        description: >-
+          The hostname of your webhook listener. Configure this URL in
+          the DocuSign Connect settings or per-envelope via the
+          eventNotification property.
+        default: example.com
+    security:
+      - $ref: '#/components/securitySchemes/hmac'
+
+channels:
+  envelopeSent:
+    address: /webhooks/docusign
+    description: >-
+      Triggered when an envelope is sent to recipients for signing.
+      The envelope transitions from draft to sent status.
+    messages:
+      envelopeSentMessage:
+        $ref: '#/components/messages/EnvelopeSentEvent'
+
+  envelopeDelivered:
+    address: /webhooks/docusign
+    description: >-
+      Triggered when an envelope is delivered to a recipient and they
+      have viewed the documents.
+    messages:
+      envelopeDeliveredMessage:
+        $ref: '#/components/messages/EnvelopeDeliveredEvent'
+
+  envelopeCompleted:
+    address: /webhooks/docusign
+    description: >-
+      Triggered when all recipients have completed their required actions
+      and the envelope is fully executed. This is the terminal success
+      state for an envelope.
+    messages:
+      envelopeCompletedMessage:
+        $ref: '#/components/messages/EnvelopeCompletedEvent'
+
+  envelopeDeclined:
+    address: /webhooks/docusign
+    description: >-
+      Triggered when a recipient declines to sign the envelope. The
+      envelope is moved to declined status and no further signing
+      can occur unless the sender corrects and resends.
+    messages:
+      envelopeDeclinedMessage:
+        $ref: '#/components/messages/EnvelopeDeclinedEvent'
+
+  envelopeVoided:
+    address: /webhooks/docusign
+    description: >-
+      Triggered when the sender voids an envelope, canceling the
+      signing process. A voided envelope cannot be sent again.
+    messages:
+      envelopeVoidedMessage:
+        $ref: '#/components/messages/EnvelopeVoidedEvent'
+
+  recipientSent:
+    address: /webhooks/docusign
+    description: >-
+      Triggered when a signing invitation is sent to an individual
+      recipient via email.
+    messages:
+      recipientSentMessage:
+        $ref: '#/components/messages/RecipientSentEvent'
+
+  recipientDelivered:
+    address: /webhooks/docusign
+    description: >-
+      Triggered when a recipient opens the envelope and views the
+      documents for the first time.
+    messages:
+      recipientDeliveredMessage:
+        $ref: '#/components/messages/RecipientDeliveredEvent'
+
+  recipientCompleted:
+    address: /webhooks/docusign
+    description: >-
+      Triggered when a recipient completes their required actions
+      such as signing, initialing, or approving the documents.
+    messages:
+      recipientCompletedMessage:
+        $ref: '#/components/messages/RecipientCompletedEvent'
+
+  recipientDeclined:
+    address: /webhooks/docusign
+    description: >-
+      Triggered when a recipient declines to sign the envelope,
+      providing a reason for the decline.
+    messages:
+      recipientDeclinedMessage:
+        $ref: '#/components/messages/RecipientDeclinedEvent'
+
+  recipientAuthenticationFailed:
+    address: /webhooks/docusign
+    description: >-
+      Triggered when a recipient fails identity verification or
+      authentication during the signing process.
+    messages:
+      recipientAuthFailedMessage:
+        $ref: '#/components/messages/RecipientAuthenticationFailedEvent'
+
+operations:
+  onEnvelopeSent:
+    action: receive
+    channel:
+      $ref: '#/channels/envelopeSent'
+    summary: Receive envelope sent notification.
+    description: >-
+      Your listener receives this notification when an envelope
+      transitions to sent status.
+    tags:
+      - $ref: '#/components/tags/envelope-events'
+    messages:
+      - $ref: '#/channels/envelopeSent/messages/envelopeSentMessage'
+
+  onEnvelopeDelivered:
+    action: receive
+    channel:
+      $ref: '#/channels/envelopeDelivered'
+    summary: Receive envelope delivered notification.
+    description: >-
+      Your listener receives this notification when an envelope is
+      delivered to and viewed by a recipient.
+    tags:
+      - $ref: '#/components/tags/envelope-events'
+    messages:
+      - $ref: '#/channels/envelopeDelivered/messages/envelopeDeliveredMessage'
+
+  onEnvelopeCompleted:
+    action: receive
+    channel:
+      $ref: '#/channels/envelopeCompleted'
+    summary: Receive envelope completed notification.
+    description: >-
+      Your listener receives this notification when all recipients have
+      completed their actions and the envelope is fully executed.
+    tags:
+      - $ref: '#/components/tags/envelope-events'
+    messages:
+      - $ref: '#/channels/envelopeCompleted/messages/envelopeCompletedMessage'
+
+  onEnvelopeDeclined:
+    action: receive
+    channel:
+      $ref: '#/channels/envelopeDeclined'
+    summary: Receive envelope declined notification.
+    description: >-
+      Your listener receives this notification when a recipient
+      declines to sign, moving the envelope to declined status.
+    tags:
+      - $ref: '#/components/tags/envelope-events'
+    messages:
+      - $ref: '#/channels/envelopeDeclined/messages/envelopeDeclinedMessage'
+
+  onEnvelopeVoided:
+    action: receive
+    channel:
+      $ref: '#/channels/envelopeVoided'
+    summary: Receive envelope voided notification.
+    description: >-
+      Your listener receives this notification when the sender voids
+      the envelope.
+    tags:
+      - $ref: '#/components/tags/envelope-events'
+    messages:
+      - $ref: '#/channels/envelopeVoided/messages/envelopeVoidedMessage'
+
+  onRecipientSent:
+    action: receive
+    channel:
+      $ref: '#/channels/recipientSent'
+    summary: Receive recipient sent notification.
+    tags:
+      - $ref: '#/components/tags/recipient-events'
+    messages:
+      - $ref: '#/channels/recipientSent/messages/recipientSentMessage'
+
+  onRecipientDelivered:
+    action: receive
+    channel:
+      $ref: '#/channels/recipientDelivered'
+    summary: Receive recipient delivered notification.
+    tags:
+      - $ref: '#/components/tags/recipient-events'
+    messages:
+      - $ref: '#/channels/recipientDelivered/messages/recipientDeliveredMessage'
+
+  onRecipientCompleted:
+    action: receive
+    channel:
+      $ref: '#/channels/recipientCompleted'
+    summary: Receive recipient completed notification.
+    tags:
+      - $ref: '#/components/tags/recipient-events'
+    messages:
+      - $ref: '#/channels/recipientCompleted/messages/recipientCompletedMessage'
+
+  onRecipientDeclined:
+    action: receive
+    channel:
+      $ref: '#/channels/recipientDeclined'
+    summary: Receive recipient declined notification.
+    tags:
+      - $ref: '#/components/tags/recipient-events'
+    messages:
+      - $ref: '#/channels/recipientDeclined/messages/recipientDeclinedMessage'
+
+  onRecipientAuthenticationFailed:
+    action: receive
+    channel:
+      $ref: '#/channels/recipientAuthenticationFailed'
+    summary: Receive recipient authentication failed notification.
+    tags:
+      - $ref: '#/components/tags/recipient-events'
+    messages:
+      - $ref: '#/channels/recipientAuthenticationFailed/messages/recipientAuthFailedMessage'
+
+components:
+  tags:
+    envelope-events:
+      name: envelope-events
+      description: Events related to envelope status changes.
+    recipient-events:
+      name: recipient-events
+      description: Events related to recipient actions and status changes.
+
+  securitySchemes:
+    hmac:
+      type: httpApiKey
+      name: X-DocuSign-Signature-1
+      in: header
+      description: >-
+        DocuSign Connect supports HMAC (Hash-based Message Authentication Code)
+        to verify that webhook notifications originate from DocuSign. The
+        X-DocuSign-Signature-1 header contains an HMAC-SHA256 signature
+        computed using your Connect HMAC key. Verify this signature against
+        the request body to ensure authenticity.
+
+  messages:
+    EnvelopeSentEvent:
+      name: EnvelopeSentEvent
+      title: Envelope Sent
+      summary: Notification sent when an envelope is dispatched to recipients.
+      contentType: application/json
+      headers:
+        type: object
+        properties:
+          X-DocuSign-Signature-1:
+            type: string
+            description: HMAC-SHA256 signature for payload verification.
+          X-DocuSign-Signature-2:
+            type: string
+            description: Secondary HMAC signature for key rotation.
+          X-DocuSign-AccountId:
+            type: string
+            description: The DocuSign account ID that generated the event.
+          Content-Type:
+            type: string
+            enum:
+              - application/json
+              - application/xml
+      payload:
+        $ref: '#/components/schemas/ConnectEventPayload'
+
+    EnvelopeDeliveredEvent:
+      name: EnvelopeDeliveredEvent
+      title: Envelope Delivered
+      summary: Notification sent when a recipient views the envelope documents.
+      contentType: application/json
+      headers:
+        type: object
+        properties:
+          X-DocuSign-Signature-1:
+            type: string
+          X-DocuSign-AccountId:
+            type: string
+      payload:
+        $ref: '#/components/schemas/ConnectEventPayload'
+
+    EnvelopeCompletedEvent:
+      name: EnvelopeCompletedEvent
+      title: Envelope Completed
+      summary: >-
+        Notification sent when all recipients complete their actions and
+        the envelope reaches terminal completed status.
+      contentType: application/json
+      headers:
+        type: object
+        properties:
+          X-DocuSign-Signature-1:
+            type: string
+          X-DocuSign-AccountId:
+            type: string
+      payload:
+        $ref: '#/components/schemas/ConnectEventPayload'
+
+    EnvelopeDeclinedEvent:
+      name: EnvelopeDeclinedEvent
+      title: Envelope Declined
+      summary: Notification sent when a recipient declines the envelope.
+      contentType: application/json
+      headers:
+        type: object
+        properties:
+          X-DocuSign-Signature-1:
+            type: string
+          X-DocuSign-AccountId:
+            type: string
+      payload:
+        $ref: '#/components/schemas/ConnectEventPayload'
+
+    EnvelopeVoidedEvent:
+      name: EnvelopeVoidedEvent
+      title: Envelope Voided
+      summary: Notification sent when the sender voids the envelope.
+      contentType: application/json
+      headers:
+        type: object
+        properties:
+          X-DocuSign-Signature-1:
+            type: string
+          X-DocuSign-AccountId:
+            type: string
+      payload:
+        $ref: '#/components/schemas/ConnectEventPayload'
+
+    RecipientSentEvent:
+      name: RecipientSentEvent
+      title: Recipient Sent
+      summary: Notification sent when a signing invitation is sent to a recipient.
+      contentType: application/json
+      headers:
+        type: object
+        properties:
+          X-DocuSign-Signature-1:
+            type: string
+          X-DocuSign-AccountId:
+            type: string
+      payload:
+        $ref: '#/components/schemas/ConnectEventPayload'
+
+    RecipientDeliveredEvent:
+      name: RecipientDeliveredEvent
+      title: Recipient Delivered
+      summary: >-
+        Notification sent when a recipient opens and views the documents.
+      contentType: application/json
+      headers:
+        type: object
+        properties:
+          X-DocuSign-Signature-1:
+            type: string
+          X-DocuSign-AccountId:
+            type: string
+      payload:
+        $ref: '#/components/schemas/ConnectEventPayload'
+
+    RecipientCompletedEvent:
+      name: RecipientCompletedEvent
+      title: Recipient Completed
+      summary: >-
+        Notification sent when a recipient completes their signing or
+        approval actions.
+      contentType: application/json
+      headers:
+        type: object
+        properties:
+          X-DocuSign-Signature-1:
+            type: string
+          X-DocuSign-AccountId:
+            type: string
+      payload:
+        $ref: '#/components/schemas/ConnectEventPayload'
+
+    RecipientDeclinedEvent:
+      name: RecipientDeclinedEvent
+      title: Recipient Declined
+      summary: Notification sent when a recipient declines to sign.
+      contentType: application/json
+      headers:
+        type: object
+        properties:
+          X-DocuSign-Signature-1:
+            type: string
+          X-DocuSign-AccountId:
+            type: string
+      payload:
+        $ref: '#/components/schemas/ConnectEventPayload'
+
+    RecipientAuthenticationFailedEvent:
+      name: RecipientAuthenticationFailedEvent
+      title: Recipient Authentication Failed
+      summary: >-
+        Notification sent when a recipient fails identity verification.
+      contentType: application/json
+      headers:
+        type: object
+        properties:
+          X-DocuSign-Signature-1:
+            type: string
+          X-DocuSign-AccountId:
+            type: string
+      payload:
+        $ref: '#/components/schemas/ConnectEventPayload'
+
+  schemas:
+    ConnectEventPayload:
+      type: object
+      description: >-
+        The DocuSign Connect event notification payload containing
+        envelope status, recipient details, and optionally document
+        content. The payload structure follows the DocuSign Connect
+        message format.
+      properties:
+        apiVersion:
+          type: string
+          description: The API version used for the notification.
+          examples:
+            - "v2.1"
+        configurationId:
+          type: string
+          description: >-
+            The ID of the Connect configuration that triggered this
+            notification.
+        event:
+          type: string
+          description: >-
+            The event that triggered this notification. Combines the
+            event source and status.
+          enum:
+            - envelope-sent
+            - envelope-delivered
+            - envelope-completed
+            - envelope-declined
+            - envelope-voided
+            - envelope-resent
+            - envelope-corrected
+            - envelope-purge
+            - envelope-deleted
+            - envelope-discard
+            - recipient-sent
+            - recipient-autoresponded
+            - recipient-delivered
+            - recipient-completed
+            - recipient-declined
+            - recipient-authenticationfailed
+            - recipient-resent
+            - recipient-reassign
+            - recipient-finish-later
+        uri:
+          type: string
+          description: The URI of the envelope in the DocuSign API.
+        retryCount:
+          type: integer
+          description: >-
+            The number of times DocuSign has retried sending this
+            notification.
+        generatedDateTime:
+          type: string
+          format: date-time
+          description: The date and time the notification was generated.
+        data:
+          $ref: '#/components/schemas/ConnectEventData'
+
+    ConnectEventData:
+      type: object
+      description: >-
+        The data payload containing envelope and recipient information
+        for the Connect event.
+      properties:
+        accountId:
+          type: string
+          description: The DocuSign account ID.
+        userId:
+          type: string
+          description: The user ID that owns the envelope.
+        envelopeId:
+          type: string
+          format: uuid
+          description: The unique identifier of the envelope.
+        envelopeSummary:
+          $ref: '#/components/schemas/ConnectEnvelopeSummary'
+
+    ConnectEnvelopeSummary:
+      type: object
+      description: >-
+        Summary information about the envelope included in the Connect
+        notification.
+      properties:
+        status:
+          type: string
+          description: The current status of the envelope.
+          enum:
+            - created
+            - sent
+            - delivered
+            - signed
+            - completed
+            - declined
+            - voided
+            - deleted
+            - timedout
+        documentsUri:
+          type: string
+          description: URI for retrieving the envelope documents.
+        recipientsUri:
+          type: string
+          description: URI for retrieving the envelope recipients.
+        envelopeUri:
+          type: string
+          description: URI for retrieving the envelope.
+        envelopeId:
+          type: string
+          format: uuid
+          description: The unique identifier of the envelope.
+        emailSubject:
+          type: string
+          description: The subject line of the envelope email.
+        emailBlurb:
+          type: string
+          description: The body text of the envelope email.
+        createdDateTime:
+          type: string
+          format: date-time
+          description: When the envelope was created.
+        sentDateTime:
+          type: string
+          format: date-time
+          description: When the envelope was sent.
+        deliveredDateTime:
+          type: string
+          format: date-time
+          description: When the envelope was delivered.
+        completedDateTime:
+          type: string
+          format: date-time
+          description: When the envelope was completed.
+        declinedDateTime:
+          type: string
+          format: date-time
+          description: When the envelope was declined.
+        voidedDateTime:
+          type: string
+          format: date-time
+          description: When the envelope was voided.
+        voidedReason:
+          type: string
+          description: The reason the envelope was voided.
+        statusChangedDateTime:
+          type: string
+          format: date-time
+          description: When the status last changed.
+        sender:
+          type: object
+          description: Information about the envelope sender.
+          properties:
+            userName:
+              type: string
+            email:
+              type: string
+              format: email
+            userId:
+              type: string
+            accountId:
+              type: string
+        recipients:
+          type: object
+          description: Recipients and their current status.
+          properties:
+            signers:
+              type: array
+              items:
+                $ref: '#/components/schemas/ConnectRecipientStatus'
+            carbonCopies:
+              type: array
+              items:
+                $ref: '#/components/schemas/ConnectRecipientStatus'
+            certifiedDeliveries:
+              type: array
+              items:
+                $ref: '#/components/schemas/ConnectRecipientStatus'
+        customFields:
+          type: object
+          description: Custom field values for the envelope.
+          properties:
+            textCustomFields:
+              type: array
+              items:
+                type: object
+                properties:
+                  name:
+                    type: string
+                  value:
+                    type: string
+                  fieldId:
+                    type: string
+        envelopeDocuments:
+          type: array
+          description: >-
+            Document metadata and optionally base64-encoded document
+            content, included when the Connect configuration is set
+            to include documents.
+          items:
+            type: object
+            properties:
+              documentId:
+                type: string
+              name:
+                type: string
+              type:
+                type: string
+              uri:
+                type: string
+              order:
+                type: string
+              PDFBytes:
+                type: string
+                description: >-
+                  Base64-encoded PDF content, included only when
+                  the Connect configuration specifies document inclusion.
+
+    ConnectRecipientStatus:
+      type: object
+      description: >-
+        Status information for a recipient included in the Connect
+        notification payload.
+      properties:
+        recipientId:
+          type: string
+          description: The unique identifier for the recipient.
+        recipientIdGuid:
+          type: string
+          format: uuid
+          description: The GUID of the recipient.
+        name:
+          type: string
+          description: The recipient's name.
+        email:
+          type: string
+          format: email
+          description: The recipient's email address.
+        status:
+          type: string
+          description: The recipient's current status.
+          enum:
+            - created
+            - sent
+            - delivered
+            - signed
+            - completed
+            - declined
+            - autoresponded
+            - authenticationfailed
+        routingOrder:
+          type: string
+          description: The routing order of the recipient.
+        sentDateTime:
+          type: string
+          format: date-time
+          description: When the signing request was sent.
+        deliveredDateTime:
+          type: string
+          format: date-time
+          description: When the recipient viewed the documents.
+        signedDateTime:
+          type: string
+          format: date-time
+          description: When the recipient signed.
+        declinedDateTime:
+          type: string
+          format: date-time
+          description: When the recipient declined.
+        declinedReason:
+          type: string
+          description: The reason the recipient declined.
+        recipientType:
+          type: string
+          description: The type of recipient.
+          enum:
+            - signer
+            - carboncopy
+            - certifieddelivery
+            - inpersonsigner
+            - agent
+            - editor
+            - intermediary
+            - witness
+        tabStatuses:
+          type: array
+          description: >-
+            The current values and status of tabs assigned to this
+            recipient, included when configured.
+          items:
+            type: object
+            properties:
+              tabType:
+                type: string
+              tabLabel:
+                type: string
+              tabValue:
+                type: string
+              tabName:
+                type: string
+              documentId:
+                type: string
+              pageNumber:
+                type: string

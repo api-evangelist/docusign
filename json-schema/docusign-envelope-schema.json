@@ -1,0 +1,1333 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/api-search/documents/docusign/json-schema/docusign-envelope-schema.json",
+  "title": "DocuSign Envelope Schema",
+  "description": "JSON Schema defining the core data models for DocuSign eSignature envelopes, recipients, documents, tabs, and templates. An envelope is the fundamental container for a DocuSign signing transaction.",
+  "type": "object",
+  "$defs": {
+    "Envelope": {
+      "type": "object",
+      "title": "Envelope",
+      "description": "The fundamental unit of a DocuSign signing transaction. An envelope contains the documents to be signed, the recipients who will act on them, and the workflow rules governing the signing process.",
+      "properties": {
+        "envelopeId": {
+          "type": "string",
+          "format": "uuid",
+          "description": "The unique identifier of the envelope, assigned by DocuSign upon creation."
+        },
+        "envelopeUri": {
+          "type": "string",
+          "format": "uri-reference",
+          "description": "The URI path for retrieving the envelope via the REST API."
+        },
+        "status": {
+          "$ref": "#/$defs/EnvelopeStatus"
+        },
+        "statusChangedDateTime": {
+          "type": "string",
+          "format": "date-time",
+          "description": "The date and time when the envelope status was last changed."
+        },
+        "emailSubject": {
+          "type": "string",
+          "maxLength": 10000,
+          "description": "The subject line of the email notification sent to recipients."
+        },
+        "emailBlurb": {
+          "type": "string",
+          "description": "The body text of the email notification sent to recipients."
+        },
+        "createdDateTime": {
+          "type": "string",
+          "format": "date-time",
+          "description": "The date and time when the envelope was created."
+        },
+        "sentDateTime": {
+          "type": "string",
+          "format": "date-time",
+          "description": "The date and time when the envelope was sent to recipients."
+        },
+        "deliveredDateTime": {
+          "type": "string",
+          "format": "date-time",
+          "description": "The date and time when the envelope was first delivered to a recipient."
+        },
+        "completedDateTime": {
+          "type": "string",
+          "format": "date-time",
+          "description": "The date and time when all recipients completed their actions and the envelope was finalized."
+        },
+        "declinedDateTime": {
+          "type": "string",
+          "format": "date-time",
+          "description": "The date and time when a recipient declined to sign the envelope."
+        },
+        "voidedDateTime": {
+          "type": "string",
+          "format": "date-time",
+          "description": "The date and time when the sender voided the envelope."
+        },
+        "voidedReason": {
+          "type": "string",
+          "description": "The reason provided by the sender for voiding the envelope."
+        },
+        "sender": {
+          "$ref": "#/$defs/UserInfo"
+        },
+        "recipients": {
+          "$ref": "#/$defs/Recipients"
+        },
+        "documents": {
+          "type": "array",
+          "description": "The documents included in this envelope.",
+          "items": {
+            "$ref": "#/$defs/Document"
+          }
+        },
+        "customFields": {
+          "$ref": "#/$defs/CustomFields"
+        },
+        "notification": {
+          "$ref": "#/$defs/Notification"
+        },
+        "purgeState": {
+          "type": "string",
+          "description": "The purge state of the envelope, indicating whether documents have been purged for data retention compliance.",
+          "enum": [
+            "unpurged",
+            "documents_queued",
+            "documents_dequeued",
+            "documents_purged",
+            "documents_and_metadata_queued",
+            "documents_and_metadata_purged"
+          ]
+        },
+        "brandId": {
+          "type": "string",
+          "description": "The ID of the brand applied to the envelope for custom theming."
+        },
+        "certificateUri": {
+          "type": "string",
+          "format": "uri-reference",
+          "description": "The URI for retrieving the certificate of completion."
+        },
+        "signingLocation": {
+          "type": "string",
+          "description": "Whether the signing takes place in person or online.",
+          "enum": ["inPerson", "online"]
+        },
+        "expireEnabled": {
+          "type": "string",
+          "description": "When set to true, the envelope has an expiration date."
+        },
+        "expireDateTime": {
+          "type": "string",
+          "format": "date-time",
+          "description": "The date and time when the envelope will expire."
+        },
+        "expireAfter": {
+          "type": "string",
+          "description": "The number of days after sending before the envelope expires."
+        },
+        "autoNavigation": {
+          "type": "string",
+          "description": "When true, auto-navigation guides recipients through the signing process."
+        },
+        "isSignatureProviderEnvelope": {
+          "type": "string",
+          "description": "Indicates whether this envelope uses a third-party signature provider."
+        }
+      },
+      "required": ["envelopeId"]
+    },
+
+    "EnvelopeStatus": {
+      "type": "string",
+      "title": "Envelope Status",
+      "description": "The lifecycle status of a DocuSign envelope. Envelopes progress through these states from creation to completion.",
+      "enum": [
+        "created",
+        "sent",
+        "delivered",
+        "signed",
+        "completed",
+        "declined",
+        "voided",
+        "deleted",
+        "timedout",
+        "processing",
+        "template"
+      ]
+    },
+
+    "EnvelopeDefinition": {
+      "type": "object",
+      "title": "Envelope Definition",
+      "description": "The definition used to create a new envelope. Contains all the properties needed to define documents, recipients, tabs, and workflow.",
+      "properties": {
+        "emailSubject": {
+          "type": "string",
+          "maxLength": 10000,
+          "description": "The subject line of the email sent to recipients. Required when sending."
+        },
+        "emailBlurb": {
+          "type": "string",
+          "description": "The body text of the email sent to recipients."
+        },
+        "status": {
+          "type": "string",
+          "description": "Set to 'sent' to send immediately or 'created' to save as draft.",
+          "enum": ["created", "sent"]
+        },
+        "templateId": {
+          "type": "string",
+          "format": "uuid",
+          "description": "The ID of a template to use as the basis for this envelope."
+        },
+        "templateRoles": {
+          "type": "array",
+          "description": "Role assignments mapping recipients to template-defined roles.",
+          "items": {
+            "$ref": "#/$defs/TemplateRole"
+          }
+        },
+        "documents": {
+          "type": "array",
+          "description": "The documents to include in the envelope.",
+          "items": {
+            "$ref": "#/$defs/Document"
+          }
+        },
+        "recipients": {
+          "$ref": "#/$defs/Recipients"
+        },
+        "compositeTemplates": {
+          "type": "array",
+          "description": "Composite templates combining server and inline templates for complex workflows.",
+          "items": {
+            "$ref": "#/$defs/CompositeTemplate"
+          }
+        },
+        "notification": {
+          "$ref": "#/$defs/Notification"
+        },
+        "customFields": {
+          "$ref": "#/$defs/CustomFields"
+        },
+        "brandId": {
+          "type": "string",
+          "description": "The ID of the brand to apply."
+        },
+        "eventNotification": {
+          "$ref": "#/$defs/EventNotification"
+        }
+      }
+    },
+
+    "Document": {
+      "type": "object",
+      "title": "Document",
+      "description": "A document included in an envelope for signing. Documents can be provided as base64-encoded content, by URL reference, or from a template.",
+      "properties": {
+        "documentId": {
+          "type": "string",
+          "description": "A unique identifier for the document within the envelope, assigned by the sender."
+        },
+        "name": {
+          "type": "string",
+          "description": "The display name of the document."
+        },
+        "fileExtension": {
+          "type": "string",
+          "description": "The file extension (e.g., pdf, docx) used to determine content type."
+        },
+        "documentBase64": {
+          "type": "string",
+          "contentEncoding": "base64",
+          "description": "The base64-encoded content of the document."
+        },
+        "remoteUrl": {
+          "type": "string",
+          "format": "uri",
+          "description": "A URL from which DocuSign retrieves the document content."
+        },
+        "order": {
+          "type": "string",
+          "description": "The display order of the document within the envelope."
+        },
+        "pages": {
+          "type": "string",
+          "description": "The number of pages in the document."
+        },
+        "display": {
+          "type": "string",
+          "description": "How the document is presented to the signer.",
+          "enum": ["inline", "modal", "download"]
+        },
+        "includeInDownload": {
+          "type": "string",
+          "description": "When true, includes this document in bulk downloads."
+        },
+        "transformPdfFields": {
+          "type": "string",
+          "description": "When true, PDF form fields are converted to DocuSign tabs."
+        }
+      },
+      "required": ["documentId", "name"]
+    },
+
+    "Recipients": {
+      "type": "object",
+      "title": "Recipients",
+      "description": "The collection of all recipients for an envelope, organized by recipient type. Each type has different capabilities and responsibilities in the signing workflow.",
+      "properties": {
+        "signers": {
+          "type": "array",
+          "description": "Recipients who must sign the documents.",
+          "items": {
+            "$ref": "#/$defs/Signer"
+          }
+        },
+        "carbonCopies": {
+          "type": "array",
+          "description": "Recipients who receive a copy of the completed envelope but do not sign.",
+          "items": {
+            "$ref": "#/$defs/CarbonCopy"
+          }
+        },
+        "certifiedDeliveries": {
+          "type": "array",
+          "description": "Recipients who must confirm receipt of the documents.",
+          "items": {
+            "$ref": "#/$defs/CertifiedDelivery"
+          }
+        },
+        "inPersonSigners": {
+          "type": "array",
+          "description": "Recipients who sign in person with a host managing the session.",
+          "items": {
+            "$ref": "#/$defs/InPersonSigner"
+          }
+        },
+        "agents": {
+          "type": "array",
+          "description": "Recipients who designate another person to sign on their behalf.",
+          "items": {
+            "$ref": "#/$defs/Agent"
+          }
+        },
+        "editors": {
+          "type": "array",
+          "description": "Recipients who can edit the envelope before it is sent.",
+          "items": {
+            "$ref": "#/$defs/Editor"
+          }
+        },
+        "intermediaries": {
+          "type": "array",
+          "description": "Recipients who forward the envelope to another person for signing.",
+          "items": {
+            "$ref": "#/$defs/Intermediary"
+          }
+        },
+        "witnesses": {
+          "type": "array",
+          "description": "Recipients who verify the identity of a signer.",
+          "items": {
+            "$ref": "#/$defs/Witness"
+          }
+        },
+        "recipientCount": {
+          "type": "string",
+          "description": "The total number of recipients across all types."
+        },
+        "currentRoutingOrder": {
+          "type": "string",
+          "description": "The routing order position currently being processed."
+        }
+      }
+    },
+
+    "Signer": {
+      "type": "object",
+      "title": "Signer",
+      "description": "A recipient who must sign one or more documents in the envelope. Signers are the primary actors in the signing workflow.",
+      "properties": {
+        "recipientId": {
+          "type": "string",
+          "description": "A unique identifier for the recipient within the envelope."
+        },
+        "recipientIdGuid": {
+          "type": "string",
+          "format": "uuid",
+          "description": "The GUID assigned to the recipient by DocuSign."
+        },
+        "name": {
+          "type": "string",
+          "description": "The full legal name of the signer."
+        },
+        "email": {
+          "type": "string",
+          "format": "email",
+          "description": "The email address of the signer."
+        },
+        "routingOrder": {
+          "type": "string",
+          "description": "The order in which the signer receives the envelope. Lower numbers go first; equal numbers sign in parallel."
+        },
+        "roleName": {
+          "type": "string",
+          "description": "The role name for matching with template roles."
+        },
+        "clientUserId": {
+          "type": "string",
+          "description": "When set, makes this an embedded signer who signs through your application rather than via email."
+        },
+        "status": {
+          "type": "string",
+          "description": "The current status of the signer in the workflow.",
+          "enum": [
+            "created",
+            "sent",
+            "delivered",
+            "signed",
+            "completed",
+            "declined",
+            "autoresponded"
+          ]
+        },
+        "signedDateTime": {
+          "type": "string",
+          "format": "date-time",
+          "description": "When the signer completed signing."
+        },
+        "deliveredDateTime": {
+          "type": "string",
+          "format": "date-time",
+          "description": "When the envelope was delivered to the signer."
+        },
+        "declinedDateTime": {
+          "type": "string",
+          "format": "date-time",
+          "description": "When the signer declined."
+        },
+        "declinedReason": {
+          "type": "string",
+          "description": "The reason the signer provided for declining."
+        },
+        "tabs": {
+          "$ref": "#/$defs/RecipientTabs"
+        },
+        "accessCode": {
+          "type": "string",
+          "description": "An access code the signer must enter to view the documents."
+        },
+        "requireIdLookup": {
+          "type": "string",
+          "description": "When true, ID verification is required before signing."
+        },
+        "note": {
+          "type": "string",
+          "description": "A private note from the sender to the signer."
+        },
+        "emailNotification": {
+          "$ref": "#/$defs/RecipientEmailNotification"
+        }
+      },
+      "required": ["recipientId", "name", "email"]
+    },
+
+    "CarbonCopy": {
+      "type": "object",
+      "title": "Carbon Copy Recipient",
+      "description": "A recipient who receives a copy of the completed documents but does not take any signing action.",
+      "properties": {
+        "recipientId": {
+          "type": "string",
+          "description": "A unique identifier for the recipient."
+        },
+        "name": {
+          "type": "string",
+          "description": "The full name of the recipient."
+        },
+        "email": {
+          "type": "string",
+          "format": "email",
+          "description": "The email address of the recipient."
+        },
+        "routingOrder": {
+          "type": "string",
+          "description": "The routing order for the recipient."
+        },
+        "roleName": {
+          "type": "string",
+          "description": "The role name for template matching."
+        },
+        "status": {
+          "type": "string",
+          "description": "The current status of the recipient."
+        },
+        "note": {
+          "type": "string",
+          "description": "A note for the recipient."
+        }
+      },
+      "required": ["recipientId", "name", "email"]
+    },
+
+    "CertifiedDelivery": {
+      "type": "object",
+      "title": "Certified Delivery Recipient",
+      "description": "A recipient who must confirm receipt of the envelope documents.",
+      "properties": {
+        "recipientId": { "type": "string" },
+        "name": { "type": "string" },
+        "email": { "type": "string", "format": "email" },
+        "routingOrder": { "type": "string" },
+        "status": { "type": "string" }
+      },
+      "required": ["recipientId", "name", "email"]
+    },
+
+    "InPersonSigner": {
+      "type": "object",
+      "title": "In-Person Signer",
+      "description": "A signer who signs in person with a host present to manage the signing session.",
+      "properties": {
+        "recipientId": { "type": "string" },
+        "hostName": {
+          "type": "string",
+          "description": "The name of the signing host."
+        },
+        "hostEmail": {
+          "type": "string",
+          "format": "email",
+          "description": "The email of the signing host."
+        },
+        "signerName": {
+          "type": "string",
+          "description": "The name of the in-person signer."
+        },
+        "signerEmail": {
+          "type": "string",
+          "format": "email",
+          "description": "The email of the in-person signer."
+        },
+        "routingOrder": { "type": "string" },
+        "status": { "type": "string" },
+        "tabs": { "$ref": "#/$defs/RecipientTabs" }
+      },
+      "required": ["recipientId", "hostName", "hostEmail", "signerName"]
+    },
+
+    "Agent": {
+      "type": "object",
+      "title": "Agent Recipient",
+      "description": "A recipient who can designate another person to sign in their place.",
+      "properties": {
+        "recipientId": { "type": "string" },
+        "name": { "type": "string" },
+        "email": { "type": "string", "format": "email" },
+        "routingOrder": { "type": "string" },
+        "status": { "type": "string" }
+      },
+      "required": ["recipientId", "name", "email"]
+    },
+
+    "Editor": {
+      "type": "object",
+      "title": "Editor Recipient",
+      "description": "A recipient who can edit the envelope before it is sent.",
+      "properties": {
+        "recipientId": { "type": "string" },
+        "name": { "type": "string" },
+        "email": { "type": "string", "format": "email" },
+        "routingOrder": { "type": "string" },
+        "status": { "type": "string" }
+      },
+      "required": ["recipientId", "name", "email"]
+    },
+
+    "Intermediary": {
+      "type": "object",
+      "title": "Intermediary Recipient",
+      "description": "A recipient who can forward the envelope to another person for signing.",
+      "properties": {
+        "recipientId": { "type": "string" },
+        "name": { "type": "string" },
+        "email": { "type": "string", "format": "email" },
+        "routingOrder": { "type": "string" },
+        "status": { "type": "string" }
+      },
+      "required": ["recipientId", "name", "email"]
+    },
+
+    "Witness": {
+      "type": "object",
+      "title": "Witness Recipient",
+      "description": "A recipient who verifies the identity of a signer during the signing process.",
+      "properties": {
+        "recipientId": { "type": "string" },
+        "name": { "type": "string" },
+        "email": { "type": "string", "format": "email" },
+        "routingOrder": { "type": "string" },
+        "status": { "type": "string" },
+        "tabs": { "$ref": "#/$defs/RecipientTabs" }
+      },
+      "required": ["recipientId", "name", "email"]
+    },
+
+    "RecipientTabs": {
+      "type": "object",
+      "title": "Recipient Tabs",
+      "description": "The collection of tabs (fields) assigned to a recipient, organized by tab type. Tabs define where and how recipients interact with documents during signing.",
+      "properties": {
+        "signHereTabs": {
+          "type": "array",
+          "description": "Signature tabs requiring the recipient to apply their signature.",
+          "items": { "$ref": "#/$defs/SignHereTab" }
+        },
+        "initialHereTabs": {
+          "type": "array",
+          "description": "Initial tabs requiring the recipient to initial.",
+          "items": { "$ref": "#/$defs/Tab" }
+        },
+        "dateSignedTabs": {
+          "type": "array",
+          "description": "Tabs auto-populated with the date the recipient signed.",
+          "items": { "$ref": "#/$defs/Tab" }
+        },
+        "textTabs": {
+          "type": "array",
+          "description": "Free-form text input tabs.",
+          "items": { "$ref": "#/$defs/TextTab" }
+        },
+        "fullNameTabs": {
+          "type": "array",
+          "description": "Tabs auto-populated with the recipient's full name.",
+          "items": { "$ref": "#/$defs/Tab" }
+        },
+        "emailTabs": {
+          "type": "array",
+          "description": "Tabs for email address input.",
+          "items": { "$ref": "#/$defs/Tab" }
+        },
+        "checkboxTabs": {
+          "type": "array",
+          "description": "Checkbox tabs for boolean selection.",
+          "items": { "$ref": "#/$defs/CheckboxTab" }
+        },
+        "radioGroupTabs": {
+          "type": "array",
+          "description": "Radio button group tabs for single-choice selection.",
+          "items": { "$ref": "#/$defs/RadioGroupTab" }
+        },
+        "listTabs": {
+          "type": "array",
+          "description": "Dropdown list tabs.",
+          "items": { "$ref": "#/$defs/ListTab" }
+        },
+        "numberTabs": {
+          "type": "array",
+          "description": "Numeric input tabs.",
+          "items": { "$ref": "#/$defs/Tab" }
+        },
+        "dateTabs": {
+          "type": "array",
+          "description": "Date selection tabs.",
+          "items": { "$ref": "#/$defs/Tab" }
+        },
+        "formulaTabs": {
+          "type": "array",
+          "description": "Calculated formula tabs.",
+          "items": { "$ref": "#/$defs/FormulaTab" }
+        },
+        "noteTabs": {
+          "type": "array",
+          "description": "Read-only note tabs for displaying text.",
+          "items": { "$ref": "#/$defs/Tab" }
+        },
+        "approveTabs": {
+          "type": "array",
+          "description": "Approval button tabs.",
+          "items": { "$ref": "#/$defs/Tab" }
+        },
+        "declineTabs": {
+          "type": "array",
+          "description": "Decline button tabs.",
+          "items": { "$ref": "#/$defs/Tab" }
+        }
+      }
+    },
+
+    "Tab": {
+      "type": "object",
+      "title": "Tab",
+      "description": "Base tab properties shared by all tab types. A tab is a field placed on a document page for recipient interaction.",
+      "properties": {
+        "tabId": {
+          "type": "string",
+          "description": "The unique identifier for the tab."
+        },
+        "tabLabel": {
+          "type": "string",
+          "description": "A label used to identify and reference the tab."
+        },
+        "documentId": {
+          "type": "string",
+          "description": "The ID of the document where this tab is placed."
+        },
+        "pageNumber": {
+          "type": "string",
+          "description": "The page number where this tab is placed."
+        },
+        "recipientId": {
+          "type": "string",
+          "description": "The recipient this tab is assigned to."
+        },
+        "xPosition": {
+          "type": "string",
+          "description": "The horizontal position of the tab on the page in pixels."
+        },
+        "yPosition": {
+          "type": "string",
+          "description": "The vertical position of the tab on the page in pixels."
+        },
+        "anchorString": {
+          "type": "string",
+          "description": "A text string used to automatically position the tab relative to text in the document."
+        },
+        "anchorXOffset": {
+          "type": "string",
+          "description": "Horizontal offset from the anchor string position."
+        },
+        "anchorYOffset": {
+          "type": "string",
+          "description": "Vertical offset from the anchor string position."
+        },
+        "anchorUnits": {
+          "type": "string",
+          "description": "The units for anchor offsets.",
+          "enum": ["pixels", "inches", "mms", "cms"]
+        },
+        "value": {
+          "type": "string",
+          "description": "The current value of the tab."
+        }
+      }
+    },
+
+    "SignHereTab": {
+      "title": "Sign Here Tab",
+      "description": "A signature tab requiring the recipient to apply their electronic signature.",
+      "allOf": [
+        { "$ref": "#/$defs/Tab" },
+        {
+          "type": "object",
+          "properties": {
+            "scaleValue": {
+              "type": "string",
+              "description": "The scale factor for the signature."
+            },
+            "optional": {
+              "type": "string",
+              "description": "When true, the signature is optional."
+            },
+            "stampType": {
+              "type": "string",
+              "description": "The type of stamp for the signature."
+            }
+          }
+        }
+      ]
+    },
+
+    "TextTab": {
+      "title": "Text Tab",
+      "description": "A free-form text input tab with optional validation.",
+      "allOf": [
+        { "$ref": "#/$defs/Tab" },
+        {
+          "type": "object",
+          "properties": {
+            "required": {
+              "type": "string",
+              "description": "When true, the tab must be filled in."
+            },
+            "locked": {
+              "type": "string",
+              "description": "When true, the value cannot be changed by the recipient."
+            },
+            "maxLength": {
+              "type": "string",
+              "description": "Maximum number of characters allowed."
+            },
+            "width": {
+              "type": "string",
+              "description": "The width of the tab in pixels."
+            },
+            "height": {
+              "type": "string",
+              "description": "The height of the tab in pixels."
+            },
+            "font": {
+              "type": "string",
+              "description": "The font face for the text."
+            },
+            "fontSize": {
+              "type": "string",
+              "description": "The font size."
+            },
+            "fontColor": {
+              "type": "string",
+              "description": "The font color."
+            },
+            "bold": {
+              "type": "string",
+              "description": "When true, text is bold."
+            },
+            "italic": {
+              "type": "string",
+              "description": "When true, text is italic."
+            },
+            "underline": {
+              "type": "string",
+              "description": "When true, text is underlined."
+            },
+            "validationPattern": {
+              "type": "string",
+              "description": "A regular expression pattern for input validation."
+            },
+            "validationMessage": {
+              "type": "string",
+              "description": "The error message displayed when validation fails."
+            },
+            "concealValueOnDocument": {
+              "type": "string",
+              "description": "When true, the value is concealed on the final document."
+            }
+          }
+        }
+      ]
+    },
+
+    "CheckboxTab": {
+      "title": "Checkbox Tab",
+      "description": "A checkbox tab for boolean true/false selection.",
+      "allOf": [
+        { "$ref": "#/$defs/Tab" },
+        {
+          "type": "object",
+          "properties": {
+            "selected": {
+              "type": "string",
+              "description": "When true, the checkbox is selected."
+            },
+            "required": {
+              "type": "string",
+              "description": "When true, the checkbox must be interacted with."
+            },
+            "locked": {
+              "type": "string",
+              "description": "When true, the selection cannot be changed."
+            }
+          }
+        }
+      ]
+    },
+
+    "RadioGroupTab": {
+      "type": "object",
+      "title": "Radio Group Tab",
+      "description": "A group of radio buttons allowing single-choice selection.",
+      "properties": {
+        "groupName": {
+          "type": "string",
+          "description": "The name of the radio button group."
+        },
+        "documentId": {
+          "type": "string",
+          "description": "The document containing the radio group."
+        },
+        "recipientId": {
+          "type": "string",
+          "description": "The recipient this group is assigned to."
+        },
+        "radios": {
+          "type": "array",
+          "description": "The individual radio button options.",
+          "items": {
+            "type": "object",
+            "properties": {
+              "value": { "type": "string" },
+              "selected": { "type": "string" },
+              "pageNumber": { "type": "string" },
+              "xPosition": { "type": "string" },
+              "yPosition": { "type": "string" },
+              "anchorString": { "type": "string" }
+            }
+          }
+        },
+        "required": {
+          "type": "string",
+          "description": "When true, a selection is required."
+        }
+      }
+    },
+
+    "ListTab": {
+      "title": "List Tab",
+      "description": "A dropdown list tab for selecting from predefined options.",
+      "allOf": [
+        { "$ref": "#/$defs/Tab" },
+        {
+          "type": "object",
+          "properties": {
+            "listItems": {
+              "type": "array",
+              "description": "The available options in the dropdown.",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "text": {
+                    "type": "string",
+                    "description": "The display text for the option."
+                  },
+                  "value": {
+                    "type": "string",
+                    "description": "The value submitted when this option is selected."
+                  },
+                  "selected": {
+                    "type": "string",
+                    "description": "When true, this option is selected by default."
+                  }
+                }
+              }
+            },
+            "required": {
+              "type": "string",
+              "description": "When true, a selection is required."
+            }
+          }
+        }
+      ]
+    },
+
+    "FormulaTab": {
+      "title": "Formula Tab",
+      "description": "A calculated field tab that computes its value from a formula expression.",
+      "allOf": [
+        { "$ref": "#/$defs/Tab" },
+        {
+          "type": "object",
+          "properties": {
+            "formula": {
+              "type": "string",
+              "description": "The formula expression used to calculate the tab value."
+            },
+            "roundDecimalPlaces": {
+              "type": "string",
+              "description": "The number of decimal places to round the result to."
+            }
+          }
+        }
+      ]
+    },
+
+    "TemplateRole": {
+      "type": "object",
+      "title": "Template Role",
+      "description": "Maps a specific person to a role defined in a template when creating an envelope from a template.",
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "The recipient's full name."
+        },
+        "email": {
+          "type": "string",
+          "format": "email",
+          "description": "The recipient's email address."
+        },
+        "roleName": {
+          "type": "string",
+          "description": "The role name matching a role defined in the template."
+        },
+        "clientUserId": {
+          "type": "string",
+          "description": "Client user ID for embedded signing."
+        },
+        "routingOrder": {
+          "type": "string",
+          "description": "The routing order for the recipient."
+        },
+        "tabs": {
+          "$ref": "#/$defs/RecipientTabs"
+        }
+      },
+      "required": ["name", "email", "roleName"]
+    },
+
+    "CompositeTemplate": {
+      "type": "object",
+      "title": "Composite Template",
+      "description": "A composite template combining server-side templates with inline template definitions for complex envelope workflows.",
+      "properties": {
+        "compositeTemplateId": {
+          "type": "string",
+          "description": "A unique identifier for this composite template."
+        },
+        "serverTemplates": {
+          "type": "array",
+          "description": "References to server-side templates.",
+          "items": {
+            "type": "object",
+            "properties": {
+              "templateId": {
+                "type": "string",
+                "description": "The server template ID."
+              },
+              "sequence": {
+                "type": "string",
+                "description": "The merge sequence order."
+              }
+            }
+          }
+        },
+        "inlineTemplates": {
+          "type": "array",
+          "description": "Inline template definitions merged with server templates.",
+          "items": {
+            "type": "object",
+            "properties": {
+              "sequence": {
+                "type": "string",
+                "description": "The merge sequence order."
+              },
+              "recipients": {
+                "$ref": "#/$defs/Recipients"
+              },
+              "documents": {
+                "type": "array",
+                "items": { "$ref": "#/$defs/Document" }
+              }
+            }
+          }
+        },
+        "document": {
+          "$ref": "#/$defs/Document"
+        }
+      }
+    },
+
+    "EnvelopeTemplate": {
+      "type": "object",
+      "title": "Envelope Template",
+      "description": "A reusable template that defines documents, recipients, tabs, and routing for common agreement workflows.",
+      "properties": {
+        "templateId": {
+          "type": "string",
+          "format": "uuid",
+          "description": "The unique identifier of the template."
+        },
+        "uri": {
+          "type": "string",
+          "format": "uri-reference",
+          "description": "The URI for the template resource."
+        },
+        "name": {
+          "type": "string",
+          "description": "The name of the template."
+        },
+        "description": {
+          "type": "string",
+          "description": "A description of the template and its purpose."
+        },
+        "created": {
+          "type": "string",
+          "format": "date-time",
+          "description": "When the template was created."
+        },
+        "lastModified": {
+          "type": "string",
+          "format": "date-time",
+          "description": "When the template was last modified."
+        },
+        "lastUsed": {
+          "type": "string",
+          "format": "date-time",
+          "description": "When the template was last used to create an envelope."
+        },
+        "shared": {
+          "type": "string",
+          "description": "Whether the template is shared with other users."
+        },
+        "folderId": {
+          "type": "string",
+          "description": "The folder containing the template."
+        },
+        "folderName": {
+          "type": "string",
+          "description": "The name of the folder."
+        },
+        "owner": {
+          "$ref": "#/$defs/UserInfo"
+        },
+        "emailSubject": {
+          "type": "string",
+          "description": "Default email subject for envelopes created from this template."
+        },
+        "emailBlurb": {
+          "type": "string",
+          "description": "Default email body text."
+        },
+        "documents": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/Document" }
+        },
+        "recipients": {
+          "$ref": "#/$defs/Recipients"
+        },
+        "notification": {
+          "$ref": "#/$defs/Notification"
+        },
+        "customFields": {
+          "$ref": "#/$defs/CustomFields"
+        }
+      },
+      "required": ["name"]
+    },
+
+    "Notification": {
+      "type": "object",
+      "title": "Notification Settings",
+      "description": "Envelope notification settings controlling reminder schedules and expiration behavior.",
+      "properties": {
+        "useAccountDefaults": {
+          "type": "string",
+          "description": "When true, uses the account's default notification settings."
+        },
+        "reminders": {
+          "type": "object",
+          "description": "Reminder notification settings.",
+          "properties": {
+            "reminderEnabled": {
+              "type": "string",
+              "description": "When true, reminders are enabled."
+            },
+            "reminderDelay": {
+              "type": "string",
+              "description": "Days before the first reminder is sent."
+            },
+            "reminderFrequency": {
+              "type": "string",
+              "description": "Days between subsequent reminders."
+            }
+          }
+        },
+        "expirations": {
+          "type": "object",
+          "description": "Expiration settings.",
+          "properties": {
+            "expireEnabled": {
+              "type": "string",
+              "description": "When true, the envelope will expire."
+            },
+            "expireAfter": {
+              "type": "string",
+              "description": "Days until the envelope expires."
+            },
+            "expireWarn": {
+              "type": "string",
+              "description": "Days before expiration to send a warning."
+            }
+          }
+        }
+      }
+    },
+
+    "CustomFields": {
+      "type": "object",
+      "title": "Custom Fields",
+      "description": "Envelope custom fields used for metadata, tracking, and integration with external systems.",
+      "properties": {
+        "textCustomFields": {
+          "type": "array",
+          "description": "Text-based custom fields.",
+          "items": {
+            "type": "object",
+            "properties": {
+              "fieldId": { "type": "string" },
+              "name": { "type": "string" },
+              "value": { "type": "string" },
+              "required": { "type": "string" },
+              "show": { "type": "string" }
+            }
+          }
+        },
+        "listCustomFields": {
+          "type": "array",
+          "description": "List-based custom fields with predefined options.",
+          "items": {
+            "type": "object",
+            "properties": {
+              "fieldId": { "type": "string" },
+              "name": { "type": "string" },
+              "value": { "type": "string" },
+              "required": { "type": "string" },
+              "show": { "type": "string" },
+              "listItems": {
+                "type": "array",
+                "items": { "type": "string" }
+              }
+            }
+          }
+        }
+      }
+    },
+
+    "EventNotification": {
+      "type": "object",
+      "title": "Event Notification",
+      "description": "Configuration for per-envelope Connect webhook notifications. Allows specifying a listener URL and the events that trigger notifications.",
+      "properties": {
+        "url": {
+          "type": "string",
+          "format": "uri",
+          "description": "The webhook endpoint URL to receive notifications."
+        },
+        "loggingEnabled": {
+          "type": "string",
+          "description": "When true, Connect logging is enabled for this envelope."
+        },
+        "requireAcknowledgment": {
+          "type": "string",
+          "description": "When true, requires an HTTP 200 acknowledgment from the listener."
+        },
+        "envelopeEvents": {
+          "type": "array",
+          "description": "Envelope-level events that trigger notifications.",
+          "items": {
+            "type": "object",
+            "properties": {
+              "envelopeEventStatusCode": {
+                "type": "string",
+                "enum": ["sent", "delivered", "completed", "declined", "voided"]
+              },
+              "includeDocuments": {
+                "type": "string",
+                "description": "When true, includes document PDFs in the notification."
+              }
+            }
+          }
+        },
+        "recipientEvents": {
+          "type": "array",
+          "description": "Recipient-level events that trigger notifications.",
+          "items": {
+            "type": "object",
+            "properties": {
+              "recipientEventStatusCode": {
+                "type": "string",
+                "enum": [
+                  "Sent",
+                  "Delivered",
+                  "Completed",
+                  "Declined",
+                  "AuthenticationFailed",
+                  "AutoResponded"
+                ]
+              },
+              "includeDocuments": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "includeDocuments": {
+          "type": "string",
+          "description": "When true, includes documents in all notifications."
+        },
+        "includeHMAC": {
+          "type": "string",
+          "description": "When true, includes HMAC security headers for verification."
+        },
+        "includeTimeZone": {
+          "type": "string",
+          "description": "When true, includes time zone information."
+        },
+        "includeCertificateOfCompletion": {
+          "type": "string",
+          "description": "When true, includes the certificate of completion."
+        }
+      },
+      "required": ["url"]
+    },
+
+    "UserInfo": {
+      "type": "object",
+      "title": "User Info",
+      "description": "Information about a DocuSign user, typically the envelope sender or account owner.",
+      "properties": {
+        "userName": {
+          "type": "string",
+          "description": "The user's full name."
+        },
+        "email": {
+          "type": "string",
+          "format": "email",
+          "description": "The user's email address."
+        },
+        "userId": {
+          "type": "string",
+          "description": "The user's unique identifier."
+        },
+        "accountId": {
+          "type": "string",
+          "description": "The DocuSign account ID."
+        }
+      }
+    },
+
+    "RecipientEmailNotification": {
+      "type": "object",
+      "title": "Recipient Email Notification",
+      "description": "Custom email notification settings overriding the envelope-level email for a specific recipient.",
+      "properties": {
+        "emailSubject": {
+          "type": "string",
+          "description": "Custom email subject for this recipient."
+        },
+        "emailBody": {
+          "type": "string",
+          "description": "Custom email body for this recipient."
+        },
+        "supportedLanguage": {
+          "type": "string",
+          "description": "The language code for the notification email."
+        }
+      }
+    },
+
+    "ErrorDetails": {
+      "type": "object",
+      "title": "Error Details",
+      "description": "Error information returned by the DocuSign API when a request fails.",
+      "properties": {
+        "errorCode": {
+          "type": "string",
+          "description": "A machine-readable error code."
+        },
+        "message": {
+          "type": "string",
+          "description": "A human-readable error message describing the issue."
+        }
+      }
+    }
+  },
+
+  "properties": {
+    "envelope": {
+      "$ref": "#/$defs/Envelope"
+    }
+  }
+}

@@ -1,0 +1,2607 @@
+openapi: 3.1.0
+info:
+  title: DocuSign eSignature REST API
+  description: >-
+    The DocuSign eSignature REST API provides a powerful, convenient, and simple
+    web services API for interacting with DocuSign. It enables developers to
+    integrate electronic signing capabilities directly into applications and
+    websites, allowing businesses to send, sign, and manage documents securely
+    and efficiently with support for sequential and parallel signing workflows,
+    document management, templates, and real-time status tracking.
+  version: 2.1.0
+  termsOfService: https://www.docusign.com/company/terms-and-conditions/developers
+  contact:
+    name: DocuSign Developer Center
+    url: https://developers.docusign.com/
+    email: devcenter@docusign.com
+  license:
+    name: DocuSign Developer Terms
+    url: https://www.docusign.com/company/terms-and-conditions/developers
+  x-logo:
+    url: https://www.docusign.com/sites/default/files/docusign_logo.png
+    altText: DocuSign
+
+externalDocs:
+  description: DocuSign eSignature REST API Reference
+  url: https://developers.docusign.com/docs/esign-rest-api/reference/
+
+servers:
+  - url: https://demo.docusign.net/restapi/v2.1
+    description: DocuSign Demo (Sandbox) Environment
+  - url: https://www.docusign.net/restapi/v2.1
+    description: DocuSign Production - NA1
+  - url: https://eu.docusign.net/restapi/v2.1
+    description: DocuSign Production - EU
+  - url: https://au.docusign.net/restapi/v2.1
+    description: DocuSign Production - AU
+
+security:
+  - OAuth2:
+      - signature
+      - impersonation
+
+tags:
+  - name: Envelopes
+    description: >-
+      Create, send, and manage envelopes. An envelope is the fundamental unit
+      of a DocuSign transaction, containing the documents to be signed, the
+      recipients who will sign them, and the workflow rules.
+    externalDocs:
+      url: https://developers.docusign.com/docs/esign-rest-api/reference/envelopes/
+  - name: EnvelopeDocuments
+    description: >-
+      Manage documents within envelopes including adding, retrieving, and
+      deleting documents attached to envelopes.
+    externalDocs:
+      url: https://developers.docusign.com/docs/esign-rest-api/reference/envelopes/envelopedocuments/
+  - name: Recipients
+    description: >-
+      Manage envelope recipients including signers, carbon copy recipients,
+      certified deliveries, and other recipient types.
+    externalDocs:
+      url: https://developers.docusign.com/docs/esign-rest-api/reference/envelopes/enveloperecipients/
+  - name: Tabs
+    description: >-
+      Manage tabs (fields) placed on documents for recipients to interact with
+      during the signing process, including signature, date, text, and
+      checkbox tabs.
+    externalDocs:
+      url: https://developers.docusign.com/docs/esign-rest-api/reference/envelopes/enveloperecipienttabs/
+  - name: Templates
+    description: >-
+      Create and manage reusable templates that define documents, recipients,
+      tabs, and routing for common agreement workflows.
+    externalDocs:
+      url: https://developers.docusign.com/docs/esign-rest-api/reference/templates/
+  - name: EnvelopeViews
+    description: >-
+      Generate URL tokens for embedded signing, sending, and recipient views
+      to integrate DocuSign experiences directly into your application.
+    externalDocs:
+      url: https://developers.docusign.com/docs/esign-rest-api/reference/envelopes/envelopeviews/
+
+paths:
+  /accounts/{accountId}/envelopes:
+    post:
+      operationId: Envelopes_CreateEnvelope
+      summary: Create an envelope
+      description: >-
+        Creates and optionally sends an envelope. An envelope is the container
+        for documents, recipients, and the workflow information. You can create
+        an envelope in draft status to allow for further modifications, or send
+        it immediately upon creation.
+      tags:
+        - Envelopes
+      parameters:
+        - $ref: '#/components/parameters/accountId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EnvelopeDefinition'
+      responses:
+        '201':
+          description: Envelope created successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EnvelopeSummary'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+    get:
+      operationId: Envelopes_ListEnvelopes
+      summary: List envelopes
+      description: >-
+        Returns a list of envelopes that match the specified criteria. Use query
+        parameters to filter by date, status, and other envelope properties.
+      tags:
+        - Envelopes
+      parameters:
+        - $ref: '#/components/parameters/accountId'
+        - name: from_date
+          in: query
+          description: >-
+            Start date for the envelope search. Only envelopes created on or
+            after this date are returned. Format is ISO 8601.
+          schema:
+            type: string
+            format: date-time
+        - name: to_date
+          in: query
+          description: >-
+            End date for the envelope search. Only envelopes created before
+            this date are returned. Format is ISO 8601.
+          schema:
+            type: string
+            format: date-time
+        - name: status
+          in: query
+          description: >-
+            Filter by envelope status. Valid values include created, sent,
+            delivered, signed, completed, declined, voided, deleted.
+          schema:
+            type: string
+            enum:
+              - created
+              - sent
+              - delivered
+              - signed
+              - completed
+              - declined
+              - voided
+              - deleted
+        - name: from_to_status
+          in: query
+          description: >-
+            The status value checked for in the from_date and to_date range.
+            Default is changed.
+          schema:
+            type: string
+        - name: count
+          in: query
+          description: Maximum number of envelopes to return. Default is 100.
+          schema:
+            type: integer
+            default: 100
+        - name: start_position
+          in: query
+          description: Starting index position for the result set.
+          schema:
+            type: integer
+        - name: search_text
+          in: query
+          description: >-
+            Free text search across envelope metadata including recipient
+            names, email addresses, and custom fields.
+          schema:
+            type: string
+        - name: order
+          in: query
+          description: Sort order for results. Valid values are asc and desc.
+          schema:
+            type: string
+            enum:
+              - asc
+              - desc
+        - name: order_by
+          in: query
+          description: >-
+            The envelope property to sort by. Valid values include created,
+            completed, last_modified, sent, status_changed.
+          schema:
+            type: string
+        - name: folder_ids
+          in: query
+          description: Comma-separated list of folder IDs to search within.
+          schema:
+            type: string
+        - name: include
+          in: query
+          description: >-
+            Comma-separated list of additional information to include.
+            Valid values include custom_fields, documents, attachments,
+            extensions, folders, recipients, powerform.
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successfully retrieved list of envelopes.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EnvelopesInformation'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+
+  /accounts/{accountId}/envelopes/{envelopeId}:
+    get:
+      operationId: Envelopes_GetEnvelope
+      summary: Get an envelope
+      description: >-
+        Retrieves the overall status and properties of a single envelope.
+        Returns information about the envelope including its status, sender,
+        recipients, and documents.
+      tags:
+        - Envelopes
+      parameters:
+        - $ref: '#/components/parameters/accountId'
+        - $ref: '#/components/parameters/envelopeId'
+        - name: include
+          in: query
+          description: >-
+            Comma-separated list of additional information to include.
+            Valid values include custom_fields, documents, attachments,
+            extensions, folders, recipients, powerform, tabs.
+          schema:
+            type: string
+        - name: advanced_update
+          in: query
+          description: When true, allows sender to update an in-process envelope.
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successfully retrieved the envelope.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Envelope'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    put:
+      operationId: Envelopes_UpdateEnvelope
+      summary: Update an envelope
+      description: >-
+        Updates the envelope specified by envelopeId. You can use this method
+        to modify envelope properties such as the email subject and message,
+        resend notifications, void envelopes, and purge documents.
+      tags:
+        - Envelopes
+      parameters:
+        - $ref: '#/components/parameters/accountId'
+        - $ref: '#/components/parameters/envelopeId'
+        - name: resend_envelope
+          in: query
+          description: >-
+            When true, resends the envelope to all recipients who have not
+            yet completed their actions.
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Envelope'
+      responses:
+        '200':
+          description: Envelope updated successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EnvelopeUpdateSummary'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+  /accounts/{accountId}/envelopes/{envelopeId}/documents:
+    get:
+      operationId: EnvelopeDocuments_ListDocuments
+      summary: List envelope documents
+      description: >-
+        Retrieves a list of documents associated with the specified envelope.
+        Returns metadata about each document including the document ID,
+        name, type, and order.
+      tags:
+        - EnvelopeDocuments
+      parameters:
+        - $ref: '#/components/parameters/accountId'
+        - $ref: '#/components/parameters/envelopeId'
+      responses:
+        '200':
+          description: Successfully retrieved document list.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EnvelopeDocumentsResult'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+  /accounts/{accountId}/envelopes/{envelopeId}/documents/{documentId}:
+    get:
+      operationId: EnvelopeDocuments_GetDocument
+      summary: Get an envelope document
+      description: >-
+        Retrieves the specified document from the envelope. Returns the
+        document content as a PDF or other supported format.
+      tags:
+        - EnvelopeDocuments
+      parameters:
+        - $ref: '#/components/parameters/accountId'
+        - $ref: '#/components/parameters/envelopeId'
+        - name: documentId
+          in: path
+          required: true
+          description: >-
+            The unique identifier of the document within the envelope.
+            Use "combined" to retrieve all documents as a single PDF.
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successfully retrieved the document.
+          content:
+            application/pdf:
+              schema:
+                type: string
+                format: binary
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+  /accounts/{accountId}/envelopes/{envelopeId}/recipients:
+    get:
+      operationId: Recipients_ListRecipients
+      summary: List envelope recipients
+      description: >-
+        Retrieves the status and information for all recipients of the
+        specified envelope. Returns details about each recipient including
+        their signing status, delivery method, and authentication.
+      tags:
+        - Recipients
+      parameters:
+        - $ref: '#/components/parameters/accountId'
+        - $ref: '#/components/parameters/envelopeId'
+        - name: include_tabs
+          in: query
+          description: When true, includes the tabs associated with each recipient.
+          schema:
+            type: string
+        - name: include_extended
+          in: query
+          description: When true, includes extended recipient information.
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successfully retrieved recipients.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Recipients'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    put:
+      operationId: Recipients_UpdateRecipients
+      summary: Update envelope recipients
+      description: >-
+        Updates one or more recipients in a draft or sent envelope. You can
+        modify recipient properties such as name, email, routing order, and
+        authentication settings.
+      tags:
+        - Recipients
+      parameters:
+        - $ref: '#/components/parameters/accountId'
+        - $ref: '#/components/parameters/envelopeId'
+        - name: resend_envelope
+          in: query
+          description: When true, resends the envelope to updated recipients.
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Recipients'
+      responses:
+        '200':
+          description: Recipients updated successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RecipientsUpdateSummary'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    post:
+      operationId: Recipients_CreateRecipients
+      summary: Add recipients to an envelope
+      description: >-
+        Adds one or more recipients to an envelope. The envelope must be in
+        draft or sent status. For sent envelopes, this creates a corrected
+        version of the envelope.
+      tags:
+        - Recipients
+      parameters:
+        - $ref: '#/components/parameters/accountId'
+        - $ref: '#/components/parameters/envelopeId'
+        - name: resend_envelope
+          in: query
+          description: When true, resends the envelope after adding recipients.
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Recipients'
+      responses:
+        '201':
+          description: Recipients added successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Recipients'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    delete:
+      operationId: Recipients_DeleteRecipients
+      summary: Delete recipients from an envelope
+      description: >-
+        Deletes one or more recipients from a draft or sent envelope.
+      tags:
+        - Recipients
+      parameters:
+        - $ref: '#/components/parameters/accountId'
+        - $ref: '#/components/parameters/envelopeId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Recipients'
+      responses:
+        '200':
+          description: Recipients deleted successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Recipients'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+  /accounts/{accountId}/envelopes/{envelopeId}/recipients/{recipientId}/tabs:
+    get:
+      operationId: Tabs_ListTabs
+      summary: List tabs for a recipient
+      description: >-
+        Retrieves the tabs associated with a specific recipient in an envelope.
+        Returns all tab types assigned to the recipient.
+      tags:
+        - Tabs
+      parameters:
+        - $ref: '#/components/parameters/accountId'
+        - $ref: '#/components/parameters/envelopeId'
+        - $ref: '#/components/parameters/recipientId'
+        - name: include_metadata
+          in: query
+          description: When true, includes metadata properties in the response.
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successfully retrieved tabs.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EnvelopeRecipientTabs'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    put:
+      operationId: Tabs_UpdateTabs
+      summary: Update tabs for a recipient
+      description: >-
+        Updates one or more tabs for a recipient in a draft envelope.
+      tags:
+        - Tabs
+      parameters:
+        - $ref: '#/components/parameters/accountId'
+        - $ref: '#/components/parameters/envelopeId'
+        - $ref: '#/components/parameters/recipientId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EnvelopeRecipientTabs'
+      responses:
+        '200':
+          description: Tabs updated successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EnvelopeRecipientTabs'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+  /accounts/{accountId}/envelopes/{envelopeId}/views/recipient:
+    post:
+      operationId: EnvelopeViews_CreateRecipientView
+      summary: Create an embedded recipient signing view
+      description: >-
+        Generates a URL that enables an embedded recipient to sign an
+        envelope within your application. The URL is time-limited and
+        intended for immediate use.
+      tags:
+        - EnvelopeViews
+      parameters:
+        - $ref: '#/components/parameters/accountId'
+        - $ref: '#/components/parameters/envelopeId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RecipientViewRequest'
+      responses:
+        '201':
+          description: Recipient view URL created successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ViewUrl'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+  /accounts/{accountId}/envelopes/{envelopeId}/views/sender:
+    post:
+      operationId: EnvelopeViews_CreateSenderView
+      summary: Create an embedded sender view
+      description: >-
+        Generates a URL that enables an embedded sender to edit an
+        envelope in draft status before sending it.
+      tags:
+        - EnvelopeViews
+      parameters:
+        - $ref: '#/components/parameters/accountId'
+        - $ref: '#/components/parameters/envelopeId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                returnUrl:
+                  type: string
+                  description: URL to redirect the sender to after the sending session ends.
+      responses:
+        '201':
+          description: Sender view URL created successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ViewUrl'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+  /accounts/{accountId}/templates:
+    get:
+      operationId: Templates_ListTemplates
+      summary: List templates
+      description: >-
+        Retrieves a list of templates associated with the specified account.
+        Templates define reusable envelopes with predefined documents,
+        recipients, tabs, and routing.
+      tags:
+        - Templates
+      parameters:
+        - $ref: '#/components/parameters/accountId'
+        - name: count
+          in: query
+          description: Maximum number of templates to return. Default is 100.
+          schema:
+            type: integer
+            default: 100
+        - name: start_position
+          in: query
+          description: Starting index for the result set.
+          schema:
+            type: integer
+        - name: search_text
+          in: query
+          description: Search text to filter templates by name.
+          schema:
+            type: string
+        - name: folder
+          in: query
+          description: >-
+            Folder from which to retrieve templates. Valid values include
+            all, drafts, inbox, sent_items, recyclebin.
+          schema:
+            type: string
+        - name: folder_ids
+          in: query
+          description: Comma-separated list of folder IDs to search within.
+          schema:
+            type: string
+        - name: shared_by_me
+          in: query
+          description: >-
+            When true, returns templates shared by the current user.
+          schema:
+            type: string
+        - name: order
+          in: query
+          description: Sort order for results. Valid values are asc and desc.
+          schema:
+            type: string
+            enum:
+              - asc
+              - desc
+        - name: order_by
+          in: query
+          description: >-
+            Template property to sort by. Valid values include name,
+            modified, used.
+          schema:
+            type: string
+        - name: used_from_date
+          in: query
+          description: Filter templates used on or after this date.
+          schema:
+            type: string
+            format: date-time
+        - name: used_to_date
+          in: query
+          description: Filter templates used before this date.
+          schema:
+            type: string
+            format: date-time
+        - name: include
+          in: query
+          description: >-
+            Comma-separated list of additional information to include.
+            Valid values include custom_fields, documents, folders,
+            notifications, recipients.
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successfully retrieved templates.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EnvelopeTemplateResults'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+    post:
+      operationId: Templates_CreateTemplate
+      summary: Create a template
+      description: >-
+        Creates a new template from scratch or from an existing template.
+        Templates define the document content, recipients, tabs, and
+        routing for reusable envelope workflows.
+      tags:
+        - Templates
+      parameters:
+        - $ref: '#/components/parameters/accountId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EnvelopeTemplate'
+      responses:
+        '201':
+          description: Template created successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TemplateSummary'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+
+  /accounts/{accountId}/templates/{templateId}:
+    get:
+      operationId: Templates_GetTemplate
+      summary: Get a template
+      description: >-
+        Retrieves the definition and properties of the specified template,
+        including its documents, recipients, tabs, and routing information.
+      tags:
+        - Templates
+      parameters:
+        - $ref: '#/components/parameters/accountId'
+        - $ref: '#/components/parameters/templateId'
+        - name: include
+          in: query
+          description: >-
+            Comma-separated list of additional properties to include.
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successfully retrieved the template.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EnvelopeTemplate'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    put:
+      operationId: Templates_UpdateTemplate
+      summary: Update a template
+      description: >-
+        Updates the template specified by templateId. You can modify the
+        template name, description, documents, recipients, and tabs.
+      tags:
+        - Templates
+      parameters:
+        - $ref: '#/components/parameters/accountId'
+        - $ref: '#/components/parameters/templateId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EnvelopeTemplate'
+      responses:
+        '200':
+          description: Template updated successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TemplateSummary'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    delete:
+      operationId: Templates_DeleteTemplate
+      summary: Delete a template
+      description: >-
+        Deletes the specified template. Deleted templates are moved to the
+        recycle bin and can be recovered within a retention period.
+      tags:
+        - Templates
+      parameters:
+        - $ref: '#/components/parameters/accountId'
+        - $ref: '#/components/parameters/templateId'
+      responses:
+        '200':
+          description: Template deleted successfully.
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+  /accounts/{accountId}/templates/{templateId}/recipients:
+    get:
+      operationId: TemplateRecipients_ListRecipients
+      summary: List template recipients
+      description: >-
+        Retrieves the recipients defined in the specified template,
+        including their roles, routing order, and tab assignments.
+      tags:
+        - Templates
+      parameters:
+        - $ref: '#/components/parameters/accountId'
+        - $ref: '#/components/parameters/templateId'
+        - name: include_tabs
+          in: query
+          description: When true, includes the tabs associated with each recipient.
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successfully retrieved template recipients.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Recipients'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    put:
+      operationId: TemplateRecipients_UpdateRecipients
+      summary: Update template recipients
+      description: >-
+        Updates one or more recipients in the specified template.
+      tags:
+        - Templates
+      parameters:
+        - $ref: '#/components/parameters/accountId'
+        - $ref: '#/components/parameters/templateId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Recipients'
+      responses:
+        '200':
+          description: Template recipients updated successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RecipientsUpdateSummary'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+components:
+  securitySchemes:
+    OAuth2:
+      type: oauth2
+      description: >-
+        DocuSign uses OAuth 2.0. Supports Authorization Code Grant for
+        user-present applications and JWT Grant for service integrations.
+      flows:
+        authorizationCode:
+          authorizationUrl: https://account-d.docusign.com/oauth/auth
+          tokenUrl: https://account-d.docusign.com/oauth/token
+          scopes:
+            signature: Access to signing and envelope operations
+            impersonation: Impersonate users via JWT Grant
+            extended: Extended API access
+        implicit:
+          authorizationUrl: https://account-d.docusign.com/oauth/auth
+          scopes:
+            signature: Access to signing and envelope operations
+
+  parameters:
+    accountId:
+      name: accountId
+      in: path
+      required: true
+      description: >-
+        The external account number (short) or account ID GUID of the
+        DocuSign account.
+      schema:
+        type: string
+    envelopeId:
+      name: envelopeId
+      in: path
+      required: true
+      description: The envelope ID (GUID) of the envelope.
+      schema:
+        type: string
+        format: uuid
+    recipientId:
+      name: recipientId
+      in: path
+      required: true
+      description: >-
+        A unique identifier for a recipient. This value is assigned by
+        DocuSign and is unique per envelope.
+      schema:
+        type: string
+    templateId:
+      name: templateId
+      in: path
+      required: true
+      description: The ID of the template.
+      schema:
+        type: string
+        format: uuid
+
+  responses:
+    BadRequest:
+      description: Bad request. The request body or parameters are invalid.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorDetails'
+    Unauthorized:
+      description: Unauthorized. Authentication credentials are missing or invalid.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorDetails'
+    NotFound:
+      description: The requested resource was not found.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorDetails'
+
+  schemas:
+    EnvelopeDefinition:
+      type: object
+      description: >-
+        The envelope definition object that contains all the properties
+        needed to create and send an envelope.
+      properties:
+        emailSubject:
+          type: string
+          description: The subject line of the email sent to recipients.
+          maxLength: 10000
+        emailBlurb:
+          type: string
+          description: The body text of the email sent to recipients.
+        status:
+          type: string
+          description: >-
+            The envelope status. Set to "sent" to send the envelope
+            immediately, or "created" to save as a draft.
+          enum:
+            - created
+            - sent
+        templateId:
+          type: string
+          description: >-
+            The ID of a template to use as the basis for the envelope.
+            When specified, the template's documents, recipients, and
+            tabs are merged with any specified in the request.
+        templateRoles:
+          type: array
+          description: >-
+            Template role assignments that map recipients to template
+            roles when using a templateId.
+          items:
+            $ref: '#/components/schemas/TemplateRole'
+        documents:
+          type: array
+          description: The documents to include in the envelope.
+          items:
+            $ref: '#/components/schemas/Document'
+        recipients:
+          $ref: '#/components/schemas/Recipients'
+        compositeTemplates:
+          type: array
+          description: >-
+            An array of composite template objects that combine server
+            templates and inline templates for complex workflows.
+          items:
+            $ref: '#/components/schemas/CompositeTemplate'
+        notification:
+          $ref: '#/components/schemas/Notification'
+        customFields:
+          $ref: '#/components/schemas/CustomFields'
+        brandId:
+          type: string
+          description: The ID of the brand to apply to the envelope.
+        envelopeIdStamping:
+          type: string
+          description: >-
+            When true, the envelope ID is stamped in the document margins.
+        eventNotification:
+          $ref: '#/components/schemas/EventNotification'
+
+    Envelope:
+      type: object
+      description: Contains the properties of an envelope.
+      properties:
+        envelopeId:
+          type: string
+          format: uuid
+          description: The unique identifier of the envelope.
+        envelopeUri:
+          type: string
+          description: The URI for retrieving the envelope.
+        status:
+          type: string
+          description: Current status of the envelope.
+          enum:
+            - created
+            - sent
+            - delivered
+            - signed
+            - completed
+            - declined
+            - voided
+            - deleted
+            - timedout
+            - processing
+            - template
+        statusChangedDateTime:
+          type: string
+          format: date-time
+          description: The date and time the status last changed.
+        emailSubject:
+          type: string
+          description: The subject line of the envelope email.
+        emailBlurb:
+          type: string
+          description: The body text of the envelope email.
+        createdDateTime:
+          type: string
+          format: date-time
+          description: The date and time the envelope was created.
+        sentDateTime:
+          type: string
+          format: date-time
+          description: The date and time the envelope was sent.
+        deliveredDateTime:
+          type: string
+          format: date-time
+          description: The date and time the envelope was delivered.
+        completedDateTime:
+          type: string
+          format: date-time
+          description: The date and time the envelope was completed.
+        voidedDateTime:
+          type: string
+          format: date-time
+          description: The date and time the envelope was voided.
+        voidedReason:
+          type: string
+          description: The reason the envelope was voided.
+        declinedDateTime:
+          type: string
+          format: date-time
+          description: The date and time the envelope was declined.
+        sender:
+          $ref: '#/components/schemas/UserInfo'
+        recipients:
+          $ref: '#/components/schemas/Recipients'
+        documents:
+          type: array
+          items:
+            $ref: '#/components/schemas/Document'
+        customFields:
+          $ref: '#/components/schemas/CustomFields'
+        notification:
+          $ref: '#/components/schemas/Notification'
+        purgeState:
+          type: string
+          description: Purge state of the envelope.
+          enum:
+            - unpurged
+            - documents_queued
+            - documents_dequeued
+            - documents_purged
+            - documents_and_metadata_queued
+            - documents_and_metadata_purged
+        brandId:
+          type: string
+          description: The ID of the brand applied to the envelope.
+        certificateUri:
+          type: string
+          description: URI for retrieving the certificate of completion.
+        isSignatureProviderEnvelope:
+          type: string
+          description: Whether this envelope uses a signature provider.
+        signingLocation:
+          type: string
+          description: >-
+            The signing location. Valid values are inPerson and online.
+          enum:
+            - inPerson
+            - online
+        expireEnabled:
+          type: string
+          description: Whether the envelope expiration is enabled.
+        expireDateTime:
+          type: string
+          format: date-time
+          description: The date and time the envelope expires.
+        expireAfter:
+          type: string
+          description: Number of days after which the envelope expires.
+        autoNavigation:
+          type: string
+          description: Whether auto-navigation is enabled for recipients.
+        anySigner:
+          type: string
+          description: Reserved for DocuSign use.
+
+    EnvelopeSummary:
+      type: object
+      description: Summary information about a newly created envelope.
+      properties:
+        envelopeId:
+          type: string
+          format: uuid
+          description: The unique identifier of the created envelope.
+        uri:
+          type: string
+          description: The URI for the envelope.
+        statusDateTime:
+          type: string
+          format: date-time
+          description: The date and time of the status change.
+        status:
+          type: string
+          description: The status of the envelope.
+
+    EnvelopeUpdateSummary:
+      type: object
+      description: Summary of an envelope update operation.
+      properties:
+        envelopeId:
+          type: string
+          format: uuid
+          description: The envelope ID.
+        bulkEnvelopeStatus:
+          type: object
+          description: Bulk envelope status information, if applicable.
+        errorDetails:
+          $ref: '#/components/schemas/ErrorDetails'
+        listCustomFieldUpdateResults:
+          type: array
+          items:
+            type: object
+        recipientUpdateResults:
+          type: array
+          items:
+            type: object
+        textCustomFieldUpdateResults:
+          type: array
+          items:
+            type: object
+
+    EnvelopesInformation:
+      type: object
+      description: >-
+        Contains information about the envelopes returned by a list
+        request, including the result set and pagination details.
+      properties:
+        envelopes:
+          type: array
+          description: The list of envelopes matching the query.
+          items:
+            $ref: '#/components/schemas/Envelope'
+        resultSetSize:
+          type: string
+          description: The number of results in the current set.
+        totalSetSize:
+          type: string
+          description: The total number of envelopes matching the query.
+        startPosition:
+          type: string
+          description: The starting index position of the current result set.
+        endPosition:
+          type: string
+          description: The ending index position of the current result set.
+        nextUri:
+          type: string
+          description: URI for the next page of results.
+        previousUri:
+          type: string
+          description: URI for the previous page of results.
+
+    EnvelopeDocumentsResult:
+      type: object
+      description: Contains the list of documents in an envelope.
+      properties:
+        envelopeId:
+          type: string
+          format: uuid
+          description: The envelope ID.
+        envelopeDocuments:
+          type: array
+          description: The list of envelope documents.
+          items:
+            $ref: '#/components/schemas/EnvelopeDocument'
+
+    EnvelopeDocument:
+      type: object
+      description: Metadata about a document within an envelope.
+      properties:
+        documentId:
+          type: string
+          description: The unique identifier of the document.
+        name:
+          type: string
+          description: The name of the document.
+        type:
+          type: string
+          description: The document type.
+        uri:
+          type: string
+          description: URI for retrieving the document.
+        order:
+          type: string
+          description: The order of the document in the envelope.
+        pages:
+          type: array
+          description: Array of page objects for the document.
+          items:
+            type: object
+            properties:
+              pageId:
+                type: string
+              sequence:
+                type: string
+              height:
+                type: string
+              width:
+                type: string
+        containsPdfFormFields:
+          type: string
+          description: Whether the document contains PDF form fields.
+        display:
+          type: string
+          description: Display setting for the document.
+        includeInDownload:
+          type: string
+          description: Whether to include this document in downloads.
+
+    Document:
+      type: object
+      description: >-
+        A document to be included in an envelope. Documents can be
+        provided as base64-encoded content or by reference.
+      properties:
+        documentId:
+          type: string
+          description: >-
+            A unique identifier for the document within the envelope,
+            assigned by the sender. Must be unique within the envelope.
+        name:
+          type: string
+          description: The name of the document.
+        fileExtension:
+          type: string
+          description: >-
+            The file extension of the document. DocuSign uses this to
+            determine the correct content type.
+        documentBase64:
+          type: string
+          description: The base64-encoded content of the document.
+        remoteUrl:
+          type: string
+          description: URL from which to retrieve the document content.
+        order:
+          type: string
+          description: The order of the document in the envelope.
+        pages:
+          type: string
+          description: The number of pages in the document.
+        display:
+          type: string
+          description: Display setting for the document.
+          enum:
+            - inline
+            - modal
+            - download
+        includeInDownload:
+          type: string
+          description: Whether to include this document in downloads.
+        transformPdfFields:
+          type: string
+          description: >-
+            When true, DocuSign transforms PDF form fields into DocuSign tabs.
+
+    Recipients:
+      type: object
+      description: >-
+        Contains the recipient collections for an envelope, organized
+        by recipient type.
+      properties:
+        signers:
+          type: array
+          description: List of signer recipients.
+          items:
+            $ref: '#/components/schemas/Signer'
+        carbonCopies:
+          type: array
+          description: >-
+            List of carbon copy recipients who receive a copy of the
+            completed envelope.
+          items:
+            $ref: '#/components/schemas/CarbonCopy'
+        certifiedDeliveries:
+          type: array
+          description: >-
+            List of certified delivery recipients who must confirm
+            receipt of the envelope.
+          items:
+            $ref: '#/components/schemas/CertifiedDelivery'
+        inPersonSigners:
+          type: array
+          description: >-
+            List of in-person signer recipients for face-to-face
+            signing scenarios.
+          items:
+            $ref: '#/components/schemas/InPersonSigner'
+        agents:
+          type: array
+          description: >-
+            List of agent recipients who can designate another person
+            to sign on their behalf.
+          items:
+            $ref: '#/components/schemas/Agent'
+        editors:
+          type: array
+          description: >-
+            List of editor recipients who can modify the envelope
+            before it is sent.
+          items:
+            $ref: '#/components/schemas/Editor'
+        intermediaries:
+          type: array
+          description: >-
+            List of intermediary recipients who can forward the
+            envelope to another person for signing.
+          items:
+            $ref: '#/components/schemas/Intermediary'
+        witnesses:
+          type: array
+          description: >-
+            List of witness recipients who verify the identity of
+            a signer.
+          items:
+            $ref: '#/components/schemas/Witness'
+        recipientCount:
+          type: string
+          description: The total number of recipients in the envelope.
+        currentRoutingOrder:
+          type: string
+          description: The current routing order position.
+
+    Signer:
+      type: object
+      description: A signer recipient who must sign the envelope documents.
+      properties:
+        recipientId:
+          type: string
+          description: >-
+            Unique identifier for the recipient. Assigned by the sender.
+        recipientIdGuid:
+          type: string
+          format: uuid
+          description: The GUID for the recipient.
+        name:
+          type: string
+          description: The full legal name of the signer.
+        email:
+          type: string
+          format: email
+          description: The email address of the signer.
+        routingOrder:
+          type: string
+          description: >-
+            The routing order of the signer. Lower numbers are processed
+            first. Recipients with the same routing order sign in parallel.
+        roleName:
+          type: string
+          description: >-
+            The role name associated with the signer, used with templates.
+        clientUserId:
+          type: string
+          description: >-
+            The client user ID for embedded signing. When set, the
+            recipient is an embedded signer and must sign through your
+            application using a generated signing URL.
+        status:
+          type: string
+          description: The status of the signer.
+          enum:
+            - created
+            - sent
+            - delivered
+            - signed
+            - completed
+            - declined
+            - autoresponded
+        signedDateTime:
+          type: string
+          format: date-time
+          description: The date and time the signer signed.
+        deliveredDateTime:
+          type: string
+          format: date-time
+          description: The date and time the envelope was delivered to the signer.
+        declinedDateTime:
+          type: string
+          format: date-time
+          description: The date and time the signer declined.
+        declinedReason:
+          type: string
+          description: The reason the signer declined.
+        tabs:
+          $ref: '#/components/schemas/EnvelopeRecipientTabs'
+        identityVerification:
+          type: object
+          description: Identity verification settings for this recipient.
+          properties:
+            workflowId:
+              type: string
+            inputOptions:
+              type: array
+              items:
+                type: object
+        phoneAuthentication:
+          type: object
+          description: Phone authentication settings.
+          properties:
+            recipMayProvideNumber:
+              type: string
+            senderProvidedNumbers:
+              type: array
+              items:
+                type: string
+        accessCode:
+          type: string
+          description: >-
+            An access code the recipient must enter to access the envelope.
+        requireIdLookup:
+          type: string
+          description: Whether ID lookup authentication is required.
+        note:
+          type: string
+          description: A private note to the signer from the sender.
+        emailNotification:
+          $ref: '#/components/schemas/RecipientEmailNotification'
+
+    CarbonCopy:
+      type: object
+      description: >-
+        A carbon copy recipient who receives a copy of the completed
+        documents but does not need to take any action.
+      properties:
+        recipientId:
+          type: string
+          description: Unique identifier for the recipient.
+        name:
+          type: string
+          description: The full name of the recipient.
+        email:
+          type: string
+          format: email
+          description: The email address of the recipient.
+        routingOrder:
+          type: string
+          description: The routing order of the recipient.
+        roleName:
+          type: string
+          description: The role name for template matching.
+        status:
+          type: string
+          description: The status of the recipient.
+        note:
+          type: string
+          description: A note for the recipient.
+
+    CertifiedDelivery:
+      type: object
+      description: >-
+        A certified delivery recipient who must confirm receipt of
+        the envelope documents.
+      properties:
+        recipientId:
+          type: string
+        name:
+          type: string
+        email:
+          type: string
+          format: email
+        routingOrder:
+          type: string
+        status:
+          type: string
+
+    InPersonSigner:
+      type: object
+      description: >-
+        An in-person signer recipient for face-to-face signing where
+        a host manages the signing session.
+      properties:
+        recipientId:
+          type: string
+        hostName:
+          type: string
+          description: The name of the signing host.
+        hostEmail:
+          type: string
+          format: email
+          description: The email of the signing host.
+        signerName:
+          type: string
+          description: The name of the in-person signer.
+        signerEmail:
+          type: string
+          format: email
+          description: The email of the in-person signer.
+        routingOrder:
+          type: string
+        status:
+          type: string
+        tabs:
+          $ref: '#/components/schemas/EnvelopeRecipientTabs'
+
+    Agent:
+      type: object
+      description: >-
+        An agent recipient who can designate a recipient to sign
+        in their place.
+      properties:
+        recipientId:
+          type: string
+        name:
+          type: string
+        email:
+          type: string
+          format: email
+        routingOrder:
+          type: string
+        status:
+          type: string
+
+    Editor:
+      type: object
+      description: >-
+        An editor recipient who can modify the envelope before
+        it is sent.
+      properties:
+        recipientId:
+          type: string
+        name:
+          type: string
+        email:
+          type: string
+          format: email
+        routingOrder:
+          type: string
+        status:
+          type: string
+
+    Intermediary:
+      type: object
+      description: >-
+        An intermediary recipient who can forward the envelope
+        to another person.
+      properties:
+        recipientId:
+          type: string
+        name:
+          type: string
+        email:
+          type: string
+          format: email
+        routingOrder:
+          type: string
+        status:
+          type: string
+
+    Witness:
+      type: object
+      description: >-
+        A witness recipient who verifies the identity of a signer.
+      properties:
+        recipientId:
+          type: string
+        name:
+          type: string
+        email:
+          type: string
+          format: email
+        routingOrder:
+          type: string
+        status:
+          type: string
+        tabs:
+          $ref: '#/components/schemas/EnvelopeRecipientTabs'
+
+    RecipientsUpdateSummary:
+      type: object
+      description: Summary of a recipients update operation.
+      properties:
+        recipientUpdateResults:
+          type: array
+          items:
+            type: object
+            properties:
+              recipientId:
+                type: string
+              errorDetails:
+                $ref: '#/components/schemas/ErrorDetails'
+
+    EnvelopeRecipientTabs:
+      type: object
+      description: >-
+        Contains the tab collections for an envelope recipient,
+        organized by tab type.
+      properties:
+        signHereTabs:
+          type: array
+          description: Signature tabs requiring the recipient to sign.
+          items:
+            $ref: '#/components/schemas/SignHere'
+        initialHereTabs:
+          type: array
+          description: Initial tabs requiring the recipient to initial.
+          items:
+            $ref: '#/components/schemas/InitialHere'
+        dateSignedTabs:
+          type: array
+          description: Date signed tabs auto-filled with the signing date.
+          items:
+            $ref: '#/components/schemas/DateSigned'
+        textTabs:
+          type: array
+          description: Text input tabs for free-form text entry.
+          items:
+            $ref: '#/components/schemas/Text'
+        fullNameTabs:
+          type: array
+          description: Full name tabs auto-filled with the signer name.
+          items:
+            $ref: '#/components/schemas/FullName'
+        emailTabs:
+          type: array
+          description: Email tabs for email address input.
+          items:
+            $ref: '#/components/schemas/EmailTab'
+        checkboxTabs:
+          type: array
+          description: Checkbox tabs for boolean selection.
+          items:
+            $ref: '#/components/schemas/Checkbox'
+        radioGroupTabs:
+          type: array
+          description: Radio button group tabs for single-choice selection.
+          items:
+            $ref: '#/components/schemas/RadioGroup'
+        listTabs:
+          type: array
+          description: List tabs for dropdown selection.
+          items:
+            $ref: '#/components/schemas/ListTab'
+        numberTabs:
+          type: array
+          description: Number tabs for numeric input.
+          items:
+            $ref: '#/components/schemas/NumberTab'
+        dateTabs:
+          type: array
+          description: Date tabs for date selection.
+          items:
+            $ref: '#/components/schemas/DateTab'
+        formulaTabs:
+          type: array
+          description: Formula tabs for calculated values.
+          items:
+            $ref: '#/components/schemas/FormulaTab'
+        noteTabs:
+          type: array
+          description: Note tabs for displaying read-only text.
+          items:
+            $ref: '#/components/schemas/NoteTab'
+        approveTabs:
+          type: array
+          description: Approve tabs for document approval.
+          items:
+            $ref: '#/components/schemas/Approve'
+        declineTabs:
+          type: array
+          description: Decline tabs for document rejection.
+          items:
+            $ref: '#/components/schemas/Decline'
+
+    SignHere:
+      type: object
+      description: A signature tab placed on a document.
+      properties:
+        tabId:
+          type: string
+          description: Unique identifier for the tab.
+        tabLabel:
+          type: string
+          description: Label used to identify the tab.
+        documentId:
+          type: string
+          description: The document ID where this tab is placed.
+        pageNumber:
+          type: string
+          description: The page number where this tab is placed.
+        recipientId:
+          type: string
+          description: The recipient this tab is assigned to.
+        xPosition:
+          type: string
+          description: The X position of the tab on the page.
+        yPosition:
+          type: string
+          description: The Y position of the tab on the page.
+        anchorString:
+          type: string
+          description: >-
+            Anchor text string used to automatically position the tab.
+        anchorXOffset:
+          type: string
+          description: X offset from the anchor string position.
+        anchorYOffset:
+          type: string
+          description: Y offset from the anchor string position.
+        anchorUnits:
+          type: string
+          description: Units for anchor offsets (pixels, inches, mms, cms).
+        scaleValue:
+          type: string
+          description: Scale value for the signature.
+        optional:
+          type: string
+          description: When true, the tab is optional for the recipient.
+        stampType:
+          type: string
+          description: The type of stamp for the signature.
+
+    InitialHere:
+      type: object
+      description: An initial tab placed on a document.
+      properties:
+        tabId:
+          type: string
+        tabLabel:
+          type: string
+        documentId:
+          type: string
+        pageNumber:
+          type: string
+        recipientId:
+          type: string
+        xPosition:
+          type: string
+        yPosition:
+          type: string
+        anchorString:
+          type: string
+        optional:
+          type: string
+        scaleValue:
+          type: string
+
+    DateSigned:
+      type: object
+      description: A tab that displays the date the recipient signed.
+      properties:
+        tabId:
+          type: string
+        tabLabel:
+          type: string
+        documentId:
+          type: string
+        pageNumber:
+          type: string
+        recipientId:
+          type: string
+        xPosition:
+          type: string
+        yPosition:
+          type: string
+        anchorString:
+          type: string
+        value:
+          type: string
+
+    Text:
+      type: object
+      description: A text input tab for free-form text entry.
+      properties:
+        tabId:
+          type: string
+        tabLabel:
+          type: string
+        documentId:
+          type: string
+        pageNumber:
+          type: string
+        recipientId:
+          type: string
+        xPosition:
+          type: string
+        yPosition:
+          type: string
+        anchorString:
+          type: string
+        value:
+          type: string
+        required:
+          type: string
+          description: When true, the recipient must fill in this tab.
+        locked:
+          type: string
+          description: When true, the tab value cannot be changed.
+        maxLength:
+          type: string
+          description: Maximum length of text input.
+        width:
+          type: string
+        height:
+          type: string
+        font:
+          type: string
+        fontSize:
+          type: string
+        fontColor:
+          type: string
+        bold:
+          type: string
+        italic:
+          type: string
+        underline:
+          type: string
+        validationPattern:
+          type: string
+          description: Regular expression for input validation.
+        validationMessage:
+          type: string
+          description: Error message displayed when validation fails.
+        concealValueOnDocument:
+          type: string
+          description: When true, the value is concealed on the document.
+
+    FullName:
+      type: object
+      description: A tab auto-filled with the recipient full name.
+      properties:
+        tabId:
+          type: string
+        tabLabel:
+          type: string
+        documentId:
+          type: string
+        pageNumber:
+          type: string
+        recipientId:
+          type: string
+        xPosition:
+          type: string
+        yPosition:
+          type: string
+        anchorString:
+          type: string
+        value:
+          type: string
+
+    EmailTab:
+      type: object
+      description: A tab for email address input.
+      properties:
+        tabId:
+          type: string
+        tabLabel:
+          type: string
+        documentId:
+          type: string
+        pageNumber:
+          type: string
+        recipientId:
+          type: string
+        xPosition:
+          type: string
+        yPosition:
+          type: string
+        anchorString:
+          type: string
+        value:
+          type: string
+
+    Checkbox:
+      type: object
+      description: A checkbox tab for boolean selection.
+      properties:
+        tabId:
+          type: string
+        tabLabel:
+          type: string
+        documentId:
+          type: string
+        pageNumber:
+          type: string
+        recipientId:
+          type: string
+        xPosition:
+          type: string
+        yPosition:
+          type: string
+        anchorString:
+          type: string
+        selected:
+          type: string
+          description: When true, the checkbox is selected.
+        required:
+          type: string
+        locked:
+          type: string
+
+    RadioGroup:
+      type: object
+      description: A group of radio buttons for single-choice selection.
+      properties:
+        groupName:
+          type: string
+          description: The name of the radio group.
+        documentId:
+          type: string
+        recipientId:
+          type: string
+        radios:
+          type: array
+          items:
+            type: object
+            properties:
+              value:
+                type: string
+              selected:
+                type: string
+              pageNumber:
+                type: string
+              xPosition:
+                type: string
+              yPosition:
+                type: string
+              anchorString:
+                type: string
+        required:
+          type: string
+
+    ListTab:
+      type: object
+      description: A dropdown list tab for selecting from predefined options.
+      properties:
+        tabId:
+          type: string
+        tabLabel:
+          type: string
+        documentId:
+          type: string
+        pageNumber:
+          type: string
+        recipientId:
+          type: string
+        xPosition:
+          type: string
+        yPosition:
+          type: string
+        anchorString:
+          type: string
+        value:
+          type: string
+        listItems:
+          type: array
+          items:
+            type: object
+            properties:
+              text:
+                type: string
+              value:
+                type: string
+              selected:
+                type: string
+        required:
+          type: string
+
+    NumberTab:
+      type: object
+      description: A tab for numeric input.
+      properties:
+        tabId:
+          type: string
+        tabLabel:
+          type: string
+        documentId:
+          type: string
+        pageNumber:
+          type: string
+        recipientId:
+          type: string
+        xPosition:
+          type: string
+        yPosition:
+          type: string
+        value:
+          type: string
+        required:
+          type: string
+
+    DateTab:
+      type: object
+      description: A tab for date selection.
+      properties:
+        tabId:
+          type: string
+        tabLabel:
+          type: string
+        documentId:
+          type: string
+        pageNumber:
+          type: string
+        recipientId:
+          type: string
+        xPosition:
+          type: string
+        yPosition:
+          type: string
+        value:
+          type: string
+        required:
+          type: string
+
+    FormulaTab:
+      type: object
+      description: A calculated field tab using formulas.
+      properties:
+        tabId:
+          type: string
+        tabLabel:
+          type: string
+        documentId:
+          type: string
+        pageNumber:
+          type: string
+        recipientId:
+          type: string
+        xPosition:
+          type: string
+        yPosition:
+          type: string
+        formula:
+          type: string
+          description: The formula expression.
+        roundDecimalPlaces:
+          type: string
+        value:
+          type: string
+
+    NoteTab:
+      type: object
+      description: A read-only note tab for displaying text.
+      properties:
+        tabId:
+          type: string
+        tabLabel:
+          type: string
+        documentId:
+          type: string
+        pageNumber:
+          type: string
+        recipientId:
+          type: string
+        xPosition:
+          type: string
+        yPosition:
+          type: string
+        value:
+          type: string
+
+    Approve:
+      type: object
+      description: An approve button tab for document approval.
+      properties:
+        tabId:
+          type: string
+        tabLabel:
+          type: string
+        documentId:
+          type: string
+        pageNumber:
+          type: string
+        recipientId:
+          type: string
+        xPosition:
+          type: string
+        yPosition:
+          type: string
+        buttonText:
+          type: string
+
+    Decline:
+      type: object
+      description: A decline button tab for document rejection.
+      properties:
+        tabId:
+          type: string
+        tabLabel:
+          type: string
+        documentId:
+          type: string
+        pageNumber:
+          type: string
+        recipientId:
+          type: string
+        xPosition:
+          type: string
+        yPosition:
+          type: string
+        buttonText:
+          type: string
+        declineReason:
+          type: string
+
+    TemplateRole:
+      type: object
+      description: >-
+        Maps a recipient to a role defined in a template. Used when
+        creating an envelope from a template.
+      properties:
+        name:
+          type: string
+          description: The recipient's full name.
+        email:
+          type: string
+          format: email
+          description: The recipient's email address.
+        roleName:
+          type: string
+          description: >-
+            The role name that matches a role defined in the template.
+        clientUserId:
+          type: string
+          description: >-
+            The client user ID for embedded signing.
+        defaultRecipient:
+          type: string
+          description: When true, this is the default recipient for the role.
+        routingOrder:
+          type: string
+          description: The routing order for the recipient.
+        accessCode:
+          type: string
+          description: Access code for authentication.
+        tabs:
+          $ref: '#/components/schemas/EnvelopeRecipientTabs'
+        emailNotification:
+          $ref: '#/components/schemas/RecipientEmailNotification'
+
+    CompositeTemplate:
+      type: object
+      description: >-
+        A composite template that combines server templates and inline
+        templates for complex envelope workflows.
+      properties:
+        compositeTemplateId:
+          type: string
+          description: Unique identifier for the composite template.
+        serverTemplates:
+          type: array
+          items:
+            type: object
+            properties:
+              templateId:
+                type: string
+              sequence:
+                type: string
+        inlineTemplates:
+          type: array
+          items:
+            type: object
+            properties:
+              sequence:
+                type: string
+              recipients:
+                $ref: '#/components/schemas/Recipients'
+              documents:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Document'
+        document:
+          $ref: '#/components/schemas/Document'
+
+    EnvelopeTemplate:
+      type: object
+      description: >-
+        A template that defines reusable documents, recipients, tabs,
+        and routing for envelope workflows.
+      properties:
+        templateId:
+          type: string
+          format: uuid
+          description: The unique identifier of the template.
+        uri:
+          type: string
+          description: The URI for the template.
+        name:
+          type: string
+          description: The name of the template.
+        description:
+          type: string
+          description: A description of the template.
+        created:
+          type: string
+          format: date-time
+          description: The date the template was created.
+        lastModified:
+          type: string
+          format: date-time
+          description: The date the template was last modified.
+        lastUsed:
+          type: string
+          format: date-time
+          description: The date the template was last used.
+        shared:
+          type: string
+          description: Whether the template is shared.
+        folderId:
+          type: string
+          description: The folder ID containing the template.
+        folderName:
+          type: string
+          description: The name of the folder containing the template.
+        owner:
+          $ref: '#/components/schemas/UserInfo'
+        emailSubject:
+          type: string
+          description: The default email subject for envelopes using this template.
+        emailBlurb:
+          type: string
+          description: The default email body for envelopes using this template.
+        signingLocation:
+          type: string
+          description: The signing location setting.
+        documents:
+          type: array
+          description: The documents included in the template.
+          items:
+            $ref: '#/components/schemas/Document'
+        recipients:
+          $ref: '#/components/schemas/Recipients'
+        notification:
+          $ref: '#/components/schemas/Notification'
+        customFields:
+          $ref: '#/components/schemas/CustomFields'
+        status:
+          type: string
+          description: Template status.
+
+    EnvelopeTemplateResults:
+      type: object
+      description: Contains results of a template list request.
+      properties:
+        envelopeTemplates:
+          type: array
+          items:
+            $ref: '#/components/schemas/EnvelopeTemplate'
+        resultSetSize:
+          type: string
+        totalSetSize:
+          type: string
+        startPosition:
+          type: string
+        endPosition:
+          type: string
+        nextUri:
+          type: string
+        previousUri:
+          type: string
+        folders:
+          type: array
+          items:
+            type: object
+            properties:
+              folderId:
+                type: string
+              name:
+                type: string
+              itemCount:
+                type: string
+
+    TemplateSummary:
+      type: object
+      description: Summary information about a template operation.
+      properties:
+        templateId:
+          type: string
+          format: uuid
+          description: The unique identifier of the template.
+        name:
+          type: string
+          description: The name of the template.
+        uri:
+          type: string
+          description: The URI for the template.
+
+    Notification:
+      type: object
+      description: Envelope notification settings including reminders and expirations.
+      properties:
+        useAccountDefaults:
+          type: string
+          description: When true, use account default notification settings.
+        reminders:
+          type: object
+          properties:
+            reminderEnabled:
+              type: string
+              description: When true, reminders are enabled.
+            reminderDelay:
+              type: string
+              description: Days before the first reminder is sent.
+            reminderFrequency:
+              type: string
+              description: Days between subsequent reminders.
+        expirations:
+          type: object
+          properties:
+            expireEnabled:
+              type: string
+              description: When true, expiration is enabled.
+            expireAfter:
+              type: string
+              description: Days until the envelope expires.
+            expireWarn:
+              type: string
+              description: Days before expiration to send a warning.
+
+    CustomFields:
+      type: object
+      description: Envelope custom fields for metadata and integrations.
+      properties:
+        textCustomFields:
+          type: array
+          items:
+            type: object
+            properties:
+              fieldId:
+                type: string
+              name:
+                type: string
+              value:
+                type: string
+              required:
+                type: string
+              show:
+                type: string
+        listCustomFields:
+          type: array
+          items:
+            type: object
+            properties:
+              fieldId:
+                type: string
+              name:
+                type: string
+              value:
+                type: string
+              required:
+                type: string
+              show:
+                type: string
+              listItems:
+                type: array
+                items:
+                  type: string
+
+    EventNotification:
+      type: object
+      description: >-
+        Configuration for envelope event notifications via DocuSign
+        Connect webhooks.
+      properties:
+        url:
+          type: string
+          description: The webhook endpoint URL to receive notifications.
+        loggingEnabled:
+          type: string
+          description: When true, Connect logging is enabled.
+        requireAcknowledgment:
+          type: string
+          description: When true, requires HTTPS 200 acknowledgment.
+        envelopeEvents:
+          type: array
+          description: Envelope-level events to trigger notifications.
+          items:
+            type: object
+            properties:
+              envelopeEventStatusCode:
+                type: string
+                enum:
+                  - sent
+                  - delivered
+                  - completed
+                  - declined
+                  - voided
+              includeDocuments:
+                type: string
+        recipientEvents:
+          type: array
+          description: Recipient-level events to trigger notifications.
+          items:
+            type: object
+            properties:
+              recipientEventStatusCode:
+                type: string
+                enum:
+                  - Sent
+                  - Delivered
+                  - Completed
+                  - Declined
+                  - AuthenticationFailed
+                  - AutoResponded
+              includeDocuments:
+                type: string
+        includeCertificateOfCompletion:
+          type: string
+          description: When true, includes the certificate of completion.
+        includeDocuments:
+          type: string
+          description: When true, includes document PDFs in the notification.
+        includeDocumentFields:
+          type: string
+          description: When true, includes document custom fields.
+        includeHMAC:
+          type: string
+          description: When true, includes HMAC security headers.
+        includeSenderAccountAsCustomField:
+          type: string
+        includeTimeZone:
+          type: string
+          description: When true, includes time zone information.
+        includeCertificateWithSoap:
+          type: string
+
+    RecipientViewRequest:
+      type: object
+      description: >-
+        Request body for generating an embedded recipient signing URL.
+      required:
+        - authenticationMethod
+        - email
+        - userName
+        - returnUrl
+      properties:
+        authenticationMethod:
+          type: string
+          description: >-
+            The authentication method used to verify the recipient.
+            Must match the authentication method used when the
+            recipient was added.
+          enum:
+            - None
+            - Phone
+            - KBA
+            - IDCheck
+            - Password
+            - HTTPBasicAuth
+            - PaperDocuments
+            - HeaderAuthentication
+            - SAML
+            - SSO
+        email:
+          type: string
+          format: email
+          description: The email address of the recipient.
+        userName:
+          type: string
+          description: The full name of the recipient.
+        clientUserId:
+          type: string
+          description: The client user ID of the embedded signer.
+        recipientId:
+          type: string
+          description: The recipient ID.
+        returnUrl:
+          type: string
+          description: >-
+            The URL to redirect the signer to after the signing
+            session ends. DocuSign appends event query parameters.
+        pingUrl:
+          type: string
+          description: >-
+            A URL that DocuSign pings during the signing session
+            to confirm the parent frame is active.
+        pingFrequency:
+          type: string
+          description: Frequency in seconds for ping requests.
+        frameAncestors:
+          type: array
+          description: >-
+            URLs allowed to iframe the signing session (CSP
+            frame-ancestors).
+          items:
+            type: string
+        messageOrigins:
+          type: array
+          description: Origins allowed to receive postMessage events.
+          items:
+            type: string
+        securityDomain:
+          type: string
+          description: The security domain for the signing session.
+
+    ViewUrl:
+      type: object
+      description: Contains a URL for an embedded view.
+      properties:
+        url:
+          type: string
+          description: >-
+            The URL for the embedded view. This URL is time-limited
+            and should be used immediately.
+
+    RecipientEmailNotification:
+      type: object
+      description: Custom email notification settings for a recipient.
+      properties:
+        emailSubject:
+          type: string
+          description: Custom email subject for this recipient.
+        emailBody:
+          type: string
+          description: Custom email body for this recipient.
+        supportedLanguage:
+          type: string
+          description: Language code for the notification.
+
+    UserInfo:
+      type: object
+      description: Information about a DocuSign user.
+      properties:
+        userName:
+          type: string
+          description: The user's full name.
+        email:
+          type: string
+          format: email
+          description: The user's email address.
+        userId:
+          type: string
+          description: The user's unique ID.
+        accountId:
+          type: string
+          description: The account ID associated with the user.
+
+    ErrorDetails:
+      type: object
+      description: Contains error information returned by the API.
+      properties:
+        errorCode:
+          type: string
+          description: The error code.
+        message:
+          type: string
+          description: A human-readable error message.
