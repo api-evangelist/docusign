@@ -1,8 +1,7 @@
 openapi: 3.0.1
 info:
   title: DocuSign Admin API
-  description: "An API for an organization administrator to manage organizations,\
-    \ accounts and users"
+  description: "An API for an organization administrator to manage organizations, accounts and users"
   termsOfService: https://www.docusign.com/company/terms-and-conditions/developers
   contact:
     name: DocuSign Developer Center
@@ -10,44 +9,43 @@ info:
     email: devcenter@docusign.com
   version: v2.1
 servers:
-- url: https://api.docusign.net/Management
+  - url: https://api.docusign.net/Management
 tags:
-- name: Users
-  description: Methods to manage users in an account.
-- name: eSignUserManagement
-  description: Methods to manage eSignature users in an account.
-- name: MultiProductUserManagement
-  description: Methods to manage multi-product users in an account.
-- name: UserExport
-  description: Methods for exporting a user list.
-- name: AccountSettingsExport
-  description: Methods and objects to get account information.
-- name: UserImport
-  description: |-
-    Methods to import users.
+  - name: Users
+    description: Methods to manage users in an account.
+  - name: eSignUserManagement
+    description: Methods to manage eSignature users in an account.
+  - name: MultiProductUserManagement
+    description: Methods to manage multi-product users in an account.
+  - name: UserExport
+    description: Methods for exporting a user list.
+  - name: AccountSettingsExport
+    description: Methods and objects to get account information.
+  - name: UserImport
+    description: |-
+      Methods to import users.
 
-    To ensure your CSV is properly formatted, use the
-    [Sample Bulk Add CSV file](https://admin.docusign.com/static-resources/organization-user-import.csv)
-     as a template.
+      To ensure your CSV is properly formatted, use the
+      [Sample Bulk Add CSV file](https://admin.docusign.com/static-resources/organization-user-import.csv)
+       as a template.
 
-    You can add up to 2,000 users to an account and include up to 50 accounts per import. The maximum number of users per import is 8,000.
-- name: IdentityProviders
-  description: Methods to get a list of identity providers.
-- name: ReservedDomains
-  description: Methods to get a list of reserved domains.
-- name: Organization
-  description: Methods for working with organizations.
-- name: AccountSettingsImport
-  description: Methods and objects to update account settings.
-- name: SingleAccountUserImport
-  description: Methods to import users.
+      You can add up to 2,000 users to an account and include up to 50 accounts per import. The maximum number of users per import is 8,000.
+  - name: IdentityProviders
+    description: Methods to get a list of identity providers.
+  - name: ReservedDomains
+    description: Methods to get a list of reserved domains.
+  - name: Organization
+    description: Methods for working with organizations.
+  - name: AccountSettingsImport
+    description: Methods and objects to update account settings.
+  - name: SingleAccountUserImport
+    description: Methods to import users.
 paths:
   /v2/organizations:
     get:
       tags:
-      - Organization
-      summary: Returns a list of organizations that the authenticated user belongs
-        to.
+        - Organization
+      summary: Docusign Returns a list of organizations that the authenticated user belongs to.
       description: |-
         Returns a list of organizations that the authenticated user belongs to.
 
@@ -56,17 +54,17 @@ paths:
         Note that the DocuSign Admin API only returns JSON, not XML.
       operationId: Organization_Organization_GetListV2
       parameters:
-      - name: mode
-        in: query
-        description: |-
-          Specifies how to select the organizations. Valid values:
+        - name: mode
+          in: query
+          description: |-
+            Specifies how to select the organizations. Valid values:
 
-          - `org_admin`: Returns organizations for which the authenticated user is an admin.
-          - `account_membership`: Returns organizations that contain an account of which the authenticated user is a member
+            - `org_admin`: Returns organizations for which the authenticated user is an admin.
+            - `account_membership`: Returns organizations that contain an account of which the authenticated user is a member
 
-          Default value: `org_admin`
-        schema:
-          type: string
+            Default value: `org_admin`
+          schema:
+            type: string
       responses:
         "200":
           description: OK
@@ -75,8 +73,8 @@ paths:
               schema:
                 $ref: '#/components/schemas/OrganizationsResponse'
       security:
-      - accessCode:
-        - organization_read
+        - accessCode:
+            - organization_read
       x-ds-methodname: getOrganizations
       x-ds-method: getOrganizations
       x-ds-service: Accounts
@@ -84,8 +82,8 @@ paths:
   /v2/organizations/{organizationId}/accounts/{accountId}/permissions:
     get:
       tags:
-      - eSignUserManagement
-      summary: Returns the list of permission profiles in an account.
+        - eSignUserManagement
+      summary: Docusign Returns the list of permission profiles in an account.
       description: |+
         Returns the list of permission profiles in an account.
 
@@ -93,20 +91,20 @@ paths:
 
       operationId: Account_Accounts_GetPermissionProfilesV2
       parameters:
-      - name: organizationId
-        in: path
-        description: The organization ID Guid
-        required: true
-        schema:
-          type: string
-          format: uuid
-      - name: accountId
-        in: path
-        description: The account ID Guid
-        required: true
-        schema:
-          type: string
-          format: uuid
+        - name: organizationId
+          in: path
+          description: The organization ID Guid
+          required: true
+          schema:
+            type: string
+            format: uuid
+        - name: accountId
+          in: path
+          description: The account ID Guid
+          required: true
+          schema:
+            type: string
+            format: uuid
       responses:
         "200":
           description: OK
@@ -115,8 +113,8 @@ paths:
               schema:
                 $ref: '#/components/schemas/PermissionsResponse'
       security:
-      - accessCode:
-        - permission_read
+        - accessCode:
+            - permission_read
       x-ds-methodname: getPermissions
       x-ds-method: getPermissions
       x-ds-service: Accounts
@@ -124,48 +122,46 @@ paths:
   /v2/organizations/{organizationId}/accounts/{accountId}/groups:
     get:
       tags:
-      - eSignUserManagement
-      summary: Returns the list of groups in an account.
+        - eSignUserManagement
+      summary: Docusign Returns the list of groups in an account.
       description: |
         Returns the list of groups in an account.
 
         - Required scopes: `group_read`
       operationId: Account_Accounts_GetGroupsV2
       parameters:
-      - name: organizationId
-        in: path
-        description: The organization ID Guid
-        required: true
-        schema:
-          type: string
-          format: uuid
-      - name: accountId
-        in: path
-        description: The account ID Guid
-        required: true
-        schema:
-          type: string
-          format: uuid
-      - name: start
-        in: query
-        description: Index of first item to include in the response. The default value
-          is 0.
-        schema:
-          type: integer
-          format: int32
-      - name: take
-        in: query
-        description: Page size of the response. The default value is 20.
-        schema:
-          type: integer
-          format: int32
-      - name: end
-        in: query
-        description: Index of the last item to include in the response. Ignored if
-          `take` parameter is specified.
-        schema:
-          type: integer
-          format: int32
+        - name: organizationId
+          in: path
+          description: The organization ID Guid
+          required: true
+          schema:
+            type: string
+            format: uuid
+        - name: accountId
+          in: path
+          description: The account ID Guid
+          required: true
+          schema:
+            type: string
+            format: uuid
+        - name: start
+          in: query
+          description: Index of first item to include in the response. The default value is 0.
+          schema:
+            type: integer
+            format: int32
+        - name: take
+          in: query
+          description: Page size of the response. The default value is 20.
+          schema:
+            type: integer
+            format: int32
+        - name: end
+          in: query
+          description: Index of the last item to include in the response. Ignored if `take` parameter is specified.
+          schema:
+            type: integer
+            format: int32
       responses:
         "200":
           description: OK
@@ -174,8 +170,8 @@ paths:
               schema:
                 $ref: '#/components/schemas/MemberGroupsResponse'
       security:
-      - accessCode:
-        - group_read
+        - accessCode:
+            - group_read
       x-ds-methodname: getGroups
       x-ds-method: getGroups
       x-ds-service: Accounts
@@ -183,21 +179,21 @@ paths:
   /v2/organizations/{organizationId}/exports/user_list:
     get:
       tags:
-      - UserExport
-      summary: Returns a list of pending and completed export requests.
+        - UserExport
+      summary: Docusign Returns a list of pending and completed export requests.
       description: |
         Returns a list of pending and completed export requests.
 
         - Required scopes: `user_read`
       operationId: OrganizationExport_OrganizationExport_Get
       parameters:
-      - name: organizationId
-        in: path
-        description: The organization ID Guid
-        required: true
-        schema:
-          type: string
-          format: uuid
+        - name: organizationId
+          in: path
+          description: The organization ID Guid
+          required: true
+          schema:
+            type: string
+            format: uuid
       responses:
         "200":
           description: OK
@@ -206,40 +202,26 @@ paths:
               schema:
                 $ref: '#/components/schemas/OrganizationExportsResponse'
       security:
-      - accessCode:
-        - user_read
+        - accessCode:
+            - user_read
       x-ds-methodname: getUserListExports
       x-ds-method: getUserListExports
       x-ds-service: BulkExports
       x-ds-in-sdk: true
     post:
       tags:
-      - UserExport
-      summary: Creates a user list export request.
-      description: "Create a user list export request.\n\n- Required scopes: `user_read`\n\
-        \nThis method initiates a user list export request. You specify the type of\
-        \ export request as JSON in the body of method, like this:\n\n``` json\n{\n\
-        \t\"type\": \"organization_memberships_export\"\n}\n```\n\n\n\n\nThe export\
-        \ request type is one of three values:\n\n| Value                        \
-        \              | Description                                             \
-        \                                                |\n| :-----------------------------------------\
-        \ | :------------------------------------------------------------------------------------------------------\
-        \ |\n| `organization_memberships_export`          | Every user in every account\
-        \ in the organization. Users in multiple accounts will appear more than once.\
-        \ |\n| `organization_domain_users_export`         | All users of the reserved\
-        \ domains.                                                               \
-        \       |\n| `organization_external_memberships_export` | Users whose email\
-        \ address domain is *not* linked to the organization.                    \
-        \               |\n"
+        - UserExport
+      summary: Docusign Creates a user list export request.
+      description: "Create a user list export request.\n\n- Required scopes: `user_read`\n\nThis method initiates a user list export request. You specify the type of export request as JSON in the body of method, like this:\n\n``` json\n{\n\t\"type\": \"organization_memberships_export\"\n}\n```\n\n\n\n\nThe export request type is one of three values:\n\n| Value                                      | Description                                                                                             |\n| :----------------------------------------- | :------------------------------------------------------------------------------------------------------ |\n| `organization_memberships_export`          | Every user in every account in the organization. Users in multiple accounts will appear more than once. |\n| `organization_domain_users_export`         | All users of the reserved domains.                                                                      |\n| `organization_external_memberships_export` | Users whose email address domain is *not* linked to the organization.                                   |\n"
       operationId: OrganizationExport_OrganizationExport_Insert
       parameters:
-      - name: organizationId
-        in: path
-        description: The organization ID Guid
-        required: true
-        schema:
-          type: string
-          format: uuid
+        - name: organizationId
+          in: path
+          description: The organization ID Guid
+          required: true
+          schema:
+            type: string
+            format: uuid
       requestBody:
         content:
           application/json:
@@ -254,8 +236,8 @@ paths:
               schema:
                 $ref: '#/components/schemas/OrganizationExportResponse'
       security:
-      - accessCode:
-        - user_read
+        - accessCode:
+            - user_read
       x-ds-methodname: createUserListExport
       x-ds-method: createUserListExport
       x-ds-service: BulkExports
@@ -264,21 +246,21 @@ paths:
   /v2/organizations/{organizationId}/exports/account_settings:
     get:
       tags:
-      - AccountSettingsExport
-      summary: Returns a list of pending and completed account settings export request.
+        - AccountSettingsExport
+      summary: Docusign Returns a list of pending and completed account settings export request.
       description: |
         Returns a list of pending and completed account settings export request.
 
         - Required scopes: `account_read`
       operationId: OrganizationExport_OrganizationExport_GetAccountCompare
       parameters:
-      - name: organizationId
-        in: path
-        description: The organization ID Guid
-        required: true
-        schema:
-          type: string
-          format: uuid
+        - name: organizationId
+          in: path
+          description: The organization ID Guid
+          required: true
+          schema:
+            type: string
+            format: uuid
       responses:
         "200":
           description: OK
@@ -287,30 +269,26 @@ paths:
               schema:
                 $ref: '#/components/schemas/OrganizationExportsResponse'
       security:
-      - accessCode:
-        - account_read
+        - accessCode:
+            - account_read
       x-ds-methodname: getAccountSettingsExports
       x-ds-method: getAccountSettingsExports
       x-ds-service: BulkExports
       x-ds-in-sdk: true
     post:
       tags:
-      - AccountSettingsExport
-      summary: Creates a  new account settings export request.
-      description: "Creates a  new account settings export request.\n\nSpecify the\
-        \ accounts whose settings you are requesting as JSON in the body of method,\
-        \ like this:\n\n``` json\n{\n  \"accounts\":\t[\n  \t{ \"account_id\": \"\
-        9ca037f4-xxxx-xxxx-xxxx-212e57d4f22e\"},\n  \t{ \"account_id\": \"624e3e00-xxxx-xxxx-xxxx-43918c520dab\"\
-        }\n\n  ]\n}\n```\n"
+        - AccountSettingsExport
+      summary: Docusign Creates a  new account settings export request.
+      description: "Creates a  new account settings export request.\n\nSpecify the accounts whose settings you are requesting as JSON in the body of method, like this:\n\n``` json\n{\n  \"accounts\":\t[\n  \t{ \"account_id\": \"9ca037f4-xxxx-xxxx-xxxx-212e57d4f22e\"},\n  \t{ \"account_id\": \"624e3e00-xxxx-xxxx-xxxx-43918c520dab\"}\n\n  ]\n}\n```\n"
       operationId: OrganizationExport_OrganizationExport_AccountCompare
       parameters:
-      - name: organizationId
-        in: path
-        description: The organization ID Guid
-        required: true
-        schema:
-          type: string
-          format: uuid
+        - name: organizationId
+          in: path
+          description: The organization ID Guid
+          required: true
+          schema:
+            type: string
+            format: uuid
       requestBody:
         content:
           application/json:
@@ -325,8 +303,8 @@ paths:
               schema:
                 $ref: '#/components/schemas/OrganizationExportResponse'
       security:
-      - accessCode:
-        - account_read
+        - accessCode:
+            - account_read
       x-ds-methodname: createAccountSettingsExport
       x-ds-method: createAccountSettingsExport
       x-ds-service: BulkExports
@@ -335,8 +313,8 @@ paths:
   /v2/organizations/{organizationId}/exports/user_list/{exportId}:
     get:
       tags:
-      - UserExport
-      summary: Returns the results for single user list export request.
+        - UserExport
+      summary: Docusign Returns the results for single user list export request.
       description: |-
         Returns the results for single user list export request.
 
@@ -350,20 +328,20 @@ paths:
         You can find the actual list of users at  `results[n].url` in the response.
       operationId: OrganizationExport_OrganizationExport_GetByExportId
       parameters:
-      - name: organizationId
-        in: path
-        description: The organization ID Guid
-        required: true
-        schema:
-          type: string
-          format: uuid
-      - name: exportId
-        in: path
-        description: The export ID GUID for the request.
-        required: true
-        schema:
-          type: string
-          format: uuid
+        - name: organizationId
+          in: path
+          description: The organization ID Guid
+          required: true
+          schema:
+            type: string
+            format: uuid
+        - name: exportId
+          in: path
+          description: The export ID GUID for the request.
+          required: true
+          schema:
+            type: string
+            format: uuid
       responses:
         "200":
           description: OK
@@ -372,16 +350,16 @@ paths:
               schema:
                 $ref: '#/components/schemas/OrganizationExportResponse'
       security:
-      - accessCode:
-        - user_read
+        - accessCode:
+            - user_read
       x-ds-methodname: getUserListExport
       x-ds-method: getUserListExport
       x-ds-service: BulkExports
       x-ds-in-sdk: true
     delete:
       tags:
-      - UserExport
-      summary: Deletes a single user list export request.
+        - UserExport
+      summary: Docusign Deletes a single user list export request.
       description: |+
         Deletes a single user list export request.
         Use this method to delete pending or completed user export requests.
@@ -390,20 +368,20 @@ paths:
 
       operationId: OrganizationExport_OrganizationExport_DeleteByExportId
       parameters:
-      - name: organizationId
-        in: path
-        description: The organization ID Guid
-        required: true
-        schema:
-          type: string
-          format: uuid
-      - name: exportId
-        in: path
-        description: The export ID GUID for the request.
-        required: true
-        schema:
-          type: string
-          format: uuid
+        - name: organizationId
+          in: path
+          description: The organization ID Guid
+          required: true
+          schema:
+            type: string
+            format: uuid
+        - name: exportId
+          in: path
+          description: The export ID GUID for the request.
+          required: true
+          schema:
+            type: string
+            format: uuid
       responses:
         "200":
           description: OK
@@ -412,8 +390,8 @@ paths:
               schema:
                 type: object
       security:
-      - accessCode:
-        - user_read
+        - accessCode:
+            - user_read
       x-ds-methodname: deleteUserListExport
       x-ds-method: deleteUserListExport
       x-ds-service: BulkExports
@@ -421,8 +399,8 @@ paths:
   /v2/organizations/{organizationId}/exports/account_settings/{exportId}:
     get:
       tags:
-      - AccountSettingsExport
-      summary: Returns the results for a single account settings export request.
+        - AccountSettingsExport
+      summary: Docusign Returns the results for a single account settings export request.
       description: |
         Returns the results for a single account settings export request.
 
@@ -472,20 +450,20 @@ paths:
         ```
       operationId: OrganizationExport_OrganizationExport_GetAccountSettingsExportByExportId
       parameters:
-      - name: organizationId
-        in: path
-        description: The organization ID Guid
-        required: true
-        schema:
-          type: string
-          format: uuid
-      - name: exportId
-        in: path
-        description: The export ID GUID for the request.
-        required: true
-        schema:
-          type: string
-          format: uuid
+        - name: organizationId
+          in: path
+          description: The organization ID Guid
+          required: true
+          schema:
+            type: string
+            format: uuid
+        - name: exportId
+          in: path
+          description: The export ID GUID for the request.
+          required: true
+          schema:
+            type: string
+            format: uuid
       responses:
         "200":
           description: OK
@@ -494,16 +472,16 @@ paths:
               schema:
                 $ref: '#/components/schemas/OrganizationExportResponse'
       security:
-      - accessCode:
-        - account_read
+        - accessCode:
+            - account_read
       x-ds-methodname: getAccountSettingsExport
       x-ds-method: getAccountSettingsExport
       x-ds-service: BulkExports
       x-ds-in-sdk: true
     delete:
       tags:
-      - AccountSettingsExport
-      summary: Deletes a single account settings export request.
+        - AccountSettingsExport
+      summary: Docusign Deletes a single account settings export request.
       description: |+
         Deletes a single account settings export request.
         Any data associated with the request is also deleted.
@@ -512,20 +490,20 @@ paths:
 
       operationId: OrganizationExport_OrganizationExport_DeleteByAccountSettingsExportId
       parameters:
-      - name: organizationId
-        in: path
-        description: The organization ID Guid
-        required: true
-        schema:
-          type: string
-          format: uuid
-      - name: exportId
-        in: path
-        description: The export ID GUID for the request.
-        required: true
-        schema:
-          type: string
-          format: uuid
+        - name: organizationId
+          in: path
+          description: The organization ID Guid
+          required: true
+          schema:
+            type: string
+            format: uuid
+        - name: exportId
+          in: path
+          description: The export ID GUID for the request.
+          required: true
+          schema:
+            type: string
+            format: uuid
       responses:
         "200":
           description: OK
@@ -534,8 +512,8 @@ paths:
               schema:
                 type: object
       security:
-      - accessCode:
-        - account_read
+        - accessCode:
+            - account_read
       x-ds-methodname: deleteAccountSettingsExport
       x-ds-method: deleteAccountSettingsExport
       x-ds-service: BulkExports
@@ -543,22 +521,21 @@ paths:
   /v2/organizations/{organizationId}/imports/account_settings:
     get:
       tags:
-      - AccountSettingsImport
-      summary: Returns the details and metadata for Bulk Account Settings Import requests
-        in the organization.
+        - AccountSettingsImport
+      summary: Docusign Returns the details and metadata for Bulk Account Settings Import requests in the organization.
       description: |-
         Returns the details and metadata for Bulk Account Settings Import requests in the organization.
 
         - Required scopes: `account_read`
       operationId: OrganizationImport_OrganizationImportAccountSettings_Get
       parameters:
-      - name: organizationId
-        in: path
-        description: The organization ID Guid
-        required: true
-        schema:
-          type: string
-          format: uuid
+        - name: organizationId
+          in: path
+          description: The organization ID Guid
+          required: true
+          schema:
+            type: string
+            format: uuid
       responses:
         "200":
           description: OK
@@ -569,16 +546,16 @@ paths:
                 items:
                   $ref: '#/components/schemas/OrganizationAccountSettingsImportResponse'
       security:
-      - accessCode:
-        - account_read
+        - accessCode:
+            - account_read
       x-ds-methodname: getBulkAccountSettingsImports
       x-ds-method: getBulkAccountSettingsImports
       x-ds-service: BulkImports
       x-ds-in-sdk: true
     post:
       tags:
-      - AccountSettingsImport
-      summary: Creates a new account settings import request.
+        - AccountSettingsImport
+      summary: Docusign Creates a new account settings import request.
       description: |-
         Creates a new account settings import request.
 
@@ -586,19 +563,19 @@ paths:
         - Required scopes: `account_write`
       operationId: OrganizationImport_OrganizationImportAccountSettings_Post
       parameters:
-      - name: organizationId
-        in: path
-        description: The organization ID GUID.
-        required: true
-        schema:
-          type: string
-          format: uuid
+        - name: organizationId
+          in: path
+          description: The organization ID GUID.
+          required: true
+          schema:
+            type: string
+            format: uuid
       requestBody:
         content:
           multipart/form-data:
             schema:
               required:
-              - file.csv
+                - file.csv
               type: object
               properties:
                 file.csv:
@@ -614,8 +591,8 @@ paths:
               schema:
                 $ref: '#/components/schemas/OrganizationAccountSettingsImportResponse'
       security:
-      - accessCode:
-        - account_write
+        - accessCode:
+            - account_write
       x-ds-methodname: addBulkAccountSettingsImport
       x-ds-method: addBulkAccountSettingsImport
       x-ds-service: BulkImports
@@ -623,8 +600,8 @@ paths:
   /v2/organizations/{organizationId}/imports/account_settings/{importId}:
     get:
       tags:
-      - AccountSettingsImport
-      summary: Returns the details/metadata for a Bulk Account Settings Import request.
+        - AccountSettingsImport
+      summary: Docusign Returns the details/metadata for a Bulk Account Settings Import request.
       description: |+
         Returns the details/metadata for a Bulk Account Settings Import request.
 
@@ -637,20 +614,20 @@ paths:
 
       operationId: OrganizationImport_OrganizationImportAccountSettings_GetById
       parameters:
-      - name: organizationId
-        in: path
-        description: The organization ID Guid
-        required: true
-        schema:
-          type: string
-          format: uuid
-      - name: importId
-        in: path
-        description: The import ID GUID for the request.
-        required: true
-        schema:
-          type: string
-          format: uuid
+        - name: organizationId
+          in: path
+          description: The organization ID Guid
+          required: true
+          schema:
+            type: string
+            format: uuid
+        - name: importId
+          in: path
+          description: The import ID GUID for the request.
+          required: true
+          schema:
+            type: string
+            format: uuid
       responses:
         "200":
           description: OK
@@ -659,16 +636,16 @@ paths:
               schema:
                 $ref: '#/components/schemas/OrganizationAccountSettingsImportResponse'
       security:
-      - accessCode:
-        - account_read
+        - accessCode:
+            - account_read
       x-ds-methodname: getBulkAccountSettingsImport
       x-ds-method: getBulkAccountSettingsImport
       x-ds-service: BulkImports
       x-ds-in-sdk: true
     delete:
       tags:
-      - AccountSettingsImport
-      summary: Deletes a Bulk Account Settings Import request.
+        - AccountSettingsImport
+      summary: Docusign Deletes a Bulk Account Settings Import request.
       description: |-
         Deletes a single account settings import request.
         Any data associated with the request is also deleted.
@@ -676,20 +653,20 @@ paths:
         - Required scopes: `account_write`
       operationId: OrganizationImport_OrganizationImportAccountSettings_DeleteById
       parameters:
-      - name: organizationId
-        in: path
-        description: The organization ID Guid
-        required: true
-        schema:
-          type: string
-          format: uuid
-      - name: importId
-        in: path
-        description: The import ID GUID for the request.
-        required: true
-        schema:
-          type: string
-          format: uuid
+        - name: organizationId
+          in: path
+          description: The organization ID Guid
+          required: true
+          schema:
+            type: string
+            format: uuid
+        - name: importId
+          in: path
+          description: The import ID GUID for the request.
+          required: true
+          schema:
+            type: string
+            format: uuid
       responses:
         "200":
           description: OK
@@ -698,8 +675,8 @@ paths:
               schema:
                 type: object
       security:
-      - accessCode:
-        - account_write
+        - accessCode:
+            - account_write
       x-ds-methodname: deleteBulkAccountSettingsImport
       x-ds-method: deleteBulkAccountSettingsImport
       x-ds-service: BulkImports
@@ -707,8 +684,8 @@ paths:
   /v2/organizations/{organizationId}/imports/bulk_users/add:
     post:
       tags:
-      - UserImport
-      summary: Creates a request to import new users into an account.
+        - UserImport
+      summary: Docusign Creates a request to import new users into an account.
       description: |-
         Creates a request to import *new* users.
 
@@ -749,19 +726,19 @@ paths:
         You can add up to 2,000 users to an account and include up to 50 accounts per import. The maximum number of users per import is 8,000.
       operationId: OrganizationImport_OrganizationImportUsers_Insert
       parameters:
-      - name: organizationId
-        in: path
-        description: The organization ID Guid
-        required: true
-        schema:
-          type: string
-          format: uuid
+        - name: organizationId
+          in: path
+          description: The organization ID Guid
+          required: true
+          schema:
+            type: string
+            format: uuid
       requestBody:
         content:
           multipart/form-data:
             schema:
               required:
-              - file.csv
+                - file.csv
               type: object
               properties:
                 file.csv:
@@ -777,8 +754,8 @@ paths:
               schema:
                 $ref: '#/components/schemas/OrganizationImportResponse'
       security:
-      - accessCode:
-        - user_write
+        - accessCode:
+            - user_write
       x-ds-methodname: addBulkUserImport
       x-ds-method: addBulkUserImport
       x-ds-service: BulkImports
@@ -786,9 +763,9 @@ paths:
   /v2/organizations/{organizationId}/accounts/{accountId}/imports/bulk_users/add:
     post:
       tags:
-      - SingleAccountUserImport
-      summary: |
-        Import request for adding user to a single account within the organization.
+        - SingleAccountUserImport
+      summary: |-
+        Docusign Import request for adding user to a single account within the organization.
       description: |
         Import request for adding user to a single account within the organization.
         This method lets you upload user information without requiring an AccountId column.
@@ -796,26 +773,26 @@ paths:
         - Required scopes: `user_write`
       operationId: OrganizationImport_OrganizationImportSingleAccountUsers_Insert
       parameters:
-      - name: organizationId
-        in: path
-        description: The organization ID Guid
-        required: true
-        schema:
-          type: string
-          format: uuid
-      - name: accountId
-        in: path
-        description: The account ID Guid
-        required: true
-        schema:
-          type: string
-          format: uuid
+        - name: organizationId
+          in: path
+          description: The organization ID Guid
+          required: true
+          schema:
+            type: string
+            format: uuid
+        - name: accountId
+          in: path
+          description: The account ID Guid
+          required: true
+          schema:
+            type: string
+            format: uuid
       requestBody:
         content:
           multipart/form-data:
             schema:
               required:
-              - file.csv
+                - file.csv
               type: object
               properties:
                 file.csv:
@@ -831,8 +808,8 @@ paths:
               schema:
                 $ref: '#/components/schemas/OrganizationImportResponse'
       security:
-      - accessCode:
-        - user_write
+        - accessCode:
+            - user_write
       x-ds-methodname: createBulkImportSingleAccountAddUsersRequest
       x-ds-method: createBulkImportSingleAccountAddUsersRequest
       x-ds-service: BulkImports
@@ -840,8 +817,8 @@ paths:
   /v2/organizations/{organizationId}/imports/bulk_users/update:
     post:
       tags:
-      - UserImport
-      summary: Bulk updates information for existing users.
+        - UserImport
+      summary: Docusign Bulk updates information for existing users.
       description: |-
         Bulk updates information for existing users.
 
@@ -907,19 +884,19 @@ paths:
         This change of email address will be applied to all of the user's account memberships.
       operationId: OrganizationImport_OrganizationImportUsers_Update
       parameters:
-      - name: organizationId
-        in: path
-        description: The organization ID Guid
-        required: true
-        schema:
-          type: string
-          format: uuid
+        - name: organizationId
+          in: path
+          description: The organization ID Guid
+          required: true
+          schema:
+            type: string
+            format: uuid
       requestBody:
         content:
           multipart/form-data:
             schema:
               required:
-              - file.csv
+                - file.csv
               type: object
               properties:
                 file.csv:
@@ -935,8 +912,8 @@ paths:
               schema:
                 $ref: '#/components/schemas/OrganizationImportResponse'
       security:
-      - accessCode:
-        - user_write
+        - accessCode:
+            - user_write
       x-ds-methodname: updateBulkUserImports
       x-ds-method: updateBulkUserImports
       x-ds-service: BulkImports
@@ -944,9 +921,9 @@ paths:
   /v2/organizations/{organizationId}/accounts/{accountId}/imports/bulk_users/update:
     post:
       tags:
-      - SingleAccountUserImport
+        - SingleAccountUserImport
       summary: |-
-        Import request for updating users for a single account
+        Docusign Import request for updating users for a single account
         within the organization.
       description: |+
         Import request for updating users for a single account
@@ -958,26 +935,26 @@ paths:
 
       operationId: OrganizationImport_OrganizationImportSingleAccountUsers_Update
       parameters:
-      - name: organizationId
-        in: path
-        description: The organization ID Guid
-        required: true
-        schema:
-          type: string
-          format: uuid
-      - name: accountId
-        in: path
-        description: The account ID Guid
-        required: true
-        schema:
-          type: string
-          format: uuid
+        - name: organizationId
+          in: path
+          description: The organization ID Guid
+          required: true
+          schema:
+            type: string
+            format: uuid
+        - name: accountId
+          in: path
+          description: The account ID Guid
+          required: true
+          schema:
+            type: string
+            format: uuid
       requestBody:
         content:
           multipart/form-data:
             schema:
               required:
-              - file.csv
+                - file.csv
               type: object
               properties:
                 file.csv:
@@ -993,8 +970,8 @@ paths:
               schema:
                 $ref: '#/components/schemas/OrganizationImportResponse'
       security:
-      - accessCode:
-        - user_write
+        - accessCode:
+            - user_write
       x-ds-methodname: createBulkImportSingleAccountUpdateUsersRequest
       x-ds-method: createBulkImportSingleAccountUpdateUsersRequest
       x-ds-service: BulkImports
@@ -1002,8 +979,8 @@ paths:
   /v2/organizations/{organizationId}/imports/bulk_users/close:
     post:
       tags:
-      - UserImport
-      summary: Creates a request to close the accounts of existing users.
+        - UserImport
+      summary: Docusign Creates a request to close the accounts of existing users.
       description: |
         Creates a request to close the accounts of existing users.
 
@@ -1031,13 +1008,13 @@ paths:
         | PermissionSet       | yes      | The user's permission set. The PermissionSet value must match an existing permission set for the account. This value is not case sensitive.                                                                                                                                                                                                                                                                         |
       operationId: OrganizationImport_OrganizationImportUsers_Close
       parameters:
-      - name: organizationId
-        in: path
-        description: The organization ID Guid
-        required: true
-        schema:
-          type: string
-          format: uuid
+        - name: organizationId
+          in: path
+          description: The organization ID Guid
+          required: true
+          schema:
+            type: string
+            format: uuid
       responses:
         "200":
           description: OK
@@ -1046,8 +1023,8 @@ paths:
               schema:
                 $ref: '#/components/schemas/OrganizationImportResponse'
       security:
-      - accessCode:
-        - user_write
+        - accessCode:
+            - user_write
       x-ds-methodname: closeBulkUserImportRequest
       x-ds-method: closeBulkUserImportRequest
       x-ds-service: BulkImports
@@ -1055,8 +1032,8 @@ paths:
   /v2/organizations/{organizationId}/imports/bulk_users/close_external:
     post:
       tags:
-      - UserImport
-      summary: Closes external memberships.
+        - UserImport
+      summary: Docusign Closes external memberships.
       description: |
         Closes external memberships.
 
@@ -1068,13 +1045,13 @@ paths:
         - But do not belong to the organization
       operationId: OrganizationImport_OrganizationImportUsers_CloseExternal
       parameters:
-      - name: organizationId
-        in: path
-        description: The organization ID Guid
-        required: true
-        schema:
-          type: string
-          format: uuid
+        - name: organizationId
+          in: path
+          description: The organization ID Guid
+          required: true
+          schema:
+            type: string
+            format: uuid
       responses:
         "200":
           description: OK
@@ -1083,8 +1060,8 @@ paths:
               schema:
                 $ref: '#/components/schemas/OrganizationImportResponse'
       security:
-      - accessCode:
-        - user_write
+        - accessCode:
+            - user_write
       x-ds-methodname: closeBulkExternalUserImportRequest
       x-ds-method: closeBulkExternalUserImportRequest
       x-ds-service: BulkImports
@@ -1092,21 +1069,21 @@ paths:
   /v2/organizations/{organizationId}/imports/bulk_users:
     get:
       tags:
-      - UserImport
-      summary: Gets a list of all of the user import requests.
+        - UserImport
+      summary: Docusign Gets a list of all of the user import requests.
       description: |
         Gets a list of all of the user import requests.
 
         - Required scopes: `user_read`
       operationId: OrganizationImport_OrganizationImportUsers_Get
       parameters:
-      - name: organizationId
-        in: path
-        description: The organization ID Guid
-        required: true
-        schema:
-          type: string
-          format: uuid
+        - name: organizationId
+          in: path
+          description: The organization ID Guid
+          required: true
+          schema:
+            type: string
+            format: uuid
       responses:
         "200":
           description: OK
@@ -1115,8 +1092,8 @@ paths:
               schema:
                 $ref: '#/components/schemas/OrganizationImportsResponse'
       security:
-      - accessCode:
-        - user_read
+        - accessCode:
+            - user_read
       x-ds-methodname: getBulkUserImportRequests
       x-ds-method: getBulkUserImportRequests
       x-ds-service: BulkImports
@@ -1124,8 +1101,8 @@ paths:
   /v2/organizations/{organizationId}/imports/bulk_users/{importId}:
     get:
       tags:
-      - UserImport
-      summary: Returns the details of a single user import request.
+        - UserImport
+      summary: Docusign Returns the details of a single user import request.
       description: |-
         Returns the details of a single user import request.
 
@@ -1137,20 +1114,20 @@ paths:
         To get a list of all of the user import requests, use `getBulkUserImportRequests`.
       operationId: OrganizationImport_OrganizationImportUsers_GetById
       parameters:
-      - name: organizationId
-        in: path
-        description: The organization ID Guid
-        required: true
-        schema:
-          type: string
-          format: uuid
-      - name: importId
-        in: path
-        description: The import ID GUID for the request.
-        required: true
-        schema:
-          type: string
-          format: uuid
+        - name: organizationId
+          in: path
+          description: The organization ID Guid
+          required: true
+          schema:
+            type: string
+            format: uuid
+        - name: importId
+          in: path
+          description: The import ID GUID for the request.
+          required: true
+          schema:
+            type: string
+            format: uuid
       responses:
         "200":
           description: OK
@@ -1159,16 +1136,16 @@ paths:
               schema:
                 $ref: '#/components/schemas/OrganizationImportResponse'
       security:
-      - accessCode:
-        - user_read
+        - accessCode:
+            - user_read
       x-ds-methodname: getBulkUserImportRequest
       x-ds-method: getBulkUserImportRequest
       x-ds-service: BulkImports
       x-ds-in-sdk: true
     delete:
       tags:
-      - UserImport
-      summary: Deletes a specific user import request.
+        - UserImport
+      summary: Docusign Deletes a specific user import request.
       description: |-
         Deletes a specific import request and its results.
 
@@ -1178,20 +1155,20 @@ paths:
         To delete a user, see `closeBulkUserImportRequest`.
       operationId: OrganizationImport_OrganizationImportUsers_DeleteById
       parameters:
-      - name: organizationId
-        in: path
-        description: The organization ID Guid
-        required: true
-        schema:
-          type: string
-          format: uuid
-      - name: importId
-        in: path
-        description: The import ID GUID for the request.
-        required: true
-        schema:
-          type: string
-          format: uuid
+        - name: organizationId
+          in: path
+          description: The organization ID Guid
+          required: true
+          schema:
+            type: string
+            format: uuid
+        - name: importId
+          in: path
+          description: The import ID GUID for the request.
+          required: true
+          schema:
+            type: string
+            format: uuid
       responses:
         "200":
           description: OK
@@ -1200,8 +1177,8 @@ paths:
               schema:
                 type: object
       security:
-      - accessCode:
-        - user_write
+        - accessCode:
+            - user_write
       x-ds-methodname: deleteBulkUserImport
       x-ds-method: deleteBulkUserImport
       x-ds-service: BulkImports
@@ -1209,9 +1186,9 @@ paths:
   /v2/organizations/{organizationId}/imports/bulk_users/{importId}/results_csv:
     get:
       tags:
-      - UserImport
+        - UserImport
       summary: |-
-        Given the ID of a user import request,
+        Docusign Given the ID of a user import request,
         return the CSV file that was imported.
       description: |
         Returns the contents of the CSV file
@@ -1224,20 +1201,20 @@ paths:
         that describes the results of importing that row.
       operationId: OrganizationImport_OrganizationImportUsers_GetCSVResults
       parameters:
-      - name: organizationId
-        in: path
-        description: The organization ID Guid
-        required: true
-        schema:
-          type: string
-          format: uuid
-      - name: importId
-        in: path
-        description: The import ID GUID for the request.
-        required: true
-        schema:
-          type: string
-          format: uuid
+        - name: organizationId
+          in: path
+          description: The organization ID Guid
+          required: true
+          schema:
+            type: string
+            format: uuid
+        - name: importId
+          in: path
+          description: The import ID GUID for the request.
+          required: true
+          schema:
+            type: string
+            format: uuid
       responses:
         "200":
           description: OK
@@ -1246,8 +1223,8 @@ paths:
               schema:
                 type: object
       security:
-      - accessCode:
-        - user_read
+        - accessCode:
+            - user_read
       x-ds-methodname: getBulkUserImportCSV
       x-ds-method: getBulkUserImportCSV
       x-ds-service: BulkImports
@@ -1255,21 +1232,21 @@ paths:
   /v2/organizations/{organizationId}/identity_providers:
     get:
       tags:
-      - IdentityProviders
-      summary: Returns the list of identity providers for an organization.
+        - IdentityProviders
+      summary: Docusign Returns the list of identity providers for an organization.
       description: |
         Returns the list of identity providers for an organization.
 
         - Required scopes: `identity_provider_read`
       operationId: Organization_GetIdentityProviders
       parameters:
-      - name: organizationId
-        in: path
-        description: The organization ID Guid
-        required: true
-        schema:
-          type: string
-          format: uuid
+        - name: organizationId
+          in: path
+          description: The organization ID Guid
+          required: true
+          schema:
+            type: string
+            format: uuid
       responses:
         "200":
           description: OK
@@ -1278,8 +1255,8 @@ paths:
               schema:
                 $ref: '#/components/schemas/IdentityProvidersResponse'
       security:
-      - accessCode:
-        - identity_provider_read
+        - accessCode:
+            - identity_provider_read
       x-ds-methodname: getIdentityProviders
       x-ds-method: getIdentityProviders
       x-ds-service: IdentityProviders
@@ -1287,8 +1264,8 @@ paths:
   /v2/organizations/{organizationId}/reserved_domains:
     get:
       tags:
-      - ReservedDomains
-      summary: Returns the list of reserved domains for the organization.
+        - ReservedDomains
+      summary: Docusign Returns the list of reserved domains for the organization.
       description: |-
         Returns the list of reserved domains for the organization.
 
@@ -1297,13 +1274,13 @@ paths:
         Please note the DocuSign Admin API only returns JSON, not XML.
       operationId: Organization_GetReservedDomains
       parameters:
-      - name: organizationId
-        in: path
-        description: The organization ID Guid
-        required: true
-        schema:
-          type: string
-          format: uuid
+        - name: organizationId
+          in: path
+          description: The organization ID Guid
+          required: true
+          schema:
+            type: string
+            format: uuid
       responses:
         "200":
           description: OK
@@ -1312,8 +1289,8 @@ paths:
               schema:
                 $ref: '#/components/schemas/DomainsResponse'
       security:
-      - accessCode:
-        - domain_read
+        - accessCode:
+            - domain_read
       x-ds-methodname: getReservedDomains
       x-ds-method: getReservedDomains
       x-ds-service: ReservedDomains
@@ -1321,8 +1298,8 @@ paths:
   /v2/organizations/{organizationId}/users/profiles:
     post:
       tags:
-      - eSignUserManagement
-      summary: Updates a user's information.
+        - eSignUserManagement
+      summary: Docusign Updates a user's information.
       description: |+
         Updates a user's information.
 
@@ -1330,13 +1307,13 @@ paths:
 
       operationId: User_Users_UpdateV2
       parameters:
-      - name: organizationId
-        in: path
-        description: The organization ID Guid
-        required: true
-        schema:
-          type: string
-          format: uuid
+        - name: organizationId
+          in: path
+          description: The organization ID Guid
+          required: true
+          schema:
+            type: string
+            format: uuid
       requestBody:
         content:
           application/json:
@@ -1351,8 +1328,8 @@ paths:
               schema:
                 $ref: '#/components/schemas/UsersUpdateResponse'
       security:
-      - accessCode:
-        - user_write
+        - accessCode:
+            - user_write
       x-ds-methodname: updateUser
       x-ds-method: updateUser
       x-ds-service: Users
@@ -1361,8 +1338,8 @@ paths:
   /v2/organizations/{organizationId}/users/email_addresses:
     post:
       tags:
-      - Users
-      summary: Updates a user's email address.
+        - Users
+      summary: Docusign Updates a user's email address.
       description: |+
         Updates a user's email address.
 
@@ -1370,13 +1347,13 @@ paths:
 
       operationId: User_Users_UpdateEmailAddressesV2
       parameters:
-      - name: organizationId
-        in: path
-        description: The organization ID Guid
-        required: true
-        schema:
-          type: string
-          format: uuid
+        - name: organizationId
+          in: path
+          description: The organization ID Guid
+          required: true
+          schema:
+            type: string
+            format: uuid
       requestBody:
         content:
           application/json:
@@ -1391,8 +1368,8 @@ paths:
               schema:
                 $ref: '#/components/schemas/UsersUpdateResponse'
       security:
-      - accessCode:
-        - user_write
+        - accessCode:
+            - user_write
       x-ds-methodname: updateEmailAddress
       x-ds-method: updateEmailAddress
       x-ds-service: Users
@@ -1401,8 +1378,8 @@ paths:
   /v2/organizations/{organizationId}/users/{userId}/accounts:
     delete:
       tags:
-      - eSignUserManagement
-      summary: Closes a user's memberships.
+        - eSignUserManagement
+      summary: Docusign Closes a user's memberships.
       description: |+
         Closes a user's memberships.
 
@@ -1410,20 +1387,20 @@ paths:
 
       operationId: User_Users_CloseMembershipsV2
       parameters:
-      - name: organizationId
-        in: path
-        description: The organization ID Guid
-        required: true
-        schema:
-          type: string
-          format: uuid
-      - name: userId
-        in: path
-        description: The user ID Guid
-        required: true
-        schema:
-          type: string
-          format: uuid
+        - name: organizationId
+          in: path
+          description: The organization ID Guid
+          required: true
+          schema:
+            type: string
+            format: uuid
+        - name: userId
+          in: path
+          description: The user ID Guid
+          required: true
+          schema:
+            type: string
+            format: uuid
       requestBody:
         content:
           application/json:
@@ -1438,8 +1415,8 @@ paths:
               schema:
                 $ref: '#/components/schemas/DeleteMembershipsResponse'
       security:
-      - accessCode:
-        - user_write
+        - accessCode:
+            - user_write
       x-ds-methodname: closeMemberships
       x-ds-method: closeMemberships
       x-ds-service: Users
@@ -1448,8 +1425,8 @@ paths:
   /v2/organizations/{organizationId}/users:
     get:
       tags:
-      - Users
-      summary: Returns information about the users in an organization.
+        - Users
+      summary: Docusign Returns information about the users in an organization.
       description: |-
         Returns information about the users in an organization.
 
@@ -1463,83 +1440,75 @@ paths:
         - `email`: An email address associated with the users that you want to return.
       operationId: OrganizationUser_OrganizationUsers_GetV2
       parameters:
-      - name: organizationId
-        in: path
-        description: The organization ID Guid
-        required: true
-        schema:
-          type: string
-          format: uuid
-      - name: start
-        in: query
-        description: Index of first item to include in the response. The default value
-          is 0.
-        schema:
-          type: integer
-          format: int32
-      - name: take
-        in: query
-        description: Page size of the response. The default value is 20.
-        schema:
-          type: integer
-          format: int32
-      - name: end
-        in: query
-        description: Index of the last item to include in the response. Ignored if
-          `take` parameter is specified.
-        schema:
-          type: integer
-          format: int32
-      - name: email
-        in: query
-        description: "Email address of the desired user. At least one of `email`,\
-          \ `account_id` or `organization_reserved_domain_id` must be specified."
-        schema:
-          type: string
-      - name: email_user_name_like
-        in: query
-        description: Selects users by pattern matching on the user's email address
-        schema:
-          type: string
-      - name: status
-        in: query
-        description: Status.
-        schema:
-          type: string
-      - name: membership_status
-        in: query
-        description: |
-          The user's membership status. One of:
+        - name: organizationId
+          in: path
+          description: The organization ID Guid
+          required: true
+          schema:
+            type: string
+            format: uuid
+        - name: start
+          in: query
+          description: Index of first item to include in the response. The default value is 0.
+          schema:
+            type: integer
+            format: int32
+        - name: take
+          in: query
+          description: Page size of the response. The default value is 20.
+          schema:
+            type: integer
+            format: int32
+        - name: end
+          in: query
+          description: Index of the last item to include in the response. Ignored if `take` parameter is specified.
+          schema:
+            type: integer
+            format: int32
+        - name: email
+          in: query
+          description: "Email address of the desired user. At least one of `email`, `account_id` or `organization_reserved_domain_id` must be specified."
+          schema:
+            type: string
+        - name: email_user_name_like
+          in: query
+          description: Selects users by pattern matching on the user's email address
+          schema:
+            type: string
+        - name: status
+          in: query
+          description: Status.
+          schema:
+            type: string
+        - name: membership_status
+          in: query
+          description: |
+            The user's membership status. One of:
 
-          - `activation_required`
-          - `activation_sent`
-          - `active`
-          - `closed`
-          - `disabled`
-        schema:
-          type: string
-      - name: account_id
-        in: query
-        description: "Select users that are members of the specified account. At least\
-          \ one of `email`, `account_id` or `organization_reserved_domain_id` must\
-          \ be specified."
-        schema:
-          type: string
-          format: uuid
-      - name: organization_reserved_domain_id
-        in: query
-        description: "Select users that are in the specified domain. At least one\
-          \ of `email`, `account_id` or `organization_reserved_domain_id` must be\
-          \ specified."
-        schema:
-          type: string
-          format: uuid
-      - name: last_modified_since
-        in: query
-        description: Select users whose data have been modified since the date specified.
-          `account_id` or `organization_reserved_domain_id` must be specified.
-        schema:
-          type: string
+            - `activation_required`
+            - `activation_sent`
+            - `active`
+            - `closed`
+            - `disabled`
+          schema:
+            type: string
+        - name: account_id
+          in: query
+          description: "Select users that are members of the specified account. At least one of `email`, `account_id` or `organization_reserved_domain_id` must be specified."
+          schema:
+            type: string
+            format: uuid
+        - name: organization_reserved_domain_id
+          in: query
+          description: "Select users that are in the specified domain. At least one of `email`, `account_id` or `organization_reserved_domain_id` must be specified."
+          schema:
+            type: string
+            format: uuid
+        - name: last_modified_since
+          in: query
+          description: Select users whose data have been modified since the date specified. `account_id` or `organization_reserved_domain_id` must be specified.
+          schema:
+            type: string
       responses:
         "200":
           description: OK
@@ -1548,16 +1517,16 @@ paths:
               schema:
                 $ref: '#/components/schemas/OrganizationUsersResponse'
       security:
-      - accessCode:
-        - user_read
+        - accessCode:
+            - user_read
       x-ds-methodname: getUsers
       x-ds-method: getUsers
       x-ds-service: Users
       x-ds-in-sdk: true
     post:
       tags:
-      - eSignUserManagement
-      summary: Creates a new user.
+        - eSignUserManagement
+      summary: Docusign Creates a new user.
       description: |+
         Creates a new user.
 
@@ -1565,13 +1534,13 @@ paths:
 
       operationId: OrganizationUser_Users_AddV2
       parameters:
-      - name: organizationId
-        in: path
-        description: The organization ID Guid
-        required: true
-        schema:
-          type: string
-          format: uuid
+        - name: organizationId
+          in: path
+          description: The organization ID Guid
+          required: true
+          schema:
+            type: string
+            format: uuid
       requestBody:
         content:
           application/json:
@@ -1586,8 +1555,8 @@ paths:
               schema:
                 $ref: '#/components/schemas/NewUserResponse'
       security:
-      - accessCode:
-        - user_write
+        - accessCode:
+            - user_write
       x-ds-methodname: createUser
       x-ds-method: createUser
       x-ds-service: Users
@@ -1596,35 +1565,35 @@ paths:
   /v2/organizations/{organizationId}/users/{userId}/memberships/{membershipId}:
     post:
       tags:
-      - eSignUserManagement
-      summary: Activates user memberships.
+        - eSignUserManagement
+      summary: Docusign Activates user memberships.
       description: |
         Activates user memberships.
 
         - Required scopes: `user_write`
       operationId: OrganizationUser_Users_ActivateMembershipV2
       parameters:
-      - name: organizationId
-        in: path
-        description: The organization ID Guid
-        required: true
-        schema:
-          type: string
-          format: uuid
-      - name: userId
-        in: path
-        description: The user ID Guid
-        required: true
-        schema:
-          type: string
-          format: uuid
-      - name: membershipId
-        in: path
-        description: The membership ID GUID.
-        required: true
-        schema:
-          type: string
-          format: uuid
+        - name: organizationId
+          in: path
+          description: The organization ID Guid
+          required: true
+          schema:
+            type: string
+            format: uuid
+        - name: userId
+          in: path
+          description: The user ID Guid
+          required: true
+          schema:
+            type: string
+            format: uuid
+        - name: membershipId
+          in: path
+          description: The membership ID GUID.
+          required: true
+          schema:
+            type: string
+            format: uuid
       requestBody:
         content:
           application/json:
@@ -1639,8 +1608,8 @@ paths:
               schema:
                 $ref: '#/components/schemas/UpdateResponse'
       security:
-      - accessCode:
-        - user_write
+        - accessCode:
+            - user_write
       x-ds-methodname: activateMembership
       x-ds-method: activateMembership
       x-ds-service: Users
@@ -1649,9 +1618,9 @@ paths:
   /v2/organizations/{organizationId}/users/profile:
     get:
       tags:
-      - eSignUserManagement
-      summary: |
-        Returns information about recently modified users.
+        - eSignUserManagement
+      summary: |-
+        Docusign Returns information about recently modified users.
       description: |+
         Returns information about recently modified users.
 
@@ -1665,18 +1634,18 @@ paths:
 
       operationId: OrganizationUser_OrganizationUsers_GetProfileV2
       parameters:
-      - name: organizationId
-        in: path
-        description: The organization ID Guid
-        required: true
-        schema:
-          type: string
-          format: uuid
-      - name: email
-        in: query
-        description: The email address associated with the users you want to retrieve.
-        schema:
-          type: string
+        - name: organizationId
+          in: path
+          description: The organization ID Guid
+          required: true
+          schema:
+            type: string
+            format: uuid
+        - name: email
+          in: query
+          description: The email address associated with the users you want to retrieve.
+          schema:
+            type: string
       responses:
         "200":
           description: OK
@@ -1685,8 +1654,8 @@ paths:
               schema:
                 $ref: '#/components/schemas/UsersDrilldownResponse'
       security:
-      - accessCode:
-        - user_read
+        - accessCode:
+            - user_read
       x-ds-methodname: getUserProfiles
       x-ds-method: getUserProfiles
       x-ds-service: Users
@@ -1694,8 +1663,8 @@ paths:
   /v2/organizations/{organizationId}/users/{userId}/identities:
     delete:
       tags:
-      - eSignUserManagement
-      summary: Deletes user identities.
+        - eSignUserManagement
+      summary: Docusign Deletes user identities.
       description: |+
         Deletes user identities.
 
@@ -1703,20 +1672,20 @@ paths:
 
       operationId: OrganizationUser_DeleteIdentitiesV2
       parameters:
-      - name: organizationId
-        in: path
-        description: The organization ID Guid
-        required: true
-        schema:
-          type: string
-          format: uuid
-      - name: userId
-        in: path
-        description: The user ID Guid
-        required: true
-        schema:
-          type: string
-          format: uuid
+        - name: organizationId
+          in: path
+          description: The organization ID Guid
+          required: true
+          schema:
+            type: string
+            format: uuid
+        - name: userId
+          in: path
+          description: The user ID Guid
+          required: true
+          schema:
+            type: string
+            format: uuid
       requestBody:
         content:
           application/json:
@@ -1731,8 +1700,8 @@ paths:
               schema:
                 $ref: '#/components/schemas/DeleteResponse'
       security:
-      - accessCode:
-        - user_write
+        - accessCode:
+            - user_write
       x-ds-methodname: deleteIdentities
       x-ds-method: deleteIdentities
       x-ds-service: Users
@@ -1741,8 +1710,8 @@ paths:
   /v2/organizations/{organizationId}/accounts/{accountId}/users:
     post:
       tags:
-      - eSignUserManagement
-      summary: Adds users to an account.
+        - eSignUserManagement
+      summary: Docusign Adds users to an account.
       description: |+
         Adds users to an account.
 
@@ -1750,20 +1719,20 @@ paths:
 
       operationId: OrganizationUser_OrganizationUsers_PostAccountUsersV2
       parameters:
-      - name: organizationId
-        in: path
-        description: The organization ID Guid
-        required: true
-        schema:
-          type: string
-          format: uuid
-      - name: accountId
-        in: path
-        description: The account ID Guid
-        required: true
-        schema:
-          type: string
-          format: uuid
+        - name: organizationId
+          in: path
+          description: The organization ID Guid
+          required: true
+          schema:
+            type: string
+            format: uuid
+        - name: accountId
+          in: path
+          description: The account ID Guid
+          required: true
+          schema:
+            type: string
+            format: uuid
       requestBody:
         content:
           application/json:
@@ -1778,8 +1747,8 @@ paths:
               schema:
                 $ref: '#/components/schemas/NewUserResponse'
       security:
-      - accessCode:
-        - user_write
+        - accessCode:
+            - user_write
       x-ds-methodname: addUsers
       x-ds-method: addUsers
       x-ds-service: Users
@@ -1788,41 +1757,41 @@ paths:
   /v2.1/organizations/{organizationId}/accounts/{accountId}/dsgroups:
     get:
       tags:
-      - MultiProductUserManagement
-      summary: Returns a list of DSGroups.
+        - MultiProductUserManagement
+      summary: Docusign Returns a list of DSGroups.
       description: |-
         Returns a list of DSGroups
 
         - Required scopes: `user_read`
       operationId: DocuSignGroupsv21_GetDSGroups_V2_1
       parameters:
-      - name: organizationId
-        in: path
-        description: |
-          The organization's GUID.
-        required: true
-        schema:
-          type: string
-          format: uuid
-      - name: accountId
-        in: path
-        description: The account ID GUID.
-        required: true
-        schema:
-          type: string
-          format: uuid
-      - name: page
-        in: query
-        description: Start page of DSGroups.
-        schema:
-          type: integer
-          format: int32
-      - name: page_size
-        in: query
-        description: Page size of DSGroups.
-        schema:
-          type: integer
-          format: int32
+        - name: organizationId
+          in: path
+          description: |
+            The organization's GUID.
+          required: true
+          schema:
+            type: string
+            format: uuid
+        - name: accountId
+          in: path
+          description: The account ID GUID.
+          required: true
+          schema:
+            type: string
+            format: uuid
+        - name: page
+          in: query
+          description: Start page of DSGroups.
+          schema:
+            type: integer
+            format: int32
+        - name: page_size
+          in: query
+          description: Page size of DSGroups.
+          schema:
+            type: integer
+            format: int32
       responses:
         "200":
           description: OK
@@ -1831,37 +1800,37 @@ paths:
               schema:
                 $ref: '#/components/schemas/DSGroupListResponse'
       security:
-      - accessCode:
-        - user_read
+        - accessCode:
+            - user_read
       x-ds-methodname: getDSGroups
       x-ds-method: getDSGroups
       x-ds-service: DSGroups
       x-ds-in-sdk: true
     post:
       tags:
-      - MultiProductUserManagement
-      summary: Creates a new DSGroup.
+        - MultiProductUserManagement
+      summary: Docusign Creates a new DSGroup.
       description: |-
         Creates a new DSGroup.
 
         - Required scopes: `user_write`
       operationId: DocuSignGroupsv21_AddDSGroup_V2_1
       parameters:
-      - name: organizationId
-        in: path
-        description: |
-          The organization's GUID.
-        required: true
-        schema:
-          type: string
-          format: uuid
-      - name: accountId
-        in: path
-        description: The account ID GUID.
-        required: true
-        schema:
-          type: string
-          format: uuid
+        - name: organizationId
+          in: path
+          description: |
+            The organization's GUID.
+          required: true
+          schema:
+            type: string
+            format: uuid
+        - name: accountId
+          in: path
+          description: The account ID GUID.
+          required: true
+          schema:
+            type: string
+            format: uuid
       requestBody:
         content:
           application/json:
@@ -1876,8 +1845,8 @@ paths:
               schema:
                 $ref: '#/components/schemas/DSGroupResponse'
       security:
-      - accessCode:
-        - user_write
+        - accessCode:
+            - user_write
       x-ds-methodname: addDSGroup
       x-ds-method: addDSGroup
       x-ds-service: DSGroups
@@ -1886,36 +1855,36 @@ paths:
   /v2.1/organizations/{organizationId}/accounts/{accountId}/dsgroups/{dsGroupId}:
     get:
       tags:
-      - MultiProductUserManagement
-      summary: Returns details about a single DSGroup.
+        - MultiProductUserManagement
+      summary: Docusign Returns details about a single DSGroup.
       description: |-
         Returns details about a single DSGroup.
 
         - Required scopes: `user_read`
       operationId: DocuSignGroupsv21_GetDSGroup_V2_1
       parameters:
-      - name: organizationId
-        in: path
-        description: |
-          The organization's GUID.
-        required: true
-        schema:
-          type: string
-          format: uuid
-      - name: accountId
-        in: path
-        description: The account ID GUID.
-        required: true
-        schema:
-          type: string
-          format: uuid
-      - name: dsGroupId
-        in: path
-        description: The DSGroup's ID GUID
-        required: true
-        schema:
-          type: string
-          format: uuid
+        - name: organizationId
+          in: path
+          description: |
+            The organization's GUID.
+          required: true
+          schema:
+            type: string
+            format: uuid
+        - name: accountId
+          in: path
+          description: The account ID GUID.
+          required: true
+          schema:
+            type: string
+            format: uuid
+        - name: dsGroupId
+          in: path
+          description: The DSGroup's ID GUID
+          required: true
+          schema:
+            type: string
+            format: uuid
       responses:
         "200":
           description: OK
@@ -1924,51 +1893,51 @@ paths:
               schema:
                 $ref: '#/components/schemas/DSGroupResponse'
       security:
-      - accessCode:
-        - user_read
+        - accessCode:
+            - user_read
       x-ds-methodname: getDSGroup
       x-ds-method: getDSGroup
       x-ds-service: DSGroups
       x-ds-in-sdk: true
     delete:
       tags:
-      - MultiProductUserManagement
-      summary: Deletes a DSGroup.
+        - MultiProductUserManagement
+      summary: Docusign Deletes a DSGroup.
       description: |-
         Deletes a DSGroup
 
         - Required scopes: `user_write`
       operationId: DocuSignGroupsv21_DeleteDSGroup_V2_1
       parameters:
-      - name: organizationId
-        in: path
-        description: |
-          The organization's GUID.
-        required: true
-        schema:
-          type: string
-          format: uuid
-      - name: accountId
-        in: path
-        description: The account ID GUID.
-        required: true
-        schema:
-          type: string
-          format: uuid
-      - name: dsGroupId
-        in: path
-        description: The DSGroup's GUID.
-        required: true
-        schema:
-          type: string
-          format: uuid
+        - name: organizationId
+          in: path
+          description: |
+            The organization's GUID.
+          required: true
+          schema:
+            type: string
+            format: uuid
+        - name: accountId
+          in: path
+          description: The account ID GUID.
+          required: true
+          schema:
+            type: string
+            format: uuid
+        - name: dsGroupId
+          in: path
+          description: The DSGroup's GUID.
+          required: true
+          schema:
+            type: string
+            format: uuid
       responses:
         "204":
           description: No Content
           content: {}
       security:
-      - accessCode:
-        - user_write
+        - accessCode:
+            - user_write
       x-ds-methodname: deleteDSGroup
       x-ds-method: deleteDSGroup
       x-ds-service: DSGroups
@@ -1976,49 +1945,49 @@ paths:
   /v2.1/organizations/{organizationId}/accounts/{accountId}/dsgroups/{dsGroupId}/users:
     get:
       tags:
-      - MultiProductUserManagement
-      summary: Gets a list of users in a DSGroup.
+        - MultiProductUserManagement
+      summary: Docusign Gets a list of users in a DSGroup.
       description: |-
         Gets a list of users in a DSGroup.
 
         - Required scopes: `user_read`
       operationId: DocuSignGroupsv21_GetDSGroupUsers_V2_1
       parameters:
-      - name: organizationId
-        in: path
-        description: |
-          The organization's GUID.
-        required: true
-        schema:
-          type: string
-          format: uuid
-      - name: accountId
-        in: path
-        description: The account ID GUID.
-        required: true
-        schema:
-          type: string
-          format: uuid
-      - name: dsGroupId
-        in: path
-        description: The DSGroup's GUID.
-        required: true
-        schema:
-          type: string
-          format: uuid
-      - name: page
-        in: query
-        description: |
-          Start page of DSGroups.
-        schema:
-          type: integer
-          format: int32
-      - name: page_size
-        in: query
-        description: Page size of DSGroups.
-        schema:
-          type: integer
-          format: int32
+        - name: organizationId
+          in: path
+          description: |
+            The organization's GUID.
+          required: true
+          schema:
+            type: string
+            format: uuid
+        - name: accountId
+          in: path
+          description: The account ID GUID.
+          required: true
+          schema:
+            type: string
+            format: uuid
+        - name: dsGroupId
+          in: path
+          description: The DSGroup's GUID.
+          required: true
+          schema:
+            type: string
+            format: uuid
+        - name: page
+          in: query
+          description: |
+            Start page of DSGroups.
+          schema:
+            type: integer
+            format: int32
+        - name: page_size
+          in: query
+          description: Page size of DSGroups.
+          schema:
+            type: integer
+            format: int32
       responses:
         "200":
           description: OK
@@ -2027,44 +1996,44 @@ paths:
               schema:
                 $ref: '#/components/schemas/DSGroupAndUsersResponse'
       security:
-      - accessCode:
-        - user_read
+        - accessCode:
+            - user_read
       x-ds-methodname: getDSGroupUsers
       x-ds-method: getDSGroupUsers
       x-ds-service: DSGroups
       x-ds-in-sdk: true
     post:
       tags:
-      - MultiProductUserManagement
-      summary: Adds a list of users to a DSGroup.
+        - MultiProductUserManagement
+      summary: Docusign Adds a list of users to a DSGroup.
       description: |-
         Adds a list of users to a DSGroup.
 
         - Required scopes: `user_write`
       operationId: DocuSignGroupsv21_AddDSGroupUsers_V2_1
       parameters:
-      - name: organizationId
-        in: path
-        description: |
-          The organization's GUID.
-        required: true
-        schema:
-          type: string
-          format: uuid
-      - name: accountId
-        in: path
-        description: The account ID GUID.
-        required: true
-        schema:
-          type: string
-          format: uuid
-      - name: dsGroupId
-        in: path
-        description: The DSGroup's GUID.
-        required: true
-        schema:
-          type: string
-          format: uuid
+        - name: organizationId
+          in: path
+          description: |
+            The organization's GUID.
+          required: true
+          schema:
+            type: string
+            format: uuid
+        - name: accountId
+          in: path
+          description: The account ID GUID.
+          required: true
+          schema:
+            type: string
+            format: uuid
+        - name: dsGroupId
+          in: path
+          description: The DSGroup's GUID.
+          required: true
+          schema:
+            type: string
+            format: uuid
       requestBody:
         content:
           application/json:
@@ -2079,8 +2048,8 @@ paths:
               schema:
                 $ref: '#/components/schemas/AddDSGroupAndUsersResponse'
       security:
-      - accessCode:
-        - user_write
+        - accessCode:
+            - user_write
       x-ds-methodname: addDSGroupUsers
       x-ds-method: addDSGroupUsers
       x-ds-service: DSGroups
@@ -2088,36 +2057,36 @@ paths:
       x-codegen-request-body-name: dSGroupUsersAddRequest
     delete:
       tags:
-      - MultiProductUserManagement
-      summary: Removes a list of users from a DSGroup.
+        - MultiProductUserManagement
+      summary: Docusign Removes a list of users from a DSGroup.
       description: |-
         Removes a list of users from a DSGroup.
 
         - Required scopes: `user_write`
       operationId: DocuSignGroupsv21_RemoveDSGroupUsers_V2_1
       parameters:
-      - name: organizationId
-        in: path
-        description: |
-          The organization's GUID.
-        required: true
-        schema:
-          type: string
-          format: uuid
-      - name: accountId
-        in: path
-        description: The account ID GUID.
-        required: true
-        schema:
-          type: string
-          format: uuid
-      - name: dsGroupId
-        in: path
-        description: The DSGroup's GUID.
-        required: true
-        schema:
-          type: string
-          format: uuid
+        - name: organizationId
+          in: path
+          description: |
+            The organization's GUID.
+          required: true
+          schema:
+            type: string
+            format: uuid
+        - name: accountId
+          in: path
+          description: The account ID GUID.
+          required: true
+          schema:
+            type: string
+            format: uuid
+        - name: dsGroupId
+          in: path
+          description: The DSGroup's GUID.
+          required: true
+          schema:
+            type: string
+            format: uuid
       requestBody:
         content:
           application/json:
@@ -2132,8 +2101,8 @@ paths:
               schema:
                 $ref: '#/components/schemas/RemoveDSGroupUsersResponse'
       security:
-      - accessCode:
-        - user_write
+        - accessCode:
+            - user_write
       x-ds-methodname: removeDSGroupUsers
       x-ds-method: removeDSGroupUsers
       x-ds-service: DSGroups
@@ -2142,30 +2111,29 @@ paths:
   /v2.1/organizations/{organizationId}/accounts/{accountId}/products/permission_profiles:
     get:
       tags:
-      - MultiProductUserManagement
-      summary: Gets products associated with the account and the available permission
-        profiles.
+        - MultiProductUserManagement
+      summary: Docusign Gets products associated with the account and the available permission profiles.
       description: |-
         Gets products associated with the account and the available permission profiles.
 
         - Required scopes: `user_read`
       operationId: OrganizationProductPermissionProfile_GetProductPermissionProfiles
       parameters:
-      - name: organizationId
-        in: path
-        description: |
-          The organization's GUID.
-        required: true
-        schema:
-          type: string
-          format: uuid
-      - name: accountId
-        in: path
-        description: The account ID GUID.
-        required: true
-        schema:
-          type: string
-          format: uuid
+        - name: organizationId
+          in: path
+          description: |
+            The organization's GUID.
+          required: true
+          schema:
+            type: string
+            format: uuid
+        - name: accountId
+          in: path
+          description: The account ID GUID.
+          required: true
+          schema:
+            type: string
+            format: uuid
       responses:
         "200":
           description: OK
@@ -2174,8 +2142,8 @@ paths:
               schema:
                 $ref: '#/components/schemas/ProductPermissionProfilesResponse'
       security:
-      - accessCode:
-        - user_read
+        - accessCode:
+            - user_read
       x-ds-methodname: getProductPermissionProfiles
       x-ds-method: getProductPermissionProfiles
       x-ds-service: ProductPermissionProfiles
@@ -2183,36 +2151,36 @@ paths:
   /v2.1/organizations/{organizationId}/accounts/{accountId}/products/users/{userId}/permission_profiles:
     get:
       tags:
-      - MultiProductUserManagement
-      summary: Retrieves a list of user's permission profiles for each account's product.
+        - MultiProductUserManagement
+      summary: Docusign Retrieves a list of user's permission profiles for each account's product.
       description: |-
         Retrieves a list of user's permission profiles for each account's product.
 
         - Required scopes: `user_read`
       operationId: OrganizationProductPermissionProfile_GetUserProductPermissionProfiles
       parameters:
-      - name: organizationId
-        in: path
-        description: |
-          The organization's GUID.
-        required: true
-        schema:
-          type: string
-          format: uuid
-      - name: accountId
-        in: path
-        description: The account ID GUID.
-        required: true
-        schema:
-          type: string
-          format: uuid
-      - name: userId
-        in: path
-        description: The user ID GUID.
-        required: true
-        schema:
-          type: string
-          format: uuid
+        - name: organizationId
+          in: path
+          description: |
+            The organization's GUID.
+          required: true
+          schema:
+            type: string
+            format: uuid
+        - name: accountId
+          in: path
+          description: The account ID GUID.
+          required: true
+          schema:
+            type: string
+            format: uuid
+        - name: userId
+          in: path
+          description: The user ID GUID.
+          required: true
+          schema:
+            type: string
+            format: uuid
       responses:
         "200":
           description: OK
@@ -2221,44 +2189,44 @@ paths:
               schema:
                 $ref: '#/components/schemas/ProductPermissionProfilesResponse'
       security:
-      - accessCode:
-        - user_read
+        - accessCode:
+            - user_read
       x-ds-methodname: getUserProductPermissionProfiles
       x-ds-method: getUserProductPermissionProfiles
       x-ds-service: ProductPermissionProfiles
       x-ds-in-sdk: true
     post:
       tags:
-      - MultiProductUserManagement
-      summary: Assigns user to permission profiles for one or more products.
+        - MultiProductUserManagement
+      summary: Docusign Assigns user to permission profiles for one or more products.
       description: |-
         Assigns user to permission profiles for one or more products.
 
         - Required scopes: `user_write`
       operationId: OrganizationProductPermissionProfile_PostUserProductPermissionProfiles
       parameters:
-      - name: organizationId
-        in: path
-        description: |
-          The organization's GUID.
-        required: true
-        schema:
-          type: string
-          format: uuid
-      - name: accountId
-        in: path
-        description: The account ID GUID.
-        required: true
-        schema:
-          type: string
-          format: uuid
-      - name: userId
-        in: path
-        description: The user ID GUID.
-        required: true
-        schema:
-          type: string
-          format: uuid
+        - name: organizationId
+          in: path
+          description: |
+            The organization's GUID.
+          required: true
+          schema:
+            type: string
+            format: uuid
+        - name: accountId
+          in: path
+          description: The account ID GUID.
+          required: true
+          schema:
+            type: string
+            format: uuid
+        - name: userId
+          in: path
+          description: The user ID GUID.
+          required: true
+          schema:
+            type: string
+            format: uuid
       requestBody:
         content:
           application/json:
@@ -2273,8 +2241,8 @@ paths:
               schema:
                 $ref: '#/components/schemas/UserProductPermissionProfilesResponse'
       security:
-      - accessCode:
-        - user_write
+        - accessCode:
+            - user_write
       x-ds-methodname: addUserProductPermissionProfiles
       x-ds-method: addUserProductPermissionProfiles
       x-ds-service: ProductPermissionProfiles
@@ -2283,29 +2251,29 @@ paths:
   /v2.1/organizations/{organizationId}/accounts/{accountId}/users:
     post:
       tags:
-      - MultiProductUserManagement
-      summary: Creates and updates a multi-product user.
+        - MultiProductUserManagement
+      summary: Docusign Creates and updates a multi-product user.
       description: |-
         Creates and updates a multi-product user.
 
         - Required scopes: `user_write`
       operationId: OrganizationUser_OrganizationUsers_PostAccountUsersV2_1
       parameters:
-      - name: organizationId
-        in: path
-        description: |
-          The organization's GUID.
-        required: true
-        schema:
-          type: string
-          format: uuid
-      - name: accountId
-        in: path
-        description: The account ID GUID.
-        required: true
-        schema:
-          type: string
-          format: uuid
+        - name: organizationId
+          in: path
+          description: |
+            The organization's GUID.
+          required: true
+          schema:
+            type: string
+            format: uuid
+        - name: accountId
+          in: path
+          description: The account ID GUID.
+          required: true
+          schema:
+            type: string
+            format: uuid
       requestBody:
         content:
           application/json:
@@ -2320,8 +2288,8 @@ paths:
               schema:
                 $ref: '#/components/schemas/AddUserResponse'
       security:
-      - accessCode:
-        - user_write
+        - accessCode:
+            - user_write
       x-ds-methodname: addOrUpdateUser
       x-ds-method: addOrUpdateUser
       x-ds-service: Users
@@ -2334,8 +2302,7 @@ components:
       properties:
         organizations:
           type: array
-          description: A list of organizations of which the  authenticated user is
-            a member.
+          description: A list of organizations of which the  authenticated user is a member.
           items:
             $ref: '#/components/schemas/OrganizationResponse'
       description: Organization list.
@@ -2627,8 +2594,7 @@ components:
           format: int64
         name:
           type: string
-          description: "The name of the permission profile. \n\nExample: `DocuSign\
-            \ Sender`"
+          description: "The name of the permission profile. \n\nExample: `DocuSign Sender`"
       description: This object is an individual permission profile response.
       x-ds-definition-name: PermissionProfileResponse
       x-ms-summary: This object is an individual permission profile response.
@@ -2654,11 +2620,9 @@ components:
             $ref: '#/components/schemas/MemberGroupResponse'
         paging:
           $ref: '#/components/schemas/PagingResponseProperties'
-      description: A response about member groups. It contains the groups and paging
-        information.
+      description: A response about member groups. It contains the groups and paging information.
       x-ds-definition-name: MemberGroupsResponse
-      x-ms-summary: A response about member groups. It contains the groups and paging
-        information.
+      x-ms-summary: A response about member groups. It contains the groups and paging information.
     MemberGroupResponse:
       type: object
       properties:
@@ -2714,13 +2678,7 @@ components:
       properties:
         type:
           type: string
-          description: "The type of export requested. One of:\n\n- `organization_domain_users_export`:\
-            \ All users of the reserved domains.\n- `organization_external_memberships_export`:\
-            \ Users whose email address domain is *not* linked to the organization.\
-            \ \n- `organization_memberships_export`: Every user in every account in\
-            \ the organization. Users in multiple accounts will appear more than once.\n\
-            - `organization_account_settings_export`: This value only applies to requests\
-            \ to export account settings."
+          description: "The type of export requested. One of:\n\n- `organization_domain_users_export`: All users of the reserved domains.\n- `organization_external_memberships_export`: Users whose email address domain is *not* linked to the organization. \n- `organization_memberships_export`: Every user in every account in the organization. Users in multiple accounts will appear more than once.\n- `organization_account_settings_export`: This value only applies to requests to export account settings."
         accounts:
           type: array
           description: ""
@@ -2739,9 +2697,7 @@ components:
       properties:
         account_id:
           type: string
-          description: "Select users that are members of the specified account. At\
-            \ least one of `email`, `account_id` or `organization_reserved_domain_id`\
-            \ must be specified."
+          description: "Select users that are members of the specified account. At least one of `email`, `account_id` or `organization_reserved_domain_id` must be specified."
           format: uuid
           example: 00000000-0000-0000-0000-000000000000
       description: ""
@@ -2847,9 +2803,7 @@ components:
       properties:
         account_id:
           type: string
-          description: "Select users that are members of the specified account. At\
-            \ least one of `email`, `account_id` or `organization_reserved_domain_id`\
-            \ must be specified."
+          description: "Select users that are members of the specified account. At least one of `email`, `account_id` or `organization_reserved_domain_id` must be specified."
           format: uuid
           example: 00000000-0000-0000-0000-000000000000
       description: ""
@@ -2928,14 +2882,12 @@ components:
       x-ms-summary: ""
     OrganizationAccountRequest:
       required:
-      - account_id
+        - account_id
       type: object
       properties:
         account_id:
           type: string
-          description: "Select users that are members of the specified account. At\
-            \ least one of `email`, `account_id` or `organization_reserved_domain_id`\
-            \ must be specified."
+          description: "Select users that are members of the specified account. At least one of `email`, `account_id` or `organization_reserved_domain_id` must be specified."
           format: uuid
           example: 00000000-0000-0000-0000-000000000000
       description: ""
@@ -3072,9 +3024,7 @@ components:
       properties:
         account_id:
           type: string
-          description: "Select users that are members of the specified account. At\
-            \ least one of `email`, `account_id` or `organization_reserved_domain_id`\
-            \ must be specified."
+          description: "Select users that are members of the specified account. At least one of `email`, `account_id` or `organization_reserved_domain_id` must be specified."
         account_name:
           type: string
           description: ""
@@ -3259,8 +3209,7 @@ components:
           description: The human-readable name of the identity provider.
         auto_provision_users:
           type: boolean
-          description: "If **true**, users who use this identity provider are automatically\
-            \ provisioned. "
+          description: "If **true**, users who use this identity provider are automatically provisioned. "
         type:
           type: string
           description: |-
@@ -3287,9 +3236,7 @@ components:
       properties:
         account_id:
           type: string
-          description: "Select users that are members of the specified account. At\
-            \ least one of `email`, `account_id` or `organization_reserved_domain_id`\
-            \ must be specified."
+          description: "Select users that are members of the specified account. At least one of `email`, `account_id` or `organization_reserved_domain_id` must be specified."
         account_name:
           type: string
           description: ""
@@ -3475,8 +3422,8 @@ components:
       x-ms-summary: A list of users whose information you want to change.
     UpdateUserRequest:
       required:
-      - id
-      - site_id
+        - id
+        - site_id
       type: object
       properties:
         id:
@@ -3537,8 +3484,7 @@ components:
             - `Evicted`
         force_password_change:
           type: boolean
-          description: "If **true**, the user will be required to change the account\
-            \ password."
+          description: "If **true**, the user will be required to change the account password."
         memberships:
           type: array
           description: A list of group membership requests.
@@ -3552,7 +3498,7 @@ components:
       x-ms-summary: Request to change a user's information.
     UpdateMembershipRequest:
       required:
-      - account_id
+        - account_id
       type: object
       properties:
         account_id:
@@ -3584,7 +3530,7 @@ components:
       x-ms-summary: A request to update group membership.
     PermissionProfileRequest:
       required:
-      - id
+        - id
       type: object
       properties:
         id:
@@ -3599,7 +3545,7 @@ components:
       x-ms-summary: A permission profile.
     GroupRequest:
       required:
-      - id
+        - id
       type: object
       properties:
         id:
@@ -3680,9 +3626,9 @@ components:
       x-ms-summary: A change email request.
     UpdateUserEmailRequest:
       required:
-      - email
-      - id
-      - site_id
+        - email
+        - id
+        - site_id
       type: object
       properties:
         id:
@@ -3702,7 +3648,7 @@ components:
       x-ms-summary: And individual change of email.
     DeleteMembershipsRequest:
       required:
-      - accounts
+        - accounts
       type: object
       properties:
         accounts:
@@ -3715,7 +3661,7 @@ components:
       x-ms-summary: A list of accounts to close for a user.
     DeleteMembershipRequest:
       required:
-      - id
+        - id
       type: object
       properties:
         id:
@@ -3835,9 +3781,7 @@ components:
           example: 00000000-0000-0000-0000-000000000000
         account_id:
           type: string
-          description: "Select users that are members of the specified account. At\
-            \ least one of `email`, `account_id` or `organization_reserved_domain_id`\
-            \ must be specified."
+          description: "Select users that are members of the specified account. At least one of `email`, `account_id` or `organization_reserved_domain_id` must be specified."
           format: uuid
           example: 00000000-0000-0000-0000-000000000000
         source_product_name:
@@ -3875,8 +3819,8 @@ components:
       x-ms-summary: ""
     NewUserRequest:
       required:
-      - accounts
-      - email
+        - accounts
+        - email
       type: object
       properties:
         accounts:
@@ -3942,7 +3886,7 @@ components:
       x-ms-summary: Information about a new user.
     NewUserRequestAccountProperties:
       required:
-      - id
+        - id
       type: object
       properties:
         id:
@@ -4055,7 +3999,7 @@ components:
       x-ms-summary: Information about a newly created user.
     ForceActivateMembershipRequest:
       required:
-      - site_id
+        - site_id
       type: object
       properties:
         site_id:
@@ -4169,8 +4113,7 @@ components:
           format: date-time
         memberships:
           type: array
-          description: A list of organizations that have groups that the user is a
-            member of.
+          description: A list of organizations that have groups that the user is a member of.
           items:
             $ref: '#/components/schemas/MembershipResponse'
         identities:
@@ -4222,8 +4165,7 @@ components:
             $ref: '#/components/schemas/MemberGroupResponse'
         is_admin:
           type: boolean
-          description: "If **true**,\nthe user has administration \nprivileges on\
-            \ the account."
+          description: "If **true**,\nthe user has administration \nprivileges on the account."
       description: Information about group membership.
       x-ds-definition-name: MembershipResponse
       x-ms-summary: Information about group membership.
@@ -4255,7 +4197,7 @@ components:
       x-ms-summary: Results of deleting a user identity.
     DeleteUserIdentityRequest:
       required:
-      - identities
+        - identities
       type: object
       properties:
         identities:
@@ -4293,7 +4235,7 @@ components:
       x-ms-summary: Results of deleting identities.
     NewAccountUserRequest:
       required:
-      - email
+        - email
       type: object
       properties:
         permission_profile:
@@ -4376,9 +4318,7 @@ components:
           format: int32
         account_id:
           type: string
-          description: "Select users that are members of the specified account. At\
-            \ least one of `email`, `account_id` or `organization_reserved_domain_id`\
-            \ must be specified."
+          description: "Select users that are members of the specified account. At least one of `email`, `account_id` or `organization_reserved_domain_id` must be specified."
           format: uuid
           example: 00000000-0000-0000-0000-000000000000
         ds_groups:
@@ -4392,7 +4332,7 @@ components:
       x-ms-summary: ""
     DSGroupAddRequest:
       required:
-      - group_name
+        - group_name
       type: object
       properties:
         group_name:
@@ -4406,7 +4346,7 @@ components:
       x-ms-summary: ""
     DSGroupUsersAddRequest:
       required:
-      - user_ids
+        - user_ids
       type: object
       properties:
         user_ids:
@@ -4457,9 +4397,7 @@ components:
           example: 00000000-0000-0000-0000-000000000000
         account_id:
           type: string
-          description: "Select users that are members of the specified account. At\
-            \ least one of `email`, `account_id` or `organization_reserved_domain_id`\
-            \ must be specified."
+          description: "Select users that are members of the specified account. At least one of `email`, `account_id` or `organization_reserved_domain_id` must be specified."
           format: uuid
           example: 00000000-0000-0000-0000-000000000000
         user_name:
@@ -4517,7 +4455,7 @@ components:
       x-ms-summary: ""
     DSGroupUsersRemoveRequest:
       required:
-      - user_ids
+        - user_ids
       type: object
       properties:
         user_ids:
@@ -4580,7 +4518,7 @@ components:
       x-ms-summary: ""
     ProductPermissionProfilesRequest:
       required:
-      - product_permission_profiles
+        - product_permission_profiles
       type: object
       properties:
         product_permission_profiles:
@@ -4593,8 +4531,8 @@ components:
       x-ms-summary: ""
     ProductPermissionProfileRequest:
       required:
-      - permission_profile_id
-      - product_id
+        - permission_profile_id
+        - product_id
       type: object
       properties:
         product_id:
@@ -4618,9 +4556,7 @@ components:
           example: 00000000-0000-0000-0000-000000000000
         account_id:
           type: string
-          description: "Select users that are members of the specified account. At\
-            \ least one of `email`, `account_id` or `organization_reserved_domain_id`\
-            \ must be specified."
+          description: "Select users that are members of the specified account. At least one of `email`, `account_id` or `organization_reserved_domain_id` must be specified."
           format: uuid
           example: 00000000-0000-0000-0000-000000000000
         product_permission_profiles:
@@ -4633,8 +4569,8 @@ components:
       x-ms-summary: ""
     NewMultiProductUserAddRequest:
       required:
-      - email
-      - product_permission_profiles
+        - email
+        - product_permission_profiles
       type: object
       properties:
         product_permission_profiles:
@@ -4702,7 +4638,7 @@ components:
       x-ms-summary: ""
     DSGroupRequest:
       required:
-      - ds_group_id
+        - ds_group_id
       type: object
       properties:
         ds_group_id:
@@ -5037,19 +4973,19 @@ components:
             identity_provider_read: ""
             domain_read: ""
 x-ds-categories:
-- name: UserManagement
-  summary: Methods to manage users in an account.
-  description: Methods to manage users in an account.
-- name: BulkOperations
-  summary: Methods to import and export users and accounts.
-  description: Methods to import and export users and accounts.
-- name: IdentityProviders
-  summary: Methods to get a list of identity providers.
-  description: Methods to get a list of identity providers.
-- name: ReservedDomains
-  summary: Methods to get a list of reserved domains.
-  description: Methods to get a list of reserved domains.
-- name: Organization
-  summary: Methods for working with organizations.
-  description: Methods for working with organizations.
+  - name: UserManagement
+    summary: Methods to manage users in an account.
+    description: Methods to manage users in an account.
+  - name: BulkOperations
+    summary: Methods to import and export users and accounts.
+    description: Methods to import and export users and accounts.
+  - name: IdentityProviders
+    summary: Methods to get a list of identity providers.
+    description: Methods to get a list of identity providers.
+  - name: ReservedDomains
+    summary: Methods to get a list of reserved domains.
+    description: Methods to get a list of reserved domains.
+  - name: Organization
+    summary: Methods for working with organizations.
+    description: Methods for working with organizations.
 x-original-swagger-version: "2.0"

@@ -1,9 +1,7 @@
 openapi: 3.0.1
 info:
-  title: Maestro API
-  description: Maestro authors and executes experiences that allow non-coders the
-    ability to define Simple Business Process without having to write code and to
-    deploy them seamlessly without having to have development expertise
+  title: Docusign Maestro API
+  description: Maestro authors and executes experiences that allow non-coders the ability to define Simple Business Process without having to write code and to deploy them seamlessly without having to have development expertise
   termsOfService: https://www.docusign.com/company/terms-and-conditions/web
   contact:
     name: Docusign Developer Center
@@ -14,20 +12,20 @@ externalDocs:
   description: Maestro API Documentation
   url: https://developers.docusign.com/docs/maestro-api/
 servers:
-- url: https://apps.docusign.com/api/maestro
+  - url: https://apps.docusign.com/api/maestro
 tags:
-- name: WorkflowTrigger
-  description: Method to trigger a workflow.
-- name: WorkflowInstanceManagement
-  description: Methods to get information about workflow instances.
-- name: WorkflowManagement
-  description: Returns the history of the workflow instance steps.
+  - name: WorkflowTrigger
+    description: Method to trigger a workflow.
+  - name: WorkflowInstanceManagement
+    description: Methods to get information about workflow instances.
+  - name: WorkflowManagement
+    description: Returns the history of the workflow instance steps.
 paths:
   /v1/accounts/{accountId}/workflow_definitions/{workflowDefinitionId}/trigger:
     post:
       tags:
-      - WorkflowTrigger
-      summary: Triggers a new instance of the workflow.
+        - WorkflowTrigger
+      summary: Docusign Triggers a new instance of the workflow.
       description: |-
         Creates a new workflow instance, triggering the workflow.
 
@@ -43,32 +41,32 @@ paths:
         - [How to trigger a Maestro workflow](/docs/maestro-api/how-to/trigger-workflow/)
       operationId: triggerWorkflowViaPost
       parameters:
-      - name: accountId
-        in: path
-        description: The account ID.
-        required: true
-        schema:
-          type: string
-          format: uuid
-      - name: workflowDefinitionId
-        in: path
-        description: Workflow definition ID.
-        required: true
-        schema:
-          type: string
-          format: uuid
-      - name: mtid
-        in: query
-        description: Managed Token Id registered with Docusign Account Server
-        schema:
-          type: string
-          format: uuid
-      - name: mtsec
-        in: query
-        description: Managed Token Secret registered with Docusign account server
-        schema:
-          type: string
-          format: uuid
+        - name: accountId
+          in: path
+          description: The account ID.
+          required: true
+          schema:
+            type: string
+            format: uuid
+        - name: workflowDefinitionId
+          in: path
+          description: Workflow definition ID.
+          required: true
+          schema:
+            type: string
+            format: uuid
+        - name: mtid
+          in: query
+          description: Managed Token Id registered with Docusign Account Server
+          schema:
+            type: string
+            format: uuid
+        - name: mtsec
+          in: query
+          description: Managed Token Secret registered with Docusign account server
+          schema:
+            type: string
+            format: uuid
       requestBody:
         content:
           application/json:
@@ -77,8 +75,7 @@ paths:
         required: true
       responses:
         "201":
-          description: Returns a workflow instance trigger URL that can be used to
-            trigger a new instance or return to an instance in progress
+          description: Returns a workflow instance trigger URL that can be used to trigger a new instance or return to an instance in progress
           content:
             application/json:
               schema:
@@ -102,8 +99,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
         "404":
-          description: Resource not found when workflow definition id or workflow
-            instance id doesn't exist
+          description: Resource not found when workflow definition id or workflow instance id doesn't exist
           content:
             application/json:
               schema:
@@ -115,10 +111,10 @@ paths:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
       security:
-      - DSAuth:
-        - aow_manage
-        - signature
-      - DSBearerAuth: []
+        - DSAuth:
+            - aow_manage
+            - signature
+        - DSBearerAuth: []
       x-ds-methodname: triggerWorkflow
       x-ds-method: triggerWorkflow
       x-ds-service: Workflow Trigger
@@ -127,31 +123,25 @@ paths:
   /v1/accounts/{accountId}/management/instances/{instanceId}/cancel:
     post:
       tags:
-      - WorkflowInstanceManagement
-      summary: Cancels a running workflow instance.
-      description: "Cancels a running \n[workflow][workflows-concept]\ninstance.\n\
-        \n<!-- maestro beta notice -->\n\n<ds-inlinemessage>\n  The Maestro API is\
-        \ currently only available\n  as part of a beta program.\n  See <a href=\"\
-        /docs/maestro-api/get-access/\">Get access to Maestro API</a>\n  for details.\n\
-        </ds-inlinemessage>\n\n<!-- end maestro beta notice -->\n\n### Related topics\n\
-        \n- [How to cancel a Maestro workflow instance][howto-cancel]\n\n\n[howto-cancel]:\
-        \       /docs/maestro-api/how-to/cancel-workflow/\n[workflows-concept]:  /docs/maestro-api/maestro101/workflows/"
+        - WorkflowInstanceManagement
+      summary: Docusign Cancels a running workflow instance.
+      description: "Cancels a running \n[workflow][workflows-concept]\ninstance.\n\n<!-- maestro beta notice -->\n\n<ds-inlinemessage>\n  The Maestro API is currently only available\n  as part of a beta program.\n  See <a href=\"/docs/maestro-api/get-access/\">Get access to Maestro API</a>\n  for details.\n</ds-inlinemessage>\n\n<!-- end maestro beta notice -->\n\n### Related topics\n\n- [How to cancel a Maestro workflow instance][howto-cancel]\n\n\n[howto-cancel]:       /docs/maestro-api/how-to/cancel-workflow/\n[workflows-concept]:  /docs/maestro-api/maestro101/workflows/"
       operationId: cancelWorkflowInstance
       parameters:
-      - name: accountId
-        in: path
-        description: The account ID.
-        required: true
-        schema:
-          type: string
-          format: uuid
-      - name: instanceId
-        in: path
-        description: The instance ID of the workflow to cancel.
-        required: true
-        schema:
-          type: string
-          format: uuid
+        - name: accountId
+          in: path
+          description: The account ID.
+          required: true
+          schema:
+            type: string
+            format: uuid
+        - name: instanceId
+          in: path
+          description: The instance ID of the workflow to cancel.
+          required: true
+          schema:
+            type: string
+            format: uuid
       responses:
         "200":
           description: Return Success
@@ -178,10 +168,10 @@ paths:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
       security:
-      - DSAuth:
-        - aow_manage
-        - signature
-      - DSBearerAuth: []
+        - DSAuth:
+            - aow_manage
+            - signature
+        - DSBearerAuth: []
       x-ds-methodname: cancelWorkflowInstance
       x-ds-method: cancelWorkflowInstance
       x-ds-service: Workflow Instance Management
@@ -189,8 +179,8 @@ paths:
   /v1/accounts/{accountId}/management/instances/{instanceId}/history:
     get:
       tags:
-      - WorkflowManagement
-      summary: Gets the step history for a workflow instance.
+        - WorkflowManagement
+      summary: Docusign Gets the step history for a workflow instance.
       description: |-
         Gets the step history for a workflow instance.
         <!-- maestro beta notice -->
@@ -205,22 +195,22 @@ paths:
         <!-- end maestro beta notice -->
       operationId: getWorkflowHistory
       parameters:
-      - name: accountId
-        in: path
-        description: The account ID.
-        required: true
-        schema:
-          type: string
-          format: uuid
-      - name: instanceId
-        in: path
-        description: |
-          Workflow instance ID. <!-- dacid -->
-          A string in UUID format: 4a6d6a08-xxxx-xxxx-xxxx-bae4fecc99c8
-        required: true
-        schema:
-          type: string
-          format: uuid
+        - name: accountId
+          in: path
+          description: The account ID.
+          required: true
+          schema:
+            type: string
+            format: uuid
+        - name: instanceId
+          in: path
+          description: |
+            Workflow instance ID. <!-- dacid -->
+            A string in UUID format: 4a6d6a08-xxxx-xxxx-xxxx-bae4fecc99c8
+          required: true
+          schema:
+            type: string
+            format: uuid
       responses:
         "200":
           description: History of workflow steps is returned
@@ -256,10 +246,10 @@ paths:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
       security:
-      - DSAuth:
-        - aow_manage
-        - signature
-      - DSBearerAuth: []
+        - DSAuth:
+            - aow_manage
+            - signature
+        - DSBearerAuth: []
       x-ds-methodname: getWorkflowHistory
       x-ds-method: getWorkflowHistory
       x-ds-service: Workflow Instance Management
@@ -267,8 +257,8 @@ paths:
   /v1/accounts/{accountId}/management/workflow_definitions:
     get:
       tags:
-      - WorkflowManagement
-      summary: Gets a list of  workflow definition metadata.
+        - WorkflowManagement
+      summary: Docusign Gets a list of  workflow definition metadata.
       description: |-
         Gets a list of  workflow definition metadata.
         <!-- maestro beta notice -->
@@ -283,25 +273,25 @@ paths:
         <!-- end maestro beta notice -->
       operationId: getWorkflowDefinitions
       parameters:
-      - name: accountId
-        in: path
-        description: The account ID.
-        required: true
-        schema:
-          type: string
-          format: uuid
-      - name: status
-        in: query
-        description: Workflow definition metadata status. <!-- filter -->
-        schema:
-          type: string
-          enum:
-          - active
-          - inactive
-          - publishing
-          - unpublishing
-          - archived
-          - archiving
+        - name: accountId
+          in: path
+          description: The account ID.
+          required: true
+          schema:
+            type: string
+            format: uuid
+        - name: status
+          in: query
+          description: Workflow definition metadata status. <!-- filter -->
+          schema:
+            type: string
+            enum:
+              - active
+              - inactive
+              - publishing
+              - unpublishing
+              - archived
+              - archiving
       responses:
         "200":
           description: Returns a list of workflow definitions' metadata.
@@ -334,38 +324,28 @@ paths:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
       security:
-      - DSAuth:
-        - aow_manage
-        - signature
-      - DSBearerAuth: []
+        - DSAuth:
+            - aow_manage
+            - signature
+        - DSBearerAuth: []
       x-ds-methodname: getWorkflowDefinitions
       x-ds-method: getWorkflowDefinitions
       x-ds-service: Workflow Management
       x-ds-in-sdk: true
     post:
       tags:
-      - WorkflowManagement
-      summary: Creates a workflow definition.
-      description: "Creates a workflow definition. In general, it is much easier to\
-        \ create a workflow through the web interface.\n\n<!-- maestro beta notice\
-        \ -->\n\n<ds-inlinemessage>\n  The Maestro API is currently only available\n\
-        \  as part of a beta program.\n  See <a href=\"/docs/maestro-api/get-access/\"\
-        >Get access to Maestro API</a>\n  for details.\n</ds-inlinemessage>\n\n<!--\
-        \ end maestro beta notice -->\n\nA Maestro workflow is an object that represents\
-        \ your end-to-end agreement workflow, including all pre and post-signing steps.\
-        \ You can add and order steps as necessary for your workflow and add conditional\
-        \ logic to create branches within that workflow. \n\nTo learn the basics of\
-        \ workflows and to see an example workflow definition,\nsee [Workflows](/docs/maestro-api/maestro101/workflows/)\
-        \ in\nthe Maestro API concepts guide.\n\n"
+        - WorkflowManagement
+      summary: Docusign Creates a workflow definition.
+      description: "Creates a workflow definition. In general, it is much easier to create a workflow through the web interface.\n\n<!-- maestro beta notice -->\n\n<ds-inlinemessage>\n  The Maestro API is currently only available\n  as part of a beta program.\n  See <a href=\"/docs/maestro-api/get-access/\">Get access to Maestro API</a>\n  for details.\n</ds-inlinemessage>\n\n<!-- end maestro beta notice -->\n\nA Maestro workflow is an object that represents your end-to-end agreement workflow, including all pre and post-signing steps. You can add and order steps as necessary for your workflow and add conditional logic to create branches within that workflow. \n\nTo learn the basics of workflows and to see an example workflow definition,\nsee [Workflows](/docs/maestro-api/maestro101/workflows/) in\nthe Maestro API concepts guide.\n\n"
       operationId: createNewWorkflowDefinition
       parameters:
-      - name: accountId
-        in: path
-        description: The account ID.
-        required: true
-        schema:
-          type: string
-          format: uuid
+        - name: accountId
+          in: path
+          description: The account ID.
+          required: true
+          schema:
+            type: string
+            format: uuid
       requestBody:
         content:
           application/json:
@@ -398,10 +378,10 @@ paths:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
       security:
-      - DSAuth:
-        - aow_manage
-        - signature
-      - DSBearerAuth: []
+        - DSAuth:
+            - aow_manage
+            - signature
+        - DSBearerAuth: []
       x-ds-methodname: createWorkflowDefinition
       x-ds-method: createWorkflowDefinition
       x-ds-service: Workflow Management
@@ -410,8 +390,8 @@ paths:
   /v1/accounts/{accountId}/management/workflow_definitions/{workflowDefinitionId}:
     get:
       tags:
-      - WorkflowManagement
-      summary: Gets a workflow definition.
+        - WorkflowManagement
+      summary: Docusign Gets a workflow definition.
       description: |+
         Returns a workflow definition.
         <!-- maestro beta notice -->
@@ -433,26 +413,26 @@ paths:
 
       operationId: getWorkflowDefinition
       parameters:
-      - name: accountId
-        in: path
-        description: The account ID.
-        required: true
-        schema:
-          type: string
-          format: uuid
-      - name: workflowDefinitionId
-        in: path
-        description: Workflow definition ID.
-        required: true
-        schema:
-          type: string
-          format: uuid
-      - name: lastDeployedId
-        in: query
-        description: The ID of the deployed workflow definition.
-        schema:
-          type: string
-          format: string
+        - name: accountId
+          in: path
+          description: The account ID.
+          required: true
+          schema:
+            type: string
+            format: uuid
+        - name: workflowDefinitionId
+          in: path
+          description: Workflow definition ID.
+          required: true
+          schema:
+            type: string
+            format: uuid
+        - name: lastDeployedId
+          in: query
+          description: The ID of the deployed workflow definition.
+          schema:
+            type: string
+            format: string
       responses:
         "200":
           description: Returns a workflow definition.
@@ -485,18 +465,18 @@ paths:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
       security:
-      - DSAuth:
-        - aow_manage
-        - signature
-      - DSBearerAuth: []
+        - DSAuth:
+            - aow_manage
+            - signature
+        - DSBearerAuth: []
       x-ds-methodname: getWorkflowDefinition
       x-ds-method: getWorkflowDefinition
       x-ds-service: Workflow Management
       x-ds-in-sdk: true
     put:
       tags:
-      - WorkflowManagement
-      summary: Updates a workflow definition.
+        - WorkflowManagement
+      summary: Docusign Updates a workflow definition.
       description: |+
         Updates a workflow definition.
         <!-- maestro beta notice -->
@@ -518,20 +498,20 @@ paths:
 
       operationId: updateWorkflowDefinition
       parameters:
-      - name: accountId
-        in: path
-        description: The account ID.
-        required: true
-        schema:
-          type: string
-          format: uuid
-      - name: workflowDefinitionId
-        in: path
-        description: Workflow definition ID.
-        required: true
-        schema:
-          type: string
-          format: uuid
+        - name: accountId
+          in: path
+          description: The account ID.
+          required: true
+          schema:
+            type: string
+            format: uuid
+        - name: workflowDefinitionId
+          in: path
+          description: Workflow definition ID.
+          required: true
+          schema:
+            type: string
+            format: uuid
       requestBody:
         content:
           application/json:
@@ -570,10 +550,10 @@ paths:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
       security:
-      - DSAuth:
-        - aow_manage
-        - signature
-      - DSBearerAuth: []
+        - DSAuth:
+            - aow_manage
+            - signature
+        - DSBearerAuth: []
       x-ds-methodname: updateWorkflowDefinition
       x-ds-method: updateWorkflowDefinition
       x-ds-service: Workflow Management
@@ -581,8 +561,8 @@ paths:
       x-codegen-request-body-name: body
     delete:
       tags:
-      - WorkflowManagement
-      summary: Deletes a workflow definition.
+        - WorkflowManagement
+      summary: Docusign Deletes a workflow definition.
       description: |-
         Deletes a workflow definition.
         <!-- maestro beta notice -->
@@ -597,20 +577,20 @@ paths:
         <!-- end maestro beta notice -->
       operationId: deleteWorkflowDefinition
       parameters:
-      - name: accountId
-        in: path
-        description: The account ID.
-        required: true
-        schema:
-          type: string
-          format: uuid
-      - name: workflowDefinitionId
-        in: path
-        description: The ID of the workflow definition to delete.
-        required: true
-        schema:
-          type: string
-          format: uuid
+        - name: accountId
+          in: path
+          description: The account ID.
+          required: true
+          schema:
+            type: string
+            format: uuid
+        - name: workflowDefinitionId
+          in: path
+          description: The ID of the workflow definition to delete.
+          required: true
+          schema:
+            type: string
+            format: uuid
       responses:
         "200":
           description: Returns Delete Successful.
@@ -631,10 +611,10 @@ paths:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
       security:
-      - DSAuth:
-        - aow_manage
-        - signature
-      - DSBearerAuth: []
+        - DSAuth:
+            - aow_manage
+            - signature
+        - DSBearerAuth: []
       x-ds-methodname: deleteWorkflowDefinition
       x-ds-method: deleteWorkflowDefinition
       x-ds-service: Workflow Management
@@ -642,8 +622,8 @@ paths:
   /v1/accounts/{accountId}/management/workflow_definitions/{workflowDefinitionId}/config_instances:
     get:
       tags:
-      - WorkflowInstanceManagement
-      summary: Gets a list of configuration instances for a workflow definition
+        - WorkflowInstanceManagement
+      summary: Docusign Gets a list of configuration instances for a workflow definition
       description: |-
         Gets a list of configuration instances for a workflow definition
         <!-- maestro beta notice -->
@@ -658,20 +638,20 @@ paths:
         <!-- end maestro beta notice -->
       operationId: getConfigInstances
       parameters:
-      - name: accountId
-        in: path
-        description: The account ID.
-        required: true
-        schema:
-          type: string
-          format: uuid
-      - name: workflowDefinitionId
-        in: path
-        description: Workflow definition ID.
-        required: true
-        schema:
-          type: string
-          format: uuid
+        - name: accountId
+          in: path
+          description: The account ID.
+          required: true
+          schema:
+            type: string
+            format: uuid
+        - name: workflowDefinitionId
+          in: path
+          description: Workflow definition ID.
+          required: true
+          schema:
+            type: string
+            format: uuid
       responses:
         "200":
           description: Returns a list of configuration instances for a workflow definition
@@ -710,10 +690,10 @@ paths:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
       security:
-      - DSAuth:
-        - aow_manage
-        - signature
-      - DSBearerAuth: []
+        - DSAuth:
+            - aow_manage
+            - signature
+        - DSBearerAuth: []
       x-ds-methodname: getWorkflowDefinitionConfigInstances
       x-ds-method: getWorkflowDefinitionConfigInstances
       x-ds-service: Workflow Management
@@ -721,34 +701,28 @@ paths:
   /v1/accounts/{accountId}/management/workflow_definitions/{workflowDefinitionId}/instances:
     get:
       tags:
-      - WorkflowInstanceManagement
-      summary: Get a list of instances of a deployed workflow definition.
-      description: "Get a list of instances of a deployed workflow definition.\n<!--\
-        \ maestro beta notice -->\n\n<ds-inlinemessage>\n  The Maestro API is currently\
-        \ only available\n  as part of a beta program.\n  See <a href=\"/docs/maestro-api/get-access/\"\
-        >Get access to Maestro API</a>\n  for details.\n</ds-inlinemessage>\n\n<!--\
-        \ end maestro beta notice -->\n\nA successful response is an array of \n[`WorkflowInstance`](/docs/maestro-api/reference/workflowinstancemanagement/workflowinstancemanagement/getworkflowinstance/#schema_200_workflowinstance_workflowinstance)\n\
-        objects.\n"
+        - WorkflowInstanceManagement
+      summary: Docusign Get a list of instances of a deployed workflow definition.
+      description: "Get a list of instances of a deployed workflow definition.\n<!-- maestro beta notice -->\n\n<ds-inlinemessage>\n  The Maestro API is currently only available\n  as part of a beta program.\n  See <a href=\"/docs/maestro-api/get-access/\">Get access to Maestro API</a>\n  for details.\n</ds-inlinemessage>\n\n<!-- end maestro beta notice -->\n\nA successful response is an array of \n[`WorkflowInstance`](/docs/maestro-api/reference/workflowinstancemanagement/workflowinstancemanagement/getworkflowinstance/#schema_200_workflowinstance_workflowinstance)\nobjects.\n"
       operationId: getWorkflowInstances
       parameters:
-      - name: accountId
-        in: path
-        description: The account ID.
-        required: true
-        schema:
-          type: string
-          format: uuid
-      - name: workflowDefinitionId
-        in: path
-        description: The ID of the workflow definition to delete.
-        required: true
-        schema:
-          type: string
-          format: uuid
+        - name: accountId
+          in: path
+          description: The account ID.
+          required: true
+          schema:
+            type: string
+            format: uuid
+        - name: workflowDefinitionId
+          in: path
+          description: The ID of the workflow definition to delete.
+          required: true
+          schema:
+            type: string
+            format: uuid
       responses:
         "200":
-          description: A list of workflow instances for a workflow definition in the
-            specified account.
+          description: A list of workflow instances for a workflow definition in the specified account.
           content:
             application/json:
               schema:
@@ -781,10 +755,10 @@ paths:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
       security:
-      - DSAuth:
-        - aow_manage
-        - signature
-      - DSBearerAuth: []
+        - DSAuth:
+            - aow_manage
+            - signature
+        - DSBearerAuth: []
       x-ds-methodname: getWorkflowInstances
       x-ds-method: getWorkflowInstances
       x-ds-service: Workflow Instance Management
@@ -792,8 +766,8 @@ paths:
   /v1/accounts/{accountId}/management/workflow_definitions/{workflowDefinitionId}/instances/{instanceId}:
     get:
       tags:
-      - WorkflowInstanceManagement
-      summary: Gets the details for a specific instance for a deployed workflow definition.
+        - WorkflowInstanceManagement
+      summary: Docusign Gets the details for a specific instance for a deployed workflow definition.
       description: |
         Gets the details for a specific instance for a deployed workflow definition.
 
@@ -816,33 +790,32 @@ paths:
         [howto-status]: /docs/maestro-api/how-to/get-workflow-status/
       operationId: getWorkflowInstance
       parameters:
-      - name: accountId
-        in: path
-        description: The account ID.
-        required: true
-        schema:
-          type: string
-          format: uuid
-      - name: workflowDefinitionId
-        in: path
-        description: Workflow definition ID.
-        required: true
-        schema:
-          type: string
-          format: uuid
-      - name: instanceId
-        in: path
-        description: |
-          Workflow instance ID. <!-- dacid -->
-          A string in UUID format: 4a6d6a08-xxxx-xxxx-xxxx-bae4fecc99c8
-        required: true
-        schema:
-          type: string
-          format: uuid
+        - name: accountId
+          in: path
+          description: The account ID.
+          required: true
+          schema:
+            type: string
+            format: uuid
+        - name: workflowDefinitionId
+          in: path
+          description: Workflow definition ID.
+          required: true
+          schema:
+            type: string
+            format: uuid
+        - name: instanceId
+          in: path
+          description: |
+            Workflow instance ID. <!-- dacid -->
+            A string in UUID format: 4a6d6a08-xxxx-xxxx-xxxx-bae4fecc99c8
+          required: true
+          schema:
+            type: string
+            format: uuid
       responses:
         "200":
-          description: Details for a specific instance for a workflow definition in
-            the specified account.
+          description: Details for a specific instance for a workflow definition in the specified account.
           content:
             application/json:
               schema:
@@ -872,10 +845,10 @@ paths:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
       security:
-      - DSAuth:
-        - aow_manage
-        - signature
-      - DSBearerAuth: []
+        - DSAuth:
+            - aow_manage
+            - signature
+        - DSBearerAuth: []
       x-ds-methodname: getWorkflowInstance
       x-ds-method: getWorkflowInstance
       x-ds-service: Workflow Instance Management
@@ -883,8 +856,8 @@ paths:
   /v1/accounts/{accountId}/management/workflow_definitions/{workflowDefinitionId}/publish:
     post:
       tags:
-      - WorkflowManagement
-      summary: Publishes or unpublishes a workflow definition.
+        - WorkflowManagement
+      summary: Docusign Publishes or unpublishes a workflow definition.
       description: |-
         Publishes or unpublishes a workflow definition.
         <!-- maestro beta notice -->
@@ -899,20 +872,20 @@ paths:
         <!-- end maestro beta notice -->
       operationId: publishOrUnPublishWorkflowDefinition
       parameters:
-      - name: accountId
-        in: path
-        description: The account ID.
-        required: true
-        schema:
-          type: string
-          format: uuid
-      - name: workflowDefinitionId
-        in: path
-        description: Workflow definition ID.
-        required: true
-        schema:
-          type: string
-          format: uuid
+        - name: accountId
+          in: path
+          description: The account ID.
+          required: true
+          schema:
+            type: string
+            format: uuid
+        - name: workflowDefinitionId
+          in: path
+          description: Workflow definition ID.
+          required: true
+          schema:
+            type: string
+            format: uuid
       requestBody:
         content:
           application/json:
@@ -951,10 +924,10 @@ paths:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
       security:
-      - DSAuth:
-        - aow_manage
-        - signature
-      - DSBearerAuth: []
+        - DSAuth:
+            - aow_manage
+            - signature
+        - DSBearerAuth: []
       x-ds-methodname: publishOrUnPublishWorkflowDefinition
       x-ds-method: publishOrUnPublishWorkflowDefinition
       x-ds-service: Workflow Management
@@ -980,9 +953,9 @@ components:
       type: string
       description: Access Token token Types
       enum:
-      - Bearer
-      - Application
-      - Resource
+        - Bearer
+        - Application
+        - Resource
       x-ds-definition-name: AccessTokenTokenTypes
       x-ms-summary: Access Token token Types
     AccountId:
@@ -1007,7 +980,7 @@ components:
       x-ms-summary: "A string in UUID format: 4a6d6a08-xxxx-xxxx-xxxx-bae4fecc99c8"
     CancelResponse:
       required:
-      - message
+        - message
       type: object
       properties:
         code:
@@ -1029,11 +1002,11 @@ components:
       x-ms-summary: Request body to create or update a workflow definition.
     DSDoUntilStep:
       required:
-      - doSteps
-      - expression
-      - id
-      - name
-      - type
+        - doSteps
+        - expression
+        - id
+        - name
+        - type
       type: object
       properties:
         doSteps:
@@ -1056,12 +1029,12 @@ components:
       x-ms-summary: ""
     DSDocGenStep:
       required:
-      - config
-      - id
-      - input
-      - name
-      - output
-      - type
+        - config
+        - id
+        - input
+        - name
+        - output
+        - type
       type: object
       properties:
         config:
@@ -1070,11 +1043,11 @@ components:
           $ref: '#/components/schemas/AowUUIDString'
         input:
           required:
-          - dataJson
-          - outputFileName
-          - outputFileNameIsUnique
-          - outputFormat
-          - templateId
+            - dataJson
+            - outputFileName
+            - outputFileNameIsUnique
+            - outputFormat
+            - templateId
           type: object
           properties:
             dataJson:
@@ -1082,10 +1055,7 @@ components:
             outputFileName:
               type: object
               properties: {}
-              description: "Reference of #/definitions/StringOrVariableOrTransformation.\
-                \ Object stands for a String or a Variable or a Transformation. This\
-                \ object should be any of the following object models or types: [string,\
-                \ #/definitions/DSWorkflowVariable, #/definitions/DSWorkflowTransformationExpression]"
+              description: "Reference of #/definitions/StringOrVariableOrTransformation. Object stands for a String or a Variable or a Transformation. This object should be any of the following object models or types: [string, #/definitions/DSWorkflowVariable, #/definitions/DSWorkflowTransformationExpression]"
             outputFileNameIsUnique:
               type: boolean
             outputFormat:
@@ -1093,10 +1063,7 @@ components:
             templateId:
               type: object
               properties: {}
-              description: "Reference of #/definitions/StringOrVariableOrTransformation.\
-                \ Object stands for a String or a Variable or a Transformation. This\
-                \ object should be any of the following object models or types: [string,\
-                \ #/definitions/DSWorkflowVariable, #/definitions/DSWorkflowTransformationExpression]"
+              description: "Reference of #/definitions/StringOrVariableOrTransformation. Object stands for a String or a Variable or a Transformation. This object should be any of the following object models or types: [string, #/definitions/DSWorkflowVariable, #/definitions/DSWorkflowTransformationExpression]"
           description: ""
         name:
           type: string
@@ -1106,10 +1073,7 @@ components:
           additionalProperties:
             type: object
             properties: {}
-            description: "Reference of #/definitions/StringOrVariableOrTransformation.\
-              \ Object stands for a String or a Variable or a Transformation. This\
-              \ object should be any of the following object models or types: [string,\
-              \ #/definitions/DSWorkflowVariable, #/definitions/DSWorkflowTransformationExpression]"
+            description: "Reference of #/definitions/StringOrVariableOrTransformation. Object stands for a String or a Variable or a Transformation. This object should be any of the following object models or types: [string, #/definitions/DSWorkflowVariable, #/definitions/DSWorkflowTransformationExpression]"
           description: ""
         type:
           $ref: '#/components/schemas/DSWorkflowStepTypes.DSDocGen'
@@ -1118,12 +1082,12 @@ components:
       x-ms-summary: ""
     DSIdvStep:
       required:
-      - config
-      - id
-      - input
-      - name
-      - output
-      - type
+        - config
+        - id
+        - input
+        - name
+        - output
+        - type
       type: object
       properties:
         config:
@@ -1132,38 +1096,28 @@ components:
           $ref: '#/components/schemas/AowUUIDString'
         input:
           required:
-          - backgroundColorBranding
-          - expectedFullName
-          - retryLimit
-          - textColorBranding
+            - backgroundColorBranding
+            - expectedFullName
+            - retryLimit
+            - textColorBranding
           type: object
           properties:
             backgroundColorBranding:
               type: object
               properties: {}
-              description: "Reference of #/definitions/StringOrVariableOrTransformation.\
-                \ Object stands for a String or a Variable or a Transformation. This\
-                \ object should be any of the following object models or types: [string,\
-                \ #/definitions/DSWorkflowVariable, #/definitions/DSWorkflowTransformationExpression]"
+              description: "Reference of #/definitions/StringOrVariableOrTransformation. Object stands for a String or a Variable or a Transformation. This object should be any of the following object models or types: [string, #/definitions/DSWorkflowVariable, #/definitions/DSWorkflowTransformationExpression]"
             expectedFullName:
               type: object
               properties: {}
-              description: "Reference of #/definitions/StringOrVariableOrTransformation.\
-                \ Object stands for a String or a Variable or a Transformation. This\
-                \ object should be any of the following object models or types: [string,\
-                \ #/definitions/DSWorkflowVariable, #/definitions/DSWorkflowTransformationExpression]"
+              description: "Reference of #/definitions/StringOrVariableOrTransformation. Object stands for a String or a Variable or a Transformation. This object should be any of the following object models or types: [string, #/definitions/DSWorkflowVariable, #/definitions/DSWorkflowTransformationExpression]"
             retryLimit:
               type: object
               properties: {}
-              description: "This object should be any of the following object models\
-                \ or types: [number, #/definitions/DSWorkflowVariable, #/definitions/DSWorkflowTransformationExpression]"
+              description: "This object should be any of the following object models or types: [number, #/definitions/DSWorkflowVariable, #/definitions/DSWorkflowTransformationExpression]"
             textColorBranding:
               type: object
               properties: {}
-              description: "Reference of #/definitions/StringOrVariableOrTransformation.\
-                \ Object stands for a String or a Variable or a Transformation. This\
-                \ object should be any of the following object models or types: [string,\
-                \ #/definitions/DSWorkflowVariable, #/definitions/DSWorkflowTransformationExpression]"
+              description: "Reference of #/definitions/StringOrVariableOrTransformation. Object stands for a String or a Variable or a Transformation. This object should be any of the following object models or types: [string, #/definitions/DSWorkflowVariable, #/definitions/DSWorkflowTransformationExpression]"
           description: ""
         name:
           type: string
@@ -1173,10 +1127,7 @@ components:
           additionalProperties:
             type: object
             properties: {}
-            description: "Reference of #/definitions/StringOrVariableOrTransformation.\
-              \ Object stands for a String or a Variable or a Transformation. This\
-              \ object should be any of the following object models or types: [string,\
-              \ #/definitions/DSWorkflowVariable, #/definitions/DSWorkflowTransformationExpression]"
+            description: "Reference of #/definitions/StringOrVariableOrTransformation. Object stands for a String or a Variable or a Transformation. This object should be any of the following object models or types: [string, #/definitions/DSWorkflowVariable, #/definitions/DSWorkflowTransformationExpression]"
           description: ""
         type:
           $ref: '#/components/schemas/DSWorkflowStepTypes.DSIdv'
@@ -1185,12 +1136,12 @@ components:
       x-ms-summary: ID verification step.
     DSIfElseStep:
       required:
-      - elseSteps
-      - expression
-      - id
-      - ifSteps
-      - name
-      - type
+        - elseSteps
+        - expression
+        - id
+        - ifSteps
+        - name
+        - type
       type: object
       properties:
         elseSteps:
@@ -1219,11 +1170,11 @@ components:
       x-ms-summary: ""
     DSLoopStep:
       required:
-      - expression
-      - id
-      - loopSteps
-      - name
-      - type
+        - expression
+        - id
+        - loopSteps
+        - name
+        - type
       type: object
       properties:
         expression:
@@ -1246,11 +1197,11 @@ components:
       x-ms-summary: ""
     DSParallelStep:
       required:
-      - expression
-      - id
-      - lanes
-      - name
-      - type
+        - expression
+        - id
+        - lanes
+        - name
+        - type
       type: object
       properties:
         expression:
@@ -1301,12 +1252,12 @@ components:
 
     DSSignStep:
       required:
-      - config
-      - id
-      - input
-      - name
-      - output
-      - type
+        - config
+        - id
+        - input
+        - name
+        - output
+        - type
       type: object
       properties:
         config:
@@ -1315,33 +1266,25 @@ components:
           $ref: '#/components/schemas/AowUUIDString'
         input:
           required:
-          - documents
-          - isEmbeddedSign
-          - signers
+            - documents
+            - isEmbeddedSign
+            - signers
           type: object
           properties:
             documents:
               type: array
-              description: "A list of #/definitions/ESignDocuments. Each element is:\
-                \ ESignDocument Object. This object should be any of the following\
-                \ object models: [#/definitions/ESignDocumentFromPreviousStep, #/definitions/ESignDocumentFromESignTemplate]"
+              description: "A list of #/definitions/ESignDocuments. Each element is: ESignDocument Object. This object should be any of the following object models: [#/definitions/ESignDocumentFromPreviousStep, #/definitions/ESignDocumentFromESignTemplate]"
               items:
                 type: object
                 properties: {}
             emailBlurb:
               type: object
               properties: {}
-              description: "Reference of #/definitions/StringOrVariableOrTransformation.\
-                \ Object stands for a String or a Variable or a Transformation. This\
-                \ object should be any of the following object models or types: [string,\
-                \ #/definitions/DSWorkflowVariable, #/definitions/DSWorkflowTransformationExpression]"
+              description: "Reference of #/definitions/StringOrVariableOrTransformation. Object stands for a String or a Variable or a Transformation. This object should be any of the following object models or types: [string, #/definitions/DSWorkflowVariable, #/definitions/DSWorkflowTransformationExpression]"
             emailSubject:
               type: object
               properties: {}
-              description: "Reference of #/definitions/StringOrVariableOrTransformation.\
-                \ Object stands for a String or a Variable or a Transformation. This\
-                \ object should be any of the following object models or types: [string,\
-                \ #/definitions/DSWorkflowVariable, #/definitions/DSWorkflowTransformationExpression]"
+              description: "Reference of #/definitions/StringOrVariableOrTransformation. Object stands for a String or a Variable or a Transformation. This object should be any of the following object models or types: [string, #/definitions/DSWorkflowVariable, #/definitions/DSWorkflowTransformationExpression]"
             isEmbeddedSign:
               type: boolean
             signers:
@@ -1357,10 +1300,7 @@ components:
           additionalProperties:
             type: object
             properties: {}
-            description: "Reference of #/definitions/StringOrVariableOrTransformation.\
-              \ Object stands for a String or a Variable or a Transformation. This\
-              \ object should be any of the following object models or types: [string,\
-              \ #/definitions/DSWorkflowVariable, #/definitions/DSWorkflowTransformationExpression]"
+            description: "Reference of #/definitions/StringOrVariableOrTransformation. Object stands for a String or a Variable or a Transformation. This object should be any of the following object models or types: [string, #/definitions/DSWorkflowVariable, #/definitions/DSWorkflowTransformationExpression]"
           description: ""
         type:
           $ref: '#/components/schemas/DSWorkflowStepTypes.DSSign'
@@ -1369,13 +1309,13 @@ components:
       x-ms-summary: ""
     DSTransformationStep:
       required:
-      - config
-      - expression
-      - id
-      - input
-      - name
-      - output
-      - type
+        - config
+        - expression
+        - id
+        - input
+        - name
+        - output
+        - type
       type: object
       properties:
         config:
@@ -1391,10 +1331,7 @@ components:
           additionalProperties:
             type: object
             properties: {}
-            description: "Reference of #/definitions/StringOrVariableOrTransformation.\
-              \ Object stands for a String or a Variable or a Transformation. This\
-              \ object should be any of the following object models or types: [string,\
-              \ #/definitions/DSWorkflowVariable, #/definitions/DSWorkflowTransformationExpression]"
+            description: "Reference of #/definitions/StringOrVariableOrTransformation. Object stands for a String or a Variable or a Transformation. This object should be any of the following object models or types: [string, #/definitions/DSWorkflowVariable, #/definitions/DSWorkflowTransformationExpression]"
           description: ""
         name:
           type: string
@@ -1404,10 +1341,7 @@ components:
           additionalProperties:
             type: object
             properties: {}
-            description: "Reference of #/definitions/StringOrVariableOrTransformation.\
-              \ Object stands for a String or a Variable or a Transformation. This\
-              \ object should be any of the following object models or types: [string,\
-              \ #/definitions/DSWorkflowVariable, #/definitions/DSWorkflowTransformationExpression]"
+            description: "Reference of #/definitions/StringOrVariableOrTransformation. Object stands for a String or a Variable or a Transformation. This object should be any of the following object models or types: [string, #/definitions/DSWorkflowVariable, #/definitions/DSWorkflowTransformationExpression]"
           description: ""
         type:
           $ref: '#/components/schemas/DSWorkflowStepTypes.DSTransformation'
@@ -1416,17 +1350,17 @@ components:
       x-ms-summary: ""
     DSWebFormsStep:
       required:
-      - config
-      - id
-      - input
-      - name
-      - output
-      - type
+        - config
+        - id
+        - input
+        - name
+        - output
+        - type
       type: object
       properties:
         config:
           required:
-          - pageUrl
+            - pageUrl
           type: object
           properties:
             pageUrl:
@@ -1440,10 +1374,7 @@ components:
           additionalProperties:
             type: object
             properties: {}
-            description: "Reference of #/definitions/StringOrVariableOrTransformation.\
-              \ Object stands for a String or a Variable or a Transformation. This\
-              \ object should be any of the following object models or types: [string,\
-              \ #/definitions/DSWorkflowVariable, #/definitions/DSWorkflowTransformationExpression]"
+            description: "Reference of #/definitions/StringOrVariableOrTransformation. Object stands for a String or a Variable or a Transformation. This object should be any of the following object models or types: [string, #/definitions/DSWorkflowVariable, #/definitions/DSWorkflowTransformationExpression]"
           description: ""
         name:
           type: string
@@ -1453,10 +1384,7 @@ components:
           additionalProperties:
             type: object
             properties: {}
-            description: "Reference of #/definitions/StringOrVariableOrTransformation.\
-              \ Object stands for a String or a Variable or a Transformation. This\
-              \ object should be any of the following object models or types: [string,\
-              \ #/definitions/DSWorkflowVariable, #/definitions/DSWorkflowTransformationExpression]"
+            description: "Reference of #/definitions/StringOrVariableOrTransformation. Object stands for a String or a Variable or a Transformation. This object should be any of the following object models or types: [string, #/definitions/DSWorkflowVariable, #/definitions/DSWorkflowTransformationExpression]"
           description: ""
         type:
           $ref: '#/components/schemas/DSWorkflowStepTypes.DSWebForms'
@@ -1465,9 +1393,9 @@ components:
       x-ms-summary: A Maesttro workflow WebForms step
     DSWorkflowBooleanExpression:
       required:
-      - expressions
-      - logicalOperator
-      - type
+        - expressions
+        - logicalOperator
+        - type
       type: object
       properties:
         expressions:
@@ -1485,10 +1413,10 @@ components:
       x-ms-summary: ""
     DSWorkflowComparisonExpression:
       required:
-      - comparisonOperator
-      - leftOperand
-      - rightOperand
-      - type
+        - comparisonOperator
+        - leftOperand
+        - rightOperand
+        - type
       type: object
       properties:
         comparisonOperator:
@@ -1496,13 +1424,11 @@ components:
         leftOperand:
           type: object
           properties: {}
-          description: "This model should be any of the following object models or\
-            \ types: [number, boolean, #/definitions/StringOrVariableOrTransformation]"
+          description: "This model should be any of the following object models or types: [number, boolean, #/definitions/StringOrVariableOrTransformation]"
         rightOperand:
           type: object
           properties: {}
-          description: "This model should be any of the following object models or\
-            \ types: [number, boolean, #/definitions/StringOrVariableOrTransformation]"
+          description: "This model should be any of the following object models or types: [number, boolean, #/definitions/StringOrVariableOrTransformation]"
         type:
           $ref: '#/components/schemas/DSWorkflowExpressionTypes.ComparisonExpression'
       description: ""
@@ -1512,23 +1438,23 @@ components:
       type: string
       description: ""
       enum:
-      - Contains
-      - NotContains
-      - Equal
-      - NotEqual
-      - GreaterThan
-      - GreaterThanOrEqual
-      - LessThan
-      - LessThanOrEqual
-      - StartsWith
-      - NotStartsWith
-      - EndsWith
-      - NotEndsWith
+        - Contains
+        - NotContains
+        - Equal
+        - NotEqual
+        - GreaterThan
+        - GreaterThanOrEqual
+        - LessThan
+        - LessThanOrEqual
+        - StartsWith
+        - NotStartsWith
+        - EndsWith
+        - NotEndsWith
       x-ds-definition-name: DSWorkflowComparisonOperatorTypes
       x-ms-summary: ""
     DSWorkflowConcatExpression:
       required:
-      - type
+        - type
       type: object
       properties:
         inputs:
@@ -1546,36 +1472,36 @@ components:
       type: string
       description: ""
       enum:
-      - pdf
-      - docx
+        - pdf
+        - docx
       x-ds-definition-name: DSWorkflowDocGenDocOutputFormat
       x-ms-summary: ""
     DSWorkflowExpressionTypes.BooleanExpression:
       type: string
       description: ""
       enum:
-      - BooleanExpression
+        - BooleanExpression
       x-ds-definition-name: DSWorkflowExpressionTypes.BooleanExpression
       x-ms-summary: ""
     DSWorkflowExpressionTypes.ComparisonExpression:
       type: string
       description: ""
       enum:
-      - ComparisonExpression
+        - ComparisonExpression
       x-ds-definition-name: DSWorkflowExpressionTypes.ComparisonExpression
       x-ms-summary: ""
     DSWorkflowExpressionTypes.ParallelExpression:
       type: string
       description: ""
       enum:
-      - ParallelExpression
+        - ParallelExpression
       x-ds-definition-name: DSWorkflowExpressionTypes.ParallelExpression
       x-ms-summary: ""
     DSWorkflowIndexOfExpression:
       required:
-      - searchText
-      - text
-      - type
+        - searchText
+        - text
+        - type
       type: object
       properties:
         searchText:
@@ -1593,8 +1519,8 @@ components:
       x-ms-summary: ""
     DSWorkflowLane:
       required:
-      - laneId
-      - laneSteps
+        - laneId
+        - laneSteps
       type: object
       properties:
         laneId:
@@ -1617,9 +1543,9 @@ components:
       x-ms-summary: ""
     DSWorkflowLastIndexOfExpression:
       required:
-      - searchText
-      - text
-      - type
+        - searchText
+        - text
+        - type
       type: object
       properties:
         searchText:
@@ -1639,14 +1565,14 @@ components:
       type: string
       description: ""
       enum:
-      - And
-      - Or
+        - And
+        - Or
       x-ds-definition-name: DSWorkflowLogicalOperatorTypes
       x-ms-summary: ""
     DSWorkflowParallelExpression:
       required:
-      - parallelCompletionSettings
-      - type
+        - parallelCompletionSettings
+        - type
       type: object
       properties:
         parallelCompletionSettings:
@@ -1668,10 +1594,10 @@ components:
       x-ms-summary: A Maestro workflow participant record.
     DSWorkflowReplaceExpression:
       required:
-      - newText
-      - oldText
-      - text
-      - type
+        - newText
+        - oldText
+        - text
+        - type
       type: object
       properties:
         newText:
@@ -1712,70 +1638,70 @@ components:
       type: string
       description: ""
       enum:
-      - DS-DocGen
+        - DS-DocGen
       x-ds-definition-name: DSWorkflowStepTypes.DSDocGen
       x-ms-summary: ""
     DSWorkflowStepTypes.DSIdv:
       type: string
       description: ""
       enum:
-      - DS-IDV
+        - DS-IDV
       x-ds-definition-name: DSWorkflowStepTypes.DSIdv
       x-ms-summary: ""
     DSWorkflowStepTypes.DSIfElse:
       type: string
       description: ""
       enum:
-      - DS-IfElse
+        - DS-IfElse
       x-ds-definition-name: DSWorkflowStepTypes.DSIfElse
       x-ms-summary: ""
     DSWorkflowStepTypes.DSSign:
       type: string
       description: ""
       enum:
-      - DS-Sign
+        - DS-Sign
       x-ds-definition-name: DSWorkflowStepTypes.DSSign
       x-ms-summary: ""
     DSWorkflowStepTypes.DSTransformation:
       type: string
       description: ""
       enum:
-      - DS-Transformation
+        - DS-Transformation
       x-ds-definition-name: DSWorkflowStepTypes.DSTransformation
       x-ms-summary: ""
     DSWorkflowStepTypes.DSWebForms:
       type: string
       description: ""
       enum:
-      - DS-WebForms
+        - DS-WebForms
       x-ds-definition-name: DSWorkflowStepTypes.DSWebForms
       x-ms-summary: ""
     DSWorkflowStepTypes.DoUntil:
       type: string
       description: ""
       enum:
-      - DS-DoUntil
+        - DS-DoUntil
       x-ds-definition-name: DSWorkflowStepTypes.DoUntil
       x-ms-summary: ""
     DSWorkflowStepTypes.Loop:
       type: string
       description: ""
       enum:
-      - DS-Loop
+        - DS-Loop
       x-ds-definition-name: DSWorkflowStepTypes.Loop
       x-ms-summary: ""
     DSWorkflowStepTypes.Parallel:
       type: string
       description: ""
       enum:
-      - DS-Parallel
+        - DS-Parallel
       x-ds-definition-name: DSWorkflowStepTypes.Parallel
       x-ms-summary: ""
     DSWorkflowSubstringExpression:
       required:
-      - startIndex
-      - text
-      - type
+        - startIndex
+        - text
+        - type
       type: object
       properties:
         length:
@@ -1797,8 +1723,8 @@ components:
       x-ms-summary: ""
     DSWorkflowToLowerExpression:
       required:
-      - text
-      - type
+        - text
+        - type
       type: object
       properties:
         text:
@@ -1812,8 +1738,8 @@ components:
       x-ms-summary: ""
     DSWorkflowToUpperExpression:
       required:
-      - text
-      - type
+        - text
+        - type
       type: object
       properties:
         text:
@@ -1827,74 +1753,66 @@ components:
       x-ms-summary: ""
     DSWorkflowTransformationExpression:
       type: object
-      description: "Transformation Expression object. This object should be any of\
-        \ the following object models: [#/definitions/DSWorkflowReplaceExpression,\
-        \ #/definitions/DSWorkflowToLowerExpression, #/definitions/DSWorkflowToUpperExpression,\
-        \ #/components/schemas/DSWorkflowLastIndexOfExpression, #/components/schemas/DSWorkflowIndexOfExpression,\
-        \ #/components/schemas/DSWorkflowSubstringExpression, #/components/schemas/DSWorkflowConcatExpression]"
+      description: "Transformation Expression object. This object should be any of the following object models: [#/definitions/DSWorkflowReplaceExpression, #/definitions/DSWorkflowToLowerExpression, #/definitions/DSWorkflowToUpperExpression, #/components/schemas/DSWorkflowLastIndexOfExpression, #/components/schemas/DSWorkflowIndexOfExpression, #/components/schemas/DSWorkflowSubstringExpression, #/components/schemas/DSWorkflowConcatExpression]"
       x-ds-definition-name: DSWorkflowTransformationExpression
-      x-ms-summary: "Transformation Expression object. This object should be any of\
-        \ the following object models: [#/definitions/DSWorkflowReplaceExpression,\
-        \ #/definitions/DSWorkflowToLowerExpression, #/definitions/DSWorkflowToUpperExpression,\
-        \ #/components/schemas/DSWorkflowLastIndexOfExpression, #/components/schemas/DSWorkflowIndexOfExpression,\
-        \ #/components/schemas/DSWorkflowSubstringExpression, #/components/schemas/DSWorkflowConcatExpression]"
+      x-ms-summary: "Transformation Expression object. This object should be any of the following object models: [#/definitions/DSWorkflowReplaceExpression, #/definitions/DSWorkflowToLowerExpression, #/definitions/DSWorkflowToUpperExpression, #/components/schemas/DSWorkflowLastIndexOfExpression, #/components/schemas/DSWorkflowIndexOfExpression, #/components/schemas/DSWorkflowSubstringExpression, #/components/schemas/DSWorkflowConcatExpression]"
     DSWorkflowTransformationExpressionTypes.ConcatExpression:
       type: string
       description: ""
       enum:
-      - ConcatExpression
+        - ConcatExpression
       x-ds-definition-name: DSWorkflowTransformationExpressionTypes.ConcatExpression
       x-ms-summary: ""
     DSWorkflowTransformationExpressionTypes.IndexOfExpression:
       type: string
       description: ""
       enum:
-      - IndexOfExpression
+        - IndexOfExpression
       x-ds-definition-name: DSWorkflowTransformationExpressionTypes.IndexOfExpression
       x-ms-summary: ""
     DSWorkflowTransformationExpressionTypes.LastIndexOfExpression:
       type: string
       description: ""
       enum:
-      - LastIndexOfExpression
+        - LastIndexOfExpression
       x-ds-definition-name: DSWorkflowTransformationExpressionTypes.LastIndexOfExpression
       x-ms-summary: ""
     DSWorkflowTransformationExpressionTypes.ReplaceExpression:
       type: string
       description: ""
       enum:
-      - ReplaceExpression
+        - ReplaceExpression
       x-ds-definition-name: DSWorkflowTransformationExpressionTypes.ReplaceExpression
       x-ms-summary: ""
     DSWorkflowTransformationExpressionTypes.SubstringExpression:
       type: string
       description: ""
       enum:
-      - SubstringExpression
+        - SubstringExpression
       x-ds-definition-name: DSWorkflowTransformationExpressionTypes.SubstringExpression
       x-ms-summary: ""
     DSWorkflowTransformationExpressionTypes.ToLowerExpression:
       type: string
       description: ""
       enum:
-      - ToLowerExpression
+        - ToLowerExpression
       x-ds-definition-name: DSWorkflowTransformationExpressionTypes.ToLowerExpression
       x-ms-summary: ""
     DSWorkflowTransformationExpressionTypes.ToUpperExpression:
       type: string
       description: ""
       enum:
-      - ToUpperExpression
+        - ToUpperExpression
       x-ds-definition-name: DSWorkflowTransformationExpressionTypes.ToUpperExpression
       x-ms-summary: ""
     DSWorkflowTrigger:
       required:
-      - httpType
-      - id
-      - input
-      - name
-      - output
-      - type
+        - httpType
+        - id
+        - input
+        - name
+        - output
+        - type
       type: object
       properties:
         eventType:
@@ -1908,8 +1826,7 @@ components:
           additionalProperties:
             type: object
             properties: {}
-            description: "Reference of #/definitions/DSWorkflowVariable. DS Workflow\
-              \ Variables"
+            description: "Reference of #/definitions/DSWorkflowVariable. DS Workflow Variables"
           description: |-
             The input [variable](/docs/maestro-api/maestro101/variables/)
             record.
@@ -1921,8 +1838,7 @@ components:
           additionalProperties:
             type: object
             properties: {}
-            description: "Reference of #/definitions/DSWorkflowVariable. DS Workflow\
-              \ Variables"
+            description: "Reference of #/definitions/DSWorkflowVariable. DS Workflow Variables"
           description: |-
             The output [variable](/docs/maestro-api/maestro101/variables/)
             record.
@@ -1935,8 +1851,8 @@ components:
       type: string
       description: The DS Workflow Trigger types
       enum:
-      - Http
-      - Http-API
+        - Http
+        - Http-API
       x-ds-definition-name: DSWorkflowTriggerTypes
       x-ms-summary: The DS Workflow Trigger types
     DSWorkflowVariable:
@@ -1951,10 +1867,10 @@ components:
       x-ms-summary: DS Workflow Variable from a Participant
     DSWorkflowVariableFromStep:
       required:
-      - key
-      - propertyName
-      - source
-      - stepId
+        - key
+        - propertyName
+        - source
+        - stepId
       type: object
       properties:
         key:
@@ -1972,10 +1888,10 @@ components:
       x-ms-summary: DS Workflow Variable from a Step
     DSWorkflowVariableFromVariable:
       required:
-      - key
-      - propertyName
-      - source
-      - stepId
+        - key
+        - propertyName
+        - source
+        - stepId
       type: object
       properties:
         key:
@@ -2008,19 +1924,19 @@ components:
       type: string
       description: ""
       enum:
-      - step
+        - step
       x-ds-definition-name: DSWorkflowVariableSourceTypes.Step
       x-ms-summary: ""
     DSWorkflowVariableSourceTypes.Variable:
       type: string
       description: ""
       enum:
-      - variable
+        - variable
       x-ds-definition-name: DSWorkflowVariableSourceTypes.Variable
       x-ms-summary: ""
     DeployRequest:
       required:
-      - deploymentStatus
+        - deploymentStatus
       type: object
       properties:
         deploymentStatus:
@@ -2030,8 +1946,8 @@ components:
       x-ms-summary: ""
     DeployResponse:
       required:
-      - message
-      - pollUrl
+        - message
+        - pollUrl
       type: object
       properties:
         message:
@@ -2055,23 +1971,23 @@ components:
       type: string
       description: ""
       enum:
-      - Publish
-      - UnPublish
-      - Disable
+        - Publish
+        - UnPublish
+        - Disable
       x-ds-definition-name: DeployStatus
       x-ms-summary: ""
     DeploymentStatus:
       type: string
       description: The workflow deployment status
       enum:
-      - Deployment In Progress
-      - Deployed
-      - Failed
-      - Delete in Progress
-      - Deleted
-      - Not Deployed
-      - Unpublish in Progress
-      - Unpublished
+        - Deployment In Progress
+        - Deployed
+        - Failed
+        - Delete in Progress
+        - Deleted
+        - Not Deployed
+        - Unpublish in Progress
+        - Unpublished
       x-ds-definition-name: DeploymentStatus
       x-ms-summary: The workflow deployment status
     DsStepId:
@@ -2082,10 +1998,10 @@ components:
       x-ms-summary: DS Step Id <TODO>
     ESignDocumentFromESignTemplate:
       required:
-      - eSignTemplateId
-      - fileExtension
-      - name
-      - type
+        - eSignTemplateId
+        - fileExtension
+        - name
+        - type
       type: object
       properties:
         eSignTemplateId:
@@ -2104,10 +2020,10 @@ components:
       x-ms-summary: ""
     ESignDocumentFromPreviousStep:
       required:
-      - documentFromPreviousStep
-      - fileExtension
-      - name
-      - type
+        - documentFromPreviousStep
+        - fileExtension
+        - name
+        - type
       type: object
       properties:
         documentFromPreviousStep:
@@ -2129,23 +2045,21 @@ components:
       type: string
       description: ""
       enum:
-      - FromDSTemplate
+        - FromDSTemplate
       x-ds-definition-name: ESignDocumentTypes.FromDSTemplate
       x-ms-summary: ""
     ESignDocumentTypes.FromPreviousStep:
       type: string
       description: ""
       enum:
-      - FromPreviousStep
+        - FromPreviousStep
       x-ds-definition-name: ESignDocumentTypes.FromPreviousStep
       x-ms-summary: ""
     ESignDocuments:
       type: object
-      description: "ESignDocument Object. This object should be any of the following\
-        \ object models: [#/definitions/ESignDocumentFromPreviousStep, #/definitions/ESignDocumentFromESignTemplate]"
+      description: "ESignDocument Object. This object should be any of the following object models: [#/definitions/ESignDocumentFromPreviousStep, #/definitions/ESignDocumentFromESignTemplate]"
       x-ds-definition-name: ESignDocuments
-      x-ms-summary: "ESignDocument Object. This object should be any of the following\
-        \ object models: [#/definitions/ESignDocumentFromPreviousStep, #/definitions/ESignDocumentFromESignTemplate]"
+      x-ms-summary: "ESignDocument Object. This object should be any of the following object models: [#/definitions/ESignDocumentFromPreviousStep, #/definitions/ESignDocumentFromESignTemplate]"
     ESignLocalePolicy:
       type: object
       additionalProperties:
@@ -2156,11 +2070,11 @@ components:
       x-ms-summary: ""
     ESignSigner:
       required:
-      - email
-      - note
-      - routingOrder
-      - tabs
-      - userName
+        - email
+        - note
+        - routingOrder
+        - tabs
+        - userName
       type: object
       properties:
         email:
@@ -2185,7 +2099,7 @@ components:
       x-ms-summary: ""
     ESignTabs:
       required:
-      - tabId
+        - tabId
       type: object
       properties:
         anchorString:
@@ -2318,24 +2232,24 @@ components:
       type: string
       description: Internal Error Codes
       enum:
-      - ERR_10001
-      - ERR_10002
-      - ERR_10003
-      - ERR_10004
-      - ERR_10005
-      - ERR_10006
-      - ERR_10007
-      - ERR_10008
-      - ERR_10009
-      - ERR_10101
-      - ERR_10201
-      - ERR_10202
-      - ERR_10301
-      - ERR_10302
-      - ERR_10401
-      - ERR_10801
-      - ERR_10802
-      - ERR_10999
+        - ERR_10001
+        - ERR_10002
+        - ERR_10003
+        - ERR_10004
+        - ERR_10005
+        - ERR_10006
+        - ERR_10007
+        - ERR_10008
+        - ERR_10009
+        - ERR_10101
+        - ERR_10201
+        - ERR_10202
+        - ERR_10301
+        - ERR_10302
+        - ERR_10401
+        - ERR_10801
+        - ERR_10802
+        - ERR_10999
       x-ds-definition-name: ErrorCodes
       x-ms-summary: Internal Error Codes
     ErrorResponse:
@@ -2353,23 +2267,23 @@ components:
       type: string
       description: The Trigger Event types
       enum:
-      - envelope-sent
-      - envelope-delivered
-      - envelope-completed
-      - envelope-declined
-      - envelope-voided
-      - envelope-created
-      - envelope-resent
-      - envelope-corrected
-      - envelope-purge
-      - envelope-deleted
-      - envelope-discard
-      - Delivery Failed
-      - Authentication Failed
-      - Sent
-      - Delivered
-      - Signed
-      - Completed
+        - envelope-sent
+        - envelope-delivered
+        - envelope-completed
+        - envelope-declined
+        - envelope-voided
+        - envelope-created
+        - envelope-resent
+        - envelope-corrected
+        - envelope-purge
+        - envelope-deleted
+        - envelope-discard
+        - Delivery Failed
+        - Authentication Failed
+        - Sent
+        - Delivered
+        - Signed
+        - Completed
       x-ds-definition-name: EventTypes
       x-ms-summary: The Trigger Event types
     GetConfigurationInstanceResponse:
@@ -2419,16 +2333,16 @@ components:
       type: string
       description: The Trigger Http types
       enum:
-      - Get
-      - Post
-      - Put
-      - Delete
+        - Get
+        - Post
+        - Put
+        - Delete
       x-ds-definition-name: HttpTypes
       x-ms-summary: The Trigger Http types
     InvalidWorkflowResponse:
       required:
-      - message
-      - validationErrors
+        - message
+        - validationErrors
       type: object
       properties:
         message:
@@ -2451,10 +2365,10 @@ components:
       x-ms-summary: ""
     NewOrUpdatedWorkflowDefinitionResponse:
       required:
-      - isValidWorkflowDefinition
-      - validationErrors
-      - workflowDefinition
-      - workflowDefinitionId
+        - isValidWorkflowDefinition
+        - validationErrors
+        - workflowDefinition
+        - workflowDefinitionId
       type: object
       properties:
         isValidWorkflowDefinition:
@@ -2474,17 +2388,15 @@ components:
       x-ms-summary: ""
     NumberOrVariable:
       type: object
-      description: "Object stands for a number or a Variable. This object should be\
-        \ any of the following object models or types: [number, #/definitions/DSWorkflowVariable]"
+      description: "Object stands for a number or a Variable. This object should be any of the following object models or types: [number, #/definitions/DSWorkflowVariable]"
       x-ds-definition-name: NumberOrVariable
-      x-ms-summary: "Object stands for a number or a Variable. This object should\
-        \ be any of the following object models or types: [number, #/definitions/DSWorkflowVariable]"
+      x-ms-summary: "Object stands for a number or a Variable. This object should be any of the following object models or types: [number, #/definitions/DSWorkflowVariable]"
     Participant:
       required:
-      - participantEmail
-      - participantFirstName
-      - participantLastName
-      - participantRole
+        - participantEmail
+        - participantFirstName
+        - participantLastName
+        - participantRole
       type: object
       properties:
         participantEmail:
@@ -2530,14 +2442,10 @@ components:
       additionalProperties:
         type: object
         properties: {}
-        description: "Reference of #/definitions/StringOrVariableOrTransformation.\
-          \ Object stands for a String or a Variable or a Transformation. This object\
-          \ should be any of the following object models or types: [string, #/definitions/DSWorkflowVariable,\
-          \ #/definitions/DSWorkflowTransformationExpression]"
+        description: "Reference of #/definitions/StringOrVariableOrTransformation. Object stands for a String or a Variable or a Transformation. This object should be any of the following object models or types: [string, #/definitions/DSWorkflowVariable, #/definitions/DSWorkflowTransformationExpression]"
       description: "A Record of strings to Strings, Variables, or Transformation Expressions"
       x-ds-definition-name: RecordStringOrVariableOrTransformation
-      x-ms-summary: "A Record of strings to Strings, Variables, or Transformation\
-        \ Expressions"
+      x-ms-summary: "A Record of strings to Strings, Variables, or Transformation Expressions"
     RecordToNever:
       type: object
       additionalProperties: false
@@ -2548,16 +2456,16 @@ components:
       type: string
       description: The workflow replication status
       enum:
-      - Deploy Replication In Progress
-      - Deploy Replicated
-      - Deploy Replication Failed
-      - Not Replicated
-      - Delete Replication in Progress
-      - Delete Replicated
-      - Delete Replication Failed
-      - Unpublish replication in Progress
-      - Unpublish Replicated
-      - Unpublish Replication Failed
+        - Deploy Replication In Progress
+        - Deploy Replicated
+        - Deploy Replication Failed
+        - Not Replicated
+        - Delete Replication in Progress
+        - Delete Replicated
+        - Delete Replication Failed
+        - Unpublish replication in Progress
+        - Unpublish Replicated
+        - Unpublish Replication Failed
       x-ds-definition-name: ReplicationStatus
       x-ms-summary: The workflow replication status
     StartedByInstance:
@@ -2572,22 +2480,18 @@ components:
           type: string
           description: ""
           enum:
-          - Anonymous
-          - Preparer
-          - Participant
-          - OnBehalfOf
+            - Anonymous
+            - Preparer
+            - Participant
+            - OnBehalfOf
       description: The started by information for a workflow instance
       x-ds-definition-name: StartedByInstance
       x-ms-summary: The started by information for a workflow instance
     StringOrVariableOrTransformation:
       type: object
-      description: "Object stands for a String or a Variable or a Transformation.\
-        \ This object should be any of the following object models or types: [string,\
-        \ #/definitions/DSWorkflowVariable, #/definitions/DSWorkflowTransformationExpression]"
+      description: "Object stands for a String or a Variable or a Transformation. This object should be any of the following object models or types: [string, #/definitions/DSWorkflowVariable, #/definitions/DSWorkflowTransformationExpression]"
       x-ds-definition-name: StringOrVariableOrTransformation
-      x-ms-summary: "Object stands for a String or a Variable or a Transformation.\
-        \ This object should be any of the following object models or types: [string,\
-        \ #/definitions/DSWorkflowVariable, #/definitions/DSWorkflowTransformationExpression]"
+      x-ms-summary: "Object stands for a String or a Variable or a Transformation. This object should be any of the following object models or types: [string, #/definitions/DSWorkflowVariable, #/definitions/DSWorkflowTransformationExpression]"
     SuccessMessageResponse:
       type: object
       properties:
@@ -2632,8 +2536,7 @@ components:
           $ref: '#/components/schemas/WorkflowInstanceId'
         workflowInstanceUrl:
           type: string
-          description: Instance-specific URL that can be used redirect to a workflow
-            instance
+          description: Instance-specific URL that can be used redirect to a workflow instance
           format: uri
       description: Trigger workflow via POST response details
       x-ds-definition-name: TriggerWorkflowViaPostResponse
@@ -2646,8 +2549,8 @@ components:
       x-ms-summary: Participant User ID
     ValidationErrors:
       required:
-      - code
-      - message
+        - code
+        - message
       type: object
       properties:
         code:
@@ -2667,13 +2570,11 @@ components:
       x-ms-summary: "A string in version number format: `3.14.159`"
     WorkflowCreatorId:
       type: string
-      description: The Docusign Admin user ID who has the ability to create workflow
-        definitions.
+      description: The Docusign Admin user ID who has the ability to create workflow definitions.
       format: uuid
       example: 00000000-0000-0000-0000-000000000000
       x-ds-definition-name: WorkflowCreatorId
-      x-ms-summary: The Docusign Admin user ID who has the ability to create workflow
-        definitions.
+      x-ms-summary: The Docusign Admin user ID who has the ability to create workflow definitions.
     WorkflowDateTime:
       type: string
       description: A date-time string.
@@ -2682,14 +2583,14 @@ components:
       x-ms-summary: A date-time string.
     WorkflowDefinition:
       required:
-      - accountId
-      - documentVersion
-      - schemaVersion
-      - steps
-      - trigger
-      - variables
-      - workflowDescription
-      - workflowName
+        - accountId
+        - documentVersion
+        - schemaVersion
+        - steps
+        - trigger
+        - variables
+        - workflowDescription
+        - workflowName
       type: object
       properties:
         accountId:
@@ -2703,8 +2604,7 @@ components:
           type: object
           additionalProperties:
             $ref: '#/components/schemas/Participant'
-          description: "A maestro [participant](/docs/maestro-api/maestro101/participants/)\
-            \ record"
+          description: "A maestro [participant](/docs/maestro-api/maestro101/participants/) record"
         schemaVersion:
           $ref: '#/components/schemas/VersionString'
         steps:
@@ -2720,8 +2620,7 @@ components:
           additionalProperties:
             type: object
             properties: {}
-            description: "Reference of #/definitions/DSWorkflowVariable. DS Workflow\
-              \ Variables"
+            description: "Reference of #/definitions/DSWorkflowVariable. DS Workflow Variables"
           description: ""
         workflowDescription:
           type: string
@@ -2749,7 +2648,7 @@ components:
       x-ms-summary: Returns a list of workflow definitions' metadata (0 or more).
     WorkflowDefinitionMetadata:
       required:
-      - id
+        - id
       type: object
       properties:
         accountId:
@@ -2786,7 +2685,7 @@ components:
       x-ms-summary: A Maestro workflow definition's metadata.
     WorkflowDefinitionWithId:
       required:
-      - id
+        - id
       type: object
       properties:
         accountId:
@@ -2829,8 +2728,8 @@ components:
       x-ms-summary: A Maestro workflow definition with metadata.
     WorkflowDeleteResponse:
       required:
-      - pollUrl
-      - workflowDefinitionId
+        - pollUrl
+        - workflowDefinitionId
       type: object
       properties:
         pollUrl:
@@ -2844,11 +2743,11 @@ components:
       x-ms-summary: The response to a request to delete a workflow.
     WorkflowInstance:
       required:
-      - creatorId
-      - dacId
-      - instanceState
-      - templateId
-      - users
+        - creatorId
+        - dacId
+        - instanceState
+        - templateId
+        - users
       type: object
       properties:
         accountId:
@@ -2902,11 +2801,11 @@ components:
       type: string
       description: "Current workflow instance state (`completed`, `failed`, `In-progress`)"
       enum:
-      - Created
-      - In Progress
-      - Completed
-      - Failed
-      - Canceled
+        - Created
+        - In Progress
+        - Completed
+        - Failed
+        - Canceled
       x-ds-definition-name: WorkflowInstanceState
       x-ms-summary: "Current workflow instance state (`completed`, `failed`, `In-progress`)"
     WorkflowInstancesList:
@@ -2920,12 +2819,12 @@ components:
       type: string
       description: Workflow definition metadata status.
       enum:
-      - active
-      - inactive
-      - publishing
-      - unpublishing
-      - archived
-      - archiving
+        - active
+        - inactive
+        - publishing
+        - unpublishing
+        - archived
+        - archiving
       x-ds-definition-name: WorkflowMetadataStatus
       x-ms-summary: Workflow definition metadata status.
     WorkflowStepError:
@@ -2956,10 +2855,10 @@ components:
       x-ms-summary: Workflow step history error
     WorkflowStepHistory:
       required:
-      - dacId
-      - stepName
-      - stepState
-      - userId
+        - dacId
+        - stepName
+        - stepState
+        - userId
       type: object
       properties:
         accountId:
@@ -3001,10 +2900,10 @@ components:
       type: string
       description: "Workflow step history state (`completed`, `failed`, `In-progress`)"
       enum:
-      - In Progress
-      - Completed
-      - Failed
-      - Canceled
+        - In Progress
+        - Completed
+        - Failed
+        - Canceled
       x-ds-definition-name: WorkflowStepHistoryState
       x-ms-summary: "Workflow step history state (`completed`, `failed`, `In-progress`)"
     WorkflowTrigger:
@@ -3014,8 +2913,7 @@ components:
           $ref: '#/components/schemas/WorkflowInstanceId'
         workflowInstanceUrl:
           type: string
-          description: Instance-specific URL that can be used redirect to a workflow
-            instance
+          description: Instance-specific URL that can be used redirect to a workflow instance
           format: uri
       description: Method to trigger a workflow.
       x-ds-definition-name: TriggerWorkflowViaPostResponse
@@ -3024,7 +2922,7 @@ components:
       x-ms-summary: Method to trigger a workflow.
     WorkflowInstanceManagement:
       required:
-      - message
+        - message
       type: object
       properties:
         code:
@@ -3063,13 +2961,13 @@ components:
       name: Authorization
       in: header
 x-ds-categories:
-- name: WorkflowTrigger
-  summary: Method to trigger a workflow.
-  description: Method to trigger a workflow.
-- name: WorkflowInstanceManagement
-  summary: Methods to get information about workflow instances.
-  description: Methods to get information about workflow instances.
-- name: WorkflowManagement
-  summary: "Methods to create, retrieve, update, and delete workflow definitions."
-  description: "Methods to create, retrieve, update, and delete workflow definitions."
+  - name: WorkflowTrigger
+    summary: Method to trigger a workflow.
+    description: Method to trigger a workflow.
+  - name: WorkflowInstanceManagement
+    summary: Methods to get information about workflow instances.
+    description: Methods to get information about workflow instances.
+  - name: WorkflowManagement
+    summary: "Methods to create, retrieve, update, and delete workflow definitions."
+    description: "Methods to create, retrieve, update, and delete workflow definitions."
 x-original-swagger-version: "2.0"
