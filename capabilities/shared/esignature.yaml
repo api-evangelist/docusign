@@ -1,0 +1,179 @@
+naftiko: "1.0.0-alpha1"
+
+info:
+  label: "DocuSign eSignature REST API"
+  description: "REST API for electronic signing, envelope management, document handling, and template operations."
+  tags:
+    - DocuSign
+    - eSignature
+    - Documents
+    - Envelopes
+  created: "2026-04-19"
+  modified: "2026-04-19"
+
+binds:
+  - namespace: env
+    keys:
+      DOCUSIGN_ACCESS_TOKEN: DOCUSIGN_ACCESS_TOKEN
+      DOCUSIGN_ACCOUNT_ID: DOCUSIGN_ACCOUNT_ID
+
+capability:
+  consumes:
+    - type: http
+      namespace: esignature
+      baseUri: https://demo.docusign.net/restapi/v2.1
+      description: "DocuSign eSignature REST API"
+      authentication:
+        type: bearer
+        token: "{{DOCUSIGN_ACCESS_TOKEN}}"
+      resources:
+        - name: envelopes
+          path: /accounts/{accountId}/envelopes
+          description: "Envelope management"
+          operations:
+            - name: list-envelopes
+              method: GET
+              description: "List envelopes"
+              inputParameters:
+                - name: accountId
+                  in: path
+                  type: string
+                  required: true
+                  description: "Account ID"
+                - name: from_date
+                  in: query
+                  type: string
+                  required: false
+                  description: "Start date for envelope search"
+              outputRawFormat: json
+              outputParameters:
+                - name: result
+                  type: object
+                  value: "$."
+            - name: create-envelope
+              method: POST
+              description: "Create and send an envelope"
+              inputParameters:
+                - name: accountId
+                  in: path
+                  type: string
+                  required: true
+                  description: "Account ID"
+              outputRawFormat: json
+              outputParameters:
+                - name: result
+                  type: object
+                  value: "$."
+              body:
+                type: json
+                data:
+                  emailSubject: "{{tools.emailSubject}}"
+                  status: "{{tools.status}}"
+        - name: envelope
+          path: /accounts/{accountId}/envelopes/{envelopeId}
+          description: "Individual envelope operations"
+          operations:
+            - name: get-envelope
+              method: GET
+              description: "Retrieve an envelope"
+              inputParameters:
+                - name: accountId
+                  in: path
+                  type: string
+                  required: true
+                  description: "Account ID"
+                - name: envelopeId
+                  in: path
+                  type: string
+                  required: true
+                  description: "Envelope ID"
+              outputRawFormat: json
+              outputParameters:
+                - name: result
+                  type: object
+                  value: "$."
+        - name: templates
+          path: /accounts/{accountId}/templates
+          description: "Template management"
+          operations:
+            - name: list-templates
+              method: GET
+              description: "List templates"
+              inputParameters:
+                - name: accountId
+                  in: path
+                  type: string
+                  required: true
+                  description: "Account ID"
+              outputRawFormat: json
+              outputParameters:
+                - name: result
+                  type: object
+                  value: "$."
+
+  exposes:
+    - type: rest
+      port: 8100
+      namespace: esignature-rest
+      resources:
+        - path: /v1/envelopes
+          name: envelopes
+          description: "Envelope management"
+          operations:
+            - method: GET
+              name: list-envelopes
+              description: "List envelopes"
+              call: "esignature.list-envelopes"
+              outputParameters:
+                - type: object
+                  mapping: "$."
+
+    - type: mcp
+      port: 9100
+      namespace: esignature-mcp
+      transport: http
+      tools:
+        - name: list-envelopes
+          description: "List envelopes in the DocuSign account"
+          hints:
+            readOnly: true
+            idempotent: true
+          call: "esignature.list-envelopes"
+          with:
+            accountId: "tools.accountId"
+          outputParameters:
+            - type: object
+              mapping: "$."
+        - name: get-envelope
+          description: "Retrieve a specific envelope"
+          hints:
+            readOnly: true
+            idempotent: true
+          call: "esignature.get-envelope"
+          with:
+            accountId: "tools.accountId"
+            envelopeId: "tools.envelopeId"
+          outputParameters:
+            - type: object
+              mapping: "$."
+        - name: create-envelope
+          description: "Create and optionally send an envelope"
+          hints:
+            readOnly: false
+          call: "esignature.create-envelope"
+          with:
+            accountId: "tools.accountId"
+          outputParameters:
+            - type: object
+              mapping: "$."
+        - name: list-templates
+          description: "List available templates"
+          hints:
+            readOnly: true
+            idempotent: true
+          call: "esignature.list-templates"
+          with:
+            accountId: "tools.accountId"
+          outputParameters:
+            - type: object
+              mapping: "$."

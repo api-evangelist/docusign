@@ -1,0 +1,130 @@
+naftiko: "1.0.0-alpha1"
+
+info:
+  label: "DocuSign Agreement Workflows"
+  description: "Unified workflow for managing the full agreement lifecycle using DocuSign eSignature APIs, combining envelope management, document handling, templates, and signing workflows for business users and developers."
+  tags:
+    - DocuSign
+    - Agreements
+    - eSignature
+    - Workflows
+  created: "2026-04-19"
+  modified: "2026-04-19"
+
+binds:
+  - namespace: env
+    keys:
+      DOCUSIGN_ACCESS_TOKEN: DOCUSIGN_ACCESS_TOKEN
+      DOCUSIGN_ACCOUNT_ID: DOCUSIGN_ACCOUNT_ID
+
+capability:
+  consumes:
+    - import: esignature
+      location: ./shared/esignature.yaml
+
+  exposes:
+    - type: rest
+      port: 8080
+      namespace: agreement-workflows-api
+      description: "Unified REST API for DocuSign agreement workflows."
+      resources:
+        - path: /v1/envelopes
+          name: envelopes
+          description: "Envelope lifecycle management"
+          operations:
+            - method: GET
+              name: list-envelopes
+              description: "List envelopes"
+              call: "esignature.list-envelopes"
+              with:
+                accountId: "rest.accountId"
+              outputParameters:
+                - type: object
+                  mapping: "$."
+            - method: POST
+              name: create-envelope
+              description: "Create and send an envelope"
+              call: "esignature.create-envelope"
+              with:
+                accountId: "rest.accountId"
+              outputParameters:
+                - type: object
+                  mapping: "$."
+        - path: /v1/envelopes/{envelopeId}
+          name: envelope
+          description: "Individual envelope operations"
+          operations:
+            - method: GET
+              name: get-envelope
+              description: "Retrieve envelope details"
+              call: "esignature.get-envelope"
+              with:
+                accountId: "rest.accountId"
+                envelopeId: "rest.envelopeId"
+              outputParameters:
+                - type: object
+                  mapping: "$."
+        - path: /v1/templates
+          name: templates
+          description: "Template management"
+          operations:
+            - method: GET
+              name: list-templates
+              description: "List templates"
+              call: "esignature.list-templates"
+              with:
+                accountId: "rest.accountId"
+              outputParameters:
+                - type: object
+                  mapping: "$."
+
+    - type: mcp
+      port: 9090
+      namespace: agreement-workflows-mcp
+      transport: http
+      description: "MCP server for AI-assisted DocuSign agreement management."
+      tools:
+        - name: list-envelopes
+          description: "List envelopes in the DocuSign account"
+          hints:
+            readOnly: true
+            idempotent: true
+          call: "esignature.list-envelopes"
+          with:
+            accountId: "tools.accountId"
+          outputParameters:
+            - type: object
+              mapping: "$."
+        - name: get-envelope
+          description: "Retrieve details of a specific envelope"
+          hints:
+            readOnly: true
+            idempotent: true
+          call: "esignature.get-envelope"
+          with:
+            accountId: "tools.accountId"
+            envelopeId: "tools.envelopeId"
+          outputParameters:
+            - type: object
+              mapping: "$."
+        - name: create-envelope
+          description: "Create and optionally send an agreement envelope"
+          hints:
+            readOnly: false
+          call: "esignature.create-envelope"
+          with:
+            accountId: "tools.accountId"
+          outputParameters:
+            - type: object
+              mapping: "$."
+        - name: list-templates
+          description: "List available agreement templates"
+          hints:
+            readOnly: true
+            idempotent: true
+          call: "esignature.list-templates"
+          with:
+            accountId: "tools.accountId"
+          outputParameters:
+            - type: object
+              mapping: "$."
