@@ -1,0 +1,42 @@
+specification: API Commons Rate Limits
+specificationVersion: '0.1'
+schema: https://raw.githubusercontent.com/api-evangelist/interface-research/main/schema/api-commons.yml#/$defs/RateLimits
+provider: DocuSign
+providerId: docusign
+created: '2026-05-04'
+modified: '2026-05-04'
+reconciled: true
+tags:
+  - Rate Limiting
+  - E-Signature
+description: DocuSign eSignature REST API per-account hourly rate limits.
+sources:
+  - https://www.docusign.com/products/electronic-signature
+  - https://developers.docusign.com/platform/api-guides/api-limits/
+headers:
+  limit: X-RateLimit-Limit
+  remaining: X-RateLimit-Remaining
+  reset: X-RateLimit-Reset
+  burst: X-RateLimit-Burst
+responseCodes:
+  throttled: 429
+limits:
+  - name: REST API hourly
+    scope: account
+    metric: requests_per_hour
+    limit: 1000
+    timeFrame: hour
+  - name: REST API burst
+    scope: account
+    metric: requests_per_second
+    limit: 10
+    timeFrame: second
+  - name: Envelope create per hour
+    scope: account
+    metric: envelopes_per_hour
+    limit: 200
+    timeFrame: hour
+  - name: Concurrent connections
+    scope: account
+    metric: concurrent
+    limit: 30

@@ -1,0 +1,166 @@
+specification: API Commons Plans
+specificationVersion: '0.1'
+schema: https://raw.githubusercontent.com/api-evangelist/interface-research/main/schema/api-commons.yml#/$defs/Plans
+provider: DocuSign
+providerId: docusign
+created: '2026-05-04'
+modified: '2026-05-04'
+reconciled: true
+tags:
+  - E-Signature
+  - Agreements
+  - Workflow
+description: DocuSign eSignature plans with envelope-allowance pricing model.
+sources:
+  - https://www.docusign.com/products/electronic-signature
+plans:
+  - id: docusign-personal
+    name: Personal
+    type: paid
+    description: $10/month annual ($15 monthly). Single user; 5 envelopes/mo.
+    entries:
+      - label: Monthly (annual)
+        name: monthly
+        type: subscription
+        metric: month
+        limit: -1
+        timeFrame: month
+        geo: global
+        unit: 1
+        price: '10.00'
+        userMultiplied: false
+      - label: Monthly (monthly billing)
+        name: monthly_mb
+        type: subscription
+        metric: month
+        limit: -1
+        timeFrame: month
+        geo: global
+        unit: 1
+        price: '15.00'
+        userMultiplied: false
+      - label: Envelopes included
+        name: envelopes
+        type: quota
+        metric: envelope
+        limit: 5
+        timeFrame: month
+        geo: global
+        unit: 1
+        price: '0.00'
+        userMultiplied: false
+    elements:
+      - name: Single user
+      - name: Reusable templates
+      - name: Mobile app
+      - name: Standard fields
+  - id: docusign-standard
+    name: Standard
+    type: paid
+    description: $25/user/mo annual. Up to 100 envelopes/user/year.
+    entries:
+      - label: Per user (annual)
+        name: seat
+        type: subscription
+        metric: user
+        limit: -1
+        timeFrame: month
+        geo: global
+        unit: 1
+        price: '25.00'
+        userMultiplied: true
+      - label: Per user (monthly)
+        name: seat
+        type: subscription
+        metric: user
+        limit: -1
+        timeFrame: month
+        geo: global
+        unit: 1
+        price: '45.00'
+        userMultiplied: true
+      - label: Envelopes included
+        name: envelopes
+        type: quota
+        metric: envelope
+        limit: 100
+        timeFrame: year
+        geo: global
+        unit: 1
+        price: '0.00'
+        userMultiplied: false
+      - label: Overage
+        name: envelope_overage
+        type: metered
+        metric: envelope
+        limit: -1
+        timeFrame: year
+        geo: global
+        unit: 1
+        price: 3.00-8.00
+        userMultiplied: false
+    elements:
+      - name: Multi-user
+      - name: Shared templates
+      - name: Branded signing
+      - name: Reminders/expirations
+  - id: docusign-business-pro
+    name: Business Pro
+    type: paid
+    description: $40/user/mo annual. Bulk send, payments, advanced fields.
+    entries:
+      - label: Per user (annual)
+        name: seat
+        type: subscription
+        metric: user
+        limit: -1
+        timeFrame: month
+        geo: global
+        unit: 1
+        price: '40.00'
+        userMultiplied: true
+      - label: Per user (monthly)
+        name: seat
+        type: subscription
+        metric: user
+        limit: -1
+        timeFrame: month
+        geo: global
+        unit: 1
+        price: '65.00'
+        userMultiplied: true
+      - label: Envelopes included
+        name: envelopes
+        type: quota
+        metric: envelope
+        limit: 100
+        timeFrame: year
+        geo: global
+        unit: 1
+        price: '0.00'
+        userMultiplied: false
+    elements:
+      - name: Bulk send
+      - name: Payment collection
+      - name: Advanced fields
+      - name: Signer attachments
+  - id: docusign-enterprise
+    name: Enterprise / Advanced Solutions
+    type: enterprise
+    description: Custom pricing via sales.
+    entries:
+      - label: Per user (custom)
+        name: seat
+        type: subscription
+        metric: user
+        limit: -1
+        timeFrame: month
+        geo: global
+        unit: 1
+        price: custom
+        userMultiplied: true
+    elements:
+      - name: Advanced ID Verification
+      - name: Conditional routing
+      - name: API access
+      - name: Salesforce/Workday integrations
