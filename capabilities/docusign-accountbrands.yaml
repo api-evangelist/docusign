@@ -1,0 +1,702 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: DocuSign REST API — AccountBrands
+  description: 'DocuSign REST API — AccountBrands. 13 operations. Lead operation: Docusign Gets a list of brand profiles..
+    Self-contained Naftiko capability covering one Docusign business surface.'
+  tags:
+  - Docusign
+  - AccountBrands
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    DOCUSIGN_API_KEY: DOCUSIGN_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: docusign-accountbrands
+    baseUri: https://www.docusign.net/restapi
+    description: DocuSign REST API — AccountBrands business capability. Self-contained, no shared references.
+    resources:
+    - name: v2-accounts-accountId-brands
+      path: /v2/accounts/{accountId}/brands
+      operations:
+      - name: brandsgetbrands
+        method: GET
+        description: Docusign Gets a list of brand profiles.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: accountId
+          in: path
+          type: string
+          description: The external account number (int) or account id GUID.
+          required: true
+        - name: exclude_distributor_brand
+          in: query
+          type: string
+          description: When set to **true**, excludes distributor brand information from the response set.
+        - name: include_logos
+          in: query
+          type: string
+          description: When set to **true**, returns the logos associated with the brand.
+      - name: brandspostbrands
+        method: POST
+        description: Docusign Creates one or more brand profile files for the account.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: accountId
+          in: path
+          type: string
+          description: The external account number (int) or account id GUID.
+          required: true
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: false
+      - name: brandsdeletebrands
+        method: DELETE
+        description: Docusign Deletes one or more brand profiles.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: accountId
+          in: path
+          type: string
+          description: The external account number (int) or account id GUID.
+          required: true
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: false
+    - name: v2-accounts-accountId-brands-brandId
+      path: /v2/accounts/{accountId}/brands/{brandId}
+      operations:
+      - name: brandgetbrand
+        method: GET
+        description: Docusign Get information for a specific brand.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: accountId
+          in: path
+          type: string
+          description: The external account number (int) or account id GUID.
+          required: true
+        - name: brandId
+          in: path
+          type: string
+          description: The unique identifier of a brand.
+          required: true
+        - name: include_external_references
+          in: query
+          type: string
+        - name: include_logos
+          in: query
+          type: string
+      - name: brandputbrand
+        method: PUT
+        description: Docusign Updates an existing brand.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: accountId
+          in: path
+          type: string
+          description: The external account number (int) or account id GUID.
+          required: true
+        - name: brandId
+          in: path
+          type: string
+          description: The unique identifier of a brand.
+          required: true
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: false
+      - name: branddeletebrand
+        method: DELETE
+        description: Docusign Removes a brand.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: accountId
+          in: path
+          type: string
+          description: The external account number (int) or account id GUID.
+          required: true
+        - name: brandId
+          in: path
+          type: string
+          description: The unique identifier of a brand.
+          required: true
+    - name: v2-accounts-accountId-brands-brandId-file
+      path: /v2/accounts/{accountId}/brands/{brandId}/file
+      operations:
+      - name: brandexportgetbrandexportfile
+        method: GET
+        description: Docusign Export a specific brand.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: accountId
+          in: path
+          type: string
+          description: The external account number (int) or account id GUID.
+          required: true
+        - name: brandId
+          in: path
+          type: string
+          description: The unique identifier of a brand.
+          required: true
+    - name: v2-accounts-accountId-brands-brandId-logos-logoType
+      path: /v2/accounts/{accountId}/brands/{brandId}/logos/{logoType}
+      operations:
+      - name: brandlogogetbrandlogo
+        method: GET
+        description: Docusign Obtains the specified image for a brand.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: accountId
+          in: path
+          type: string
+          description: The external account number (int) or account id GUID.
+          required: true
+        - name: brandId
+          in: path
+          type: string
+          description: The unique identifier of a brand.
+          required: true
+        - name: logoType
+          in: path
+          type: string
+          description: One of **Primary**, **Secondary** or **Email**.
+          required: true
+      - name: brandlogoputbrandlogo
+        method: PUT
+        description: Docusign Put one branding logo.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: accountId
+          in: path
+          type: string
+          description: The external account number (int) or account id GUID.
+          required: true
+        - name: brandId
+          in: path
+          type: string
+          description: The unique identifier of a brand.
+          required: true
+        - name: logoType
+          in: path
+          type: string
+          description: One of **Primary**, **Secondary** or **Email**.
+          required: true
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+      - name: brandlogodeletebrandlogo
+        method: DELETE
+        description: Docusign Delete one branding logo.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: accountId
+          in: path
+          type: string
+          description: The external account number (int) or account id GUID.
+          required: true
+        - name: brandId
+          in: path
+          type: string
+          description: The unique identifier of a brand.
+          required: true
+        - name: logoType
+          in: path
+          type: string
+          description: One of **Primary**, **Secondary** or **Email**.
+          required: true
+    - name: v2-accounts-accountId-brands-brandId-resources
+      path: /v2/accounts/{accountId}/brands/{brandId}/resources
+      operations:
+      - name: brandresourcesgetbrandresourceslist
+        method: GET
+        description: Docusign Returns the specified account's list of branding resources (metadata).
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: accountId
+          in: path
+          type: string
+          description: The external account number (int) or account id GUID.
+          required: true
+        - name: brandId
+          in: path
+          type: string
+          description: The unique identifier of a brand.
+          required: true
+    - name: v2-accounts-accountId-brands-brandId-resources-resourceContentType
+      path: /v2/accounts/{accountId}/brands/{brandId}/resources/{resourceContentType}
+      operations:
+      - name: brandresourcesgetbrandresources
+        method: GET
+        description: Docusign Returns the specified branding resource file.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: accountId
+          in: path
+          type: string
+          description: The external account number (int) or account id GUID.
+          required: true
+        - name: brandId
+          in: path
+          type: string
+          description: The unique identifier of a brand.
+          required: true
+        - name: resourceContentType
+          in: path
+          type: string
+          required: true
+        - name: langcode
+          in: query
+          type: string
+        - name: return_master
+          in: query
+          type: string
+      - name: brandresourcesputbrandresources
+        method: PUT
+        description: Docusign Uploads a branding resource file.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: accountId
+          in: path
+          type: string
+          description: The external account number (int) or account id GUID.
+          required: true
+        - name: brandId
+          in: path
+          type: string
+          description: The unique identifier of a brand.
+          required: true
+        - name: resourceContentType
+          in: path
+          type: string
+          required: true
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+  exposes:
+  - type: rest
+    namespace: docusign-accountbrands-rest
+    port: 8080
+    description: REST adapter for DocuSign REST API — AccountBrands. One Spectral-compliant resource per consumed operation,
+      prefixed with /v1.
+    resources:
+    - path: /v1/v2/accounts/{accountid}/brands
+      name: v2-accounts-accountid-brands
+      description: REST surface for v2-accounts-accountId-brands.
+      operations:
+      - method: GET
+        name: brandsgetbrands
+        description: Docusign Gets a list of brand profiles.
+        call: docusign-accountbrands.brandsgetbrands
+        with:
+          accountId: rest.accountId
+          exclude_distributor_brand: rest.exclude_distributor_brand
+          include_logos: rest.include_logos
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: POST
+        name: brandspostbrands
+        description: Docusign Creates one or more brand profile files for the account.
+        call: docusign-accountbrands.brandspostbrands
+        with:
+          accountId: rest.accountId
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: DELETE
+        name: brandsdeletebrands
+        description: Docusign Deletes one or more brand profiles.
+        call: docusign-accountbrands.brandsdeletebrands
+        with:
+          accountId: rest.accountId
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/v2/accounts/{accountid}/brands/{brandid}
+      name: v2-accounts-accountid-brands-brandid
+      description: REST surface for v2-accounts-accountId-brands-brandId.
+      operations:
+      - method: GET
+        name: brandgetbrand
+        description: Docusign Get information for a specific brand.
+        call: docusign-accountbrands.brandgetbrand
+        with:
+          accountId: rest.accountId
+          brandId: rest.brandId
+          include_external_references: rest.include_external_references
+          include_logos: rest.include_logos
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: PUT
+        name: brandputbrand
+        description: Docusign Updates an existing brand.
+        call: docusign-accountbrands.brandputbrand
+        with:
+          accountId: rest.accountId
+          brandId: rest.brandId
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: DELETE
+        name: branddeletebrand
+        description: Docusign Removes a brand.
+        call: docusign-accountbrands.branddeletebrand
+        with:
+          accountId: rest.accountId
+          brandId: rest.brandId
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/v2/accounts/{accountid}/brands/{brandid}/file
+      name: v2-accounts-accountid-brands-brandid-file
+      description: REST surface for v2-accounts-accountId-brands-brandId-file.
+      operations:
+      - method: GET
+        name: brandexportgetbrandexportfile
+        description: Docusign Export a specific brand.
+        call: docusign-accountbrands.brandexportgetbrandexportfile
+        with:
+          accountId: rest.accountId
+          brandId: rest.brandId
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/v2/accounts/{accountid}/brands/{brandid}/logos/{logotype}
+      name: v2-accounts-accountid-brands-brandid-logos-logotype
+      description: REST surface for v2-accounts-accountId-brands-brandId-logos-logoType.
+      operations:
+      - method: GET
+        name: brandlogogetbrandlogo
+        description: Docusign Obtains the specified image for a brand.
+        call: docusign-accountbrands.brandlogogetbrandlogo
+        with:
+          accountId: rest.accountId
+          brandId: rest.brandId
+          logoType: rest.logoType
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: PUT
+        name: brandlogoputbrandlogo
+        description: Docusign Put one branding logo.
+        call: docusign-accountbrands.brandlogoputbrandlogo
+        with:
+          accountId: rest.accountId
+          brandId: rest.brandId
+          logoType: rest.logoType
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: DELETE
+        name: brandlogodeletebrandlogo
+        description: Docusign Delete one branding logo.
+        call: docusign-accountbrands.brandlogodeletebrandlogo
+        with:
+          accountId: rest.accountId
+          brandId: rest.brandId
+          logoType: rest.logoType
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/v2/accounts/{accountid}/brands/{brandid}/resources
+      name: v2-accounts-accountid-brands-brandid-resources
+      description: REST surface for v2-accounts-accountId-brands-brandId-resources.
+      operations:
+      - method: GET
+        name: brandresourcesgetbrandresourceslist
+        description: Docusign Returns the specified account's list of branding resources (metadata).
+        call: docusign-accountbrands.brandresourcesgetbrandresourceslist
+        with:
+          accountId: rest.accountId
+          brandId: rest.brandId
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/v2/accounts/{accountid}/brands/{brandid}/resources/{resourcecontenttype}
+      name: v2-accounts-accountid-brands-brandid-resources-resourcecontenttype
+      description: REST surface for v2-accounts-accountId-brands-brandId-resources-resourceContentType.
+      operations:
+      - method: GET
+        name: brandresourcesgetbrandresources
+        description: Docusign Returns the specified branding resource file.
+        call: docusign-accountbrands.brandresourcesgetbrandresources
+        with:
+          accountId: rest.accountId
+          brandId: rest.brandId
+          resourceContentType: rest.resourceContentType
+          langcode: rest.langcode
+          return_master: rest.return_master
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: PUT
+        name: brandresourcesputbrandresources
+        description: Docusign Uploads a branding resource file.
+        call: docusign-accountbrands.brandresourcesputbrandresources
+        with:
+          accountId: rest.accountId
+          brandId: rest.brandId
+          resourceContentType: rest.resourceContentType
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: docusign-accountbrands-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for DocuSign REST API — AccountBrands. One tool per consumed operation, routed inline through
+      this capability's consumes block.
+    tools:
+    - name: docusign-gets-list-brand-profiles
+      description: Docusign Gets a list of brand profiles.
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: docusign-accountbrands.brandsgetbrands
+      with:
+        accountId: tools.accountId
+        exclude_distributor_brand: tools.exclude_distributor_brand
+        include_logos: tools.include_logos
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: docusign-creates-one-more-brand
+      description: Docusign Creates one or more brand profile files for the account.
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: docusign-accountbrands.brandspostbrands
+      with:
+        accountId: tools.accountId
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: docusign-deletes-one-more-brand
+      description: Docusign Deletes one or more brand profiles.
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: docusign-accountbrands.brandsdeletebrands
+      with:
+        accountId: tools.accountId
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: docusign-get-information-specific-brand
+      description: Docusign Get information for a specific brand.
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: docusign-accountbrands.brandgetbrand
+      with:
+        accountId: tools.accountId
+        brandId: tools.brandId
+        include_external_references: tools.include_external_references
+        include_logos: tools.include_logos
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: docusign-updates-existing-brand
+      description: Docusign Updates an existing brand.
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: true
+      call: docusign-accountbrands.brandputbrand
+      with:
+        accountId: tools.accountId
+        brandId: tools.brandId
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: docusign-removes-brand
+      description: Docusign Removes a brand.
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: docusign-accountbrands.branddeletebrand
+      with:
+        accountId: tools.accountId
+        brandId: tools.brandId
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: docusign-export-specific-brand
+      description: Docusign Export a specific brand.
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: docusign-accountbrands.brandexportgetbrandexportfile
+      with:
+        accountId: tools.accountId
+        brandId: tools.brandId
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: docusign-obtains-specified-image-brand
+      description: Docusign Obtains the specified image for a brand.
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: docusign-accountbrands.brandlogogetbrandlogo
+      with:
+        accountId: tools.accountId
+        brandId: tools.brandId
+        logoType: tools.logoType
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: docusign-put-one-branding-logo
+      description: Docusign Put one branding logo.
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: true
+      call: docusign-accountbrands.brandlogoputbrandlogo
+      with:
+        accountId: tools.accountId
+        brandId: tools.brandId
+        logoType: tools.logoType
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: docusign-delete-one-branding-logo
+      description: Docusign Delete one branding logo.
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: docusign-accountbrands.brandlogodeletebrandlogo
+      with:
+        accountId: tools.accountId
+        brandId: tools.brandId
+        logoType: tools.logoType
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: docusign-returns-specified-account-s-list
+      description: Docusign Returns the specified account's list of branding resources (metadata).
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: docusign-accountbrands.brandresourcesgetbrandresourceslist
+      with:
+        accountId: tools.accountId
+        brandId: tools.brandId
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: docusign-returns-specified-branding-resource
+      description: Docusign Returns the specified branding resource file.
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: docusign-accountbrands.brandresourcesgetbrandresources
+      with:
+        accountId: tools.accountId
+        brandId: tools.brandId
+        resourceContentType: tools.resourceContentType
+        langcode: tools.langcode
+        return_master: tools.return_master
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: docusign-uploads-branding-resource-file
+      description: Docusign Uploads a branding resource file.
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: true
+      call: docusign-accountbrands.brandresourcesputbrandresources
+      with:
+        accountId: tools.accountId
+        brandId: tools.brandId
+        resourceContentType: tools.resourceContentType
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.

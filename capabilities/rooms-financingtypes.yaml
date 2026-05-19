@@ -1,0 +1,72 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: DocuSign Rooms API - v2 — FinancingTypes
+  description: 'DocuSign Rooms API - v2 — FinancingTypes. 1 operations. Lead operation: Docusign Gets financing types.. Self-contained
+    Naftiko capability covering one Docusign business surface.'
+  tags:
+  - Docusign
+  - FinancingTypes
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    DOCUSIGN_API_KEY: DOCUSIGN_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: rooms-financingtypes
+    baseUri: https://rooms.docusign.com/restapi
+    description: DocuSign Rooms API - v2 — FinancingTypes business capability. Self-contained, no shared references.
+    resources:
+    - name: v2-financing_types
+      path: /v2/financing_types
+      operations:
+      - name: financingtypesgetfinancingtypes
+        method: GET
+        description: Docusign Gets financing types.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    authentication:
+      type: apikey
+      key: Authorization
+      value: '{{env.DOCUSIGN_API_KEY}}'
+      placement: header
+  exposes:
+  - type: rest
+    namespace: rooms-financingtypes-rest
+    port: 8080
+    description: REST adapter for DocuSign Rooms API - v2 — FinancingTypes. One Spectral-compliant resource per consumed operation,
+      prefixed with /v1.
+    resources:
+    - path: /v1/v2/financing-types
+      name: v2-financing-types
+      description: REST surface for v2-financing_types.
+      operations:
+      - method: GET
+        name: financingtypesgetfinancingtypes
+        description: Docusign Gets financing types.
+        call: rooms-financingtypes.financingtypesgetfinancingtypes
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: rooms-financingtypes-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for DocuSign Rooms API - v2 — FinancingTypes. One tool per consumed operation, routed inline
+      through this capability's consumes block.
+    tools:
+    - name: docusign-gets-financing-types
+      description: Docusign Gets financing types.
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: rooms-financingtypes.financingtypesgetfinancingtypes
+      outputParameters:
+      - type: object
+        mapping: $.

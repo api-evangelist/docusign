@@ -1,0 +1,67 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: DocuSign REST API — Resources
+  description: 'DocuSign REST API — Resources. 1 operations. Lead operation: Docusign Lists resources for REST version specified.
+    Self-contained Naftiko capability covering one Docusign business surface.'
+  tags:
+  - Docusign
+  - Resources
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    DOCUSIGN_API_KEY: DOCUSIGN_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: docusign-resources
+    baseUri: https://www.docusign.net/restapi
+    description: DocuSign REST API — Resources business capability. Self-contained, no shared references.
+    resources:
+    - name: v2
+      path: /v2
+      operations:
+      - name: serviceinformationgetresourceinformation
+        method: GET
+        description: Docusign Lists resources for REST version specified
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+  exposes:
+  - type: rest
+    namespace: docusign-resources-rest
+    port: 8080
+    description: REST adapter for DocuSign REST API — Resources. One Spectral-compliant resource per consumed operation, prefixed
+      with /v1.
+    resources:
+    - path: /v1/v2
+      name: v2
+      description: REST surface for v2.
+      operations:
+      - method: GET
+        name: serviceinformationgetresourceinformation
+        description: Docusign Lists resources for REST version specified
+        call: docusign-resources.serviceinformationgetresourceinformation
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: docusign-resources-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for DocuSign REST API — Resources. One tool per consumed operation, routed inline through this
+      capability's consumes block.
+    tools:
+    - name: docusign-lists-resources-rest-version
+      description: Docusign Lists resources for REST version specified
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: docusign-resources.serviceinformationgetresourceinformation
+      outputParameters:
+      - type: object
+        mapping: $.

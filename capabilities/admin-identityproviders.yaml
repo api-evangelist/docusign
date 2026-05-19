@@ -1,0 +1,80 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: DocuSign Admin API — IdentityProviders
+  description: 'DocuSign Admin API — IdentityProviders. 1 operations. Lead operation: Docusign Returns the list of identity
+    providers for an organization.. Self-contained Naftiko capability covering one Docusign business surface.'
+  tags:
+  - Docusign
+  - IdentityProviders
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    DOCUSIGN_API_KEY: DOCUSIGN_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: admin-identityproviders
+    baseUri: https://api.docusign.net/Management
+    description: DocuSign Admin API — IdentityProviders business capability. Self-contained, no shared references.
+    resources:
+    - name: v2-organizations-organizationId-identity_providers
+      path: /v2/organizations/{organizationId}/identity_providers
+      operations:
+      - name: organizationgetidentityproviders
+        method: GET
+        description: Docusign Returns the list of identity providers for an organization.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: organizationId
+          in: path
+          type: string
+          description: The organization ID Guid
+          required: true
+    authentication:
+      type: bearer
+      token: '{{env.DOCUSIGN_API_KEY}}'
+  exposes:
+  - type: rest
+    namespace: admin-identityproviders-rest
+    port: 8080
+    description: REST adapter for DocuSign Admin API — IdentityProviders. One Spectral-compliant resource per consumed operation,
+      prefixed with /v1.
+    resources:
+    - path: /v1/v2/organizations/{organizationid}/identity-providers
+      name: v2-organizations-organizationid-identity-providers
+      description: REST surface for v2-organizations-organizationId-identity_providers.
+      operations:
+      - method: GET
+        name: organizationgetidentityproviders
+        description: Docusign Returns the list of identity providers for an organization.
+        call: admin-identityproviders.organizationgetidentityproviders
+        with:
+          organizationId: rest.organizationId
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: admin-identityproviders-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for DocuSign Admin API — IdentityProviders. One tool per consumed operation, routed inline through
+      this capability's consumes block.
+    tools:
+    - name: docusign-returns-list-identity-providers
+      description: Docusign Returns the list of identity providers for an organization.
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: admin-identityproviders.organizationgetidentityproviders
+      with:
+        organizationId: tools.organizationId
+      outputParameters:
+      - type: object
+        mapping: $.

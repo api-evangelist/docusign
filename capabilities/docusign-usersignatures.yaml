@@ -1,0 +1,543 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: DocuSign REST API — UserSignatures
+  description: 'DocuSign REST API — UserSignatures. 9 operations. Lead operation: Docusign Retrieves a list of user signature
+    definitions for a specified user.. Self-contained Naftiko capability covering one Docusign business surface.'
+  tags:
+  - Docusign
+  - UserSignatures
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    DOCUSIGN_API_KEY: DOCUSIGN_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: docusign-usersignatures
+    baseUri: https://www.docusign.net/restapi
+    description: DocuSign REST API — UserSignatures business capability. Self-contained, no shared references.
+    resources:
+    - name: v2-accounts-accountId-users-userId-signatures
+      path: /v2/accounts/{accountId}/users/{userId}/signatures
+      operations:
+      - name: usersignaturesgetusersignatures
+        method: GET
+        description: Docusign Retrieves a list of user signature definitions for a specified user.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: accountId
+          in: path
+          type: string
+          description: The external account number (int) or account id GUID.
+          required: true
+        - name: userId
+          in: path
+          type: string
+          description: 'The user ID of the user being accessed. Generally this is the user ID of the authenticated user, but
+            if the authenticated user is an Admin on the account, this '
+          required: true
+        - name: stamp_type
+          in: query
+          type: string
+      - name: usersignaturesputusersignature
+        method: PUT
+        description: Docusign Adds/updates a user signature.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: accountId
+          in: path
+          type: string
+          description: The external account number (int) or account id GUID.
+          required: true
+        - name: userId
+          in: path
+          type: string
+          description: 'The user ID of the user being accessed. Generally this is the user ID of the authenticated user, but
+            if the authenticated user is an Admin on the account, this '
+          required: true
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: false
+      - name: usersignaturespostusersignatures
+        method: POST
+        description: Docusign Adds user Signature and initials images to a Signature.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: accountId
+          in: path
+          type: string
+          description: The external account number (int) or account id GUID.
+          required: true
+        - name: userId
+          in: path
+          type: string
+          description: 'The user ID of the user being accessed. Generally this is the user ID of the authenticated user, but
+            if the authenticated user is an Admin on the account, this '
+          required: true
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: false
+    - name: v2-accounts-accountId-users-userId-signatures-signatureId
+      path: /v2/accounts/{accountId}/users/{userId}/signatures/{signatureId}
+      operations:
+      - name: usersignaturesgetusersignature
+        method: GET
+        description: Docusign Gets the user signature information for the specified user.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: accountId
+          in: path
+          type: string
+          description: The external account number (int) or account id GUID.
+          required: true
+        - name: signatureId
+          in: path
+          type: string
+          description: The ID of the signature being accessed.
+          required: true
+        - name: userId
+          in: path
+          type: string
+          description: 'The user ID of the user being accessed. Generally this is the user ID of the authenticated user, but
+            if the authenticated user is an Admin on the account, this '
+          required: true
+      - name: usersignaturesputusersignaturebyid
+        method: PUT
+        description: Docusign Updates the user signature for a specified user.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: accountId
+          in: path
+          type: string
+          description: The external account number (int) or account id GUID.
+          required: true
+        - name: signatureId
+          in: path
+          type: string
+          description: The ID of the signature being accessed.
+          required: true
+        - name: userId
+          in: path
+          type: string
+          description: 'The user ID of the user being accessed. Generally this is the user ID of the authenticated user, but
+            if the authenticated user is an Admin on the account, this '
+          required: true
+        - name: close_existing_signature
+          in: query
+          type: string
+          description: When set to **true**, closes the current signature.
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: false
+      - name: usersignaturesdeleteusersignature
+        method: DELETE
+        description: Docusign Removes removes signature information for the specified user.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: accountId
+          in: path
+          type: string
+          description: The external account number (int) or account id GUID.
+          required: true
+        - name: signatureId
+          in: path
+          type: string
+          description: The ID of the signature being accessed.
+          required: true
+        - name: userId
+          in: path
+          type: string
+          description: 'The user ID of the user being accessed. Generally this is the user ID of the authenticated user, but
+            if the authenticated user is an Admin on the account, this '
+          required: true
+    - name: v2-accounts-accountId-users-userId-signatures-signatureId-imageType
+      path: /v2/accounts/{accountId}/users/{userId}/signatures/{signatureId}/{imageType}
+      operations:
+      - name: usersignaturesgetusersignatureimage
+        method: GET
+        description: Docusign Retrieves the user initials image or the  user signature image for the specified user.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: accountId
+          in: path
+          type: string
+          description: The external account number (int) or account id GUID.
+          required: true
+        - name: imageType
+          in: path
+          type: string
+          description: One of **signature_image** or **initials_image**.
+          required: true
+        - name: signatureId
+          in: path
+          type: string
+          description: The ID of the signature being accessed.
+          required: true
+        - name: userId
+          in: path
+          type: string
+          description: 'The user ID of the user being accessed. Generally this is the user ID of the authenticated user, but
+            if the authenticated user is an Admin on the account, this '
+          required: true
+        - name: include_chrome
+          in: query
+          type: string
+      - name: usersignaturesputusersignatureimage
+        method: PUT
+        description: Docusign Updates the user signature image or user initials image for the specified user.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: accountId
+          in: path
+          type: string
+          description: The external account number (int) or account id GUID.
+          required: true
+        - name: imageType
+          in: path
+          type: string
+          description: One of **signature_image** or **initials_image**.
+          required: true
+        - name: signatureId
+          in: path
+          type: string
+          description: The ID of the signature being accessed.
+          required: true
+        - name: userId
+          in: path
+          type: string
+          description: 'The user ID of the user being accessed. Generally this is the user ID of the authenticated user, but
+            if the authenticated user is an Admin on the account, this '
+          required: true
+      - name: usersignaturesdeleteusersignatureimage
+        method: DELETE
+        description: Docusign Deletes the user initials image or the  user signature image for the specified user.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: accountId
+          in: path
+          type: string
+          description: The external account number (int) or account id GUID.
+          required: true
+        - name: imageType
+          in: path
+          type: string
+          description: One of **signature_image** or **initials_image**.
+          required: true
+        - name: signatureId
+          in: path
+          type: string
+          description: The ID of the signature being accessed.
+          required: true
+        - name: userId
+          in: path
+          type: string
+          description: 'The user ID of the user being accessed. Generally this is the user ID of the authenticated user, but
+            if the authenticated user is an Admin on the account, this '
+          required: true
+  exposes:
+  - type: rest
+    namespace: docusign-usersignatures-rest
+    port: 8080
+    description: REST adapter for DocuSign REST API — UserSignatures. One Spectral-compliant resource per consumed operation,
+      prefixed with /v1.
+    resources:
+    - path: /v1/v2/accounts/{accountid}/users/{userid}/signatures
+      name: v2-accounts-accountid-users-userid-signatures
+      description: REST surface for v2-accounts-accountId-users-userId-signatures.
+      operations:
+      - method: GET
+        name: usersignaturesgetusersignatures
+        description: Docusign Retrieves a list of user signature definitions for a specified user.
+        call: docusign-usersignatures.usersignaturesgetusersignatures
+        with:
+          accountId: rest.accountId
+          userId: rest.userId
+          stamp_type: rest.stamp_type
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: PUT
+        name: usersignaturesputusersignature
+        description: Docusign Adds/updates a user signature.
+        call: docusign-usersignatures.usersignaturesputusersignature
+        with:
+          accountId: rest.accountId
+          userId: rest.userId
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: POST
+        name: usersignaturespostusersignatures
+        description: Docusign Adds user Signature and initials images to a Signature.
+        call: docusign-usersignatures.usersignaturespostusersignatures
+        with:
+          accountId: rest.accountId
+          userId: rest.userId
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/v2/accounts/{accountid}/users/{userid}/signatures/{signatureid}
+      name: v2-accounts-accountid-users-userid-signatures-signatureid
+      description: REST surface for v2-accounts-accountId-users-userId-signatures-signatureId.
+      operations:
+      - method: GET
+        name: usersignaturesgetusersignature
+        description: Docusign Gets the user signature information for the specified user.
+        call: docusign-usersignatures.usersignaturesgetusersignature
+        with:
+          accountId: rest.accountId
+          signatureId: rest.signatureId
+          userId: rest.userId
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: PUT
+        name: usersignaturesputusersignaturebyid
+        description: Docusign Updates the user signature for a specified user.
+        call: docusign-usersignatures.usersignaturesputusersignaturebyid
+        with:
+          accountId: rest.accountId
+          signatureId: rest.signatureId
+          userId: rest.userId
+          close_existing_signature: rest.close_existing_signature
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: DELETE
+        name: usersignaturesdeleteusersignature
+        description: Docusign Removes removes signature information for the specified user.
+        call: docusign-usersignatures.usersignaturesdeleteusersignature
+        with:
+          accountId: rest.accountId
+          signatureId: rest.signatureId
+          userId: rest.userId
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/v2/accounts/{accountid}/users/{userid}/signatures/{signatureid}/{imagetype}
+      name: v2-accounts-accountid-users-userid-signatures-signatureid-imagetype
+      description: REST surface for v2-accounts-accountId-users-userId-signatures-signatureId-imageType.
+      operations:
+      - method: GET
+        name: usersignaturesgetusersignatureimage
+        description: Docusign Retrieves the user initials image or the  user signature image for the specified user.
+        call: docusign-usersignatures.usersignaturesgetusersignatureimage
+        with:
+          accountId: rest.accountId
+          imageType: rest.imageType
+          signatureId: rest.signatureId
+          userId: rest.userId
+          include_chrome: rest.include_chrome
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: PUT
+        name: usersignaturesputusersignatureimage
+        description: Docusign Updates the user signature image or user initials image for the specified user.
+        call: docusign-usersignatures.usersignaturesputusersignatureimage
+        with:
+          accountId: rest.accountId
+          imageType: rest.imageType
+          signatureId: rest.signatureId
+          userId: rest.userId
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: DELETE
+        name: usersignaturesdeleteusersignatureimage
+        description: Docusign Deletes the user initials image or the  user signature image for the specified user.
+        call: docusign-usersignatures.usersignaturesdeleteusersignatureimage
+        with:
+          accountId: rest.accountId
+          imageType: rest.imageType
+          signatureId: rest.signatureId
+          userId: rest.userId
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: docusign-usersignatures-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for DocuSign REST API — UserSignatures. One tool per consumed operation, routed inline through
+      this capability's consumes block.
+    tools:
+    - name: docusign-retrieves-list-user-signature
+      description: Docusign Retrieves a list of user signature definitions for a specified user.
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: docusign-usersignatures.usersignaturesgetusersignatures
+      with:
+        accountId: tools.accountId
+        userId: tools.userId
+        stamp_type: tools.stamp_type
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: docusign-adds-updates-user-signature
+      description: Docusign Adds/updates a user signature.
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: true
+      call: docusign-usersignatures.usersignaturesputusersignature
+      with:
+        accountId: tools.accountId
+        userId: tools.userId
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: docusign-adds-user-signature-and
+      description: Docusign Adds user Signature and initials images to a Signature.
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: docusign-usersignatures.usersignaturespostusersignatures
+      with:
+        accountId: tools.accountId
+        userId: tools.userId
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: docusign-gets-user-signature-information
+      description: Docusign Gets the user signature information for the specified user.
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: docusign-usersignatures.usersignaturesgetusersignature
+      with:
+        accountId: tools.accountId
+        signatureId: tools.signatureId
+        userId: tools.userId
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: docusign-updates-user-signature-specified
+      description: Docusign Updates the user signature for a specified user.
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: true
+      call: docusign-usersignatures.usersignaturesputusersignaturebyid
+      with:
+        accountId: tools.accountId
+        signatureId: tools.signatureId
+        userId: tools.userId
+        close_existing_signature: tools.close_existing_signature
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: docusign-removes-removes-signature-information
+      description: Docusign Removes removes signature information for the specified user.
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: docusign-usersignatures.usersignaturesdeleteusersignature
+      with:
+        accountId: tools.accountId
+        signatureId: tools.signatureId
+        userId: tools.userId
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: docusign-retrieves-user-initials-image
+      description: Docusign Retrieves the user initials image or the  user signature image for the specified user.
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: docusign-usersignatures.usersignaturesgetusersignatureimage
+      with:
+        accountId: tools.accountId
+        imageType: tools.imageType
+        signatureId: tools.signatureId
+        userId: tools.userId
+        include_chrome: tools.include_chrome
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: docusign-updates-user-signature-image
+      description: Docusign Updates the user signature image or user initials image for the specified user.
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: true
+      call: docusign-usersignatures.usersignaturesputusersignatureimage
+      with:
+        accountId: tools.accountId
+        imageType: tools.imageType
+        signatureId: tools.signatureId
+        userId: tools.userId
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: docusign-deletes-user-initials-image
+      description: Docusign Deletes the user initials image or the  user signature image for the specified user.
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: docusign-usersignatures.usersignaturesdeleteusersignatureimage
+      with:
+        accountId: tools.accountId
+        imageType: tools.imageType
+        signatureId: tools.signatureId
+        userId: tools.userId
+      outputParameters:
+      - type: object
+        mapping: $.

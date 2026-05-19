@@ -1,0 +1,77 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: DocuSign REST API — PaymentGatewayAccounts
+  description: 'DocuSign REST API — PaymentGatewayAccounts. 1 operations. Lead operation: Docusign List payment gateway account
+    information. Self-contained Naftiko capability covering one Docusign business surface.'
+  tags:
+  - Docusign
+  - PaymentGatewayAccounts
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    DOCUSIGN_API_KEY: DOCUSIGN_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: docusign-paymentgatewayaccounts
+    baseUri: https://www.docusign.net/restapi
+    description: DocuSign REST API — PaymentGatewayAccounts business capability. Self-contained, no shared references.
+    resources:
+    - name: v2-accounts-accountId-payment_gateway_accounts
+      path: /v2/accounts/{accountId}/payment_gateway_accounts
+      operations:
+      - name: paymentgatewayaccountsgetallpaymentgatewayaccounts
+        method: GET
+        description: Docusign List payment gateway account information
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: accountId
+          in: path
+          type: string
+          description: The external account number (int) or account id GUID.
+          required: true
+  exposes:
+  - type: rest
+    namespace: docusign-paymentgatewayaccounts-rest
+    port: 8080
+    description: REST adapter for DocuSign REST API — PaymentGatewayAccounts. One Spectral-compliant resource per consumed
+      operation, prefixed with /v1.
+    resources:
+    - path: /v1/v2/accounts/{accountid}/payment-gateway-accounts
+      name: v2-accounts-accountid-payment-gateway-accounts
+      description: REST surface for v2-accounts-accountId-payment_gateway_accounts.
+      operations:
+      - method: GET
+        name: paymentgatewayaccountsgetallpaymentgatewayaccounts
+        description: Docusign List payment gateway account information
+        call: docusign-paymentgatewayaccounts.paymentgatewayaccountsgetallpaymentgatewayaccounts
+        with:
+          accountId: rest.accountId
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: docusign-paymentgatewayaccounts-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for DocuSign REST API — PaymentGatewayAccounts. One tool per consumed operation, routed inline
+      through this capability's consumes block.
+    tools:
+    - name: docusign-list-payment-gateway-account
+      description: Docusign List payment gateway account information
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: docusign-paymentgatewayaccounts.paymentgatewayaccountsgetallpaymentgatewayaccounts
+      with:
+        accountId: tools.accountId
+      outputParameters:
+      - type: object
+        mapping: $.

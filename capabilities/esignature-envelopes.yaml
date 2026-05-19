@@ -1,0 +1,267 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: DocuSign eSignature REST API — Envelopes
+  description: 'DocuSign eSignature REST API — Envelopes. 4 operations. Lead operation: Docusign Create an Envelope. Self-contained
+    Naftiko capability covering one Docusign business surface.'
+  tags:
+  - Docusign
+  - Envelopes
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    DOCUSIGN_API_KEY: DOCUSIGN_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: esignature-envelopes
+    baseUri: https://demo.docusign.net/restapi/v2.1
+    description: DocuSign eSignature REST API — Envelopes business capability. Self-contained, no shared references.
+    resources:
+    - name: accounts-accountId-envelopes
+      path: /accounts/{accountId}/envelopes
+      operations:
+      - name: envelopescreateenvelope
+        method: POST
+        description: Docusign Create an Envelope
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+      - name: envelopeslistenvelopes
+        method: GET
+        description: Docusign List Envelopes
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: from_date
+          in: query
+          type: string
+          description: Start date for the envelope search. Only envelopes created on or after this date are returned. Format
+            is ISO 8601.
+        - name: to_date
+          in: query
+          type: string
+          description: End date for the envelope search. Only envelopes created before this date are returned. Format is ISO
+            8601.
+        - name: status
+          in: query
+          type: string
+          description: Filter by envelope status. Valid values include created, sent, delivered, signed, completed, declined,
+            voided, deleted.
+        - name: from_to_status
+          in: query
+          type: string
+          description: The status value checked for in the from_date and to_date range. Default is changed.
+        - name: count
+          in: query
+          type: integer
+          description: Maximum number of envelopes to return. Default is 100.
+        - name: start_position
+          in: query
+          type: integer
+          description: Starting index position for the result set.
+        - name: search_text
+          in: query
+          type: string
+          description: Free text search across envelope metadata including recipient names, email addresses, and custom fields.
+        - name: order
+          in: query
+          type: string
+          description: Sort order for results. Valid values are asc and desc.
+        - name: order_by
+          in: query
+          type: string
+          description: The envelope property to sort by. Valid values include created, completed, last_modified, sent, status_changed.
+        - name: folder_ids
+          in: query
+          type: string
+          description: Comma-separated list of folder IDs to search within.
+        - name: include
+          in: query
+          type: string
+          description: Comma-separated list of additional information to include. Valid values include custom_fields, documents,
+            attachments, extensions, folders, recipients, powerfor
+    - name: accounts-accountId-envelopes-envelopeId
+      path: /accounts/{accountId}/envelopes/{envelopeId}
+      operations:
+      - name: envelopesgetenvelope
+        method: GET
+        description: Docusign Get an Envelope
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: include
+          in: query
+          type: string
+          description: Comma-separated list of additional information to include. Valid values include custom_fields, documents,
+            attachments, extensions, folders, recipients, powerfor
+        - name: advanced_update
+          in: query
+          type: string
+          description: When true, allows sender to update an in-process envelope.
+      - name: envelopesupdateenvelope
+        method: PUT
+        description: Docusign Update an Envelope
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: resend_envelope
+          in: query
+          type: string
+          description: When true, resends the envelope to all recipients who have not yet completed their actions.
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    authentication:
+      type: bearer
+      token: '{{env.DOCUSIGN_API_KEY}}'
+  exposes:
+  - type: rest
+    namespace: esignature-envelopes-rest
+    port: 8080
+    description: REST adapter for DocuSign eSignature REST API — Envelopes. One Spectral-compliant resource per consumed operation,
+      prefixed with /v1.
+    resources:
+    - path: /v1/accounts/{accountid}/envelopes
+      name: accounts-accountid-envelopes
+      description: REST surface for accounts-accountId-envelopes.
+      operations:
+      - method: POST
+        name: envelopescreateenvelope
+        description: Docusign Create an Envelope
+        call: esignature-envelopes.envelopescreateenvelope
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: GET
+        name: envelopeslistenvelopes
+        description: Docusign List Envelopes
+        call: esignature-envelopes.envelopeslistenvelopes
+        with:
+          from_date: rest.from_date
+          to_date: rest.to_date
+          status: rest.status
+          from_to_status: rest.from_to_status
+          count: rest.count
+          start_position: rest.start_position
+          search_text: rest.search_text
+          order: rest.order
+          order_by: rest.order_by
+          folder_ids: rest.folder_ids
+          include: rest.include
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/accounts/{accountid}/envelopes/{envelopeid}
+      name: accounts-accountid-envelopes-envelopeid
+      description: REST surface for accounts-accountId-envelopes-envelopeId.
+      operations:
+      - method: GET
+        name: envelopesgetenvelope
+        description: Docusign Get an Envelope
+        call: esignature-envelopes.envelopesgetenvelope
+        with:
+          include: rest.include
+          advanced_update: rest.advanced_update
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: PUT
+        name: envelopesupdateenvelope
+        description: Docusign Update an Envelope
+        call: esignature-envelopes.envelopesupdateenvelope
+        with:
+          resend_envelope: rest.resend_envelope
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: esignature-envelopes-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for DocuSign eSignature REST API — Envelopes. One tool per consumed operation, routed inline
+      through this capability's consumes block.
+    tools:
+    - name: docusign-create-envelope
+      description: Docusign Create an Envelope
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: esignature-envelopes.envelopescreateenvelope
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: docusign-list-envelopes
+      description: Docusign List Envelopes
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: esignature-envelopes.envelopeslistenvelopes
+      with:
+        from_date: tools.from_date
+        to_date: tools.to_date
+        status: tools.status
+        from_to_status: tools.from_to_status
+        count: tools.count
+        start_position: tools.start_position
+        search_text: tools.search_text
+        order: tools.order
+        order_by: tools.order_by
+        folder_ids: tools.folder_ids
+        include: tools.include
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: docusign-get-envelope
+      description: Docusign Get an Envelope
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: esignature-envelopes.envelopesgetenvelope
+      with:
+        include: tools.include
+        advanced_update: tools.advanced_update
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: docusign-update-envelope
+      description: Docusign Update an Envelope
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: true
+      call: esignature-envelopes.envelopesupdateenvelope
+      with:
+        resend_envelope: tools.resend_envelope
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.

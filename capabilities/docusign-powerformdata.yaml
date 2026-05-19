@@ -1,0 +1,102 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: DocuSign REST API — PowerFormData
+  description: 'DocuSign REST API — PowerFormData. 1 operations. Lead operation: Docusign Returns the form data associated
+    with the usage of a PowerForm.. Self-contained Naftiko capability covering one Docusign business surface.'
+  tags:
+  - Docusign
+  - PowerFormData
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    DOCUSIGN_API_KEY: DOCUSIGN_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: docusign-powerformdata
+    baseUri: https://www.docusign.net/restapi
+    description: DocuSign REST API — PowerFormData business capability. Self-contained, no shared references.
+    resources:
+    - name: v2-accounts-accountId-powerforms-powerFormId-form_data
+      path: /v2/accounts/{accountId}/powerforms/{powerFormId}/form_data
+      operations:
+      - name: powerformsgetpowerformformdata
+        method: GET
+        description: Docusign Returns the form data associated with the usage of a PowerForm.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: accountId
+          in: path
+          type: string
+          description: The external account number (int) or account id GUID.
+          required: true
+        - name: powerFormId
+          in: path
+          type: string
+          required: true
+        - name: data_layout
+          in: query
+          type: string
+        - name: from_date
+          in: query
+          type: string
+          description: Start of the search date range. Only returns templates created on or after this date/time. If no value
+            is specified, there is no limit on the earliest date crea
+        - name: to_date
+          in: query
+          type: string
+          description: End of the search date range. Only returns templates created up to this date/time. If no value is provided,
+            this defaults to the current date.
+  exposes:
+  - type: rest
+    namespace: docusign-powerformdata-rest
+    port: 8080
+    description: REST adapter for DocuSign REST API — PowerFormData. One Spectral-compliant resource per consumed operation,
+      prefixed with /v1.
+    resources:
+    - path: /v1/v2/accounts/{accountid}/powerforms/{powerformid}/form-data
+      name: v2-accounts-accountid-powerforms-powerformid-form-data
+      description: REST surface for v2-accounts-accountId-powerforms-powerFormId-form_data.
+      operations:
+      - method: GET
+        name: powerformsgetpowerformformdata
+        description: Docusign Returns the form data associated with the usage of a PowerForm.
+        call: docusign-powerformdata.powerformsgetpowerformformdata
+        with:
+          accountId: rest.accountId
+          powerFormId: rest.powerFormId
+          data_layout: rest.data_layout
+          from_date: rest.from_date
+          to_date: rest.to_date
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: docusign-powerformdata-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for DocuSign REST API — PowerFormData. One tool per consumed operation, routed inline through
+      this capability's consumes block.
+    tools:
+    - name: docusign-returns-form-data-associated
+      description: Docusign Returns the form data associated with the usage of a PowerForm.
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: docusign-powerformdata.powerformsgetpowerformformdata
+      with:
+        accountId: tools.accountId
+        powerFormId: tools.powerFormId
+        data_layout: tools.data_layout
+        from_date: tools.from_date
+        to_date: tools.to_date
+      outputParameters:
+      - type: object
+        mapping: $.

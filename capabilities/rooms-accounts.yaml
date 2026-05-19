@@ -1,0 +1,82 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: DocuSign Rooms API - v2 — Accounts
+  description: 'DocuSign Rooms API - v2 — Accounts. 1 operations. Lead operation: Docusign Gets account information.. Self-contained
+    Naftiko capability covering one Docusign business surface.'
+  tags:
+  - Docusign
+  - Accounts
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    DOCUSIGN_API_KEY: DOCUSIGN_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: rooms-accounts
+    baseUri: https://rooms.docusign.com/restapi
+    description: DocuSign Rooms API - v2 — Accounts business capability. Self-contained, no shared references.
+    resources:
+    - name: v2-accounts-accountId
+      path: /v2/accounts/{accountId}
+      operations:
+      - name: accountsgetaccountinformation
+        method: GET
+        description: Docusign Gets account information.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: accountId
+          in: path
+          type: string
+          description: The globally unique identifier (GUID) for the account.
+          required: true
+    authentication:
+      type: apikey
+      key: Authorization
+      value: '{{env.DOCUSIGN_API_KEY}}'
+      placement: header
+  exposes:
+  - type: rest
+    namespace: rooms-accounts-rest
+    port: 8080
+    description: REST adapter for DocuSign Rooms API - v2 — Accounts. One Spectral-compliant resource per consumed operation,
+      prefixed with /v1.
+    resources:
+    - path: /v1/v2/accounts/{accountid}
+      name: v2-accounts-accountid
+      description: REST surface for v2-accounts-accountId.
+      operations:
+      - method: GET
+        name: accountsgetaccountinformation
+        description: Docusign Gets account information.
+        call: rooms-accounts.accountsgetaccountinformation
+        with:
+          accountId: rest.accountId
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: rooms-accounts-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for DocuSign Rooms API - v2 — Accounts. One tool per consumed operation, routed inline through
+      this capability's consumes block.
+    tools:
+    - name: docusign-gets-account-information
+      description: Docusign Gets account information.
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: rooms-accounts.accountsgetaccountinformation
+      with:
+        accountId: tools.accountId
+      outputParameters:
+      - type: object
+        mapping: $.

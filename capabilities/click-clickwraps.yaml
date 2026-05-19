@@ -1,0 +1,1217 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: DocuSign Click API — ClickWraps
+  description: 'DocuSign Click API — ClickWraps. 21 operations. Lead operation: Docusign Gets the current version and other
+    information about the Click API.. Self-contained Naftiko capability covering one Docusign business surface.'
+  tags:
+  - Docusign
+  - ClickWraps
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    DOCUSIGN_API_KEY: DOCUSIGN_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: click-clickwraps
+    baseUri: https://www.docusign.net/clickapi
+    description: DocuSign Click API — ClickWraps business capability. Self-contained, no shared references.
+    resources:
+    - name: service_information
+      path: /service_information
+      operations:
+      - name: serviceinformationgetserviceinformation
+        method: GET
+        description: Docusign Gets the current version and other information about the Click API.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: v1-accounts-accountId-clickwraps
+      path: /v1/accounts/{accountId}/clickwraps
+      operations:
+      - name: clickwrapsgetclickwraps
+        method: GET
+        description: Docusign Gets all the clickwraps for an account.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: accountId
+          in: path
+          type: string
+          description: A GUID that identifies your account.
+          required: true
+        - name: from_date
+          in: query
+          type: string
+          description: Optional. The earliest date to return agreements from.
+        - name: ownerUserId
+          in: query
+          type: string
+          description: Optional. The user ID of the owner.
+        - name: page_number
+          in: query
+          type: string
+          description: Optional. The page number to return.
+        - name: shared
+          in: query
+          type: string
+        - name: status
+          in: query
+          type: string
+          description: 'Optional. The status of the clickwraps to filter by. One of:'
+        - name: to_date
+          in: query
+          type: string
+          description: Optional. The latest date to return agreements from.
+      - name: clickwrapspostclickwrap
+        method: POST
+        description: Docusign Creates a clickwrap for an account.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: accountId
+          in: path
+          type: string
+          description: A GUID that identifies your account.
+          required: true
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: false
+      - name: clickwrapsdeleteclickwraps
+        method: DELETE
+        description: Docusign Deletes clickwraps for an account.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: accountId
+          in: path
+          type: string
+          description: A GUID that identifies your account.
+          required: true
+        - name: clickwrapIds
+          in: query
+          type: string
+          description: A comma-separated list of clickwrap IDs to delete.
+    - name: v1-accounts-accountId-clickwraps-clickwrapId
+      path: /v1/accounts/{accountId}/clickwraps/{clickwrapId}
+      operations:
+      - name: clickwrapsgetclickwrap
+        method: GET
+        description: Docusign Gets a  single clickwrap object.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: accountId
+          in: path
+          type: string
+          description: A GUID that identifies your account.
+          required: true
+        - name: clickwrapId
+          in: path
+          type: string
+          description: The ID of the clickwrap.
+          required: true
+      - name: clickwrapsputclickwrap
+        method: PUT
+        description: Docusign Updates the user ID of a clickwrap.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: accountId
+          in: path
+          type: string
+          description: A GUID that identifies your account.
+          required: true
+        - name: clickwrapId
+          in: path
+          type: string
+          description: The ID of the clickwrap.
+          required: true
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: false
+      - name: clickwrapsdeleteclickwrap
+        method: DELETE
+        description: Docusign Deletes a clickwrap and all of its versions.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: accountId
+          in: path
+          type: string
+          description: A GUID that identifies your account.
+          required: true
+        - name: clickwrapId
+          in: path
+          type: string
+          description: The ID of the clickwrap.
+          required: true
+        - name: versions
+          in: query
+          type: string
+          description: A comma-separated list of versions to delete.
+    - name: v1-accounts-accountId-clickwraps-clickwrapId-agreements
+      path: /v1/accounts/{accountId}/clickwraps/{clickwrapId}/agreements
+      operations:
+      - name: useragreementsposthasagreed
+        method: POST
+        description: Docusign Checks if a user has agreed to a clickwrap.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: accountId
+          in: path
+          type: string
+          description: A GUID that identifies your account.
+          required: true
+        - name: clickwrapId
+          in: path
+          type: string
+          description: The ID of the clickwrap.
+          required: true
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: false
+    - name: v1-accounts-accountId-clickwraps-clickwrapId-agreements-agreementId
+      path: /v1/accounts/{accountId}/clickwraps/{clickwrapId}/agreements/{agreementId}
+      operations:
+      - name: useragreementsgetagreement
+        method: GET
+        description: Docusign Gets a specific agreement for a specified clickwrap.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: accountId
+          in: path
+          type: string
+          description: A GUID that identifies your account.
+          required: true
+        - name: agreementId
+          in: path
+          type: string
+          description: The agreement ID.
+          required: true
+        - name: clickwrapId
+          in: path
+          type: string
+          description: The ID of the clickwrap.
+          required: true
+    - name: v1-accounts-accountId-clickwraps-clickwrapId-agreements-agreementId-download
+      path: /v1/accounts/{accountId}/clickwraps/{clickwrapId}/agreements/{agreementId}/download
+      operations:
+      - name: useragreementsgetagreementpdf
+        method: GET
+        description: Docusign Gets the completed user agreement PDF.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: accountId
+          in: path
+          type: string
+          description: A GUID that identifies your account.
+          required: true
+        - name: agreementId
+          in: path
+          type: string
+          description: The agreement ID.
+          required: true
+        - name: clickwrapId
+          in: path
+          type: string
+          description: The ID of the clickwrap.
+          required: true
+    - name: v1-accounts-accountId-clickwraps-clickwrapId-users
+      path: /v1/accounts/{accountId}/clickwraps/{clickwrapId}/users
+      operations:
+      - name: useragreementsgetclickwrapagreements
+        method: GET
+        description: Docusign Get user agreements
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: accountId
+          in: path
+          type: string
+          description: A GUID that identifies your account.
+          required: true
+        - name: clickwrapId
+          in: path
+          type: string
+          description: The ID of the clickwrap.
+          required: true
+        - name: client_user_id
+          in: query
+          type: string
+          description: The client ID.
+        - name: from_date
+          in: query
+          type: string
+          description: Optional. The earliest date to return agreements from.
+        - name: page_number
+          in: query
+          type: string
+          description: Optional. The page number to return.
+        - name: status
+          in: query
+          type: string
+          description: Optional. The status of the clickwraps to return.
+        - name: to_date
+          in: query
+          type: string
+          description: Optional. The latest date to return agreements from.
+    - name: v1-accounts-accountId-clickwraps-clickwrapId-versions
+      path: /v1/accounts/{accountId}/clickwraps/{clickwrapId}/versions
+      operations:
+      - name: clickwrapversionspostclickwrapversion
+        method: POST
+        description: Docusign Creates a new clickwrap version.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: accountId
+          in: path
+          type: string
+          description: A GUID that identifies your account.
+          required: true
+        - name: clickwrapId
+          in: path
+          type: string
+          description: The ID of the clickwrap.
+          required: true
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: false
+      - name: clickwrapversionsdeleteclickwrapversions
+        method: DELETE
+        description: Docusign Deletes the versions of a clickwrap.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: accountId
+          in: path
+          type: string
+          description: A GUID that identifies your account.
+          required: true
+        - name: clickwrapId
+          in: path
+          type: string
+          description: The ID of the clickwrap.
+          required: true
+        - name: clickwrapVersionIds
+          in: query
+          type: string
+          description: A comma-separated list of clickwrap version IDs to delete.
+    - name: v1-accounts-accountId-clickwraps-clickwrapId-versions-versionId
+      path: /v1/accounts/{accountId}/clickwraps/{clickwrapId}/versions/{versionId}
+      operations:
+      - name: clickwrapversionsgetclickwrapversion
+        method: GET
+        description: Docusign Gets a specific version from a clickwrap.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: accountId
+          in: path
+          type: string
+          description: A GUID that identifies your account.
+          required: true
+        - name: clickwrapId
+          in: path
+          type: string
+          description: The ID of the clickwrap.
+          required: true
+        - name: versionId
+          in: path
+          type: string
+          description: The ID of the version.
+          required: true
+      - name: clickwrapversionsputclickwrapversion
+        method: PUT
+        description: Docusign Updates a specific version of a clickwrap.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: accountId
+          in: path
+          type: string
+          description: A GUID that identifies your account.
+          required: true
+        - name: clickwrapId
+          in: path
+          type: string
+          description: The ID of the clickwrap.
+          required: true
+        - name: versionId
+          in: path
+          type: string
+          description: The ID of the version.
+          required: true
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: false
+      - name: clickwrapversionsdeleteclickwrapversion
+        method: DELETE
+        description: Docusign Deletes a specific version of a clickwrap.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: accountId
+          in: path
+          type: string
+          description: A GUID that identifies your account.
+          required: true
+        - name: clickwrapId
+          in: path
+          type: string
+          description: The ID of the clickwrap.
+          required: true
+        - name: versionId
+          in: path
+          type: string
+          description: The ID of the version.
+          required: true
+    - name: v1-accounts-accountId-clickwraps-clickwrapId-versions-versionId-users
+      path: /v1/accounts/{accountId}/clickwraps/{clickwrapId}/versions/{versionId}/users
+      operations:
+      - name: useragreementsgetclickwrapversionagreements
+        method: GET
+        description: Docusign Gets the agreement responses for a clickwrap version.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: accountId
+          in: path
+          type: string
+          description: A GUID that identifies your account.
+          required: true
+        - name: clickwrapId
+          in: path
+          type: string
+          description: The ID of the clickwrap.
+          required: true
+        - name: versionId
+          in: path
+          type: string
+          description: The ID of the version.
+          required: true
+        - name: client_user_id
+          in: query
+          type: string
+        - name: from_date
+          in: query
+          type: string
+          description: Optional. The earliest date to return agreements from.
+        - name: page_number
+          in: query
+          type: string
+          description: Optional. The page number to return.
+        - name: status
+          in: query
+          type: string
+          description: 'Clickwrap status. Possible values:'
+        - name: to_date
+          in: query
+          type: string
+          description: Optional. The latest date to return agreements from.
+    - name: v1-accounts-accountId-clickwraps-clickwrapId-versions-versionNumber
+      path: /v1/accounts/{accountId}/clickwraps/{clickwrapId}/versions/{versionNumber}
+      operations:
+      - name: clickwrapversionsgetclickwrapversionbynumber
+        method: GET
+        description: Docusign Gets a clickwrap version by specifying its version number.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: accountId
+          in: path
+          type: string
+          description: A GUID that identifies your account.
+          required: true
+        - name: clickwrapId
+          in: path
+          type: string
+          description: The ID of the clickwrap.
+          required: true
+        - name: versionNumber
+          in: path
+          type: string
+          description: Version of the clickwrap.
+          required: true
+      - name: clickwrapversionsputclickwrapversionbynumber
+        method: PUT
+        description: Docusign Updates a clickwrap version by specifying its version number.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: accountId
+          in: path
+          type: string
+          description: A GUID that identifies your account.
+          required: true
+        - name: clickwrapId
+          in: path
+          type: string
+          description: The ID of the clickwrap.
+          required: true
+        - name: versionNumber
+          in: path
+          type: string
+          description: Version of the clickwrap.
+          required: true
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: false
+      - name: clickwrapversionsdeleteclickwrapversionbynumber
+        method: DELETE
+        description: Docusign Deletes a clickwrap version from a clickwrap by specifying its version number.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: accountId
+          in: path
+          type: string
+          description: A GUID that identifies your account.
+          required: true
+        - name: clickwrapId
+          in: path
+          type: string
+          description: The ID of the clickwrap.
+          required: true
+        - name: versionNumber
+          in: path
+          type: string
+          description: Version of the clickwrap.
+          required: true
+    - name: v1-accounts-accountId-clickwraps-clickwrapId-versions-versionNumber-users
+      path: /v1/accounts/{accountId}/clickwraps/{clickwrapId}/versions/{versionNumber}/users
+      operations:
+      - name: useragreementsgetclickwrapversionagreementsbynumber
+        method: GET
+        description: Docusign Gets the agreement responses for a clickwrap version
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: accountId
+          in: path
+          type: string
+          description: A GUID that identifies your account.
+          required: true
+        - name: clickwrapId
+          in: path
+          type: string
+          description: The ID of the clickwrap.
+          required: true
+        - name: versionNumber
+          in: path
+          type: string
+          description: Version of the clickwrap.
+          required: true
+        - name: client_user_id
+          in: query
+          type: string
+          description: The client user ID.
+        - name: from_date
+          in: query
+          type: string
+          description: Optional. The earliest date to return agreements from.
+        - name: page_number
+          in: query
+          type: string
+          description: Optional. The page number to return.
+        - name: status
+          in: query
+          type: string
+          description: 'Clickwrap status. Possible values:'
+        - name: to_date
+          in: query
+          type: string
+          description: Optional. The latest date to return agreements from.
+  exposes:
+  - type: rest
+    namespace: click-clickwraps-rest
+    port: 8080
+    description: REST adapter for DocuSign Click API — ClickWraps. One Spectral-compliant resource per consumed operation,
+      prefixed with /v1.
+    resources:
+    - path: /v1/service-information
+      name: service-information
+      description: REST surface for service_information.
+      operations:
+      - method: GET
+        name: serviceinformationgetserviceinformation
+        description: Docusign Gets the current version and other information about the Click API.
+        call: click-clickwraps.serviceinformationgetserviceinformation
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/v1/accounts/{accountid}/clickwraps
+      name: v1-accounts-accountid-clickwraps
+      description: REST surface for v1-accounts-accountId-clickwraps.
+      operations:
+      - method: GET
+        name: clickwrapsgetclickwraps
+        description: Docusign Gets all the clickwraps for an account.
+        call: click-clickwraps.clickwrapsgetclickwraps
+        with:
+          accountId: rest.accountId
+          from_date: rest.from_date
+          ownerUserId: rest.ownerUserId
+          page_number: rest.page_number
+          shared: rest.shared
+          status: rest.status
+          to_date: rest.to_date
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: POST
+        name: clickwrapspostclickwrap
+        description: Docusign Creates a clickwrap for an account.
+        call: click-clickwraps.clickwrapspostclickwrap
+        with:
+          accountId: rest.accountId
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: DELETE
+        name: clickwrapsdeleteclickwraps
+        description: Docusign Deletes clickwraps for an account.
+        call: click-clickwraps.clickwrapsdeleteclickwraps
+        with:
+          accountId: rest.accountId
+          clickwrapIds: rest.clickwrapIds
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/v1/accounts/{accountid}/clickwraps/{clickwrapid}
+      name: v1-accounts-accountid-clickwraps-clickwrapid
+      description: REST surface for v1-accounts-accountId-clickwraps-clickwrapId.
+      operations:
+      - method: GET
+        name: clickwrapsgetclickwrap
+        description: Docusign Gets a  single clickwrap object.
+        call: click-clickwraps.clickwrapsgetclickwrap
+        with:
+          accountId: rest.accountId
+          clickwrapId: rest.clickwrapId
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: PUT
+        name: clickwrapsputclickwrap
+        description: Docusign Updates the user ID of a clickwrap.
+        call: click-clickwraps.clickwrapsputclickwrap
+        with:
+          accountId: rest.accountId
+          clickwrapId: rest.clickwrapId
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: DELETE
+        name: clickwrapsdeleteclickwrap
+        description: Docusign Deletes a clickwrap and all of its versions.
+        call: click-clickwraps.clickwrapsdeleteclickwrap
+        with:
+          accountId: rest.accountId
+          clickwrapId: rest.clickwrapId
+          versions: rest.versions
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/v1/accounts/{accountid}/clickwraps/{clickwrapid}/agreements
+      name: v1-accounts-accountid-clickwraps-clickwrapid-agreements
+      description: REST surface for v1-accounts-accountId-clickwraps-clickwrapId-agreements.
+      operations:
+      - method: POST
+        name: useragreementsposthasagreed
+        description: Docusign Checks if a user has agreed to a clickwrap.
+        call: click-clickwraps.useragreementsposthasagreed
+        with:
+          accountId: rest.accountId
+          clickwrapId: rest.clickwrapId
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/v1/accounts/{accountid}/clickwraps/{clickwrapid}/agreements/{agreementid}
+      name: v1-accounts-accountid-clickwraps-clickwrapid-agreements-agreementid
+      description: REST surface for v1-accounts-accountId-clickwraps-clickwrapId-agreements-agreementId.
+      operations:
+      - method: GET
+        name: useragreementsgetagreement
+        description: Docusign Gets a specific agreement for a specified clickwrap.
+        call: click-clickwraps.useragreementsgetagreement
+        with:
+          accountId: rest.accountId
+          agreementId: rest.agreementId
+          clickwrapId: rest.clickwrapId
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/v1/accounts/{accountid}/clickwraps/{clickwrapid}/agreements/{agreementid}/download
+      name: v1-accounts-accountid-clickwraps-clickwrapid-agreements-agreementid-download
+      description: REST surface for v1-accounts-accountId-clickwraps-clickwrapId-agreements-agreementId-download.
+      operations:
+      - method: GET
+        name: useragreementsgetagreementpdf
+        description: Docusign Gets the completed user agreement PDF.
+        call: click-clickwraps.useragreementsgetagreementpdf
+        with:
+          accountId: rest.accountId
+          agreementId: rest.agreementId
+          clickwrapId: rest.clickwrapId
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/v1/accounts/{accountid}/clickwraps/{clickwrapid}/users
+      name: v1-accounts-accountid-clickwraps-clickwrapid-users
+      description: REST surface for v1-accounts-accountId-clickwraps-clickwrapId-users.
+      operations:
+      - method: GET
+        name: useragreementsgetclickwrapagreements
+        description: Docusign Get user agreements
+        call: click-clickwraps.useragreementsgetclickwrapagreements
+        with:
+          accountId: rest.accountId
+          clickwrapId: rest.clickwrapId
+          client_user_id: rest.client_user_id
+          from_date: rest.from_date
+          page_number: rest.page_number
+          status: rest.status
+          to_date: rest.to_date
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/v1/accounts/{accountid}/clickwraps/{clickwrapid}/versions
+      name: v1-accounts-accountid-clickwraps-clickwrapid-versions
+      description: REST surface for v1-accounts-accountId-clickwraps-clickwrapId-versions.
+      operations:
+      - method: POST
+        name: clickwrapversionspostclickwrapversion
+        description: Docusign Creates a new clickwrap version.
+        call: click-clickwraps.clickwrapversionspostclickwrapversion
+        with:
+          accountId: rest.accountId
+          clickwrapId: rest.clickwrapId
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: DELETE
+        name: clickwrapversionsdeleteclickwrapversions
+        description: Docusign Deletes the versions of a clickwrap.
+        call: click-clickwraps.clickwrapversionsdeleteclickwrapversions
+        with:
+          accountId: rest.accountId
+          clickwrapId: rest.clickwrapId
+          clickwrapVersionIds: rest.clickwrapVersionIds
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/v1/accounts/{accountid}/clickwraps/{clickwrapid}/versions/{versionid}
+      name: v1-accounts-accountid-clickwraps-clickwrapid-versions-versionid
+      description: REST surface for v1-accounts-accountId-clickwraps-clickwrapId-versions-versionId.
+      operations:
+      - method: GET
+        name: clickwrapversionsgetclickwrapversion
+        description: Docusign Gets a specific version from a clickwrap.
+        call: click-clickwraps.clickwrapversionsgetclickwrapversion
+        with:
+          accountId: rest.accountId
+          clickwrapId: rest.clickwrapId
+          versionId: rest.versionId
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: PUT
+        name: clickwrapversionsputclickwrapversion
+        description: Docusign Updates a specific version of a clickwrap.
+        call: click-clickwraps.clickwrapversionsputclickwrapversion
+        with:
+          accountId: rest.accountId
+          clickwrapId: rest.clickwrapId
+          versionId: rest.versionId
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: DELETE
+        name: clickwrapversionsdeleteclickwrapversion
+        description: Docusign Deletes a specific version of a clickwrap.
+        call: click-clickwraps.clickwrapversionsdeleteclickwrapversion
+        with:
+          accountId: rest.accountId
+          clickwrapId: rest.clickwrapId
+          versionId: rest.versionId
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/v1/accounts/{accountid}/clickwraps/{clickwrapid}/versions/{versionid}/users
+      name: v1-accounts-accountid-clickwraps-clickwrapid-versions-versionid-users
+      description: REST surface for v1-accounts-accountId-clickwraps-clickwrapId-versions-versionId-users.
+      operations:
+      - method: GET
+        name: useragreementsgetclickwrapversionagreements
+        description: Docusign Gets the agreement responses for a clickwrap version.
+        call: click-clickwraps.useragreementsgetclickwrapversionagreements
+        with:
+          accountId: rest.accountId
+          clickwrapId: rest.clickwrapId
+          versionId: rest.versionId
+          client_user_id: rest.client_user_id
+          from_date: rest.from_date
+          page_number: rest.page_number
+          status: rest.status
+          to_date: rest.to_date
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/v1/accounts/{accountid}/clickwraps/{clickwrapid}/versions/{versionnumber}
+      name: v1-accounts-accountid-clickwraps-clickwrapid-versions-versionnumber
+      description: REST surface for v1-accounts-accountId-clickwraps-clickwrapId-versions-versionNumber.
+      operations:
+      - method: GET
+        name: clickwrapversionsgetclickwrapversionbynumber
+        description: Docusign Gets a clickwrap version by specifying its version number.
+        call: click-clickwraps.clickwrapversionsgetclickwrapversionbynumber
+        with:
+          accountId: rest.accountId
+          clickwrapId: rest.clickwrapId
+          versionNumber: rest.versionNumber
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: PUT
+        name: clickwrapversionsputclickwrapversionbynumber
+        description: Docusign Updates a clickwrap version by specifying its version number.
+        call: click-clickwraps.clickwrapversionsputclickwrapversionbynumber
+        with:
+          accountId: rest.accountId
+          clickwrapId: rest.clickwrapId
+          versionNumber: rest.versionNumber
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: DELETE
+        name: clickwrapversionsdeleteclickwrapversionbynumber
+        description: Docusign Deletes a clickwrap version from a clickwrap by specifying its version number.
+        call: click-clickwraps.clickwrapversionsdeleteclickwrapversionbynumber
+        with:
+          accountId: rest.accountId
+          clickwrapId: rest.clickwrapId
+          versionNumber: rest.versionNumber
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/v1/accounts/{accountid}/clickwraps/{clickwrapid}/versions/{versionnumber}/users
+      name: v1-accounts-accountid-clickwraps-clickwrapid-versions-versionnumber-users
+      description: REST surface for v1-accounts-accountId-clickwraps-clickwrapId-versions-versionNumber-users.
+      operations:
+      - method: GET
+        name: useragreementsgetclickwrapversionagreementsbynumber
+        description: Docusign Gets the agreement responses for a clickwrap version
+        call: click-clickwraps.useragreementsgetclickwrapversionagreementsbynumber
+        with:
+          accountId: rest.accountId
+          clickwrapId: rest.clickwrapId
+          versionNumber: rest.versionNumber
+          client_user_id: rest.client_user_id
+          from_date: rest.from_date
+          page_number: rest.page_number
+          status: rest.status
+          to_date: rest.to_date
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: click-clickwraps-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for DocuSign Click API — ClickWraps. One tool per consumed operation, routed inline through this
+      capability's consumes block.
+    tools:
+    - name: docusign-gets-current-version-and
+      description: Docusign Gets the current version and other information about the Click API.
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: click-clickwraps.serviceinformationgetserviceinformation
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: docusign-gets-all-clickwraps-account
+      description: Docusign Gets all the clickwraps for an account.
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: click-clickwraps.clickwrapsgetclickwraps
+      with:
+        accountId: tools.accountId
+        from_date: tools.from_date
+        ownerUserId: tools.ownerUserId
+        page_number: tools.page_number
+        shared: tools.shared
+        status: tools.status
+        to_date: tools.to_date
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: docusign-creates-clickwrap-account
+      description: Docusign Creates a clickwrap for an account.
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: click-clickwraps.clickwrapspostclickwrap
+      with:
+        accountId: tools.accountId
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: docusign-deletes-clickwraps-account
+      description: Docusign Deletes clickwraps for an account.
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: click-clickwraps.clickwrapsdeleteclickwraps
+      with:
+        accountId: tools.accountId
+        clickwrapIds: tools.clickwrapIds
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: docusign-gets-single-clickwrap-object
+      description: Docusign Gets a  single clickwrap object.
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: click-clickwraps.clickwrapsgetclickwrap
+      with:
+        accountId: tools.accountId
+        clickwrapId: tools.clickwrapId
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: docusign-updates-user-id-clickwrap
+      description: Docusign Updates the user ID of a clickwrap.
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: true
+      call: click-clickwraps.clickwrapsputclickwrap
+      with:
+        accountId: tools.accountId
+        clickwrapId: tools.clickwrapId
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: docusign-deletes-clickwrap-and-all
+      description: Docusign Deletes a clickwrap and all of its versions.
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: click-clickwraps.clickwrapsdeleteclickwrap
+      with:
+        accountId: tools.accountId
+        clickwrapId: tools.clickwrapId
+        versions: tools.versions
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: docusign-checks-if-user-has
+      description: Docusign Checks if a user has agreed to a clickwrap.
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: click-clickwraps.useragreementsposthasagreed
+      with:
+        accountId: tools.accountId
+        clickwrapId: tools.clickwrapId
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: docusign-gets-specific-agreement-specified
+      description: Docusign Gets a specific agreement for a specified clickwrap.
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: click-clickwraps.useragreementsgetagreement
+      with:
+        accountId: tools.accountId
+        agreementId: tools.agreementId
+        clickwrapId: tools.clickwrapId
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: docusign-gets-completed-user-agreement
+      description: Docusign Gets the completed user agreement PDF.
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: click-clickwraps.useragreementsgetagreementpdf
+      with:
+        accountId: tools.accountId
+        agreementId: tools.agreementId
+        clickwrapId: tools.clickwrapId
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: docusign-get-user-agreements
+      description: Docusign Get user agreements
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: click-clickwraps.useragreementsgetclickwrapagreements
+      with:
+        accountId: tools.accountId
+        clickwrapId: tools.clickwrapId
+        client_user_id: tools.client_user_id
+        from_date: tools.from_date
+        page_number: tools.page_number
+        status: tools.status
+        to_date: tools.to_date
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: docusign-creates-new-clickwrap-version
+      description: Docusign Creates a new clickwrap version.
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: click-clickwraps.clickwrapversionspostclickwrapversion
+      with:
+        accountId: tools.accountId
+        clickwrapId: tools.clickwrapId
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: docusign-deletes-versions-clickwrap
+      description: Docusign Deletes the versions of a clickwrap.
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: click-clickwraps.clickwrapversionsdeleteclickwrapversions
+      with:
+        accountId: tools.accountId
+        clickwrapId: tools.clickwrapId
+        clickwrapVersionIds: tools.clickwrapVersionIds
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: docusign-gets-specific-version-clickwrap
+      description: Docusign Gets a specific version from a clickwrap.
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: click-clickwraps.clickwrapversionsgetclickwrapversion
+      with:
+        accountId: tools.accountId
+        clickwrapId: tools.clickwrapId
+        versionId: tools.versionId
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: docusign-updates-specific-version-clickwrap
+      description: Docusign Updates a specific version of a clickwrap.
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: true
+      call: click-clickwraps.clickwrapversionsputclickwrapversion
+      with:
+        accountId: tools.accountId
+        clickwrapId: tools.clickwrapId
+        versionId: tools.versionId
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: docusign-deletes-specific-version-clickwrap
+      description: Docusign Deletes a specific version of a clickwrap.
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: click-clickwraps.clickwrapversionsdeleteclickwrapversion
+      with:
+        accountId: tools.accountId
+        clickwrapId: tools.clickwrapId
+        versionId: tools.versionId
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: docusign-gets-agreement-responses-clickwrap
+      description: Docusign Gets the agreement responses for a clickwrap version.
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: click-clickwraps.useragreementsgetclickwrapversionagreements
+      with:
+        accountId: tools.accountId
+        clickwrapId: tools.clickwrapId
+        versionId: tools.versionId
+        client_user_id: tools.client_user_id
+        from_date: tools.from_date
+        page_number: tools.page_number
+        status: tools.status
+        to_date: tools.to_date
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: docusign-gets-clickwrap-version-specifying
+      description: Docusign Gets a clickwrap version by specifying its version number.
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: click-clickwraps.clickwrapversionsgetclickwrapversionbynumber
+      with:
+        accountId: tools.accountId
+        clickwrapId: tools.clickwrapId
+        versionNumber: tools.versionNumber
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: docusign-updates-clickwrap-version-specifying
+      description: Docusign Updates a clickwrap version by specifying its version number.
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: true
+      call: click-clickwraps.clickwrapversionsputclickwrapversionbynumber
+      with:
+        accountId: tools.accountId
+        clickwrapId: tools.clickwrapId
+        versionNumber: tools.versionNumber
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: docusign-deletes-clickwrap-version-clickwrap
+      description: Docusign Deletes a clickwrap version from a clickwrap by specifying its version number.
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: click-clickwraps.clickwrapversionsdeleteclickwrapversionbynumber
+      with:
+        accountId: tools.accountId
+        clickwrapId: tools.clickwrapId
+        versionNumber: tools.versionNumber
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: docusign-gets-agreement-responses-clickwrap-2
+      description: Docusign Gets the agreement responses for a clickwrap version
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: click-clickwraps.useragreementsgetclickwrapversionagreementsbynumber
+      with:
+        accountId: tools.accountId
+        clickwrapId: tools.clickwrapId
+        versionNumber: tools.versionNumber
+        client_user_id: tools.client_user_id
+        from_date: tools.from_date
+        page_number: tools.page_number
+        status: tools.status
+        to_date: tools.to_date
+      outputParameters:
+      - type: object
+        mapping: $.

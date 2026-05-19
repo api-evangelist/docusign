@@ -1,0 +1,561 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: DocuSign Rooms API - v2 — FormGroups
+  description: 'DocuSign Rooms API - v2 — FormGroups. 10 operations. Lead operation: Docusign Gets form groups.. Self-contained
+    Naftiko capability covering one Docusign business surface.'
+  tags:
+  - Docusign
+  - FormGroups
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    DOCUSIGN_API_KEY: DOCUSIGN_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: rooms-formgroups
+    baseUri: https://rooms.docusign.com/restapi
+    description: DocuSign Rooms API - v2 — FormGroups business capability. Self-contained, no shared references.
+    resources:
+    - name: v2-accounts-accountId-form_groups
+      path: /v2/accounts/{accountId}/form_groups
+      operations:
+      - name: formgroupsgetformgroups
+        method: GET
+        description: Docusign Gets form groups.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: count
+          in: query
+          type: integer
+          description: The number of results to return. This value must be a number between `1` and `100` (default).
+        - name: startPosition
+          in: query
+          type: integer
+          description: The starting zero-based index position of the results set. The default value is `0`.
+        - name: accountId
+          in: path
+          type: string
+          description: The globally unique identifier (GUID) for the account.
+          required: true
+      - name: formgroupscreateformgroup
+        method: POST
+        description: Docusign Creates a form group.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: accountId
+          in: path
+          type: string
+          description: The globally unique identifier (GUID) for the account.
+          required: true
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: false
+    - name: v2-accounts-accountId-form_groups-formGroupId
+      path: /v2/accounts/{accountId}/form_groups/{formGroupId}
+      operations:
+      - name: formgroupsgetformgroup
+        method: GET
+        description: Docusign Gets a form group.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: formGroupId
+          in: path
+          type: string
+          description: The ID of the form group.
+          required: true
+        - name: accountId
+          in: path
+          type: string
+          description: The globally unique identifier (GUID) for the account.
+          required: true
+      - name: formgroupsrenameformgroup
+        method: PUT
+        description: Docusign Renames a form group.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: formGroupId
+          in: path
+          type: string
+          description: The ID of the form group.
+          required: true
+        - name: accountId
+          in: path
+          type: string
+          description: The globally unique identifier (GUID) for the account.
+          required: true
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: false
+      - name: formgroupsdeleteformgroup
+        method: DELETE
+        description: Docusign Deletes a form group.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: formGroupId
+          in: path
+          type: string
+          description: The ID of the form group.
+          required: true
+        - name: accountId
+          in: path
+          type: string
+          description: The globally unique identifier (GUID) for the account.
+          required: true
+    - name: v2-accounts-accountId-form_groups-formGroupId-assign_form
+      path: /v2/accounts/{accountId}/form_groups/{formGroupId}/assign_form
+      operations:
+      - name: formgroupsassignformgroupform
+        method: POST
+        description: Docusign Assigns a form to a form group.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: formGroupId
+          in: path
+          type: string
+          description: The ID of the form group.
+          required: true
+        - name: accountId
+          in: path
+          type: string
+          description: The globally unique identifier (GUID) for the account.
+          required: true
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: false
+    - name: v2-accounts-accountId-form_groups-formGroupId-forms
+      path: /v2/accounts/{accountId}/form_groups/{formGroupId}/forms
+      operations:
+      - name: formgroupformsgetformgroupforms
+        method: GET
+        description: Docusign Gets the user's form group forms.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: formGroupId
+          in: path
+          type: string
+          description: The ID of the form group.
+          required: true
+        - name: count
+          in: query
+          type: integer
+          description: 'The number of results to return. '
+        - name: startPosition
+          in: query
+          type: integer
+          description: The starting point of the list. The default is 0.
+        - name: accountId
+          in: path
+          type: string
+          description: The globally unique identifier (GUID) for the account.
+          required: true
+    - name: v2-accounts-accountId-form_groups-formGroupId-grant_office_access-officeId
+      path: /v2/accounts/{accountId}/form_groups/{formGroupId}/grant_office_access/{officeId}
+      operations:
+      - name: formgroupsgrantofficeaccesstoformgroup
+        method: POST
+        description: Docusign Grants an office access to a form group.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: formGroupId
+          in: path
+          type: string
+          description: The ID of the form group.
+          required: true
+        - name: officeId
+          in: path
+          type: integer
+          description: The ID of the office. This is the ID that the system generated when you created the office.
+          required: true
+        - name: accountId
+          in: path
+          type: string
+          description: The globally unique identifier (GUID) for the account.
+          required: true
+    - name: v2-accounts-accountId-form_groups-formGroupId-revoke_office_access-officeId
+      path: /v2/accounts/{accountId}/form_groups/{formGroupId}/revoke_office_access/{officeId}
+      operations:
+      - name: formgroupsrevokeofficeaccessfromformgroup
+        method: POST
+        description: Docusign Revoke an office's access to a form group.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: formGroupId
+          in: path
+          type: string
+          description: The ID of the form group.
+          required: true
+        - name: officeId
+          in: path
+          type: integer
+          description: The ID of the office. This is the ID that the system generated when you created the office.
+          required: true
+        - name: accountId
+          in: path
+          type: string
+          description: The globally unique identifier (GUID) for the account.
+          required: true
+    - name: v2-accounts-accountId-form_groups-formGroupId-unassign_form-formId
+      path: /v2/accounts/{accountId}/form_groups/{formGroupId}/unassign_form/{formId}
+      operations:
+      - name: formgroupsremoveformgroupform
+        method: POST
+        description: Docusign Removes a form from a form group.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: formGroupId
+          in: path
+          type: string
+          description: The ID of the form group.
+          required: true
+        - name: formId
+          in: path
+          type: string
+          description: The ID of the form.
+          required: true
+        - name: accountId
+          in: path
+          type: string
+          description: The globally unique identifier (GUID) for the account.
+          required: true
+    authentication:
+      type: apikey
+      key: Authorization
+      value: '{{env.DOCUSIGN_API_KEY}}'
+      placement: header
+  exposes:
+  - type: rest
+    namespace: rooms-formgroups-rest
+    port: 8080
+    description: REST adapter for DocuSign Rooms API - v2 — FormGroups. One Spectral-compliant resource per consumed operation,
+      prefixed with /v1.
+    resources:
+    - path: /v1/v2/accounts/{accountid}/form-groups
+      name: v2-accounts-accountid-form-groups
+      description: REST surface for v2-accounts-accountId-form_groups.
+      operations:
+      - method: GET
+        name: formgroupsgetformgroups
+        description: Docusign Gets form groups.
+        call: rooms-formgroups.formgroupsgetformgroups
+        with:
+          count: rest.count
+          startPosition: rest.startPosition
+          accountId: rest.accountId
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: POST
+        name: formgroupscreateformgroup
+        description: Docusign Creates a form group.
+        call: rooms-formgroups.formgroupscreateformgroup
+        with:
+          accountId: rest.accountId
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/v2/accounts/{accountid}/form-groups/{formgroupid}
+      name: v2-accounts-accountid-form-groups-formgroupid
+      description: REST surface for v2-accounts-accountId-form_groups-formGroupId.
+      operations:
+      - method: GET
+        name: formgroupsgetformgroup
+        description: Docusign Gets a form group.
+        call: rooms-formgroups.formgroupsgetformgroup
+        with:
+          formGroupId: rest.formGroupId
+          accountId: rest.accountId
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: PUT
+        name: formgroupsrenameformgroup
+        description: Docusign Renames a form group.
+        call: rooms-formgroups.formgroupsrenameformgroup
+        with:
+          formGroupId: rest.formGroupId
+          accountId: rest.accountId
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: DELETE
+        name: formgroupsdeleteformgroup
+        description: Docusign Deletes a form group.
+        call: rooms-formgroups.formgroupsdeleteformgroup
+        with:
+          formGroupId: rest.formGroupId
+          accountId: rest.accountId
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/v2/accounts/{accountid}/form-groups/{formgroupid}/assign-form
+      name: v2-accounts-accountid-form-groups-formgroupid-assign-form
+      description: REST surface for v2-accounts-accountId-form_groups-formGroupId-assign_form.
+      operations:
+      - method: POST
+        name: formgroupsassignformgroupform
+        description: Docusign Assigns a form to a form group.
+        call: rooms-formgroups.formgroupsassignformgroupform
+        with:
+          formGroupId: rest.formGroupId
+          accountId: rest.accountId
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/v2/accounts/{accountid}/form-groups/{formgroupid}/forms
+      name: v2-accounts-accountid-form-groups-formgroupid-forms
+      description: REST surface for v2-accounts-accountId-form_groups-formGroupId-forms.
+      operations:
+      - method: GET
+        name: formgroupformsgetformgroupforms
+        description: Docusign Gets the user's form group forms.
+        call: rooms-formgroups.formgroupformsgetformgroupforms
+        with:
+          formGroupId: rest.formGroupId
+          count: rest.count
+          startPosition: rest.startPosition
+          accountId: rest.accountId
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/v2/accounts/{accountid}/form-groups/{formgroupid}/grant-office-access/{officeid}
+      name: v2-accounts-accountid-form-groups-formgroupid-grant-office-access-officeid
+      description: REST surface for v2-accounts-accountId-form_groups-formGroupId-grant_office_access-officeId.
+      operations:
+      - method: POST
+        name: formgroupsgrantofficeaccesstoformgroup
+        description: Docusign Grants an office access to a form group.
+        call: rooms-formgroups.formgroupsgrantofficeaccesstoformgroup
+        with:
+          formGroupId: rest.formGroupId
+          officeId: rest.officeId
+          accountId: rest.accountId
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/v2/accounts/{accountid}/form-groups/{formgroupid}/revoke-office-access/{officeid}
+      name: v2-accounts-accountid-form-groups-formgroupid-revoke-office-access-officeid
+      description: REST surface for v2-accounts-accountId-form_groups-formGroupId-revoke_office_access-officeId.
+      operations:
+      - method: POST
+        name: formgroupsrevokeofficeaccessfromformgroup
+        description: Docusign Revoke an office's access to a form group.
+        call: rooms-formgroups.formgroupsrevokeofficeaccessfromformgroup
+        with:
+          formGroupId: rest.formGroupId
+          officeId: rest.officeId
+          accountId: rest.accountId
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/v2/accounts/{accountid}/form-groups/{formgroupid}/unassign-form/{formid}
+      name: v2-accounts-accountid-form-groups-formgroupid-unassign-form-formid
+      description: REST surface for v2-accounts-accountId-form_groups-formGroupId-unassign_form-formId.
+      operations:
+      - method: POST
+        name: formgroupsremoveformgroupform
+        description: Docusign Removes a form from a form group.
+        call: rooms-formgroups.formgroupsremoveformgroupform
+        with:
+          formGroupId: rest.formGroupId
+          formId: rest.formId
+          accountId: rest.accountId
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: rooms-formgroups-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for DocuSign Rooms API - v2 — FormGroups. One tool per consumed operation, routed inline through
+      this capability's consumes block.
+    tools:
+    - name: docusign-gets-form-groups
+      description: Docusign Gets form groups.
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: rooms-formgroups.formgroupsgetformgroups
+      with:
+        count: tools.count
+        startPosition: tools.startPosition
+        accountId: tools.accountId
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: docusign-creates-form-group
+      description: Docusign Creates a form group.
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: rooms-formgroups.formgroupscreateformgroup
+      with:
+        accountId: tools.accountId
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: docusign-gets-form-group
+      description: Docusign Gets a form group.
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: rooms-formgroups.formgroupsgetformgroup
+      with:
+        formGroupId: tools.formGroupId
+        accountId: tools.accountId
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: docusign-renames-form-group
+      description: Docusign Renames a form group.
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: true
+      call: rooms-formgroups.formgroupsrenameformgroup
+      with:
+        formGroupId: tools.formGroupId
+        accountId: tools.accountId
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: docusign-deletes-form-group
+      description: Docusign Deletes a form group.
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: rooms-formgroups.formgroupsdeleteformgroup
+      with:
+        formGroupId: tools.formGroupId
+        accountId: tools.accountId
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: docusign-assigns-form-form-group
+      description: Docusign Assigns a form to a form group.
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: rooms-formgroups.formgroupsassignformgroupform
+      with:
+        formGroupId: tools.formGroupId
+        accountId: tools.accountId
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: docusign-gets-user-s-form-group
+      description: Docusign Gets the user's form group forms.
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: rooms-formgroups.formgroupformsgetformgroupforms
+      with:
+        formGroupId: tools.formGroupId
+        count: tools.count
+        startPosition: tools.startPosition
+        accountId: tools.accountId
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: docusign-grants-office-access-form
+      description: Docusign Grants an office access to a form group.
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: rooms-formgroups.formgroupsgrantofficeaccesstoformgroup
+      with:
+        formGroupId: tools.formGroupId
+        officeId: tools.officeId
+        accountId: tools.accountId
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: docusign-revoke-office-s-access-form
+      description: Docusign Revoke an office's access to a form group.
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: rooms-formgroups.formgroupsrevokeofficeaccessfromformgroup
+      with:
+        formGroupId: tools.formGroupId
+        officeId: tools.officeId
+        accountId: tools.accountId
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: docusign-removes-form-form-group
+      description: Docusign Removes a form from a form group.
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: rooms-formgroups.formgroupsremoveformgroupform
+      with:
+        formGroupId: tools.formGroupId
+        formId: tools.formId
+        accountId: tools.accountId
+      outputParameters:
+      - type: object
+        mapping: $.

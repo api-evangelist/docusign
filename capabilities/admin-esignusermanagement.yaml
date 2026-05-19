@@ -1,0 +1,531 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: DocuSign Admin API — eSignUserManagement
+  description: 'DocuSign Admin API — eSignUserManagement. 9 operations. Lead operation: Docusign Returns the list of groups
+    in an account.. Self-contained Naftiko capability covering one Docusign business surface.'
+  tags:
+  - Docusign
+  - eSignUserManagement
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    DOCUSIGN_API_KEY: DOCUSIGN_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: admin-esignusermanagement
+    baseUri: https://api.docusign.net/Management
+    description: DocuSign Admin API — eSignUserManagement business capability. Self-contained, no shared references.
+    resources:
+    - name: v2-organizations-organizationId-accounts-accountId-groups
+      path: /v2/organizations/{organizationId}/accounts/{accountId}/groups
+      operations:
+      - name: accountaccountsgetgroupsv2
+        method: GET
+        description: Docusign Returns the list of groups in an account.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: organizationId
+          in: path
+          type: string
+          description: The organization ID Guid
+          required: true
+        - name: accountId
+          in: path
+          type: string
+          description: The account ID Guid
+          required: true
+        - name: start
+          in: query
+          type: integer
+          description: Index of first item to include in the response. The default value is 0.
+        - name: take
+          in: query
+          type: integer
+          description: Page size of the response. The default value is 20.
+        - name: end
+          in: query
+          type: integer
+          description: Index of the last item to include in the response. Ignored if `take` parameter is specified.
+    - name: v2-organizations-organizationId-accounts-accountId-permissions
+      path: /v2/organizations/{organizationId}/accounts/{accountId}/permissions
+      operations:
+      - name: accountaccountsgetpermissionprofilesv2
+        method: GET
+        description: Docusign Returns the list of permission profiles in an account.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: organizationId
+          in: path
+          type: string
+          description: The organization ID Guid
+          required: true
+        - name: accountId
+          in: path
+          type: string
+          description: The account ID Guid
+          required: true
+    - name: v2-organizations-organizationId-accounts-accountId-users
+      path: /v2/organizations/{organizationId}/accounts/{accountId}/users
+      operations:
+      - name: organizationuserorganizationuserspostaccountusersv2
+        method: POST
+        description: Docusign Adds users to an account.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: organizationId
+          in: path
+          type: string
+          description: The organization ID Guid
+          required: true
+        - name: accountId
+          in: path
+          type: string
+          description: The account ID Guid
+          required: true
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: v2-organizations-organizationId-users
+      path: /v2/organizations/{organizationId}/users
+      operations:
+      - name: organizationuserusersaddv2
+        method: POST
+        description: Docusign Creates a new user.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: organizationId
+          in: path
+          type: string
+          description: The organization ID Guid
+          required: true
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: v2-organizations-organizationId-users-profile
+      path: /v2/organizations/{organizationId}/users/profile
+      operations:
+      - name: organizationuserorganizationusersgetprofilev2
+        method: GET
+        description: Docusign Returns information about recently modified users.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: organizationId
+          in: path
+          type: string
+          description: The organization ID Guid
+          required: true
+        - name: email
+          in: query
+          type: string
+          description: The email address associated with the users you want to retrieve.
+    - name: v2-organizations-organizationId-users-profiles
+      path: /v2/organizations/{organizationId}/users/profiles
+      operations:
+      - name: userusersupdatev2
+        method: POST
+        description: Docusign Updates a user's information.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: organizationId
+          in: path
+          type: string
+          description: The organization ID Guid
+          required: true
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: v2-organizations-organizationId-users-userId-accounts
+      path: /v2/organizations/{organizationId}/users/{userId}/accounts
+      operations:
+      - name: userusersclosemembershipsv2
+        method: DELETE
+        description: Docusign Closes a user's memberships.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: organizationId
+          in: path
+          type: string
+          description: The organization ID Guid
+          required: true
+        - name: userId
+          in: path
+          type: string
+          description: The user ID Guid
+          required: true
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: v2-organizations-organizationId-users-userId-identities
+      path: /v2/organizations/{organizationId}/users/{userId}/identities
+      operations:
+      - name: organizationuserdeleteidentitiesv2
+        method: DELETE
+        description: Docusign Deletes user identities.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: organizationId
+          in: path
+          type: string
+          description: The organization ID Guid
+          required: true
+        - name: userId
+          in: path
+          type: string
+          description: The user ID Guid
+          required: true
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: v2-organizations-organizationId-users-userId-memberships-membershipId
+      path: /v2/organizations/{organizationId}/users/{userId}/memberships/{membershipId}
+      operations:
+      - name: organizationuserusersactivatemembershipv2
+        method: POST
+        description: Docusign Activates user memberships.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: organizationId
+          in: path
+          type: string
+          description: The organization ID Guid
+          required: true
+        - name: userId
+          in: path
+          type: string
+          description: The user ID Guid
+          required: true
+        - name: membershipId
+          in: path
+          type: string
+          description: The membership ID GUID.
+          required: true
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    authentication:
+      type: bearer
+      token: '{{env.DOCUSIGN_API_KEY}}'
+  exposes:
+  - type: rest
+    namespace: admin-esignusermanagement-rest
+    port: 8080
+    description: REST adapter for DocuSign Admin API — eSignUserManagement. One Spectral-compliant resource per consumed operation,
+      prefixed with /v1.
+    resources:
+    - path: /v1/v2/organizations/{organizationid}/accounts/{accountid}/groups
+      name: v2-organizations-organizationid-accounts-accountid-groups
+      description: REST surface for v2-organizations-organizationId-accounts-accountId-groups.
+      operations:
+      - method: GET
+        name: accountaccountsgetgroupsv2
+        description: Docusign Returns the list of groups in an account.
+        call: admin-esignusermanagement.accountaccountsgetgroupsv2
+        with:
+          organizationId: rest.organizationId
+          accountId: rest.accountId
+          start: rest.start
+          take: rest.take
+          end: rest.end
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/v2/organizations/{organizationid}/accounts/{accountid}/permissions
+      name: v2-organizations-organizationid-accounts-accountid-permissions
+      description: REST surface for v2-organizations-organizationId-accounts-accountId-permissions.
+      operations:
+      - method: GET
+        name: accountaccountsgetpermissionprofilesv2
+        description: Docusign Returns the list of permission profiles in an account.
+        call: admin-esignusermanagement.accountaccountsgetpermissionprofilesv2
+        with:
+          organizationId: rest.organizationId
+          accountId: rest.accountId
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/v2/organizations/{organizationid}/accounts/{accountid}/users
+      name: v2-organizations-organizationid-accounts-accountid-users
+      description: REST surface for v2-organizations-organizationId-accounts-accountId-users.
+      operations:
+      - method: POST
+        name: organizationuserorganizationuserspostaccountusersv2
+        description: Docusign Adds users to an account.
+        call: admin-esignusermanagement.organizationuserorganizationuserspostaccountusersv2
+        with:
+          organizationId: rest.organizationId
+          accountId: rest.accountId
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/v2/organizations/{organizationid}/users
+      name: v2-organizations-organizationid-users
+      description: REST surface for v2-organizations-organizationId-users.
+      operations:
+      - method: POST
+        name: organizationuserusersaddv2
+        description: Docusign Creates a new user.
+        call: admin-esignusermanagement.organizationuserusersaddv2
+        with:
+          organizationId: rest.organizationId
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/v2/organizations/{organizationid}/users/profile
+      name: v2-organizations-organizationid-users-profile
+      description: REST surface for v2-organizations-organizationId-users-profile.
+      operations:
+      - method: GET
+        name: organizationuserorganizationusersgetprofilev2
+        description: Docusign Returns information about recently modified users.
+        call: admin-esignusermanagement.organizationuserorganizationusersgetprofilev2
+        with:
+          organizationId: rest.organizationId
+          email: rest.email
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/v2/organizations/{organizationid}/users/profiles
+      name: v2-organizations-organizationid-users-profiles
+      description: REST surface for v2-organizations-organizationId-users-profiles.
+      operations:
+      - method: POST
+        name: userusersupdatev2
+        description: Docusign Updates a user's information.
+        call: admin-esignusermanagement.userusersupdatev2
+        with:
+          organizationId: rest.organizationId
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/v2/organizations/{organizationid}/users/{userid}/accounts
+      name: v2-organizations-organizationid-users-userid-accounts
+      description: REST surface for v2-organizations-organizationId-users-userId-accounts.
+      operations:
+      - method: DELETE
+        name: userusersclosemembershipsv2
+        description: Docusign Closes a user's memberships.
+        call: admin-esignusermanagement.userusersclosemembershipsv2
+        with:
+          organizationId: rest.organizationId
+          userId: rest.userId
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/v2/organizations/{organizationid}/users/{userid}/identities
+      name: v2-organizations-organizationid-users-userid-identities
+      description: REST surface for v2-organizations-organizationId-users-userId-identities.
+      operations:
+      - method: DELETE
+        name: organizationuserdeleteidentitiesv2
+        description: Docusign Deletes user identities.
+        call: admin-esignusermanagement.organizationuserdeleteidentitiesv2
+        with:
+          organizationId: rest.organizationId
+          userId: rest.userId
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/v2/organizations/{organizationid}/users/{userid}/memberships/{membershipid}
+      name: v2-organizations-organizationid-users-userid-memberships-membershipid
+      description: REST surface for v2-organizations-organizationId-users-userId-memberships-membershipId.
+      operations:
+      - method: POST
+        name: organizationuserusersactivatemembershipv2
+        description: Docusign Activates user memberships.
+        call: admin-esignusermanagement.organizationuserusersactivatemembershipv2
+        with:
+          organizationId: rest.organizationId
+          userId: rest.userId
+          membershipId: rest.membershipId
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: admin-esignusermanagement-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for DocuSign Admin API — eSignUserManagement. One tool per consumed operation, routed inline
+      through this capability's consumes block.
+    tools:
+    - name: docusign-returns-list-groups-account
+      description: Docusign Returns the list of groups in an account.
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: admin-esignusermanagement.accountaccountsgetgroupsv2
+      with:
+        organizationId: tools.organizationId
+        accountId: tools.accountId
+        start: tools.start
+        take: tools.take
+        end: tools.end
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: docusign-returns-list-permission-profiles
+      description: Docusign Returns the list of permission profiles in an account.
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: admin-esignusermanagement.accountaccountsgetpermissionprofilesv2
+      with:
+        organizationId: tools.organizationId
+        accountId: tools.accountId
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: docusign-adds-users-account
+      description: Docusign Adds users to an account.
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: admin-esignusermanagement.organizationuserorganizationuserspostaccountusersv2
+      with:
+        organizationId: tools.organizationId
+        accountId: tools.accountId
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: docusign-creates-new-user
+      description: Docusign Creates a new user.
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: admin-esignusermanagement.organizationuserusersaddv2
+      with:
+        organizationId: tools.organizationId
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: docusign-returns-information-about-recently
+      description: Docusign Returns information about recently modified users.
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: admin-esignusermanagement.organizationuserorganizationusersgetprofilev2
+      with:
+        organizationId: tools.organizationId
+        email: tools.email
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: docusign-updates-user-s-information
+      description: Docusign Updates a user's information.
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: admin-esignusermanagement.userusersupdatev2
+      with:
+        organizationId: tools.organizationId
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: docusign-closes-user-s-memberships
+      description: Docusign Closes a user's memberships.
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: admin-esignusermanagement.userusersclosemembershipsv2
+      with:
+        organizationId: tools.organizationId
+        userId: tools.userId
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: docusign-deletes-user-identities
+      description: Docusign Deletes user identities.
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: admin-esignusermanagement.organizationuserdeleteidentitiesv2
+      with:
+        organizationId: tools.organizationId
+        userId: tools.userId
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: docusign-activates-user-memberships
+      description: Docusign Activates user memberships.
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: admin-esignusermanagement.organizationuserusersactivatemembershipv2
+      with:
+        organizationId: tools.organizationId
+        userId: tools.userId
+        membershipId: tools.membershipId
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.

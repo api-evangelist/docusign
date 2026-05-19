@@ -1,0 +1,77 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: DocuSign REST API — AccountSealProviders
+  description: 'DocuSign REST API — AccountSealProviders. 1 operations. Lead operation: AccountSealProviders. Self-contained
+    Naftiko capability covering one Docusign business surface.'
+  tags:
+  - Docusign
+  - AccountSealProviders
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    DOCUSIGN_API_KEY: DOCUSIGN_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: docusign-accountsealproviders
+    baseUri: https://www.docusign.net/restapi
+    description: DocuSign REST API — AccountSealProviders business capability. Self-contained, no shared references.
+    resources:
+    - name: v2-accounts-accountId-seals
+      path: /v2/accounts/{accountId}/seals
+      operations:
+      - name: accountsignatureprovidersgetsealproviders
+        method: GET
+        description: ''
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: accountId
+          in: path
+          type: string
+          description: The external account number (int) or account id GUID.
+          required: true
+  exposes:
+  - type: rest
+    namespace: docusign-accountsealproviders-rest
+    port: 8080
+    description: REST adapter for DocuSign REST API — AccountSealProviders. One Spectral-compliant resource per consumed operation,
+      prefixed with /v1.
+    resources:
+    - path: /v1/v2/accounts/{accountid}/seals
+      name: v2-accounts-accountid-seals
+      description: REST surface for v2-accounts-accountId-seals.
+      operations:
+      - method: GET
+        name: accountsignatureprovidersgetsealproviders
+        description: accountsignatureprovidersgetsealproviders
+        call: docusign-accountsealproviders.accountsignatureprovidersgetsealproviders
+        with:
+          accountId: rest.accountId
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: docusign-accountsealproviders-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for DocuSign REST API — AccountSealProviders. One tool per consumed operation, routed inline
+      through this capability's consumes block.
+    tools:
+    - name: accountsignatureprovidersgetsealproviders
+      description: accountsignatureprovidersgetsealproviders
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: docusign-accountsealproviders.accountsignatureprovidersgetsealproviders
+      with:
+        accountId: tools.accountId
+      outputParameters:
+      - type: object
+        mapping: $.

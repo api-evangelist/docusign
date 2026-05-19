@@ -1,0 +1,190 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: DocuSign REST API — AccountConsumerDisclosures
+  description: 'DocuSign REST API — AccountConsumerDisclosures. 3 operations. Lead operation: Docusign Gets the Electronic
+    Record and Signature Disclosure for the account.. Self-contained Naftiko capability covering one Docusign business surface.'
+  tags:
+  - Docusign
+  - AccountConsumerDisclosures
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    DOCUSIGN_API_KEY: DOCUSIGN_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: docusign-accountconsumerdisclosures
+    baseUri: https://www.docusign.net/restapi
+    description: DocuSign REST API — AccountConsumerDisclosures business capability. Self-contained, no shared references.
+    resources:
+    - name: v2-accounts-accountId-consumer_disclosure
+      path: /v2/accounts/{accountId}/consumer_disclosure
+      operations:
+      - name: consumerdisclosuregetconsumerdisclosure
+        method: GET
+        description: Docusign Gets the Electronic Record and Signature Disclosure for the account.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: accountId
+          in: path
+          type: string
+          description: The external account number (int) or account id GUID.
+          required: true
+        - name: langCode
+          in: query
+          type: string
+          description: 'Specifies the language used in the response. The supported languages, with the language value shown
+            in parenthesis, are: Arabic (ar), Bulgarian (bg), Czech (cs)'
+    - name: v2-accounts-accountId-consumer_disclosure-langCode
+      path: /v2/accounts/{accountId}/consumer_disclosure/{langCode}
+      operations:
+      - name: consumerdisclosuregetconsumerdisclosurelangcode
+        method: GET
+        description: Docusign Gets the Electronic Record and Signature Disclosure.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: accountId
+          in: path
+          type: string
+          description: The external account number (int) or account id GUID.
+          required: true
+        - name: langCode
+          in: path
+          type: string
+          description: The simple type enumeration the language used in the response. The supported languages, with the language
+            value shown in parenthesis, are:Arabic (ar), Bulgarian
+          required: true
+      - name: consumerdisclosureputconsumerdisclosure
+        method: PUT
+        description: Docusign Update Consumer Disclosure.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: accountId
+          in: path
+          type: string
+          description: The external account number (int) or account id GUID.
+          required: true
+        - name: langCode
+          in: path
+          type: string
+          description: The simple type enumeration the language used in the response. The supported languages, with the language
+            value shown in parenthesis, are:Arabic (ar), Bulgarian
+          required: true
+        - name: include_metadata
+          in: query
+          type: string
+          description: Reserved for DocuSign.
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: false
+  exposes:
+  - type: rest
+    namespace: docusign-accountconsumerdisclosures-rest
+    port: 8080
+    description: REST adapter for DocuSign REST API — AccountConsumerDisclosures. One Spectral-compliant resource per consumed
+      operation, prefixed with /v1.
+    resources:
+    - path: /v1/v2/accounts/{accountid}/consumer-disclosure
+      name: v2-accounts-accountid-consumer-disclosure
+      description: REST surface for v2-accounts-accountId-consumer_disclosure.
+      operations:
+      - method: GET
+        name: consumerdisclosuregetconsumerdisclosure
+        description: Docusign Gets the Electronic Record and Signature Disclosure for the account.
+        call: docusign-accountconsumerdisclosures.consumerdisclosuregetconsumerdisclosure
+        with:
+          accountId: rest.accountId
+          langCode: rest.langCode
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/v2/accounts/{accountid}/consumer-disclosure/{langcode}
+      name: v2-accounts-accountid-consumer-disclosure-langcode
+      description: REST surface for v2-accounts-accountId-consumer_disclosure-langCode.
+      operations:
+      - method: GET
+        name: consumerdisclosuregetconsumerdisclosurelangcode
+        description: Docusign Gets the Electronic Record and Signature Disclosure.
+        call: docusign-accountconsumerdisclosures.consumerdisclosuregetconsumerdisclosurelangcode
+        with:
+          accountId: rest.accountId
+          langCode: rest.langCode
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: PUT
+        name: consumerdisclosureputconsumerdisclosure
+        description: Docusign Update Consumer Disclosure.
+        call: docusign-accountconsumerdisclosures.consumerdisclosureputconsumerdisclosure
+        with:
+          accountId: rest.accountId
+          langCode: rest.langCode
+          include_metadata: rest.include_metadata
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: docusign-accountconsumerdisclosures-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for DocuSign REST API — AccountConsumerDisclosures. One tool per consumed operation, routed inline
+      through this capability's consumes block.
+    tools:
+    - name: docusign-gets-electronic-record-and
+      description: Docusign Gets the Electronic Record and Signature Disclosure for the account.
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: docusign-accountconsumerdisclosures.consumerdisclosuregetconsumerdisclosure
+      with:
+        accountId: tools.accountId
+        langCode: tools.langCode
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: docusign-gets-electronic-record-and-2
+      description: Docusign Gets the Electronic Record and Signature Disclosure.
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: docusign-accountconsumerdisclosures.consumerdisclosuregetconsumerdisclosurelangcode
+      with:
+        accountId: tools.accountId
+        langCode: tools.langCode
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: docusign-update-consumer-disclosure
+      description: Docusign Update Consumer Disclosure.
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: true
+      call: docusign-accountconsumerdisclosures.consumerdisclosureputconsumerdisclosure
+      with:
+        accountId: tools.accountId
+        langCode: tools.langCode
+        include_metadata: tools.include_metadata
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.

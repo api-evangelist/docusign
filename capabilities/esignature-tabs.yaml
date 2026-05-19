@@ -1,0 +1,114 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: DocuSign eSignature REST API — Tabs
+  description: 'DocuSign eSignature REST API — Tabs. 2 operations. Lead operation: Docusign List Tabs for a Recipient. Self-contained
+    Naftiko capability covering one Docusign business surface.'
+  tags:
+  - Docusign
+  - Tabs
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    DOCUSIGN_API_KEY: DOCUSIGN_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: esignature-tabs
+    baseUri: https://demo.docusign.net/restapi/v2.1
+    description: DocuSign eSignature REST API — Tabs business capability. Self-contained, no shared references.
+    resources:
+    - name: accounts-accountId-envelopes-envelopeId-recipients-recipientId-tabs
+      path: /accounts/{accountId}/envelopes/{envelopeId}/recipients/{recipientId}/tabs
+      operations:
+      - name: tabslisttabs
+        method: GET
+        description: Docusign List Tabs for a Recipient
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: include_metadata
+          in: query
+          type: string
+          description: When true, includes metadata properties in the response.
+      - name: tabsupdatetabs
+        method: PUT
+        description: Docusign Update Tabs for a Recipient
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    authentication:
+      type: bearer
+      token: '{{env.DOCUSIGN_API_KEY}}'
+  exposes:
+  - type: rest
+    namespace: esignature-tabs-rest
+    port: 8080
+    description: REST adapter for DocuSign eSignature REST API — Tabs. One Spectral-compliant resource per consumed operation,
+      prefixed with /v1.
+    resources:
+    - path: /v1/accounts/{accountid}/envelopes/{envelopeid}/recipients/{recipientid}/tabs
+      name: accounts-accountid-envelopes-envelopeid-recipients-recipientid-tabs
+      description: REST surface for accounts-accountId-envelopes-envelopeId-recipients-recipientId-tabs.
+      operations:
+      - method: GET
+        name: tabslisttabs
+        description: Docusign List Tabs for a Recipient
+        call: esignature-tabs.tabslisttabs
+        with:
+          include_metadata: rest.include_metadata
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: PUT
+        name: tabsupdatetabs
+        description: Docusign Update Tabs for a Recipient
+        call: esignature-tabs.tabsupdatetabs
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: esignature-tabs-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for DocuSign eSignature REST API — Tabs. One tool per consumed operation, routed inline through
+      this capability's consumes block.
+    tools:
+    - name: docusign-list-tabs-recipient
+      description: Docusign List Tabs for a Recipient
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: esignature-tabs.tabslisttabs
+      with:
+        include_metadata: tools.include_metadata
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: docusign-update-tabs-recipient
+      description: Docusign Update Tabs for a Recipient
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: true
+      call: esignature-tabs.tabsupdatetabs
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.

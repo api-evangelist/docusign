@@ -1,0 +1,116 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: DocuSign Rooms API - v2 — RoomTemplates
+  description: 'DocuSign Rooms API - v2 — RoomTemplates. 1 operations. Lead operation: Docusign Gets room templates.. Self-contained
+    Naftiko capability covering one Docusign business surface.'
+  tags:
+  - Docusign
+  - RoomTemplates
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    DOCUSIGN_API_KEY: DOCUSIGN_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: rooms-roomtemplates
+    baseUri: https://rooms.docusign.com/restapi
+    description: DocuSign Rooms API - v2 — RoomTemplates business capability. Self-contained, no shared references.
+    resources:
+    - name: v2-accounts-accountId-room_templates
+      path: /v2/accounts/{accountId}/room_templates
+      operations:
+      - name: roomtemplatesgetroomtemplates
+        method: GET
+        description: Docusign Gets room templates.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: officeId
+          in: query
+          type: integer
+          description: 'The ID of the office for which the user wants to create a room. When you pass in a value for this
+            parameter, only room templates that are valid for that office '
+        - name: onlyAssignable
+          in: query
+          type: boolean
+          description: When **true,** returns only the roles that the current user can assign to someone else. The default
+            value is **false.**
+        - name: onlyEnabled
+          in: query
+          type: boolean
+          description: When true, only returns room templates that are not disabled.
+        - name: count
+          in: query
+          type: integer
+          description: 'The number of results. When this property is used as a request parameter specifying the number of
+            results to return, the value must be a number between `1` and '
+        - name: startPosition
+          in: query
+          type: integer
+          description: The index position within the total result set from which to start returning values. The default value
+            is `0`.
+        - name: accountId
+          in: path
+          type: string
+          description: The globally unique identifier (GUID) for the account.
+          required: true
+    authentication:
+      type: apikey
+      key: Authorization
+      value: '{{env.DOCUSIGN_API_KEY}}'
+      placement: header
+  exposes:
+  - type: rest
+    namespace: rooms-roomtemplates-rest
+    port: 8080
+    description: REST adapter for DocuSign Rooms API - v2 — RoomTemplates. One Spectral-compliant resource per consumed operation,
+      prefixed with /v1.
+    resources:
+    - path: /v1/v2/accounts/{accountid}/room-templates
+      name: v2-accounts-accountid-room-templates
+      description: REST surface for v2-accounts-accountId-room_templates.
+      operations:
+      - method: GET
+        name: roomtemplatesgetroomtemplates
+        description: Docusign Gets room templates.
+        call: rooms-roomtemplates.roomtemplatesgetroomtemplates
+        with:
+          officeId: rest.officeId
+          onlyAssignable: rest.onlyAssignable
+          onlyEnabled: rest.onlyEnabled
+          count: rest.count
+          startPosition: rest.startPosition
+          accountId: rest.accountId
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: rooms-roomtemplates-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for DocuSign Rooms API - v2 — RoomTemplates. One tool per consumed operation, routed inline through
+      this capability's consumes block.
+    tools:
+    - name: docusign-gets-room-templates
+      description: Docusign Gets room templates.
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: rooms-roomtemplates.roomtemplatesgetroomtemplates
+      with:
+        officeId: tools.officeId
+        onlyAssignable: tools.onlyAssignable
+        onlyEnabled: tools.onlyEnabled
+        count: tools.count
+        startPosition: tools.startPosition
+        accountId: tools.accountId
+      outputParameters:
+      - type: object
+        mapping: $.

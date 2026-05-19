@@ -1,0 +1,185 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: DocuSign REST API — UserCustomSettings
+  description: 'DocuSign REST API — UserCustomSettings. 3 operations. Lead operation: Docusign Retrieves the custom user settings
+    for a specified user.. Self-contained Naftiko capability covering one Docusign business surface.'
+  tags:
+  - Docusign
+  - UserCustomSettings
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    DOCUSIGN_API_KEY: DOCUSIGN_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: docusign-usercustomsettings
+    baseUri: https://www.docusign.net/restapi
+    description: DocuSign REST API — UserCustomSettings business capability. Self-contained, no shared references.
+    resources:
+    - name: v2-accounts-accountId-users-userId-custom_settings
+      path: /v2/accounts/{accountId}/users/{userId}/custom_settings
+      operations:
+      - name: usercustomsettingsgetcustomsettings
+        method: GET
+        description: Docusign Retrieves the custom user settings for a specified user.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: accountId
+          in: path
+          type: string
+          description: The external account number (int) or account id GUID.
+          required: true
+        - name: userId
+          in: path
+          type: string
+          description: 'The user ID of the user being accessed. Generally this is the user ID of the authenticated user, but
+            if the authenticated user is an Admin on the account, this '
+          required: true
+      - name: usercustomsettingsputcustomsettings
+        method: PUT
+        description: Docusign Adds or updates custom user settings for the specified user.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: accountId
+          in: path
+          type: string
+          description: The external account number (int) or account id GUID.
+          required: true
+        - name: userId
+          in: path
+          type: string
+          description: 'The user ID of the user being accessed. Generally this is the user ID of the authenticated user, but
+            if the authenticated user is an Admin on the account, this '
+          required: true
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: false
+      - name: usercustomsettingsdeletecustomsettings
+        method: DELETE
+        description: Docusign Deletes custom user settings for a specified user.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: accountId
+          in: path
+          type: string
+          description: The external account number (int) or account id GUID.
+          required: true
+        - name: userId
+          in: path
+          type: string
+          description: 'The user ID of the user being accessed. Generally this is the user ID of the authenticated user, but
+            if the authenticated user is an Admin on the account, this '
+          required: true
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: false
+  exposes:
+  - type: rest
+    namespace: docusign-usercustomsettings-rest
+    port: 8080
+    description: REST adapter for DocuSign REST API — UserCustomSettings. One Spectral-compliant resource per consumed operation,
+      prefixed with /v1.
+    resources:
+    - path: /v1/v2/accounts/{accountid}/users/{userid}/custom-settings
+      name: v2-accounts-accountid-users-userid-custom-settings
+      description: REST surface for v2-accounts-accountId-users-userId-custom_settings.
+      operations:
+      - method: GET
+        name: usercustomsettingsgetcustomsettings
+        description: Docusign Retrieves the custom user settings for a specified user.
+        call: docusign-usercustomsettings.usercustomsettingsgetcustomsettings
+        with:
+          accountId: rest.accountId
+          userId: rest.userId
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: PUT
+        name: usercustomsettingsputcustomsettings
+        description: Docusign Adds or updates custom user settings for the specified user.
+        call: docusign-usercustomsettings.usercustomsettingsputcustomsettings
+        with:
+          accountId: rest.accountId
+          userId: rest.userId
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: DELETE
+        name: usercustomsettingsdeletecustomsettings
+        description: Docusign Deletes custom user settings for a specified user.
+        call: docusign-usercustomsettings.usercustomsettingsdeletecustomsettings
+        with:
+          accountId: rest.accountId
+          userId: rest.userId
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: docusign-usercustomsettings-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for DocuSign REST API — UserCustomSettings. One tool per consumed operation, routed inline through
+      this capability's consumes block.
+    tools:
+    - name: docusign-retrieves-custom-user-settings
+      description: Docusign Retrieves the custom user settings for a specified user.
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: docusign-usercustomsettings.usercustomsettingsgetcustomsettings
+      with:
+        accountId: tools.accountId
+        userId: tools.userId
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: docusign-adds-updates-custom-user
+      description: Docusign Adds or updates custom user settings for the specified user.
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: true
+      call: docusign-usercustomsettings.usercustomsettingsputcustomsettings
+      with:
+        accountId: tools.accountId
+        userId: tools.userId
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: docusign-deletes-custom-user-settings
+      description: Docusign Deletes custom user settings for a specified user.
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: docusign-usercustomsettings.usercustomsettingsdeletecustomsettings
+      with:
+        accountId: tools.accountId
+        userId: tools.userId
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.

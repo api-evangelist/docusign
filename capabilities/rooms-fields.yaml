@@ -1,0 +1,95 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: DocuSign Rooms API - v2 — Fields
+  description: 'DocuSign Rooms API - v2 — Fields. 1 operations. Lead operation: Docusign Gets a field set.. Self-contained
+    Naftiko capability covering one Docusign business surface.'
+  tags:
+  - Docusign
+  - Fields
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    DOCUSIGN_API_KEY: DOCUSIGN_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: rooms-fields
+    baseUri: https://rooms.docusign.com/restapi
+    description: DocuSign Rooms API - v2 — Fields business capability. Self-contained, no shared references.
+    resources:
+    - name: v2-accounts-accountId-field_sets-fieldSetId
+      path: /v2/accounts/{accountId}/field_sets/{fieldSetId}
+      operations:
+      - name: fieldsgetfieldset
+        method: GET
+        description: Docusign Gets a field set.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: fieldSetId
+          in: path
+          type: string
+          description: The ID of the field set.
+          required: true
+        - name: fieldsCustomDataFilters
+          in: query
+          type: array
+          description: 'An comma-separated list that limits the fields to return:'
+        - name: accountId
+          in: path
+          type: string
+          description: The globally unique identifier (GUID) for the account.
+          required: true
+    authentication:
+      type: apikey
+      key: Authorization
+      value: '{{env.DOCUSIGN_API_KEY}}'
+      placement: header
+  exposes:
+  - type: rest
+    namespace: rooms-fields-rest
+    port: 8080
+    description: REST adapter for DocuSign Rooms API - v2 — Fields. One Spectral-compliant resource per consumed operation,
+      prefixed with /v1.
+    resources:
+    - path: /v1/v2/accounts/{accountid}/field-sets/{fieldsetid}
+      name: v2-accounts-accountid-field-sets-fieldsetid
+      description: REST surface for v2-accounts-accountId-field_sets-fieldSetId.
+      operations:
+      - method: GET
+        name: fieldsgetfieldset
+        description: Docusign Gets a field set.
+        call: rooms-fields.fieldsgetfieldset
+        with:
+          fieldSetId: rest.fieldSetId
+          fieldsCustomDataFilters: rest.fieldsCustomDataFilters
+          accountId: rest.accountId
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: rooms-fields-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for DocuSign Rooms API - v2 — Fields. One tool per consumed operation, routed inline through
+      this capability's consumes block.
+    tools:
+    - name: docusign-gets-field-set
+      description: Docusign Gets a field set.
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: rooms-fields.fieldsgetfieldset
+      with:
+        fieldSetId: tools.fieldSetId
+        fieldsCustomDataFilters: tools.fieldsCustomDataFilters
+        accountId: tools.accountId
+      outputParameters:
+      - type: object
+        mapping: $.

@@ -1,0 +1,193 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: DocuSign Admin API — Users
+  description: 'DocuSign Admin API — Users. 2 operations. Lead operation: Docusign Returns information about the users in
+    an organization.. Self-contained Naftiko capability covering one Docusign business surface.'
+  tags:
+  - Docusign
+  - Users
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    DOCUSIGN_API_KEY: DOCUSIGN_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: admin-users
+    baseUri: https://api.docusign.net/Management
+    description: DocuSign Admin API — Users business capability. Self-contained, no shared references.
+    resources:
+    - name: v2-organizations-organizationId-users
+      path: /v2/organizations/{organizationId}/users
+      operations:
+      - name: organizationuserorganizationusersgetv2
+        method: GET
+        description: Docusign Returns information about the users in an organization.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: organizationId
+          in: path
+          type: string
+          description: The organization ID Guid
+          required: true
+        - name: start
+          in: query
+          type: integer
+          description: Index of first item to include in the response. The default value is 0.
+        - name: take
+          in: query
+          type: integer
+          description: Page size of the response. The default value is 20.
+        - name: end
+          in: query
+          type: integer
+          description: Index of the last item to include in the response. Ignored if `take` parameter is specified.
+        - name: email
+          in: query
+          type: string
+          description: Email address of the desired user. At least one of `email`, `account_id` or `organization_reserved_domain_id`
+            must be specified.
+        - name: email_user_name_like
+          in: query
+          type: string
+          description: Selects users by pattern matching on the user's email address
+        - name: status
+          in: query
+          type: string
+          description: Status.
+        - name: membership_status
+          in: query
+          type: string
+          description: 'The user''s membership status. One of:'
+        - name: account_id
+          in: query
+          type: string
+          description: Select users that are members of the specified account. At least one of `email`, `account_id` or `organization_reserved_domain_id`
+            must be specified.
+        - name: organization_reserved_domain_id
+          in: query
+          type: string
+          description: Select users that are in the specified domain. At least one of `email`, `account_id` or `organization_reserved_domain_id`
+            must be specified.
+        - name: last_modified_since
+          in: query
+          type: string
+          description: Select users whose data have been modified since the date specified. `account_id` or `organization_reserved_domain_id`
+            must be specified.
+    - name: v2-organizations-organizationId-users-email_addresses
+      path: /v2/organizations/{organizationId}/users/email_addresses
+      operations:
+      - name: userusersupdateemailaddressesv2
+        method: POST
+        description: Docusign Updates a user's email address.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: organizationId
+          in: path
+          type: string
+          description: The organization ID Guid
+          required: true
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    authentication:
+      type: bearer
+      token: '{{env.DOCUSIGN_API_KEY}}'
+  exposes:
+  - type: rest
+    namespace: admin-users-rest
+    port: 8080
+    description: REST adapter for DocuSign Admin API — Users. One Spectral-compliant resource per consumed operation, prefixed
+      with /v1.
+    resources:
+    - path: /v1/v2/organizations/{organizationid}/users
+      name: v2-organizations-organizationid-users
+      description: REST surface for v2-organizations-organizationId-users.
+      operations:
+      - method: GET
+        name: organizationuserorganizationusersgetv2
+        description: Docusign Returns information about the users in an organization.
+        call: admin-users.organizationuserorganizationusersgetv2
+        with:
+          organizationId: rest.organizationId
+          start: rest.start
+          take: rest.take
+          end: rest.end
+          email: rest.email
+          email_user_name_like: rest.email_user_name_like
+          status: rest.status
+          membership_status: rest.membership_status
+          account_id: rest.account_id
+          organization_reserved_domain_id: rest.organization_reserved_domain_id
+          last_modified_since: rest.last_modified_since
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/v2/organizations/{organizationid}/users/email-addresses
+      name: v2-organizations-organizationid-users-email-addresses
+      description: REST surface for v2-organizations-organizationId-users-email_addresses.
+      operations:
+      - method: POST
+        name: userusersupdateemailaddressesv2
+        description: Docusign Updates a user's email address.
+        call: admin-users.userusersupdateemailaddressesv2
+        with:
+          organizationId: rest.organizationId
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: admin-users-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for DocuSign Admin API — Users. One tool per consumed operation, routed inline through this capability's
+      consumes block.
+    tools:
+    - name: docusign-returns-information-about-users
+      description: Docusign Returns information about the users in an organization.
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: admin-users.organizationuserorganizationusersgetv2
+      with:
+        organizationId: tools.organizationId
+        start: tools.start
+        take: tools.take
+        end: tools.end
+        email: tools.email
+        email_user_name_like: tools.email_user_name_like
+        status: tools.status
+        membership_status: tools.membership_status
+        account_id: tools.account_id
+        organization_reserved_domain_id: tools.organization_reserved_domain_id
+        last_modified_since: tools.last_modified_since
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: docusign-updates-user-s-email-address
+      description: Docusign Updates a user's email address.
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: admin-users.userusersupdateemailaddressesv2
+      with:
+        organizationId: tools.organizationId
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.

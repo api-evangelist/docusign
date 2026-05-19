@@ -1,0 +1,206 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: DocuSign REST API — Authentication
+  description: 'DocuSign REST API — Authentication. 4 operations. Lead operation: Docusign Gets login information for a specified
+    user.. Self-contained Naftiko capability covering one Docusign business surface.'
+  tags:
+  - Docusign
+  - Authentication
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    DOCUSIGN_API_KEY: DOCUSIGN_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: docusign-authentication
+    baseUri: https://www.docusign.net/restapi
+    description: DocuSign REST API — Authentication business capability. Self-contained, no shared references.
+    resources:
+    - name: v2-login_information
+      path: /v2/login_information
+      operations:
+      - name: logininformationgetlogininformation
+        method: GET
+        description: Docusign Gets login information for a specified user.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: api_password
+          in: query
+          type: string
+          description: Reserved for DocuSign.
+        - name: embed_account_id_guid
+          in: query
+          type: string
+        - name: include_account_id_guid
+          in: query
+          type: string
+          description: When set to **true**, shows the account ID GUID in the response.
+        - name: login_settings
+          in: query
+          type: string
+          description: Determines whether login settings are returned in the response.
+    - name: v2-login_information-loginPart
+      path: /v2/login_information/{loginPart}
+      operations:
+      - name: logininformationputlogininformation
+        method: PUT
+        description: Docusign Updates the password for a specified user.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: loginPart
+          in: path
+          type: string
+          description: Currently, only the value **password** is supported.
+          required: true
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: false
+    - name: v2-oauth2-revoke
+      path: /v2/oauth2/revoke
+      operations:
+      - name: oauth2postrevoke
+        method: POST
+        description: Docusign **Deprecated** Revokes an authorization token.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: v2-oauth2-token
+      path: /v2/oauth2/token
+      operations:
+      - name: oauth2posttoken
+        method: POST
+        description: Docusign **Deprecated** Creates an authorization token.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+  exposes:
+  - type: rest
+    namespace: docusign-authentication-rest
+    port: 8080
+    description: REST adapter for DocuSign REST API — Authentication. One Spectral-compliant resource per consumed operation,
+      prefixed with /v1.
+    resources:
+    - path: /v1/v2/login-information
+      name: v2-login-information
+      description: REST surface for v2-login_information.
+      operations:
+      - method: GET
+        name: logininformationgetlogininformation
+        description: Docusign Gets login information for a specified user.
+        call: docusign-authentication.logininformationgetlogininformation
+        with:
+          api_password: rest.api_password
+          embed_account_id_guid: rest.embed_account_id_guid
+          include_account_id_guid: rest.include_account_id_guid
+          login_settings: rest.login_settings
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/v2/login-information/{loginpart}
+      name: v2-login-information-loginpart
+      description: REST surface for v2-login_information-loginPart.
+      operations:
+      - method: PUT
+        name: logininformationputlogininformation
+        description: Docusign Updates the password for a specified user.
+        call: docusign-authentication.logininformationputlogininformation
+        with:
+          loginPart: rest.loginPart
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/v2/oauth2/revoke
+      name: v2-oauth2-revoke
+      description: REST surface for v2-oauth2-revoke.
+      operations:
+      - method: POST
+        name: oauth2postrevoke
+        description: Docusign **Deprecated** Revokes an authorization token.
+        call: docusign-authentication.oauth2postrevoke
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/v2/oauth2/token
+      name: v2-oauth2-token
+      description: REST surface for v2-oauth2-token.
+      operations:
+      - method: POST
+        name: oauth2posttoken
+        description: Docusign **Deprecated** Creates an authorization token.
+        call: docusign-authentication.oauth2posttoken
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: docusign-authentication-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for DocuSign REST API — Authentication. One tool per consumed operation, routed inline through
+      this capability's consumes block.
+    tools:
+    - name: docusign-gets-login-information-specified
+      description: Docusign Gets login information for a specified user.
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: docusign-authentication.logininformationgetlogininformation
+      with:
+        api_password: tools.api_password
+        embed_account_id_guid: tools.embed_account_id_guid
+        include_account_id_guid: tools.include_account_id_guid
+        login_settings: tools.login_settings
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: docusign-updates-password-specified-user
+      description: Docusign Updates the password for a specified user.
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: true
+      call: docusign-authentication.logininformationputlogininformation
+      with:
+        loginPart: tools.loginPart
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: docusign-deprecated-revokes-authorization-token
+      description: Docusign **Deprecated** Revokes an authorization token.
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: docusign-authentication.oauth2postrevoke
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: docusign-deprecated-creates-authorization-token
+      description: Docusign **Deprecated** Creates an authorization token.
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: docusign-authentication.oauth2posttoken
+      outputParameters:
+      - type: object
+        mapping: $.

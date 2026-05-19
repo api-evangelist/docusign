@@ -1,0 +1,213 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: DocuSign Admin API — UserExport
+  description: 'DocuSign Admin API — UserExport. 4 operations. Lead operation: Docusign Returns a list of pending and completed
+    export requests.. Self-contained Naftiko capability covering one Docusign business surface.'
+  tags:
+  - Docusign
+  - UserExport
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    DOCUSIGN_API_KEY: DOCUSIGN_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: admin-userexport
+    baseUri: https://api.docusign.net/Management
+    description: DocuSign Admin API — UserExport business capability. Self-contained, no shared references.
+    resources:
+    - name: v2-organizations-organizationId-exports-user_list
+      path: /v2/organizations/{organizationId}/exports/user_list
+      operations:
+      - name: organizationexportorganizationexportget
+        method: GET
+        description: Docusign Returns a list of pending and completed export requests.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: organizationId
+          in: path
+          type: string
+          description: The organization ID Guid
+          required: true
+      - name: organizationexportorganizationexportinsert
+        method: POST
+        description: Docusign Creates a user list export request.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: organizationId
+          in: path
+          type: string
+          description: The organization ID Guid
+          required: true
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: v2-organizations-organizationId-exports-user_list-exportId
+      path: /v2/organizations/{organizationId}/exports/user_list/{exportId}
+      operations:
+      - name: organizationexportorganizationexportgetbyexportid
+        method: GET
+        description: Docusign Returns the results for single user list export request.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: organizationId
+          in: path
+          type: string
+          description: The organization ID Guid
+          required: true
+        - name: exportId
+          in: path
+          type: string
+          description: The export ID GUID for the request.
+          required: true
+      - name: organizationexportorganizationexportdeletebyexportid
+        method: DELETE
+        description: Docusign Deletes a single user list export request.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: organizationId
+          in: path
+          type: string
+          description: The organization ID Guid
+          required: true
+        - name: exportId
+          in: path
+          type: string
+          description: The export ID GUID for the request.
+          required: true
+    authentication:
+      type: bearer
+      token: '{{env.DOCUSIGN_API_KEY}}'
+  exposes:
+  - type: rest
+    namespace: admin-userexport-rest
+    port: 8080
+    description: REST adapter for DocuSign Admin API — UserExport. One Spectral-compliant resource per consumed operation,
+      prefixed with /v1.
+    resources:
+    - path: /v1/v2/organizations/{organizationid}/exports/user-list
+      name: v2-organizations-organizationid-exports-user-list
+      description: REST surface for v2-organizations-organizationId-exports-user_list.
+      operations:
+      - method: GET
+        name: organizationexportorganizationexportget
+        description: Docusign Returns a list of pending and completed export requests.
+        call: admin-userexport.organizationexportorganizationexportget
+        with:
+          organizationId: rest.organizationId
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: POST
+        name: organizationexportorganizationexportinsert
+        description: Docusign Creates a user list export request.
+        call: admin-userexport.organizationexportorganizationexportinsert
+        with:
+          organizationId: rest.organizationId
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/v2/organizations/{organizationid}/exports/user-list/{exportid}
+      name: v2-organizations-organizationid-exports-user-list-exportid
+      description: REST surface for v2-organizations-organizationId-exports-user_list-exportId.
+      operations:
+      - method: GET
+        name: organizationexportorganizationexportgetbyexportid
+        description: Docusign Returns the results for single user list export request.
+        call: admin-userexport.organizationexportorganizationexportgetbyexportid
+        with:
+          organizationId: rest.organizationId
+          exportId: rest.exportId
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: DELETE
+        name: organizationexportorganizationexportdeletebyexportid
+        description: Docusign Deletes a single user list export request.
+        call: admin-userexport.organizationexportorganizationexportdeletebyexportid
+        with:
+          organizationId: rest.organizationId
+          exportId: rest.exportId
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: admin-userexport-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for DocuSign Admin API — UserExport. One tool per consumed operation, routed inline through this
+      capability's consumes block.
+    tools:
+    - name: docusign-returns-list-pending-and
+      description: Docusign Returns a list of pending and completed export requests.
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: admin-userexport.organizationexportorganizationexportget
+      with:
+        organizationId: tools.organizationId
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: docusign-creates-user-list-export
+      description: Docusign Creates a user list export request.
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: false
+      call: admin-userexport.organizationexportorganizationexportinsert
+      with:
+        organizationId: tools.organizationId
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: docusign-returns-results-single-user
+      description: Docusign Returns the results for single user list export request.
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: admin-userexport.organizationexportorganizationexportgetbyexportid
+      with:
+        organizationId: tools.organizationId
+        exportId: tools.exportId
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: docusign-deletes-single-user-list
+      description: Docusign Deletes a single user list export request.
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: admin-userexport.organizationexportorganizationexportdeletebyexportid
+      with:
+        organizationId: tools.organizationId
+        exportId: tools.exportId
+      outputParameters:
+      - type: object
+        mapping: $.

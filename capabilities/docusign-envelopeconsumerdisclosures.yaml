@@ -1,0 +1,166 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: DocuSign REST API — EnvelopeConsumerDisclosures
+  description: 'DocuSign REST API — EnvelopeConsumerDisclosures. 2 operations. Lead operation: Docusign Gets the Electronic
+    Record and Signature Disclosure associated with the account.. Self-contained Naftiko capability covering one Docusign
+    business surface.'
+  tags:
+  - Docusign
+  - EnvelopeConsumerDisclosures
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    DOCUSIGN_API_KEY: DOCUSIGN_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: docusign-envelopeconsumerdisclosures
+    baseUri: https://www.docusign.net/restapi
+    description: DocuSign REST API — EnvelopeConsumerDisclosures business capability. Self-contained, no shared references.
+    resources:
+    - name: v2-accounts-accountId-envelopes-envelopeId-recipients-recipientId-consumer_discl
+      path: /v2/accounts/{accountId}/envelopes/{envelopeId}/recipients/{recipientId}/consumer_disclosure
+      operations:
+      - name: consumerdisclosuregetconsumerdisclosureenvelopeidrecipientid
+        method: GET
+        description: Docusign Gets the Electronic Record and Signature Disclosure associated with the account.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: accountId
+          in: path
+          type: string
+          description: The external account number (int) or account id GUID.
+          required: true
+        - name: envelopeId
+          in: path
+          type: string
+          description: The envelope's GUID. Eg 93be49ab-afa0-4adf-933c-f752070d71ec
+          required: true
+        - name: recipientId
+          in: path
+          type: string
+          description: A local reference that senders use to map recipients to other objects, such as specific document tabs.
+            Within an envelope, each `recipientId` must be unique, bu
+          required: true
+        - name: langCode
+          in: query
+          type: string
+    - name: v2-accounts-accountId-envelopes-envelopeId-recipients-recipientId-consumer_discl
+      path: /v2/accounts/{accountId}/envelopes/{envelopeId}/recipients/{recipientId}/consumer_disclosure/{langCode}
+      operations:
+      - name: consumerdisclosuregetconsumerdisclosureenvelopeidrecipientidlangcode
+        method: GET
+        description: 'Docusign Reserved: Gets the Electronic Record and Signature Disclosure associated with the account.'
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: accountId
+          in: path
+          type: string
+          description: The external account number (int) or account id GUID.
+          required: true
+        - name: envelopeId
+          in: path
+          type: string
+          description: The envelope's GUID. Eg 93be49ab-afa0-4adf-933c-f752070d71ec
+          required: true
+        - name: langCode
+          in: path
+          type: string
+          description: The simple type enumeration the language used in the response. The supported languages, with the language
+            value shown in parenthesis, are:Arabic (ar), Bulgarian
+          required: true
+        - name: recipientId
+          in: path
+          type: string
+          description: A local reference that senders use to map recipients to other objects, such as specific document tabs.
+            Within an envelope, each `recipientId` must be unique, bu
+          required: true
+        - name: langCode
+          in: query
+          type: string
+  exposes:
+  - type: rest
+    namespace: docusign-envelopeconsumerdisclosures-rest
+    port: 8080
+    description: REST adapter for DocuSign REST API — EnvelopeConsumerDisclosures. One Spectral-compliant resource per consumed
+      operation, prefixed with /v1.
+    resources:
+    - path: /v1/v2/accounts/{accountid}/envelopes/{envelopeid}/recipients/{recipientid}/consumer-disclosure
+      name: v2-accounts-accountid-envelopes-envelopeid-recipients-recipientid-consumer-discl
+      description: REST surface for v2-accounts-accountId-envelopes-envelopeId-recipients-recipientId-consumer_discl.
+      operations:
+      - method: GET
+        name: consumerdisclosuregetconsumerdisclosureenvelopeidrecipientid
+        description: Docusign Gets the Electronic Record and Signature Disclosure associated with the account.
+        call: docusign-envelopeconsumerdisclosures.consumerdisclosuregetconsumerdisclosureenvelopeidrecipientid
+        with:
+          accountId: rest.accountId
+          envelopeId: rest.envelopeId
+          recipientId: rest.recipientId
+          langCode: rest.langCode
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/v2/accounts/{accountid}/envelopes/{envelopeid}/recipients/{recipientid}/consumer-disclosure/{langcode}
+      name: v2-accounts-accountid-envelopes-envelopeid-recipients-recipientid-consumer-discl
+      description: REST surface for v2-accounts-accountId-envelopes-envelopeId-recipients-recipientId-consumer_discl.
+      operations:
+      - method: GET
+        name: consumerdisclosuregetconsumerdisclosureenvelopeidrecipientidlangcode
+        description: 'Docusign Reserved: Gets the Electronic Record and Signature Disclosure associated with the account.'
+        call: docusign-envelopeconsumerdisclosures.consumerdisclosuregetconsumerdisclosureenvelopeidrecipientidlangcode
+        with:
+          accountId: rest.accountId
+          envelopeId: rest.envelopeId
+          langCode: rest.langCode
+          recipientId: rest.recipientId
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: docusign-envelopeconsumerdisclosures-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for DocuSign REST API — EnvelopeConsumerDisclosures. One tool per consumed operation, routed
+      inline through this capability's consumes block.
+    tools:
+    - name: docusign-gets-electronic-record-and
+      description: Docusign Gets the Electronic Record and Signature Disclosure associated with the account.
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: docusign-envelopeconsumerdisclosures.consumerdisclosuregetconsumerdisclosureenvelopeidrecipientid
+      with:
+        accountId: tools.accountId
+        envelopeId: tools.envelopeId
+        recipientId: tools.recipientId
+        langCode: tools.langCode
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: docusign-reserved-gets-electronic-record
+      description: 'Docusign Reserved: Gets the Electronic Record and Signature Disclosure associated with the account.'
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: docusign-envelopeconsumerdisclosures.consumerdisclosuregetconsumerdisclosureenvelopeidrecipientidlangcode
+      with:
+        accountId: tools.accountId
+        envelopeId: tools.envelopeId
+        langCode: tools.langCode
+        recipientId: tools.recipientId
+      outputParameters:
+      - type: object
+        mapping: $.

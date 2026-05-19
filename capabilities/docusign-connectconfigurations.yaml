@@ -1,0 +1,337 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: DocuSign REST API — ConnectConfigurations
+  description: 'DocuSign REST API — ConnectConfigurations. 6 operations. Lead operation: Docusign Get Connect Configuration
+    Information. Self-contained Naftiko capability covering one Docusign business surface.'
+  tags:
+  - Docusign
+  - ConnectConfigurations
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    DOCUSIGN_API_KEY: DOCUSIGN_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: docusign-connectconfigurations
+    baseUri: https://www.docusign.net/restapi
+    description: DocuSign REST API — ConnectConfigurations business capability. Self-contained, no shared references.
+    resources:
+    - name: v2-accounts-accountId-connect
+      path: /v2/accounts/{accountId}/connect
+      operations:
+      - name: connectgetconnectconfigs
+        method: GET
+        description: Docusign Get Connect Configuration Information
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: accountId
+          in: path
+          type: string
+          description: The external account number (int) or account id GUID.
+          required: true
+      - name: connectputconnectconfiguration
+        method: PUT
+        description: Docusign Updates a specified Connect configuration.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: accountId
+          in: path
+          type: string
+          description: The external account number (int) or account id GUID.
+          required: true
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: false
+      - name: connectpostconnectconfiguration
+        method: POST
+        description: Docusign Creates a connect configuration for the specified account.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: accountId
+          in: path
+          type: string
+          description: The external account number (int) or account id GUID.
+          required: true
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: false
+    - name: v2-accounts-accountId-connect-connectId
+      path: /v2/accounts/{accountId}/connect/{connectId}
+      operations:
+      - name: connectgetconnectconfig
+        method: GET
+        description: Docusign Get information on a Connect Configuration
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: accountId
+          in: path
+          type: string
+          description: The external account number (int) or account id GUID.
+          required: true
+        - name: connectId
+          in: path
+          type: string
+          description: The ID of the custom Connect configuration being accessed.
+          required: true
+      - name: connectdeleteconnectconfig
+        method: DELETE
+        description: Docusign Deletes the specified connect configuration.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: accountId
+          in: path
+          type: string
+          description: The external account number (int) or account id GUID.
+          required: true
+        - name: connectId
+          in: path
+          type: string
+          description: The ID of the custom Connect configuration being accessed.
+          required: true
+    - name: v2-accounts-accountId-connect-connectId-users
+      path: /v2/accounts/{accountId}/connect/{connectId}/users
+      operations:
+      - name: connectgetconnectusers
+        method: GET
+        description: Docusign Returns users from the configured Connect service.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: accountId
+          in: path
+          type: string
+          description: The external account number (int) or account id GUID.
+          required: true
+        - name: connectId
+          in: path
+          type: string
+          description: The ID of the custom Connect configuration being accessed.
+          required: true
+        - name: count
+          in: query
+          type: string
+          description: Optional. Number of items to return.
+        - name: email_substring
+          in: query
+          type: string
+          description: Filters the returned user records by the email address or a sub-string of email address.
+        - name: list_included_users
+          in: query
+          type: string
+        - name: start_position
+          in: query
+          type: string
+          description: The position within the total result set from which to start returning values. The value **thumbnail**
+            may be used to return the page image.
+        - name: status
+          in: query
+          type: string
+          description: Filters the results by user status.
+        - name: user_name_substring
+          in: query
+          type: string
+          description: Filters the user records returned by the user name or a sub-string of user name.
+  exposes:
+  - type: rest
+    namespace: docusign-connectconfigurations-rest
+    port: 8080
+    description: REST adapter for DocuSign REST API — ConnectConfigurations. One Spectral-compliant resource per consumed
+      operation, prefixed with /v1.
+    resources:
+    - path: /v1/v2/accounts/{accountid}/connect
+      name: v2-accounts-accountid-connect
+      description: REST surface for v2-accounts-accountId-connect.
+      operations:
+      - method: GET
+        name: connectgetconnectconfigs
+        description: Docusign Get Connect Configuration Information
+        call: docusign-connectconfigurations.connectgetconnectconfigs
+        with:
+          accountId: rest.accountId
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: PUT
+        name: connectputconnectconfiguration
+        description: Docusign Updates a specified Connect configuration.
+        call: docusign-connectconfigurations.connectputconnectconfiguration
+        with:
+          accountId: rest.accountId
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: POST
+        name: connectpostconnectconfiguration
+        description: Docusign Creates a connect configuration for the specified account.
+        call: docusign-connectconfigurations.connectpostconnectconfiguration
+        with:
+          accountId: rest.accountId
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/v2/accounts/{accountid}/connect/{connectid}
+      name: v2-accounts-accountid-connect-connectid
+      description: REST surface for v2-accounts-accountId-connect-connectId.
+      operations:
+      - method: GET
+        name: connectgetconnectconfig
+        description: Docusign Get information on a Connect Configuration
+        call: docusign-connectconfigurations.connectgetconnectconfig
+        with:
+          accountId: rest.accountId
+          connectId: rest.connectId
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: DELETE
+        name: connectdeleteconnectconfig
+        description: Docusign Deletes the specified connect configuration.
+        call: docusign-connectconfigurations.connectdeleteconnectconfig
+        with:
+          accountId: rest.accountId
+          connectId: rest.connectId
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/v2/accounts/{accountid}/connect/{connectid}/users
+      name: v2-accounts-accountid-connect-connectid-users
+      description: REST surface for v2-accounts-accountId-connect-connectId-users.
+      operations:
+      - method: GET
+        name: connectgetconnectusers
+        description: Docusign Returns users from the configured Connect service.
+        call: docusign-connectconfigurations.connectgetconnectusers
+        with:
+          accountId: rest.accountId
+          connectId: rest.connectId
+          count: rest.count
+          email_substring: rest.email_substring
+          list_included_users: rest.list_included_users
+          start_position: rest.start_position
+          status: rest.status
+          user_name_substring: rest.user_name_substring
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: docusign-connectconfigurations-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for DocuSign REST API — ConnectConfigurations. One tool per consumed operation, routed inline
+      through this capability's consumes block.
+    tools:
+    - name: docusign-get-connect-configuration-information
+      description: Docusign Get Connect Configuration Information
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: docusign-connectconfigurations.connectgetconnectconfigs
+      with:
+        accountId: tools.accountId
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: docusign-updates-specified-connect-configuration
+      description: Docusign Updates a specified Connect configuration.
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: true
+      call: docusign-connectconfigurations.connectputconnectconfiguration
+      with:
+        accountId: tools.accountId
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: docusign-creates-connect-configuration-specified
+      description: Docusign Creates a connect configuration for the specified account.
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: docusign-connectconfigurations.connectpostconnectconfiguration
+      with:
+        accountId: tools.accountId
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: docusign-get-information-connect-configuration
+      description: Docusign Get information on a Connect Configuration
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: docusign-connectconfigurations.connectgetconnectconfig
+      with:
+        accountId: tools.accountId
+        connectId: tools.connectId
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: docusign-deletes-specified-connect-configuration
+      description: Docusign Deletes the specified connect configuration.
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: docusign-connectconfigurations.connectdeleteconnectconfig
+      with:
+        accountId: tools.accountId
+        connectId: tools.connectId
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: docusign-returns-users-configured-connect
+      description: Docusign Returns users from the configured Connect service.
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: docusign-connectconfigurations.connectgetconnectusers
+      with:
+        accountId: tools.accountId
+        connectId: tools.connectId
+        count: tools.count
+        email_substring: tools.email_substring
+        list_included_users: tools.list_included_users
+        start_position: tools.start_position
+        status: tools.status
+        user_name_substring: tools.user_name_substring
+      outputParameters:
+      - type: object
+        mapping: $.

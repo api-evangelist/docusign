@@ -1,0 +1,91 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: DocuSign REST API — ResponsiveHtmlPreview
+  description: 'DocuSign REST API — ResponsiveHtmlPreview. 1 operations. Lead operation: ResponsiveHtmlPreview. Self-contained
+    Naftiko capability covering one Docusign business surface.'
+  tags:
+  - Docusign
+  - ResponsiveHtmlPreview
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    DOCUSIGN_API_KEY: DOCUSIGN_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: docusign-responsivehtmlpreview
+    baseUri: https://www.docusign.net/restapi
+    description: DocuSign REST API — ResponsiveHtmlPreview business capability. Self-contained, no shared references.
+    resources:
+    - name: v2-accounts-accountId-envelopes-envelopeId-responsive_html_preview
+      path: /v2/accounts/{accountId}/envelopes/{envelopeId}/responsive_html_preview
+      operations:
+      - name: responsivehtmlpostresponsivehtmlpreview
+        method: POST
+        description: ''
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: accountId
+          in: path
+          type: string
+          description: The external account number (int) or account id GUID.
+          required: true
+        - name: envelopeId
+          in: path
+          type: string
+          description: The envelope's GUID. Eg 93be49ab-afa0-4adf-933c-f752070d71ec
+          required: true
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: false
+  exposes:
+  - type: rest
+    namespace: docusign-responsivehtmlpreview-rest
+    port: 8080
+    description: REST adapter for DocuSign REST API — ResponsiveHtmlPreview. One Spectral-compliant resource per consumed
+      operation, prefixed with /v1.
+    resources:
+    - path: /v1/v2/accounts/{accountid}/envelopes/{envelopeid}/responsive-html-preview
+      name: v2-accounts-accountid-envelopes-envelopeid-responsive-html-preview
+      description: REST surface for v2-accounts-accountId-envelopes-envelopeId-responsive_html_preview.
+      operations:
+      - method: POST
+        name: responsivehtmlpostresponsivehtmlpreview
+        description: responsivehtmlpostresponsivehtmlpreview
+        call: docusign-responsivehtmlpreview.responsivehtmlpostresponsivehtmlpreview
+        with:
+          accountId: rest.accountId
+          envelopeId: rest.envelopeId
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: docusign-responsivehtmlpreview-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for DocuSign REST API — ResponsiveHtmlPreview. One tool per consumed operation, routed inline
+      through this capability's consumes block.
+    tools:
+    - name: responsivehtmlpostresponsivehtmlpreview
+      description: responsivehtmlpostresponsivehtmlpreview
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: docusign-responsivehtmlpreview.responsivehtmlpostresponsivehtmlpreview
+      with:
+        accountId: tools.accountId
+        envelopeId: tools.envelopeId
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.

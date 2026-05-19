@@ -1,0 +1,94 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: DocuSign Rooms API - v2 — TaskListTemplates
+  description: 'DocuSign Rooms API - v2 — TaskListTemplates. 1 operations. Lead operation: Docusign Gets task list templates..
+    Self-contained Naftiko capability covering one Docusign business surface.'
+  tags:
+  - Docusign
+  - TaskListTemplates
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    DOCUSIGN_API_KEY: DOCUSIGN_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: rooms-tasklisttemplates
+    baseUri: https://rooms.docusign.com/restapi
+    description: DocuSign Rooms API - v2 — TaskListTemplates business capability. Self-contained, no shared references.
+    resources:
+    - name: v2-accounts-accountId-task_list_templates
+      path: /v2/accounts/{accountId}/task_list_templates
+      operations:
+      - name: tasklisttemplatesgettasklisttemplates
+        method: GET
+        description: Docusign Gets task list templates.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: startPosition
+          in: query
+          type: integer
+          description: The starting zero-based index position from which to start returning values. The default is `0`.
+        - name: count
+          in: query
+          type: integer
+          description: The number of results to return. This value must be a number between `1` and `100` (default).
+        - name: accountId
+          in: path
+          type: string
+          description: The globally unique identifier (GUID) for the account.
+          required: true
+    authentication:
+      type: apikey
+      key: Authorization
+      value: '{{env.DOCUSIGN_API_KEY}}'
+      placement: header
+  exposes:
+  - type: rest
+    namespace: rooms-tasklisttemplates-rest
+    port: 8080
+    description: REST adapter for DocuSign Rooms API - v2 — TaskListTemplates. One Spectral-compliant resource per consumed
+      operation, prefixed with /v1.
+    resources:
+    - path: /v1/v2/accounts/{accountid}/task-list-templates
+      name: v2-accounts-accountid-task-list-templates
+      description: REST surface for v2-accounts-accountId-task_list_templates.
+      operations:
+      - method: GET
+        name: tasklisttemplatesgettasklisttemplates
+        description: Docusign Gets task list templates.
+        call: rooms-tasklisttemplates.tasklisttemplatesgettasklisttemplates
+        with:
+          startPosition: rest.startPosition
+          count: rest.count
+          accountId: rest.accountId
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: rooms-tasklisttemplates-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for DocuSign Rooms API - v2 — TaskListTemplates. One tool per consumed operation, routed inline
+      through this capability's consumes block.
+    tools:
+    - name: docusign-gets-task-list-templates
+      description: Docusign Gets task list templates.
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: rooms-tasklisttemplates.tasklisttemplatesgettasklisttemplates
+      with:
+        startPosition: tools.startPosition
+        count: tools.count
+        accountId: tools.accountId
+      outputParameters:
+      - type: object
+        mapping: $.

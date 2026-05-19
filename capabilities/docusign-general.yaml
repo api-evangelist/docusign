@@ -1,0 +1,66 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: DocuSign REST API
+  description: 'DocuSign REST API. 1 operations. Lead operation: Docusign Retrieves the available REST API versions.. Self-contained
+    Naftiko capability covering one Docusign business surface.'
+  tags:
+  - Docusign
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    DOCUSIGN_API_KEY: DOCUSIGN_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: docusign-general
+    baseUri: https://www.docusign.net/restapi
+    description: DocuSign REST API business capability. Self-contained, no shared references.
+    resources:
+    - name: service_information
+      path: /service_information
+      operations:
+      - name: serviceinformationgetserviceinformation
+        method: GET
+        description: Docusign Retrieves the available REST API versions.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+  exposes:
+  - type: rest
+    namespace: docusign-general-rest
+    port: 8080
+    description: REST adapter for DocuSign REST API. One Spectral-compliant resource per consumed operation, prefixed with
+      /v1.
+    resources:
+    - path: /v1/service-information
+      name: service-information
+      description: REST surface for service_information.
+      operations:
+      - method: GET
+        name: serviceinformationgetserviceinformation
+        description: Docusign Retrieves the available REST API versions.
+        call: docusign-general.serviceinformationgetserviceinformation
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: docusign-general-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for DocuSign REST API. One tool per consumed operation, routed inline through this capability's
+      consumes block.
+    tools:
+    - name: docusign-retrieves-available-rest-api
+      description: Docusign Retrieves the available REST API versions.
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: docusign-general.serviceinformationgetserviceinformation
+      outputParameters:
+      - type: object
+        mapping: $.

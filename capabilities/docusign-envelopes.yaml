@@ -1,0 +1,1217 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: DocuSign REST API — Envelopes
+  description: 'DocuSign REST API — Envelopes. 17 operations. Lead operation: Docusign Gets status changes for one or more
+    envelopes.. Self-contained Naftiko capability covering one Docusign business surface.'
+  tags:
+  - Docusign
+  - Envelopes
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    DOCUSIGN_API_KEY: DOCUSIGN_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: docusign-envelopes
+    baseUri: https://www.docusign.net/restapi
+    description: DocuSign REST API — Envelopes business capability. Self-contained, no shared references.
+    resources:
+    - name: v2-accounts-accountId-envelopes
+      path: /v2/accounts/{accountId}/envelopes
+      operations:
+      - name: envelopesgetenvelopes
+        method: GET
+        description: Docusign Gets status changes for one or more envelopes.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: accountId
+          in: path
+          type: string
+          description: The external account number (int) or account id GUID.
+          required: true
+        - name: ac_status
+          in: query
+          type: string
+          description: 'Specifies the Authoritative Copy Status for the envelopes. The possible values are: Unknown, Original,
+            Transferred, AuthoritativeCopy, AuthoritativeCopyExportPe'
+        - name: block
+          in: query
+          type: string
+          description: Reserved for DocuSign.
+        - name: count
+          in: query
+          type: string
+          description: Optional. Number of items to return. Currently there is no implicit maximum limit of the number of
+            items that can be returned.
+        - name: custom_field
+          in: query
+          type: string
+          description: 'Optional. Specifies a envelope custom field name and value searched for in the envelopes. Format:
+            `custom_envelope_field_name=desired_value`'
+        - name: email
+          in: query
+          type: string
+          description: Limit results to envelopes
+        - name: envelope_ids
+          in: query
+          type: string
+          description: Comma separated list of `envelopeId` values.
+        - name: from_date
+          in: query
+          type: string
+          description: Specifies the date and time
+        - name: from_to_status
+          in: query
+          type: string
+          description: 'The status value checked for in the `from_date` to `to_date` time period. '
+        - name: start_position
+          in: query
+          type: string
+          description: This value is supported and currently has no implicit maximum items.
+        - name: status
+          in: query
+          type: string
+          description: 'A comma-separated list of current envelope statuses to included in the response. Possible values are:'
+        - name: to_date
+          in: query
+          type: string
+          description: Specifies the date and time
+        - name: transaction_ids
+          in: query
+          type: string
+          description: A comma-separated list of envelope transaction IDs.
+        - name: user_name
+          in: query
+          type: string
+          description: Limit results to envelopes
+      - name: envelopespostenvelopes
+        method: POST
+        description: Docusign Creates an envelope.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: accountId
+          in: path
+          type: string
+          description: The external account number (int) or account id GUID.
+          required: true
+        - name: cdse_mode
+          in: query
+          type: string
+          description: Reserved for DocuSign.
+        - name: change_routing_order
+          in: query
+          type: string
+          description: When true, users can define the routing order of recipients while sending documents for signature.
+        - name: completed_documents_only
+          in: query
+          type: string
+          description: Reserved for DocuSign.
+        - name: merge_roles_on_draft
+          in: query
+          type: string
+          description: When set to **true**, template roles will be merged, and empty recipients will be removed. This parameter
+            applies when you create a draft envelope with multiple
+        - name: tab_label_exact_matches
+          in: query
+          type: string
+          description: Reserved for DocuSign.
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: false
+    - name: v2-accounts-accountId-envelopes-status
+      path: /v2/accounts/{accountId}/envelopes/status
+      operations:
+      - name: envelopesputstatus
+        method: PUT
+        description: Docusign Gets the envelope status for the specified envelopes.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: accountId
+          in: path
+          type: string
+          description: The external account number (int) or account id GUID.
+          required: true
+        - name: ac_status
+          in: query
+          type: string
+          description: 'Specifies the Authoritative Copy Status for the envelopes. The possible values are: Unknown, Original,
+            Transferred, AuthoritativeCopy, AuthoritativeCopyExportPe'
+        - name: block
+          in: query
+          type: string
+          description: Reserved for DocuSign.
+        - name: count
+          in: query
+          type: string
+          description: The maximum number of results to be returned by this request.
+        - name: email
+          in: query
+          type: string
+          description: Reserved for DocuSign.
+        - name: envelope_ids
+          in: query
+          type: string
+          description: Comma separated list of `envelopeId` values.
+        - name: from_date
+          in: query
+          type: string
+          description: The date/time setting that specifies when the request begins checking for status changes for envelopes
+            in the account. This is required unless parameters `envel
+        - name: from_to_status
+          in: query
+          type: string
+          description: 'The status value checked for in the `from_date` to `to_date` time period. '
+        - name: start_position
+          in: query
+          type: string
+          description: Reserved for DocuSign.
+        - name: status
+          in: query
+          type: string
+          description: Item status. <!-- TODO -->
+        - name: to_date
+          in: query
+          type: string
+          description: Optional date/time setting
+        - name: transaction_ids
+          in: query
+          type: string
+          description: A comma-separated list of envelope transaction IDs.
+        - name: user_name
+          in: query
+          type: string
+          description: Limit results to envelopes
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: false
+    - name: v2-accounts-accountId-envelopes-envelopeId
+      path: /v2/accounts/{accountId}/envelopes/{envelopeId}
+      operations:
+      - name: envelopesgetenvelope
+        method: GET
+        description: Docusign Gets the status of a single envelope.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: accountId
+          in: path
+          type: string
+          description: The external account number (int) or account id GUID.
+          required: true
+        - name: envelopeId
+          in: path
+          type: string
+          description: The envelope's GUID. Eg 93be49ab-afa0-4adf-933c-f752070d71ec
+          required: true
+        - name: advanced_update
+          in: query
+          type: string
+          description: When true, envelope information can be added or modified.
+        - name: include
+          in: query
+          type: string
+          description: Reserved for DocuSign.
+      - name: envelopesputenvelope
+        method: PUT
+        description: Docusign Send, void, or modify a draft envelope. Purge documents from a completed envelope.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: accountId
+          in: path
+          type: string
+          description: The external account number (int) or account id GUID.
+          required: true
+        - name: envelopeId
+          in: path
+          type: string
+          description: The envelope's GUID. Eg 93be49ab-afa0-4adf-933c-f752070d71ec
+          required: true
+        - name: advanced_update
+          in: query
+          type: string
+          description: When set to **true**, allows the caller to update recipients, tabs, custom fields, notification, email
+            settings and other envelope attributes.
+        - name: resend_envelope
+          in: query
+          type: string
+          description: When set to **true**, sends the specified envelope again.
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: false
+    - name: v2-accounts-accountId-envelopes-envelopeId-audit_events
+      path: /v2/accounts/{accountId}/envelopes/{envelopeId}/audit_events
+      operations:
+      - name: auditeventsgetauditevents
+        method: GET
+        description: Docusign Gets the envelope audit events for an envelope.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: accountId
+          in: path
+          type: string
+          description: The external account number (int) or account id GUID.
+          required: true
+        - name: envelopeId
+          in: path
+          type: string
+          description: The envelope's GUID. Eg 93be49ab-afa0-4adf-933c-f752070d71ec
+          required: true
+    - name: v2-accounts-accountId-envelopes-envelopeId-documents-documentId-pages
+      path: /v2/accounts/{accountId}/envelopes/{envelopeId}/documents/{documentId}/pages
+      operations:
+      - name: pagesgetpageimages
+        method: GET
+        description: Docusign Returns document page image(s) based on input.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: accountId
+          in: path
+          type: string
+          description: The external account number (int) or account id GUID.
+          required: true
+        - name: documentId
+          in: path
+          type: string
+          description: The ID of the document being accessed.
+          required: true
+        - name: envelopeId
+          in: path
+          type: string
+          description: The envelope's GUID. Eg 93be49ab-afa0-4adf-933c-f752070d71ec
+          required: true
+        - name: count
+          in: query
+          type: string
+          description: The maximum number of results to be returned by this request.
+        - name: dpi
+          in: query
+          type: string
+          description: Number of dots per inch for the resulting image. The default if not used is 94. The range is 1-310.
+        - name: max_height
+          in: query
+          type: string
+          description: Sets the maximum height (in pixels) of the returned image.
+        - name: max_width
+          in: query
+          type: string
+          description: Sets the maximum width (in pixels) of the returned image.
+        - name: nocache
+          in: query
+          type: string
+        - name: show_changes
+          in: query
+          type: string
+        - name: start_position
+          in: query
+          type: string
+          description: The position within the total result set from which to start returning values. The value **thumbnail**
+            may be used to return the page image.
+    - name: v2-accounts-accountId-envelopes-envelopeId-documents-documentId-pages-pageNumber
+      path: /v2/accounts/{accountId}/envelopes/{envelopeId}/documents/{documentId}/pages/{pageNumber}
+      operations:
+      - name: pagesdeletepage
+        method: DELETE
+        description: Docusign Deletes a page from a document in an envelope.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: accountId
+          in: path
+          type: string
+          description: The external account number (int) or account id GUID.
+          required: true
+        - name: documentId
+          in: path
+          type: string
+          description: The ID of the document being accessed.
+          required: true
+        - name: envelopeId
+          in: path
+          type: string
+          description: The envelope's GUID. Eg 93be49ab-afa0-4adf-933c-f752070d71ec
+          required: true
+        - name: pageNumber
+          in: path
+          type: string
+          description: The page number being accessed.
+          required: true
+    - name: v2-accounts-accountId-envelopes-envelopeId-documents-documentId-pages-pageNumber
+      path: /v2/accounts/{accountId}/envelopes/{envelopeId}/documents/{documentId}/pages/{pageNumber}/page_image
+      operations:
+      - name: pagesgetpageimage
+        method: GET
+        description: Docusign Gets a page image from an envelope for display.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: accountId
+          in: path
+          type: string
+          description: The external account number (int) or account id GUID.
+          required: true
+        - name: documentId
+          in: path
+          type: string
+          description: The ID of the document being accessed.
+          required: true
+        - name: envelopeId
+          in: path
+          type: string
+          description: The envelope's GUID. Eg 93be49ab-afa0-4adf-933c-f752070d71ec
+          required: true
+        - name: pageNumber
+          in: path
+          type: string
+          description: The page number being accessed.
+          required: true
+        - name: dpi
+          in: query
+          type: string
+          description: Sets the dpi for the image.
+        - name: max_height
+          in: query
+          type: string
+          description: Sets the maximum height for the page image in pixels. The dpi is recalculated based on this setting.
+        - name: max_width
+          in: query
+          type: string
+          description: Sets the maximum width for the page image in pixels. The dpi is recalculated based on this setting.
+        - name: show_changes
+          in: query
+          type: string
+      - name: pagesputpageimage
+        method: PUT
+        description: Docusign Rotates page image from an envelope for display.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: accountId
+          in: path
+          type: string
+          description: The external account number (int) or account id GUID.
+          required: true
+        - name: documentId
+          in: path
+          type: string
+          description: The ID of the document being accessed.
+          required: true
+        - name: envelopeId
+          in: path
+          type: string
+          description: The envelope's GUID. Eg 93be49ab-afa0-4adf-933c-f752070d71ec
+          required: true
+        - name: pageNumber
+          in: path
+          type: string
+          description: The page number being accessed.
+          required: true
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: false
+    - name: v2-accounts-accountId-envelopes-envelopeId-notification
+      path: /v2/accounts/{accountId}/envelopes/{envelopeId}/notification
+      operations:
+      - name: notificationgetenvelopesenvelopeidnotification
+        method: GET
+        description: Docusign Gets envelope notification information.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: accountId
+          in: path
+          type: string
+          description: The external account number (int) or account id GUID.
+          required: true
+        - name: envelopeId
+          in: path
+          type: string
+          description: The envelope's GUID. Eg 93be49ab-afa0-4adf-933c-f752070d71ec
+          required: true
+      - name: notificationputenvelopesenvelopeidnotification
+        method: PUT
+        description: Docusign Sets envelope notification (Reminders/Expirations) structure for an existing envelope.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: accountId
+          in: path
+          type: string
+          description: The external account number (int) or account id GUID.
+          required: true
+        - name: envelopeId
+          in: path
+          type: string
+          description: The envelope's GUID. Eg 93be49ab-afa0-4adf-933c-f752070d71ec
+          required: true
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: false
+    - name: v2-accounts-accountId-envelopes-envelopeId-recipients-recipientId-initials_image
+      path: /v2/accounts/{accountId}/envelopes/{envelopeId}/recipients/{recipientId}/initials_image
+      operations:
+      - name: recipientsgetrecipientinitialsimage
+        method: GET
+        description: Docusign Gets the initials image for a user.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: accountId
+          in: path
+          type: string
+          description: The external account number (int) or account id GUID.
+          required: true
+        - name: envelopeId
+          in: path
+          type: string
+          description: The envelope's GUID. Eg 93be49ab-afa0-4adf-933c-f752070d71ec
+          required: true
+        - name: recipientId
+          in: path
+          type: string
+          description: A local reference that senders use to map recipients to other objects, such as specific document tabs.
+            Within an envelope, each `recipientId` must be unique, bu
+          required: true
+        - name: include_chrome
+          in: query
+          type: string
+          description: 'The added line and identifier around the initial image. Note: Older envelopes might only have chromed
+            images. If getting the non-chromed image fails, try gettin'
+      - name: recipientsputrecipientinitialsimage
+        method: PUT
+        description: Docusign Sets the initials image for an accountless signer.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: accountId
+          in: path
+          type: string
+          description: The external account number (int) or account id GUID.
+          required: true
+        - name: envelopeId
+          in: path
+          type: string
+          description: The envelope's GUID. Eg 93be49ab-afa0-4adf-933c-f752070d71ec
+          required: true
+        - name: recipientId
+          in: path
+          type: string
+          description: A local reference that senders use to map recipients to other objects, such as specific document tabs.
+            Within an envelope, each `recipientId` must be unique, bu
+          required: true
+    - name: v2-accounts-accountId-envelopes-envelopeId-recipients-recipientId-signature
+      path: /v2/accounts/{accountId}/envelopes/{envelopeId}/recipients/{recipientId}/signature
+      operations:
+      - name: recipientsgetrecipientsignature
+        method: GET
+        description: Docusign Gets signature information for a signer or sign-in-person recipient.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: accountId
+          in: path
+          type: string
+          description: The external account number (int) or account id GUID.
+          required: true
+        - name: envelopeId
+          in: path
+          type: string
+          description: The envelope's GUID. Eg 93be49ab-afa0-4adf-933c-f752070d71ec
+          required: true
+        - name: recipientId
+          in: path
+          type: string
+          description: A local reference that senders use to map recipients to other objects, such as specific document tabs.
+            Within an envelope, each `recipientId` must be unique, bu
+          required: true
+    - name: v2-accounts-accountId-envelopes-envelopeId-recipients-recipientId-signature_imag
+      path: /v2/accounts/{accountId}/envelopes/{envelopeId}/recipients/{recipientId}/signature_image
+      operations:
+      - name: recipientsgetrecipientsignatureimage
+        method: GET
+        description: Docusign Retrieve signature image information for a signer/sign-in-person recipient.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: accountId
+          in: path
+          type: string
+          description: The external account number (int) or account id GUID.
+          required: true
+        - name: envelopeId
+          in: path
+          type: string
+          description: The envelope's GUID. Eg 93be49ab-afa0-4adf-933c-f752070d71ec
+          required: true
+        - name: recipientId
+          in: path
+          type: string
+          description: A local reference that senders use to map recipients to other objects, such as specific document tabs.
+            Within an envelope, each `recipientId` must be unique, bu
+          required: true
+        - name: include_chrome
+          in: query
+          type: string
+          description: When set to **true**, indicates the chromed version of the signature image should be retrieved.
+      - name: recipientsputrecipientsignatureimage
+        method: PUT
+        description: Docusign Sets the signature image for an accountless signer.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: accountId
+          in: path
+          type: string
+          description: The external account number (int) or account id GUID.
+          required: true
+        - name: envelopeId
+          in: path
+          type: string
+          description: The envelope's GUID. Eg 93be49ab-afa0-4adf-933c-f752070d71ec
+          required: true
+        - name: recipientId
+          in: path
+          type: string
+          description: A local reference that senders use to map recipients to other objects, such as specific document tabs.
+            Within an envelope, each `recipientId` must be unique, bu
+          required: true
+  exposes:
+  - type: rest
+    namespace: docusign-envelopes-rest
+    port: 8080
+    description: REST adapter for DocuSign REST API — Envelopes. One Spectral-compliant resource per consumed operation, prefixed
+      with /v1.
+    resources:
+    - path: /v1/v2/accounts/{accountid}/envelopes
+      name: v2-accounts-accountid-envelopes
+      description: REST surface for v2-accounts-accountId-envelopes.
+      operations:
+      - method: GET
+        name: envelopesgetenvelopes
+        description: Docusign Gets status changes for one or more envelopes.
+        call: docusign-envelopes.envelopesgetenvelopes
+        with:
+          accountId: rest.accountId
+          ac_status: rest.ac_status
+          block: rest.block
+          count: rest.count
+          custom_field: rest.custom_field
+          email: rest.email
+          envelope_ids: rest.envelope_ids
+          from_date: rest.from_date
+          from_to_status: rest.from_to_status
+          start_position: rest.start_position
+          status: rest.status
+          to_date: rest.to_date
+          transaction_ids: rest.transaction_ids
+          user_name: rest.user_name
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: POST
+        name: envelopespostenvelopes
+        description: Docusign Creates an envelope.
+        call: docusign-envelopes.envelopespostenvelopes
+        with:
+          accountId: rest.accountId
+          cdse_mode: rest.cdse_mode
+          change_routing_order: rest.change_routing_order
+          completed_documents_only: rest.completed_documents_only
+          merge_roles_on_draft: rest.merge_roles_on_draft
+          tab_label_exact_matches: rest.tab_label_exact_matches
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/v2/accounts/{accountid}/envelopes/status
+      name: v2-accounts-accountid-envelopes-status
+      description: REST surface for v2-accounts-accountId-envelopes-status.
+      operations:
+      - method: PUT
+        name: envelopesputstatus
+        description: Docusign Gets the envelope status for the specified envelopes.
+        call: docusign-envelopes.envelopesputstatus
+        with:
+          accountId: rest.accountId
+          ac_status: rest.ac_status
+          block: rest.block
+          count: rest.count
+          email: rest.email
+          envelope_ids: rest.envelope_ids
+          from_date: rest.from_date
+          from_to_status: rest.from_to_status
+          start_position: rest.start_position
+          status: rest.status
+          to_date: rest.to_date
+          transaction_ids: rest.transaction_ids
+          user_name: rest.user_name
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/v2/accounts/{accountid}/envelopes/{envelopeid}
+      name: v2-accounts-accountid-envelopes-envelopeid
+      description: REST surface for v2-accounts-accountId-envelopes-envelopeId.
+      operations:
+      - method: GET
+        name: envelopesgetenvelope
+        description: Docusign Gets the status of a single envelope.
+        call: docusign-envelopes.envelopesgetenvelope
+        with:
+          accountId: rest.accountId
+          envelopeId: rest.envelopeId
+          advanced_update: rest.advanced_update
+          include: rest.include
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: PUT
+        name: envelopesputenvelope
+        description: Docusign Send, void, or modify a draft envelope. Purge documents from a completed envelope.
+        call: docusign-envelopes.envelopesputenvelope
+        with:
+          accountId: rest.accountId
+          envelopeId: rest.envelopeId
+          advanced_update: rest.advanced_update
+          resend_envelope: rest.resend_envelope
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/v2/accounts/{accountid}/envelopes/{envelopeid}/audit-events
+      name: v2-accounts-accountid-envelopes-envelopeid-audit-events
+      description: REST surface for v2-accounts-accountId-envelopes-envelopeId-audit_events.
+      operations:
+      - method: GET
+        name: auditeventsgetauditevents
+        description: Docusign Gets the envelope audit events for an envelope.
+        call: docusign-envelopes.auditeventsgetauditevents
+        with:
+          accountId: rest.accountId
+          envelopeId: rest.envelopeId
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/v2/accounts/{accountid}/envelopes/{envelopeid}/documents/{documentid}/pages
+      name: v2-accounts-accountid-envelopes-envelopeid-documents-documentid-pages
+      description: REST surface for v2-accounts-accountId-envelopes-envelopeId-documents-documentId-pages.
+      operations:
+      - method: GET
+        name: pagesgetpageimages
+        description: Docusign Returns document page image(s) based on input.
+        call: docusign-envelopes.pagesgetpageimages
+        with:
+          accountId: rest.accountId
+          documentId: rest.documentId
+          envelopeId: rest.envelopeId
+          count: rest.count
+          dpi: rest.dpi
+          max_height: rest.max_height
+          max_width: rest.max_width
+          nocache: rest.nocache
+          show_changes: rest.show_changes
+          start_position: rest.start_position
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/v2/accounts/{accountid}/envelopes/{envelopeid}/documents/{documentid}/pages/{pagenumber}
+      name: v2-accounts-accountid-envelopes-envelopeid-documents-documentid-pages-pagenumber
+      description: REST surface for v2-accounts-accountId-envelopes-envelopeId-documents-documentId-pages-pageNumber.
+      operations:
+      - method: DELETE
+        name: pagesdeletepage
+        description: Docusign Deletes a page from a document in an envelope.
+        call: docusign-envelopes.pagesdeletepage
+        with:
+          accountId: rest.accountId
+          documentId: rest.documentId
+          envelopeId: rest.envelopeId
+          pageNumber: rest.pageNumber
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/v2/accounts/{accountid}/envelopes/{envelopeid}/documents/{documentid}/pages/{pagenumber}/page-image
+      name: v2-accounts-accountid-envelopes-envelopeid-documents-documentid-pages-pagenumber
+      description: REST surface for v2-accounts-accountId-envelopes-envelopeId-documents-documentId-pages-pageNumber.
+      operations:
+      - method: GET
+        name: pagesgetpageimage
+        description: Docusign Gets a page image from an envelope for display.
+        call: docusign-envelopes.pagesgetpageimage
+        with:
+          accountId: rest.accountId
+          documentId: rest.documentId
+          envelopeId: rest.envelopeId
+          pageNumber: rest.pageNumber
+          dpi: rest.dpi
+          max_height: rest.max_height
+          max_width: rest.max_width
+          show_changes: rest.show_changes
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: PUT
+        name: pagesputpageimage
+        description: Docusign Rotates page image from an envelope for display.
+        call: docusign-envelopes.pagesputpageimage
+        with:
+          accountId: rest.accountId
+          documentId: rest.documentId
+          envelopeId: rest.envelopeId
+          pageNumber: rest.pageNumber
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/v2/accounts/{accountid}/envelopes/{envelopeid}/notification
+      name: v2-accounts-accountid-envelopes-envelopeid-notification
+      description: REST surface for v2-accounts-accountId-envelopes-envelopeId-notification.
+      operations:
+      - method: GET
+        name: notificationgetenvelopesenvelopeidnotification
+        description: Docusign Gets envelope notification information.
+        call: docusign-envelopes.notificationgetenvelopesenvelopeidnotification
+        with:
+          accountId: rest.accountId
+          envelopeId: rest.envelopeId
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: PUT
+        name: notificationputenvelopesenvelopeidnotification
+        description: Docusign Sets envelope notification (Reminders/Expirations) structure for an existing envelope.
+        call: docusign-envelopes.notificationputenvelopesenvelopeidnotification
+        with:
+          accountId: rest.accountId
+          envelopeId: rest.envelopeId
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/v2/accounts/{accountid}/envelopes/{envelopeid}/recipients/{recipientid}/initials-image
+      name: v2-accounts-accountid-envelopes-envelopeid-recipients-recipientid-initials-image
+      description: REST surface for v2-accounts-accountId-envelopes-envelopeId-recipients-recipientId-initials_image.
+      operations:
+      - method: GET
+        name: recipientsgetrecipientinitialsimage
+        description: Docusign Gets the initials image for a user.
+        call: docusign-envelopes.recipientsgetrecipientinitialsimage
+        with:
+          accountId: rest.accountId
+          envelopeId: rest.envelopeId
+          recipientId: rest.recipientId
+          include_chrome: rest.include_chrome
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: PUT
+        name: recipientsputrecipientinitialsimage
+        description: Docusign Sets the initials image for an accountless signer.
+        call: docusign-envelopes.recipientsputrecipientinitialsimage
+        with:
+          accountId: rest.accountId
+          envelopeId: rest.envelopeId
+          recipientId: rest.recipientId
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/v2/accounts/{accountid}/envelopes/{envelopeid}/recipients/{recipientid}/signature
+      name: v2-accounts-accountid-envelopes-envelopeid-recipients-recipientid-signature
+      description: REST surface for v2-accounts-accountId-envelopes-envelopeId-recipients-recipientId-signature.
+      operations:
+      - method: GET
+        name: recipientsgetrecipientsignature
+        description: Docusign Gets signature information for a signer or sign-in-person recipient.
+        call: docusign-envelopes.recipientsgetrecipientsignature
+        with:
+          accountId: rest.accountId
+          envelopeId: rest.envelopeId
+          recipientId: rest.recipientId
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/v2/accounts/{accountid}/envelopes/{envelopeid}/recipients/{recipientid}/signature-image
+      name: v2-accounts-accountid-envelopes-envelopeid-recipients-recipientid-signature-imag
+      description: REST surface for v2-accounts-accountId-envelopes-envelopeId-recipients-recipientId-signature_imag.
+      operations:
+      - method: GET
+        name: recipientsgetrecipientsignatureimage
+        description: Docusign Retrieve signature image information for a signer/sign-in-person recipient.
+        call: docusign-envelopes.recipientsgetrecipientsignatureimage
+        with:
+          accountId: rest.accountId
+          envelopeId: rest.envelopeId
+          recipientId: rest.recipientId
+          include_chrome: rest.include_chrome
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: PUT
+        name: recipientsputrecipientsignatureimage
+        description: Docusign Sets the signature image for an accountless signer.
+        call: docusign-envelopes.recipientsputrecipientsignatureimage
+        with:
+          accountId: rest.accountId
+          envelopeId: rest.envelopeId
+          recipientId: rest.recipientId
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: docusign-envelopes-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for DocuSign REST API — Envelopes. One tool per consumed operation, routed inline through this
+      capability's consumes block.
+    tools:
+    - name: docusign-gets-status-changes-one
+      description: Docusign Gets status changes for one or more envelopes.
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: docusign-envelopes.envelopesgetenvelopes
+      with:
+        accountId: tools.accountId
+        ac_status: tools.ac_status
+        block: tools.block
+        count: tools.count
+        custom_field: tools.custom_field
+        email: tools.email
+        envelope_ids: tools.envelope_ids
+        from_date: tools.from_date
+        from_to_status: tools.from_to_status
+        start_position: tools.start_position
+        status: tools.status
+        to_date: tools.to_date
+        transaction_ids: tools.transaction_ids
+        user_name: tools.user_name
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: docusign-creates-envelope
+      description: Docusign Creates an envelope.
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: docusign-envelopes.envelopespostenvelopes
+      with:
+        accountId: tools.accountId
+        cdse_mode: tools.cdse_mode
+        change_routing_order: tools.change_routing_order
+        completed_documents_only: tools.completed_documents_only
+        merge_roles_on_draft: tools.merge_roles_on_draft
+        tab_label_exact_matches: tools.tab_label_exact_matches
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: docusign-gets-envelope-status-specified
+      description: Docusign Gets the envelope status for the specified envelopes.
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: true
+      call: docusign-envelopes.envelopesputstatus
+      with:
+        accountId: tools.accountId
+        ac_status: tools.ac_status
+        block: tools.block
+        count: tools.count
+        email: tools.email
+        envelope_ids: tools.envelope_ids
+        from_date: tools.from_date
+        from_to_status: tools.from_to_status
+        start_position: tools.start_position
+        status: tools.status
+        to_date: tools.to_date
+        transaction_ids: tools.transaction_ids
+        user_name: tools.user_name
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: docusign-gets-status-single-envelope
+      description: Docusign Gets the status of a single envelope.
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: docusign-envelopes.envelopesgetenvelope
+      with:
+        accountId: tools.accountId
+        envelopeId: tools.envelopeId
+        advanced_update: tools.advanced_update
+        include: tools.include
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: docusign-send-void-modify-draft
+      description: Docusign Send, void, or modify a draft envelope. Purge documents from a completed envelope.
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: true
+      call: docusign-envelopes.envelopesputenvelope
+      with:
+        accountId: tools.accountId
+        envelopeId: tools.envelopeId
+        advanced_update: tools.advanced_update
+        resend_envelope: tools.resend_envelope
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: docusign-gets-envelope-audit-events
+      description: Docusign Gets the envelope audit events for an envelope.
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: docusign-envelopes.auditeventsgetauditevents
+      with:
+        accountId: tools.accountId
+        envelopeId: tools.envelopeId
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: docusign-returns-document-page-image-s
+      description: Docusign Returns document page image(s) based on input.
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: docusign-envelopes.pagesgetpageimages
+      with:
+        accountId: tools.accountId
+        documentId: tools.documentId
+        envelopeId: tools.envelopeId
+        count: tools.count
+        dpi: tools.dpi
+        max_height: tools.max_height
+        max_width: tools.max_width
+        nocache: tools.nocache
+        show_changes: tools.show_changes
+        start_position: tools.start_position
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: docusign-deletes-page-document-envelope
+      description: Docusign Deletes a page from a document in an envelope.
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: docusign-envelopes.pagesdeletepage
+      with:
+        accountId: tools.accountId
+        documentId: tools.documentId
+        envelopeId: tools.envelopeId
+        pageNumber: tools.pageNumber
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: docusign-gets-page-image-envelope
+      description: Docusign Gets a page image from an envelope for display.
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: docusign-envelopes.pagesgetpageimage
+      with:
+        accountId: tools.accountId
+        documentId: tools.documentId
+        envelopeId: tools.envelopeId
+        pageNumber: tools.pageNumber
+        dpi: tools.dpi
+        max_height: tools.max_height
+        max_width: tools.max_width
+        show_changes: tools.show_changes
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: docusign-rotates-page-image-envelope
+      description: Docusign Rotates page image from an envelope for display.
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: true
+      call: docusign-envelopes.pagesputpageimage
+      with:
+        accountId: tools.accountId
+        documentId: tools.documentId
+        envelopeId: tools.envelopeId
+        pageNumber: tools.pageNumber
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: docusign-gets-envelope-notification-information
+      description: Docusign Gets envelope notification information.
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: docusign-envelopes.notificationgetenvelopesenvelopeidnotification
+      with:
+        accountId: tools.accountId
+        envelopeId: tools.envelopeId
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: docusign-sets-envelope-notification-reminders
+      description: Docusign Sets envelope notification (Reminders/Expirations) structure for an existing envelope.
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: true
+      call: docusign-envelopes.notificationputenvelopesenvelopeidnotification
+      with:
+        accountId: tools.accountId
+        envelopeId: tools.envelopeId
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: docusign-gets-initials-image-user
+      description: Docusign Gets the initials image for a user.
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: docusign-envelopes.recipientsgetrecipientinitialsimage
+      with:
+        accountId: tools.accountId
+        envelopeId: tools.envelopeId
+        recipientId: tools.recipientId
+        include_chrome: tools.include_chrome
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: docusign-sets-initials-image-accountless
+      description: Docusign Sets the initials image for an accountless signer.
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: true
+      call: docusign-envelopes.recipientsputrecipientinitialsimage
+      with:
+        accountId: tools.accountId
+        envelopeId: tools.envelopeId
+        recipientId: tools.recipientId
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: docusign-gets-signature-information-signer
+      description: Docusign Gets signature information for a signer or sign-in-person recipient.
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: docusign-envelopes.recipientsgetrecipientsignature
+      with:
+        accountId: tools.accountId
+        envelopeId: tools.envelopeId
+        recipientId: tools.recipientId
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: docusign-retrieve-signature-image-information
+      description: Docusign Retrieve signature image information for a signer/sign-in-person recipient.
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: docusign-envelopes.recipientsgetrecipientsignatureimage
+      with:
+        accountId: tools.accountId
+        envelopeId: tools.envelopeId
+        recipientId: tools.recipientId
+        include_chrome: tools.include_chrome
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: docusign-sets-signature-image-accountless
+      description: Docusign Sets the signature image for an accountless signer.
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: true
+      call: docusign-envelopes.recipientsputrecipientsignatureimage
+      with:
+        accountId: tools.accountId
+        envelopeId: tools.envelopeId
+        recipientId: tools.recipientId
+      outputParameters:
+      - type: object
+        mapping: $.

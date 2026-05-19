@@ -1,0 +1,711 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: DocuSign REST API — Accounts
+  description: 'DocuSign REST API — Accounts. 14 operations. Lead operation: Docusign Creates new accounts.. Self-contained
+    Naftiko capability covering one Docusign business surface.'
+  tags:
+  - Docusign
+  - Accounts
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    DOCUSIGN_API_KEY: DOCUSIGN_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: docusign-accounts
+    baseUri: https://www.docusign.net/restapi
+    description: DocuSign REST API — Accounts business capability. Self-contained, no shared references.
+    resources:
+    - name: v2-accounts
+      path: /v2/accounts
+      operations:
+      - name: accountspostaccounts
+        method: POST
+        description: Docusign Creates new accounts.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: preview_billing_plan
+          in: query
+          type: string
+          description: When set to **true**, creates the account using a preview billing plan.
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: false
+    - name: v2-accounts-provisioning
+      path: /v2/accounts/provisioning
+      operations:
+      - name: accountsgetprovisioning
+        method: GET
+        description: Docusign Retrieves the account provisioning information for the account.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: v2-accounts-accountId
+      path: /v2/accounts/{accountId}
+      operations:
+      - name: accountsgetaccount
+        method: GET
+        description: Docusign Retrieves the account information for the specified account.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: accountId
+          in: path
+          type: string
+          description: The external account number (int) or account id GUID.
+          required: true
+        - name: include_account_settings
+          in: query
+          type: string
+          description: When set to **true**, includes the account settings for the account in the response.
+      - name: accountsdeleteaccount
+        method: DELETE
+        description: Docusign Deletes the specified account.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: accountId
+          in: path
+          type: string
+          description: The external account number (int) or account id GUID.
+          required: true
+    - name: v2-accounts-accountId-billing_charges
+      path: /v2/accounts/{accountId}/billing_charges
+      operations:
+      - name: billingchargesgetaccountbillingcharges
+        method: GET
+        description: Docusign Gets list of recurring and usage charges for the account.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: accountId
+          in: path
+          type: string
+          description: The external account number (int) or account id GUID.
+          required: true
+        - name: include_charges
+          in: query
+          type: string
+          description: Specifies which billing charges to return.
+    - name: v2-accounts-accountId-captive_recipients-recipientPart
+      path: /v2/accounts/{accountId}/captive_recipients/{recipientPart}
+      operations:
+      - name: captiverecipientsdeletecaptiverecipientspart
+        method: DELETE
+        description: Docusign Deletes the signature for one or more captive recipient records.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: accountId
+          in: path
+          type: string
+          description: The external account number (int) or account id GUID.
+          required: true
+        - name: recipientPart
+          in: path
+          type: string
+          description: Signature is the only supported value.
+          required: true
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: false
+    - name: v2-accounts-accountId-recipient_names
+      path: /v2/accounts/{accountId}/recipient_names
+      operations:
+      - name: recipientnamesgetrecipientnames
+        method: GET
+        description: Docusign Gets recipient names associated with an email address.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: accountId
+          in: path
+          type: string
+          description: The external account number (int) or account id GUID.
+          required: true
+        - name: email
+          in: query
+          type: string
+          description: The email address for the user
+    - name: v2-accounts-accountId-settings
+      path: /v2/accounts/{accountId}/settings
+      operations:
+      - name: settingsgetsettings
+        method: GET
+        description: Docusign Gets account settings information.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: accountId
+          in: path
+          type: string
+          description: The external account number (int) or account id GUID.
+          required: true
+      - name: settingsputsettings
+        method: PUT
+        description: Docusign Updates the account settings for an account.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: accountId
+          in: path
+          type: string
+          description: The external account number (int) or account id GUID.
+          required: true
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: false
+    - name: v2-accounts-accountId-shared_access
+      path: /v2/accounts/{accountId}/shared_access
+      operations:
+      - name: sharedaccessgetsharedaccess
+        method: GET
+        description: 'Docusign Reserved: Gets the shared item status for one or more users.'
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: accountId
+          in: path
+          type: string
+          description: The external account number (int) or account id GUID.
+          required: true
+        - name: count
+          in: query
+          type: string
+          description: Specifies maximum number of results included in the response. If no value is specified, this defaults
+            to 1000.
+        - name: envelopes_not_shared_user_status
+          in: query
+          type: string
+        - name: folder_ids
+          in: query
+          type: string
+          description: A comma separated list of folder IDs  for which the shared item
+        - name: item_type
+          in: query
+          type: string
+          description: 'Specifies the type of shared item being requested. The possible values are:'
+        - name: search_text
+          in: query
+          type: string
+          description: This can be used to filter user names in the response. The wild-card '*' (asterisk) can be used around
+            the string.
+        - name: shared
+          in: query
+          type: string
+          description: 'A comma-separated list of sharing filters that specifies which users appear in the response. '
+        - name: start_position
+          in: query
+          type: string
+          description: 'If the number of responses is greater than `count`, the number of responses to skip. Typically this
+            value is a multiple of `count`. Default: 0.'
+        - name: user_ids
+          in: query
+          type: string
+          description: A comma-separated list of user IDs for whom the shared item information is being requested.
+      - name: sharedaccessputsharedaccess
+        method: PUT
+        description: 'Docusign Reserved: Sets the shared access information for users.'
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: accountId
+          in: path
+          type: string
+          description: The external account number (int) or account id GUID.
+          required: true
+        - name: item_type
+          in: query
+          type: string
+          description: 'Specifies the type of shared item being requested. The possible values are:'
+        - name: user_ids
+          in: query
+          type: string
+          description: A comma-separated list of user IDs whose shared item information is being set.
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: false
+    - name: v2-accounts-accountId-supported_languages
+      path: /v2/accounts/{accountId}/supported_languages
+      operations:
+      - name: supportedlanguagesgetsupportedlanguages
+        method: GET
+        description: Docusign List supported languages for the recipient language setting
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: accountId
+          in: path
+          type: string
+          description: The external account number (int) or account id GUID.
+          required: true
+    - name: v2-accounts-accountId-unsupported_file_types
+      path: /v2/accounts/{accountId}/unsupported_file_types
+      operations:
+      - name: unsupportedfiletypesgetunsupportedfiletypes
+        method: GET
+        description: Docusign Gets a list of unsupported file types.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: accountId
+          in: path
+          type: string
+          description: The external account number (int) or account id GUID.
+          required: true
+    - name: v2-organization_exports-organizationId-account_settings-resultId
+      path: /v2/organization_exports/{organizationId}/account_settings/{resultId}
+      operations:
+      - name: organizationexportsgetaccountsettingsexport
+        method: GET
+        description: ''
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: organizationId
+          in: path
+          type: string
+          required: true
+        - name: resultId
+          in: path
+          type: string
+          required: true
+  exposes:
+  - type: rest
+    namespace: docusign-accounts-rest
+    port: 8080
+    description: REST adapter for DocuSign REST API — Accounts. One Spectral-compliant resource per consumed operation, prefixed
+      with /v1.
+    resources:
+    - path: /v1/v2/accounts
+      name: v2-accounts
+      description: REST surface for v2-accounts.
+      operations:
+      - method: POST
+        name: accountspostaccounts
+        description: Docusign Creates new accounts.
+        call: docusign-accounts.accountspostaccounts
+        with:
+          preview_billing_plan: rest.preview_billing_plan
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/v2/accounts/provisioning
+      name: v2-accounts-provisioning
+      description: REST surface for v2-accounts-provisioning.
+      operations:
+      - method: GET
+        name: accountsgetprovisioning
+        description: Docusign Retrieves the account provisioning information for the account.
+        call: docusign-accounts.accountsgetprovisioning
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/v2/accounts/{accountid}
+      name: v2-accounts-accountid
+      description: REST surface for v2-accounts-accountId.
+      operations:
+      - method: GET
+        name: accountsgetaccount
+        description: Docusign Retrieves the account information for the specified account.
+        call: docusign-accounts.accountsgetaccount
+        with:
+          accountId: rest.accountId
+          include_account_settings: rest.include_account_settings
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: DELETE
+        name: accountsdeleteaccount
+        description: Docusign Deletes the specified account.
+        call: docusign-accounts.accountsdeleteaccount
+        with:
+          accountId: rest.accountId
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/v2/accounts/{accountid}/billing-charges
+      name: v2-accounts-accountid-billing-charges
+      description: REST surface for v2-accounts-accountId-billing_charges.
+      operations:
+      - method: GET
+        name: billingchargesgetaccountbillingcharges
+        description: Docusign Gets list of recurring and usage charges for the account.
+        call: docusign-accounts.billingchargesgetaccountbillingcharges
+        with:
+          accountId: rest.accountId
+          include_charges: rest.include_charges
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/v2/accounts/{accountid}/captive-recipients/{recipientpart}
+      name: v2-accounts-accountid-captive-recipients-recipientpart
+      description: REST surface for v2-accounts-accountId-captive_recipients-recipientPart.
+      operations:
+      - method: DELETE
+        name: captiverecipientsdeletecaptiverecipientspart
+        description: Docusign Deletes the signature for one or more captive recipient records.
+        call: docusign-accounts.captiverecipientsdeletecaptiverecipientspart
+        with:
+          accountId: rest.accountId
+          recipientPart: rest.recipientPart
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/v2/accounts/{accountid}/recipient-names
+      name: v2-accounts-accountid-recipient-names
+      description: REST surface for v2-accounts-accountId-recipient_names.
+      operations:
+      - method: GET
+        name: recipientnamesgetrecipientnames
+        description: Docusign Gets recipient names associated with an email address.
+        call: docusign-accounts.recipientnamesgetrecipientnames
+        with:
+          accountId: rest.accountId
+          email: rest.email
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/v2/accounts/{accountid}/settings
+      name: v2-accounts-accountid-settings
+      description: REST surface for v2-accounts-accountId-settings.
+      operations:
+      - method: GET
+        name: settingsgetsettings
+        description: Docusign Gets account settings information.
+        call: docusign-accounts.settingsgetsettings
+        with:
+          accountId: rest.accountId
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: PUT
+        name: settingsputsettings
+        description: Docusign Updates the account settings for an account.
+        call: docusign-accounts.settingsputsettings
+        with:
+          accountId: rest.accountId
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/v2/accounts/{accountid}/shared-access
+      name: v2-accounts-accountid-shared-access
+      description: REST surface for v2-accounts-accountId-shared_access.
+      operations:
+      - method: GET
+        name: sharedaccessgetsharedaccess
+        description: 'Docusign Reserved: Gets the shared item status for one or more users.'
+        call: docusign-accounts.sharedaccessgetsharedaccess
+        with:
+          accountId: rest.accountId
+          count: rest.count
+          envelopes_not_shared_user_status: rest.envelopes_not_shared_user_status
+          folder_ids: rest.folder_ids
+          item_type: rest.item_type
+          search_text: rest.search_text
+          shared: rest.shared
+          start_position: rest.start_position
+          user_ids: rest.user_ids
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: PUT
+        name: sharedaccessputsharedaccess
+        description: 'Docusign Reserved: Sets the shared access information for users.'
+        call: docusign-accounts.sharedaccessputsharedaccess
+        with:
+          accountId: rest.accountId
+          item_type: rest.item_type
+          user_ids: rest.user_ids
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/v2/accounts/{accountid}/supported-languages
+      name: v2-accounts-accountid-supported-languages
+      description: REST surface for v2-accounts-accountId-supported_languages.
+      operations:
+      - method: GET
+        name: supportedlanguagesgetsupportedlanguages
+        description: Docusign List supported languages for the recipient language setting
+        call: docusign-accounts.supportedlanguagesgetsupportedlanguages
+        with:
+          accountId: rest.accountId
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/v2/accounts/{accountid}/unsupported-file-types
+      name: v2-accounts-accountid-unsupported-file-types
+      description: REST surface for v2-accounts-accountId-unsupported_file_types.
+      operations:
+      - method: GET
+        name: unsupportedfiletypesgetunsupportedfiletypes
+        description: Docusign Gets a list of unsupported file types.
+        call: docusign-accounts.unsupportedfiletypesgetunsupportedfiletypes
+        with:
+          accountId: rest.accountId
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/v2/organization-exports/{organizationid}/account-settings/{resultid}
+      name: v2-organization-exports-organizationid-account-settings-resultid
+      description: REST surface for v2-organization_exports-organizationId-account_settings-resultId.
+      operations:
+      - method: GET
+        name: organizationexportsgetaccountsettingsexport
+        description: organizationexportsgetaccountsettingsexport
+        call: docusign-accounts.organizationexportsgetaccountsettingsexport
+        with:
+          organizationId: rest.organizationId
+          resultId: rest.resultId
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: docusign-accounts-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for DocuSign REST API — Accounts. One tool per consumed operation, routed inline through this
+      capability's consumes block.
+    tools:
+    - name: docusign-creates-new-accounts
+      description: Docusign Creates new accounts.
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: docusign-accounts.accountspostaccounts
+      with:
+        preview_billing_plan: tools.preview_billing_plan
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: docusign-retrieves-account-provisioning-information
+      description: Docusign Retrieves the account provisioning information for the account.
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: docusign-accounts.accountsgetprovisioning
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: docusign-retrieves-account-information-specified
+      description: Docusign Retrieves the account information for the specified account.
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: docusign-accounts.accountsgetaccount
+      with:
+        accountId: tools.accountId
+        include_account_settings: tools.include_account_settings
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: docusign-deletes-specified-account
+      description: Docusign Deletes the specified account.
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: docusign-accounts.accountsdeleteaccount
+      with:
+        accountId: tools.accountId
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: docusign-gets-list-recurring-and
+      description: Docusign Gets list of recurring and usage charges for the account.
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: docusign-accounts.billingchargesgetaccountbillingcharges
+      with:
+        accountId: tools.accountId
+        include_charges: tools.include_charges
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: docusign-deletes-signature-one-more
+      description: Docusign Deletes the signature for one or more captive recipient records.
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: docusign-accounts.captiverecipientsdeletecaptiverecipientspart
+      with:
+        accountId: tools.accountId
+        recipientPart: tools.recipientPart
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: docusign-gets-recipient-names-associated
+      description: Docusign Gets recipient names associated with an email address.
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: docusign-accounts.recipientnamesgetrecipientnames
+      with:
+        accountId: tools.accountId
+        email: tools.email
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: docusign-gets-account-settings-information
+      description: Docusign Gets account settings information.
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: docusign-accounts.settingsgetsettings
+      with:
+        accountId: tools.accountId
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: docusign-updates-account-settings-account
+      description: Docusign Updates the account settings for an account.
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: true
+      call: docusign-accounts.settingsputsettings
+      with:
+        accountId: tools.accountId
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: docusign-reserved-gets-shared-item
+      description: 'Docusign Reserved: Gets the shared item status for one or more users.'
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: docusign-accounts.sharedaccessgetsharedaccess
+      with:
+        accountId: tools.accountId
+        count: tools.count
+        envelopes_not_shared_user_status: tools.envelopes_not_shared_user_status
+        folder_ids: tools.folder_ids
+        item_type: tools.item_type
+        search_text: tools.search_text
+        shared: tools.shared
+        start_position: tools.start_position
+        user_ids: tools.user_ids
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: docusign-reserved-sets-shared-access
+      description: 'Docusign Reserved: Sets the shared access information for users.'
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: true
+      call: docusign-accounts.sharedaccessputsharedaccess
+      with:
+        accountId: tools.accountId
+        item_type: tools.item_type
+        user_ids: tools.user_ids
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: docusign-list-supported-languages-recipient
+      description: Docusign List supported languages for the recipient language setting
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: docusign-accounts.supportedlanguagesgetsupportedlanguages
+      with:
+        accountId: tools.accountId
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: docusign-gets-list-unsupported-file
+      description: Docusign Gets a list of unsupported file types.
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: docusign-accounts.unsupportedfiletypesgetunsupportedfiletypes
+      with:
+        accountId: tools.accountId
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: organizationexportsgetaccountsettingsexport
+      description: organizationexportsgetaccountsettingsexport
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: docusign-accounts.organizationexportsgetaccountsettingsexport
+      with:
+        organizationId: tools.organizationId
+        resultId: tools.resultId
+      outputParameters:
+      - type: object
+        mapping: $.

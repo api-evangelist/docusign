@@ -1,0 +1,72 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: DocuSign Rooms API - v2 — SellerDecisionTypes
+  description: 'DocuSign Rooms API - v2 — SellerDecisionTypes. 1 operations. Lead operation: Docusign Gets seller decision
+    types.. Self-contained Naftiko capability covering one Docusign business surface.'
+  tags:
+  - Docusign
+  - SellerDecisionTypes
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    DOCUSIGN_API_KEY: DOCUSIGN_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: rooms-sellerdecisiontypes
+    baseUri: https://rooms.docusign.com/restapi
+    description: DocuSign Rooms API - v2 — SellerDecisionTypes business capability. Self-contained, no shared references.
+    resources:
+    - name: v2-seller_decision_types
+      path: /v2/seller_decision_types
+      operations:
+      - name: sellerdecisiontypesgetsellerdecisiontypes
+        method: GET
+        description: Docusign Gets seller decision types.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    authentication:
+      type: apikey
+      key: Authorization
+      value: '{{env.DOCUSIGN_API_KEY}}'
+      placement: header
+  exposes:
+  - type: rest
+    namespace: rooms-sellerdecisiontypes-rest
+    port: 8080
+    description: REST adapter for DocuSign Rooms API - v2 — SellerDecisionTypes. One Spectral-compliant resource per consumed
+      operation, prefixed with /v1.
+    resources:
+    - path: /v1/v2/seller-decision-types
+      name: v2-seller-decision-types
+      description: REST surface for v2-seller_decision_types.
+      operations:
+      - method: GET
+        name: sellerdecisiontypesgetsellerdecisiontypes
+        description: Docusign Gets seller decision types.
+        call: rooms-sellerdecisiontypes.sellerdecisiontypesgetsellerdecisiontypes
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: rooms-sellerdecisiontypes-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for DocuSign Rooms API - v2 — SellerDecisionTypes. One tool per consumed operation, routed inline
+      through this capability's consumes block.
+    tools:
+    - name: docusign-gets-seller-decision-types
+      description: Docusign Gets seller decision types.
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: rooms-sellerdecisiontypes.sellerdecisiontypesgetsellerdecisiontypes
+      outputParameters:
+      - type: object
+        mapping: $.

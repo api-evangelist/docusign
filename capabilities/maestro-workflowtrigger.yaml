@@ -1,0 +1,106 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Docusign Maestro API — WorkflowTrigger
+  description: 'Docusign Maestro API — WorkflowTrigger. 1 operations. Lead operation: Docusign Triggers a new instance of
+    the workflow.. Self-contained Naftiko capability covering one Docusign business surface.'
+  tags:
+  - Docusign
+  - WorkflowTrigger
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    DOCUSIGN_API_KEY: DOCUSIGN_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: maestro-workflowtrigger
+    baseUri: https://apps.docusign.com/api/maestro
+    description: Docusign Maestro API — WorkflowTrigger business capability. Self-contained, no shared references.
+    resources:
+    - name: v1-accounts-accountId-workflow_definitions-workflowDefinitionId-trigger
+      path: /v1/accounts/{accountId}/workflow_definitions/{workflowDefinitionId}/trigger
+      operations:
+      - name: triggerworkflowviapost
+        method: POST
+        description: Docusign Triggers a new instance of the workflow.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: accountId
+          in: path
+          type: string
+          description: The account ID.
+          required: true
+        - name: workflowDefinitionId
+          in: path
+          type: string
+          description: Workflow definition ID.
+          required: true
+        - name: mtid
+          in: query
+          type: string
+          description: Managed Token Id registered with Docusign Account Server
+        - name: mtsec
+          in: query
+          type: string
+          description: Managed Token Secret registered with Docusign account server
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    authentication:
+      type: bearer
+      token: '{{env.DOCUSIGN_API_KEY}}'
+  exposes:
+  - type: rest
+    namespace: maestro-workflowtrigger-rest
+    port: 8080
+    description: REST adapter for Docusign Maestro API — WorkflowTrigger. One Spectral-compliant resource per consumed operation,
+      prefixed with /v1.
+    resources:
+    - path: /v1/v1/accounts/{accountid}/workflow-definitions/{workflowdefinitionid}/trigger
+      name: v1-accounts-accountid-workflow-definitions-workflowdefinitionid-trigger
+      description: REST surface for v1-accounts-accountId-workflow_definitions-workflowDefinitionId-trigger.
+      operations:
+      - method: POST
+        name: triggerworkflowviapost
+        description: Docusign Triggers a new instance of the workflow.
+        call: maestro-workflowtrigger.triggerworkflowviapost
+        with:
+          accountId: rest.accountId
+          workflowDefinitionId: rest.workflowDefinitionId
+          mtid: rest.mtid
+          mtsec: rest.mtsec
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: maestro-workflowtrigger-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Docusign Maestro API — WorkflowTrigger. One tool per consumed operation, routed inline through
+      this capability's consumes block.
+    tools:
+    - name: docusign-triggers-new-instance-workflow
+      description: Docusign Triggers a new instance of the workflow.
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: maestro-workflowtrigger.triggerworkflowviapost
+      with:
+        accountId: tools.accountId
+        workflowDefinitionId: tools.workflowDefinitionId
+        mtid: tools.mtid
+        mtsec: tools.mtsec
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.

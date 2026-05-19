@@ -1,0 +1,473 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: DocuSign REST API — WorkspaceItems
+  description: 'DocuSign REST API — WorkspaceItems. 6 operations. Lead operation: Docusign List Workspace Folder Contents.
+    Self-contained Naftiko capability covering one Docusign business surface.'
+  tags:
+  - Docusign
+  - WorkspaceItems
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    DOCUSIGN_API_KEY: DOCUSIGN_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: docusign-workspaceitems
+    baseUri: https://www.docusign.net/restapi
+    description: DocuSign REST API — WorkspaceItems business capability. Self-contained, no shared references.
+    resources:
+    - name: v2-accounts-accountId-workspaces-workspaceId-folders-folderId
+      path: /v2/accounts/{accountId}/workspaces/{workspaceId}/folders/{folderId}
+      operations:
+      - name: workspacefoldergetworkspacefolder
+        method: GET
+        description: Docusign List Workspace Folder Contents
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: accountId
+          in: path
+          type: string
+          description: The external account number (int) or account id GUID.
+          required: true
+        - name: folderId
+          in: path
+          type: string
+          description: The ID of the folder being accessed.
+          required: true
+        - name: workspaceId
+          in: path
+          type: string
+          description: Specifies the workspace ID GUID.
+          required: true
+        - name: count
+          in: query
+          type: string
+          description: The maximum number of results to be returned by this request.
+        - name: include_files
+          in: query
+          type: string
+          description: When set to **true**, file information is returned in the response along with folder information. The
+            default is **false**.
+        - name: include_sub_folders
+          in: query
+          type: string
+          description: When set to **true**, information about the sub-folders of the current folder is returned. The default
+            is **false**.
+        - name: include_thumbnails
+          in: query
+          type: string
+          description: When set to **true**, thumbnails are returned as part of the response.  The default is **false**.
+        - name: include_user_detail
+          in: query
+          type: string
+          description: Set to **true** to return extended details about the user. The default is **false**.
+        - name: start_position
+          in: query
+          type: string
+          description: The position within the total result set from which to start returning values.
+        - name: workspace_user_id
+          in: query
+          type: string
+          description: If set, then the results are filtered to those associated with the specified userId.
+      - name: workspacefolderdeleteworkspaceitems
+        method: DELETE
+        description: Docusign Deletes workspace one or more specific files/folders from the given folder or root.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: accountId
+          in: path
+          type: string
+          description: The external account number (int) or account id GUID.
+          required: true
+        - name: folderId
+          in: path
+          type: string
+          description: The ID of the folder being accessed.
+          required: true
+        - name: workspaceId
+          in: path
+          type: string
+          description: Specifies the workspace ID GUID.
+          required: true
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: false
+    - name: v2-accounts-accountId-workspaces-workspaceId-folders-folderId-files
+      path: /v2/accounts/{accountId}/workspaces/{workspaceId}/folders/{folderId}/files
+      operations:
+      - name: workspacefilepostworkspacefiles
+        method: POST
+        description: Docusign Creates a workspace file.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: accountId
+          in: path
+          type: string
+          description: The external account number (int) or account id GUID.
+          required: true
+        - name: folderId
+          in: path
+          type: string
+          description: The ID of the folder being accessed.
+          required: true
+        - name: workspaceId
+          in: path
+          type: string
+          description: Specifies the workspace ID GUID.
+          required: true
+    - name: v2-accounts-accountId-workspaces-workspaceId-folders-folderId-files-fileId
+      path: /v2/accounts/{accountId}/workspaces/{workspaceId}/folders/{folderId}/files/{fileId}
+      operations:
+      - name: workspacefilegetworkspacefile
+        method: GET
+        description: Docusign Get Workspace File
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: accountId
+          in: path
+          type: string
+          description: The external account number (int) or account id GUID.
+          required: true
+        - name: fileId
+          in: path
+          type: string
+          description: Specifies the room file ID GUID.
+          required: true
+        - name: folderId
+          in: path
+          type: string
+          description: The ID of the folder being accessed.
+          required: true
+        - name: workspaceId
+          in: path
+          type: string
+          description: Specifies the workspace ID GUID.
+          required: true
+        - name: is_download
+          in: query
+          type: string
+          description: When set to **true**, the Content-Disposition header is set in the response. The value of the header
+            provides the filename of the file. Default is **false**.
+        - name: pdf_version
+          in: query
+          type: string
+          description: When set to **true** the file returned as a PDF.
+      - name: workspacefileputworkspacefile
+        method: PUT
+        description: Docusign Update Workspace File Metadata
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: accountId
+          in: path
+          type: string
+          description: The external account number (int) or account id GUID.
+          required: true
+        - name: fileId
+          in: path
+          type: string
+          description: Specifies the room file ID GUID.
+          required: true
+        - name: folderId
+          in: path
+          type: string
+          description: The ID of the folder being accessed.
+          required: true
+        - name: workspaceId
+          in: path
+          type: string
+          description: Specifies the workspace ID GUID.
+          required: true
+    - name: v2-accounts-accountId-workspaces-workspaceId-folders-folderId-files-fileId-pages
+      path: /v2/accounts/{accountId}/workspaces/{workspaceId}/folders/{folderId}/files/{fileId}/pages
+      operations:
+      - name: workspacefilepagesgetworkspacefilepages
+        method: GET
+        description: Docusign List File Pages
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: accountId
+          in: path
+          type: string
+          description: The external account number (int) or account id GUID.
+          required: true
+        - name: fileId
+          in: path
+          type: string
+          description: Specifies the room file ID GUID.
+          required: true
+        - name: folderId
+          in: path
+          type: string
+          description: The ID of the folder being accessed.
+          required: true
+        - name: workspaceId
+          in: path
+          type: string
+          description: Specifies the workspace ID GUID.
+          required: true
+        - name: count
+          in: query
+          type: string
+          description: The maximum number of results to be returned by this request.
+        - name: dpi
+          in: query
+          type: string
+          description: Number of dots per inch for the resulting image. The default if not used is 94. The range is 1-310.
+        - name: max_height
+          in: query
+          type: string
+          description: Sets the maximum height (in pixels) of the returned image.
+        - name: max_width
+          in: query
+          type: string
+          description: Sets the maximum width (in pixels) of the returned image.
+        - name: start_position
+          in: query
+          type: string
+          description: The position within the total result set from which to start returning values. The value **thumbnail**
+            may be used to return the page image.
+  exposes:
+  - type: rest
+    namespace: docusign-workspaceitems-rest
+    port: 8080
+    description: REST adapter for DocuSign REST API — WorkspaceItems. One Spectral-compliant resource per consumed operation,
+      prefixed with /v1.
+    resources:
+    - path: /v1/v2/accounts/{accountid}/workspaces/{workspaceid}/folders/{folderid}
+      name: v2-accounts-accountid-workspaces-workspaceid-folders-folderid
+      description: REST surface for v2-accounts-accountId-workspaces-workspaceId-folders-folderId.
+      operations:
+      - method: GET
+        name: workspacefoldergetworkspacefolder
+        description: Docusign List Workspace Folder Contents
+        call: docusign-workspaceitems.workspacefoldergetworkspacefolder
+        with:
+          accountId: rest.accountId
+          folderId: rest.folderId
+          workspaceId: rest.workspaceId
+          count: rest.count
+          include_files: rest.include_files
+          include_sub_folders: rest.include_sub_folders
+          include_thumbnails: rest.include_thumbnails
+          include_user_detail: rest.include_user_detail
+          start_position: rest.start_position
+          workspace_user_id: rest.workspace_user_id
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: DELETE
+        name: workspacefolderdeleteworkspaceitems
+        description: Docusign Deletes workspace one or more specific files/folders from the given folder or root.
+        call: docusign-workspaceitems.workspacefolderdeleteworkspaceitems
+        with:
+          accountId: rest.accountId
+          folderId: rest.folderId
+          workspaceId: rest.workspaceId
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/v2/accounts/{accountid}/workspaces/{workspaceid}/folders/{folderid}/files
+      name: v2-accounts-accountid-workspaces-workspaceid-folders-folderid-files
+      description: REST surface for v2-accounts-accountId-workspaces-workspaceId-folders-folderId-files.
+      operations:
+      - method: POST
+        name: workspacefilepostworkspacefiles
+        description: Docusign Creates a workspace file.
+        call: docusign-workspaceitems.workspacefilepostworkspacefiles
+        with:
+          accountId: rest.accountId
+          folderId: rest.folderId
+          workspaceId: rest.workspaceId
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/v2/accounts/{accountid}/workspaces/{workspaceid}/folders/{folderid}/files/{fileid}
+      name: v2-accounts-accountid-workspaces-workspaceid-folders-folderid-files-fileid
+      description: REST surface for v2-accounts-accountId-workspaces-workspaceId-folders-folderId-files-fileId.
+      operations:
+      - method: GET
+        name: workspacefilegetworkspacefile
+        description: Docusign Get Workspace File
+        call: docusign-workspaceitems.workspacefilegetworkspacefile
+        with:
+          accountId: rest.accountId
+          fileId: rest.fileId
+          folderId: rest.folderId
+          workspaceId: rest.workspaceId
+          is_download: rest.is_download
+          pdf_version: rest.pdf_version
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: PUT
+        name: workspacefileputworkspacefile
+        description: Docusign Update Workspace File Metadata
+        call: docusign-workspaceitems.workspacefileputworkspacefile
+        with:
+          accountId: rest.accountId
+          fileId: rest.fileId
+          folderId: rest.folderId
+          workspaceId: rest.workspaceId
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/v2/accounts/{accountid}/workspaces/{workspaceid}/folders/{folderid}/files/{fileid}/pages
+      name: v2-accounts-accountid-workspaces-workspaceid-folders-folderid-files-fileid-pages
+      description: REST surface for v2-accounts-accountId-workspaces-workspaceId-folders-folderId-files-fileId-pages.
+      operations:
+      - method: GET
+        name: workspacefilepagesgetworkspacefilepages
+        description: Docusign List File Pages
+        call: docusign-workspaceitems.workspacefilepagesgetworkspacefilepages
+        with:
+          accountId: rest.accountId
+          fileId: rest.fileId
+          folderId: rest.folderId
+          workspaceId: rest.workspaceId
+          count: rest.count
+          dpi: rest.dpi
+          max_height: rest.max_height
+          max_width: rest.max_width
+          start_position: rest.start_position
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: docusign-workspaceitems-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for DocuSign REST API — WorkspaceItems. One tool per consumed operation, routed inline through
+      this capability's consumes block.
+    tools:
+    - name: docusign-list-workspace-folder-contents
+      description: Docusign List Workspace Folder Contents
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: docusign-workspaceitems.workspacefoldergetworkspacefolder
+      with:
+        accountId: tools.accountId
+        folderId: tools.folderId
+        workspaceId: tools.workspaceId
+        count: tools.count
+        include_files: tools.include_files
+        include_sub_folders: tools.include_sub_folders
+        include_thumbnails: tools.include_thumbnails
+        include_user_detail: tools.include_user_detail
+        start_position: tools.start_position
+        workspace_user_id: tools.workspace_user_id
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: docusign-deletes-workspace-one-more
+      description: Docusign Deletes workspace one or more specific files/folders from the given folder or root.
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: docusign-workspaceitems.workspacefolderdeleteworkspaceitems
+      with:
+        accountId: tools.accountId
+        folderId: tools.folderId
+        workspaceId: tools.workspaceId
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: docusign-creates-workspace-file
+      description: Docusign Creates a workspace file.
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: docusign-workspaceitems.workspacefilepostworkspacefiles
+      with:
+        accountId: tools.accountId
+        folderId: tools.folderId
+        workspaceId: tools.workspaceId
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: docusign-get-workspace-file
+      description: Docusign Get Workspace File
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: docusign-workspaceitems.workspacefilegetworkspacefile
+      with:
+        accountId: tools.accountId
+        fileId: tools.fileId
+        folderId: tools.folderId
+        workspaceId: tools.workspaceId
+        is_download: tools.is_download
+        pdf_version: tools.pdf_version
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: docusign-update-workspace-file-metadata
+      description: Docusign Update Workspace File Metadata
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: true
+      call: docusign-workspaceitems.workspacefileputworkspacefile
+      with:
+        accountId: tools.accountId
+        fileId: tools.fileId
+        folderId: tools.folderId
+        workspaceId: tools.workspaceId
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: docusign-list-file-pages
+      description: Docusign List File Pages
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: docusign-workspaceitems.workspacefilepagesgetworkspacefilepages
+      with:
+        accountId: tools.accountId
+        fileId: tools.fileId
+        folderId: tools.folderId
+        workspaceId: tools.workspaceId
+        count: tools.count
+        dpi: tools.dpi
+        max_height: tools.max_height
+        max_width: tools.max_width
+        start_position: tools.start_position
+      outputParameters:
+      - type: object
+        mapping: $.

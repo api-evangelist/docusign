@@ -1,0 +1,224 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: DocuSign REST API — EnvelopeEmailSettings
+  description: 'DocuSign REST API — EnvelopeEmailSettings. 4 operations. Lead operation: Docusign Gets the email setting overrides
+    for an envelope.. Self-contained Naftiko capability covering one Docusign business surface.'
+  tags:
+  - Docusign
+  - EnvelopeEmailSettings
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    DOCUSIGN_API_KEY: DOCUSIGN_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: docusign-envelopeemailsettings
+    baseUri: https://www.docusign.net/restapi
+    description: DocuSign REST API — EnvelopeEmailSettings business capability. Self-contained, no shared references.
+    resources:
+    - name: v2-accounts-accountId-envelopes-envelopeId-email_settings
+      path: /v2/accounts/{accountId}/envelopes/{envelopeId}/email_settings
+      operations:
+      - name: emailsettingsgetemailsettings
+        method: GET
+        description: Docusign Gets the email setting overrides for an envelope.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: accountId
+          in: path
+          type: string
+          description: The external account number (int) or account id GUID.
+          required: true
+        - name: envelopeId
+          in: path
+          type: string
+          description: The envelope's GUID. Eg 93be49ab-afa0-4adf-933c-f752070d71ec
+          required: true
+      - name: emailsettingsputemailsettings
+        method: PUT
+        description: Docusign Updates the email setting overrides for an envelope.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: accountId
+          in: path
+          type: string
+          description: The external account number (int) or account id GUID.
+          required: true
+        - name: envelopeId
+          in: path
+          type: string
+          description: The envelope's GUID. Eg 93be49ab-afa0-4adf-933c-f752070d71ec
+          required: true
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: false
+      - name: emailsettingspostemailsettings
+        method: POST
+        description: Docusign Adds email setting overrides to an envelope.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: accountId
+          in: path
+          type: string
+          description: The external account number (int) or account id GUID.
+          required: true
+        - name: envelopeId
+          in: path
+          type: string
+          description: The envelope's GUID. Eg 93be49ab-afa0-4adf-933c-f752070d71ec
+          required: true
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: false
+      - name: emailsettingsdeleteemailsettings
+        method: DELETE
+        description: Docusign Deletes the email setting overrides for an envelope.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: accountId
+          in: path
+          type: string
+          description: The external account number (int) or account id GUID.
+          required: true
+        - name: envelopeId
+          in: path
+          type: string
+          description: The envelope's GUID. Eg 93be49ab-afa0-4adf-933c-f752070d71ec
+          required: true
+  exposes:
+  - type: rest
+    namespace: docusign-envelopeemailsettings-rest
+    port: 8080
+    description: REST adapter for DocuSign REST API — EnvelopeEmailSettings. One Spectral-compliant resource per consumed
+      operation, prefixed with /v1.
+    resources:
+    - path: /v1/v2/accounts/{accountid}/envelopes/{envelopeid}/email-settings
+      name: v2-accounts-accountid-envelopes-envelopeid-email-settings
+      description: REST surface for v2-accounts-accountId-envelopes-envelopeId-email_settings.
+      operations:
+      - method: GET
+        name: emailsettingsgetemailsettings
+        description: Docusign Gets the email setting overrides for an envelope.
+        call: docusign-envelopeemailsettings.emailsettingsgetemailsettings
+        with:
+          accountId: rest.accountId
+          envelopeId: rest.envelopeId
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: PUT
+        name: emailsettingsputemailsettings
+        description: Docusign Updates the email setting overrides for an envelope.
+        call: docusign-envelopeemailsettings.emailsettingsputemailsettings
+        with:
+          accountId: rest.accountId
+          envelopeId: rest.envelopeId
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: POST
+        name: emailsettingspostemailsettings
+        description: Docusign Adds email setting overrides to an envelope.
+        call: docusign-envelopeemailsettings.emailsettingspostemailsettings
+        with:
+          accountId: rest.accountId
+          envelopeId: rest.envelopeId
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: DELETE
+        name: emailsettingsdeleteemailsettings
+        description: Docusign Deletes the email setting overrides for an envelope.
+        call: docusign-envelopeemailsettings.emailsettingsdeleteemailsettings
+        with:
+          accountId: rest.accountId
+          envelopeId: rest.envelopeId
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: docusign-envelopeemailsettings-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for DocuSign REST API — EnvelopeEmailSettings. One tool per consumed operation, routed inline
+      through this capability's consumes block.
+    tools:
+    - name: docusign-gets-email-setting-overrides
+      description: Docusign Gets the email setting overrides for an envelope.
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: docusign-envelopeemailsettings.emailsettingsgetemailsettings
+      with:
+        accountId: tools.accountId
+        envelopeId: tools.envelopeId
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: docusign-updates-email-setting-overrides
+      description: Docusign Updates the email setting overrides for an envelope.
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: true
+      call: docusign-envelopeemailsettings.emailsettingsputemailsettings
+      with:
+        accountId: tools.accountId
+        envelopeId: tools.envelopeId
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: docusign-adds-email-setting-overrides
+      description: Docusign Adds email setting overrides to an envelope.
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: docusign-envelopeemailsettings.emailsettingspostemailsettings
+      with:
+        accountId: tools.accountId
+        envelopeId: tools.envelopeId
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: docusign-deletes-email-setting-overrides
+      description: Docusign Deletes the email setting overrides for an envelope.
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: docusign-envelopeemailsettings.emailsettingsdeleteemailsettings
+      with:
+        accountId: tools.accountId
+        envelopeId: tools.envelopeId
+      outputParameters:
+      - type: object
+        mapping: $.

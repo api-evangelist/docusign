@@ -1,0 +1,72 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: DocuSign Rooms API - v2 — PropertyTypes
+  description: 'DocuSign Rooms API - v2 — PropertyTypes. 1 operations. Lead operation: Docusign Gets property types.. Self-contained
+    Naftiko capability covering one Docusign business surface.'
+  tags:
+  - Docusign
+  - PropertyTypes
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    DOCUSIGN_API_KEY: DOCUSIGN_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: rooms-propertytypes
+    baseUri: https://rooms.docusign.com/restapi
+    description: DocuSign Rooms API - v2 — PropertyTypes business capability. Self-contained, no shared references.
+    resources:
+    - name: v2-property_types
+      path: /v2/property_types
+      operations:
+      - name: propertytypesgetpropertytypes
+        method: GET
+        description: Docusign Gets property types.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    authentication:
+      type: apikey
+      key: Authorization
+      value: '{{env.DOCUSIGN_API_KEY}}'
+      placement: header
+  exposes:
+  - type: rest
+    namespace: rooms-propertytypes-rest
+    port: 8080
+    description: REST adapter for DocuSign Rooms API - v2 — PropertyTypes. One Spectral-compliant resource per consumed operation,
+      prefixed with /v1.
+    resources:
+    - path: /v1/v2/property-types
+      name: v2-property-types
+      description: REST surface for v2-property_types.
+      operations:
+      - method: GET
+        name: propertytypesgetpropertytypes
+        description: Docusign Gets property types.
+        call: rooms-propertytypes.propertytypesgetpropertytypes
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: rooms-propertytypes-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for DocuSign Rooms API - v2 — PropertyTypes. One tool per consumed operation, routed inline through
+      this capability's consumes block.
+    tools:
+    - name: docusign-gets-property-types
+      description: Docusign Gets property types.
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: rooms-propertytypes.propertytypesgetpropertytypes
+      outputParameters:
+      - type: object
+        mapping: $.

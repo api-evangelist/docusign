@@ -1,0 +1,79 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: DocuSign Admin API — Organization
+  description: 'DocuSign Admin API — Organization. 1 operations. Lead operation: Docusign Returns a list of organizations
+    that the authenticated user belongs to.. Self-contained Naftiko capability covering one Docusign business surface.'
+  tags:
+  - Docusign
+  - Organization
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    DOCUSIGN_API_KEY: DOCUSIGN_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: admin-organization
+    baseUri: https://api.docusign.net/Management
+    description: DocuSign Admin API — Organization business capability. Self-contained, no shared references.
+    resources:
+    - name: v2-organizations
+      path: /v2/organizations
+      operations:
+      - name: organizationorganizationgetlistv2
+        method: GET
+        description: Docusign Returns a list of organizations that the authenticated user belongs to.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: mode
+          in: query
+          type: string
+          description: 'Specifies how to select the organizations. Valid values:'
+    authentication:
+      type: bearer
+      token: '{{env.DOCUSIGN_API_KEY}}'
+  exposes:
+  - type: rest
+    namespace: admin-organization-rest
+    port: 8080
+    description: REST adapter for DocuSign Admin API — Organization. One Spectral-compliant resource per consumed operation,
+      prefixed with /v1.
+    resources:
+    - path: /v1/v2/organizations
+      name: v2-organizations
+      description: REST surface for v2-organizations.
+      operations:
+      - method: GET
+        name: organizationorganizationgetlistv2
+        description: Docusign Returns a list of organizations that the authenticated user belongs to.
+        call: admin-organization.organizationorganizationgetlistv2
+        with:
+          mode: rest.mode
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: admin-organization-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for DocuSign Admin API — Organization. One tool per consumed operation, routed inline through
+      this capability's consumes block.
+    tools:
+    - name: docusign-returns-list-organizations-that
+      description: Docusign Returns a list of organizations that the authenticated user belongs to.
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: admin-organization.organizationorganizationgetlistv2
+      with:
+        mode: tools.mode
+      outputParameters:
+      - type: object
+        mapping: $.

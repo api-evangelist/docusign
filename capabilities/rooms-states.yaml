@@ -1,0 +1,72 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: DocuSign Rooms API - v2 — States
+  description: 'DocuSign Rooms API - v2 — States. 1 operations. Lead operation: Docusign Gets states.. Self-contained Naftiko
+    capability covering one Docusign business surface.'
+  tags:
+  - Docusign
+  - States
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    DOCUSIGN_API_KEY: DOCUSIGN_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: rooms-states
+    baseUri: https://rooms.docusign.com/restapi
+    description: DocuSign Rooms API - v2 — States business capability. Self-contained, no shared references.
+    resources:
+    - name: v2-states
+      path: /v2/states
+      operations:
+      - name: statesgetstates
+        method: GET
+        description: Docusign Gets states.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    authentication:
+      type: apikey
+      key: Authorization
+      value: '{{env.DOCUSIGN_API_KEY}}'
+      placement: header
+  exposes:
+  - type: rest
+    namespace: rooms-states-rest
+    port: 8080
+    description: REST adapter for DocuSign Rooms API - v2 — States. One Spectral-compliant resource per consumed operation,
+      prefixed with /v1.
+    resources:
+    - path: /v1/v2/states
+      name: v2-states
+      description: REST surface for v2-states.
+      operations:
+      - method: GET
+        name: statesgetstates
+        description: Docusign Gets states.
+        call: rooms-states.statesgetstates
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: rooms-states-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for DocuSign Rooms API - v2 — States. One tool per consumed operation, routed inline through
+      this capability's consumes block.
+    tools:
+    - name: docusign-gets-states
+      description: Docusign Gets states.
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: rooms-states.statesgetstates
+      outputParameters:
+      - type: object
+        mapping: $.

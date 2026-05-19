@@ -1,0 +1,88 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: DocuSign REST API — NotaryJournals
+  description: 'DocuSign REST API — NotaryJournals. 1 operations. Lead operation: NotaryJournals. Self-contained Naftiko capability
+    covering one Docusign business surface.'
+  tags:
+  - Docusign
+  - NotaryJournals
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    DOCUSIGN_API_KEY: DOCUSIGN_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: docusign-notaryjournals
+    baseUri: https://www.docusign.net/restapi
+    description: DocuSign REST API — NotaryJournals business capability. Self-contained, no shared references.
+    resources:
+    - name: v2-current_user-notary-journals
+      path: /v2/current_user/notary/journals
+      operations:
+      - name: notaryjournalsgetnotaryjournals
+        method: GET
+        description: ''
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: count
+          in: query
+          type: string
+          description: The maximum number of results to be returned by this request.
+        - name: search_text
+          in: query
+          type: string
+        - name: start_position
+          in: query
+          type: string
+          description: The position within the total result set from which to start returning values. The value **thumbnail**
+            may be used to return the page image.
+  exposes:
+  - type: rest
+    namespace: docusign-notaryjournals-rest
+    port: 8080
+    description: REST adapter for DocuSign REST API — NotaryJournals. One Spectral-compliant resource per consumed operation,
+      prefixed with /v1.
+    resources:
+    - path: /v1/v2/current-user/notary/journals
+      name: v2-current-user-notary-journals
+      description: REST surface for v2-current_user-notary-journals.
+      operations:
+      - method: GET
+        name: notaryjournalsgetnotaryjournals
+        description: notaryjournalsgetnotaryjournals
+        call: docusign-notaryjournals.notaryjournalsgetnotaryjournals
+        with:
+          count: rest.count
+          search_text: rest.search_text
+          start_position: rest.start_position
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: docusign-notaryjournals-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for DocuSign REST API — NotaryJournals. One tool per consumed operation, routed inline through
+      this capability's consumes block.
+    tools:
+    - name: notaryjournalsgetnotaryjournals
+      description: notaryjournalsgetnotaryjournals
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: docusign-notaryjournals.notaryjournalsgetnotaryjournals
+      with:
+        count: tools.count
+        search_text: tools.search_text
+        start_position: tools.start_position
+      outputParameters:
+      - type: object
+        mapping: $.

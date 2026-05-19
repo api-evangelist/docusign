@@ -1,0 +1,259 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: DocuSign REST API — TemplateDocumentFields
+  description: 'DocuSign REST API — TemplateDocumentFields. 4 operations. Lead operation: Docusign Gets the custom document
+    fields for a an existing template document.. Self-contained Naftiko capability covering one Docusign business surface.'
+  tags:
+  - Docusign
+  - TemplateDocumentFields
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    DOCUSIGN_API_KEY: DOCUSIGN_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: docusign-templatedocumentfields
+    baseUri: https://www.docusign.net/restapi
+    description: DocuSign REST API — TemplateDocumentFields business capability. Self-contained, no shared references.
+    resources:
+    - name: v2-accounts-accountId-templates-templateId-documents-documentId-fields
+      path: /v2/accounts/{accountId}/templates/{templateId}/documents/{documentId}/fields
+      operations:
+      - name: documentfieldsgettemplatedocumentfields
+        method: GET
+        description: Docusign Gets the custom document fields for a an existing template document.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: accountId
+          in: path
+          type: string
+          description: The external account number (int) or account id GUID.
+          required: true
+        - name: documentId
+          in: path
+          type: string
+          description: The ID of the document being accessed.
+          required: true
+        - name: templateId
+          in: path
+          type: string
+          description: The ID of the template being accessed.
+          required: true
+      - name: documentfieldsputtemplatedocumentfields
+        method: PUT
+        description: Docusign Updates existing custom document fields in an existing template document.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: accountId
+          in: path
+          type: string
+          description: The external account number (int) or account id GUID.
+          required: true
+        - name: documentId
+          in: path
+          type: string
+          description: The ID of the document being accessed.
+          required: true
+        - name: templateId
+          in: path
+          type: string
+          description: The ID of the template being accessed.
+          required: true
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: false
+      - name: documentfieldsposttemplatedocumentfields
+        method: POST
+        description: Docusign Creates custom document fields in an existing template document.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: accountId
+          in: path
+          type: string
+          description: The external account number (int) or account id GUID.
+          required: true
+        - name: documentId
+          in: path
+          type: string
+          description: The ID of the document being accessed.
+          required: true
+        - name: templateId
+          in: path
+          type: string
+          description: The ID of the template being accessed.
+          required: true
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: false
+      - name: documentfieldsdeletetemplatedocumentfields
+        method: DELETE
+        description: Docusign Deletes custom document fields from an existing template document.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: accountId
+          in: path
+          type: string
+          description: The external account number (int) or account id GUID.
+          required: true
+        - name: documentId
+          in: path
+          type: string
+          description: The ID of the document being accessed.
+          required: true
+        - name: templateId
+          in: path
+          type: string
+          description: The ID of the template being accessed.
+          required: true
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: false
+  exposes:
+  - type: rest
+    namespace: docusign-templatedocumentfields-rest
+    port: 8080
+    description: REST adapter for DocuSign REST API — TemplateDocumentFields. One Spectral-compliant resource per consumed
+      operation, prefixed with /v1.
+    resources:
+    - path: /v1/v2/accounts/{accountid}/templates/{templateid}/documents/{documentid}/fields
+      name: v2-accounts-accountid-templates-templateid-documents-documentid-fields
+      description: REST surface for v2-accounts-accountId-templates-templateId-documents-documentId-fields.
+      operations:
+      - method: GET
+        name: documentfieldsgettemplatedocumentfields
+        description: Docusign Gets the custom document fields for a an existing template document.
+        call: docusign-templatedocumentfields.documentfieldsgettemplatedocumentfields
+        with:
+          accountId: rest.accountId
+          documentId: rest.documentId
+          templateId: rest.templateId
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: PUT
+        name: documentfieldsputtemplatedocumentfields
+        description: Docusign Updates existing custom document fields in an existing template document.
+        call: docusign-templatedocumentfields.documentfieldsputtemplatedocumentfields
+        with:
+          accountId: rest.accountId
+          documentId: rest.documentId
+          templateId: rest.templateId
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: POST
+        name: documentfieldsposttemplatedocumentfields
+        description: Docusign Creates custom document fields in an existing template document.
+        call: docusign-templatedocumentfields.documentfieldsposttemplatedocumentfields
+        with:
+          accountId: rest.accountId
+          documentId: rest.documentId
+          templateId: rest.templateId
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: DELETE
+        name: documentfieldsdeletetemplatedocumentfields
+        description: Docusign Deletes custom document fields from an existing template document.
+        call: docusign-templatedocumentfields.documentfieldsdeletetemplatedocumentfields
+        with:
+          accountId: rest.accountId
+          documentId: rest.documentId
+          templateId: rest.templateId
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: docusign-templatedocumentfields-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for DocuSign REST API — TemplateDocumentFields. One tool per consumed operation, routed inline
+      through this capability's consumes block.
+    tools:
+    - name: docusign-gets-custom-document-fields
+      description: Docusign Gets the custom document fields for a an existing template document.
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: docusign-templatedocumentfields.documentfieldsgettemplatedocumentfields
+      with:
+        accountId: tools.accountId
+        documentId: tools.documentId
+        templateId: tools.templateId
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: docusign-updates-existing-custom-document
+      description: Docusign Updates existing custom document fields in an existing template document.
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: true
+      call: docusign-templatedocumentfields.documentfieldsputtemplatedocumentfields
+      with:
+        accountId: tools.accountId
+        documentId: tools.documentId
+        templateId: tools.templateId
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: docusign-creates-custom-document-fields
+      description: Docusign Creates custom document fields in an existing template document.
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: docusign-templatedocumentfields.documentfieldsposttemplatedocumentfields
+      with:
+        accountId: tools.accountId
+        documentId: tools.documentId
+        templateId: tools.templateId
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: docusign-deletes-custom-document-fields
+      description: Docusign Deletes custom document fields from an existing template document.
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: docusign-templatedocumentfields.documentfieldsdeletetemplatedocumentfields
+      with:
+        accountId: tools.accountId
+        documentId: tools.documentId
+        templateId: tools.templateId
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.

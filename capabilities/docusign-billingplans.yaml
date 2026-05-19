@@ -1,0 +1,309 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: DocuSign REST API — BillingPlans
+  description: 'DocuSign REST API — BillingPlans. 6 operations. Lead operation: Docusign Get Account Billing Plan. Self-contained
+    Naftiko capability covering one Docusign business surface.'
+  tags:
+  - Docusign
+  - BillingPlans
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    DOCUSIGN_API_KEY: DOCUSIGN_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: docusign-billingplans
+    baseUri: https://www.docusign.net/restapi
+    description: DocuSign REST API — BillingPlans business capability. Self-contained, no shared references.
+    resources:
+    - name: v2-accounts-accountId-billing_plan
+      path: /v2/accounts/{accountId}/billing_plan
+      operations:
+      - name: billingplangetbillingplan
+        method: GET
+        description: Docusign Get Account Billing Plan
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: accountId
+          in: path
+          type: string
+          description: The external account number (int) or account id GUID.
+          required: true
+        - name: include_credit_card_information
+          in: query
+          type: string
+          description: When set to **true**, payment information including credit card information will show in the return.
+        - name: include_metadata
+          in: query
+          type: string
+          description: When set to **true**, the `canUpgrade` and `renewalStatus` properities are included the response and
+            an array of `supportedCountries` property is added to the `
+        - name: include_successor_plans
+          in: query
+          type: string
+          description: When set to **true**, excludes successor information from the response.
+      - name: billingplanputbillingplan
+        method: PUT
+        description: Docusign Updates the account billing plan.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: accountId
+          in: path
+          type: string
+          description: The external account number (int) or account id GUID.
+          required: true
+        - name: preview_billing_plan
+          in: query
+          type: string
+          description: When set to **true**, updates the account using a preview billing plan.
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: false
+    - name: v2-accounts-accountId-billing_plan-credit_card
+      path: /v2/accounts/{accountId}/billing_plan/credit_card
+      operations:
+      - name: billingplangetcreditcardinfo
+        method: GET
+        description: Docusign Get metadata for a given credit card.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: accountId
+          in: path
+          type: string
+          description: The external account number (int) or account id GUID.
+          required: true
+    - name: v2-accounts-accountId-billing_plan-purchased_envelopes
+      path: /v2/accounts/{accountId}/billing_plan/purchased_envelopes
+      operations:
+      - name: purchasedenvelopesputpurchasedenvelopes
+        method: PUT
+        description: 'Docusign Reserverd: Purchase additional envelopes.'
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: accountId
+          in: path
+          type: string
+          description: The external account number (int) or account id GUID.
+          required: true
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: false
+    - name: v2-billing_plans
+      path: /v2/billing_plans
+      operations:
+      - name: billingplansgetbillingplans
+        method: GET
+        description: Docusign Gets the list of available billing plans.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: v2-billing_plans-billingPlanId
+      path: /v2/billing_plans/{billingPlanId}
+      operations:
+      - name: billingplansgetbillingplan
+        method: GET
+        description: Docusign Get the billing plan details.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: billingPlanId
+          in: path
+          type: string
+          description: The ID of the billing plan being accessed.
+          required: true
+  exposes:
+  - type: rest
+    namespace: docusign-billingplans-rest
+    port: 8080
+    description: REST adapter for DocuSign REST API — BillingPlans. One Spectral-compliant resource per consumed operation,
+      prefixed with /v1.
+    resources:
+    - path: /v1/v2/accounts/{accountid}/billing-plan
+      name: v2-accounts-accountid-billing-plan
+      description: REST surface for v2-accounts-accountId-billing_plan.
+      operations:
+      - method: GET
+        name: billingplangetbillingplan
+        description: Docusign Get Account Billing Plan
+        call: docusign-billingplans.billingplangetbillingplan
+        with:
+          accountId: rest.accountId
+          include_credit_card_information: rest.include_credit_card_information
+          include_metadata: rest.include_metadata
+          include_successor_plans: rest.include_successor_plans
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: PUT
+        name: billingplanputbillingplan
+        description: Docusign Updates the account billing plan.
+        call: docusign-billingplans.billingplanputbillingplan
+        with:
+          accountId: rest.accountId
+          preview_billing_plan: rest.preview_billing_plan
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/v2/accounts/{accountid}/billing-plan/credit-card
+      name: v2-accounts-accountid-billing-plan-credit-card
+      description: REST surface for v2-accounts-accountId-billing_plan-credit_card.
+      operations:
+      - method: GET
+        name: billingplangetcreditcardinfo
+        description: Docusign Get metadata for a given credit card.
+        call: docusign-billingplans.billingplangetcreditcardinfo
+        with:
+          accountId: rest.accountId
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/v2/accounts/{accountid}/billing-plan/purchased-envelopes
+      name: v2-accounts-accountid-billing-plan-purchased-envelopes
+      description: REST surface for v2-accounts-accountId-billing_plan-purchased_envelopes.
+      operations:
+      - method: PUT
+        name: purchasedenvelopesputpurchasedenvelopes
+        description: 'Docusign Reserverd: Purchase additional envelopes.'
+        call: docusign-billingplans.purchasedenvelopesputpurchasedenvelopes
+        with:
+          accountId: rest.accountId
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/v2/billing-plans
+      name: v2-billing-plans
+      description: REST surface for v2-billing_plans.
+      operations:
+      - method: GET
+        name: billingplansgetbillingplans
+        description: Docusign Gets the list of available billing plans.
+        call: docusign-billingplans.billingplansgetbillingplans
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/v2/billing-plans/{billingplanid}
+      name: v2-billing-plans-billingplanid
+      description: REST surface for v2-billing_plans-billingPlanId.
+      operations:
+      - method: GET
+        name: billingplansgetbillingplan
+        description: Docusign Get the billing plan details.
+        call: docusign-billingplans.billingplansgetbillingplan
+        with:
+          billingPlanId: rest.billingPlanId
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: docusign-billingplans-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for DocuSign REST API — BillingPlans. One tool per consumed operation, routed inline through
+      this capability's consumes block.
+    tools:
+    - name: docusign-get-account-billing-plan
+      description: Docusign Get Account Billing Plan
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: docusign-billingplans.billingplangetbillingplan
+      with:
+        accountId: tools.accountId
+        include_credit_card_information: tools.include_credit_card_information
+        include_metadata: tools.include_metadata
+        include_successor_plans: tools.include_successor_plans
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: docusign-updates-account-billing-plan
+      description: Docusign Updates the account billing plan.
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: true
+      call: docusign-billingplans.billingplanputbillingplan
+      with:
+        accountId: tools.accountId
+        preview_billing_plan: tools.preview_billing_plan
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: docusign-get-metadata-given-credit
+      description: Docusign Get metadata for a given credit card.
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: docusign-billingplans.billingplangetcreditcardinfo
+      with:
+        accountId: tools.accountId
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: docusign-reserverd-purchase-additional-envelopes
+      description: 'Docusign Reserverd: Purchase additional envelopes.'
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: true
+      call: docusign-billingplans.purchasedenvelopesputpurchasedenvelopes
+      with:
+        accountId: tools.accountId
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: docusign-gets-list-available-billing
+      description: Docusign Gets the list of available billing plans.
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: docusign-billingplans.billingplansgetbillingplans
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: docusign-get-billing-plan-details
+      description: Docusign Get the billing plan details.
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: docusign-billingplans.billingplansgetbillingplan
+      with:
+        billingPlanId: tools.billingPlanId
+      outputParameters:
+      - type: object
+        mapping: $.

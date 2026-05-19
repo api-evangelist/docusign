@@ -1,0 +1,72 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: DocuSign Rooms API - v2 — TaskDateTypes
+  description: 'DocuSign Rooms API - v2 — TaskDateTypes. 1 operations. Lead operation: Docusign Gets task date types.. Self-contained
+    Naftiko capability covering one Docusign business surface.'
+  tags:
+  - Docusign
+  - TaskDateTypes
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    DOCUSIGN_API_KEY: DOCUSIGN_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: rooms-taskdatetypes
+    baseUri: https://rooms.docusign.com/restapi
+    description: DocuSign Rooms API - v2 — TaskDateTypes business capability. Self-contained, no shared references.
+    resources:
+    - name: v2-task_date_types
+      path: /v2/task_date_types
+      operations:
+      - name: taskdatetypesgettaskdatetypes
+        method: GET
+        description: Docusign Gets task date types.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    authentication:
+      type: apikey
+      key: Authorization
+      value: '{{env.DOCUSIGN_API_KEY}}'
+      placement: header
+  exposes:
+  - type: rest
+    namespace: rooms-taskdatetypes-rest
+    port: 8080
+    description: REST adapter for DocuSign Rooms API - v2 — TaskDateTypes. One Spectral-compliant resource per consumed operation,
+      prefixed with /v1.
+    resources:
+    - path: /v1/v2/task-date-types
+      name: v2-task-date-types
+      description: REST surface for v2-task_date_types.
+      operations:
+      - method: GET
+        name: taskdatetypesgettaskdatetypes
+        description: Docusign Gets task date types.
+        call: rooms-taskdatetypes.taskdatetypesgettaskdatetypes
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: rooms-taskdatetypes-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for DocuSign Rooms API - v2 — TaskDateTypes. One tool per consumed operation, routed inline through
+      this capability's consumes block.
+    tools:
+    - name: docusign-gets-task-date-types
+      description: Docusign Gets task date types.
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: rooms-taskdatetypes.taskdatetypesgettaskdatetypes
+      outputParameters:
+      - type: object
+        mapping: $.

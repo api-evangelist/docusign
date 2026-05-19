@@ -1,0 +1,259 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: DocuSign REST API — EnvelopeDocumentFields
+  description: 'DocuSign REST API — EnvelopeDocumentFields. 4 operations. Lead operation: Docusign Gets the custom document
+    fields from an  existing envelope document.. Self-contained Naftiko capability covering one Docusign business surface.'
+  tags:
+  - Docusign
+  - EnvelopeDocumentFields
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    DOCUSIGN_API_KEY: DOCUSIGN_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: docusign-envelopedocumentfields
+    baseUri: https://www.docusign.net/restapi
+    description: DocuSign REST API — EnvelopeDocumentFields business capability. Self-contained, no shared references.
+    resources:
+    - name: v2-accounts-accountId-envelopes-envelopeId-documents-documentId-fields
+      path: /v2/accounts/{accountId}/envelopes/{envelopeId}/documents/{documentId}/fields
+      operations:
+      - name: documentfieldsgetdocumentfields
+        method: GET
+        description: Docusign Gets the custom document fields from an  existing envelope document.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: accountId
+          in: path
+          type: string
+          description: The external account number (int) or account id GUID.
+          required: true
+        - name: documentId
+          in: path
+          type: string
+          description: The ID of the document being accessed.
+          required: true
+        - name: envelopeId
+          in: path
+          type: string
+          description: The envelope's GUID. Eg 93be49ab-afa0-4adf-933c-f752070d71ec
+          required: true
+      - name: documentfieldsputdocumentfields
+        method: PUT
+        description: Docusign Updates existing custom document fields in an existing envelope document.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: accountId
+          in: path
+          type: string
+          description: The external account number (int) or account id GUID.
+          required: true
+        - name: documentId
+          in: path
+          type: string
+          description: The ID of the document being accessed.
+          required: true
+        - name: envelopeId
+          in: path
+          type: string
+          description: The envelope's GUID. Eg 93be49ab-afa0-4adf-933c-f752070d71ec
+          required: true
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: false
+      - name: documentfieldspostdocumentfields
+        method: POST
+        description: Docusign Creates custom document fields in an existing envelope document.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: accountId
+          in: path
+          type: string
+          description: The external account number (int) or account id GUID.
+          required: true
+        - name: documentId
+          in: path
+          type: string
+          description: The ID of the document being accessed.
+          required: true
+        - name: envelopeId
+          in: path
+          type: string
+          description: The envelope's GUID. Eg 93be49ab-afa0-4adf-933c-f752070d71ec
+          required: true
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: false
+      - name: documentfieldsdeletedocumentfields
+        method: DELETE
+        description: Docusign Deletes custom document fields from an existing envelope document.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: accountId
+          in: path
+          type: string
+          description: The external account number (int) or account id GUID.
+          required: true
+        - name: documentId
+          in: path
+          type: string
+          description: The ID of the document being accessed.
+          required: true
+        - name: envelopeId
+          in: path
+          type: string
+          description: The envelope's GUID. Eg 93be49ab-afa0-4adf-933c-f752070d71ec
+          required: true
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: false
+  exposes:
+  - type: rest
+    namespace: docusign-envelopedocumentfields-rest
+    port: 8080
+    description: REST adapter for DocuSign REST API — EnvelopeDocumentFields. One Spectral-compliant resource per consumed
+      operation, prefixed with /v1.
+    resources:
+    - path: /v1/v2/accounts/{accountid}/envelopes/{envelopeid}/documents/{documentid}/fields
+      name: v2-accounts-accountid-envelopes-envelopeid-documents-documentid-fields
+      description: REST surface for v2-accounts-accountId-envelopes-envelopeId-documents-documentId-fields.
+      operations:
+      - method: GET
+        name: documentfieldsgetdocumentfields
+        description: Docusign Gets the custom document fields from an  existing envelope document.
+        call: docusign-envelopedocumentfields.documentfieldsgetdocumentfields
+        with:
+          accountId: rest.accountId
+          documentId: rest.documentId
+          envelopeId: rest.envelopeId
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: PUT
+        name: documentfieldsputdocumentfields
+        description: Docusign Updates existing custom document fields in an existing envelope document.
+        call: docusign-envelopedocumentfields.documentfieldsputdocumentfields
+        with:
+          accountId: rest.accountId
+          documentId: rest.documentId
+          envelopeId: rest.envelopeId
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: POST
+        name: documentfieldspostdocumentfields
+        description: Docusign Creates custom document fields in an existing envelope document.
+        call: docusign-envelopedocumentfields.documentfieldspostdocumentfields
+        with:
+          accountId: rest.accountId
+          documentId: rest.documentId
+          envelopeId: rest.envelopeId
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: DELETE
+        name: documentfieldsdeletedocumentfields
+        description: Docusign Deletes custom document fields from an existing envelope document.
+        call: docusign-envelopedocumentfields.documentfieldsdeletedocumentfields
+        with:
+          accountId: rest.accountId
+          documentId: rest.documentId
+          envelopeId: rest.envelopeId
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: docusign-envelopedocumentfields-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for DocuSign REST API — EnvelopeDocumentFields. One tool per consumed operation, routed inline
+      through this capability's consumes block.
+    tools:
+    - name: docusign-gets-custom-document-fields
+      description: Docusign Gets the custom document fields from an  existing envelope document.
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: docusign-envelopedocumentfields.documentfieldsgetdocumentfields
+      with:
+        accountId: tools.accountId
+        documentId: tools.documentId
+        envelopeId: tools.envelopeId
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: docusign-updates-existing-custom-document
+      description: Docusign Updates existing custom document fields in an existing envelope document.
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: true
+      call: docusign-envelopedocumentfields.documentfieldsputdocumentfields
+      with:
+        accountId: tools.accountId
+        documentId: tools.documentId
+        envelopeId: tools.envelopeId
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: docusign-creates-custom-document-fields
+      description: Docusign Creates custom document fields in an existing envelope document.
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: docusign-envelopedocumentfields.documentfieldspostdocumentfields
+      with:
+        accountId: tools.accountId
+        documentId: tools.documentId
+        envelopeId: tools.envelopeId
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: docusign-deletes-custom-document-fields
+      description: Docusign Deletes custom document fields from an existing envelope document.
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: docusign-envelopedocumentfields.documentfieldsdeletedocumentfields
+      with:
+        accountId: tools.accountId
+        documentId: tools.documentId
+        envelopeId: tools.envelopeId
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.

@@ -1,0 +1,103 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: DocuSign Rooms API - v2 — RoomFolders
+  description: 'DocuSign Rooms API - v2 — RoomFolders. 1 operations. Lead operation: Docusign Gets a list of room folders
+    accessible to the current user.. Self-contained Naftiko capability covering one Docusign business surface.'
+  tags:
+  - Docusign
+  - RoomFolders
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    DOCUSIGN_API_KEY: DOCUSIGN_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: rooms-roomfolders
+    baseUri: https://rooms.docusign.com/restapi
+    description: DocuSign Rooms API - v2 — RoomFolders business capability. Self-contained, no shared references.
+    resources:
+    - name: v2-accounts-accountId-rooms-roomId-room_folders
+      path: /v2/accounts/{accountId}/rooms/{roomId}/room_folders
+      operations:
+      - name: roomfoldersgetroomfolders
+        method: GET
+        description: Docusign Gets a list of room folders accessible to the current user.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: roomId
+          in: path
+          type: integer
+          description: The ID of the room from which to retrieve folders.
+          required: true
+        - name: startPosition
+          in: query
+          type: integer
+          description: The starting zero-based index position of the results set. When this property is used as a query parameter,
+            the default value is `0`.
+        - name: count
+          in: query
+          type: integer
+          description: 'The number of results. When this property is used as a request parameter specifying the number of
+            results to return, the value must be a number between `1` and '
+        - name: accountId
+          in: path
+          type: string
+          description: The globally unique identifier (GUID) for the account.
+          required: true
+    authentication:
+      type: apikey
+      key: Authorization
+      value: '{{env.DOCUSIGN_API_KEY}}'
+      placement: header
+  exposes:
+  - type: rest
+    namespace: rooms-roomfolders-rest
+    port: 8080
+    description: REST adapter for DocuSign Rooms API - v2 — RoomFolders. One Spectral-compliant resource per consumed operation,
+      prefixed with /v1.
+    resources:
+    - path: /v1/v2/accounts/{accountid}/rooms/{roomid}/room-folders
+      name: v2-accounts-accountid-rooms-roomid-room-folders
+      description: REST surface for v2-accounts-accountId-rooms-roomId-room_folders.
+      operations:
+      - method: GET
+        name: roomfoldersgetroomfolders
+        description: Docusign Gets a list of room folders accessible to the current user.
+        call: rooms-roomfolders.roomfoldersgetroomfolders
+        with:
+          roomId: rest.roomId
+          startPosition: rest.startPosition
+          count: rest.count
+          accountId: rest.accountId
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: rooms-roomfolders-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for DocuSign Rooms API - v2 — RoomFolders. One tool per consumed operation, routed inline through
+      this capability's consumes block.
+    tools:
+    - name: docusign-gets-list-room-folders
+      description: Docusign Gets a list of room folders accessible to the current user.
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: rooms-roomfolders.roomfoldersgetroomfolders
+      with:
+        roomId: tools.roomId
+        startPosition: tools.startPosition
+        count: tools.count
+        accountId: tools.accountId
+      outputParameters:
+      - type: object
+        mapping: $.

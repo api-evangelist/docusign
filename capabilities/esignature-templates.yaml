@@ -1,0 +1,352 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: DocuSign eSignature REST API — Templates
+  description: 'DocuSign eSignature REST API — Templates. 7 operations. Lead operation: Docusign List Templates. Self-contained
+    Naftiko capability covering one Docusign business surface.'
+  tags:
+  - Docusign
+  - Templates
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    DOCUSIGN_API_KEY: DOCUSIGN_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: esignature-templates
+    baseUri: https://demo.docusign.net/restapi/v2.1
+    description: DocuSign eSignature REST API — Templates business capability. Self-contained, no shared references.
+    resources:
+    - name: accounts-accountId-templates
+      path: /accounts/{accountId}/templates
+      operations:
+      - name: templateslisttemplates
+        method: GET
+        description: Docusign List Templates
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: count
+          in: query
+          type: integer
+          description: Maximum number of templates to return. Default is 100.
+        - name: start_position
+          in: query
+          type: integer
+          description: Starting index for the result set.
+        - name: search_text
+          in: query
+          type: string
+          description: Search text to filter templates by name.
+        - name: folder
+          in: query
+          type: string
+          description: Folder from which to retrieve templates. Valid values include all, drafts, inbox, sent_items, recyclebin.
+        - name: folder_ids
+          in: query
+          type: string
+          description: Comma-separated list of folder IDs to search within.
+        - name: shared_by_me
+          in: query
+          type: string
+          description: When true, returns templates shared by the current user.
+        - name: order
+          in: query
+          type: string
+          description: Sort order for results. Valid values are asc and desc.
+        - name: order_by
+          in: query
+          type: string
+          description: Template property to sort by. Valid values include name, modified, used.
+        - name: used_from_date
+          in: query
+          type: string
+          description: Filter templates used on or after this date.
+        - name: used_to_date
+          in: query
+          type: string
+          description: Filter templates used before this date.
+        - name: include
+          in: query
+          type: string
+          description: Comma-separated list of additional information to include. Valid values include custom_fields, documents,
+            folders, notifications, recipients.
+      - name: templatescreatetemplate
+        method: POST
+        description: Docusign Create a Template
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: accounts-accountId-templates-templateId
+      path: /accounts/{accountId}/templates/{templateId}
+      operations:
+      - name: templatesgettemplate
+        method: GET
+        description: Docusign Get a Template
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: include
+          in: query
+          type: string
+          description: Comma-separated list of additional properties to include.
+      - name: templatesupdatetemplate
+        method: PUT
+        description: Docusign Update a Template
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+      - name: templatesdeletetemplate
+        method: DELETE
+        description: Docusign Delete a Template
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: accounts-accountId-templates-templateId-recipients
+      path: /accounts/{accountId}/templates/{templateId}/recipients
+      operations:
+      - name: templaterecipientslistrecipients
+        method: GET
+        description: Docusign List Template Recipients
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: include_tabs
+          in: query
+          type: string
+          description: When true, includes the tabs associated with each recipient.
+      - name: templaterecipientsupdaterecipients
+        method: PUT
+        description: Docusign Update Template Recipients
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    authentication:
+      type: bearer
+      token: '{{env.DOCUSIGN_API_KEY}}'
+  exposes:
+  - type: rest
+    namespace: esignature-templates-rest
+    port: 8080
+    description: REST adapter for DocuSign eSignature REST API — Templates. One Spectral-compliant resource per consumed operation,
+      prefixed with /v1.
+    resources:
+    - path: /v1/accounts/{accountid}/templates
+      name: accounts-accountid-templates
+      description: REST surface for accounts-accountId-templates.
+      operations:
+      - method: GET
+        name: templateslisttemplates
+        description: Docusign List Templates
+        call: esignature-templates.templateslisttemplates
+        with:
+          count: rest.count
+          start_position: rest.start_position
+          search_text: rest.search_text
+          folder: rest.folder
+          folder_ids: rest.folder_ids
+          shared_by_me: rest.shared_by_me
+          order: rest.order
+          order_by: rest.order_by
+          used_from_date: rest.used_from_date
+          used_to_date: rest.used_to_date
+          include: rest.include
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: POST
+        name: templatescreatetemplate
+        description: Docusign Create a Template
+        call: esignature-templates.templatescreatetemplate
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/accounts/{accountid}/templates/{templateid}
+      name: accounts-accountid-templates-templateid
+      description: REST surface for accounts-accountId-templates-templateId.
+      operations:
+      - method: GET
+        name: templatesgettemplate
+        description: Docusign Get a Template
+        call: esignature-templates.templatesgettemplate
+        with:
+          include: rest.include
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: PUT
+        name: templatesupdatetemplate
+        description: Docusign Update a Template
+        call: esignature-templates.templatesupdatetemplate
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: DELETE
+        name: templatesdeletetemplate
+        description: Docusign Delete a Template
+        call: esignature-templates.templatesdeletetemplate
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/accounts/{accountid}/templates/{templateid}/recipients
+      name: accounts-accountid-templates-templateid-recipients
+      description: REST surface for accounts-accountId-templates-templateId-recipients.
+      operations:
+      - method: GET
+        name: templaterecipientslistrecipients
+        description: Docusign List Template Recipients
+        call: esignature-templates.templaterecipientslistrecipients
+        with:
+          include_tabs: rest.include_tabs
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: PUT
+        name: templaterecipientsupdaterecipients
+        description: Docusign Update Template Recipients
+        call: esignature-templates.templaterecipientsupdaterecipients
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: esignature-templates-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for DocuSign eSignature REST API — Templates. One tool per consumed operation, routed inline
+      through this capability's consumes block.
+    tools:
+    - name: docusign-list-templates
+      description: Docusign List Templates
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: esignature-templates.templateslisttemplates
+      with:
+        count: tools.count
+        start_position: tools.start_position
+        search_text: tools.search_text
+        folder: tools.folder
+        folder_ids: tools.folder_ids
+        shared_by_me: tools.shared_by_me
+        order: tools.order
+        order_by: tools.order_by
+        used_from_date: tools.used_from_date
+        used_to_date: tools.used_to_date
+        include: tools.include
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: docusign-create-template
+      description: Docusign Create a Template
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: esignature-templates.templatescreatetemplate
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: docusign-get-template
+      description: Docusign Get a Template
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: esignature-templates.templatesgettemplate
+      with:
+        include: tools.include
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: docusign-update-template
+      description: Docusign Update a Template
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: true
+      call: esignature-templates.templatesupdatetemplate
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: docusign-delete-template
+      description: Docusign Delete a Template
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: esignature-templates.templatesdeletetemplate
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: docusign-list-template-recipients
+      description: Docusign List Template Recipients
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: esignature-templates.templaterecipientslistrecipients
+      with:
+        include_tabs: tools.include_tabs
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: docusign-update-template-recipients
+      description: Docusign Update Template Recipients
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: true
+      call: esignature-templates.templaterecipientsupdaterecipients
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.

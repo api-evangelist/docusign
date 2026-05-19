@@ -1,0 +1,194 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: DocuSign Rooms API - v2 — Documents
+  description: 'DocuSign Rooms API - v2 — Documents. 3 operations. Lead operation: Docusign Gets information about or the
+    contents of a document.. Self-contained Naftiko capability covering one Docusign business surface.'
+  tags:
+  - Docusign
+  - Documents
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    DOCUSIGN_API_KEY: DOCUSIGN_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: rooms-documents
+    baseUri: https://rooms.docusign.com/restapi
+    description: DocuSign Rooms API - v2 — Documents business capability. Self-contained, no shared references.
+    resources:
+    - name: v2-accounts-accountId-documents-documentId
+      path: /v2/accounts/{accountId}/documents/{documentId}
+      operations:
+      - name: documentsgetdocument
+        method: GET
+        description: Docusign Gets information about or the contents of a document.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: documentId
+          in: path
+          type: integer
+          description: The ID of the document.
+          required: true
+        - name: includeContents
+          in: query
+          type: boolean
+          description: When **true,** includes the contents of the document in the `base64Contents` property of the response.
+            The default value is **false.**
+        - name: accountId
+          in: path
+          type: string
+          description: The globally unique identifier (GUID) for the account.
+          required: true
+      - name: documentsdeletedocument
+        method: DELETE
+        description: Docusign Deletes a specified document.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: documentId
+          in: path
+          type: integer
+          description: The ID of the document.
+          required: true
+        - name: accountId
+          in: path
+          type: string
+          description: The globally unique identifier (GUID) for the account.
+          required: true
+    - name: v2-accounts-accountId-documents-documentId-users
+      path: /v2/accounts/{accountId}/documents/{documentId}/users
+      operations:
+      - name: documentscreatedocumentuser
+        method: POST
+        description: Docusign Grants a user access to a document.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: documentId
+          in: path
+          type: integer
+          description: The ID of the document.
+          required: true
+        - name: accountId
+          in: path
+          type: string
+          description: The globally unique identifier (GUID) for the account.
+          required: true
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: false
+    authentication:
+      type: apikey
+      key: Authorization
+      value: '{{env.DOCUSIGN_API_KEY}}'
+      placement: header
+  exposes:
+  - type: rest
+    namespace: rooms-documents-rest
+    port: 8080
+    description: REST adapter for DocuSign Rooms API - v2 — Documents. One Spectral-compliant resource per consumed operation,
+      prefixed with /v1.
+    resources:
+    - path: /v1/v2/accounts/{accountid}/documents/{documentid}
+      name: v2-accounts-accountid-documents-documentid
+      description: REST surface for v2-accounts-accountId-documents-documentId.
+      operations:
+      - method: GET
+        name: documentsgetdocument
+        description: Docusign Gets information about or the contents of a document.
+        call: rooms-documents.documentsgetdocument
+        with:
+          documentId: rest.documentId
+          includeContents: rest.includeContents
+          accountId: rest.accountId
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: DELETE
+        name: documentsdeletedocument
+        description: Docusign Deletes a specified document.
+        call: rooms-documents.documentsdeletedocument
+        with:
+          documentId: rest.documentId
+          accountId: rest.accountId
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/v2/accounts/{accountid}/documents/{documentid}/users
+      name: v2-accounts-accountid-documents-documentid-users
+      description: REST surface for v2-accounts-accountId-documents-documentId-users.
+      operations:
+      - method: POST
+        name: documentscreatedocumentuser
+        description: Docusign Grants a user access to a document.
+        call: rooms-documents.documentscreatedocumentuser
+        with:
+          documentId: rest.documentId
+          accountId: rest.accountId
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: rooms-documents-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for DocuSign Rooms API - v2 — Documents. One tool per consumed operation, routed inline through
+      this capability's consumes block.
+    tools:
+    - name: docusign-gets-information-about-contents
+      description: Docusign Gets information about or the contents of a document.
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: rooms-documents.documentsgetdocument
+      with:
+        documentId: tools.documentId
+        includeContents: tools.includeContents
+        accountId: tools.accountId
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: docusign-deletes-specified-document
+      description: Docusign Deletes a specified document.
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: rooms-documents.documentsdeletedocument
+      with:
+        documentId: tools.documentId
+        accountId: tools.accountId
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: docusign-grants-user-access-document
+      description: Docusign Grants a user access to a document.
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: rooms-documents.documentscreatedocumentuser
+      with:
+        documentId: tools.documentId
+        accountId: tools.accountId
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.

@@ -1,0 +1,101 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: DocuSign Rooms API - v2 — FormProviders
+  description: 'DocuSign Rooms API - v2 — FormProviders. 1 operations. Lead operation: Docusign Gets all associations by provider..
+    Self-contained Naftiko capability covering one Docusign business surface.'
+  tags:
+  - Docusign
+  - FormProviders
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    DOCUSIGN_API_KEY: DOCUSIGN_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: rooms-formproviders
+    baseUri: https://rooms.docusign.com/restapi
+    description: DocuSign Rooms API - v2 — FormProviders business capability. Self-contained, no shared references.
+    resources:
+    - name: v2-accounts-accountId-form_providers-providerId-associations
+      path: /v2/accounts/{accountId}/form_providers/{providerId}/associations
+      operations:
+      - name: formproviderassociationsgetformproviderassociations
+        method: GET
+        description: Docusign Gets all associations by provider.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: providerId
+          in: path
+          type: string
+          description: The provider ID.
+          required: true
+        - name: count
+          in: query
+          type: integer
+          description: The total number of associations to be returned.
+        - name: startPosition
+          in: query
+          type: integer
+          description: The starting position on the list.
+        - name: accountId
+          in: path
+          type: string
+          description: The globally unique identifier (GUID) for the account.
+          required: true
+    authentication:
+      type: apikey
+      key: Authorization
+      value: '{{env.DOCUSIGN_API_KEY}}'
+      placement: header
+  exposes:
+  - type: rest
+    namespace: rooms-formproviders-rest
+    port: 8080
+    description: REST adapter for DocuSign Rooms API - v2 — FormProviders. One Spectral-compliant resource per consumed operation,
+      prefixed with /v1.
+    resources:
+    - path: /v1/v2/accounts/{accountid}/form-providers/{providerid}/associations
+      name: v2-accounts-accountid-form-providers-providerid-associations
+      description: REST surface for v2-accounts-accountId-form_providers-providerId-associations.
+      operations:
+      - method: GET
+        name: formproviderassociationsgetformproviderassociations
+        description: Docusign Gets all associations by provider.
+        call: rooms-formproviders.formproviderassociationsgetformproviderassociations
+        with:
+          providerId: rest.providerId
+          count: rest.count
+          startPosition: rest.startPosition
+          accountId: rest.accountId
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: rooms-formproviders-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for DocuSign Rooms API - v2 — FormProviders. One tool per consumed operation, routed inline through
+      this capability's consumes block.
+    tools:
+    - name: docusign-gets-all-associations-provider
+      description: Docusign Gets all associations by provider.
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: rooms-formproviders.formproviderassociationsgetformproviderassociations
+      with:
+        providerId: tools.providerId
+        count: tools.count
+        startPosition: tools.startPosition
+        accountId: tools.accountId
+      outputParameters:
+      - type: object
+        mapping: $.

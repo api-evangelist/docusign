@@ -1,0 +1,89 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: DocuSign Rooms API - v2 — FormDetails
+  description: 'DocuSign Rooms API - v2 — FormDetails. 1 operations. Lead operation: Docusign Gets form details.. Self-contained
+    Naftiko capability covering one Docusign business surface.'
+  tags:
+  - Docusign
+  - FormDetails
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    DOCUSIGN_API_KEY: DOCUSIGN_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: rooms-formdetails
+    baseUri: https://rooms.docusign.com/restapi
+    description: DocuSign Rooms API - v2 — FormDetails business capability. Self-contained, no shared references.
+    resources:
+    - name: v2-accounts-accountId-forms-formId-details
+      path: /v2/accounts/{accountId}/forms/{formId}/details
+      operations:
+      - name: formdetailsgetformdetails
+        method: GET
+        description: Docusign Gets form details.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: formId
+          in: path
+          type: string
+          description: The ID of the form.
+          required: true
+        - name: accountId
+          in: path
+          type: string
+          description: The globally unique identifier (GUID) for the account.
+          required: true
+    authentication:
+      type: apikey
+      key: Authorization
+      value: '{{env.DOCUSIGN_API_KEY}}'
+      placement: header
+  exposes:
+  - type: rest
+    namespace: rooms-formdetails-rest
+    port: 8080
+    description: REST adapter for DocuSign Rooms API - v2 — FormDetails. One Spectral-compliant resource per consumed operation,
+      prefixed with /v1.
+    resources:
+    - path: /v1/v2/accounts/{accountid}/forms/{formid}/details
+      name: v2-accounts-accountid-forms-formid-details
+      description: REST surface for v2-accounts-accountId-forms-formId-details.
+      operations:
+      - method: GET
+        name: formdetailsgetformdetails
+        description: Docusign Gets form details.
+        call: rooms-formdetails.formdetailsgetformdetails
+        with:
+          formId: rest.formId
+          accountId: rest.accountId
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: rooms-formdetails-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for DocuSign Rooms API - v2 — FormDetails. One tool per consumed operation, routed inline through
+      this capability's consumes block.
+    tools:
+    - name: docusign-gets-form-details
+      description: Docusign Gets form details.
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: rooms-formdetails.formdetailsgetformdetails
+      with:
+        formId: tools.formId
+        accountId: tools.accountId
+      outputParameters:
+      - type: object
+        mapping: $.

@@ -1,0 +1,290 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: DocuSign Rooms API - v2 — Offices
+  description: 'DocuSign Rooms API - v2 — Offices. 5 operations. Lead operation: Docusign Gets offices.. Self-contained Naftiko
+    capability covering one Docusign business surface.'
+  tags:
+  - Docusign
+  - Offices
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    DOCUSIGN_API_KEY: DOCUSIGN_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: rooms-offices
+    baseUri: https://rooms.docusign.com/restapi
+    description: DocuSign Rooms API - v2 — Offices business capability. Self-contained, no shared references.
+    resources:
+    - name: v2-accounts-accountId-offices
+      path: /v2/accounts/{accountId}/offices
+      operations:
+      - name: officesgetoffices
+        method: GET
+        description: Docusign Gets offices.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: count
+          in: query
+          type: integer
+          description: The number of results to return. This value must be a number between `1` and `100` (default).
+        - name: startPosition
+          in: query
+          type: integer
+          description: The starting zero-based index position of the results set from which to begin returning values. The
+            default value is `0`.
+        - name: onlyAccessible
+          in: query
+          type: boolean
+          description: When **true,** the response only includes the offices that are accessible to the current user.
+        - name: search
+          in: query
+          type: string
+          description: Filters returned records by the specified string. The response only includes records containing this
+            string in the office `name` field.
+        - name: accountId
+          in: path
+          type: string
+          description: The globally unique identifier (GUID) for the account.
+          required: true
+      - name: officescreateoffice
+        method: POST
+        description: Docusign Creates an office.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: accountId
+          in: path
+          type: string
+          description: The globally unique identifier (GUID) for the account.
+          required: true
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: false
+    - name: v2-accounts-accountId-offices-officeId
+      path: /v2/accounts/{accountId}/offices/{officeId}
+      operations:
+      - name: officesgetoffice
+        method: GET
+        description: Docusign Gets information about an office.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: officeId
+          in: path
+          type: integer
+          description: The ID of the office.
+          required: true
+        - name: accountId
+          in: path
+          type: string
+          description: The globally unique identifier (GUID) for the account.
+          required: true
+      - name: officesdeleteoffice
+        method: DELETE
+        description: Docusign Deletes an office.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: officeId
+          in: path
+          type: integer
+          description: The ID of the office.
+          required: true
+        - name: accountId
+          in: path
+          type: string
+          description: The globally unique identifier (GUID) for the account.
+          required: true
+    - name: v2-accounts-accountId-offices-officeId-reference_counts
+      path: /v2/accounts/{accountId}/offices/{officeId}/reference_counts
+      operations:
+      - name: officesgetreferencecounts
+        method: GET
+        description: Docusign Retrieves the number and type of objects that reference an office.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: officeId
+          in: path
+          type: integer
+          description: The ID of the office.
+          required: true
+        - name: accountId
+          in: path
+          type: string
+          description: The globally unique identifier (GUID) for the account.
+          required: true
+    authentication:
+      type: apikey
+      key: Authorization
+      value: '{{env.DOCUSIGN_API_KEY}}'
+      placement: header
+  exposes:
+  - type: rest
+    namespace: rooms-offices-rest
+    port: 8080
+    description: REST adapter for DocuSign Rooms API - v2 — Offices. One Spectral-compliant resource per consumed operation,
+      prefixed with /v1.
+    resources:
+    - path: /v1/v2/accounts/{accountid}/offices
+      name: v2-accounts-accountid-offices
+      description: REST surface for v2-accounts-accountId-offices.
+      operations:
+      - method: GET
+        name: officesgetoffices
+        description: Docusign Gets offices.
+        call: rooms-offices.officesgetoffices
+        with:
+          count: rest.count
+          startPosition: rest.startPosition
+          onlyAccessible: rest.onlyAccessible
+          search: rest.search
+          accountId: rest.accountId
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: POST
+        name: officescreateoffice
+        description: Docusign Creates an office.
+        call: rooms-offices.officescreateoffice
+        with:
+          accountId: rest.accountId
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/v2/accounts/{accountid}/offices/{officeid}
+      name: v2-accounts-accountid-offices-officeid
+      description: REST surface for v2-accounts-accountId-offices-officeId.
+      operations:
+      - method: GET
+        name: officesgetoffice
+        description: Docusign Gets information about an office.
+        call: rooms-offices.officesgetoffice
+        with:
+          officeId: rest.officeId
+          accountId: rest.accountId
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: DELETE
+        name: officesdeleteoffice
+        description: Docusign Deletes an office.
+        call: rooms-offices.officesdeleteoffice
+        with:
+          officeId: rest.officeId
+          accountId: rest.accountId
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/v2/accounts/{accountid}/offices/{officeid}/reference-counts
+      name: v2-accounts-accountid-offices-officeid-reference-counts
+      description: REST surface for v2-accounts-accountId-offices-officeId-reference_counts.
+      operations:
+      - method: GET
+        name: officesgetreferencecounts
+        description: Docusign Retrieves the number and type of objects that reference an office.
+        call: rooms-offices.officesgetreferencecounts
+        with:
+          officeId: rest.officeId
+          accountId: rest.accountId
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: rooms-offices-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for DocuSign Rooms API - v2 — Offices. One tool per consumed operation, routed inline through
+      this capability's consumes block.
+    tools:
+    - name: docusign-gets-offices
+      description: Docusign Gets offices.
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: rooms-offices.officesgetoffices
+      with:
+        count: tools.count
+        startPosition: tools.startPosition
+        onlyAccessible: tools.onlyAccessible
+        search: tools.search
+        accountId: tools.accountId
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: docusign-creates-office
+      description: Docusign Creates an office.
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: rooms-offices.officescreateoffice
+      with:
+        accountId: tools.accountId
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: docusign-gets-information-about-office
+      description: Docusign Gets information about an office.
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: rooms-offices.officesgetoffice
+      with:
+        officeId: tools.officeId
+        accountId: tools.accountId
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: docusign-deletes-office
+      description: Docusign Deletes an office.
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: rooms-offices.officesdeleteoffice
+      with:
+        officeId: tools.officeId
+        accountId: tools.accountId
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: docusign-retrieves-number-and-type
+      description: Docusign Retrieves the number and type of objects that reference an office.
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: rooms-offices.officesgetreferencecounts
+      with:
+        officeId: tools.officeId
+        accountId: tools.accountId
+      outputParameters:
+      - type: object
+        mapping: $.

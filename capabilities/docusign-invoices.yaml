@@ -1,0 +1,179 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: DocuSign REST API — Invoices
+  description: 'DocuSign REST API — Invoices. 3 operations. Lead operation: Docusign Get a List of Billing Invoices. Self-contained
+    Naftiko capability covering one Docusign business surface.'
+  tags:
+  - Docusign
+  - Invoices
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    DOCUSIGN_API_KEY: DOCUSIGN_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: docusign-invoices
+    baseUri: https://www.docusign.net/restapi
+    description: DocuSign REST API — Invoices business capability. Self-contained, no shared references.
+    resources:
+    - name: v2-accounts-accountId-billing_invoices
+      path: /v2/accounts/{accountId}/billing_invoices
+      operations:
+      - name: billinginvoicesgetbillinginvoices
+        method: GET
+        description: Docusign Get a List of Billing Invoices
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: accountId
+          in: path
+          type: string
+          description: The external account number (int) or account id GUID.
+          required: true
+        - name: from_date
+          in: query
+          type: string
+          description: Specifies the date/time of the earliest invoice in the account to retrieve.
+        - name: to_date
+          in: query
+          type: string
+          description: Specifies the date/time of the latest invoice in the account to retrieve.
+    - name: v2-accounts-accountId-billing_invoices-invoiceId
+      path: /v2/accounts/{accountId}/billing_invoices/{invoiceId}
+      operations:
+      - name: billinginvoicesgetbillinginvoice
+        method: GET
+        description: Docusign Retrieves a billing invoice.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: accountId
+          in: path
+          type: string
+          description: The external account number (int) or account id GUID.
+          required: true
+        - name: invoiceId
+          in: path
+          type: string
+          required: true
+    - name: v2-accounts-accountId-billing_invoices_past_due
+      path: /v2/accounts/{accountId}/billing_invoices_past_due
+      operations:
+      - name: billinginvoicesgetbillinginvoicespastdue
+        method: GET
+        description: Docusign Get a list of past due invoices.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: accountId
+          in: path
+          type: string
+          description: The external account number (int) or account id GUID.
+          required: true
+  exposes:
+  - type: rest
+    namespace: docusign-invoices-rest
+    port: 8080
+    description: REST adapter for DocuSign REST API — Invoices. One Spectral-compliant resource per consumed operation, prefixed
+      with /v1.
+    resources:
+    - path: /v1/v2/accounts/{accountid}/billing-invoices
+      name: v2-accounts-accountid-billing-invoices
+      description: REST surface for v2-accounts-accountId-billing_invoices.
+      operations:
+      - method: GET
+        name: billinginvoicesgetbillinginvoices
+        description: Docusign Get a List of Billing Invoices
+        call: docusign-invoices.billinginvoicesgetbillinginvoices
+        with:
+          accountId: rest.accountId
+          from_date: rest.from_date
+          to_date: rest.to_date
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/v2/accounts/{accountid}/billing-invoices/{invoiceid}
+      name: v2-accounts-accountid-billing-invoices-invoiceid
+      description: REST surface for v2-accounts-accountId-billing_invoices-invoiceId.
+      operations:
+      - method: GET
+        name: billinginvoicesgetbillinginvoice
+        description: Docusign Retrieves a billing invoice.
+        call: docusign-invoices.billinginvoicesgetbillinginvoice
+        with:
+          accountId: rest.accountId
+          invoiceId: rest.invoiceId
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/v2/accounts/{accountid}/billing-invoices-past-due
+      name: v2-accounts-accountid-billing-invoices-past-due
+      description: REST surface for v2-accounts-accountId-billing_invoices_past_due.
+      operations:
+      - method: GET
+        name: billinginvoicesgetbillinginvoicespastdue
+        description: Docusign Get a list of past due invoices.
+        call: docusign-invoices.billinginvoicesgetbillinginvoicespastdue
+        with:
+          accountId: rest.accountId
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: docusign-invoices-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for DocuSign REST API — Invoices. One tool per consumed operation, routed inline through this
+      capability's consumes block.
+    tools:
+    - name: docusign-get-list-billing-invoices
+      description: Docusign Get a List of Billing Invoices
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: docusign-invoices.billinginvoicesgetbillinginvoices
+      with:
+        accountId: tools.accountId
+        from_date: tools.from_date
+        to_date: tools.to_date
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: docusign-retrieves-billing-invoice
+      description: Docusign Retrieves a billing invoice.
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: docusign-invoices.billinginvoicesgetbillinginvoice
+      with:
+        accountId: tools.accountId
+        invoiceId: tools.invoiceId
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: docusign-get-list-past-due
+      description: Docusign Get a list of past due invoices.
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: docusign-invoices.billinginvoicesgetbillinginvoicespastdue
+      with:
+        accountId: tools.accountId
+      outputParameters:
+      - type: object
+        mapping: $.

@@ -1,0 +1,259 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: DocuSign REST API — Workspaces
+  description: 'DocuSign REST API — Workspaces. 5 operations. Lead operation: Docusign List Workspaces. Self-contained Naftiko
+    capability covering one Docusign business surface.'
+  tags:
+  - Docusign
+  - Workspaces
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    DOCUSIGN_API_KEY: DOCUSIGN_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: docusign-workspaces
+    baseUri: https://www.docusign.net/restapi
+    description: DocuSign REST API — Workspaces business capability. Self-contained, no shared references.
+    resources:
+    - name: v2-accounts-accountId-workspaces
+      path: /v2/accounts/{accountId}/workspaces
+      operations:
+      - name: workspacegetworkspaces
+        method: GET
+        description: Docusign List Workspaces
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: accountId
+          in: path
+          type: string
+          description: The external account number (int) or account id GUID.
+          required: true
+      - name: workspacepostworkspace
+        method: POST
+        description: Docusign Create a Workspace
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: accountId
+          in: path
+          type: string
+          description: The external account number (int) or account id GUID.
+          required: true
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: false
+    - name: v2-accounts-accountId-workspaces-workspaceId
+      path: /v2/accounts/{accountId}/workspaces/{workspaceId}
+      operations:
+      - name: workspacegetworkspace
+        method: GET
+        description: Docusign Get Workspace
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: accountId
+          in: path
+          type: string
+          description: The external account number (int) or account id GUID.
+          required: true
+        - name: workspaceId
+          in: path
+          type: string
+          description: Specifies the workspace ID GUID.
+          required: true
+      - name: workspaceputworkspace
+        method: PUT
+        description: Docusign Update Workspace
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: accountId
+          in: path
+          type: string
+          description: The external account number (int) or account id GUID.
+          required: true
+        - name: workspaceId
+          in: path
+          type: string
+          description: Specifies the workspace ID GUID.
+          required: true
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: false
+      - name: workspacedeleteworkspace
+        method: DELETE
+        description: Docusign Delete Workspace
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: accountId
+          in: path
+          type: string
+          description: The external account number (int) or account id GUID.
+          required: true
+        - name: workspaceId
+          in: path
+          type: string
+          description: Specifies the workspace ID GUID.
+          required: true
+  exposes:
+  - type: rest
+    namespace: docusign-workspaces-rest
+    port: 8080
+    description: REST adapter for DocuSign REST API — Workspaces. One Spectral-compliant resource per consumed operation,
+      prefixed with /v1.
+    resources:
+    - path: /v1/v2/accounts/{accountid}/workspaces
+      name: v2-accounts-accountid-workspaces
+      description: REST surface for v2-accounts-accountId-workspaces.
+      operations:
+      - method: GET
+        name: workspacegetworkspaces
+        description: Docusign List Workspaces
+        call: docusign-workspaces.workspacegetworkspaces
+        with:
+          accountId: rest.accountId
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: POST
+        name: workspacepostworkspace
+        description: Docusign Create a Workspace
+        call: docusign-workspaces.workspacepostworkspace
+        with:
+          accountId: rest.accountId
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/v2/accounts/{accountid}/workspaces/{workspaceid}
+      name: v2-accounts-accountid-workspaces-workspaceid
+      description: REST surface for v2-accounts-accountId-workspaces-workspaceId.
+      operations:
+      - method: GET
+        name: workspacegetworkspace
+        description: Docusign Get Workspace
+        call: docusign-workspaces.workspacegetworkspace
+        with:
+          accountId: rest.accountId
+          workspaceId: rest.workspaceId
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: PUT
+        name: workspaceputworkspace
+        description: Docusign Update Workspace
+        call: docusign-workspaces.workspaceputworkspace
+        with:
+          accountId: rest.accountId
+          workspaceId: rest.workspaceId
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: DELETE
+        name: workspacedeleteworkspace
+        description: Docusign Delete Workspace
+        call: docusign-workspaces.workspacedeleteworkspace
+        with:
+          accountId: rest.accountId
+          workspaceId: rest.workspaceId
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: docusign-workspaces-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for DocuSign REST API — Workspaces. One tool per consumed operation, routed inline through this
+      capability's consumes block.
+    tools:
+    - name: docusign-list-workspaces
+      description: Docusign List Workspaces
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: docusign-workspaces.workspacegetworkspaces
+      with:
+        accountId: tools.accountId
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: docusign-create-workspace
+      description: Docusign Create a Workspace
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: docusign-workspaces.workspacepostworkspace
+      with:
+        accountId: tools.accountId
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: docusign-get-workspace
+      description: Docusign Get Workspace
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: docusign-workspaces.workspacegetworkspace
+      with:
+        accountId: tools.accountId
+        workspaceId: tools.workspaceId
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: docusign-update-workspace
+      description: Docusign Update Workspace
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: true
+      call: docusign-workspaces.workspaceputworkspace
+      with:
+        accountId: tools.accountId
+        workspaceId: tools.workspaceId
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: docusign-delete-workspace
+      description: Docusign Delete Workspace
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: docusign-workspaces.workspacedeleteworkspace
+      with:
+        accountId: tools.accountId
+        workspaceId: tools.workspaceId
+      outputParameters:
+      - type: object
+        mapping: $.

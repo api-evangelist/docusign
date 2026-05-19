@@ -1,0 +1,617 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: DocuSign REST API — Users
+  description: 'DocuSign REST API — Users. 11 operations. Lead operation: Docusign Retrieves the list of users for the specified
+    account.. Self-contained Naftiko capability covering one Docusign business surface.'
+  tags:
+  - Docusign
+  - Users
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    DOCUSIGN_API_KEY: DOCUSIGN_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: docusign-users
+    baseUri: https://www.docusign.net/restapi
+    description: DocuSign REST API — Users business capability. Self-contained, no shared references.
+    resources:
+    - name: v2-accounts-accountId-users
+      path: /v2/accounts/{accountId}/users
+      operations:
+      - name: usersgetusers
+        method: GET
+        description: Docusign Retrieves the list of users for the specified account.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: accountId
+          in: path
+          type: string
+          description: The external account number (int) or account id GUID.
+          required: true
+        - name: additional_info
+          in: query
+          type: string
+          description: When set to **true**, the full list of user information is returned for each user in the account.
+        - name: count
+          in: query
+          type: string
+          description: Number of records to return. The number must be greater than 0 and less than or equal to 100.
+        - name: email
+          in: query
+          type: string
+        - name: email_substring
+          in: query
+          type: string
+          description: Filters the returned user records by the email address or a sub-string of email address.
+        - name: group_id
+          in: query
+          type: string
+          description: Filters user records returned by one or more group Id's.
+        - name: login_status
+          in: query
+          type: string
+        - name: not_group_id
+          in: query
+          type: string
+        - name: start_position
+          in: query
+          type: string
+          description: Starting value for the list.
+        - name: status
+          in: query
+          type: string
+          description: 'Filters the user records by account status. One of:'
+        - name: user_name_substring
+          in: query
+          type: string
+          description: Filters the user records returned by the user name or a sub-string of user name.
+      - name: usersputusers
+        method: PUT
+        description: Docusign Change one or more user in the specified account.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: accountId
+          in: path
+          type: string
+          description: The external account number (int) or account id GUID.
+          required: true
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: false
+      - name: userspostusers
+        method: POST
+        description: Docusign Adds news user to the specified account.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: accountId
+          in: path
+          type: string
+          description: The external account number (int) or account id GUID.
+          required: true
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: false
+      - name: usersdeleteusers
+        method: DELETE
+        description: Docusign Removes users account privileges.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: accountId
+          in: path
+          type: string
+          description: The external account number (int) or account id GUID.
+          required: true
+        - name: delete
+          in: query
+          type: string
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: false
+    - name: v2-accounts-accountId-users-userId
+      path: /v2/accounts/{accountId}/users/{userId}
+      operations:
+      - name: usergetuser
+        method: GET
+        description: Docusign Gets the user information for a specified user.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: accountId
+          in: path
+          type: string
+          description: The external account number (int) or account id GUID.
+          required: true
+        - name: userId
+          in: path
+          type: string
+          description: 'The user ID of the user being accessed. Generally this is the user ID of the authenticated user, but
+            if the authenticated user is an Admin on the account, this '
+          required: true
+        - name: additional_info
+          in: query
+          type: string
+          description: When set to **true**, the full list of user information is returned for each user in the account.
+        - name: email
+          in: query
+          type: string
+      - name: userputuser
+        method: PUT
+        description: Docusign Updates the specified user information.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: accountId
+          in: path
+          type: string
+          description: The external account number (int) or account id GUID.
+          required: true
+        - name: userId
+          in: path
+          type: string
+          description: 'The user ID of the user being accessed. Generally this is the user ID of the authenticated user, but
+            if the authenticated user is an Admin on the account, this '
+          required: true
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: false
+    - name: v2-accounts-accountId-users-userId-profile-image
+      path: /v2/accounts/{accountId}/users/{userId}/profile/image
+      operations:
+      - name: userprofileimagegetuserprofileimage
+        method: GET
+        description: Docusign Retrieves the user profile image for the specified user.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: accountId
+          in: path
+          type: string
+          description: The external account number (int) or account id GUID.
+          required: true
+        - name: userId
+          in: path
+          type: string
+          description: 'The user ID of the user being accessed. Generally this is the user ID of the authenticated user, but
+            if the authenticated user is an Admin on the account, this '
+          required: true
+        - name: encoding
+          in: query
+          type: string
+      - name: userprofileimageputuserprofileimage
+        method: PUT
+        description: Docusign Updates the user profile image for a specified user.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: accountId
+          in: path
+          type: string
+          description: The external account number (int) or account id GUID.
+          required: true
+        - name: userId
+          in: path
+          type: string
+          description: 'The user ID of the user being accessed. Generally this is the user ID of the authenticated user, but
+            if the authenticated user is an Admin on the account, this '
+          required: true
+      - name: userprofileimagedeleteuserprofileimage
+        method: DELETE
+        description: Docusign Deletes the user profile image for the specified user.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: accountId
+          in: path
+          type: string
+          description: The external account number (int) or account id GUID.
+          required: true
+        - name: userId
+          in: path
+          type: string
+          description: 'The user ID of the user being accessed. Generally this is the user ID of the authenticated user, but
+            if the authenticated user is an Admin on the account, this '
+          required: true
+    - name: v2-accounts-accountId-users-userId-settings
+      path: /v2/accounts/{accountId}/users/{userId}/settings
+      operations:
+      - name: usersettingsgetusersettings
+        method: GET
+        description: Docusign Gets the user account settings for a specified user.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: accountId
+          in: path
+          type: string
+          description: The external account number (int) or account id GUID.
+          required: true
+        - name: userId
+          in: path
+          type: string
+          description: 'The user ID of the user being accessed. Generally this is the user ID of the authenticated user, but
+            if the authenticated user is an Admin on the account, this '
+          required: true
+      - name: usersettingsputusersettings
+        method: PUT
+        description: Docusign Updates the user account settings for a specified user.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: accountId
+          in: path
+          type: string
+          description: The external account number (int) or account id GUID.
+          required: true
+        - name: userId
+          in: path
+          type: string
+          description: 'The user ID of the user being accessed. Generally this is the user ID of the authenticated user, but
+            if the authenticated user is an Admin on the account, this '
+          required: true
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: false
+  exposes:
+  - type: rest
+    namespace: docusign-users-rest
+    port: 8080
+    description: REST adapter for DocuSign REST API — Users. One Spectral-compliant resource per consumed operation, prefixed
+      with /v1.
+    resources:
+    - path: /v1/v2/accounts/{accountid}/users
+      name: v2-accounts-accountid-users
+      description: REST surface for v2-accounts-accountId-users.
+      operations:
+      - method: GET
+        name: usersgetusers
+        description: Docusign Retrieves the list of users for the specified account.
+        call: docusign-users.usersgetusers
+        with:
+          accountId: rest.accountId
+          additional_info: rest.additional_info
+          count: rest.count
+          email: rest.email
+          email_substring: rest.email_substring
+          group_id: rest.group_id
+          login_status: rest.login_status
+          not_group_id: rest.not_group_id
+          start_position: rest.start_position
+          status: rest.status
+          user_name_substring: rest.user_name_substring
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: PUT
+        name: usersputusers
+        description: Docusign Change one or more user in the specified account.
+        call: docusign-users.usersputusers
+        with:
+          accountId: rest.accountId
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: POST
+        name: userspostusers
+        description: Docusign Adds news user to the specified account.
+        call: docusign-users.userspostusers
+        with:
+          accountId: rest.accountId
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: DELETE
+        name: usersdeleteusers
+        description: Docusign Removes users account privileges.
+        call: docusign-users.usersdeleteusers
+        with:
+          accountId: rest.accountId
+          delete: rest.delete
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/v2/accounts/{accountid}/users/{userid}
+      name: v2-accounts-accountid-users-userid
+      description: REST surface for v2-accounts-accountId-users-userId.
+      operations:
+      - method: GET
+        name: usergetuser
+        description: Docusign Gets the user information for a specified user.
+        call: docusign-users.usergetuser
+        with:
+          accountId: rest.accountId
+          userId: rest.userId
+          additional_info: rest.additional_info
+          email: rest.email
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: PUT
+        name: userputuser
+        description: Docusign Updates the specified user information.
+        call: docusign-users.userputuser
+        with:
+          accountId: rest.accountId
+          userId: rest.userId
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/v2/accounts/{accountid}/users/{userid}/profile/image
+      name: v2-accounts-accountid-users-userid-profile-image
+      description: REST surface for v2-accounts-accountId-users-userId-profile-image.
+      operations:
+      - method: GET
+        name: userprofileimagegetuserprofileimage
+        description: Docusign Retrieves the user profile image for the specified user.
+        call: docusign-users.userprofileimagegetuserprofileimage
+        with:
+          accountId: rest.accountId
+          userId: rest.userId
+          encoding: rest.encoding
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: PUT
+        name: userprofileimageputuserprofileimage
+        description: Docusign Updates the user profile image for a specified user.
+        call: docusign-users.userprofileimageputuserprofileimage
+        with:
+          accountId: rest.accountId
+          userId: rest.userId
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: DELETE
+        name: userprofileimagedeleteuserprofileimage
+        description: Docusign Deletes the user profile image for the specified user.
+        call: docusign-users.userprofileimagedeleteuserprofileimage
+        with:
+          accountId: rest.accountId
+          userId: rest.userId
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/v2/accounts/{accountid}/users/{userid}/settings
+      name: v2-accounts-accountid-users-userid-settings
+      description: REST surface for v2-accounts-accountId-users-userId-settings.
+      operations:
+      - method: GET
+        name: usersettingsgetusersettings
+        description: Docusign Gets the user account settings for a specified user.
+        call: docusign-users.usersettingsgetusersettings
+        with:
+          accountId: rest.accountId
+          userId: rest.userId
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: PUT
+        name: usersettingsputusersettings
+        description: Docusign Updates the user account settings for a specified user.
+        call: docusign-users.usersettingsputusersettings
+        with:
+          accountId: rest.accountId
+          userId: rest.userId
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: docusign-users-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for DocuSign REST API — Users. One tool per consumed operation, routed inline through this capability's
+      consumes block.
+    tools:
+    - name: docusign-retrieves-list-users-specified
+      description: Docusign Retrieves the list of users for the specified account.
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: docusign-users.usersgetusers
+      with:
+        accountId: tools.accountId
+        additional_info: tools.additional_info
+        count: tools.count
+        email: tools.email
+        email_substring: tools.email_substring
+        group_id: tools.group_id
+        login_status: tools.login_status
+        not_group_id: tools.not_group_id
+        start_position: tools.start_position
+        status: tools.status
+        user_name_substring: tools.user_name_substring
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: docusign-change-one-more-user
+      description: Docusign Change one or more user in the specified account.
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: true
+      call: docusign-users.usersputusers
+      with:
+        accountId: tools.accountId
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: docusign-adds-news-user-specified
+      description: Docusign Adds news user to the specified account.
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: docusign-users.userspostusers
+      with:
+        accountId: tools.accountId
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: docusign-removes-users-account-privileges
+      description: Docusign Removes users account privileges.
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: docusign-users.usersdeleteusers
+      with:
+        accountId: tools.accountId
+        delete: tools.delete
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: docusign-gets-user-information-specified
+      description: Docusign Gets the user information for a specified user.
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: docusign-users.usergetuser
+      with:
+        accountId: tools.accountId
+        userId: tools.userId
+        additional_info: tools.additional_info
+        email: tools.email
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: docusign-updates-specified-user-information
+      description: Docusign Updates the specified user information.
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: true
+      call: docusign-users.userputuser
+      with:
+        accountId: tools.accountId
+        userId: tools.userId
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: docusign-retrieves-user-profile-image
+      description: Docusign Retrieves the user profile image for the specified user.
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: docusign-users.userprofileimagegetuserprofileimage
+      with:
+        accountId: tools.accountId
+        userId: tools.userId
+        encoding: tools.encoding
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: docusign-updates-user-profile-image
+      description: Docusign Updates the user profile image for a specified user.
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: true
+      call: docusign-users.userprofileimageputuserprofileimage
+      with:
+        accountId: tools.accountId
+        userId: tools.userId
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: docusign-deletes-user-profile-image
+      description: Docusign Deletes the user profile image for the specified user.
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: docusign-users.userprofileimagedeleteuserprofileimage
+      with:
+        accountId: tools.accountId
+        userId: tools.userId
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: docusign-gets-user-account-settings
+      description: Docusign Gets the user account settings for a specified user.
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: docusign-users.usersettingsgetusersettings
+      with:
+        accountId: tools.accountId
+        userId: tools.userId
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: docusign-updates-user-account-settings
+      description: Docusign Updates the user account settings for a specified user.
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: true
+      call: docusign-users.usersettingsputusersettings
+      with:
+        accountId: tools.accountId
+        userId: tools.userId
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.

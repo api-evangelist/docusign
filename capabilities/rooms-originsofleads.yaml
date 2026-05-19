@@ -1,0 +1,72 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: DocuSign Rooms API - v2 — OriginsOfLeads
+  description: 'DocuSign Rooms API - v2 — OriginsOfLeads. 1 operations. Lead operation: Docusign Gets origins of leads.. Self-contained
+    Naftiko capability covering one Docusign business surface.'
+  tags:
+  - Docusign
+  - OriginsOfLeads
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    DOCUSIGN_API_KEY: DOCUSIGN_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: rooms-originsofleads
+    baseUri: https://rooms.docusign.com/restapi
+    description: DocuSign Rooms API - v2 — OriginsOfLeads business capability. Self-contained, no shared references.
+    resources:
+    - name: v2-origins_of_leads
+      path: /v2/origins_of_leads
+      operations:
+      - name: originsofleadsgetoriginsofleads
+        method: GET
+        description: Docusign Gets origins of leads.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    authentication:
+      type: apikey
+      key: Authorization
+      value: '{{env.DOCUSIGN_API_KEY}}'
+      placement: header
+  exposes:
+  - type: rest
+    namespace: rooms-originsofleads-rest
+    port: 8080
+    description: REST adapter for DocuSign Rooms API - v2 — OriginsOfLeads. One Spectral-compliant resource per consumed operation,
+      prefixed with /v1.
+    resources:
+    - path: /v1/v2/origins-of-leads
+      name: v2-origins-of-leads
+      description: REST surface for v2-origins_of_leads.
+      operations:
+      - method: GET
+        name: originsofleadsgetoriginsofleads
+        description: Docusign Gets origins of leads.
+        call: rooms-originsofleads.originsofleadsgetoriginsofleads
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: rooms-originsofleads-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for DocuSign Rooms API - v2 — OriginsOfLeads. One tool per consumed operation, routed inline
+      through this capability's consumes block.
+    tools:
+    - name: docusign-gets-origins-leads
+      description: Docusign Gets origins of leads.
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: rooms-originsofleads.originsofleadsgetoriginsofleads
+      outputParameters:
+      - type: object
+        mapping: $.

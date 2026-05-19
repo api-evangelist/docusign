@@ -1,0 +1,185 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: DocuSign REST API — UserSocialAccountLogins
+  description: 'DocuSign REST API — UserSocialAccountLogins. 3 operations. Lead operation: Docusign Gets a list of a user''s
+    social accounts.. Self-contained Naftiko capability covering one Docusign business surface.'
+  tags:
+  - Docusign
+  - UserSocialAccountLogins
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    DOCUSIGN_API_KEY: DOCUSIGN_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: docusign-usersocialaccountlogins
+    baseUri: https://www.docusign.net/restapi
+    description: DocuSign REST API — UserSocialAccountLogins business capability. Self-contained, no shared references.
+    resources:
+    - name: v2-accounts-accountId-users-userId-social
+      path: /v2/accounts/{accountId}/users/{userId}/social
+      operations:
+      - name: usersociallogingetusersociallogin
+        method: GET
+        description: Docusign Gets a list of a user's social accounts.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: accountId
+          in: path
+          type: string
+          description: The external account number (int) or account id GUID.
+          required: true
+        - name: userId
+          in: path
+          type: string
+          description: 'The user ID of the user being accessed. Generally this is the user ID of the authenticated user, but
+            if the authenticated user is an Admin on the account, this '
+          required: true
+      - name: usersocialloginputusersociallogin
+        method: PUT
+        description: Docusign Adds social account for a user.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: accountId
+          in: path
+          type: string
+          description: The external account number (int) or account id GUID.
+          required: true
+        - name: userId
+          in: path
+          type: string
+          description: 'The user ID of the user being accessed. Generally this is the user ID of the authenticated user, but
+            if the authenticated user is an Admin on the account, this '
+          required: true
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: false
+      - name: usersociallogindeleteusersociallogin
+        method: DELETE
+        description: Docusign Deletes user's social account.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: accountId
+          in: path
+          type: string
+          description: The external account number (int) or account id GUID.
+          required: true
+        - name: userId
+          in: path
+          type: string
+          description: 'The user ID of the user being accessed. Generally this is the user ID of the authenticated user, but
+            if the authenticated user is an Admin on the account, this '
+          required: true
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: false
+  exposes:
+  - type: rest
+    namespace: docusign-usersocialaccountlogins-rest
+    port: 8080
+    description: REST adapter for DocuSign REST API — UserSocialAccountLogins. One Spectral-compliant resource per consumed
+      operation, prefixed with /v1.
+    resources:
+    - path: /v1/v2/accounts/{accountid}/users/{userid}/social
+      name: v2-accounts-accountid-users-userid-social
+      description: REST surface for v2-accounts-accountId-users-userId-social.
+      operations:
+      - method: GET
+        name: usersociallogingetusersociallogin
+        description: Docusign Gets a list of a user's social accounts.
+        call: docusign-usersocialaccountlogins.usersociallogingetusersociallogin
+        with:
+          accountId: rest.accountId
+          userId: rest.userId
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: PUT
+        name: usersocialloginputusersociallogin
+        description: Docusign Adds social account for a user.
+        call: docusign-usersocialaccountlogins.usersocialloginputusersociallogin
+        with:
+          accountId: rest.accountId
+          userId: rest.userId
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: DELETE
+        name: usersociallogindeleteusersociallogin
+        description: Docusign Deletes user's social account.
+        call: docusign-usersocialaccountlogins.usersociallogindeleteusersociallogin
+        with:
+          accountId: rest.accountId
+          userId: rest.userId
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: docusign-usersocialaccountlogins-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for DocuSign REST API — UserSocialAccountLogins. One tool per consumed operation, routed inline
+      through this capability's consumes block.
+    tools:
+    - name: docusign-gets-list-user-s-social
+      description: Docusign Gets a list of a user's social accounts.
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: docusign-usersocialaccountlogins.usersociallogingetusersociallogin
+      with:
+        accountId: tools.accountId
+        userId: tools.userId
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: docusign-adds-social-account-user
+      description: Docusign Adds social account for a user.
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: true
+      call: docusign-usersocialaccountlogins.usersocialloginputusersociallogin
+      with:
+        accountId: tools.accountId
+        userId: tools.userId
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: docusign-deletes-user-s-social-account
+      description: Docusign Deletes user's social account.
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: docusign-usersocialaccountlogins.usersociallogindeleteusersociallogin
+      with:
+        accountId: tools.accountId
+        userId: tools.userId
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
