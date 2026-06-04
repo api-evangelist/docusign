@@ -1,0 +1,128 @@
+arazzo: 1.0.1
+info:
+  title: DocuSign Send Envelope and Track Status
+  summary: Create and send an envelope with a document and signer, then poll until it reaches a terminal status.
+  description: >-
+    The canonical DocuSign send-and-track flow. The workflow creates an
+    envelope with status "sent" so it is dispatched immediately to a single
+    signer, reads the returned envelope status, and then polls the envelope
+    status endpoint, branching back to poll again while the envelope is still
+    in flight and ending once it reaches a terminal status such as completed,
+    declined, or voided. Every step spells out its request inline so the flow
+    can be read and executed without opening the underlying OpenAPI
+    description.
+  version: 1.0.0
+sourceDescriptions:
+- name: esignatureApi
+  url: ../openapi/docusign-esignature-openapi.yml
+  type: openapi
+workflows:
+- workflowId: send-envelope-and-track-status
+  summary: Send a single-signer envelope and poll until it reaches a terminal status.
+  description: >-
+    Creates an envelope in sent status containing one base64 document and one
+    signer with a single signature tab, captures the new envelope id, then
+    retrieves and re-checks the envelope status until signing completes.
+  inputs:
+    type: object
+    required:
+    - accountId
+    - emailSubject
+    - signerName
+    - signerEmail
+    - documentBase64
+    properties:
+      accountId:
+        type: string
+        description: The DocuSign account ID (GUID or short account number).
+      emailSubject:
+        type: string
+        description: The subject line of the email sent to the signer.
+      signerName:
+        type: string
+        description: The full legal name of the signer.
+      signerEmail:
+        type: string
+        description: The email address of the signer.
+      documentBase64:
+        type: string
+        description: The base64-encoded content of the document to sign.
+      documentName:
+        type: string
+        description: The display name of the document.
+        default: Agreement.pdf
+      fileExtension:
+        type: string
+        description: The file extension of the document.
+        default: pdf
+  steps:
+  - stepId: createAndSendEnvelope
+    description: >-
+      Create an envelope in sent status with one document and one signer who
+      has a single signature tab anchored on the document.
+    operationId: Envelopes_CreateEnvelope
+    parameters:
+    - name: accountId
+      in: path
+      value: $inputs.accountId
+    requestBody:
+      contentType: application/json
+      payload:
+        emailSubject: $inputs.emailSubject
+        status: sent
+        documents:
+        - documentId: '1'
+          name: $inputs.documentName
+          fileExtension: $inputs.fileExtension
+          documentBase64: $inputs.documentBase64
+        recipients:
+          signers:
+          - recipientId: '1'
+            routingOrder: '1'
+            name: $inputs.signerName
+            email: $inputs.signerEmail
+            tabs:
+              signHereTabs:
+              - documentId: '1'
+                pageNumber: '1'
+                anchorString: '/sign/'
+    successCriteria:
+    - condition: $statusCode == 201
+    outputs:
+      envelopeId: $response.body#/envelopeId
+      status: $response.body#/status
+  - stepId: getEnvelopeStatus
+    description: >-
+      Retrieve the current status of the envelope so the workflow can decide
+      whether signing has finished or is still in progress.
+    operationId: Envelopes_GetEnvelope
+    parameters:
+    - name: accountId
+      in: path
+      value: $inputs.accountId
+    - name: envelopeId
+      in: path
+      value: $steps.createAndSendEnvelope.outputs.envelopeId
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      status: $response.body#/status
+      completedDateTime: $response.body#/completedDateTime
+    onSuccess:
+    - name: stillInFlight
+      type: goto
+      stepId: getEnvelopeStatus
+      criteria:
+      - context: $response.body
+        condition: $.status == 'sent' || $.status == 'delivered' || $.status == 'created'
+        type: jsonpath
+    - name: terminal
+      type: end
+      criteria:
+      - context: $response.body
+        condition: $.status == 'completed' || $.status == 'declined' || $.status == 'voided'
+        type: jsonpath
+  outputs:
+    envelopeId: $steps.createAndSendEnvelope.outputs.envelopeId
+    finalStatus: $steps.getEnvelopeStatus.outputs.status
+    completedDateTime: $steps.getEnvelopeStatus.outputs.completedDateTime

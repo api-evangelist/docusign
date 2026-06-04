@@ -1,0 +1,124 @@
+arazzo: 1.0.1
+info:
+  title: DocuSign Create Template and Send Envelope
+  summary: Create a reusable template with a document and signer role, then send an envelope based on it.
+  description: >-
+    Bootstraps a reusable agreement and immediately puts it to work. The
+    workflow creates a template that carries a document and a single signer
+    role, captures the new template id, and then creates and sends an envelope
+    from that template by binding a real recipient to the role. This is the
+    end-to-end path from defining a standardized document to dispatching the
+    first signed copy. Every step spells out its request inline so the flow can
+    be read and executed without opening the underlying OpenAPI description.
+  version: 1.0.0
+sourceDescriptions:
+- name: esignatureApi
+  url: ../openapi/docusign-esignature-openapi.yml
+  type: openapi
+workflows:
+- workflowId: create-template-and-send-envelope
+  summary: Create a template, then send an envelope from it.
+  description: >-
+    Defines a template with a document and a signer role, then creates and
+    sends an envelope from that template by mapping a recipient to the role.
+  inputs:
+    type: object
+    required:
+    - accountId
+    - templateName
+    - roleName
+    - documentBase64
+    - signerName
+    - signerEmail
+    properties:
+      accountId:
+        type: string
+        description: The DocuSign account ID (GUID or short account number).
+      templateName:
+        type: string
+        description: The name of the template to create.
+      roleName:
+        type: string
+        description: The signer role name defined on the template.
+      documentBase64:
+        type: string
+        description: The base64-encoded content of the template document.
+      signerName:
+        type: string
+        description: The full legal name of the recipient bound to the role.
+      signerEmail:
+        type: string
+        description: The email address of the recipient bound to the role.
+      emailSubject:
+        type: string
+        description: The email subject used when sending the envelope.
+        default: Please sign this document
+      documentName:
+        type: string
+        description: The display name of the template document.
+        default: Agreement.pdf
+      fileExtension:
+        type: string
+        description: The file extension of the template document.
+        default: pdf
+  steps:
+  - stepId: createTemplate
+    description: >-
+      Create a reusable template containing one document and a single signer
+      role with a signature tab.
+    operationId: Templates_CreateTemplate
+    parameters:
+    - name: accountId
+      in: path
+      value: $inputs.accountId
+    requestBody:
+      contentType: application/json
+      payload:
+        name: $inputs.templateName
+        emailSubject: $inputs.emailSubject
+        documents:
+        - documentId: '1'
+          name: $inputs.documentName
+          fileExtension: $inputs.fileExtension
+          documentBase64: $inputs.documentBase64
+        recipients:
+          signers:
+          - recipientId: '1'
+            routingOrder: '1'
+            roleName: $inputs.roleName
+            tabs:
+              signHereTabs:
+              - documentId: '1'
+                pageNumber: '1'
+                anchorString: '/sign/'
+    successCriteria:
+    - condition: $statusCode == 201
+    outputs:
+      templateId: $response.body#/templateId
+  - stepId: sendEnvelopeFromTemplate
+    description: >-
+      Create and send an envelope from the new template, binding a recipient to
+      the defined role.
+    operationId: Envelopes_CreateEnvelope
+    parameters:
+    - name: accountId
+      in: path
+      value: $inputs.accountId
+    requestBody:
+      contentType: application/json
+      payload:
+        emailSubject: $inputs.emailSubject
+        status: sent
+        templateId: $steps.createTemplate.outputs.templateId
+        templateRoles:
+        - roleName: $inputs.roleName
+          name: $inputs.signerName
+          email: $inputs.signerEmail
+    successCriteria:
+    - condition: $statusCode == 201
+    outputs:
+      envelopeId: $response.body#/envelopeId
+      status: $response.body#/status
+  outputs:
+    templateId: $steps.createTemplate.outputs.templateId
+    envelopeId: $steps.sendEnvelopeFromTemplate.outputs.envelopeId

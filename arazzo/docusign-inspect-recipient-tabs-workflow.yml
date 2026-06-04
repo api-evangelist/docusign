@@ -1,0 +1,82 @@
+arazzo: 1.0.1
+info:
+  title: DocuSign Inspect Recipient Tabs
+  summary: List an envelope's recipients, then retrieve the tabs assigned to a chosen recipient.
+  description: >-
+    Surfaces exactly what a recipient is being asked to fill in. The workflow
+    lists the recipients of an envelope to confirm the target recipient and
+    capture its recipient id, then retrieves the full set of tabs (signature,
+    initial, date, text, and other field types) assigned to that recipient so
+    your application can render or validate the signing form. Every step spells
+    out its request inline so the flow can be read and executed without opening
+    the underlying OpenAPI description.
+  version: 1.0.0
+sourceDescriptions:
+- name: esignatureApi
+  url: ../openapi/docusign-esignature-openapi.yml
+  type: openapi
+workflows:
+- workflowId: inspect-recipient-tabs
+  summary: Resolve a recipient and read the tabs assigned to them.
+  description: >-
+    Lists envelope recipients and retrieves the tab collection for the
+    specified recipient.
+  inputs:
+    type: object
+    required:
+    - accountId
+    - envelopeId
+    - recipientId
+    properties:
+      accountId:
+        type: string
+        description: The DocuSign account ID (GUID or short account number).
+      envelopeId:
+        type: string
+        description: The ID of the envelope to inspect.
+      recipientId:
+        type: string
+        description: The recipient ID whose tabs are retrieved.
+  steps:
+  - stepId: listRecipients
+    description: >-
+      List the envelope recipients to confirm the target recipient exists
+      before fetching its tabs.
+    operationId: Recipients_ListRecipients
+    parameters:
+    - name: accountId
+      in: path
+      value: $inputs.accountId
+    - name: envelopeId
+      in: path
+      value: $inputs.envelopeId
+    - name: include_tabs
+      in: query
+      value: 'true'
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      signers: $response.body#/signers
+  - stepId: listTabs
+    description: >-
+      Retrieve the full tab collection assigned to the specified recipient.
+    operationId: Tabs_ListTabs
+    parameters:
+    - name: accountId
+      in: path
+      value: $inputs.accountId
+    - name: envelopeId
+      in: path
+      value: $inputs.envelopeId
+    - name: recipientId
+      in: path
+      value: $inputs.recipientId
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      signHereTabs: $response.body#/signHereTabs
+      textTabs: $response.body#/textTabs
+  outputs:
+    envelopeId: $inputs.envelopeId
+    signHereTabs: $steps.listTabs.outputs.signHereTabs
+    textTabs: $steps.listTabs.outputs.textTabs

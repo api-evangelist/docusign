@@ -1,0 +1,150 @@
+arazzo: 1.0.1
+info:
+  title: DocuSign Prefill Text Tabs and Send
+  summary: Create a draft envelope, set a recipient's text tab values, then send the envelope.
+  description: >-
+    Pre-populates form fields before a signer ever opens the document. The
+    workflow creates a draft envelope with a document and one signer that has a
+    text tab, updates that recipient's tabs to carry prefilled text values, and
+    then sends the envelope so the signer reviews already-populated fields. This
+    is the standard pattern for stamping known data onto an agreement before
+    routing it. Every step spells out its request inline so the flow can be read
+    and executed without opening the underlying OpenAPI description.
+  version: 1.0.0
+sourceDescriptions:
+- name: esignatureApi
+  url: ../openapi/docusign-esignature-openapi.yml
+  type: openapi
+workflows:
+- workflowId: prefill-text-tabs-and-send
+  summary: Prefill a recipient's text tab on a draft envelope and send it.
+  description: >-
+    Creates a draft envelope with a text tab, updates the tab value for the
+    recipient, then transitions the envelope to sent.
+  inputs:
+    type: object
+    required:
+    - accountId
+    - emailSubject
+    - signerName
+    - signerEmail
+    - documentBase64
+    - tabLabel
+    - tabValue
+    properties:
+      accountId:
+        type: string
+        description: The DocuSign account ID (GUID or short account number).
+      emailSubject:
+        type: string
+        description: The subject line of the envelope email.
+      signerName:
+        type: string
+        description: The full legal name of the signer.
+      signerEmail:
+        type: string
+        description: The email address of the signer.
+      documentBase64:
+        type: string
+        description: The base64-encoded content of the document.
+      tabLabel:
+        type: string
+        description: The label identifying the text tab to prefill.
+      tabValue:
+        type: string
+        description: The prefilled value to write into the text tab.
+      documentName:
+        type: string
+        description: The display name of the document.
+        default: Agreement.pdf
+      fileExtension:
+        type: string
+        description: The file extension of the document.
+        default: pdf
+  steps:
+  - stepId: createDraftWithTextTab
+    description: >-
+      Create a draft envelope with one signer that has both a signature tab and
+      a labeled text tab to be prefilled.
+    operationId: Envelopes_CreateEnvelope
+    parameters:
+    - name: accountId
+      in: path
+      value: $inputs.accountId
+    requestBody:
+      contentType: application/json
+      payload:
+        emailSubject: $inputs.emailSubject
+        status: created
+        documents:
+        - documentId: '1'
+          name: $inputs.documentName
+          fileExtension: $inputs.fileExtension
+          documentBase64: $inputs.documentBase64
+        recipients:
+          signers:
+          - recipientId: '1'
+            routingOrder: '1'
+            name: $inputs.signerName
+            email: $inputs.signerEmail
+            tabs:
+              signHereTabs:
+              - documentId: '1'
+                pageNumber: '1'
+                anchorString: '/sign/'
+              textTabs:
+              - documentId: '1'
+                pageNumber: '1'
+                tabLabel: $inputs.tabLabel
+                anchorString: '/text/'
+    successCriteria:
+    - condition: $statusCode == 201
+    outputs:
+      envelopeId: $response.body#/envelopeId
+  - stepId: setTabValue
+    description: >-
+      Update the recipient's text tab to carry the prefilled value before the
+      envelope is sent.
+    operationId: Tabs_UpdateTabs
+    parameters:
+    - name: accountId
+      in: path
+      value: $inputs.accountId
+    - name: envelopeId
+      in: path
+      value: $steps.createDraftWithTextTab.outputs.envelopeId
+    - name: recipientId
+      in: path
+      value: '1'
+    requestBody:
+      contentType: application/json
+      payload:
+        textTabs:
+        - tabLabel: $inputs.tabLabel
+          value: $inputs.tabValue
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      textTabs: $response.body#/textTabs
+  - stepId: sendEnvelope
+    description: >-
+      Transition the draft envelope to sent so the signer receives the document
+      with prefilled fields.
+    operationId: Envelopes_UpdateEnvelope
+    parameters:
+    - name: accountId
+      in: path
+      value: $inputs.accountId
+    - name: envelopeId
+      in: path
+      value: $steps.createDraftWithTextTab.outputs.envelopeId
+    requestBody:
+      contentType: application/json
+      payload:
+        status: sent
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      envelopeId: $response.body#/envelopeId
+  outputs:
+    envelopeId: $steps.createDraftWithTextTab.outputs.envelopeId

@@ -1,0 +1,135 @@
+arazzo: 1.0.1
+info:
+  title: DocuSign Multi-Signer Sequential Routing
+  summary: Send an envelope to two signers in sequential routing order, then poll the recipients until both complete.
+  description: >-
+    Coordinates a serial signing ceremony. The workflow creates and sends an
+    envelope to two signers placed at routing orders one and two so the second
+    signer is only notified after the first finishes, then lists the recipients
+    and re-checks their statuses, looping while any signer is still pending and
+    ending once both have completed. This is the e-signature equivalent of a
+    sequential approval chain. Every step spells out its request inline so the
+    flow can be read and executed without opening the underlying OpenAPI
+    description.
+  version: 1.0.0
+sourceDescriptions:
+- name: esignatureApi
+  url: ../openapi/docusign-esignature-openapi.yml
+  type: openapi
+workflows:
+- workflowId: multi-signer-routing-order
+  summary: Send to two sequential signers and poll recipients to completion.
+  description: >-
+    Creates and sends an envelope with two signers at distinct routing orders,
+    then polls the recipient list until both signers complete.
+  inputs:
+    type: object
+    required:
+    - accountId
+    - emailSubject
+    - documentBase64
+    - firstSignerName
+    - firstSignerEmail
+    - secondSignerName
+    - secondSignerEmail
+    properties:
+      accountId:
+        type: string
+        description: The DocuSign account ID (GUID or short account number).
+      emailSubject:
+        type: string
+        description: The subject line of the envelope email.
+      documentBase64:
+        type: string
+        description: The base64-encoded content of the document.
+      firstSignerName:
+        type: string
+        description: The full legal name of the first signer (routing order 1).
+      firstSignerEmail:
+        type: string
+        description: The email address of the first signer.
+      secondSignerName:
+        type: string
+        description: The full legal name of the second signer (routing order 2).
+      secondSignerEmail:
+        type: string
+        description: The email address of the second signer.
+      documentName:
+        type: string
+        description: The display name of the document.
+        default: Agreement.pdf
+      fileExtension:
+        type: string
+        description: The file extension of the document.
+        default: pdf
+  steps:
+  - stepId: sendToSequentialSigners
+    description: >-
+      Create and send an envelope with two signers at routing orders 1 and 2 so
+      they are notified in sequence.
+    operationId: Envelopes_CreateEnvelope
+    parameters:
+    - name: accountId
+      in: path
+      value: $inputs.accountId
+    requestBody:
+      contentType: application/json
+      payload:
+        emailSubject: $inputs.emailSubject
+        status: sent
+        documents:
+        - documentId: '1'
+          name: $inputs.documentName
+          fileExtension: $inputs.fileExtension
+          documentBase64: $inputs.documentBase64
+        recipients:
+          signers:
+          - recipientId: '1'
+            routingOrder: '1'
+            name: $inputs.firstSignerName
+            email: $inputs.firstSignerEmail
+            tabs:
+              signHereTabs:
+              - documentId: '1'
+                pageNumber: '1'
+                anchorString: '/sign1/'
+          - recipientId: '2'
+            routingOrder: '2'
+            name: $inputs.secondSignerName
+            email: $inputs.secondSignerEmail
+            tabs:
+              signHereTabs:
+              - documentId: '1'
+                pageNumber: '1'
+                anchorString: '/sign2/'
+    successCriteria:
+    - condition: $statusCode == 201
+    outputs:
+      envelopeId: $response.body#/envelopeId
+  - stepId: pollRecipients
+    description: >-
+      List the recipients and re-check their statuses, looping while any signer
+      is still pending.
+    operationId: Recipients_ListRecipients
+    parameters:
+    - name: accountId
+      in: path
+      value: $inputs.accountId
+    - name: envelopeId
+      in: path
+      value: $steps.sendToSequentialSigners.outputs.envelopeId
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      signers: $response.body#/signers
+    onSuccess:
+    - name: stillPending
+      type: goto
+      stepId: pollRecipients
+      criteria:
+      - context: $response.body
+        condition: $.signers[?(@.status != 'completed')]
+        type: jsonpath
+  outputs:
+    envelopeId: $steps.sendToSequentialSigners.outputs.envelopeId
+    signers: $steps.pollRecipients.outputs.signers

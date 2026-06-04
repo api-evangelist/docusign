@@ -1,0 +1,93 @@
+arazzo: 1.0.1
+info:
+  title: DocuSign Correct Recipient Email and Resend
+  summary: List an envelope's recipients, update a recipient's email address, and resend the corrected envelope.
+  description: >-
+    Fixes a bad delivery without recreating the agreement. The workflow lists
+    the recipients of a sent envelope to capture the target recipient, updates
+    that recipient with a corrected email address and name, and resends the
+    envelope so the notification reaches the right inbox. This is the standard
+    in-flight correction path for a mistyped signer address. Every step spells
+    out its request inline so the flow can be read and executed without opening
+    the underlying OpenAPI description.
+  version: 1.0.0
+sourceDescriptions:
+- name: esignatureApi
+  url: ../openapi/docusign-esignature-openapi.yml
+  type: openapi
+workflows:
+- workflowId: correct-recipient-email-and-resend
+  summary: Correct a recipient's email on a sent envelope and resend it.
+  description: >-
+    Reads the recipient list, updates the specified recipient's email and name,
+    and resends the corrected envelope.
+  inputs:
+    type: object
+    required:
+    - accountId
+    - envelopeId
+    - recipientId
+    - correctedName
+    - correctedEmail
+    properties:
+      accountId:
+        type: string
+        description: The DocuSign account ID (GUID or short account number).
+      envelopeId:
+        type: string
+        description: The ID of the envelope to correct.
+      recipientId:
+        type: string
+        description: The recipient ID to update on the envelope.
+      correctedName:
+        type: string
+        description: The corrected full legal name of the recipient.
+      correctedEmail:
+        type: string
+        description: The corrected email address of the recipient.
+  steps:
+  - stepId: listRecipients
+    description: >-
+      List the current recipients so the recipient targeted for correction is
+      confirmed to exist on the envelope.
+    operationId: Recipients_ListRecipients
+    parameters:
+    - name: accountId
+      in: path
+      value: $inputs.accountId
+    - name: envelopeId
+      in: path
+      value: $inputs.envelopeId
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      signers: $response.body#/signers
+  - stepId: updateRecipient
+    description: >-
+      Update the targeted recipient with the corrected email and name, and
+      resend the envelope so the new address is notified.
+    operationId: Recipients_UpdateRecipients
+    parameters:
+    - name: accountId
+      in: path
+      value: $inputs.accountId
+    - name: envelopeId
+      in: path
+      value: $inputs.envelopeId
+    - name: resend_envelope
+      in: query
+      value: 'true'
+    requestBody:
+      contentType: application/json
+      payload:
+        signers:
+        - recipientId: $inputs.recipientId
+          name: $inputs.correctedName
+          email: $inputs.correctedEmail
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      recipientUpdateResults: $response.body#/recipientUpdateResults
+  outputs:
+    envelopeId: $inputs.envelopeId
+    recipientUpdateResults: $steps.updateRecipient.outputs.recipientUpdateResults

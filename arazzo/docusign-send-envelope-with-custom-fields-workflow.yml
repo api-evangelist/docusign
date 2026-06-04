@@ -1,0 +1,130 @@
+arazzo: 1.0.1
+info:
+  title: DocuSign Send Envelope With Custom Fields
+  summary: Send an envelope carrying envelope custom fields, then read them back via the envelope status.
+  description: >-
+    Tags an agreement with integration metadata. The workflow creates and sends
+    an envelope that includes envelope-level custom fields (textCustomFields)
+    used to correlate the envelope with records in your own systems, then reads
+    the envelope back requesting include=custom_fields so the stored metadata is
+    confirmed on the returned envelope. Note that the eSignature description in
+    this repository exposes envelope custom fields through the envelope body and
+    the include=custom_fields query rather than a dedicated custom-fields
+    endpoint, so this workflow is adapted to use that path. Every step spells
+    out its request inline so the flow can be read and executed without opening
+    the underlying OpenAPI description.
+  version: 1.0.0
+sourceDescriptions:
+- name: esignatureApi
+  url: ../openapi/docusign-esignature-openapi.yml
+  type: openapi
+workflows:
+- workflowId: send-envelope-with-custom-fields
+  summary: Send an envelope with custom fields and read them back.
+  description: >-
+    Creates and sends an envelope carrying a text custom field, then retrieves
+    the envelope with include=custom_fields to confirm the metadata.
+  inputs:
+    type: object
+    required:
+    - accountId
+    - emailSubject
+    - signerName
+    - signerEmail
+    - documentBase64
+    - customFieldName
+    - customFieldValue
+    properties:
+      accountId:
+        type: string
+        description: The DocuSign account ID (GUID or short account number).
+      emailSubject:
+        type: string
+        description: The subject line of the envelope email.
+      signerName:
+        type: string
+        description: The full legal name of the signer.
+      signerEmail:
+        type: string
+        description: The email address of the signer.
+      documentBase64:
+        type: string
+        description: The base64-encoded content of the document.
+      customFieldName:
+        type: string
+        description: The name of the envelope custom field to attach.
+      customFieldValue:
+        type: string
+        description: The value of the envelope custom field.
+      documentName:
+        type: string
+        description: The display name of the document.
+        default: Agreement.pdf
+      fileExtension:
+        type: string
+        description: The file extension of the document.
+        default: pdf
+  steps:
+  - stepId: createEnvelopeWithCustomFields
+    description: >-
+      Create and send an envelope that carries a text custom field used to
+      correlate the envelope with external records.
+    operationId: Envelopes_CreateEnvelope
+    parameters:
+    - name: accountId
+      in: path
+      value: $inputs.accountId
+    requestBody:
+      contentType: application/json
+      payload:
+        emailSubject: $inputs.emailSubject
+        status: sent
+        documents:
+        - documentId: '1'
+          name: $inputs.documentName
+          fileExtension: $inputs.fileExtension
+          documentBase64: $inputs.documentBase64
+        recipients:
+          signers:
+          - recipientId: '1'
+            routingOrder: '1'
+            name: $inputs.signerName
+            email: $inputs.signerEmail
+            tabs:
+              signHereTabs:
+              - documentId: '1'
+                pageNumber: '1'
+                anchorString: '/sign/'
+        customFields:
+          textCustomFields:
+          - name: $inputs.customFieldName
+            value: $inputs.customFieldValue
+            required: 'false'
+            show: 'true'
+    successCriteria:
+    - condition: $statusCode == 201
+    outputs:
+      envelopeId: $response.body#/envelopeId
+  - stepId: readCustomFields
+    description: >-
+      Retrieve the envelope including its custom fields to confirm the metadata
+      was stored on the envelope.
+    operationId: Envelopes_GetEnvelope
+    parameters:
+    - name: accountId
+      in: path
+      value: $inputs.accountId
+    - name: envelopeId
+      in: path
+      value: $steps.createEnvelopeWithCustomFields.outputs.envelopeId
+    - name: include
+      in: query
+      value: custom_fields
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      customFields: $response.body#/customFields
+      status: $response.body#/status
+  outputs:
+    envelopeId: $steps.createEnvelopeWithCustomFields.outputs.envelopeId
+    customFields: $steps.readCustomFields.outputs.customFields

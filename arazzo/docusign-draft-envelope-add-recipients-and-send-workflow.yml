@@ -1,0 +1,131 @@
+arazzo: 1.0.1
+info:
+  title: DocuSign Build a Draft Envelope and Send
+  summary: Create a draft envelope with a document, add recipients to it, then send it by updating its status.
+  description: >-
+    A staged authoring flow that mirrors how many integrations build an
+    envelope incrementally. The workflow first creates an envelope in created
+    (draft) status with a single document, then adds one or more signer
+    recipients to that draft, and finally transitions the envelope to sent by
+    updating its status so DocuSign dispatches it. Every step spells out its
+    request inline so the flow can be read and executed without opening the
+    underlying OpenAPI description.
+  version: 1.0.0
+sourceDescriptions:
+- name: esignatureApi
+  url: ../openapi/docusign-esignature-openapi.yml
+  type: openapi
+workflows:
+- workflowId: draft-envelope-add-recipients-and-send
+  summary: Create a draft envelope, attach a recipient, and send it.
+  description: >-
+    Creates a draft envelope holding one document, adds a signer recipient to
+    the draft, then updates the envelope status to sent to release it to the
+    recipient.
+  inputs:
+    type: object
+    required:
+    - accountId
+    - emailSubject
+    - signerName
+    - signerEmail
+    - documentBase64
+    properties:
+      accountId:
+        type: string
+        description: The DocuSign account ID (GUID or short account number).
+      emailSubject:
+        type: string
+        description: The subject line of the envelope email.
+      signerName:
+        type: string
+        description: The full legal name of the signer to add.
+      signerEmail:
+        type: string
+        description: The email address of the signer to add.
+      documentBase64:
+        type: string
+        description: The base64-encoded content of the document.
+      documentName:
+        type: string
+        description: The display name of the document.
+        default: Agreement.pdf
+      fileExtension:
+        type: string
+        description: The file extension of the document.
+        default: pdf
+  steps:
+  - stepId: createDraftEnvelope
+    description: >-
+      Create the envelope in created (draft) status with a single document so
+      recipients can be attached before it is sent.
+    operationId: Envelopes_CreateEnvelope
+    parameters:
+    - name: accountId
+      in: path
+      value: $inputs.accountId
+    requestBody:
+      contentType: application/json
+      payload:
+        emailSubject: $inputs.emailSubject
+        status: created
+        documents:
+        - documentId: '1'
+          name: $inputs.documentName
+          fileExtension: $inputs.fileExtension
+          documentBase64: $inputs.documentBase64
+    successCriteria:
+    - condition: $statusCode == 201
+    outputs:
+      envelopeId: $response.body#/envelopeId
+  - stepId: addRecipient
+    description: >-
+      Add a signer recipient to the draft envelope, placing a signature tab on
+      the first page of the document.
+    operationId: Recipients_CreateRecipients
+    parameters:
+    - name: accountId
+      in: path
+      value: $inputs.accountId
+    - name: envelopeId
+      in: path
+      value: $steps.createDraftEnvelope.outputs.envelopeId
+    requestBody:
+      contentType: application/json
+      payload:
+        signers:
+        - recipientId: '1'
+          routingOrder: '1'
+          name: $inputs.signerName
+          email: $inputs.signerEmail
+          tabs:
+            signHereTabs:
+            - documentId: '1'
+              pageNumber: '1'
+              anchorString: '/sign/'
+    successCriteria:
+    - condition: $statusCode == 201
+    outputs:
+      recipientCount: $response.body#/recipientCount
+  - stepId: sendEnvelope
+    description: >-
+      Transition the draft envelope to sent status so DocuSign delivers it to
+      the recipient.
+    operationId: Envelopes_UpdateEnvelope
+    parameters:
+    - name: accountId
+      in: path
+      value: $inputs.accountId
+    - name: envelopeId
+      in: path
+      value: $steps.createDraftEnvelope.outputs.envelopeId
+    requestBody:
+      contentType: application/json
+      payload:
+        status: sent
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      envelopeId: $response.body#/envelopeId
+  outputs:
+    envelopeId: $steps.createDraftEnvelope.outputs.envelopeId

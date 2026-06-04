@@ -1,0 +1,113 @@
+arazzo: 1.0.1
+info:
+  title: DocuSign Draft Envelope Sender View
+  summary: Create a draft envelope with a document, then generate an embedded sender view URL for in-app tagging and sending.
+  description: >-
+    Lets a user finish preparing and sending an envelope inside your
+    application using DocuSign's embedded sender experience. The workflow
+    creates an envelope in draft (created) status with a single document and
+    then generates a sender view URL, which opens the DocuSign tagging and
+    sending UI so the user can place tabs, confirm recipients, and send without
+    leaving your product. Every step spells out its request inline so the flow
+    can be read and executed without opening the underlying OpenAPI
+    description.
+  version: 1.0.0
+sourceDescriptions:
+- name: esignatureApi
+  url: ../openapi/docusign-esignature-openapi.yml
+  type: openapi
+workflows:
+- workflowId: draft-envelope-sender-view
+  summary: Create a draft envelope and generate an embedded sender view URL.
+  description: >-
+    Creates a draft envelope holding a document and a placeholder signer, then
+    generates the embedded sender view URL for in-app preparation and sending.
+  inputs:
+    type: object
+    required:
+    - accountId
+    - emailSubject
+    - signerName
+    - signerEmail
+    - documentBase64
+    - returnUrl
+    properties:
+      accountId:
+        type: string
+        description: The DocuSign account ID (GUID or short account number).
+      emailSubject:
+        type: string
+        description: The subject line of the envelope email.
+      signerName:
+        type: string
+        description: The full legal name of the placeholder signer.
+      signerEmail:
+        type: string
+        description: The email address of the placeholder signer.
+      documentBase64:
+        type: string
+        description: The base64-encoded content of the document.
+      returnUrl:
+        type: string
+        description: The URL DocuSign redirects to after the sending session ends.
+      documentName:
+        type: string
+        description: The display name of the document.
+        default: Agreement.pdf
+      fileExtension:
+        type: string
+        description: The file extension of the document.
+        default: pdf
+  steps:
+  - stepId: createDraftEnvelope
+    description: >-
+      Create a draft envelope with one document and a placeholder signer so the
+      sender can complete tagging in the embedded view.
+    operationId: Envelopes_CreateEnvelope
+    parameters:
+    - name: accountId
+      in: path
+      value: $inputs.accountId
+    requestBody:
+      contentType: application/json
+      payload:
+        emailSubject: $inputs.emailSubject
+        status: created
+        documents:
+        - documentId: '1'
+          name: $inputs.documentName
+          fileExtension: $inputs.fileExtension
+          documentBase64: $inputs.documentBase64
+        recipients:
+          signers:
+          - recipientId: '1'
+            routingOrder: '1'
+            name: $inputs.signerName
+            email: $inputs.signerEmail
+    successCriteria:
+    - condition: $statusCode == 201
+    outputs:
+      envelopeId: $response.body#/envelopeId
+  - stepId: createSenderView
+    description: >-
+      Generate the embedded sender view URL that opens the DocuSign tagging and
+      sending experience for the draft envelope.
+    operationId: EnvelopeViews_CreateSenderView
+    parameters:
+    - name: accountId
+      in: path
+      value: $inputs.accountId
+    - name: envelopeId
+      in: path
+      value: $steps.createDraftEnvelope.outputs.envelopeId
+    requestBody:
+      contentType: application/json
+      payload:
+        returnUrl: $inputs.returnUrl
+    successCriteria:
+    - condition: $statusCode == 201
+    outputs:
+      senderUrl: $response.body#/url
+  outputs:
+    envelopeId: $steps.createDraftEnvelope.outputs.envelopeId
+    senderUrl: $steps.createSenderView.outputs.senderUrl

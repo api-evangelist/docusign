@@ -1,0 +1,111 @@
+arazzo: 1.0.1
+info:
+  title: DocuSign List Sent Envelopes and Check Status
+  summary: List envelopes sent in a date range, then fetch full status detail for the first matching envelope.
+  description: >-
+    A monitoring sweep over recent activity. The workflow lists envelopes
+    filtered by a sent date range and status, captures the first matching
+    envelope id, and then retrieves that envelope's full status detail
+    including recipients so a dashboard or audit job can report on the most
+    recent agreement. The flow only drills in when the list returns at least one
+    envelope. Every step spells out its request inline so the flow can be read
+    and executed without opening the underlying OpenAPI description.
+  version: 1.0.0
+sourceDescriptions:
+- name: esignatureApi
+  url: ../openapi/docusign-esignature-openapi.yml
+  type: openapi
+workflows:
+- workflowId: list-sent-envelopes-and-check-status
+  summary: List envelopes by date and status, then detail the first match.
+  description: >-
+    Queries envelopes within a date range and status filter, then retrieves the
+    full status of the first envelope returned.
+  inputs:
+    type: object
+    required:
+    - accountId
+    - fromDate
+    properties:
+      accountId:
+        type: string
+        description: The DocuSign account ID (GUID or short account number).
+      fromDate:
+        type: string
+        description: ISO 8601 start date for the envelope search.
+      status:
+        type: string
+        description: Envelope status to filter on.
+        default: sent
+      count:
+        type: integer
+        description: Maximum number of envelopes to return.
+        default: 10
+  steps:
+  - stepId: listEnvelopes
+    description: >-
+      List envelopes created on or after the start date matching the requested
+      status, and capture the first envelope id.
+    operationId: Envelopes_ListEnvelopes
+    parameters:
+    - name: accountId
+      in: path
+      value: $inputs.accountId
+    - name: from_date
+      in: query
+      value: $inputs.fromDate
+    - name: status
+      in: query
+      value: $inputs.status
+    - name: count
+      in: query
+      value: $inputs.count
+    - name: order_by
+      in: query
+      value: sent
+    - name: order
+      in: query
+      value: desc
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      envelopeId: $response.body#/envelopes/0/envelopeId
+      totalSetSize: $response.body#/totalSetSize
+    onSuccess:
+    - name: hasResults
+      type: goto
+      stepId: getEnvelopeDetail
+      criteria:
+      - context: $response.body
+        condition: $.envelopes.length > 0
+        type: jsonpath
+    - name: empty
+      type: end
+      criteria:
+      - context: $response.body
+        condition: $.envelopes.length == 0
+        type: jsonpath
+  - stepId: getEnvelopeDetail
+    description: >-
+      Retrieve full status detail for the first envelope returned, including its
+      recipients.
+    operationId: Envelopes_GetEnvelope
+    parameters:
+    - name: accountId
+      in: path
+      value: $inputs.accountId
+    - name: envelopeId
+      in: path
+      value: $steps.listEnvelopes.outputs.envelopeId
+    - name: include
+      in: query
+      value: recipients
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      status: $response.body#/status
+      statusChangedDateTime: $response.body#/statusChangedDateTime
+  outputs:
+    envelopeId: $steps.listEnvelopes.outputs.envelopeId
+    status: $steps.getEnvelopeDetail.outputs.status
+    totalSetSize: $steps.listEnvelopes.outputs.totalSetSize

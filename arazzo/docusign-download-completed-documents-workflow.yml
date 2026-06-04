@@ -1,0 +1,104 @@
+arazzo: 1.0.1
+info:
+  title: DocuSign Download Completed Documents
+  summary: Confirm an envelope is completed, list its documents, and download the combined signed PDF.
+  description: >-
+    Retrieves the signed paperwork once an agreement is finished. The workflow
+    checks that the envelope has reached completed status, lists the documents
+    attached to the envelope, and then downloads the combined document set as a
+    single PDF using the special "combined" document identifier. The flow only
+    proceeds to download when the envelope is genuinely complete. Every step
+    spells out its request inline so the flow can be read and executed without
+    opening the underlying OpenAPI description.
+  version: 1.0.0
+sourceDescriptions:
+- name: esignatureApi
+  url: ../openapi/docusign-esignature-openapi.yml
+  type: openapi
+workflows:
+- workflowId: download-completed-documents
+  summary: Download the combined signed PDF of a completed envelope.
+  description: >-
+    Verifies the envelope is completed, enumerates its documents, and retrieves
+    the combined signed PDF for archival.
+  inputs:
+    type: object
+    required:
+    - accountId
+    - envelopeId
+    properties:
+      accountId:
+        type: string
+        description: The DocuSign account ID (GUID or short account number).
+      envelopeId:
+        type: string
+        description: The ID of the completed envelope to download.
+  steps:
+  - stepId: confirmCompleted
+    description: >-
+      Confirm the envelope has reached completed status before attempting to
+      download the signed documents.
+    operationId: Envelopes_GetEnvelope
+    parameters:
+    - name: accountId
+      in: path
+      value: $inputs.accountId
+    - name: envelopeId
+      in: path
+      value: $inputs.envelopeId
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      status: $response.body#/status
+    onSuccess:
+    - name: isCompleted
+      type: goto
+      stepId: listDocuments
+      criteria:
+      - context: $response.body
+        condition: $.status == 'completed'
+        type: jsonpath
+    - name: notReady
+      type: end
+      criteria:
+      - context: $response.body
+        condition: $.status != 'completed'
+        type: jsonpath
+  - stepId: listDocuments
+    description: >-
+      List the documents in the envelope so their metadata is captured before
+      the combined download.
+    operationId: EnvelopeDocuments_ListDocuments
+    parameters:
+    - name: accountId
+      in: path
+      value: $inputs.accountId
+    - name: envelopeId
+      in: path
+      value: $inputs.envelopeId
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      envelopeDocuments: $response.body#/envelopeDocuments
+  - stepId: downloadCombined
+    description: >-
+      Download all documents in the envelope as a single combined PDF using the
+      reserved "combined" document identifier.
+    operationId: EnvelopeDocuments_GetDocument
+    parameters:
+    - name: accountId
+      in: path
+      value: $inputs.accountId
+    - name: envelopeId
+      in: path
+      value: $inputs.envelopeId
+    - name: documentId
+      in: path
+      value: combined
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      contentType: $response.header.Content-Type
+  outputs:
+    envelopeId: $inputs.envelopeId
+    documents: $steps.listDocuments.outputs.envelopeDocuments

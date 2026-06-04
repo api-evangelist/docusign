@@ -1,0 +1,106 @@
+arazzo: 1.0.1
+info:
+  title: DocuSign Update Template Recipients
+  summary: Read a template's recipients, update a role's default name and email, then verify the change.
+  description: >-
+    Maintains the default recipients baked into a reusable template. The
+    workflow lists the recipients defined on a template, updates a chosen role's
+    default name and email, and re-reads the template recipients to confirm the
+    update took effect. This keeps a shared template pointed at the right
+    default approver without recreating it. Every step spells out its request
+    inline so the flow can be read and executed without opening the underlying
+    OpenAPI description.
+  version: 1.0.0
+sourceDescriptions:
+- name: esignatureApi
+  url: ../openapi/docusign-esignature-openapi.yml
+  type: openapi
+workflows:
+- workflowId: update-template-recipients
+  summary: Update a template recipient's default name and email and verify it.
+  description: >-
+    Lists template recipients, updates the specified recipient's default
+    details, then re-lists to confirm the change.
+  inputs:
+    type: object
+    required:
+    - accountId
+    - templateId
+    - recipientId
+    - newName
+    - newEmail
+    properties:
+      accountId:
+        type: string
+        description: The DocuSign account ID (GUID or short account number).
+      templateId:
+        type: string
+        description: The ID of the template to update.
+      recipientId:
+        type: string
+        description: The recipient ID within the template to update.
+      newName:
+        type: string
+        description: The new default name for the template recipient.
+      newEmail:
+        type: string
+        description: The new default email for the template recipient.
+  steps:
+  - stepId: listTemplateRecipients
+    description: >-
+      List the recipients currently defined on the template to confirm the
+      target recipient exists.
+    operationId: TemplateRecipients_ListRecipients
+    parameters:
+    - name: accountId
+      in: path
+      value: $inputs.accountId
+    - name: templateId
+      in: path
+      value: $inputs.templateId
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      signers: $response.body#/signers
+  - stepId: updateTemplateRecipient
+    description: >-
+      Update the targeted template recipient with the new default name and
+      email address.
+    operationId: TemplateRecipients_UpdateRecipients
+    parameters:
+    - name: accountId
+      in: path
+      value: $inputs.accountId
+    - name: templateId
+      in: path
+      value: $inputs.templateId
+    requestBody:
+      contentType: application/json
+      payload:
+        signers:
+        - recipientId: $inputs.recipientId
+          name: $inputs.newName
+          email: $inputs.newEmail
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      recipientUpdateResults: $response.body#/recipientUpdateResults
+  - stepId: verifyTemplateRecipients
+    description: >-
+      Re-list the template recipients to confirm the updated default details
+      were persisted.
+    operationId: TemplateRecipients_ListRecipients
+    parameters:
+    - name: accountId
+      in: path
+      value: $inputs.accountId
+    - name: templateId
+      in: path
+      value: $inputs.templateId
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      signers: $response.body#/signers
+  outputs:
+    templateId: $inputs.templateId
+    signers: $steps.verifyTemplateRecipients.outputs.signers

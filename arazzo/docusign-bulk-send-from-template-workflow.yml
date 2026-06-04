@@ -1,0 +1,127 @@
+arazzo: 1.0.1
+info:
+  title: DocuSign Bulk Send From Template
+  summary: Resolve a template, then fan out multiple template-based envelopes to a list of recipients in one workflow run.
+  description: >-
+    Distributes the same agreement to many recipients. DocuSign's dedicated bulk
+    send list endpoints are not present in the eSignature description in this
+    repository, so this workflow is adapted to achieve the same outcome by
+    resolving a template once and then creating and sending one template-based
+    envelope for each of two recipients, binding each to the same template role.
+    The pattern generalizes to any batch size by repeating the per-recipient
+    send step. Every step spells out its request inline so the flow can be read
+    and executed without opening the underlying OpenAPI description.
+  version: 1.0.0
+sourceDescriptions:
+- name: esignatureApi
+  url: ../openapi/docusign-esignature-openapi.yml
+  type: openapi
+workflows:
+- workflowId: bulk-send-from-template
+  summary: Fan out template-based envelopes to multiple recipients.
+  description: >-
+    Confirms the template exists, then sends one envelope per recipient from
+    that template, binding each recipient to the same role.
+  inputs:
+    type: object
+    required:
+    - accountId
+    - templateId
+    - roleName
+    - firstRecipientName
+    - firstRecipientEmail
+    - secondRecipientName
+    - secondRecipientEmail
+    properties:
+      accountId:
+        type: string
+        description: The DocuSign account ID (GUID or short account number).
+      templateId:
+        type: string
+        description: The ID of the template to send from.
+      roleName:
+        type: string
+        description: The template role name each recipient is bound to.
+      firstRecipientName:
+        type: string
+        description: The full legal name of the first recipient.
+      firstRecipientEmail:
+        type: string
+        description: The email address of the first recipient.
+      secondRecipientName:
+        type: string
+        description: The full legal name of the second recipient.
+      secondRecipientEmail:
+        type: string
+        description: The email address of the second recipient.
+      emailSubject:
+        type: string
+        description: The email subject used for each envelope.
+        default: Please sign this document
+  steps:
+  - stepId: confirmTemplate
+    description: >-
+      Confirm the template exists and capture its name before fanning out
+      envelopes to recipients.
+    operationId: Templates_GetTemplate
+    parameters:
+    - name: accountId
+      in: path
+      value: $inputs.accountId
+    - name: templateId
+      in: path
+      value: $inputs.templateId
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      templateName: $response.body#/name
+  - stepId: sendToFirstRecipient
+    description: >-
+      Create and send a template-based envelope to the first recipient, binding
+      them to the template role.
+    operationId: Envelopes_CreateEnvelope
+    parameters:
+    - name: accountId
+      in: path
+      value: $inputs.accountId
+    requestBody:
+      contentType: application/json
+      payload:
+        emailSubject: $inputs.emailSubject
+        status: sent
+        templateId: $inputs.templateId
+        templateRoles:
+        - roleName: $inputs.roleName
+          name: $inputs.firstRecipientName
+          email: $inputs.firstRecipientEmail
+    successCriteria:
+    - condition: $statusCode == 201
+    outputs:
+      envelopeId: $response.body#/envelopeId
+  - stepId: sendToSecondRecipient
+    description: >-
+      Create and send a template-based envelope to the second recipient, using
+      the same template role.
+    operationId: Envelopes_CreateEnvelope
+    parameters:
+    - name: accountId
+      in: path
+      value: $inputs.accountId
+    requestBody:
+      contentType: application/json
+      payload:
+        emailSubject: $inputs.emailSubject
+        status: sent
+        templateId: $inputs.templateId
+        templateRoles:
+        - roleName: $inputs.roleName
+          name: $inputs.secondRecipientName
+          email: $inputs.secondRecipientEmail
+    successCriteria:
+    - condition: $statusCode == 201
+    outputs:
+      envelopeId: $response.body#/envelopeId
+  outputs:
+    templateName: $steps.confirmTemplate.outputs.templateName
+    firstEnvelopeId: $steps.sendToFirstRecipient.outputs.envelopeId
+    secondEnvelopeId: $steps.sendToSecondRecipient.outputs.envelopeId

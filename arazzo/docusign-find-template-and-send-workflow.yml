@@ -1,0 +1,131 @@
+arazzo: 1.0.1
+info:
+  title: DocuSign Find Template and Send
+  summary: Search templates by name, read the matched template's roles, and send an envelope from it.
+  description: >-
+    Resolves a template by human-friendly name before dispatching. The workflow
+    searches the account's templates with a search text filter, reads the
+    detailed definition of the first matched template to surface its role and
+    document layout, and then creates and sends an envelope from that template
+    by binding a recipient to the resolved role. The flow only sends when a
+    matching template is found. Every step spells out its request inline so the
+    flow can be read and executed without opening the underlying OpenAPI
+    description.
+  version: 1.0.0
+sourceDescriptions:
+- name: esignatureApi
+  url: ../openapi/docusign-esignature-openapi.yml
+  type: openapi
+workflows:
+- workflowId: find-template-and-send
+  summary: Look up a template by name and send an envelope from it.
+  description: >-
+    Finds a template via search text, inspects the matched template, and sends
+    an envelope from it by binding a recipient to a named role.
+  inputs:
+    type: object
+    required:
+    - accountId
+    - searchText
+    - roleName
+    - signerName
+    - signerEmail
+    properties:
+      accountId:
+        type: string
+        description: The DocuSign account ID (GUID or short account number).
+      searchText:
+        type: string
+        description: Text used to find the template by name.
+      roleName:
+        type: string
+        description: The role name defined on the matched template.
+      signerName:
+        type: string
+        description: The full legal name of the recipient.
+      signerEmail:
+        type: string
+        description: The email address of the recipient.
+      emailSubject:
+        type: string
+        description: The email subject used when sending the envelope.
+        default: Please sign this document
+  steps:
+  - stepId: searchTemplates
+    description: >-
+      Search the account's templates by name and capture the first matching
+      template id.
+    operationId: Templates_ListTemplates
+    parameters:
+    - name: accountId
+      in: path
+      value: $inputs.accountId
+    - name: search_text
+      in: query
+      value: $inputs.searchText
+    - name: count
+      in: query
+      value: 1
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      templateId: $response.body#/envelopeTemplates/0/templateId
+    onSuccess:
+    - name: found
+      type: goto
+      stepId: getTemplate
+      criteria:
+      - context: $response.body
+        condition: $.envelopeTemplates.length > 0
+        type: jsonpath
+    - name: notFound
+      type: end
+      criteria:
+      - context: $response.body
+        condition: $.envelopeTemplates.length == 0
+        type: jsonpath
+  - stepId: getTemplate
+    description: >-
+      Retrieve the matched template's full definition, including recipients, so
+      its role layout is confirmed before sending.
+    operationId: Templates_GetTemplate
+    parameters:
+    - name: accountId
+      in: path
+      value: $inputs.accountId
+    - name: templateId
+      in: path
+      value: $steps.searchTemplates.outputs.templateId
+    - name: include
+      in: query
+      value: recipients
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      name: $response.body#/name
+  - stepId: sendEnvelopeFromTemplate
+    description: >-
+      Create and send an envelope from the resolved template, binding the
+      recipient to the named role.
+    operationId: Envelopes_CreateEnvelope
+    parameters:
+    - name: accountId
+      in: path
+      value: $inputs.accountId
+    requestBody:
+      contentType: application/json
+      payload:
+        emailSubject: $inputs.emailSubject
+        status: sent
+        templateId: $steps.searchTemplates.outputs.templateId
+        templateRoles:
+        - roleName: $inputs.roleName
+          name: $inputs.signerName
+          email: $inputs.signerEmail
+    successCriteria:
+    - condition: $statusCode == 201
+    outputs:
+      envelopeId: $response.body#/envelopeId
+  outputs:
+    templateId: $steps.searchTemplates.outputs.templateId
+    envelopeId: $steps.sendEnvelopeFromTemplate.outputs.envelopeId

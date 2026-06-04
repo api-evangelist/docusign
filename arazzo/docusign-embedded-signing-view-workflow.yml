@@ -1,0 +1,128 @@
+arazzo: 1.0.1
+info:
+  title: DocuSign Embedded Signing View
+  summary: Create and send an envelope to an embedded signer, then generate a recipient view URL for in-app signing.
+  description: >-
+    Powers embedded signing inside your own application. The workflow creates
+    and sends an envelope whose signer carries a clientUserId, which marks the
+    recipient as an embedded (captive) signer, and then requests a recipient
+    view URL that your application loads in an iframe or redirect so the signer
+    completes the document without leaving your product. Every step spells out
+    its request inline so the flow can be read and executed without opening the
+    underlying OpenAPI description.
+  version: 1.0.0
+sourceDescriptions:
+- name: esignatureApi
+  url: ../openapi/docusign-esignature-openapi.yml
+  type: openapi
+workflows:
+- workflowId: embedded-signing-view
+  summary: Send an envelope to an embedded signer and generate the signing URL.
+  description: >-
+    Creates a sent envelope with one embedded signer identified by a
+    clientUserId, then generates a time-limited recipient view URL for in-app
+    signing.
+  inputs:
+    type: object
+    required:
+    - accountId
+    - emailSubject
+    - signerName
+    - signerEmail
+    - clientUserId
+    - documentBase64
+    - returnUrl
+    properties:
+      accountId:
+        type: string
+        description: The DocuSign account ID (GUID or short account number).
+      emailSubject:
+        type: string
+        description: The subject line of the envelope email.
+      signerName:
+        type: string
+        description: The full legal name of the signer.
+      signerEmail:
+        type: string
+        description: The email address of the signer.
+      clientUserId:
+        type: string
+        description: The client user ID that marks the signer as an embedded signer.
+      documentBase64:
+        type: string
+        description: The base64-encoded content of the document.
+      returnUrl:
+        type: string
+        description: The URL DocuSign redirects to after the signing session ends.
+      documentName:
+        type: string
+        description: The display name of the document.
+        default: Agreement.pdf
+      fileExtension:
+        type: string
+        description: The file extension of the document.
+        default: pdf
+  steps:
+  - stepId: createEmbeddedEnvelope
+    description: >-
+      Create and send an envelope whose single signer carries a clientUserId so
+      the recipient is treated as an embedded signer.
+    operationId: Envelopes_CreateEnvelope
+    parameters:
+    - name: accountId
+      in: path
+      value: $inputs.accountId
+    requestBody:
+      contentType: application/json
+      payload:
+        emailSubject: $inputs.emailSubject
+        status: sent
+        documents:
+        - documentId: '1'
+          name: $inputs.documentName
+          fileExtension: $inputs.fileExtension
+          documentBase64: $inputs.documentBase64
+        recipients:
+          signers:
+          - recipientId: '1'
+            routingOrder: '1'
+            name: $inputs.signerName
+            email: $inputs.signerEmail
+            clientUserId: $inputs.clientUserId
+            tabs:
+              signHereTabs:
+              - documentId: '1'
+                pageNumber: '1'
+                anchorString: '/sign/'
+    successCriteria:
+    - condition: $statusCode == 201
+    outputs:
+      envelopeId: $response.body#/envelopeId
+  - stepId: createRecipientView
+    description: >-
+      Generate the embedded recipient view URL, matching the recipient email,
+      name, and clientUserId used when the envelope was created.
+    operationId: EnvelopeViews_CreateRecipientView
+    parameters:
+    - name: accountId
+      in: path
+      value: $inputs.accountId
+    - name: envelopeId
+      in: path
+      value: $steps.createEmbeddedEnvelope.outputs.envelopeId
+    requestBody:
+      contentType: application/json
+      payload:
+        authenticationMethod: None
+        email: $inputs.signerEmail
+        userName: $inputs.signerName
+        clientUserId: $inputs.clientUserId
+        recipientId: '1'
+        returnUrl: $inputs.returnUrl
+    successCriteria:
+    - condition: $statusCode == 201
+    outputs:
+      signingUrl: $response.body#/url
+  outputs:
+    envelopeId: $steps.createEmbeddedEnvelope.outputs.envelopeId
+    signingUrl: $steps.createRecipientView.outputs.signingUrl

@@ -1,0 +1,88 @@
+arazzo: 1.0.1
+info:
+  title: DocuSign Resend Envelope to Pending Recipients
+  summary: List an envelope's recipients and, if any are still pending, resend the envelope notification.
+  description: >-
+    A nudge flow for stalled agreements. The workflow lists the recipients of
+    an envelope, inspects whether any recipient is still in a non-completed
+    state, and branches: when at least one recipient is still pending it resends
+    the envelope by updating it with the resend_envelope flag so a fresh
+    notification email goes out, and when everyone is finished it ends without
+    sending a redundant reminder. Every step spells out its request inline so
+    the flow can be read and executed without opening the underlying OpenAPI
+    description.
+  version: 1.0.0
+sourceDescriptions:
+- name: esignatureApi
+  url: ../openapi/docusign-esignature-openapi.yml
+  type: openapi
+workflows:
+- workflowId: resend-envelope-to-pending-recipients
+  summary: Resend an envelope only when recipients are still pending.
+  description: >-
+    Lists envelope recipients, checks for any signer not yet completed, and
+    conditionally resends the envelope notification.
+  inputs:
+    type: object
+    required:
+    - accountId
+    - envelopeId
+    properties:
+      accountId:
+        type: string
+        description: The DocuSign account ID (GUID or short account number).
+      envelopeId:
+        type: string
+        description: The ID of the envelope whose recipients are evaluated.
+  steps:
+  - stepId: listRecipients
+    description: >-
+      Retrieve the recipient list and their statuses so the workflow can detect
+      whether anyone still needs to act.
+    operationId: Recipients_ListRecipients
+    parameters:
+    - name: accountId
+      in: path
+      value: $inputs.accountId
+    - name: envelopeId
+      in: path
+      value: $inputs.envelopeId
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      signers: $response.body#/signers
+      recipientCount: $response.body#/recipientCount
+    onSuccess:
+    - name: hasPending
+      type: goto
+      stepId: resendEnvelope
+      criteria:
+      - context: $response.body
+        condition: $.signers[?(@.status != 'completed')]
+        type: jsonpath
+  - stepId: resendEnvelope
+    description: >-
+      Resend the envelope by updating it with the resend_envelope flag, which
+      re-notifies recipients who have not yet completed their actions.
+    operationId: Envelopes_UpdateEnvelope
+    parameters:
+    - name: accountId
+      in: path
+      value: $inputs.accountId
+    - name: envelopeId
+      in: path
+      value: $inputs.envelopeId
+    - name: resend_envelope
+      in: query
+      value: 'true'
+    requestBody:
+      contentType: application/json
+      payload:
+        status: sent
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      envelopeId: $response.body#/envelopeId
+  outputs:
+    envelopeId: $inputs.envelopeId
+    resentEnvelopeId: $steps.resendEnvelope.outputs.envelopeId

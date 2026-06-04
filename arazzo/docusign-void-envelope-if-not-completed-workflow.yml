@@ -1,0 +1,94 @@
+arazzo: 1.0.1
+info:
+  title: DocuSign Void Envelope If Not Completed
+  summary: Check an envelope's status and void it only if signing has not yet completed.
+  description: >-
+    A safe cancellation flow. The workflow reads the current status of an
+    envelope and branches: when the envelope is still in flight (sent or
+    delivered) it voids the envelope by updating its status to voided with a
+    void reason, and when the envelope has already completed it ends without
+    making any change so a finished agreement is never disturbed. Every step
+    spells out its request inline so the flow can be read and executed without
+    opening the underlying OpenAPI description.
+  version: 1.0.0
+sourceDescriptions:
+- name: esignatureApi
+  url: ../openapi/docusign-esignature-openapi.yml
+  type: openapi
+workflows:
+- workflowId: void-envelope-if-not-completed
+  summary: Void an in-flight envelope, leaving completed envelopes untouched.
+  description: >-
+    Retrieves the envelope status and, only when the envelope is still sent or
+    delivered, transitions it to voided with the supplied reason.
+  inputs:
+    type: object
+    required:
+    - accountId
+    - envelopeId
+    - voidedReason
+    properties:
+      accountId:
+        type: string
+        description: The DocuSign account ID (GUID or short account number).
+      envelopeId:
+        type: string
+        description: The ID of the envelope to evaluate and possibly void.
+      voidedReason:
+        type: string
+        description: The reason recorded for voiding the envelope.
+  steps:
+  - stepId: getEnvelopeStatus
+    description: >-
+      Retrieve the envelope's current status to decide whether it is eligible
+      to be voided.
+    operationId: Envelopes_GetEnvelope
+    parameters:
+    - name: accountId
+      in: path
+      value: $inputs.accountId
+    - name: envelopeId
+      in: path
+      value: $inputs.envelopeId
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      status: $response.body#/status
+    onSuccess:
+    - name: eligibleToVoid
+      type: goto
+      stepId: voidEnvelope
+      criteria:
+      - context: $response.body
+        condition: $.status == 'sent' || $.status == 'delivered'
+        type: jsonpath
+    - name: alreadyDone
+      type: end
+      criteria:
+      - context: $response.body
+        condition: $.status == 'completed' || $.status == 'declined' || $.status == 'voided'
+        type: jsonpath
+  - stepId: voidEnvelope
+    description: >-
+      Void the envelope by updating its status to voided and recording the
+      supplied void reason.
+    operationId: Envelopes_UpdateEnvelope
+    parameters:
+    - name: accountId
+      in: path
+      value: $inputs.accountId
+    - name: envelopeId
+      in: path
+      value: $inputs.envelopeId
+    requestBody:
+      contentType: application/json
+      payload:
+        status: voided
+        voidedReason: $inputs.voidedReason
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      envelopeId: $response.body#/envelopeId
+  outputs:
+    envelopeId: $inputs.envelopeId
+    voided: $steps.voidEnvelope.outputs.envelopeId
