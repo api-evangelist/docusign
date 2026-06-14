@@ -1,0 +1,1908 @@
+# DocuSign Conceptual GraphQL Schema
+# Derived from the DocuSign eSignature REST API type definitions.
+# https://developers.docusign.com/docs/esign-rest-api/reference/
+# This is a conceptual schema — DocuSign does not provide a native GraphQL API.
+
+scalar DateTime
+scalar Upload
+scalar JSON
+
+# ─────────────────────────────────────────────
+# Enums
+# ─────────────────────────────────────────────
+
+enum EnvelopeStatus {
+  created
+  sent
+  delivered
+  signed
+  completed
+  declined
+  voided
+  deleted
+  timedout
+  authfailed
+  template
+}
+
+enum RecipientStatus {
+  created
+  sent
+  delivered
+  signed
+  completed
+  declined
+  faxpending
+  autoresponded
+}
+
+enum RecipientType {
+  signers
+  carbonCopies
+  certifiedDeliveries
+  agents
+  editors
+  intermediaries
+  inPersonSigners
+  witnesses
+}
+
+enum TabType {
+  signHere
+  initialHere
+  dateSigned
+  fullName
+  title
+  email
+  company
+  text
+  number
+  ssn
+  zip
+  date
+  checkbox
+  radioGroup
+  list
+  decline
+  note
+  formulaTab
+  signerAttachment
+}
+
+enum AuthenticationMethod {
+  auto
+  eNotary
+  none
+  phoneAuthentication
+  idCheck
+  smartCard
+  accessCode
+  smsAuthentication
+}
+
+enum SigningGroupType {
+  sharedSigningGroup
+  systemSigningGroup
+}
+
+enum FolderType {
+  sentitems
+  draft
+  inbox
+  recyclebin
+  deleteditems
+  templates
+}
+
+enum CloudStorageProviderType {
+  googledrive
+  box
+  dropbox
+  microsoftonedrive
+  microsoftsharepoint
+  egnyte
+}
+
+enum ConnectConfigAllowEnvelopePublishStatus {
+  enabled
+  disabled
+}
+
+enum BulkSendBatchStatus {
+  queued
+  processing
+  completed
+  failed
+}
+
+enum PowerFormStatus {
+  active
+  inactive
+}
+
+# ─────────────────────────────────────────────
+# Account & User
+# ─────────────────────────────────────────────
+
+type AccountInfo {
+  accountId: String!
+  accountName: String
+  baseUri: String
+  billingPlanInfo: BillingPlanInfo
+  externalAccountId: String
+  isDefault: Boolean
+  createdDateTime: DateTime
+  currentPlanId: String
+  planName: String
+  planStartDate: DateTime
+  planEndDate: DateTime
+  suspensionDate: DateTime
+  suspensionStatus: String
+}
+
+type BillingPlanInfo {
+  billingPlan: BillingPlan
+  successorPlans: [BillingPlan]
+  billingAddress: Address
+  creditCardInformation: CreditCardInformation
+  enableSupport: Boolean
+  includedSeats: String
+  incrementalSeats: String
+  isDowngrade: Boolean
+  renewalStatus: String
+  paymentMethod: String
+}
+
+type BillingPlan {
+  planId: String
+  planName: String
+  paymentCycle: String
+  paymentMethod: String
+  perSeatPrice: String
+  otherDiscountPercent: String
+  supportIncidentFee: String
+  supportPlanFee: String
+  includedSeats: String
+}
+
+type CreditCardInformation {
+  cardType: String
+  cardNumber: String
+  expirationMonth: String
+  expirationYear: String
+  nameOnCard: String
+}
+
+type Address {
+  street1: String
+  street2: String
+  city: String
+  state: String
+  zip: String
+  country: String
+  phone: String
+  fax: String
+}
+
+type UserInfo {
+  userId: String!
+  userName: String
+  email: String
+  firstName: String
+  lastName: String
+  title: String
+  company: String
+  jobTitle: String
+  isAdmin: Boolean
+  createdDateTime: DateTime
+  lastLogin: DateTime
+  loginStatus: String
+  accountId: String
+  uri: String
+  activationAccessCode: String
+  enableConnectForUser: Boolean
+  permissionProfileId: String
+  permissionProfileName: String
+  userStatus: String
+  userType: String
+  groups: [Group]
+}
+
+type Group {
+  groupId: String
+  groupName: String
+  groupType: String
+  permissionProfileId: String
+  usersCount: String
+}
+
+# ─────────────────────────────────────────────
+# Envelope Core Types
+# ─────────────────────────────────────────────
+
+type Envelope {
+  envelopeId: String!
+  status: EnvelopeStatus!
+  statusChangedDateTime: DateTime
+  sentDateTime: DateTime
+  completedDateTime: DateTime
+  voidedDateTime: DateTime
+  voidedReason: String
+  declinedDateTime: DateTime
+  createdDateTime: DateTime
+  deliveredDateTime: DateTime
+  initialSentDateTime: DateTime
+  lastModifiedDateTime: DateTime
+  emailSubject: String
+  emailBlurb: String
+  signingLocation: String
+  customFieldsUri: String
+  notificationUri: String
+  documentsUri: String
+  recipientsUri: String
+  envelopeUri: String
+  templateId: String
+  enableWetSign: Boolean
+  allowMarkup: Boolean
+  allowReassign: Boolean
+  allowViewHistory: Boolean
+  asynchronous: Boolean
+  autoNavigation: Boolean
+  enforceSignerVisibility: Boolean
+  authoritativeCopy: Boolean
+  useDisclosure: Boolean
+  expireEnabled: Boolean
+  expireDateTime: DateTime
+  expireAfter: String
+  burnDefaultTabData: Boolean
+  certificateUri: String
+  sender: Sender
+  documents: [Document]
+  recipients: RecipientSet
+  notification: EnvelopeNotification
+  customFields: CustomFieldSet
+  envelopeCustomMetadata: JSON
+  brandId: String
+  brandLock: Boolean
+  messageLock: Boolean
+  recipientsLock: Boolean
+  accessControlListBase64: String
+  is21CFRPart11: Boolean
+  isSignatureProviderEnvelope: Boolean
+}
+
+type EnvelopeDefinition {
+  emailSubject: String!
+  emailBlurb: String
+  status: EnvelopeStatus
+  documents: [Document]
+  recipients: RecipientSet
+  templateId: String
+  templateRoles: [TemplateRole]
+  compositeTemplates: [CompositeTemplate]
+  notification: EnvelopeNotification
+  customFields: CustomFieldSet
+  allowMarkup: Boolean
+  allowReassign: Boolean
+  allowViewHistory: Boolean
+  autoNavigation: Boolean
+  brandId: String
+  enforceSignerVisibility: Boolean
+  envelopeIdStamping: Boolean
+  messageLock: Boolean
+  recipientsLock: Boolean
+  useDisclosure: Boolean
+}
+
+type Sender {
+  userName: String
+  userId: String
+  email: String
+  accountId: String
+}
+
+type EnvelopeSummary {
+  envelopeId: String!
+  status: EnvelopeStatus
+  statusDateTime: DateTime
+  uri: String
+  bulkEnvelopeStatus: BulkEnvelopeStatus
+}
+
+type BulkEnvelopeStatus {
+  batchId: String
+  batchSize: String
+  batchName: String
+  failed: String
+  queued: String
+  sent: String
+  submittedDate: DateTime
+}
+
+# ─────────────────────────────────────────────
+# Document Types
+# ─────────────────────────────────────────────
+
+type Document {
+  documentId: String!
+  name: String
+  fileExtension: String
+  documentBase64: String
+  remoteUrl: String
+  documentFields: [NameValue]
+  order: String
+  pages: String
+  password: String
+  encryptedWithCustomEncryptionKey: Boolean
+  includeInDownload: Boolean
+  signerMustAcknowledge: String
+  transformPdfFields: Boolean
+  applyAnchorTabs: Boolean
+  display: String
+  matchSensitivity: String
+  templateLocked: Boolean
+  templateRequired: Boolean
+}
+
+type DocumentPage {
+  pageId: String
+  sequence: String
+  height: String
+  width: String
+  dpi: String
+  uri: String
+  thumbnailUri: String
+}
+
+type NameValue {
+  name: String
+  value: String
+  originalValue: String
+  errorDetails: ErrorDetail
+}
+
+type ErrorDetail {
+  errorCode: String
+  message: String
+}
+
+# ─────────────────────────────────────────────
+# Recipients
+# ─────────────────────────────────────────────
+
+type RecipientSet {
+  signers: [Signer]
+  carbonCopies: [CarbonCopy]
+  certifiedDeliveries: [CertifiedDelivery]
+  agents: [Agent]
+  editors: [Editor]
+  intermediaries: [Intermediary]
+  inPersonSigners: [InPersonSigner]
+  witnesses: [Witness]
+  recipientCount: String
+  currentRoutingOrder: String
+}
+
+interface Recipient {
+  recipientId: String
+  recipientIdGuid: String
+  name: String
+  email: String
+  routingOrder: String
+  status: RecipientStatus
+  signedDateTime: DateTime
+  deliveredDateTime: DateTime
+  sentDateTime: DateTime
+  declinedDateTime: DateTime
+  declinedReason: String
+  note: String
+  roleName: String
+  accessCode: String
+  requireIdLookup: Boolean
+  idCheckConfigurationName: String
+  userId: String
+  clientUserId: String
+  embeddedRecipientStartURL: String
+  recipientAuthenticationStatus: RecipientAuthStatus
+  tabs: TabSet
+  errorDetails: ErrorDetail
+}
+
+type Signer implements Recipient {
+  recipientId: String
+  recipientIdGuid: String
+  name: String
+  email: String
+  routingOrder: String
+  status: RecipientStatus
+  signedDateTime: DateTime
+  deliveredDateTime: DateTime
+  sentDateTime: DateTime
+  declinedDateTime: DateTime
+  declinedReason: String
+  note: String
+  roleName: String
+  accessCode: String
+  requireIdLookup: Boolean
+  idCheckConfigurationName: String
+  userId: String
+  clientUserId: String
+  embeddedRecipientStartURL: String
+  recipientAuthenticationStatus: RecipientAuthStatus
+  tabs: TabSet
+  errorDetails: ErrorDetail
+  defaultRecipient: Boolean
+  isBulkRecipient: Boolean
+  bulkRecipientsUri: String
+  signInEachLocation: Boolean
+  autoNavigation: Boolean
+  recipientSuppliesTabs: Boolean
+  canSignOffline: Boolean
+}
+
+type CarbonCopy implements Recipient {
+  recipientId: String
+  recipientIdGuid: String
+  name: String
+  email: String
+  routingOrder: String
+  status: RecipientStatus
+  signedDateTime: DateTime
+  deliveredDateTime: DateTime
+  sentDateTime: DateTime
+  declinedDateTime: DateTime
+  declinedReason: String
+  note: String
+  roleName: String
+  accessCode: String
+  requireIdLookup: Boolean
+  idCheckConfigurationName: String
+  userId: String
+  clientUserId: String
+  embeddedRecipientStartURL: String
+  recipientAuthenticationStatus: RecipientAuthStatus
+  tabs: TabSet
+  errorDetails: ErrorDetail
+}
+
+type CertifiedDelivery implements Recipient {
+  recipientId: String
+  recipientIdGuid: String
+  name: String
+  email: String
+  routingOrder: String
+  status: RecipientStatus
+  signedDateTime: DateTime
+  deliveredDateTime: DateTime
+  sentDateTime: DateTime
+  declinedDateTime: DateTime
+  declinedReason: String
+  note: String
+  roleName: String
+  accessCode: String
+  requireIdLookup: Boolean
+  idCheckConfigurationName: String
+  userId: String
+  clientUserId: String
+  embeddedRecipientStartURL: String
+  recipientAuthenticationStatus: RecipientAuthStatus
+  tabs: TabSet
+  errorDetails: ErrorDetail
+}
+
+type Agent implements Recipient {
+  recipientId: String
+  recipientIdGuid: String
+  name: String
+  email: String
+  routingOrder: String
+  status: RecipientStatus
+  signedDateTime: DateTime
+  deliveredDateTime: DateTime
+  sentDateTime: DateTime
+  declinedDateTime: DateTime
+  declinedReason: String
+  note: String
+  roleName: String
+  accessCode: String
+  requireIdLookup: Boolean
+  idCheckConfigurationName: String
+  userId: String
+  clientUserId: String
+  embeddedRecipientStartURL: String
+  recipientAuthenticationStatus: RecipientAuthStatus
+  tabs: TabSet
+  errorDetails: ErrorDetail
+}
+
+type Editor implements Recipient {
+  recipientId: String
+  recipientIdGuid: String
+  name: String
+  email: String
+  routingOrder: String
+  status: RecipientStatus
+  signedDateTime: DateTime
+  deliveredDateTime: DateTime
+  sentDateTime: DateTime
+  declinedDateTime: DateTime
+  declinedReason: String
+  note: String
+  roleName: String
+  accessCode: String
+  requireIdLookup: Boolean
+  idCheckConfigurationName: String
+  userId: String
+  clientUserId: String
+  embeddedRecipientStartURL: String
+  recipientAuthenticationStatus: RecipientAuthStatus
+  tabs: TabSet
+  errorDetails: ErrorDetail
+}
+
+type Intermediary implements Recipient {
+  recipientId: String
+  recipientIdGuid: String
+  name: String
+  email: String
+  routingOrder: String
+  status: RecipientStatus
+  signedDateTime: DateTime
+  deliveredDateTime: DateTime
+  sentDateTime: DateTime
+  declinedDateTime: DateTime
+  declinedReason: String
+  note: String
+  roleName: String
+  accessCode: String
+  requireIdLookup: Boolean
+  idCheckConfigurationName: String
+  userId: String
+  clientUserId: String
+  embeddedRecipientStartURL: String
+  recipientAuthenticationStatus: RecipientAuthStatus
+  tabs: TabSet
+  errorDetails: ErrorDetail
+}
+
+type InPersonSigner implements Recipient {
+  recipientId: String
+  recipientIdGuid: String
+  name: String
+  email: String
+  routingOrder: String
+  status: RecipientStatus
+  signedDateTime: DateTime
+  deliveredDateTime: DateTime
+  sentDateTime: DateTime
+  declinedDateTime: DateTime
+  declinedReason: String
+  note: String
+  roleName: String
+  accessCode: String
+  requireIdLookup: Boolean
+  idCheckConfigurationName: String
+  userId: String
+  clientUserId: String
+  embeddedRecipientStartURL: String
+  recipientAuthenticationStatus: RecipientAuthStatus
+  tabs: TabSet
+  errorDetails: ErrorDetail
+  inPersonSigningType: String
+  signerName: String
+  signerEmail: String
+  hostName: String
+  hostEmail: String
+}
+
+type Witness implements Recipient {
+  recipientId: String
+  recipientIdGuid: String
+  name: String
+  email: String
+  routingOrder: String
+  status: RecipientStatus
+  signedDateTime: DateTime
+  deliveredDateTime: DateTime
+  sentDateTime: DateTime
+  declinedDateTime: DateTime
+  declinedReason: String
+  note: String
+  roleName: String
+  accessCode: String
+  requireIdLookup: Boolean
+  idCheckConfigurationName: String
+  userId: String
+  clientUserId: String
+  embeddedRecipientStartURL: String
+  recipientAuthenticationStatus: RecipientAuthStatus
+  tabs: TabSet
+  errorDetails: ErrorDetail
+  witnessFor: String
+  witnessForGuid: String
+}
+
+type RecipientAuthStatus {
+  accessCodeResult: AuthStatusResult
+  ageVerifyResult: AuthStatusResult
+  anySocialIDResult: AuthStatusResult
+  facebookResult: AuthStatusResult
+  googleResult: AuthStatusResult
+  idCheckResult: AuthStatusResult
+  identityVerificationResult: AuthStatusResult
+  linkedinResult: AuthStatusResult
+  liveIDResult: AuthStatusResult
+  ofacResult: AuthStatusResult
+  openIDResult: AuthStatusResult
+  phoneAuthResult: AuthStatusResult
+  salesforceResult: AuthStatusResult
+  smsAuthResult: AuthStatusResult
+  twitterResult: AuthStatusResult
+  yahooResult: AuthStatusResult
+}
+
+type AuthStatusResult {
+  status: String
+  eventTimestamp: DateTime
+}
+
+type RecipientEvent {
+  recipientEventStatusCode: String
+  includeDocuments: Boolean
+}
+
+# ─────────────────────────────────────────────
+# Tabs
+# ─────────────────────────────────────────────
+
+type TabSet {
+  signHereTabs: [SignHereTab]
+  initialHereTabs: [InitialsTab]
+  dateSignedTabs: [DateSignedTab]
+  checkboxTabs: [CheckboxTab]
+  dateTabs: [DateTab]
+  declineTabs: [DeclineTab]
+  emailTabs: [EmailTab]
+  formulaTabs: [FormulaTab]
+  fullNameTabs: [FullNameTab]
+  listTabs: [ListTab]
+  noteTabs: [NoteTab]
+  numberTabs: [NumberTab]
+  radioGroupTabs: [RadioGroupTab]
+  signerAttachmentTabs: [SignerAttachmentTab]
+  ssnTabs: [SSNTab]
+  textTabs: [TextTab]
+  titleTabs: [TitleTab]
+  zipTabs: [ZipTab]
+}
+
+interface Tab {
+  tabId: String
+  tabLabel: String
+  tabType: TabType
+  documentId: String
+  recipientId: String
+  pageNumber: String
+  xPosition: String
+  yPosition: String
+  width: String
+  height: String
+  required: Boolean
+  locked: Boolean
+  bold: Boolean
+  italic: Boolean
+  underline: Boolean
+  fontColor: String
+  fontSize: String
+  font: String
+  anchorString: String
+  anchorXOffset: String
+  anchorYOffset: String
+  anchorUnits: String
+  anchorIgnoreIfNotPresent: Boolean
+  anchorCaseSensitive: Boolean
+  anchorMatchWholeWord: Boolean
+  conditionalParentLabel: String
+  conditionalParentValue: String
+  customTabId: String
+  mergeField: MergeField
+  errorDetails: ErrorDetail
+}
+
+type SignHereTab implements Tab {
+  tabId: String
+  tabLabel: String
+  tabType: TabType
+  documentId: String
+  recipientId: String
+  pageNumber: String
+  xPosition: String
+  yPosition: String
+  width: String
+  height: String
+  required: Boolean
+  locked: Boolean
+  bold: Boolean
+  italic: Boolean
+  underline: Boolean
+  fontColor: String
+  fontSize: String
+  font: String
+  anchorString: String
+  anchorXOffset: String
+  anchorYOffset: String
+  anchorUnits: String
+  anchorIgnoreIfNotPresent: Boolean
+  anchorCaseSensitive: Boolean
+  anchorMatchWholeWord: Boolean
+  conditionalParentLabel: String
+  conditionalParentValue: String
+  customTabId: String
+  mergeField: MergeField
+  errorDetails: ErrorDetail
+  handDrawRequired: Boolean
+  stampType: String
+  stampTypeMetadata: JSON
+}
+
+type InitialsTab implements Tab {
+  tabId: String
+  tabLabel: String
+  tabType: TabType
+  documentId: String
+  recipientId: String
+  pageNumber: String
+  xPosition: String
+  yPosition: String
+  width: String
+  height: String
+  required: Boolean
+  locked: Boolean
+  bold: Boolean
+  italic: Boolean
+  underline: Boolean
+  fontColor: String
+  fontSize: String
+  font: String
+  anchorString: String
+  anchorXOffset: String
+  anchorYOffset: String
+  anchorUnits: String
+  anchorIgnoreIfNotPresent: Boolean
+  anchorCaseSensitive: Boolean
+  anchorMatchWholeWord: Boolean
+  conditionalParentLabel: String
+  conditionalParentValue: String
+  customTabId: String
+  mergeField: MergeField
+  errorDetails: ErrorDetail
+}
+
+type DateSignedTab implements Tab {
+  tabId: String
+  tabLabel: String
+  tabType: TabType
+  documentId: String
+  recipientId: String
+  pageNumber: String
+  xPosition: String
+  yPosition: String
+  width: String
+  height: String
+  required: Boolean
+  locked: Boolean
+  bold: Boolean
+  italic: Boolean
+  underline: Boolean
+  fontColor: String
+  fontSize: String
+  font: String
+  anchorString: String
+  anchorXOffset: String
+  anchorYOffset: String
+  anchorUnits: String
+  anchorIgnoreIfNotPresent: Boolean
+  anchorCaseSensitive: Boolean
+  anchorMatchWholeWord: Boolean
+  conditionalParentLabel: String
+  conditionalParentValue: String
+  customTabId: String
+  mergeField: MergeField
+  errorDetails: ErrorDetail
+  value: String
+}
+
+type CheckboxTab implements Tab {
+  tabId: String
+  tabLabel: String
+  tabType: TabType
+  documentId: String
+  recipientId: String
+  pageNumber: String
+  xPosition: String
+  yPosition: String
+  width: String
+  height: String
+  required: Boolean
+  locked: Boolean
+  bold: Boolean
+  italic: Boolean
+  underline: Boolean
+  fontColor: String
+  fontSize: String
+  font: String
+  anchorString: String
+  anchorXOffset: String
+  anchorYOffset: String
+  anchorUnits: String
+  anchorIgnoreIfNotPresent: Boolean
+  anchorCaseSensitive: Boolean
+  anchorMatchWholeWord: Boolean
+  conditionalParentLabel: String
+  conditionalParentValue: String
+  customTabId: String
+  mergeField: MergeField
+  errorDetails: ErrorDetail
+  selected: Boolean
+  selectedOriginal: Boolean
+  requireInitialOnSharedChange: Boolean
+  shared: Boolean
+}
+
+type DateTab implements Tab {
+  tabId: String
+  tabLabel: String
+  tabType: TabType
+  documentId: String
+  recipientId: String
+  pageNumber: String
+  xPosition: String
+  yPosition: String
+  width: String
+  height: String
+  required: Boolean
+  locked: Boolean
+  bold: Boolean
+  italic: Boolean
+  underline: Boolean
+  fontColor: String
+  fontSize: String
+  font: String
+  anchorString: String
+  anchorXOffset: String
+  anchorYOffset: String
+  anchorUnits: String
+  anchorIgnoreIfNotPresent: Boolean
+  anchorCaseSensitive: Boolean
+  anchorMatchWholeWord: Boolean
+  conditionalParentLabel: String
+  conditionalParentValue: String
+  customTabId: String
+  mergeField: MergeField
+  errorDetails: ErrorDetail
+  value: String
+  validationMessage: String
+  validationPattern: String
+  concealValueOnDocument: Boolean
+  disableAutoSize: Boolean
+  maximumLength: String
+}
+
+type DeclineTab implements Tab {
+  tabId: String
+  tabLabel: String
+  tabType: TabType
+  documentId: String
+  recipientId: String
+  pageNumber: String
+  xPosition: String
+  yPosition: String
+  width: String
+  height: String
+  required: Boolean
+  locked: Boolean
+  bold: Boolean
+  italic: Boolean
+  underline: Boolean
+  fontColor: String
+  fontSize: String
+  font: String
+  anchorString: String
+  anchorXOffset: String
+  anchorYOffset: String
+  anchorUnits: String
+  anchorIgnoreIfNotPresent: Boolean
+  anchorCaseSensitive: Boolean
+  anchorMatchWholeWord: Boolean
+  conditionalParentLabel: String
+  conditionalParentValue: String
+  customTabId: String
+  mergeField: MergeField
+  errorDetails: ErrorDetail
+  buttonText: String
+  declineReason: String
+}
+
+type EmailTab implements Tab {
+  tabId: String
+  tabLabel: String
+  tabType: TabType
+  documentId: String
+  recipientId: String
+  pageNumber: String
+  xPosition: String
+  yPosition: String
+  width: String
+  height: String
+  required: Boolean
+  locked: Boolean
+  bold: Boolean
+  italic: Boolean
+  underline: Boolean
+  fontColor: String
+  fontSize: String
+  font: String
+  anchorString: String
+  anchorXOffset: String
+  anchorYOffset: String
+  anchorUnits: String
+  anchorIgnoreIfNotPresent: Boolean
+  anchorCaseSensitive: Boolean
+  anchorMatchWholeWord: Boolean
+  conditionalParentLabel: String
+  conditionalParentValue: String
+  customTabId: String
+  mergeField: MergeField
+  errorDetails: ErrorDetail
+  value: String
+  shared: Boolean
+  requireInitialOnSharedChange: Boolean
+  concealValueOnDocument: Boolean
+  disableAutoSize: Boolean
+  maximumLength: String
+  validationMessage: String
+  validationPattern: String
+}
+
+type FormulaTab implements Tab {
+  tabId: String
+  tabLabel: String
+  tabType: TabType
+  documentId: String
+  recipientId: String
+  pageNumber: String
+  xPosition: String
+  yPosition: String
+  width: String
+  height: String
+  required: Boolean
+  locked: Boolean
+  bold: Boolean
+  italic: Boolean
+  underline: Boolean
+  fontColor: String
+  fontSize: String
+  font: String
+  anchorString: String
+  anchorXOffset: String
+  anchorYOffset: String
+  anchorUnits: String
+  anchorIgnoreIfNotPresent: Boolean
+  anchorCaseSensitive: Boolean
+  anchorMatchWholeWord: Boolean
+  conditionalParentLabel: String
+  conditionalParentValue: String
+  customTabId: String
+  mergeField: MergeField
+  errorDetails: ErrorDetail
+  formula: String
+  roundDecimalPlaces: String
+  isPaymentAmount: Boolean
+  paymentDetails: PaymentDetails
+}
+
+type FullNameTab implements Tab {
+  tabId: String
+  tabLabel: String
+  tabType: TabType
+  documentId: String
+  recipientId: String
+  pageNumber: String
+  xPosition: String
+  yPosition: String
+  width: String
+  height: String
+  required: Boolean
+  locked: Boolean
+  bold: Boolean
+  italic: Boolean
+  underline: Boolean
+  fontColor: String
+  fontSize: String
+  font: String
+  anchorString: String
+  anchorXOffset: String
+  anchorYOffset: String
+  anchorUnits: String
+  anchorIgnoreIfNotPresent: Boolean
+  anchorCaseSensitive: Boolean
+  anchorMatchWholeWord: Boolean
+  conditionalParentLabel: String
+  conditionalParentValue: String
+  customTabId: String
+  mergeField: MergeField
+  errorDetails: ErrorDetail
+  value: String
+}
+
+type ListTab implements Tab {
+  tabId: String
+  tabLabel: String
+  tabType: TabType
+  documentId: String
+  recipientId: String
+  pageNumber: String
+  xPosition: String
+  yPosition: String
+  width: String
+  height: String
+  required: Boolean
+  locked: Boolean
+  bold: Boolean
+  italic: Boolean
+  underline: Boolean
+  fontColor: String
+  fontSize: String
+  font: String
+  anchorString: String
+  anchorXOffset: String
+  anchorYOffset: String
+  anchorUnits: String
+  anchorIgnoreIfNotPresent: Boolean
+  anchorCaseSensitive: Boolean
+  anchorMatchWholeWord: Boolean
+  conditionalParentLabel: String
+  conditionalParentValue: String
+  customTabId: String
+  mergeField: MergeField
+  errorDetails: ErrorDetail
+  listItems: [ListItem]
+  value: String
+  originalValue: String
+}
+
+type NoteTab implements Tab {
+  tabId: String
+  tabLabel: String
+  tabType: TabType
+  documentId: String
+  recipientId: String
+  pageNumber: String
+  xPosition: String
+  yPosition: String
+  width: String
+  height: String
+  required: Boolean
+  locked: Boolean
+  bold: Boolean
+  italic: Boolean
+  underline: Boolean
+  fontColor: String
+  fontSize: String
+  font: String
+  anchorString: String
+  anchorXOffset: String
+  anchorYOffset: String
+  anchorUnits: String
+  anchorIgnoreIfNotPresent: Boolean
+  anchorCaseSensitive: Boolean
+  anchorMatchWholeWord: Boolean
+  conditionalParentLabel: String
+  conditionalParentValue: String
+  customTabId: String
+  mergeField: MergeField
+  errorDetails: ErrorDetail
+  value: String
+}
+
+type NumberTab implements Tab {
+  tabId: String
+  tabLabel: String
+  tabType: TabType
+  documentId: String
+  recipientId: String
+  pageNumber: String
+  xPosition: String
+  yPosition: String
+  width: String
+  height: String
+  required: Boolean
+  locked: Boolean
+  bold: Boolean
+  italic: Boolean
+  underline: Boolean
+  fontColor: String
+  fontSize: String
+  font: String
+  anchorString: String
+  anchorXOffset: String
+  anchorYOffset: String
+  anchorUnits: String
+  anchorIgnoreIfNotPresent: Boolean
+  anchorCaseSensitive: Boolean
+  anchorMatchWholeWord: Boolean
+  conditionalParentLabel: String
+  conditionalParentValue: String
+  customTabId: String
+  mergeField: MergeField
+  errorDetails: ErrorDetail
+  value: String
+  validationMessage: String
+  validationPattern: String
+  concealValueOnDocument: Boolean
+  disableAutoSize: Boolean
+  maximumLength: String
+}
+
+type RadioGroupTab implements Tab {
+  tabId: String
+  tabLabel: String
+  tabType: TabType
+  documentId: String
+  recipientId: String
+  pageNumber: String
+  xPosition: String
+  yPosition: String
+  width: String
+  height: String
+  required: Boolean
+  locked: Boolean
+  bold: Boolean
+  italic: Boolean
+  underline: Boolean
+  fontColor: String
+  fontSize: String
+  font: String
+  anchorString: String
+  anchorXOffset: String
+  anchorYOffset: String
+  anchorUnits: String
+  anchorIgnoreIfNotPresent: Boolean
+  anchorCaseSensitive: Boolean
+  anchorMatchWholeWord: Boolean
+  conditionalParentLabel: String
+  conditionalParentValue: String
+  customTabId: String
+  mergeField: MergeField
+  errorDetails: ErrorDetail
+  groupName: String
+  radios: [Radio]
+  requireAll: Boolean
+  shared: Boolean
+  requireInitialOnSharedChange: Boolean
+}
+
+type SignerAttachmentTab implements Tab {
+  tabId: String
+  tabLabel: String
+  tabType: TabType
+  documentId: String
+  recipientId: String
+  pageNumber: String
+  xPosition: String
+  yPosition: String
+  width: String
+  height: String
+  required: Boolean
+  locked: Boolean
+  bold: Boolean
+  italic: Boolean
+  underline: Boolean
+  fontColor: String
+  fontSize: String
+  font: String
+  anchorString: String
+  anchorXOffset: String
+  anchorYOffset: String
+  anchorUnits: String
+  anchorIgnoreIfNotPresent: Boolean
+  anchorCaseSensitive: Boolean
+  anchorMatchWholeWord: Boolean
+  conditionalParentLabel: String
+  conditionalParentValue: String
+  customTabId: String
+  mergeField: MergeField
+  errorDetails: ErrorDetail
+  optional: Boolean
+}
+
+type SSNTab implements Tab {
+  tabId: String
+  tabLabel: String
+  tabType: TabType
+  documentId: String
+  recipientId: String
+  pageNumber: String
+  xPosition: String
+  yPosition: String
+  width: String
+  height: String
+  required: Boolean
+  locked: Boolean
+  bold: Boolean
+  italic: Boolean
+  underline: Boolean
+  fontColor: String
+  fontSize: String
+  font: String
+  anchorString: String
+  anchorXOffset: String
+  anchorYOffset: String
+  anchorUnits: String
+  anchorIgnoreIfNotPresent: Boolean
+  anchorCaseSensitive: Boolean
+  anchorMatchWholeWord: Boolean
+  conditionalParentLabel: String
+  conditionalParentValue: String
+  customTabId: String
+  mergeField: MergeField
+  errorDetails: ErrorDetail
+  value: String
+  concealValueOnDocument: Boolean
+  disableAutoSize: Boolean
+  validationMessage: String
+  validationPattern: String
+}
+
+type TextTab implements Tab {
+  tabId: String
+  tabLabel: String
+  tabType: TabType
+  documentId: String
+  recipientId: String
+  pageNumber: String
+  xPosition: String
+  yPosition: String
+  width: String
+  height: String
+  required: Boolean
+  locked: Boolean
+  bold: Boolean
+  italic: Boolean
+  underline: Boolean
+  fontColor: String
+  fontSize: String
+  font: String
+  anchorString: String
+  anchorXOffset: String
+  anchorYOffset: String
+  anchorUnits: String
+  anchorIgnoreIfNotPresent: Boolean
+  anchorCaseSensitive: Boolean
+  anchorMatchWholeWord: Boolean
+  conditionalParentLabel: String
+  conditionalParentValue: String
+  customTabId: String
+  mergeField: MergeField
+  errorDetails: ErrorDetail
+  value: String
+  originalValue: String
+  shared: Boolean
+  requireInitialOnSharedChange: Boolean
+  concealValueOnDocument: Boolean
+  disableAutoSize: Boolean
+  maximumLength: String
+  validationMessage: String
+  validationPattern: String
+}
+
+type TitleTab implements Tab {
+  tabId: String
+  tabLabel: String
+  tabType: TabType
+  documentId: String
+  recipientId: String
+  pageNumber: String
+  xPosition: String
+  yPosition: String
+  width: String
+  height: String
+  required: Boolean
+  locked: Boolean
+  bold: Boolean
+  italic: Boolean
+  underline: Boolean
+  fontColor: String
+  fontSize: String
+  font: String
+  anchorString: String
+  anchorXOffset: String
+  anchorYOffset: String
+  anchorUnits: String
+  anchorIgnoreIfNotPresent: Boolean
+  anchorCaseSensitive: Boolean
+  anchorMatchWholeWord: Boolean
+  conditionalParentLabel: String
+  conditionalParentValue: String
+  customTabId: String
+  mergeField: MergeField
+  errorDetails: ErrorDetail
+  value: String
+}
+
+type ZipTab implements Tab {
+  tabId: String
+  tabLabel: String
+  tabType: TabType
+  documentId: String
+  recipientId: String
+  pageNumber: String
+  xPosition: String
+  yPosition: String
+  width: String
+  height: String
+  required: Boolean
+  locked: Boolean
+  bold: Boolean
+  italic: Boolean
+  underline: Boolean
+  fontColor: String
+  fontSize: String
+  font: String
+  anchorString: String
+  anchorXOffset: String
+  anchorYOffset: String
+  anchorUnits: String
+  anchorIgnoreIfNotPresent: Boolean
+  anchorCaseSensitive: Boolean
+  anchorMatchWholeWord: Boolean
+  conditionalParentLabel: String
+  conditionalParentValue: String
+  customTabId: String
+  mergeField: MergeField
+  errorDetails: ErrorDetail
+  value: String
+  concealValueOnDocument: Boolean
+  disableAutoSize: Boolean
+  useDash4: Boolean
+  validationMessage: String
+  validationPattern: String
+}
+
+type Anchor {
+  anchorString: String
+  anchorXOffset: String
+  anchorYOffset: String
+  anchorUnits: String
+  anchorIgnoreIfNotPresent: Boolean
+  anchorCaseSensitive: Boolean
+  anchorMatchWholeWord: Boolean
+}
+
+type MergeField {
+  allowSenderToEdit: Boolean
+  configurationType: String
+  path: String
+  row: String
+  writeBack: Boolean
+}
+
+type ListItem {
+  text: String
+  value: String
+  selected: Boolean
+}
+
+type Radio {
+  pageNumber: String
+  xPosition: String
+  yPosition: String
+  value: String
+  selected: Boolean
+  required: Boolean
+  locked: Boolean
+  anchorString: String
+  anchorXOffset: String
+  anchorYOffset: String
+  anchorUnits: String
+  anchorIgnoreIfNotPresent: Boolean
+  anchorCaseSensitive: Boolean
+  anchorMatchWholeWord: Boolean
+  tabId: String
+  errorDetails: ErrorDetail
+}
+
+type PaymentDetails {
+  chargeId: String
+  currencyCode: String
+  gatewayAccountId: String
+  gatewayDisplayName: String
+  gatewayName: String
+  lineItems: [PaymentLineItem]
+  paymentOption: String
+  status: String
+  total: Money
+}
+
+type PaymentLineItem {
+  amountReference: String
+  description: String
+  itemCode: String
+  name: String
+}
+
+type Money {
+  amountInBaseUnit: String
+  currency: String
+  displayAmount: String
+}
+
+# ─────────────────────────────────────────────
+# Templates
+# ─────────────────────────────────────────────
+
+type Template {
+  templateId: String!
+  name: String
+  description: String
+  shared: Boolean
+  passwordProtected: Boolean
+  created: DateTime
+  lastModified: DateTime
+  lastUsed: DateTime
+  owner: UserInfo
+  folder: String
+  folderId: String
+  folderUri: String
+  folderName: String
+  uri: String
+  documents: [Document]
+  recipients: RecipientSet
+  notification: EnvelopeNotification
+  customFields: CustomFieldSet
+  pageCount: Int
+  emailSubject: String
+  emailBlurb: String
+  brandId: String
+  allowMarkup: Boolean
+  allowReassign: Boolean
+  autoNavigation: Boolean
+  envelopeIdStamping: Boolean
+  messageLock: Boolean
+  recipientsLock: Boolean
+  signingLocation: String
+}
+
+type TemplateRole {
+  roleName: String
+  name: String
+  email: String
+  accessCode: String
+  inPersonSignerName: String
+  clientUserId: String
+  tabs: TabSet
+  defaultRecipient: Boolean
+}
+
+type CompositeTemplate {
+  compositeTemplateId: String
+  serverTemplates: [ServerTemplate]
+  inlineTemplates: [InlineTemplate]
+  document: Document
+  pdfMetaDataTemplateSequence: String
+}
+
+type ServerTemplate {
+  sequence: String
+  templateId: String
+}
+
+type InlineTemplate {
+  sequence: String
+  envelope: EnvelopeDefinition
+}
+
+# ─────────────────────────────────────────────
+# Notifications & Custom Fields
+# ─────────────────────────────────────────────
+
+type EnvelopeNotification {
+  useAccountDefaults: Boolean
+  reminders: Reminder
+  expirations: Expiration
+}
+
+type Reminder {
+  reminderEnabled: Boolean
+  reminderDelay: String
+  reminderFrequency: String
+  firstReminderDay: String
+}
+
+type Expiration {
+  expireEnabled: Boolean
+  expireAfter: String
+  expireWarn: String
+}
+
+type CustomFieldSet {
+  textCustomFields: [TextCustomField]
+  listCustomFields: [ListCustomField]
+}
+
+type TextCustomField {
+  fieldId: String
+  name: String
+  value: String
+  show: Boolean
+  required: Boolean
+  configurationType: String
+  errorDetails: ErrorDetail
+}
+
+type ListCustomField {
+  fieldId: String
+  name: String
+  value: String
+  show: Boolean
+  required: Boolean
+  listItems: [String]
+  configurationType: String
+  errorDetails: ErrorDetail
+}
+
+# ─────────────────────────────────────────────
+# Folders
+# ─────────────────────────────────────────────
+
+type Folder {
+  folderId: String!
+  name: String
+  type: FolderType
+  ownerUserId: String
+  ownerUserName: String
+  ownerEmail: String
+  uri: String
+  filter: FolderFilter
+  envelopes: [FolderItem]
+  folders: [Folder]
+  startPosition: String
+  endPosition: String
+  totalSetSize: String
+  resultSetSize: String
+}
+
+type FolderFilter {
+  actionRequired: Boolean
+  expires: Boolean
+  isTemplate: Boolean
+  order: String
+  orderBy: String
+  searchText: String
+  startPosition: String
+  status: EnvelopeStatus
+  toDate: DateTime
+  fromDate: DateTime
+}
+
+type FolderItem {
+  envelopeId: String
+  name: String
+  status: EnvelopeStatus
+  ownerName: String
+  ownerUserId: String
+  ownerEmail: String
+  senderName: String
+  senderEmail: String
+  completedDateTime: DateTime
+  sentDateTime: DateTime
+  createdDateTime: DateTime
+  lastModifiedDateTime: DateTime
+  expirationDateTime: DateTime
+  is21CFRPart11: Boolean
+  isSignatureProviderEnvelope: Boolean
+  recipients: RecipientSet
+  subject: String
+  templateId: String
+}
+
+# ─────────────────────────────────────────────
+# Bulk Send
+# ─────────────────────────────────────────────
+
+type BulkSend {
+  bulkSendListId: String!
+  name: String
+  createdByUser: String
+  createdDate: DateTime
+  bulkCopies: [BulkSendCopy]
+}
+
+type BulkSendCopy {
+  recipients: [BulkSendCopyRecipient]
+  customFields: [BulkSendCopyCustomField]
+  emailBlurb: String
+  emailSubject: String
+  envelopeOrTemplateId: String
+}
+
+type BulkSendCopyRecipient {
+  name: String
+  email: String
+  roleName: String
+  accessCode: String
+  clientUserId: String
+  deliveryMethod: String
+  identification: JSON
+  note: String
+  phoneNumber: JSON
+  recipientSignatureProviders: [JSON]
+  signingGroupId: String
+  tabs: TabSet
+}
+
+type BulkSendCopyCustomField {
+  name: String
+  value: String
+}
+
+type BulkSendBatch {
+  batchId: String!
+  batchName: String
+  batchSize: String
+  batchStatus: BulkSendBatchStatus
+  envelopesUri: String
+  failed: String
+  mailingListId: String
+  mailingListName: String
+  ownerUserId: String
+  ownerUserName: String
+  ownerEmail: String
+  queued: String
+  sent: String
+  submittedDate: DateTime
+}
+
+# ─────────────────────────────────────────────
+# Connect (Webhooks)
+# ─────────────────────────────────────────────
+
+type Connect {
+  connectId: String!
+  name: String
+  urlToPublishTo: String
+  configurationType: String
+  enableLog: Boolean
+  allowEnvelopePublish: ConnectConfigAllowEnvelopePublishStatus
+  allUsers: Boolean
+  userIds: [String]
+  envelopeEvents: [EnvelopeEvent]
+  recipientEvents: [RecipientEvent]
+  includeDocuments: Boolean
+  includeEnvelopeVoidReason: Boolean
+  includeHMAC: Boolean
+  includeSenderAccountAsCustomField: Boolean
+  includeTimeZone: Boolean
+  loggingEnabled: Boolean
+  requireAcknowledgement: Boolean
+  salesforceDocumentsAsContentFiles: Boolean
+  signMessageWithX509Cert: Boolean
+  soapNameSpace: String
+  useSoapInterface: Boolean
+}
+
+type EnvelopeEvent {
+  envelopeEventStatusCode: EnvelopeStatus
+  includeDocuments: Boolean
+}
+
+type ConnectLog {
+  connectId: String
+  created: DateTime
+  email: String
+  envelopeId: String
+  error: String
+  failureId: String
+  failureUri: String
+  lastTry: DateTime
+  logId: String
+  logUri: String
+  retryCount: String
+  retryUri: String
+  status: String
+  subject: String
+  userName: String
+}
+
+# ─────────────────────────────────────────────
+# PowerForms
+# ─────────────────────────────────────────────
+
+type PowerForm {
+  powerFormId: String!
+  name: String
+  uri: String
+  powerFormUrl: String
+  status: PowerFormStatus
+  templateId: String
+  templateName: String
+  createdDateTime: DateTime
+  lastUsedDateTime: DateTime
+  timesUsed: String
+  timesRemaining: String
+  limitUseInterval: String
+  limitUseIntervalUnits: String
+  limitUseIntervalEnabled: Boolean
+  maxUseEnabled: Boolean
+  envelopeId: String
+  recipients: [PowerFormRecipient]
+  senderName: String
+  senderUserId: String
+}
+
+type PowerFormRecipient {
+  recipientId: String
+  roleName: String
+  name: String
+  email: String
+  accessCode: String
+  accessCodeLocked: Boolean
+  accessCodeRequired: Boolean
+  emailLocked: Boolean
+  nameLocked: Boolean
+}
+
+# ─────────────────────────────────────────────
+# Retention / Purge
+# ─────────────────────────────────────────────
+
+type RetentionPolicy {
+  retentionDays: String
+}
+
+type Purge {
+  purgeType: String
+  purgeState: String
+}
+
+# ─────────────────────────────────────────────
+# Cloud Storage
+# ─────────────────────────────────────────────
+
+type CloudStorageProvider {
+  serviceId: String!
+  service: CloudStorageProviderType
+  authenticationUrl: String
+  redirectUrl: String
+}
+
+# ─────────────────────────────────────────────
+# Branding
+# ─────────────────────────────────────────────
+
+type BrandLogo {
+  brandId: String!
+  brandName: String
+  defaultBrandLanguage: String
+  brandCompany: String
+  colors: [BrandColor]
+  emailContent: [BrandEmailContent]
+  errorDetails: ErrorDetail
+  isSendingDefault: Boolean
+  isSigningDefault: Boolean
+  isOverridingCompanyName: Boolean
+  logos: BrandLogos
+}
+
+type BrandColor {
+  name: String
+  value: String
+}
+
+type BrandEmailContent {
+  type: String
+  content: String
+  emailBody: String
+  emailSubject: String
+  linkText: String
+}
+
+type BrandLogos {
+  primary: String
+  secondary: String
+  email: String
+}
+
+# ─────────────────────────────────────────────
+# Root Query / Mutation / Subscription
+# ─────────────────────────────────────────────
+
+type Query {
+  # Envelopes
+  envelope(accountId: String!, envelopeId: String!): Envelope
+  envelopes(accountId: String!, fromDate: DateTime, toDate: DateTime, status: EnvelopeStatus, searchText: String): [Envelope]
+  envelopeDocuments(accountId: String!, envelopeId: String!): [Document]
+  envelopeRecipients(accountId: String!, envelopeId: String!): RecipientSet
+  envelopeTabs(accountId: String!, envelopeId: String!, recipientId: String!): TabSet
+
+  # Templates
+  template(accountId: String!, templateId: String!): Template
+  templates(accountId: String!, searchText: String, folder: String, sharedByMe: Boolean): [Template]
+  templateRecipients(accountId: String!, templateId: String!): RecipientSet
+  templateTabs(accountId: String!, templateId: String!, recipientId: String!): TabSet
+
+  # Folders
+  folder(accountId: String!, folderId: String!): Folder
+  folders(accountId: String!): [Folder]
+
+  # Bulk Send
+  bulkSendList(accountId: String!, bulkSendListId: String!): BulkSend
+  bulkSendLists(accountId: String!): [BulkSend]
+  bulkSendBatch(accountId: String!, bulkSendBatchId: String!): BulkSendBatch
+  bulkSendBatches(accountId: String!): [BulkSendBatch]
+
+  # Connect
+  connectConfiguration(accountId: String!, connectId: String!): Connect
+  connectConfigurations(accountId: String!): [Connect]
+  connectLogs(accountId: String!): [ConnectLog]
+
+  # PowerForms
+  powerForm(accountId: String!, powerFormId: String!): PowerForm
+  powerForms(accountId: String!): [PowerForm]
+
+  # Account & Users
+  account(accountId: String!): AccountInfo
+  user(accountId: String!, userId: String!): UserInfo
+  users(accountId: String!): [UserInfo]
+
+  # Branding
+  brand(accountId: String!, brandId: String!): BrandLogo
+  brands(accountId: String!): [BrandLogo]
+
+  # Cloud Storage
+  cloudStorageProviders(accountId: String!, userId: String!): [CloudStorageProvider]
+}
+
+type Mutation {
+  # Envelopes
+  createEnvelope(accountId: String!, envelope: JSON!): EnvelopeSummary
+  updateEnvelope(accountId: String!, envelopeId: String!, envelope: JSON!): EnvelopeSummary
+  voidEnvelope(accountId: String!, envelopeId: String!, voidedReason: String!): EnvelopeSummary
+  deleteEnvelope(accountId: String!, envelopeIds: [String]!): JSON
+  resendEnvelope(accountId: String!, envelopeId: String!): EnvelopeSummary
+
+  # Recipients
+  addRecipients(accountId: String!, envelopeId: String!, recipients: JSON!): RecipientSet
+  updateRecipients(accountId: String!, envelopeId: String!, recipients: JSON!): RecipientSet
+  deleteRecipients(accountId: String!, envelopeId: String!, recipients: JSON!): RecipientSet
+
+  # Tabs
+  addTabs(accountId: String!, envelopeId: String!, recipientId: String!, tabs: JSON!): TabSet
+  updateTabs(accountId: String!, envelopeId: String!, recipientId: String!, tabs: JSON!): TabSet
+  deleteTabs(accountId: String!, envelopeId: String!, recipientId: String!, tabs: JSON!): TabSet
+
+  # Templates
+  createTemplate(accountId: String!, template: JSON!): Template
+  updateTemplate(accountId: String!, templateId: String!, template: JSON!): Template
+  deleteTemplate(accountId: String!, templateId: String!): JSON
+
+  # Bulk Send
+  createBulkSendList(accountId: String!, bulkSend: JSON!): BulkSend
+  sendBulkEnvelopes(accountId: String!, bulkSendListId: String!, envelopeOrTemplateId: String!): BulkSendBatch
+
+  # Connect
+  createConnectConfiguration(accountId: String!, connect: JSON!): Connect
+  updateConnectConfiguration(accountId: String!, connectId: String!, connect: JSON!): Connect
+  deleteConnectConfiguration(accountId: String!, connectId: String!): JSON
+  retryConnectFailures(accountId: String!, envelopeIds: [String]!): JSON
+
+  # PowerForms
+  createPowerForm(accountId: String!, powerForm: JSON!): PowerForm
+  updatePowerForm(accountId: String!, powerFormId: String!, powerForm: JSON!): PowerForm
+  deletePowerForm(accountId: String!, powerFormIds: [String]!): JSON
+}
+
+type Subscription {
+  envelopeStatusChanged(accountId: String!, envelopeId: String): Envelope
+  recipientStatusChanged(accountId: String!, envelopeId: String!): RecipientSet
+}
