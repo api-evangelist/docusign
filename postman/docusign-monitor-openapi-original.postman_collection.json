@@ -1,0 +1,207 @@
+{
+  "info": {
+    "_postman_id": "da5aa9bb-73c2-43df-ab89-9d14cafd5e5f",
+    "name": "Docusign Monitor API",
+    "description": "An API for an integrator to access the features of DocuSign Monitor\n\nContact Support:\n Name: DocuSign Developer Center\n Email: devcenter@docusign.com",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "createdAt": "2026-06-05T13:15:54.000Z",
+    "updatedAt": "2026-06-05T13:15:54.000Z",
+    "lastUpdatedBy": "35240",
+    "uid": "35240-da5aa9bb-73c2-43df-ab89-9d14cafd5e5f"
+  },
+  "item": [
+    {
+      "name": "api",
+      "item": [
+        {
+          "name": "v{version}",
+          "item": [
+            {
+              "name": "datasets",
+              "item": [
+                {
+                  "name": "{dataSetName}",
+                  "item": [
+                    {
+                      "name": "stream",
+                      "item": [
+                        {
+                          "name": "Docusign Gets customer event data for an organization.",
+                          "id": "0e41b216-b7d1-40aa-9c18-f3d4cac3dde0",
+                          "protocolProfileBehavior": {
+                            "disableBodyPruning": true
+                          },
+                          "request": {
+                            "method": "GET",
+                            "header": [
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/api/v{{version}}/datasets/:dataSetName/stream?cursor=<string>&limit=1000",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "api",
+                                "v{{version}}",
+                                "datasets",
+                                ":dataSetName",
+                                "stream"
+                              ],
+                              "query": [
+                                {
+                                  "description": "Specifies a pointer into the dataset where your query will begin. You can either provide an ISO DateTime or a string cursor (from the `endCursor` value in the response). If no value is provided, the query begins from seven days ago.\n\nFor example, to fetch event data beginning from January 1, 2022, set this value to `2022-01-01T00:00:00Z`. The response will include data about events starting from that date in chronological order. The response also includes an `endCursor` property. To fetch the next page of event data, call this endpoint again with `cursor` set to the previous `endCursor` value.\n",
+                                  "key": "cursor",
+                                  "value": "<string>"
+                                },
+                                {
+                                  "description": "The maximum number of records to return. The default value is 1000.",
+                                  "key": "limit",
+                                  "value": "1000"
+                                }
+                              ],
+                              "variable": [
+                                {
+                                  "id": "e0bd73a1-8081-44d3-be0d-04684a62425e",
+                                  "key": "dataSetName",
+                                  "value": "<string>",
+                                  "description": "(Required) Must be `monitor`."
+                                }
+                              ]
+                            },
+                            "description": "Gets customer event data for the organization that owns the integration key.\n\nThe results for this endpoint are paginated by event timestamp. Use the `cursor` parameter to specify where the query begins in the dataset. Use the `limit` parameter to set the number of records returned.\n"
+                          },
+                          "response": [
+                            {
+                              "id": "9b2049e5-b343-4b64-a58e-a8f8cf18adc4",
+                              "name": "Success",
+                              "originalRequest": {
+                                "method": "GET",
+                                "header": [
+                                  {
+                                    "key": "Accept",
+                                    "value": "application/json"
+                                  },
+                                  {
+                                    "description": "Added as a part of security scheme: apikey",
+                                    "key": "Authorization",
+                                    "value": "<API Key>"
+                                  }
+                                ],
+                                "url": {
+                                  "raw": "{{baseUrl}}/api/v{{version}}/datasets/:dataSetName/stream?cursor=<string>&limit=1000",
+                                  "host": [
+                                    "{{baseUrl}}"
+                                  ],
+                                  "path": [
+                                    "api",
+                                    "v{{version}}",
+                                    "datasets",
+                                    ":dataSetName",
+                                    "stream"
+                                  ],
+                                  "query": [
+                                    {
+                                      "description": "Specifies a pointer into the dataset where your query will begin. You can either provide an ISO DateTime or a string cursor (from the `endCursor` value in the response). If no value is provided, the query begins from seven days ago.\n\nFor example, to fetch event data beginning from January 1, 2022, set this value to `2022-01-01T00:00:00Z`. The response will include data about events starting from that date in chronological order. The response also includes an `endCursor` property. To fetch the next page of event data, call this endpoint again with `cursor` set to the previous `endCursor` value.\n",
+                                      "key": "cursor",
+                                      "value": "<string>"
+                                    },
+                                    {
+                                      "description": "The maximum number of records to return. The default value is 1000.",
+                                      "key": "limit",
+                                      "value": "1000"
+                                    }
+                                  ],
+                                  "variable": [
+                                    {
+                                      "key": "dataSetName"
+                                    }
+                                  ]
+                                }
+                              },
+                              "status": "OK",
+                              "code": 200,
+                              "_postman_previewlanguage": "json",
+                              "header": [
+                                {
+                                  "key": "Content-Type",
+                                  "value": "application/json"
+                                }
+                              ],
+                              "cookie": [],
+                              "responseTime": null,
+                              "body": "{\n  \"endCursor\": \"<string>\"\n}",
+                              "createdAt": "2026-06-05T13:15:55.000Z",
+                              "updatedAt": "2026-06-05T13:15:55.000Z",
+                              "uid": "35240-9b2049e5-b343-4b64-a58e-a8f8cf18adc4"
+                            }
+                          ],
+                          "createdAt": "2026-06-05T13:15:55.000Z",
+                          "updatedAt": "2026-06-05T13:15:55.000Z",
+                          "uid": "35240-0e41b216-b7d1-40aa-9c18-f3d4cac3dde0"
+                        }
+                      ],
+                      "id": "a820cb20-b9d4-4a25-9b42-bb29078832d4",
+                      "createdAt": "2026-06-05T13:15:55.000Z",
+                      "updatedAt": "2026-06-05T13:15:55.000Z",
+                      "uid": "35240-a820cb20-b9d4-4a25-9b42-bb29078832d4"
+                    }
+                  ],
+                  "id": "b854a224-d49d-4c43-8f90-c94031ce4ab7",
+                  "createdAt": "2026-06-05T13:15:55.000Z",
+                  "updatedAt": "2026-06-05T13:15:55.000Z",
+                  "uid": "35240-b854a224-d49d-4c43-8f90-c94031ce4ab7"
+                }
+              ],
+              "id": "9df313eb-b584-4572-ac1d-f77a11bcb169",
+              "createdAt": "2026-06-05T13:15:55.000Z",
+              "updatedAt": "2026-06-05T13:15:55.000Z",
+              "uid": "35240-9df313eb-b584-4572-ac1d-f77a11bcb169"
+            }
+          ],
+          "id": "4c4ea185-17d7-46a2-9e00-489f6701791c",
+          "createdAt": "2026-06-05T13:15:55.000Z",
+          "updatedAt": "2026-06-05T13:15:55.000Z",
+          "uid": "35240-4c4ea185-17d7-46a2-9e00-489f6701791c"
+        }
+      ],
+      "id": "5178f9ed-21ad-40de-8e27-1d7350f3e67b",
+      "createdAt": "2026-06-05T13:15:55.000Z",
+      "updatedAt": "2026-06-05T13:15:55.000Z",
+      "uid": "35240-5178f9ed-21ad-40de-8e27-1d7350f3e67b"
+    }
+  ],
+  "auth": {
+    "type": "apikey",
+    "apikey": [
+      {
+        "key": "key",
+        "value": "Authorization",
+        "type": "string"
+      },
+      {
+        "key": "value",
+        "value": "{{apiKey}}",
+        "type": "string"
+      },
+      {
+        "key": "in",
+        "value": "header",
+        "type": "string"
+      }
+    ]
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "https://lens.docusign.net/"
+    },
+    {
+      "key": "version",
+      "value": "2.0"
+    }
+  ]
+}

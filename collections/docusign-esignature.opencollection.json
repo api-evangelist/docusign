@@ -1,0 +1,825 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "DocuSign eSignature REST API",
+    "version": "2.1.0"
+  },
+  "request": {
+    "auth": {
+      "type": "oauth2",
+      "flow": "authorization_code",
+      "authorizationUrl": "https://account-d.docusign.com/oauth/auth",
+      "accessTokenUrl": "https://account-d.docusign.com/oauth/token",
+      "credentials": {
+        "clientId": "{{clientId}}",
+        "clientSecret": "{{clientSecret}}"
+      }
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Envelopes",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Docusign List Envelopes",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://demo.docusign.net/restapi/v2.1/accounts/:accountId/envelopes",
+            "params": [
+              {
+                "name": "accountId",
+                "value": "",
+                "type": "path",
+                "description": "The external account number (short) or account ID GUID of the DocuSign account."
+              },
+              {
+                "name": "from_date",
+                "value": "",
+                "type": "query",
+                "description": "Start date for the envelope search. Only envelopes created on or after this date are returned. Format is ISO 8601."
+              },
+              {
+                "name": "to_date",
+                "value": "",
+                "type": "query",
+                "description": "End date for the envelope search. Only envelopes created before this date are returned. Format is ISO 8601."
+              },
+              {
+                "name": "status",
+                "value": "",
+                "type": "query",
+                "description": "Filter by envelope status. Valid values include created, sent, delivered, signed, completed, declined, voided, deleted."
+              },
+              {
+                "name": "from_to_status",
+                "value": "",
+                "type": "query",
+                "description": "The status value checked for in the from_date and to_date range. Default is changed."
+              },
+              {
+                "name": "count",
+                "value": "",
+                "type": "query",
+                "description": "Maximum number of envelopes to return. Default is 100."
+              },
+              {
+                "name": "start_position",
+                "value": "",
+                "type": "query",
+                "description": "Starting index position for the result set."
+              },
+              {
+                "name": "search_text",
+                "value": "",
+                "type": "query",
+                "description": "Free text search across envelope metadata including recipient names, email addresses, and custom fields."
+              },
+              {
+                "name": "order",
+                "value": "",
+                "type": "query",
+                "description": "Sort order for results. Valid values are asc and desc."
+              },
+              {
+                "name": "order_by",
+                "value": "",
+                "type": "query",
+                "description": "The envelope property to sort by. Valid values include created, completed, last_modified, sent, status_changed."
+              },
+              {
+                "name": "folder_ids",
+                "value": "",
+                "type": "query",
+                "description": "Comma-separated list of folder IDs to search within."
+              },
+              {
+                "name": "include",
+                "value": "",
+                "type": "query",
+                "description": "Comma-separated list of additional information to include. Valid values include custom_fields, documents, attachments, extensions, folders, recipients, powerform."
+              }
+            ]
+          },
+          "docs": "Returns a list of envelopes that match the specified criteria. Use query parameters to filter by date, status, and other envelope properties."
+        },
+        {
+          "info": {
+            "name": "Docusign Create an Envelope",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://demo.docusign.net/restapi/v2.1/accounts/:accountId/envelopes",
+            "params": [
+              {
+                "name": "accountId",
+                "value": "",
+                "type": "path",
+                "description": "The external account number (short) or account ID GUID of the DocuSign account."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Creates and optionally sends an envelope. An envelope is the container for documents, recipients, and the workflow information. You can create an envelope in draft status to allow for further modifications, or send it immediately upon creation."
+        },
+        {
+          "info": {
+            "name": "Docusign Get an Envelope",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://demo.docusign.net/restapi/v2.1/accounts/:accountId/envelopes/:envelopeId",
+            "params": [
+              {
+                "name": "accountId",
+                "value": "",
+                "type": "path",
+                "description": "The external account number (short) or account ID GUID of the DocuSign account."
+              },
+              {
+                "name": "envelopeId",
+                "value": "",
+                "type": "path",
+                "description": "The envelope ID (GUID) of the envelope."
+              },
+              {
+                "name": "include",
+                "value": "",
+                "type": "query",
+                "description": "Comma-separated list of additional information to include. Valid values include custom_fields, documents, attachments, extensions, folders, recipients, powerform, tabs."
+              },
+              {
+                "name": "advanced_update",
+                "value": "",
+                "type": "query",
+                "description": "When true, allows sender to update an in-process envelope."
+              }
+            ]
+          },
+          "docs": "Retrieves the overall status and properties of a single envelope. Returns information about the envelope including its status, sender, recipients, and documents."
+        },
+        {
+          "info": {
+            "name": "Docusign Update an Envelope",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://demo.docusign.net/restapi/v2.1/accounts/:accountId/envelopes/:envelopeId",
+            "params": [
+              {
+                "name": "accountId",
+                "value": "",
+                "type": "path",
+                "description": "The external account number (short) or account ID GUID of the DocuSign account."
+              },
+              {
+                "name": "envelopeId",
+                "value": "",
+                "type": "path",
+                "description": "The envelope ID (GUID) of the envelope."
+              },
+              {
+                "name": "resend_envelope",
+                "value": "",
+                "type": "query",
+                "description": "When true, resends the envelope to all recipients who have not yet completed their actions."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Updates the envelope specified by envelopeId. You can use this method to modify envelope properties such as the email subject and message, resend notifications, void envelopes, and purge documents."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "EnvelopeDocuments",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Docusign List Envelope Documents",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://demo.docusign.net/restapi/v2.1/accounts/:accountId/envelopes/:envelopeId/documents",
+            "params": [
+              {
+                "name": "accountId",
+                "value": "",
+                "type": "path",
+                "description": "The external account number (short) or account ID GUID of the DocuSign account."
+              },
+              {
+                "name": "envelopeId",
+                "value": "",
+                "type": "path",
+                "description": "The envelope ID (GUID) of the envelope."
+              }
+            ]
+          },
+          "docs": "Retrieves a list of documents associated with the specified envelope. Returns metadata about each document including the document ID, name, type, and order."
+        },
+        {
+          "info": {
+            "name": "Docusign Get an Envelope Document",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://demo.docusign.net/restapi/v2.1/accounts/:accountId/envelopes/:envelopeId/documents/:documentId",
+            "params": [
+              {
+                "name": "accountId",
+                "value": "",
+                "type": "path",
+                "description": "The external account number (short) or account ID GUID of the DocuSign account."
+              },
+              {
+                "name": "envelopeId",
+                "value": "",
+                "type": "path",
+                "description": "The envelope ID (GUID) of the envelope."
+              },
+              {
+                "name": "documentId",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the document within the envelope. Use \"combined\" to retrieve all documents as a single PDF."
+              }
+            ]
+          },
+          "docs": "Retrieves the specified document from the envelope. Returns the document content as a PDF or other supported format."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Recipients",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Docusign List Envelope Recipients",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://demo.docusign.net/restapi/v2.1/accounts/:accountId/envelopes/:envelopeId/recipients",
+            "params": [
+              {
+                "name": "accountId",
+                "value": "",
+                "type": "path",
+                "description": "The external account number (short) or account ID GUID of the DocuSign account."
+              },
+              {
+                "name": "envelopeId",
+                "value": "",
+                "type": "path",
+                "description": "The envelope ID (GUID) of the envelope."
+              },
+              {
+                "name": "include_tabs",
+                "value": "",
+                "type": "query",
+                "description": "When true, includes the tabs associated with each recipient."
+              },
+              {
+                "name": "include_extended",
+                "value": "",
+                "type": "query",
+                "description": "When true, includes extended recipient information."
+              }
+            ]
+          },
+          "docs": "Retrieves the status and information for all recipients of the specified envelope. Returns details about each recipient including their signing status, delivery method, and authentication."
+        },
+        {
+          "info": {
+            "name": "Docusign Add Recipients to an Envelope",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://demo.docusign.net/restapi/v2.1/accounts/:accountId/envelopes/:envelopeId/recipients",
+            "params": [
+              {
+                "name": "accountId",
+                "value": "",
+                "type": "path",
+                "description": "The external account number (short) or account ID GUID of the DocuSign account."
+              },
+              {
+                "name": "envelopeId",
+                "value": "",
+                "type": "path",
+                "description": "The envelope ID (GUID) of the envelope."
+              },
+              {
+                "name": "resend_envelope",
+                "value": "",
+                "type": "query",
+                "description": "When true, resends the envelope after adding recipients."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Adds one or more recipients to an envelope. The envelope must be in draft or sent status. For sent envelopes, this creates a corrected version of the envelope."
+        },
+        {
+          "info": {
+            "name": "Docusign Update Envelope Recipients",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://demo.docusign.net/restapi/v2.1/accounts/:accountId/envelopes/:envelopeId/recipients",
+            "params": [
+              {
+                "name": "accountId",
+                "value": "",
+                "type": "path",
+                "description": "The external account number (short) or account ID GUID of the DocuSign account."
+              },
+              {
+                "name": "envelopeId",
+                "value": "",
+                "type": "path",
+                "description": "The envelope ID (GUID) of the envelope."
+              },
+              {
+                "name": "resend_envelope",
+                "value": "",
+                "type": "query",
+                "description": "When true, resends the envelope to updated recipients."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Updates one or more recipients in a draft or sent envelope. You can modify recipient properties such as name, email, routing order, and authentication settings."
+        },
+        {
+          "info": {
+            "name": "Docusign Delete Recipients From an Envelope",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://demo.docusign.net/restapi/v2.1/accounts/:accountId/envelopes/:envelopeId/recipients",
+            "params": [
+              {
+                "name": "accountId",
+                "value": "",
+                "type": "path",
+                "description": "The external account number (short) or account ID GUID of the DocuSign account."
+              },
+              {
+                "name": "envelopeId",
+                "value": "",
+                "type": "path",
+                "description": "The envelope ID (GUID) of the envelope."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Deletes one or more recipients from a draft or sent envelope."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Tabs",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Docusign List Tabs for a Recipient",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://demo.docusign.net/restapi/v2.1/accounts/:accountId/envelopes/:envelopeId/recipients/:recipientId/tabs",
+            "params": [
+              {
+                "name": "accountId",
+                "value": "",
+                "type": "path",
+                "description": "The external account number (short) or account ID GUID of the DocuSign account."
+              },
+              {
+                "name": "envelopeId",
+                "value": "",
+                "type": "path",
+                "description": "The envelope ID (GUID) of the envelope."
+              },
+              {
+                "name": "recipientId",
+                "value": "",
+                "type": "path",
+                "description": "A unique identifier for a recipient. This value is assigned by DocuSign and is unique per envelope."
+              },
+              {
+                "name": "include_metadata",
+                "value": "",
+                "type": "query",
+                "description": "When true, includes metadata properties in the response."
+              }
+            ]
+          },
+          "docs": "Retrieves the tabs associated with a specific recipient in an envelope. Returns all tab types assigned to the recipient."
+        },
+        {
+          "info": {
+            "name": "Docusign Update Tabs for a Recipient",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://demo.docusign.net/restapi/v2.1/accounts/:accountId/envelopes/:envelopeId/recipients/:recipientId/tabs",
+            "params": [
+              {
+                "name": "accountId",
+                "value": "",
+                "type": "path",
+                "description": "The external account number (short) or account ID GUID of the DocuSign account."
+              },
+              {
+                "name": "envelopeId",
+                "value": "",
+                "type": "path",
+                "description": "The envelope ID (GUID) of the envelope."
+              },
+              {
+                "name": "recipientId",
+                "value": "",
+                "type": "path",
+                "description": "A unique identifier for a recipient. This value is assigned by DocuSign and is unique per envelope."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Updates one or more tabs for a recipient in a draft envelope."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "EnvelopeViews",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Docusign Create an Embedded Recipient Signing View",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://demo.docusign.net/restapi/v2.1/accounts/:accountId/envelopes/:envelopeId/views/recipient",
+            "params": [
+              {
+                "name": "accountId",
+                "value": "",
+                "type": "path",
+                "description": "The external account number (short) or account ID GUID of the DocuSign account."
+              },
+              {
+                "name": "envelopeId",
+                "value": "",
+                "type": "path",
+                "description": "The envelope ID (GUID) of the envelope."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Generates a URL that enables an embedded recipient to sign an envelope within your application. The URL is time-limited and intended for immediate use."
+        },
+        {
+          "info": {
+            "name": "Docusign Create an Embedded Sender View",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://demo.docusign.net/restapi/v2.1/accounts/:accountId/envelopes/:envelopeId/views/sender",
+            "params": [
+              {
+                "name": "accountId",
+                "value": "",
+                "type": "path",
+                "description": "The external account number (short) or account ID GUID of the DocuSign account."
+              },
+              {
+                "name": "envelopeId",
+                "value": "",
+                "type": "path",
+                "description": "The envelope ID (GUID) of the envelope."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Generates a URL that enables an embedded sender to edit an envelope in draft status before sending it."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Templates",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Docusign List Templates",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://demo.docusign.net/restapi/v2.1/accounts/:accountId/templates",
+            "params": [
+              {
+                "name": "accountId",
+                "value": "",
+                "type": "path",
+                "description": "The external account number (short) or account ID GUID of the DocuSign account."
+              },
+              {
+                "name": "count",
+                "value": "",
+                "type": "query",
+                "description": "Maximum number of templates to return. Default is 100."
+              },
+              {
+                "name": "start_position",
+                "value": "",
+                "type": "query",
+                "description": "Starting index for the result set."
+              },
+              {
+                "name": "search_text",
+                "value": "",
+                "type": "query",
+                "description": "Search text to filter templates by name."
+              },
+              {
+                "name": "folder",
+                "value": "",
+                "type": "query",
+                "description": "Folder from which to retrieve templates. Valid values include all, drafts, inbox, sent_items, recyclebin."
+              },
+              {
+                "name": "folder_ids",
+                "value": "",
+                "type": "query",
+                "description": "Comma-separated list of folder IDs to search within."
+              },
+              {
+                "name": "shared_by_me",
+                "value": "",
+                "type": "query",
+                "description": "When true, returns templates shared by the current user."
+              },
+              {
+                "name": "order",
+                "value": "",
+                "type": "query",
+                "description": "Sort order for results. Valid values are asc and desc."
+              },
+              {
+                "name": "order_by",
+                "value": "",
+                "type": "query",
+                "description": "Template property to sort by. Valid values include name, modified, used."
+              },
+              {
+                "name": "used_from_date",
+                "value": "",
+                "type": "query",
+                "description": "Filter templates used on or after this date."
+              },
+              {
+                "name": "used_to_date",
+                "value": "",
+                "type": "query",
+                "description": "Filter templates used before this date."
+              },
+              {
+                "name": "include",
+                "value": "",
+                "type": "query",
+                "description": "Comma-separated list of additional information to include. Valid values include custom_fields, documents, folders, notifications, recipients."
+              }
+            ]
+          },
+          "docs": "Retrieves a list of templates associated with the specified account. Templates define reusable envelopes with predefined documents, recipients, tabs, and routing."
+        },
+        {
+          "info": {
+            "name": "Docusign Create a Template",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://demo.docusign.net/restapi/v2.1/accounts/:accountId/templates",
+            "params": [
+              {
+                "name": "accountId",
+                "value": "",
+                "type": "path",
+                "description": "The external account number (short) or account ID GUID of the DocuSign account."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Creates a new template from scratch or from an existing template. Templates define the document content, recipients, tabs, and routing for reusable envelope workflows."
+        },
+        {
+          "info": {
+            "name": "Docusign Get a Template",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://demo.docusign.net/restapi/v2.1/accounts/:accountId/templates/:templateId",
+            "params": [
+              {
+                "name": "accountId",
+                "value": "",
+                "type": "path",
+                "description": "The external account number (short) or account ID GUID of the DocuSign account."
+              },
+              {
+                "name": "templateId",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the template."
+              },
+              {
+                "name": "include",
+                "value": "",
+                "type": "query",
+                "description": "Comma-separated list of additional properties to include."
+              }
+            ]
+          },
+          "docs": "Retrieves the definition and properties of the specified template, including its documents, recipients, tabs, and routing information."
+        },
+        {
+          "info": {
+            "name": "Docusign Update a Template",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://demo.docusign.net/restapi/v2.1/accounts/:accountId/templates/:templateId",
+            "params": [
+              {
+                "name": "accountId",
+                "value": "",
+                "type": "path",
+                "description": "The external account number (short) or account ID GUID of the DocuSign account."
+              },
+              {
+                "name": "templateId",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the template."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Updates the template specified by templateId. You can modify the template name, description, documents, recipients, and tabs."
+        },
+        {
+          "info": {
+            "name": "Docusign Delete a Template",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://demo.docusign.net/restapi/v2.1/accounts/:accountId/templates/:templateId",
+            "params": [
+              {
+                "name": "accountId",
+                "value": "",
+                "type": "path",
+                "description": "The external account number (short) or account ID GUID of the DocuSign account."
+              },
+              {
+                "name": "templateId",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the template."
+              }
+            ]
+          },
+          "docs": "Deletes the specified template. Deleted templates are moved to the recycle bin and can be recovered within a retention period."
+        },
+        {
+          "info": {
+            "name": "Docusign List Template Recipients",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://demo.docusign.net/restapi/v2.1/accounts/:accountId/templates/:templateId/recipients",
+            "params": [
+              {
+                "name": "accountId",
+                "value": "",
+                "type": "path",
+                "description": "The external account number (short) or account ID GUID of the DocuSign account."
+              },
+              {
+                "name": "templateId",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the template."
+              },
+              {
+                "name": "include_tabs",
+                "value": "",
+                "type": "query",
+                "description": "When true, includes the tabs associated with each recipient."
+              }
+            ]
+          },
+          "docs": "Retrieves the recipients defined in the specified template, including their roles, routing order, and tab assignments."
+        },
+        {
+          "info": {
+            "name": "Docusign Update Template Recipients",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://demo.docusign.net/restapi/v2.1/accounts/:accountId/templates/:templateId/recipients",
+            "params": [
+              {
+                "name": "accountId",
+                "value": "",
+                "type": "path",
+                "description": "The external account number (short) or account ID GUID of the DocuSign account."
+              },
+              {
+                "name": "templateId",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the template."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Updates one or more recipients in the specified template."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}
