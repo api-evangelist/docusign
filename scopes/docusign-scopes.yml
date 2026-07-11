@@ -1,0 +1,101 @@
+generated: '2026-07-11'
+method: derived
+source: openapi/docusign-admin-openapi-original.yml, openapi/docusign-esignature-openapi.yml,
+  openapi/docusign-maestro-openapi-original.yml
+schemes:
+- name: accessCode
+  source: openapi/docusign-admin-openapi-original.yml
+  flows:
+  - flow: authorizationCode
+    authorizationUrl: https://account.docusign.com/oauth/auth
+    tokenUrl: https://account.docusign.com/oauth/auth
+  description: OAuth2 Access code Grant
+- name: OAuth2
+  source: openapi/docusign-esignature-openapi.yml
+  flows:
+  - flow: authorizationCode
+    authorizationUrl: https://account-d.docusign.com/oauth/auth
+    tokenUrl: https://account-d.docusign.com/oauth/token
+  - flow: implicit
+    authorizationUrl: https://account-d.docusign.com/oauth/auth
+  description: DocuSign uses OAuth 2.0. Supports Authorization Code Grant for user-present applications
+    and JWT Grant for service integrations.
+- name: DSAuth
+  source: openapi/docusign-maestro-openapi-original.yml
+  flows:
+  - flow: authorizationCode
+    authorizationUrl: https://account-tk1.tk.docusign.dev/oauth/auth
+    tokenUrl: https://account-tk1.tk.docusign.dev/oauth/token
+  description: Docusign AuthN/AuthZ
+scopes:
+- scope: account_read
+  flows:
+  - authorizationCode
+  sources:
+  - openapi/docusign-admin-openapi-original.yml
+- scope: account_write
+  flows:
+  - authorizationCode
+  sources:
+  - openapi/docusign-admin-openapi-original.yml
+- scope: aow_manage
+  description: Manage workflows scope
+  flows:
+  - authorizationCode
+  sources:
+  - openapi/docusign-maestro-openapi-original.yml
+- scope: domain_read
+  flows:
+  - authorizationCode
+  sources:
+  - openapi/docusign-admin-openapi-original.yml
+- scope: extended
+  description: Extended API access
+  flows:
+  - authorizationCode
+  sources:
+  - openapi/docusign-esignature-openapi.yml
+- scope: group_read
+  flows:
+  - authorizationCode
+  sources:
+  - openapi/docusign-admin-openapi-original.yml
+- scope: identity_provider_read
+  flows:
+  - authorizationCode
+  sources:
+  - openapi/docusign-admin-openapi-original.yml
+- scope: impersonation
+  description: Impersonate users via JWT Grant
+  flows:
+  - authorizationCode
+  sources:
+  - openapi/docusign-esignature-openapi.yml
+- scope: organization_read
+  flows:
+  - authorizationCode
+  sources:
+  - openapi/docusign-admin-openapi-original.yml
+- scope: permission_read
+  flows:
+  - authorizationCode
+  sources:
+  - openapi/docusign-admin-openapi-original.yml
+- scope: signature
+  description: Access to signing and envelope operations
+  flows:
+  - authorizationCode
+  - implicit
+  sources:
+  - openapi/docusign-esignature-openapi.yml
+  - openapi/docusign-maestro-openapi-original.yml
+- scope: user_read
+  flows:
+  - authorizationCode
+  sources:
+  - openapi/docusign-admin-openapi-original.yml
+- scope: user_write
+  flows:
+  - authorizationCode
+  sources:
+  - openapi/docusign-admin-openapi-original.yml
