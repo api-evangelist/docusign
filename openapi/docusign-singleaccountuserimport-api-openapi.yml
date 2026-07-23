@@ -1,0 +1,316 @@
+openapi: 3.0.1
+info:
+  title: DocuSign Admin AccountBrands SingleAccountUserImport API
+  description: An API for an organization administrator to manage organizations, accounts and users
+  termsOfService: https://www.docusign.com/company/terms-and-conditions/developers
+  contact:
+    name: DocuSign Developer Center
+    url: https://developers.docusign.com
+    email: devcenter@docusign.com
+  version: v2.1
+servers:
+- url: https://api.docusign.net/Management
+tags:
+- name: SingleAccountUserImport
+  description: Methods to import users.
+paths:
+  /v2/organizations/{organizationId}/accounts/{accountId}/imports/bulk_users/add:
+    post:
+      tags:
+      - SingleAccountUserImport
+      summary: Docusign Import request for adding user to a single account within the organization.
+      description: 'Import request for adding user to a single account within the organization.
+
+        This method lets you upload user information without requiring an AccountId column.
+
+
+        - Required scopes: `user_write`
+
+        '
+      operationId: OrganizationImport_OrganizationImportSingleAccountUsers_Insert
+      parameters:
+      - name: organizationId
+        in: path
+        description: The organization ID Guid
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: accountId
+        in: path
+        description: The account ID Guid
+        required: true
+        schema:
+          type: string
+          format: uuid
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              required:
+              - file.csv
+              type: object
+              properties:
+                file.csv:
+                  type: string
+                  description: CSV file.
+                  format: binary
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrganizationImportResponse'
+      security:
+      - accessCode:
+        - user_write
+      x-ds-methodname: createBulkImportSingleAccountAddUsersRequest
+      x-ds-method: createBulkImportSingleAccountAddUsersRequest
+      x-ds-service: BulkImports
+      x-ds-in-sdk: true
+  /v2/organizations/{organizationId}/accounts/{accountId}/imports/bulk_users/update:
+    post:
+      tags:
+      - SingleAccountUserImport
+      summary: 'Docusign Import request for updating users for a single account
+
+        within the organization.'
+      description: 'Import request for updating users for a single account
+
+        within the organization.
+
+
+        - Required scopes: `user_write`
+
+
+        This method lets you upload user information without requiring an AccountId column.
+
+
+        '
+      operationId: OrganizationImport_OrganizationImportSingleAccountUsers_Update
+      parameters:
+      - name: organizationId
+        in: path
+        description: The organization ID Guid
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: accountId
+        in: path
+        description: The account ID Guid
+        required: true
+        schema:
+          type: string
+          format: uuid
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              required:
+              - file.csv
+              type: object
+              properties:
+                file.csv:
+                  type: string
+                  description: CSV file.
+                  format: binary
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrganizationImportResponse'
+      security:
+      - accessCode:
+        - user_write
+      x-ds-methodname: createBulkImportSingleAccountUpdateUsersRequest
+      x-ds-method: createBulkImportSingleAccountUpdateUsersRequest
+      x-ds-service: BulkImports
+      x-ds-in-sdk: true
+components:
+  schemas:
+    OrganizationImportResponse:
+      type: object
+      properties:
+        id:
+          type: string
+          description: ''
+          format: uuid
+          example: 00000000-0000-0000-0000-000000000000
+        type:
+          type: string
+          description: ''
+        requestor:
+          $ref: '#/components/schemas/OrganizationImportResponseRequestor'
+        created:
+          type: string
+          description: ''
+          format: date-time
+        last_modified:
+          type: string
+          description: ''
+          format: date-time
+        status:
+          type: string
+          description: Status.
+        user_count:
+          type: integer
+          description: ''
+          format: int32
+        processed_user_count:
+          type: integer
+          description: ''
+          format: int32
+        added_user_count:
+          type: integer
+          description: ''
+          format: int32
+        updated_user_count:
+          type: integer
+          description: ''
+          format: int32
+        closed_user_count:
+          type: integer
+          description: ''
+          format: int32
+        no_action_required_user_count:
+          type: integer
+          description: ''
+          format: int32
+        error_count:
+          type: integer
+          description: ''
+          format: int32
+        warning_count:
+          type: integer
+          description: ''
+          format: int32
+        invalid_column_headers:
+          type: string
+          description: ''
+        imports_not_found_or_not_available_for_accounts:
+          type: string
+          description: ''
+        imports_failed_for_accounts:
+          type: string
+          description: ''
+        imports_timed_out_for_accounts:
+          type: string
+          description: ''
+        imports_not_found_or_not_available_for_sites:
+          type: string
+          description: ''
+        imports_failed_for_sites:
+          type: string
+          description: ''
+        imports_timed_out_for_sites:
+          type: string
+          description: ''
+        file_level_error_rollups:
+          type: array
+          description: ''
+          items:
+            $ref: '#/components/schemas/OrganizationImportResponseErrorRollup'
+        user_level_error_rollups:
+          type: array
+          description: ''
+          items:
+            $ref: '#/components/schemas/OrganizationImportResponseErrorRollup'
+        user_level_warning_rollups:
+          type: array
+          description: ''
+          items:
+            $ref: '#/components/schemas/OrganizationImportResponseWarningRollup'
+        has_csv_results:
+          type: boolean
+          description: ''
+        results_uri:
+          type: string
+          description: ''
+      description: ''
+      x-ds-definition-name: OrganizationImportResponse
+      x-ms-summary: ''
+    OrganizationImportResponseRequestor:
+      type: object
+      properties:
+        name:
+          type: string
+          description: ''
+        id:
+          type: string
+          description: ''
+        type:
+          type: string
+          description: ''
+        email:
+          type: string
+          description: The email address.
+      description: ''
+      x-ds-definition-name: OrganizationImportResponseRequestor
+      x-ms-summary: ''
+    OrganizationImportResponseErrorRollup:
+      type: object
+      properties:
+        error_type:
+          type: string
+          description: ''
+        count:
+          type: integer
+          description: ''
+          format: int32
+      description: ''
+      x-ds-definition-name: OrganizationImportResponseErrorRollup
+      x-ms-summary: ''
+    OrganizationImportResponseWarningRollup:
+      type: object
+      properties:
+        warning_type:
+          type: string
+          description: ''
+        count:
+          type: integer
+          description: ''
+          format: int32
+      description: ''
+      x-ds-definition-name: OrganizationImportResponseWarningRollup
+      x-ms-summary: ''
+  securitySchemes:
+    accessCode:
+      type: oauth2
+      description: OAuth2 Access code Grant
+      flows:
+        authorizationCode:
+          authorizationUrl: https://account.docusign.com/oauth/auth
+          tokenUrl: https://account.docusign.com/oauth/auth
+          scopes:
+            organization_read: ''
+            permission_read: ''
+            group_read: ''
+            user_read: ''
+            account_read: ''
+            account_write: ''
+            user_write: ''
+            identity_provider_read: ''
+            domain_read: ''
+x-ds-categories:
+- name: UserManagement
+  summary: Methods to manage users in an account.
+  description: Methods to manage users in an account.
+- name: BulkOperations
+  summary: Methods to import and export users and accounts.
+  description: Methods to import and export users and accounts.
+- name: IdentityProviders
+  summary: Methods to get a list of identity providers.
+  description: Methods to get a list of identity providers.
+- name: ReservedDomains
+  summary: Methods to get a list of reserved domains.
+  description: Methods to get a list of reserved domains.
+- name: Organization
+  summary: Methods for working with organizations.
+  description: Methods for working with organizations.
+x-original-swagger-version: '2.0'

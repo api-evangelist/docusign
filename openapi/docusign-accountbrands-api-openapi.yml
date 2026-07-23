@@ -1,0 +1,894 @@
+openapi: 3.0.1
+info:
+  title: DocuSign Admin AccountBrands API
+  description: An API for an organization administrator to manage organizations, accounts and users
+  termsOfService: https://www.docusign.com/company/terms-and-conditions/developers
+  contact:
+    name: DocuSign Developer Center
+    url: https://developers.docusign.com
+    email: devcenter@docusign.com
+  version: v2.1
+servers:
+- url: https://api.docusign.net/Management
+tags:
+- name: AccountBrands
+  description: 'The AcccountBrands resource provides methods that allow you to create and delete the account brand associated with an account.
+
+
+    Branding allows you to add the look and feel of your organization''s
+
+    brand to the sending, signing, and email process making it easier for users to identify envelopes coming from your organization.
+
+
+    The DocuSign Account Custom Branding feature lets you set the colors, logo, and text for your account. You can create any number of brand profiles with different settings to reflect each of your corporate brands or different internal divisions or departments.
+
+
+    When you create or change a branding profile, it applies to everyone using that profile and affects all envelopes sent with that profile.'
+paths:
+  /v2/accounts/{accountId}/brands:
+    get:
+      tags:
+      - AccountBrands
+      summary: Docusign Gets a list of brand profiles.
+      description: Retrieves the list of brand profiles associated with the account and the default brand profiles. The Account Branding feature (accountSettings properties `canSelfBrandSend` and `canSelfBrandSend`)  must be set to **true** for the account to use this call.
+      operationId: Brands_GetBrands
+      parameters:
+      - name: accountId
+        in: path
+        description: The external account number (int) or account id GUID.
+        required: true
+        schema:
+          type: string
+      - name: exclude_distributor_brand
+        in: query
+        description: When set to **true**, excludes distributor brand information from the response set.
+        schema:
+          type: string
+      - name: include_logos
+        in: query
+        description: When set to **true**, returns the logos associated with the brand.
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Successful response.
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AccountBrands'
+        '400':
+          description: Error encountered.
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/errorDetails'
+      deprecated: false
+      x-ds-methodname: listBrands
+      x-ds-method: list
+      x-ds-service: Accounts
+      x-ds-in-sdk: true
+    post:
+      tags:
+      - AccountBrands
+      summary: Docusign Creates one or more brand profile files for the account.
+      description: 'Creates one or more brand profile files for the account. The Account Branding feature (accountSettings properties `canSelfBrandSend` and `canSelfBrandSig`) must be set to **true** for the account to use this call.
+
+
+        An error is returned if `brandId` property for a brand profile is already set for the account. To upload a new version of an existing brand profile, you must delete the profile and then upload the newer version.
+
+
+        When brand profile files are being uploaded, they must be combined into one zip file and the `Content-Type` must be `application/zip`.'
+      operationId: Brands_PostBrands
+      parameters:
+      - name: accountId
+        in: path
+        description: The external account number (int) or account id GUID.
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/brand'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/brand'
+        required: false
+      responses:
+        '201':
+          description: Successful response.
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AccountBrands'
+        '400':
+          description: Error encountered.
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/errorDetails'
+      deprecated: false
+      x-ds-methodname: createBrand
+      x-ds-method: create
+      x-ds-service: Accounts
+      x-ds-in-sdk: true
+      x-codegen-request-body-name: brand
+    delete:
+      tags:
+      - AccountBrands
+      summary: Docusign Deletes one or more brand profiles.
+      description: Deletes one or more brand profiles from an account. The Account Branding feature (accountSettings properties `canSelfBrandSend` and `canSelfBrandSend`) must be set to **true** to use this call.
+      operationId: Brands_DeleteBrands
+      parameters:
+      - name: accountId
+        in: path
+        description: The external account number (int) or account id GUID.
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/brandsRequest'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/brandsRequest'
+        required: false
+      responses:
+        '200':
+          description: Successful response.
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AccountBrands'
+        '400':
+          description: Error encountered.
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/errorDetails'
+      deprecated: false
+      x-ds-methodname: deleteBrands
+      x-ds-method: deleteList
+      x-ds-service: Accounts
+      x-ds-in-sdk: true
+      x-codegen-request-body-name: brandsRequest
+  /v2/accounts/{accountId}/brands/{brandId}:
+    get:
+      tags:
+      - AccountBrands
+      summary: Docusign Get information for a specific brand.
+      operationId: Brand_GetBrand
+      parameters:
+      - name: accountId
+        in: path
+        description: The external account number (int) or account id GUID.
+        required: true
+        schema:
+          type: string
+      - name: brandId
+        in: path
+        description: The unique identifier of a brand.
+        required: true
+        schema:
+          type: string
+      - name: include_external_references
+        in: query
+        schema:
+          type: string
+      - name: include_logos
+        in: query
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Successful response.
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/brand'
+        '400':
+          description: Error encountered.
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/errorDetails'
+      deprecated: false
+      x-ds-methodname: getBrand
+      x-ds-method: get
+      x-ds-service: Accounts
+      x-ds-in-sdk: true
+    put:
+      tags:
+      - AccountBrands
+      summary: Docusign Updates an existing brand.
+      operationId: Brand_PutBrand
+      parameters:
+      - name: accountId
+        in: path
+        description: The external account number (int) or account id GUID.
+        required: true
+        schema:
+          type: string
+      - name: brandId
+        in: path
+        description: The unique identifier of a brand.
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/brand'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/brand'
+        required: false
+      responses:
+        '200':
+          description: Successful response.
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/brand'
+        '400':
+          description: Error encountered.
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/errorDetails'
+      deprecated: false
+      x-ds-methodname: updateBrand
+      x-ds-method: update
+      x-ds-service: Accounts
+      x-ds-in-sdk: true
+      x-codegen-request-body-name: brand
+    delete:
+      tags:
+      - AccountBrands
+      summary: Docusign Removes a brand.
+      operationId: Brand_DeleteBrand
+      parameters:
+      - name: accountId
+        in: path
+        description: The external account number (int) or account id GUID.
+        required: true
+        schema:
+          type: string
+      - name: brandId
+        in: path
+        description: The unique identifier of a brand.
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Successful response.
+          content: {}
+        '400':
+          description: Error encountered.
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/errorDetails'
+      deprecated: false
+      x-ds-methodname: deleteBrand
+      x-ds-method: delete
+      x-ds-service: Accounts
+      x-ds-in-sdk: true
+  /v2/accounts/{accountId}/brands/{brandId}/file:
+    get:
+      tags:
+      - AccountBrands
+      summary: Docusign Export a specific brand.
+      operationId: BrandExport_GetBrandExportFile
+      parameters:
+      - name: accountId
+        in: path
+        description: The external account number (int) or account id GUID.
+        required: true
+        schema:
+          type: string
+      - name: brandId
+        in: path
+        description: The unique identifier of a brand.
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Successful response.
+          content: {}
+        '400':
+          description: Error encountered.
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/errorDetails'
+      deprecated: false
+      x-ds-methodname: getBrandExportFile
+      x-ds-method: getExportFile
+      x-ds-service: Accounts
+      x-ds-in-sdk: true
+  /v2/accounts/{accountId}/brands/{brandId}/logos/{logoType}:
+    get:
+      tags:
+      - AccountBrands
+      summary: Docusign Obtains the specified image for a brand.
+      operationId: BrandLogo_GetBrandLogo
+      parameters:
+      - name: accountId
+        in: path
+        description: The external account number (int) or account id GUID.
+        required: true
+        schema:
+          type: string
+      - name: brandId
+        in: path
+        description: The unique identifier of a brand.
+        required: true
+        schema:
+          type: string
+      - name: logoType
+        in: path
+        description: One of **Primary**, **Secondary** or **Email**.
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Successful response.
+          content:
+            image/png:
+              schema:
+                type: string
+                format: binary
+        '400':
+          description: Error encountered.
+          content:
+            image/png:
+              schema:
+                $ref: '#/components/schemas/errorDetails'
+      deprecated: false
+      x-ds-methodname: getBrandLogoByType
+      x-ds-method: getLogo
+      x-ds-service: Accounts
+      x-ds-in-sdk: true
+    put:
+      tags:
+      - AccountBrands
+      summary: Docusign Put one branding logo.
+      operationId: BrandLogo_PutBrandLogo
+      parameters:
+      - name: accountId
+        in: path
+        description: The external account number (int) or account id GUID.
+        required: true
+        schema:
+          type: string
+      - name: brandId
+        in: path
+        description: The unique identifier of a brand.
+        required: true
+        schema:
+          type: string
+      - name: logoType
+        in: path
+        description: One of **Primary**, **Secondary** or **Email**.
+        required: true
+        schema:
+          type: string
+      requestBody:
+        description: 'Brand logo binary Stream. Supported formats: JPG, GIF, PNG. Maximum file size: 300 KB. Recommended dimensions: 296 x 76 pixels (larger images will be resized). Changes may take up to one hour to display in all places'
+        content:
+          image/png:
+            schema:
+              type: string
+              format: binary
+        required: true
+      responses:
+        '200':
+          description: Successful response.
+          content: {}
+        '400':
+          description: Error encountered.
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/errorDetails'
+      deprecated: false
+      x-ds-methodname: updateBrandLogoByType
+      x-ds-method: updateLogo
+      x-ds-service: Accounts
+      x-ds-in-sdk: true
+      x-codegen-request-body-name: logoFileBytes
+    delete:
+      tags:
+      - AccountBrands
+      summary: Docusign Delete one branding logo.
+      operationId: BrandLogo_DeleteBrandLogo
+      parameters:
+      - name: accountId
+        in: path
+        description: The external account number (int) or account id GUID.
+        required: true
+        schema:
+          type: string
+      - name: brandId
+        in: path
+        description: The unique identifier of a brand.
+        required: true
+        schema:
+          type: string
+      - name: logoType
+        in: path
+        description: One of **Primary**, **Secondary** or **Email**.
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Successful response.
+          content: {}
+        '400':
+          description: Error encountered.
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/errorDetails'
+      deprecated: false
+      x-ds-methodname: deleteBrandLogoByType
+      x-ds-method: deleteLogo
+      x-ds-service: Accounts
+      x-ds-in-sdk: true
+  /v2/accounts/{accountId}/brands/{brandId}/resources:
+    get:
+      tags:
+      - AccountBrands
+      summary: Docusign Returns the specified account's list of branding resources (metadata).
+      operationId: BrandResources_GetBrandResourcesList
+      parameters:
+      - name: accountId
+        in: path
+        description: The external account number (int) or account id GUID.
+        required: true
+        schema:
+          type: string
+      - name: brandId
+        in: path
+        description: The unique identifier of a brand.
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Successful response.
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/brandResourcesList'
+        '400':
+          description: Error encountered.
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/errorDetails'
+      deprecated: false
+      x-ds-methodname: getBrandResources
+      x-ds-method: listResources
+      x-ds-service: Accounts
+      x-ds-in-sdk: true
+  /v2/accounts/{accountId}/brands/{brandId}/resources/{resourceContentType}:
+    get:
+      tags:
+      - AccountBrands
+      summary: Docusign Returns the specified branding resource file.
+      operationId: BrandResources_GetBrandResources
+      parameters:
+      - name: accountId
+        in: path
+        description: The external account number (int) or account id GUID.
+        required: true
+        schema:
+          type: string
+      - name: brandId
+        in: path
+        description: The unique identifier of a brand.
+        required: true
+        schema:
+          type: string
+      - name: resourceContentType
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: langcode
+        in: query
+        schema:
+          type: string
+      - name: return_master
+        in: query
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Successful response.
+          content: {}
+        '400':
+          description: Error encountered.
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/errorDetails'
+      deprecated: false
+      x-ds-methodname: getBrandResourcesByContentType
+      x-ds-method: getResource
+      x-ds-service: Accounts
+      x-ds-in-sdk: true
+    put:
+      tags:
+      - AccountBrands
+      summary: Docusign Uploads a branding resource file.
+      operationId: BrandResources_PutBrandResources
+      parameters:
+      - name: accountId
+        in: path
+        description: The external account number (int) or account id GUID.
+        required: true
+        schema:
+          type: string
+      - name: brandId
+        in: path
+        description: The unique identifier of a brand.
+        required: true
+        schema:
+          type: string
+      - name: resourceContentType
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              required:
+              - file.xml
+              type: object
+              properties:
+                file.xml:
+                  type: string
+                  description: Brand resource XML file.
+                  format: binary
+        required: true
+      responses:
+        '200':
+          description: Successful response.
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/brandResources'
+        '400':
+          description: Error encountered.
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/errorDetails'
+      deprecated: false
+      x-ds-methodname: updateBrandResourcesByContentType
+      x-ds-method: updateResource
+      x-ds-service: Accounts
+      x-ds-in-sdk: true
+components:
+  schemas:
+    brandRequest:
+      type: object
+      properties:
+        brandId:
+          type: string
+          description: The ID of the brand used in API calls
+      description: ''
+      x-ds-definition-name: brandRequest
+      x-ms-summary: ''
+    userInfo:
+      type: object
+      properties:
+        activationAccessCode:
+          type: string
+          description: ''
+        email:
+          type: string
+          description: ''
+        errorDetails:
+          $ref: '#/components/schemas/errorDetails'
+        loginStatus:
+          type: string
+          description: ''
+        sendActivationEmail:
+          type: string
+          description: ''
+        uri:
+          type: string
+          description: ''
+        userId:
+          type: string
+          description: 'The user ID of the user being accessed. Generally this is the user ID of the authenticated user, but if the authenticated user is an Admin on the account, this may be another user the Admin user is accessing. **Note**: For the [GET /v2/accounts/{accountId}/envelopes](https://developers.docusign.com/esign-rest-api/reference/Envelopes/Envelopes/listStatusChanges/#envelopesInformation) method, the `user_id` query parameter is not implemented and should not be used.'
+        userName:
+          type: string
+          description: ''
+        userStatus:
+          type: string
+          description: 'Status of the user''s account. One of:
+
+
+            * ActivationRequired
+
+            * ActivationSent
+
+            * Active
+
+            * Closed
+
+            * Disabled
+
+            '
+        userType:
+          type: string
+          description: ''
+      description: ''
+      x-ds-definition-name: userInfo
+      x-ms-summary: ''
+    AccountBrands:
+      type: object
+      properties:
+        brands:
+          type: array
+          description: The list of brands.
+          items:
+            $ref: '#/components/schemas/brand'
+        recipientBrandIdDefault:
+          type: string
+          description: The brand seen by envelope recipients when a brand is not explicitly set.
+        senderBrandIdDefault:
+          type: string
+          description: The brand seen by envelope senders when a brand is not explicitly set.
+      description: Brand management for accounts
+      x-ds-definition-name: brandsResponse
+      x-ds-category: Accounts
+      x-ds-order: '10'
+      x-ms-summary: Brand management for accounts
+    brandLink:
+      type: object
+      properties:
+        linkText:
+          type: string
+          description: ''
+        linkType:
+          type: string
+          description: ''
+        showLink:
+          type: string
+          description: ''
+        urlOrMailTo:
+          type: string
+          description: ''
+      description: ''
+      x-ds-definition-name: brandLink
+      x-ms-summary: ''
+    brandLogos:
+      type: object
+      properties:
+        email:
+          type: string
+          description: ''
+        primary:
+          type: string
+          description: ''
+        secondary:
+          type: string
+          description: ''
+      description: ''
+      x-ds-definition-name: brandLogos
+      x-ms-summary: ''
+    brandEmailContent:
+      type: object
+      properties:
+        content:
+          type: string
+          description: ''
+        emailContentType:
+          type: string
+          description: ''
+        emailToLink:
+          type: string
+          description: ''
+        linkText:
+          type: string
+          description: ''
+      description: ''
+      x-ds-definition-name: brandEmailContent
+      x-ms-summary: ''
+    brandResources:
+      type: object
+      properties:
+        createdByUserInfo:
+          $ref: '#/components/schemas/userInfo'
+        createdDate:
+          type: string
+          description: ''
+        modifiedByUserInfo:
+          $ref: '#/components/schemas/userInfo'
+        modifiedDate:
+          type: string
+          description: ''
+        modifiedTemplates:
+          type: array
+          description: ''
+          items:
+            type: string
+        resourcesContentType:
+          type: string
+          description: ''
+        resourcesContentUri:
+          type: string
+          description: ''
+      description: ''
+      x-ds-definition-name: brandResources
+      x-ms-summary: ''
+    brandsRequest:
+      type: object
+      properties:
+        brands:
+          type: array
+          description: The list of brands.
+          items:
+            $ref: '#/components/schemas/brandRequest'
+      description: ''
+      x-ds-definition-name: brandsRequest
+      x-ms-summary: ''
+    brandResourceUrls:
+      type: object
+      properties:
+        email:
+          type: string
+          description: ''
+        sending:
+          type: string
+          description: ''
+        signing:
+          type: string
+          description: ''
+        signingCaptive:
+          type: string
+          description: ''
+      description: ''
+      x-ds-definition-name: brandResourceUrls
+      x-ms-summary: ''
+    errorDetails:
+      type: object
+      properties:
+        errorCode:
+          type: string
+          description: An error code associated with the error.
+        message:
+          type: string
+          description: A short error message.
+      description: This object describes errors that occur. It is only valid for responses, and ignored in requests.
+      x-ds-definition-name: errorDetails
+      x-ms-summary: This object describes errors that occur. It is only valid for responses, and ignored in requests.
+    brand:
+      type: object
+      properties:
+        brandCompany:
+          type: string
+          description: The name of the company associated with this brand.
+        brandId:
+          type: string
+          description: The ID used to identify a specific brand in API calls.
+        brandName:
+          type: string
+          description: The name of the brand.
+        colors:
+          type: array
+          description: ''
+          items:
+            $ref: '#/components/schemas/nameValue'
+        emailContent:
+          type: array
+          description: ''
+          items:
+            $ref: '#/components/schemas/brandEmailContent'
+        errorDetails:
+          $ref: '#/components/schemas/errorDetails'
+        isOverridingCompanyName:
+          type: string
+          description: ''
+        isSendingDefault:
+          type: string
+          description: ''
+        isSigningDefault:
+          type: string
+          description: ''
+        landingPages:
+          type: array
+          description: ''
+          items:
+            $ref: '#/components/schemas/nameValue'
+        links:
+          type: array
+          description: ''
+          items:
+            $ref: '#/components/schemas/brandLink'
+        logos:
+          $ref: '#/components/schemas/brandLogos'
+        resources:
+          $ref: '#/components/schemas/brandResourceUrls'
+      description: ''
+      x-ds-definition-name: brand
+      x-ms-summary: ''
+    brandResourcesList:
+      type: object
+      properties:
+        resourcesContentTypes:
+          type: array
+          description: ''
+          items:
+            $ref: '#/components/schemas/brandResources'
+      description: ''
+      x-ds-definition-name: brandResourcesList
+      x-ms-summary: ''
+    nameValue:
+      type: object
+      properties:
+        errorDetails:
+          $ref: '#/components/schemas/errorDetails'
+        name:
+          type: string
+          description: The name or key of a name/value pair.
+        originalValue:
+          type: string
+          description: 'The initial value of the tab when it was sent to the recipient. '
+        value:
+          type: string
+          description: The value field of a name/value pair.
+      description: ''
+      x-ds-definition-name: nameValue
+      x-ms-summary: ''
+  securitySchemes:
+    accessCode:
+      type: oauth2
+      description: OAuth2 Access code Grant
+      flows:
+        authorizationCode:
+          authorizationUrl: https://account.docusign.com/oauth/auth
+          tokenUrl: https://account.docusign.com/oauth/auth
+          scopes:
+            organization_read: ''
+            permission_read: ''
+            group_read: ''
+            user_read: ''
+            account_read: ''
+            account_write: ''
+            user_write: ''
+            identity_provider_read: ''
+            domain_read: ''
+x-ds-categories:
+- name: UserManagement
+  summary: Methods to manage users in an account.
+  description: Methods to manage users in an account.
+- name: BulkOperations
+  summary: Methods to import and export users and accounts.
+  description: Methods to import and export users and accounts.
+- name: IdentityProviders
+  summary: Methods to get a list of identity providers.
+  description: Methods to get a list of identity providers.
+- name: ReservedDomains
+  summary: Methods to get a list of reserved domains.
+  description: Methods to get a list of reserved domains.
+- name: Organization
+  summary: Methods for working with organizations.
+  description: Methods for working with organizations.
+x-original-swagger-version: '2.0'

@@ -1,0 +1,535 @@
+openapi: 3.0.1
+info:
+  title: DocuSign Admin AccountBrands ConnectEvents API
+  description: An API for an organization administrator to manage organizations, accounts and users
+  termsOfService: https://www.docusign.com/company/terms-and-conditions/developers
+  contact:
+    name: DocuSign Developer Center
+    url: https://developers.docusign.com
+    email: devcenter@docusign.com
+  version: v2.1
+servers:
+- url: https://api.docusign.net/Management
+tags:
+- name: ConnectEvents
+  description: The ConnectEvents resource provides methods that allow you to read, delete, and republish the connect logs associated with an envelope.
+paths:
+  /v2/accounts/{accountId}/connect/envelopes/{envelopeId}/retry_queue:
+    put:
+      tags:
+      - ConnectEvents
+      summary: Docusign Republishes Connect information for the specified envelope.
+      description: Republishes Connect information for the specified envelope.
+      operationId: ConnectPublish_PutConnectRetryByEnvelope
+      parameters:
+      - name: accountId
+        in: path
+        description: The external account number (int) or account id GUID.
+        required: true
+        schema:
+          type: string
+      - name: envelopeId
+        in: path
+        description: 'The envelope''s GUID. Eg 93be49ab-afa0-4adf-933c-f752070d71ec '
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Successful response.
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/connectFailureResults'
+        '400':
+          description: Error encountered.
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/errorDetails'
+      deprecated: false
+      x-ds-methodname: retryEventForEnvelope
+      x-ds-method: retryForEnvelope
+      x-ds-service: Connect
+      x-ds-in-sdk: true
+  /v2/accounts/{accountId}/connect/envelopes/retry_queue:
+    put:
+      tags:
+      - ConnectEvents
+      summary: Docusign Republishes Connect information for multiple envelopes.
+      description: Republishes Connect information for the  specified set of envelopes. The primary use is to republish Connect post failures by including envelope IDs for the envelopes that failed to post in the request. The list of envelope IDs that failed to post correctly can be retrieved by calling to [ML:GetConnectLog] retrieve the failure log.
+      operationId: ConnectPublish_PutConnectRetry
+      parameters:
+      - name: accountId
+        in: path
+        description: The external account number (int) or account id GUID.
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/connectFailureFilter'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/connectFailureFilter'
+        required: false
+      responses:
+        '200':
+          description: Successful response.
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/connectFailureResults'
+        '400':
+          description: Error encountered.
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/errorDetails'
+      deprecated: false
+      x-ds-methodname: retryEventForEnvelopes
+      x-ds-method: retryForEnvelopes
+      x-ds-service: Connect
+      x-ds-in-sdk: true
+      x-codegen-request-body-name: connectFailureFilter
+  /v2/accounts/{accountId}/connect/failures:
+    get:
+      tags:
+      - ConnectEvents
+      summary: Docusign Gets the Connect failure log information.
+      description: Retrieves the Connect Failure Log information. It can be used to determine which envelopes failed to post, so a republish request can be created.
+      operationId: ConnectFailures_GetConnectLogs
+      parameters:
+      - name: accountId
+        in: path
+        description: The external account number (int) or account id GUID.
+        required: true
+        schema:
+          type: string
+      - name: from_date
+        in: query
+        description: Start of the search date range. Only returns templates created on or after this date/time. If no value is specified, there is no limit on the earliest date created.
+        schema:
+          type: string
+      - name: to_date
+        in: query
+        description: End of the search date range. Only returns templates created up to this date/time. If no value is provided, this defaults to the current date.
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Successful response.
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/connectLogs'
+        '400':
+          description: Error encountered.
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/errorDetails'
+      deprecated: false
+      x-ds-methodname: listEventFailureLogs
+      x-ds-method: listFailures
+      x-ds-service: Connect
+      x-ds-in-sdk: true
+  /v2/accounts/{accountId}/connect/failures/{failureId}:
+    delete:
+      tags:
+      - ConnectEvents
+      summary: Docusign Deletes a Connect failure log entry.
+      description: Deletes the Connect failure log information for the specified entry.
+      operationId: ConnectFailures_DeleteConnectFailureLog
+      parameters:
+      - name: accountId
+        in: path
+        description: The external account number (int) or account id GUID.
+        required: true
+        schema:
+          type: string
+      - name: failureId
+        in: path
+        description: The ID of the failed connect log entry.
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Successful response.
+          content: {}
+        '400':
+          description: Error encountered.
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/errorDetails'
+      deprecated: false
+      x-ds-methodname: deleteEventFailureLog
+      x-ds-method: deleteFailure
+      x-ds-service: Connect
+      x-ds-in-sdk: true
+  /v2/accounts/{accountId}/connect/logs:
+    get:
+      tags:
+      - ConnectEvents
+      summary: Docusign Gets the Connect log.
+      description: 'Retrieves a list of connect log entries for your account.
+
+
+        ###### Note: The `enableLog` setting in the Connect configuration must be set to true to enable logging. If logging is not enabled, then no log entries are recorded. '
+      operationId: ConnectLog_GetConnectLogs
+      parameters:
+      - name: accountId
+        in: path
+        description: The external account number (int) or account id GUID.
+        required: true
+        schema:
+          type: string
+      - name: from_date
+        in: query
+        description: Start of the search date range. Only returns templates created on or after this date/time. If no value is specified, there is no limit on the earliest date created.
+        schema:
+          type: string
+      - name: to_date
+        in: query
+        description: End of the search date range. Only returns templates created up to this date/time. If no value is provided, this defaults to the current date.
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Successful response.
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/connectLogs'
+        '400':
+          description: Error encountered.
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/errorDetails'
+      deprecated: false
+      x-ds-methodname: listEventLogs
+      x-ds-method: list
+      x-ds-service: Connect
+      x-ds-in-sdk: true
+    delete:
+      tags:
+      - ConnectEvents
+      summary: Docusign Gets a list of Connect log entries.
+      description: 'Retrieves a list of connect log entries for your account.
+
+
+        ###### Note: The `enableLog` property in the Connect configuration must be set to **true** to enable logging. If logging is not enabled, then no log entries are recorded.'
+      operationId: ConnectLog_DeleteConnectLogs
+      parameters:
+      - name: accountId
+        in: path
+        description: The external account number (int) or account id GUID.
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Successful response.
+          content: {}
+        '400':
+          description: Error encountered.
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/errorDetails'
+      deprecated: false
+      x-ds-methodname: deleteEventLogs
+      x-ds-method: deleteList
+      x-ds-service: Connect
+      x-ds-in-sdk: true
+  /v2/accounts/{accountId}/connect/logs/{logId}:
+    get:
+      tags:
+      - ConnectEvents
+      summary: Docusign Get the specified Connect log entry.
+      description: 'Retrieves the specified Connect log entry for your account.
+
+
+        ###### Note: The `enableLog` setting in the Connect configuration must be set to true to enable logging. If logging is not enabled, then no log entries are recorded. '
+      operationId: ConnectLog_GetConnectLog
+      parameters:
+      - name: accountId
+        in: path
+        description: The external account number (int) or account id GUID.
+        required: true
+        schema:
+          type: string
+      - name: logId
+        in: path
+        description: The ID of the connect log entry
+        required: true
+        schema:
+          type: string
+      - name: additional_info
+        in: query
+        description: When true, the connectDebugLog information is included in the response.
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Successful response.
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/connectLog'
+        '400':
+          description: Error encountered.
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/errorDetails'
+      deprecated: false
+      x-ds-methodname: getEventLog
+      x-ds-method: get
+      x-ds-service: Connect
+      x-ds-in-sdk: true
+    delete:
+      tags:
+      - ConnectEvents
+      summary: Docusign Deletes a specified Connect log entry.
+      description: 'Deletes a specified entry from the Connect Log.
+
+        '
+      operationId: ConnectLog_DeleteConnectLog
+      parameters:
+      - name: accountId
+        in: path
+        description: The external account number (int) or account id GUID.
+        required: true
+        schema:
+          type: string
+      - name: logId
+        in: path
+        description: The ID of the connect log entry
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Successful response.
+          content: {}
+        '400':
+          description: Error encountered.
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/errorDetails'
+      deprecated: false
+      x-ds-methodname: deleteEventLog
+      x-ds-method: delete
+      x-ds-service: Connect
+      x-ds-in-sdk: true
+components:
+  schemas:
+    connectFailureResult:
+      type: object
+      properties:
+        configId:
+          type: string
+          description: Reserved for DocuSign.
+        configUrl:
+          type: string
+          description: 'Reserved for DocuSign.
+
+            '
+        envelopeId:
+          type: string
+          description: The envelope ID of the envelope status that failed to post.
+        status:
+          type: string
+          description: Connection status.
+        statusMessage:
+          type: string
+          description: Connection status message.
+      description: ''
+      x-ds-definition-name: connectFailureResult
+      x-ms-summary: ''
+    connectFailureFilter:
+      type: object
+      properties:
+        envelopeIds:
+          type: array
+          description: ''
+          items:
+            type: string
+        synchronous:
+          type: string
+          description: ''
+      description: ''
+      x-ds-definition-name: connectFailureFilter
+      x-ms-summary: ''
+    errorDetails:
+      type: object
+      properties:
+        errorCode:
+          type: string
+          description: An error code associated with the error.
+        message:
+          type: string
+          description: A short error message.
+      description: This object describes errors that occur. It is only valid for responses, and ignored in requests.
+      x-ds-definition-name: errorDetails
+      x-ms-summary: This object describes errors that occur. It is only valid for responses, and ignored in requests.
+    connectLog:
+      type: object
+      properties:
+        accountId:
+          type: string
+          description: The account ID associated with the envelope.
+        configUrl:
+          type: string
+          description: The web address of the listener or Retrieving Service end point for Connect.
+        connectDebugLog:
+          type: array
+          description: 'A complex element containing information about the Connect configuration, error details, date/time, description and payload.
+
+
+            This is only included in the response if the query additional_info=true is used.'
+          items:
+            $ref: '#/components/schemas/connectDebugLog'
+        connectId:
+          type: string
+          description: The identifier for the Connect configuration that failed. If an account has multiple Connect configurations, this value is used to look up the Connect configuration for the failed post.
+        created:
+          type: string
+          description: The date and time the entry was created.
+        email:
+          type: string
+          description: The email that sent the envelope.
+        envelopeId:
+          type: string
+          description: The envelope ID of the envelope status that failed to post.
+        error:
+          type: string
+          description: The error that caused the Connect post to fail.
+        failureId:
+          type: string
+          description: The failure log ID for the failure.
+        failureUri:
+          type: string
+          description: The URI for the failure.
+        lastTry:
+          type: string
+          description: The date and time the last attempt to post.
+        logId:
+          type: string
+          description: The Connect log ID for the entry.
+        logUri:
+          type: string
+          description: The URI for the log item.
+        retryCount:
+          type: string
+          description: The number of times the Connect post has been retried.
+        retryUri:
+          type: string
+          description: The UEI to retry to publish the Connect failure.
+        status:
+          type: string
+          description: 'The new envelope status for the failed Connect post. The possible values are: Any, Voided, Created, Deleted, Sent, Delivered, Signed, Completed, Declined, TimedOut, Template, or Processing.'
+        subject:
+          type: string
+          description: The envelope subject.
+        userName:
+          type: string
+          description: The name of the envelope sender.
+      description: ''
+      x-ds-definition-name: connectLog
+      x-ms-summary: ''
+    connectDebugLog:
+      type: object
+      properties:
+        connectConfig:
+          type: string
+          description: ''
+        errorDetails:
+          $ref: '#/components/schemas/errorDetails'
+        eventDateTime:
+          type: string
+          description: ''
+        eventDescription:
+          type: string
+          description: ''
+        payload:
+          type: string
+          description: ''
+      description: ''
+      x-ds-definition-name: connectDebugLog
+      x-ms-summary: ''
+    connectFailureResults:
+      type: object
+      properties:
+        retryQueue:
+          type: array
+          description: ''
+          items:
+            $ref: '#/components/schemas/connectFailureResult'
+      description: ''
+      x-ds-definition-name: connectFailureResults
+      x-ms-summary: ''
+    connectLogs:
+      type: object
+      properties:
+        failures:
+          type: array
+          description: An array of containing failure information from the Connect failure log.
+          items:
+            $ref: '#/components/schemas/connectLog'
+        logs:
+          type: array
+          description: 'A complex type containing Connect log information. It is divided into two sections, one for regular logs and one for Connect failures. '
+          items:
+            $ref: '#/components/schemas/connectLog'
+        totalRecords:
+          type: string
+          description: Record count.
+        type:
+          type: string
+          description: 'Type of the user. Valid values: type_owner, type_participant.'
+      description: ''
+      x-ds-definition-name: connectLogs
+      x-ms-summary: ''
+  securitySchemes:
+    accessCode:
+      type: oauth2
+      description: OAuth2 Access code Grant
+      flows:
+        authorizationCode:
+          authorizationUrl: https://account.docusign.com/oauth/auth
+          tokenUrl: https://account.docusign.com/oauth/auth
+          scopes:
+            organization_read: ''
+            permission_read: ''
+            group_read: ''
+            user_read: ''
+            account_read: ''
+            account_write: ''
+            user_write: ''
+            identity_provider_read: ''
+            domain_read: ''
+x-ds-categories:
+- name: UserManagement
+  summary: Methods to manage users in an account.
+  description: Methods to manage users in an account.
+- name: BulkOperations
+  summary: Methods to import and export users and accounts.
+  description: Methods to import and export users and accounts.
+- name: IdentityProviders
+  summary: Methods to get a list of identity providers.
+  description: Methods to get a list of identity providers.
+- name: ReservedDomains
+  summary: Methods to get a list of reserved domains.
+  description: Methods to get a list of reserved domains.
+- name: Organization
+  summary: Methods for working with organizations.
+  description: Methods for working with organizations.
+x-original-swagger-version: '2.0'

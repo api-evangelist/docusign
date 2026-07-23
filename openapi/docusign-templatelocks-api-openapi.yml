@@ -1,0 +1,353 @@
+openapi: 3.0.1
+info:
+  title: DocuSign Admin AccountBrands TemplateLocks API
+  description: An API for an organization administrator to manage organizations, accounts and users
+  termsOfService: https://www.docusign.com/company/terms-and-conditions/developers
+  contact:
+    name: DocuSign Developer Center
+    url: https://developers.docusign.com
+    email: devcenter@docusign.com
+  version: v2.1
+servers:
+- url: https://api.docusign.net/Management
+tags:
+- name: TemplateLocks
+  description: 'The TemplateLocks resource provides methods that allow you to manage locks on an template.
+
+
+    You can lock the template, and set the time until the lock expires, to prevent users from accessing and changing the template.
+
+
+    Users must have envelope locking capability enabled to use these functions.'
+paths:
+  /v2/accounts/{accountId}/templates/{templateId}/lock:
+    get:
+      tags:
+      - TemplateLocks
+      summary: Docusign Gets template lock information.
+      description: 'Retrieves general information about the template lock.
+
+
+        If the call is made by the user who has the lock and the request has the same integrator key as original, then the `X-DocuSign-Edit` header  field and additional lock information is included in the response. This allows users to recover a lost editing session token and the `X-DocuSign-Edit` header.'
+      operationId: Lock_GetTemplateLock
+      parameters:
+      - name: accountId
+        in: path
+        description: The external account number (int) or account id GUID.
+        required: true
+        schema:
+          type: string
+      - name: templateId
+        in: path
+        description: The ID of the template being accessed.
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Successful response.
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/lockInformation'
+        '400':
+          description: Error encountered.
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/errorDetails'
+      deprecated: false
+      x-ds-methodname: getLock
+      x-ds-method: get
+      x-ds-service: Templates
+      x-ds-in-sdk: true
+    put:
+      tags:
+      - TemplateLocks
+      summary: Docusign Updates a template lock.
+      description: Updates the lock duration time or update the `lockedByApp` property information for the specified template. The user and integrator key must match the user specified by the `lockByUser` property and integrator key information and the `X-DocuSign-Edit` header must be included or an error will be generated.
+      operationId: Lock_PutTemplateLock
+      parameters:
+      - name: accountId
+        in: path
+        description: The external account number (int) or account id GUID.
+        required: true
+        schema:
+          type: string
+      - name: templateId
+        in: path
+        description: The ID of the template being accessed.
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/lockRequest'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/lockRequest'
+        required: false
+      responses:
+        '200':
+          description: Successful response.
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/lockInformation'
+        '400':
+          description: Error encountered.
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/errorDetails'
+      deprecated: false
+      x-ds-methodname: updateLock
+      x-ds-method: update
+      x-ds-service: Templates
+      x-ds-in-sdk: true
+      x-codegen-request-body-name: lockRequest
+    post:
+      tags:
+      - TemplateLocks
+      summary: Docusign Lock a template.
+      description: 'Locks the specified template, and sets the time until the lock expires, to prevent other users or recipients from accessing and changing the template.
+
+
+        ###### Note: Users must have envelope locking capability enabled to use this function (the userSetting property `canLockEnvelopes` must be set to **true** for the user).'
+      operationId: Lock_PostTemplateLock
+      parameters:
+      - name: accountId
+        in: path
+        description: The external account number (int) or account id GUID.
+        required: true
+        schema:
+          type: string
+      - name: templateId
+        in: path
+        description: The ID of the template being accessed.
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/lockRequest'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/lockRequest'
+        required: false
+      responses:
+        '201':
+          description: Successful response.
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/lockInformation'
+        '400':
+          description: Error encountered.
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/errorDetails'
+      deprecated: false
+      x-ds-methodname: createLock
+      x-ds-method: create
+      x-ds-service: Templates
+      x-ds-in-sdk: true
+      x-codegen-request-body-name: lockRequest
+    delete:
+      tags:
+      - TemplateLocks
+      summary: Docusign Deletes a template lock.
+      description: Deletes the lock from the specified template. The `X-DocuSign-Edit` header must be included in the request.
+      operationId: Lock_DeleteTemplateLock
+      parameters:
+      - name: accountId
+        in: path
+        description: The external account number (int) or account id GUID.
+        required: true
+        schema:
+          type: string
+      - name: templateId
+        in: path
+        description: The ID of the template being accessed.
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/lockRequest'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/lockRequest'
+        required: false
+      responses:
+        '200':
+          description: Successful response.
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/lockInformation'
+        '400':
+          description: Error encountered.
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/errorDetails'
+      deprecated: false
+      x-ds-methodname: deleteLock
+      x-ds-method: delete
+      x-ds-service: Templates
+      x-ds-in-sdk: true
+      x-codegen-request-body-name: lockRequest
+components:
+  schemas:
+    lockRequest:
+      type: object
+      properties:
+        lockDurationInSeconds:
+          type: string
+          description: The number of seconds to lock the envelope for editing.  Must be greater than 0 seconds.
+        lockedByApp:
+          type: string
+          description: A friendly name of the application used to lock the envelope.  Will be used in error messages to the user when lock conflicts occur.
+        lockType:
+          type: string
+          description: The type of envelope lock.  Currently "edit" is the only supported type.
+        templatePassword:
+          type: string
+          description: ''
+        useScratchPad:
+          type: string
+          description: "Reserved for future use.\n\nIndicates whether a scratchpad is used for editing information.\n "
+      description: ''
+      x-ds-definition-name: lockRequest
+      x-ms-summary: ''
+    lockInformation:
+      type: object
+      properties:
+        errorDetails:
+          $ref: '#/components/schemas/errorDetails'
+        lockDurationInSeconds:
+          type: string
+          description: The number of seconds to lock the envelope for editing.  Must be greater than 0 seconds.
+        lockedByApp:
+          type: string
+          description: A friendly name of the application used to lock the envelope.  Will be used in error messages to the user when lock conflicts occur.
+        lockedByUser:
+          $ref: '#/components/schemas/userInfo'
+        lockedUntilDateTime:
+          type: string
+          description: The datetime until the envelope lock expires.
+        lockToken:
+          type: string
+          description: A unique identifier provided to the owner of the envelope lock.   Used to prove ownership of the lock.
+        lockType:
+          type: string
+          description: The type of envelope lock.  Currently "edit" is the only supported type.
+        useScratchPad:
+          type: string
+          description: "Reserved for future use.\n\nIndicates whether a scratchpad is used for editing information.\n "
+      description: ''
+      x-ds-definition-name: lockInformation
+      x-ms-summary: ''
+    userInfo:
+      type: object
+      properties:
+        activationAccessCode:
+          type: string
+          description: ''
+        email:
+          type: string
+          description: ''
+        errorDetails:
+          $ref: '#/components/schemas/errorDetails'
+        loginStatus:
+          type: string
+          description: ''
+        sendActivationEmail:
+          type: string
+          description: ''
+        uri:
+          type: string
+          description: ''
+        userId:
+          type: string
+          description: 'The user ID of the user being accessed. Generally this is the user ID of the authenticated user, but if the authenticated user is an Admin on the account, this may be another user the Admin user is accessing. **Note**: For the [GET /v2/accounts/{accountId}/envelopes](https://developers.docusign.com/esign-rest-api/reference/Envelopes/Envelopes/listStatusChanges/#envelopesInformation) method, the `user_id` query parameter is not implemented and should not be used.'
+        userName:
+          type: string
+          description: ''
+        userStatus:
+          type: string
+          description: 'Status of the user''s account. One of:
+
+
+            * ActivationRequired
+
+            * ActivationSent
+
+            * Active
+
+            * Closed
+
+            * Disabled
+
+            '
+        userType:
+          type: string
+          description: ''
+      description: ''
+      x-ds-definition-name: userInfo
+      x-ms-summary: ''
+    errorDetails:
+      type: object
+      properties:
+        errorCode:
+          type: string
+          description: An error code associated with the error.
+        message:
+          type: string
+          description: A short error message.
+      description: This object describes errors that occur. It is only valid for responses, and ignored in requests.
+      x-ds-definition-name: errorDetails
+      x-ms-summary: This object describes errors that occur. It is only valid for responses, and ignored in requests.
+  securitySchemes:
+    accessCode:
+      type: oauth2
+      description: OAuth2 Access code Grant
+      flows:
+        authorizationCode:
+          authorizationUrl: https://account.docusign.com/oauth/auth
+          tokenUrl: https://account.docusign.com/oauth/auth
+          scopes:
+            organization_read: ''
+            permission_read: ''
+            group_read: ''
+            user_read: ''
+            account_read: ''
+            account_write: ''
+            user_write: ''
+            identity_provider_read: ''
+            domain_read: ''
+x-ds-categories:
+- name: UserManagement
+  summary: Methods to manage users in an account.
+  description: Methods to manage users in an account.
+- name: BulkOperations
+  summary: Methods to import and export users and accounts.
+  description: Methods to import and export users and accounts.
+- name: IdentityProviders
+  summary: Methods to get a list of identity providers.
+  description: Methods to get a list of identity providers.
+- name: ReservedDomains
+  summary: Methods to get a list of reserved domains.
+  description: Methods to get a list of reserved domains.
+- name: Organization
+  summary: Methods for working with organizations.
+  description: Methods for working with organizations.
+x-original-swagger-version: '2.0'

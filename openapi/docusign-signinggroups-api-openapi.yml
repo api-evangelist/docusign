@@ -1,0 +1,385 @@
+openapi: 3.0.1
+info:
+  title: DocuSign Admin AccountBrands SigningGroups API
+  description: An API for an organization administrator to manage organizations, accounts and users
+  termsOfService: https://www.docusign.com/company/terms-and-conditions/developers
+  contact:
+    name: DocuSign Developer Center
+    url: https://developers.docusign.com
+    email: devcenter@docusign.com
+  version: v2.1
+servers:
+- url: https://api.docusign.net/Management
+tags:
+- name: SigningGroups
+  description: "The SigningGroups resource provides methods that allow you manage signing groups.\n\nSigning Groups allow you to create a group of people to which an envelope is sent. Any member of that group can open an envelope and sign the documents in the envelope with their own signature, even though a signature field was not directly assigned to them. When the Signing Group option is used, group members that open and sign the envelope are tracked in the envelope history and certificate.\n\nWhen one group member opens the envelope, it is temporarily locked and if other members try to open the envelope they will see a message saying the envelope is currently opened. If the group member exits the envelope without finishing the lock expires, allowing other group members to open and complete the envelope.\n\nWhen the envelope is complete, all members of the group will receive a completed notification and can access the completed envelope. \nThe envelope history and Certificate of Completion will show that the envelope was sent to a signing group and record which members viewed and signed the envelope.\n\nAn account can have a maximum of 50 signing groups. Each signing group can have a maximum of 50 group members.\n\nThe Signing Groups feature is only supported in certain DocuSign Enterprise and System Automated Premium plans. Your account might not support this option. To access this functionality, contact your Account Manager or DocuSign Support (support@docusign.com) for assistance."
+paths:
+  /v2/accounts/{accountId}/signing_groups:
+    get:
+      tags:
+      - SigningGroups
+      summary: Docusign Gets a list of the Signing Groups in an account.
+      description: Retrieves a list of all signing groups in the specified account.
+      operationId: SigningGroups_GetSigningGroups
+      parameters:
+      - name: accountId
+        in: path
+        description: The external account number (int) or account id GUID.
+        required: true
+        schema:
+          type: string
+      - name: group_type
+        in: query
+        schema:
+          type: string
+      - name: include_users
+        in: query
+        description: 'When set to **true**, the response includes the signing group members. '
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Successful response.
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/signingGroupInformation'
+        '400':
+          description: Error encountered.
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/errorDetails'
+      deprecated: false
+      x-ds-methodname: list
+      x-ds-method: list
+      x-ds-service: SigningGroups
+      x-ds-in-sdk: true
+    put:
+      tags:
+      - SigningGroups
+      summary: Docusign Updates signing group names.
+      description: 'Updates the name of one or more existing signing groups. '
+      operationId: SigningGroups_PutSigningGroups
+      parameters:
+      - name: accountId
+        in: path
+        description: The external account number (int) or account id GUID.
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/signingGroupInformation'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/signingGroupInformation'
+        required: false
+      responses:
+        '200':
+          description: Successful response.
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/signingGroupInformation'
+        '400':
+          description: Error encountered.
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/errorDetails'
+      deprecated: false
+      x-ds-methodname: updateList
+      x-ds-method: updateList
+      x-ds-service: SigningGroups
+      x-ds-in-sdk: true
+      x-codegen-request-body-name: signingGroupInformation
+    post:
+      tags:
+      - SigningGroups
+      summary: Docusign Creates a signing group.
+      description: "Creates one or more signing groups. \n\nMultiple signing groups can be created in one call. Only users with account administrator privileges can create signing groups. \n\nAn account can have a maximum of 50 signing groups. Each signing group can have a maximum of 50 group members.\n \nSigning groups can be used by any account user."
+      operationId: SigningGroups_PostSigningGroups
+      parameters:
+      - name: accountId
+        in: path
+        description: The external account number (int) or account id GUID.
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/signingGroupInformation'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/signingGroupInformation'
+        required: false
+      responses:
+        '201':
+          description: Successful response.
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/signingGroupInformation'
+        '400':
+          description: Error encountered.
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/errorDetails'
+      deprecated: false
+      x-ds-methodname: createList
+      x-ds-method: create
+      x-ds-service: SigningGroups
+      x-ds-in-sdk: true
+      x-codegen-request-body-name: signingGroupInformation
+    delete:
+      tags:
+      - SigningGroups
+      summary: Docusign Deletes one or more signing groups.
+      description: Deletes one or more signing groups in the specified account.
+      operationId: SigningGroups_DeleteSigningGroups
+      parameters:
+      - name: accountId
+        in: path
+        description: The external account number (int) or account id GUID.
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/signingGroupInformation'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/signingGroupInformation'
+        required: false
+      responses:
+        '200':
+          description: Successful response.
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/signingGroupInformation'
+        '400':
+          description: Error encountered.
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/errorDetails'
+      deprecated: false
+      x-ds-methodname: deleteList
+      x-ds-method: delete
+      x-ds-service: SigningGroups
+      x-ds-in-sdk: true
+      x-codegen-request-body-name: signingGroupInformation
+  /v2/accounts/{accountId}/signing_groups/{signingGroupId}:
+    get:
+      tags:
+      - SigningGroups
+      summary: Docusign Gets information about a signing group.
+      description: 'Retrieves information, including group member information, for the specified signing group. '
+      operationId: SigningGroups_GetSigningGroup
+      parameters:
+      - name: accountId
+        in: path
+        description: The external account number (int) or account id GUID.
+        required: true
+        schema:
+          type: string
+      - name: signingGroupId
+        in: path
+        description: 'Optional. The ID of the [signing group](https://support.docusign.com/en/guides/ndse-user-guide-signing-groups).
+
+
+          **Note**: When you send an envelope to a signing group, anyone in the group can open it and sign it with their own signature. For this reason, we recommend that you do not include non-signer recipients (such as carbon copy recipients) in the same signing group as signer recipients. However, you could create a second signing group for the non-signer recipients and change the default action of Needs to Sign to a different value, such as Receives a Copy. '
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Successful response.
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/signingGroup'
+        '400':
+          description: Error encountered.
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/errorDetails'
+      deprecated: false
+      x-ds-methodname: get
+      x-ds-method: get
+      x-ds-service: SigningGroups
+      x-ds-in-sdk: true
+    put:
+      tags:
+      - SigningGroups
+      summary: Docusign Updates a signing group.
+      description: 'Updates signing group name and member information. You can also add new members to the signing group. A signing group can have a maximum of 50 members. '
+      operationId: SigningGroups_PutSigningGroup
+      parameters:
+      - name: accountId
+        in: path
+        description: The external account number (int) or account id GUID.
+        required: true
+        schema:
+          type: string
+      - name: signingGroupId
+        in: path
+        description: 'Optional. The ID of the [signing group](https://support.docusign.com/en/guides/ndse-user-guide-signing-groups).
+
+
+          **Note**: When you send an envelope to a signing group, anyone in the group can open it and sign it with their own signature. For this reason, we recommend that you do not include non-signer recipients (such as carbon copy recipients) in the same signing group as signer recipients. However, you could create a second signing group for the non-signer recipients and change the default action of Needs to Sign to a different value, such as Receives a Copy. '
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/signingGroup'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/signingGroup'
+        required: false
+      responses:
+        '200':
+          description: Successful response.
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/signingGroup'
+        '400':
+          description: Error encountered.
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/errorDetails'
+      deprecated: false
+      x-ds-methodname: update
+      x-ds-method: update
+      x-ds-service: SigningGroups
+      x-ds-in-sdk: true
+      x-codegen-request-body-name: signingGroup
+components:
+  schemas:
+    signingGroup:
+      type: object
+      properties:
+        created:
+          type: string
+          description: The UTC DateTime when the workspace user authorization was created.
+        createdBy:
+          type: string
+          description: ''
+        errorDetails:
+          $ref: '#/components/schemas/errorDetails'
+        groupEmail:
+          type: string
+          description: ''
+        groupName:
+          type: string
+          description: The name of the group. The search_text provided in the call automatically performs a wild card search on group_name.
+        groupType:
+          type: string
+          description: The group type.
+        modified:
+          type: string
+          description: ''
+        modifiedBy:
+          type: string
+          description: ''
+        signingGroupId:
+          type: string
+          description: 'Optional. The ID of the [signing group](https://support.docusign.com/en/guides/ndse-user-guide-signing-groups).
+
+
+            **Note**: When you send an envelope to a signing group, anyone in the group can open it and sign it with their own signature. For this reason, we recommend that you do not include non-signer recipients (such as carbon copy recipients) in the same signing group as signer recipients. However, you could create a second signing group for the non-signer recipients and change the default action of Needs to Sign to a different value, such as Receives a Copy. '
+        users:
+          type: array
+          description: ''
+          items:
+            $ref: '#/components/schemas/signingGroupUser'
+      description: ''
+      x-ds-definition-name: signingGroup
+      x-ms-summary: ''
+    signingGroupUser:
+      type: object
+      properties:
+        email:
+          type: string
+          description: ''
+        errorDetails:
+          $ref: '#/components/schemas/errorDetails'
+        userName:
+          type: string
+          description: "The name of the group member. \n\nMaximum Length: 100 characters. "
+      description: ''
+      x-ds-definition-name: signingGroupUser
+      x-ms-summary: ''
+    signingGroupInformation:
+      type: object
+      properties:
+        groups:
+          type: array
+          description: A collection group objects containing information about the groups returned.
+          items:
+            $ref: '#/components/schemas/signingGroup'
+      description: ''
+      x-ds-definition-name: signingGroupInformation
+      x-ms-summary: ''
+    errorDetails:
+      type: object
+      properties:
+        errorCode:
+          type: string
+          description: An error code associated with the error.
+        message:
+          type: string
+          description: A short error message.
+      description: This object describes errors that occur. It is only valid for responses, and ignored in requests.
+      x-ds-definition-name: errorDetails
+      x-ms-summary: This object describes errors that occur. It is only valid for responses, and ignored in requests.
+  securitySchemes:
+    accessCode:
+      type: oauth2
+      description: OAuth2 Access code Grant
+      flows:
+        authorizationCode:
+          authorizationUrl: https://account.docusign.com/oauth/auth
+          tokenUrl: https://account.docusign.com/oauth/auth
+          scopes:
+            organization_read: ''
+            permission_read: ''
+            group_read: ''
+            user_read: ''
+            account_read: ''
+            account_write: ''
+            user_write: ''
+            identity_provider_read: ''
+            domain_read: ''
+x-ds-categories:
+- name: UserManagement
+  summary: Methods to manage users in an account.
+  description: Methods to manage users in an account.
+- name: BulkOperations
+  summary: Methods to import and export users and accounts.
+  description: Methods to import and export users and accounts.
+- name: IdentityProviders
+  summary: Methods to get a list of identity providers.
+  description: Methods to get a list of identity providers.
+- name: ReservedDomains
+  summary: Methods to get a list of reserved domains.
+  description: Methods to get a list of reserved domains.
+- name: Organization
+  summary: Methods for working with organizations.
+  description: Methods for working with organizations.
+x-original-swagger-version: '2.0'

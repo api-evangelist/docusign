@@ -1,0 +1,886 @@
+openapi: 3.0.1
+info:
+  title: DocuSign Admin AccountBrands AccountPermissionProfiles API
+  description: An API for an organization administrator to manage organizations, accounts and users
+  termsOfService: https://www.docusign.com/company/terms-and-conditions/developers
+  contact:
+    name: DocuSign Developer Center
+    url: https://developers.docusign.com
+    email: devcenter@docusign.com
+  version: v2.1
+servers:
+- url: https://api.docusign.net/Management
+tags:
+- name: AccountPermissionProfiles
+  description: 'The AccountPermissionProfiles resource provides methods that allow you to manage permission profiles.
+
+    '
+paths:
+  /v2/accounts/{accountId}/permission_profiles:
+    get:
+      tags:
+      - AccountPermissionProfiles
+      summary: Docusign Gets a list of permission profiles.
+      description: 'Retrieves a list of Permission Profiles. Permission Profiles are a standard set of user permissions that you can apply to individual users or users in a Group. This makes it easier to manage user permissions for a large number of users, without having to change permissions on a user-by-user basis.
+
+
+        Currently, Permission Profiles can only be created and modified in the DocuSign console.'
+      operationId: PermissionProfiles_GetPermissionProfiles
+      parameters:
+      - name: accountId
+        in: path
+        description: The external account number (int) or account id GUID.
+        required: true
+        schema:
+          type: string
+      - name: include
+        in: query
+        description: 'Reserved for DocuSign.
+
+          '
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Successful response.
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/permissionProfileInformation'
+        '400':
+          description: Error encountered.
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/errorDetails'
+      deprecated: false
+      x-ds-methodname: listPermissions
+      x-ds-method: list
+      x-ds-service: Accounts
+      x-ds-in-sdk: true
+    post:
+      tags:
+      - AccountPermissionProfiles
+      summary: Docusign Creates a new permission profile in the specified account.
+      operationId: PermissionProfiles_PostPermissionProfiles
+      parameters:
+      - name: accountId
+        in: path
+        description: The external account number (int) or account id GUID.
+        required: true
+        schema:
+          type: string
+      - name: include
+        in: query
+        description: "A comma-separated list of additional information to include in the response. Valid values are: \n\n- `recipients`: Includes information about template recipients.\n- `folders`: Includes information about the folder that holds the template. \n- `documents` : Includes information about template documents.\n- `custom_fields`: Includes information about template custom fields.\n- `notifications`: Includes information about the notification settings for templates.\n- `advanced_templates`: Includes advanced templates in the response. For example, these include templates that use advanced recipient routing. We recommend that you use this option to ensure that the response includes all relevant templates. "
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/permissionProfile'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/permissionProfile'
+        required: false
+      responses:
+        '201':
+          description: Successful response.
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/permissionProfile'
+        '400':
+          description: Error encountered.
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/errorDetails'
+      deprecated: false
+      x-ds-methodname: createPermissionProfile
+      x-ds-method: create
+      x-ds-service: Accounts
+      x-ds-in-sdk: true
+      x-codegen-request-body-name: permissionProfile
+  /v2/accounts/{accountId}/permission_profiles/{permissionProfileId}:
+    get:
+      tags:
+      - AccountPermissionProfiles
+      summary: Docusign Returns a permissions profile in the specified account.
+      operationId: PermissionProfiles_GetPermissionProfile
+      parameters:
+      - name: accountId
+        in: path
+        description: The external account number (int) or account id GUID.
+        required: true
+        schema:
+          type: string
+      - name: permissionProfileId
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: include
+        in: query
+        description: "A comma-separated list of additional information to include in the response. Valid values are: \n\n- `recipients`: Includes information about template recipients.\n- `folders`: Includes information about the folder that holds the template. \n- `documents` : Includes information about template documents.\n- `custom_fields`: Includes information about template custom fields.\n- `notifications`: Includes information about the notification settings for templates.\n- `advanced_templates`: Includes advanced templates in the response. For example, these include templates that use advanced recipient routing. We recommend that you use this option to ensure that the response includes all relevant templates. "
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Successful response.
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/permissionProfile'
+        '400':
+          description: Error encountered.
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/errorDetails'
+      deprecated: false
+      x-ds-methodname: getPermissionProfile
+      x-ds-method: get
+      x-ds-service: Accounts
+      x-ds-in-sdk: true
+    put:
+      tags:
+      - AccountPermissionProfiles
+      summary: Docusign Updates a permission profile within the specified account.
+      operationId: PermissionProfiles_PutPermissionProfiles
+      parameters:
+      - name: accountId
+        in: path
+        description: The external account number (int) or account id GUID.
+        required: true
+        schema:
+          type: string
+      - name: permissionProfileId
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: include
+        in: query
+        description: "A comma-separated list of additional information to include in the response. Valid values are: \n\n- `recipients`: Includes information about template recipients.\n- `folders`: Includes information about the folder that holds the template. \n- `documents` : Includes information about template documents.\n- `custom_fields`: Includes information about template custom fields.\n- `notifications`: Includes information about the notification settings for templates.\n- `advanced_templates`: Includes advanced templates in the response. For example, these include templates that use advanced recipient routing. We recommend that you use this option to ensure that the response includes all relevant templates. "
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/permissionProfile'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/permissionProfile'
+        required: false
+      responses:
+        '200':
+          description: Successful response.
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/permissionProfile'
+        '400':
+          description: Error encountered.
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/errorDetails'
+      deprecated: false
+      x-ds-methodname: updatePermissionProfile
+      x-ds-method: update
+      x-ds-service: Accounts
+      x-ds-in-sdk: true
+      x-codegen-request-body-name: permissionProfile
+    delete:
+      tags:
+      - AccountPermissionProfiles
+      summary: Docusign Deletes a permissions profile within the specified account.
+      operationId: PermissionProfiles_DeletePermissionProfiles
+      parameters:
+      - name: accountId
+        in: path
+        description: The external account number (int) or account id GUID.
+        required: true
+        schema:
+          type: string
+      - name: permissionProfileId
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: move_users_to
+        in: query
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Successful response.
+          content: {}
+        '400':
+          description: Error encountered.
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/errorDetails'
+      deprecated: false
+      x-ds-methodname: deletePermissionProfile
+      x-ds-method: delete
+      x-ds-service: Accounts
+      x-ds-in-sdk: true
+components:
+  schemas:
+    permissionProfile:
+      type: object
+      properties:
+        modifiedByUsername:
+          type: string
+          description: ''
+        modifiedDateTime:
+          type: string
+          description: ''
+        permissionProfileId:
+          type: string
+          description: ''
+        permissionProfileName:
+          type: string
+          description: ''
+        settings:
+          $ref: '#/components/schemas/accountRoleSettings'
+        userCount:
+          type: string
+          description: ''
+        users:
+          type: array
+          description: ''
+          items:
+            $ref: '#/components/schemas/userInformation'
+      description: ''
+      x-ds-definition-name: permissionProfile
+      x-ms-summary: ''
+    userInformation:
+      type: object
+      properties:
+        accountManagementGranular:
+          $ref: '#/components/schemas/userAccountManagementGranularInformation'
+        activationAccessCode:
+          type: string
+          description: ''
+        countryCode:
+          type: string
+          description: ''
+        createdDateTime:
+          type: string
+          description: Indicates the date and time the item was created.
+        customSettings:
+          type: array
+          description: The name/value pair information for the user custom setting.
+          items:
+            $ref: '#/components/schemas/nameValue'
+        email:
+          type: string
+          description: ''
+        enableConnectForUser:
+          type: string
+          description: 'Specifies whether the user is enabled for updates from DocuSign Connect. Valid values: true or false.'
+        errorDetails:
+          $ref: '#/components/schemas/errorDetails'
+        firstName:
+          type: string
+          description: "The user's first name. \nMaximum Length: 50 characters."
+        forgottenPasswordInfo:
+          $ref: '#/components/schemas/forgottenPasswordInformation'
+        groupList:
+          type: array
+          description: "A list of the group information for groups to add the user to. Group information can be found by calling [ML:GET group information]. The only required parameter is groupId. \n\nThe parameters are:\n\n* groupId - The DocuSign group ID for the group.\n* groupName - The name of the group\n* permissionProfileId - The ID of the permission profile associated with the group.\n* groupType - The group type.\n"
+          items:
+            $ref: '#/components/schemas/group'
+        homeAddress:
+          $ref: '#/components/schemas/addressInformation_v2'
+        initialsImageUri:
+          type: string
+          description: Contains the URI for an endpoint that you can use to retrieve the initials image.
+        isAdmin:
+          type: string
+          description: Determines if the feature set is actively set as part of the plan.
+        jobTitle:
+          type: string
+          description: ''
+        lastLogin:
+          type: string
+          description: The date-time when the user last logged on to the system.
+        lastName:
+          type: string
+          description: The recipient's last name.
+        loginStatus:
+          type: string
+          description: ''
+        middleName:
+          type: string
+          description: "The user's middle name. \nLimit: 50 characters."
+        password:
+          type: string
+          description: ''
+        passwordExpiration:
+          type: string
+          description: If password expiration is enabled, the date-time when the user's password expires.
+        permissionProfileId:
+          type: string
+          description: ''
+        permissionProfileName:
+          type: string
+          description: ''
+        profileImageUri:
+          type: string
+          description: ''
+        sendActivationEmail:
+          type: string
+          description: ''
+        sendActivationOnInvalidLogin:
+          type: string
+          description: 'When set to **true**, specifies that an additional activation email is sent to the user if they fail a log on before activating their account. '
+        signatureImageUri:
+          type: string
+          description: Contains the URI for an endpoint that you can use to retrieve the signature image.
+        subscribe:
+          type: string
+          description: ''
+        suffixName:
+          type: string
+          description: 'The suffix for the user''s name, such as Jr, IV, PhD, etc.
+
+
+            Limit: 50 characters. '
+        title:
+          type: string
+          description: The title of the user.
+        uri:
+          type: string
+          description: ''
+        userId:
+          type: string
+          description: 'The user ID of the user being accessed. Generally this is the user ID of the authenticated user, but if the authenticated user is an Admin on the account, this may be another user the Admin user is accessing. **Note**: For the [GET /v2/accounts/{accountId}/envelopes](https://developers.docusign.com/esign-rest-api/reference/Envelopes/Envelopes/listStatusChanges/#envelopesInformation) method, the `user_id` query parameter is not implemented and should not be used.'
+        userName:
+          type: string
+          description: ''
+        userProfileLastModifiedDate:
+          type: string
+          description: The date-time when the user's profile was last modified.
+        userSettings:
+          type: array
+          description: ''
+          items:
+            $ref: '#/components/schemas/nameValue'
+        userStatus:
+          type: string
+          description: 'Status of the user''s account. One of:
+
+
+            * ActivationRequired
+
+            * ActivationSent
+
+            * Active
+
+            * Closed
+
+            * Disabled
+
+            '
+        userType:
+          type: string
+          description: ''
+        workAddress:
+          $ref: '#/components/schemas/addressInformation_v2'
+      description: ''
+      x-ds-definition-name: userInformation
+      x-ms-summary: ''
+    userInfo:
+      type: object
+      properties:
+        activationAccessCode:
+          type: string
+          description: ''
+        email:
+          type: string
+          description: ''
+        errorDetails:
+          $ref: '#/components/schemas/errorDetails'
+        loginStatus:
+          type: string
+          description: ''
+        sendActivationEmail:
+          type: string
+          description: ''
+        uri:
+          type: string
+          description: ''
+        userId:
+          type: string
+          description: 'The user ID of the user being accessed. Generally this is the user ID of the authenticated user, but if the authenticated user is an Admin on the account, this may be another user the Admin user is accessing. **Note**: For the [GET /v2/accounts/{accountId}/envelopes](https://developers.docusign.com/esign-rest-api/reference/Envelopes/Envelopes/listStatusChanges/#envelopesInformation) method, the `user_id` query parameter is not implemented and should not be used.'
+        userName:
+          type: string
+          description: ''
+        userStatus:
+          type: string
+          description: 'Status of the user''s account. One of:
+
+
+            * ActivationRequired
+
+            * ActivationSent
+
+            * Active
+
+            * Closed
+
+            * Disabled
+
+            '
+        userType:
+          type: string
+          description: ''
+      description: ''
+      x-ds-definition-name: userInfo
+      x-ms-summary: ''
+    addressInformation_v2:
+      type: object
+      properties:
+        address1:
+          type: string
+          description: 'First Line of the address.
+
+            Maximum length: 100 characters.'
+        address2:
+          type: string
+          description: 'Second Line of the address.
+
+            Maximum length: 100 characters.'
+        city:
+          type: string
+          description: ''
+        country:
+          type: string
+          description: Specifies the country associated with the address.
+        fax:
+          type: string
+          description: ''
+        phone:
+          type: string
+          description: ''
+        postalCode:
+          type: string
+          description: ''
+        stateOrProvince:
+          type: string
+          description: The state or province associated with the address.
+      description: ''
+      x-ds-definition-name: addressInformation_v2
+      x-ms-summary: ''
+    userAccountManagementGranularInformation:
+      type: object
+      properties:
+        canManageAccountSecuritySettings:
+          type: string
+          description: ''
+        canManageAccountSecuritySettingsMetadata:
+          $ref: '#/components/schemas/settingsMetadata'
+        canManageAccountSettings:
+          type: string
+          description: ''
+        canManageAccountSettingsMetadata:
+          $ref: '#/components/schemas/settingsMetadata'
+        canManageAdmins:
+          type: string
+          description: '**True**
+
+            if the user can manage
+
+            admins.'
+        canManageAdminsMetadata:
+          $ref: '#/components/schemas/settingsMetadata'
+        canManageEnvelopeTransfer:
+          type: string
+          description: ''
+        canManageEnvelopeTransferMetadata:
+          $ref: '#/components/schemas/settingsMetadata'
+        canManageGroups:
+          type: string
+          description: '**True**
+
+            if the user can manage
+
+            groups.'
+        canManageGroupsMetadata:
+          $ref: '#/components/schemas/settingsMetadata'
+        canManageReporting:
+          type: string
+          description: ''
+        canManageReportingMetadata:
+          $ref: '#/components/schemas/settingsMetadata'
+        canManageSharing:
+          type: string
+          description: ''
+        canManageSharingMetadata:
+          $ref: '#/components/schemas/settingsMetadata'
+        canManageSigningGroups:
+          type: string
+          description: ''
+        canManageSigningGroupsMetadata:
+          $ref: '#/components/schemas/settingsMetadata'
+        canManageUsers:
+          type: string
+          description: '**True**
+
+            if the user can manage
+
+            users.'
+        canManageUsersMetadata:
+          $ref: '#/components/schemas/settingsMetadata'
+        canViewUsers:
+          type: string
+          description: ''
+        canViewUsersMetadata:
+          $ref: '#/components/schemas/settingsMetadata'
+      description: Describes which account management capabilities a user has.
+      x-ds-definition-name: userAccountManagementGranularInformation
+      x-ms-summary: Describes which account management capabilities a user has.
+    settingsMetadata:
+      type: object
+      properties:
+        is21CFRPart11:
+          type: string
+          description: When set to **true**, indicates that this module is enabled on the account.
+        options:
+          type: array
+          description: ''
+          items:
+            type: string
+        rights:
+          type: string
+          description: ''
+        uiHint:
+          type: string
+          description: ''
+        uiOrder:
+          type: string
+          description: ''
+        uiType:
+          type: string
+          description: ''
+      description: ''
+      x-ds-definition-name: settingsMetadata
+      x-ms-summary: ''
+    accountRoleSettings:
+      type: object
+      properties:
+        allowAccountManagement:
+          type: string
+          description: ''
+        allowAccountManagementMetadata:
+          $ref: '#/components/schemas/settingsMetadata'
+        allowApiAccess:
+          type: string
+          description: ''
+        allowApiAccessMetadata:
+          $ref: '#/components/schemas/settingsMetadata'
+        allowApiAccessToAccount:
+          type: string
+          description: ''
+        allowApiAccessToAccountMetadata:
+          $ref: '#/components/schemas/settingsMetadata'
+        allowApiSendingOnBehalfOfOthers:
+          type: string
+          description: ''
+        allowApiSendingOnBehalfOfOthersMetadata:
+          $ref: '#/components/schemas/settingsMetadata'
+        allowApiSequentialSigning:
+          type: string
+          description: ''
+        allowApiSequentialSigningMetadata:
+          $ref: '#/components/schemas/settingsMetadata'
+        allowAutoTagging:
+          type: string
+          description: ''
+        allowAutoTaggingMetadata:
+          $ref: '#/components/schemas/settingsMetadata'
+        allowBulkSending:
+          type: string
+          description: ''
+        allowBulkSendingMetadata:
+          $ref: '#/components/schemas/settingsMetadata'
+        allowDocuSignDesktopClient:
+          type: string
+          description: ''
+        allowDocuSignDesktopClientMetadata:
+          $ref: '#/components/schemas/settingsMetadata'
+        allowedAddressBookAccess:
+          type: string
+          description: ''
+        allowedAddressBookAccessMetadata:
+          $ref: '#/components/schemas/settingsMetadata'
+        allowedTemplateAccess:
+          type: string
+          description: ''
+        allowedTemplateAccessMetadata:
+          $ref: '#/components/schemas/settingsMetadata'
+        allowedToBeEnvelopeTransferRecipient:
+          type: string
+          description: ''
+        allowedToBeEnvelopeTransferRecipientMetadata:
+          $ref: '#/components/schemas/settingsMetadata'
+        allowEnvelopeSending:
+          type: string
+          description: ''
+        allowEnvelopeSendingMetadata:
+          $ref: '#/components/schemas/settingsMetadata'
+        allowESealRecipients:
+          type: string
+          description: ''
+        allowESealRecipientsMetadata:
+          $ref: '#/components/schemas/settingsMetadata'
+        allowPowerFormsAdminToAccessAllPowerFormEnvelopes:
+          type: string
+          description: ''
+        allowPowerFormsAdminToAccessAllPowerFormEnvelopesMetadata:
+          $ref: '#/components/schemas/settingsMetadata'
+        allowSendersToSetRecipientEmailLanguage:
+          type: string
+          description: ''
+        allowSendersToSetRecipientEmailLanguageMetadata:
+          $ref: '#/components/schemas/settingsMetadata'
+        allowSignerAttachments:
+          type: string
+          description: ''
+        allowSignerAttachmentsMetadata:
+          $ref: '#/components/schemas/settingsMetadata'
+        allowSupplementalDocuments:
+          type: string
+          description: ''
+        allowSupplementalDocumentsMetadata:
+          $ref: '#/components/schemas/settingsMetadata'
+        allowTaggingInSendAndCorrect:
+          type: string
+          description: ''
+        allowTaggingInSendAndCorrectMetadata:
+          $ref: '#/components/schemas/settingsMetadata'
+        allowVaulting:
+          type: string
+          description: ''
+        allowVaultingMetadata:
+          $ref: '#/components/schemas/settingsMetadata'
+        allowWetSigningOverride:
+          type: string
+          description: ''
+        allowWetSigningOverrideMetadata:
+          $ref: '#/components/schemas/settingsMetadata'
+        canCreateWorkspaces:
+          type: string
+          description: ''
+        canCreateWorkspacesMetadata:
+          $ref: '#/components/schemas/settingsMetadata'
+        disableDocumentUpload:
+          type: string
+          description: ''
+        disableDocumentUploadMetadata:
+          $ref: '#/components/schemas/settingsMetadata'
+        disableOtherActions:
+          type: string
+          description: ''
+        disableOtherActionsMetadata:
+          $ref: '#/components/schemas/settingsMetadata'
+        enableApiRequestLogging:
+          type: string
+          description: ''
+        enableApiRequestLoggingMetadata:
+          $ref: '#/components/schemas/settingsMetadata'
+        enableRecipientViewingNotifications:
+          type: string
+          description: ''
+        enableRecipientViewingNotificationsMetadata:
+          $ref: '#/components/schemas/settingsMetadata'
+        enableSequentialSigningInterface:
+          type: string
+          description: ''
+        enableSequentialSigningInterfaceMetadata:
+          $ref: '#/components/schemas/settingsMetadata'
+        enableTransactionPointIntegration:
+          type: string
+          description: ''
+        enableTransactionPointIntegrationMetadata:
+          $ref: '#/components/schemas/settingsMetadata'
+        powerFormRole:
+          type: string
+          description: ''
+        powerFormRoleMetadata:
+          $ref: '#/components/schemas/settingsMetadata'
+        receiveCompletedSelfSignedDocumentsAsEmailLinks:
+          type: string
+          description: ''
+        receiveCompletedSelfSignedDocumentsAsEmailLinksMetadata:
+          $ref: '#/components/schemas/settingsMetadata'
+        supplementalDocumentsMustAccept:
+          type: string
+          description: ''
+        supplementalDocumentsMustAcceptMetadata:
+          $ref: '#/components/schemas/settingsMetadata'
+        supplementalDocumentsMustRead:
+          type: string
+          description: ''
+        supplementalDocumentsMustReadMetadata:
+          $ref: '#/components/schemas/settingsMetadata'
+        supplementalDocumentsMustView:
+          type: string
+          description: ''
+        supplementalDocumentsMustViewMetadata:
+          $ref: '#/components/schemas/settingsMetadata'
+        useNewDocuSignExperienceInterface:
+          type: string
+          description: ''
+        useNewDocuSignExperienceInterfaceMetadata:
+          $ref: '#/components/schemas/settingsMetadata'
+        useNewSendingInterface:
+          type: string
+          description: ''
+        useNewSendingInterfaceMetadata:
+          $ref: '#/components/schemas/settingsMetadata'
+        vaultingMode:
+          type: string
+          description: ''
+        vaultingModeMetadata:
+          $ref: '#/components/schemas/settingsMetadata'
+      description: ''
+      x-ds-definition-name: accountRoleSettings
+      x-ms-summary: ''
+    permissionProfileInformation:
+      type: object
+      properties:
+        permissionProfiles:
+          type: array
+          description: A complex type containing a collection of permission profiles.
+          items:
+            $ref: '#/components/schemas/permissionProfile'
+      description: ''
+      x-ds-definition-name: permissionProfileInformation
+      x-ms-summary: ''
+    group:
+      type: object
+      properties:
+        errorDetails:
+          $ref: '#/components/schemas/errorDetails'
+        groupId:
+          type: string
+          description: The DocuSign group ID for the group.
+        groupName:
+          type: string
+          description: The name of the group.
+        groupType:
+          type: string
+          description: The group type.
+        permissionProfileId:
+          type: string
+          description: The ID of the permission profile associated with the group.
+        users:
+          type: array
+          description: List of users in the group.
+          items:
+            $ref: '#/components/schemas/userInfo'
+      description: Information about groups.
+      x-ds-definition-name: group
+      x-ms-summary: Information about groups.
+    forgottenPasswordInformation:
+      type: object
+      properties:
+        forgottenPasswordAnswer1:
+          type: string
+          description: The answer to the first forgotten password challenge question.
+        forgottenPasswordAnswer2:
+          type: string
+          description: The answer to the second forgotten password challenge question.
+        forgottenPasswordAnswer3:
+          type: string
+          description: The answer to the third forgotten password challenge question.
+        forgottenPasswordAnswer4:
+          type: string
+          description: The answer to the fourth forgotten password challenge question.
+        forgottenPasswordQuestion1:
+          type: string
+          description: The first challenge question presented to a user who has forgotten their password.
+        forgottenPasswordQuestion2:
+          type: string
+          description: The second challenge question presented to a user who has forgotten their password.
+        forgottenPasswordQuestion3:
+          type: string
+          description: The third challenge question presented to a user who has forgotten their password.
+        forgottenPasswordQuestion4:
+          type: string
+          description: The fourth challenge question presented to a user who has forgotten their password.
+      description: A complex element that has up to four Question/Answer pairs for forgotten password information.
+      x-ds-definition-name: forgottenPasswordInformation
+      x-ms-summary: A complex element that has up to four Question/Answer pairs for forgotten password information.
+    errorDetails:
+      type: object
+      properties:
+        errorCode:
+          type: string
+          description: An error code associated with the error.
+        message:
+          type: string
+          description: A short error message.
+      description: This object describes errors that occur. It is only valid for responses, and ignored in requests.
+      x-ds-definition-name: errorDetails
+      x-ms-summary: This object describes errors that occur. It is only valid for responses, and ignored in requests.
+    nameValue:
+      type: object
+      properties:
+        errorDetails:
+          $ref: '#/components/schemas/errorDetails'
+        name:
+          type: string
+          description: The name or key of a name/value pair.
+        originalValue:
+          type: string
+          description: 'The initial value of the tab when it was sent to the recipient. '
+        value:
+          type: string
+          description: The value field of a name/value pair.
+      description: ''
+      x-ds-definition-name: nameValue
+      x-ms-summary: ''
+  securitySchemes:
+    accessCode:
+      type: oauth2
+      description: OAuth2 Access code Grant
+      flows:
+        authorizationCode:
+          authorizationUrl: https://account.docusign.com/oauth/auth
+          tokenUrl: https://account.docusign.com/oauth/auth
+          scopes:
+            organization_read: ''
+            permission_read: ''
+            group_read: ''
+            user_read: ''
+            account_read: ''
+            account_write: ''
+            user_write: ''
+            identity_provider_read: ''
+            domain_read: ''
+x-ds-categories:
+- name: UserManagement
+  summary: Methods to manage users in an account.
+  description: Methods to manage users in an account.
+- name: BulkOperations
+  summary: Methods to import and export users and accounts.
+  description: Methods to import and export users and accounts.
+- name: IdentityProviders
+  summary: Methods to get a list of identity providers.
+  description: Methods to get a list of identity providers.
+- name: ReservedDomains
+  summary: Methods to get a list of reserved domains.
+  description: Methods to get a list of reserved domains.
+- name: Organization
+  summary: Methods for working with organizations.
+  description: Methods for working with organizations.
+x-original-swagger-version: '2.0'

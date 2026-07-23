@@ -1,0 +1,1265 @@
+openapi: 3.0.1
+info:
+  title: DocuSign Admin AccountBrands Recipients API
+  description: An API for an organization administrator to manage organizations, accounts and users
+  termsOfService: https://www.docusign.com/company/terms-and-conditions/developers
+  contact:
+    name: DocuSign Developer Center
+    url: https://developers.docusign.com
+    email: devcenter@docusign.com
+  version: v2.1
+servers:
+- url: https://api.docusign.net/Management
+tags:
+- name: Recipients
+  description: Manage envelope recipients including signers, carbon copy recipients, certified deliveries, and other recipient types.
+  externalDocs:
+    url: https://developers.docusign.com/docs/esign-rest-api/reference/envelopes/enveloperecipients/
+paths:
+  /accounts/{accountId}/envelopes/{envelopeId}/recipients:
+    get:
+      operationId: Recipients_ListRecipients
+      summary: Docusign List Envelope Recipients
+      description: Retrieves the status and information for all recipients of the specified envelope. Returns details about each recipient including their signing status, delivery method, and authentication.
+      tags:
+      - Recipients
+      parameters:
+      - $ref: '#/components/parameters/accountId'
+      - $ref: '#/components/parameters/envelopeId'
+      - name: include_tabs
+        in: query
+        description: When true, includes the tabs associated with each recipient.
+        schema:
+          type: string
+      - name: include_extended
+        in: query
+        description: When true, includes extended recipient information.
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Successfully retrieved recipients.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Recipients'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
+    put:
+      operationId: Recipients_UpdateRecipients
+      summary: Docusign Update Envelope Recipients
+      description: Updates one or more recipients in a draft or sent envelope. You can modify recipient properties such as name, email, routing order, and authentication settings.
+      tags:
+      - Recipients
+      parameters:
+      - $ref: '#/components/parameters/accountId'
+      - $ref: '#/components/parameters/envelopeId'
+      - name: resend_envelope
+        in: query
+        description: When true, resends the envelope to updated recipients.
+        schema:
+          type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Recipients'
+      responses:
+        '200':
+          description: Recipients updated successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RecipientsUpdateSummary'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
+    post:
+      operationId: Recipients_CreateRecipients
+      summary: Docusign Add Recipients to an Envelope
+      description: Adds one or more recipients to an envelope. The envelope must be in draft or sent status. For sent envelopes, this creates a corrected version of the envelope.
+      tags:
+      - Recipients
+      parameters:
+      - $ref: '#/components/parameters/accountId'
+      - $ref: '#/components/parameters/envelopeId'
+      - name: resend_envelope
+        in: query
+        description: When true, resends the envelope after adding recipients.
+        schema:
+          type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Recipients'
+      responses:
+        '201':
+          description: Recipients added successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Recipients'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
+    delete:
+      operationId: Recipients_DeleteRecipients
+      summary: Docusign Delete Recipients From an Envelope
+      description: Deletes one or more recipients from a draft or sent envelope.
+      tags:
+      - Recipients
+      parameters:
+      - $ref: '#/components/parameters/accountId'
+      - $ref: '#/components/parameters/envelopeId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Recipients'
+      responses:
+        '200':
+          description: Recipients deleted successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Recipients'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
+components:
+  schemas:
+    RecipientsUpdateSummary:
+      type: object
+      description: Summary of a recipients update operation.
+      properties:
+        recipientUpdateResults:
+          type: array
+          items:
+            type: object
+            properties:
+              recipientId:
+                type: string
+              errorDetails:
+                $ref: '#/components/schemas/ErrorDetails'
+          example: []
+    Editor:
+      type: object
+      description: An editor recipient who can modify the envelope before it is sent.
+      properties:
+        recipientId:
+          type: string
+          example: '500123'
+        name:
+          type: string
+          example: Example Title
+        email:
+          type: string
+          format: email
+          example: user@example.com
+        routingOrder:
+          type: string
+          example: example_value
+        status:
+          type: string
+          example: example_value
+    ListTab:
+      type: object
+      description: A dropdown list tab for selecting from predefined options.
+      properties:
+        tabId:
+          type: string
+          example: '500123'
+        tabLabel:
+          type: string
+          example: example_value
+        documentId:
+          type: string
+          example: '500123'
+        pageNumber:
+          type: string
+          example: example_value
+        recipientId:
+          type: string
+          example: '500123'
+        xPosition:
+          type: string
+          example: example_value
+        yPosition:
+          type: string
+          example: example_value
+        anchorString:
+          type: string
+          example: example_value
+        value:
+          type: string
+          example: example_value
+        listItems:
+          type: array
+          items:
+            type: object
+            properties:
+              text:
+                type: string
+              value:
+                type: string
+              selected:
+                type: string
+          example: []
+        required:
+          type: string
+          example: example_value
+    Decline:
+      type: object
+      description: A decline button tab for document rejection.
+      properties:
+        tabId:
+          type: string
+          example: '500123'
+        tabLabel:
+          type: string
+          example: example_value
+        documentId:
+          type: string
+          example: '500123'
+        pageNumber:
+          type: string
+          example: example_value
+        recipientId:
+          type: string
+          example: '500123'
+        xPosition:
+          type: string
+          example: example_value
+        yPosition:
+          type: string
+          example: example_value
+        buttonText:
+          type: string
+          example: example_value
+        declineReason:
+          type: string
+          example: example_value
+    DateSigned:
+      type: object
+      description: A tab that displays the date the recipient signed.
+      properties:
+        tabId:
+          type: string
+          example: '500123'
+        tabLabel:
+          type: string
+          example: example_value
+        documentId:
+          type: string
+          example: '500123'
+        pageNumber:
+          type: string
+          example: example_value
+        recipientId:
+          type: string
+          example: '500123'
+        xPosition:
+          type: string
+          example: example_value
+        yPosition:
+          type: string
+          example: example_value
+        anchorString:
+          type: string
+          example: example_value
+        value:
+          type: string
+          example: example_value
+    Intermediary:
+      type: object
+      description: An intermediary recipient who can forward the envelope to another person.
+      properties:
+        recipientId:
+          type: string
+          example: '500123'
+        name:
+          type: string
+          example: Example Title
+        email:
+          type: string
+          format: email
+          example: user@example.com
+        routingOrder:
+          type: string
+          example: example_value
+        status:
+          type: string
+          example: example_value
+    Witness:
+      type: object
+      description: A witness recipient who verifies the identity of a signer.
+      properties:
+        recipientId:
+          type: string
+          example: '500123'
+        name:
+          type: string
+          example: Example Title
+        email:
+          type: string
+          format: email
+          example: user@example.com
+        routingOrder:
+          type: string
+          example: example_value
+        status:
+          type: string
+          example: example_value
+        tabs:
+          $ref: '#/components/schemas/EnvelopeRecipientTabs'
+    EmailTab:
+      type: object
+      description: A tab for email address input.
+      properties:
+        tabId:
+          type: string
+          example: '500123'
+        tabLabel:
+          type: string
+          example: example_value
+        documentId:
+          type: string
+          example: '500123'
+        pageNumber:
+          type: string
+          example: example_value
+        recipientId:
+          type: string
+          example: '500123'
+        xPosition:
+          type: string
+          example: example_value
+        yPosition:
+          type: string
+          example: example_value
+        anchorString:
+          type: string
+          example: example_value
+        value:
+          type: string
+          example: example_value
+    NumberTab:
+      type: object
+      description: A tab for numeric input.
+      properties:
+        tabId:
+          type: string
+          example: '500123'
+        tabLabel:
+          type: string
+          example: example_value
+        documentId:
+          type: string
+          example: '500123'
+        pageNumber:
+          type: string
+          example: example_value
+        recipientId:
+          type: string
+          example: '500123'
+        xPosition:
+          type: string
+          example: example_value
+        yPosition:
+          type: string
+          example: example_value
+        value:
+          type: string
+          example: example_value
+        required:
+          type: string
+          example: example_value
+    CertifiedDelivery:
+      type: object
+      description: A certified delivery recipient who must confirm receipt of the envelope documents.
+      properties:
+        recipientId:
+          type: string
+          example: '500123'
+        name:
+          type: string
+          example: Example Title
+        email:
+          type: string
+          format: email
+          example: user@example.com
+        routingOrder:
+          type: string
+          example: example_value
+        status:
+          type: string
+          example: example_value
+    Agent:
+      type: object
+      description: An agent recipient who can designate a recipient to sign in their place.
+      properties:
+        recipientId:
+          type: string
+          example: '500123'
+        name:
+          type: string
+          example: Example Title
+        email:
+          type: string
+          format: email
+          example: user@example.com
+        routingOrder:
+          type: string
+          example: example_value
+        status:
+          type: string
+          example: example_value
+    Text:
+      type: object
+      description: A text input tab for free-form text entry.
+      properties:
+        tabId:
+          type: string
+          example: '500123'
+        tabLabel:
+          type: string
+          example: example_value
+        documentId:
+          type: string
+          example: '500123'
+        pageNumber:
+          type: string
+          example: example_value
+        recipientId:
+          type: string
+          example: '500123'
+        xPosition:
+          type: string
+          example: example_value
+        yPosition:
+          type: string
+          example: example_value
+        anchorString:
+          type: string
+          example: example_value
+        value:
+          type: string
+          example: example_value
+        required:
+          type: string
+          description: When true, the recipient must fill in this tab.
+          example: example_value
+        locked:
+          type: string
+          description: When true, the tab value cannot be changed.
+          example: example_value
+        maxLength:
+          type: string
+          description: Maximum length of text input.
+          example: example_value
+        width:
+          type: string
+          example: example_value
+        height:
+          type: string
+          example: example_value
+        font:
+          type: string
+          example: example_value
+        fontSize:
+          type: string
+          example: example_value
+        fontColor:
+          type: string
+          example: example_value
+        bold:
+          type: string
+          example: example_value
+        italic:
+          type: string
+          example: example_value
+        underline:
+          type: string
+          example: example_value
+        validationPattern:
+          type: string
+          description: Regular expression for input validation.
+          example: example_value
+        validationMessage:
+          type: string
+          description: Error message displayed when validation fails.
+          example: example_value
+        concealValueOnDocument:
+          type: string
+          description: When true, the value is concealed on the document.
+          example: example_value
+    SignHere:
+      type: object
+      description: A signature tab placed on a document.
+      properties:
+        tabId:
+          type: string
+          description: Unique identifier for the tab.
+          example: '500123'
+        tabLabel:
+          type: string
+          description: Label used to identify the tab.
+          example: example_value
+        documentId:
+          type: string
+          description: The document ID where this tab is placed.
+          example: '500123'
+        pageNumber:
+          type: string
+          description: The page number where this tab is placed.
+          example: example_value
+        recipientId:
+          type: string
+          description: The recipient this tab is assigned to.
+          example: '500123'
+        xPosition:
+          type: string
+          description: The X position of the tab on the page.
+          example: example_value
+        yPosition:
+          type: string
+          description: The Y position of the tab on the page.
+          example: example_value
+        anchorString:
+          type: string
+          description: Anchor text string used to automatically position the tab.
+          example: example_value
+        anchorXOffset:
+          type: string
+          description: X offset from the anchor string position.
+          example: example_value
+        anchorYOffset:
+          type: string
+          description: Y offset from the anchor string position.
+          example: example_value
+        anchorUnits:
+          type: string
+          description: Units for anchor offsets (pixels, inches, mms, cms).
+          example: example_value
+        scaleValue:
+          type: string
+          description: Scale value for the signature.
+          example: example_value
+        optional:
+          type: string
+          description: When true, the tab is optional for the recipient.
+          example: example_value
+        stampType:
+          type: string
+          description: The type of stamp for the signature.
+          example: example_value
+    Signer:
+      type: object
+      description: A signer recipient who must sign the envelope documents.
+      properties:
+        recipientId:
+          type: string
+          description: Unique identifier for the recipient. Assigned by the sender.
+          example: '500123'
+        recipientIdGuid:
+          type: string
+          format: uuid
+          description: The GUID for the recipient.
+          example: '500123'
+        name:
+          type: string
+          description: The full legal name of the signer.
+          example: Example Title
+        email:
+          type: string
+          format: email
+          description: The email address of the signer.
+          example: user@example.com
+        routingOrder:
+          type: string
+          description: The routing order of the signer. Lower numbers are processed first. Recipients with the same routing order sign in parallel.
+          example: example_value
+        roleName:
+          type: string
+          description: The role name associated with the signer, used with templates.
+          example: example_value
+        clientUserId:
+          type: string
+          description: The client user ID for embedded signing. When set, the recipient is an embedded signer and must sign through your application using a generated signing URL.
+          example: '500123'
+        status:
+          type: string
+          description: The status of the signer.
+          enum:
+          - created
+          - sent
+          - delivered
+          - signed
+          - completed
+          - declined
+          - autoresponded
+          example: created
+        signedDateTime:
+          type: string
+          format: date-time
+          description: The date and time the signer signed.
+          example: '2026-01-15T10:30:00Z'
+        deliveredDateTime:
+          type: string
+          format: date-time
+          description: The date and time the envelope was delivered to the signer.
+          example: '2026-01-15T10:30:00Z'
+        declinedDateTime:
+          type: string
+          format: date-time
+          description: The date and time the signer declined.
+          example: '2026-01-15T10:30:00Z'
+        declinedReason:
+          type: string
+          description: The reason the signer declined.
+          example: example_value
+        tabs:
+          $ref: '#/components/schemas/EnvelopeRecipientTabs'
+        identityVerification:
+          type: object
+          description: Identity verification settings for this recipient.
+          properties:
+            workflowId:
+              type: string
+            inputOptions:
+              type: array
+              items:
+                type: object
+          example: example_value
+        phoneAuthentication:
+          type: object
+          description: Phone authentication settings.
+          properties:
+            recipMayProvideNumber:
+              type: string
+            senderProvidedNumbers:
+              type: array
+              items:
+                type: string
+          example: example_value
+        accessCode:
+          type: string
+          description: An access code the recipient must enter to access the envelope.
+          example: example_value
+        requireIdLookup:
+          type: string
+          description: Whether ID lookup authentication is required.
+          example: example_value
+        note:
+          type: string
+          description: A private note to the signer from the sender.
+          example: example_value
+        emailNotification:
+          $ref: '#/components/schemas/RecipientEmailNotification'
+    NoteTab:
+      type: object
+      description: A read-only note tab for displaying text.
+      properties:
+        tabId:
+          type: string
+          example: '500123'
+        tabLabel:
+          type: string
+          example: example_value
+        documentId:
+          type: string
+          example: '500123'
+        pageNumber:
+          type: string
+          example: example_value
+        recipientId:
+          type: string
+          example: '500123'
+        xPosition:
+          type: string
+          example: example_value
+        yPosition:
+          type: string
+          example: example_value
+        value:
+          type: string
+          example: example_value
+    Checkbox:
+      type: object
+      description: A checkbox tab for boolean selection.
+      properties:
+        tabId:
+          type: string
+          example: '500123'
+        tabLabel:
+          type: string
+          example: example_value
+        documentId:
+          type: string
+          example: '500123'
+        pageNumber:
+          type: string
+          example: example_value
+        recipientId:
+          type: string
+          example: '500123'
+        xPosition:
+          type: string
+          example: example_value
+        yPosition:
+          type: string
+          example: example_value
+        anchorString:
+          type: string
+          example: example_value
+        selected:
+          type: string
+          description: When true, the checkbox is selected.
+          example: example_value
+        required:
+          type: string
+          example: example_value
+        locked:
+          type: string
+          example: example_value
+    EnvelopeRecipientTabs:
+      type: object
+      description: Contains the tab collections for an envelope recipient, organized by tab type.
+      properties:
+        signHereTabs:
+          type: array
+          description: Signature tabs requiring the recipient to sign.
+          items:
+            $ref: '#/components/schemas/SignHere'
+          example: []
+        initialHereTabs:
+          type: array
+          description: Initial tabs requiring the recipient to initial.
+          items:
+            $ref: '#/components/schemas/InitialHere'
+          example: []
+        dateSignedTabs:
+          type: array
+          description: Date signed tabs auto-filled with the signing date.
+          items:
+            $ref: '#/components/schemas/DateSigned'
+          example: []
+        textTabs:
+          type: array
+          description: Text input tabs for free-form text entry.
+          items:
+            $ref: '#/components/schemas/Text'
+          example: []
+        fullNameTabs:
+          type: array
+          description: Full name tabs auto-filled with the signer name.
+          items:
+            $ref: '#/components/schemas/FullName'
+          example: []
+        emailTabs:
+          type: array
+          description: Email tabs for email address input.
+          items:
+            $ref: '#/components/schemas/EmailTab'
+          example: user@example.com
+        checkboxTabs:
+          type: array
+          description: Checkbox tabs for boolean selection.
+          items:
+            $ref: '#/components/schemas/Checkbox'
+          example: []
+        radioGroupTabs:
+          type: array
+          description: Radio button group tabs for single-choice selection.
+          items:
+            $ref: '#/components/schemas/RadioGroup'
+          example: []
+        listTabs:
+          type: array
+          description: List tabs for dropdown selection.
+          items:
+            $ref: '#/components/schemas/ListTab'
+          example: []
+        numberTabs:
+          type: array
+          description: Number tabs for numeric input.
+          items:
+            $ref: '#/components/schemas/NumberTab'
+          example: []
+        dateTabs:
+          type: array
+          description: Date tabs for date selection.
+          items:
+            $ref: '#/components/schemas/DateTab'
+          example: []
+        formulaTabs:
+          type: array
+          description: Formula tabs for calculated values.
+          items:
+            $ref: '#/components/schemas/FormulaTab'
+          example: []
+        noteTabs:
+          type: array
+          description: Note tabs for displaying read-only text.
+          items:
+            $ref: '#/components/schemas/NoteTab'
+          example: []
+        approveTabs:
+          type: array
+          description: Approve tabs for document approval.
+          items:
+            $ref: '#/components/schemas/Approve'
+          example: []
+        declineTabs:
+          type: array
+          description: Decline tabs for document rejection.
+          items:
+            $ref: '#/components/schemas/Decline'
+          example: []
+    ErrorDetails:
+      type: object
+      description: Contains error information returned by the API.
+      properties:
+        errorCode:
+          type: string
+          description: The error code.
+          example: example_value
+        message:
+          type: string
+          description: A human-readable error message.
+          example: example_value
+    InitialHere:
+      type: object
+      description: An initial tab placed on a document.
+      properties:
+        tabId:
+          type: string
+          example: '500123'
+        tabLabel:
+          type: string
+          example: example_value
+        documentId:
+          type: string
+          example: '500123'
+        pageNumber:
+          type: string
+          example: example_value
+        recipientId:
+          type: string
+          example: '500123'
+        xPosition:
+          type: string
+          example: example_value
+        yPosition:
+          type: string
+          example: example_value
+        anchorString:
+          type: string
+          example: example_value
+        optional:
+          type: string
+          example: example_value
+        scaleValue:
+          type: string
+          example: example_value
+    RadioGroup:
+      type: object
+      description: A group of radio buttons for single-choice selection.
+      properties:
+        groupName:
+          type: string
+          description: The name of the radio group.
+          example: example_value
+        documentId:
+          type: string
+          example: '500123'
+        recipientId:
+          type: string
+          example: '500123'
+        radios:
+          type: array
+          items:
+            type: object
+            properties:
+              value:
+                type: string
+              selected:
+                type: string
+              pageNumber:
+                type: string
+              xPosition:
+                type: string
+              yPosition:
+                type: string
+              anchorString:
+                type: string
+          example: []
+        required:
+          type: string
+          example: example_value
+    CarbonCopy:
+      type: object
+      description: A carbon copy recipient who receives a copy of the completed documents but does not need to take any action.
+      properties:
+        recipientId:
+          type: string
+          description: Unique identifier for the recipient.
+          example: '500123'
+        name:
+          type: string
+          description: The full name of the recipient.
+          example: Example Title
+        email:
+          type: string
+          format: email
+          description: The email address of the recipient.
+          example: user@example.com
+        routingOrder:
+          type: string
+          description: The routing order of the recipient.
+          example: example_value
+        roleName:
+          type: string
+          description: The role name for template matching.
+          example: example_value
+        status:
+          type: string
+          description: The status of the recipient.
+          example: example_value
+        note:
+          type: string
+          description: A note for the recipient.
+          example: example_value
+    Approve:
+      type: object
+      description: An approve button tab for document approval.
+      properties:
+        tabId:
+          type: string
+          example: '500123'
+        tabLabel:
+          type: string
+          example: example_value
+        documentId:
+          type: string
+          example: '500123'
+        pageNumber:
+          type: string
+          example: example_value
+        recipientId:
+          type: string
+          example: '500123'
+        xPosition:
+          type: string
+          example: example_value
+        yPosition:
+          type: string
+          example: example_value
+        buttonText:
+          type: string
+          example: example_value
+    RecipientEmailNotification:
+      type: object
+      description: Custom email notification settings for a recipient.
+      properties:
+        emailSubject:
+          type: string
+          description: Custom email subject for this recipient.
+          example: user@example.com
+        emailBody:
+          type: string
+          description: Custom email body for this recipient.
+          example: user@example.com
+        supportedLanguage:
+          type: string
+          description: Language code for the notification.
+          example: example_value
+    FormulaTab:
+      type: object
+      description: A calculated field tab using formulas.
+      properties:
+        tabId:
+          type: string
+          example: '500123'
+        tabLabel:
+          type: string
+          example: example_value
+        documentId:
+          type: string
+          example: '500123'
+        pageNumber:
+          type: string
+          example: example_value
+        recipientId:
+          type: string
+          example: '500123'
+        xPosition:
+          type: string
+          example: example_value
+        yPosition:
+          type: string
+          example: example_value
+        formula:
+          type: string
+          description: The formula expression.
+          example: example_value
+        roundDecimalPlaces:
+          type: string
+          example: example_value
+        value:
+          type: string
+          example: example_value
+    InPersonSigner:
+      type: object
+      description: An in-person signer recipient for face-to-face signing where a host manages the signing session.
+      properties:
+        recipientId:
+          type: string
+          example: '500123'
+        hostName:
+          type: string
+          description: The name of the signing host.
+          example: example_value
+        hostEmail:
+          type: string
+          format: email
+          description: The email of the signing host.
+          example: user@example.com
+        signerName:
+          type: string
+          description: The name of the in-person signer.
+          example: example_value
+        signerEmail:
+          type: string
+          format: email
+          description: The email of the in-person signer.
+          example: user@example.com
+        routingOrder:
+          type: string
+          example: example_value
+        status:
+          type: string
+          example: example_value
+        tabs:
+          $ref: '#/components/schemas/EnvelopeRecipientTabs'
+    FullName:
+      type: object
+      description: A tab auto-filled with the recipient full name.
+      properties:
+        tabId:
+          type: string
+          example: '500123'
+        tabLabel:
+          type: string
+          example: example_value
+        documentId:
+          type: string
+          example: '500123'
+        pageNumber:
+          type: string
+          example: example_value
+        recipientId:
+          type: string
+          example: '500123'
+        xPosition:
+          type: string
+          example: example_value
+        yPosition:
+          type: string
+          example: example_value
+        anchorString:
+          type: string
+          example: example_value
+        value:
+          type: string
+          example: example_value
+    DateTab:
+      type: object
+      description: A tab for date selection.
+      properties:
+        tabId:
+          type: string
+          example: '500123'
+        tabLabel:
+          type: string
+          example: example_value
+        documentId:
+          type: string
+          example: '500123'
+        pageNumber:
+          type: string
+          example: example_value
+        recipientId:
+          type: string
+          example: '500123'
+        xPosition:
+          type: string
+          example: example_value
+        yPosition:
+          type: string
+          example: example_value
+        value:
+          type: string
+          example: example_value
+        required:
+          type: string
+          example: example_value
+    Recipients:
+      type: object
+      description: Contains the recipient collections for an envelope, organized by recipient type.
+      properties:
+        signers:
+          type: array
+          description: List of signer recipients.
+          items:
+            $ref: '#/components/schemas/Signer'
+          example: []
+        carbonCopies:
+          type: array
+          description: List of carbon copy recipients who receive a copy of the completed envelope.
+          items:
+            $ref: '#/components/schemas/CarbonCopy'
+          example: []
+        certifiedDeliveries:
+          type: array
+          description: List of certified delivery recipients who must confirm receipt of the envelope.
+          items:
+            $ref: '#/components/schemas/CertifiedDelivery'
+          example: []
+        inPersonSigners:
+          type: array
+          description: List of in-person signer recipients for face-to-face signing scenarios.
+          items:
+            $ref: '#/components/schemas/InPersonSigner'
+          example: []
+        agents:
+          type: array
+          description: List of agent recipients who can designate another person to sign on their behalf.
+          items:
+            $ref: '#/components/schemas/Agent'
+          example: []
+        editors:
+          type: array
+          description: List of editor recipients who can modify the envelope before it is sent.
+          items:
+            $ref: '#/components/schemas/Editor'
+          example: []
+        intermediaries:
+          type: array
+          description: List of intermediary recipients who can forward the envelope to another person for signing.
+          items:
+            $ref: '#/components/schemas/Intermediary'
+          example: []
+        witnesses:
+          type: array
+          description: List of witness recipients who verify the identity of a signer.
+          items:
+            $ref: '#/components/schemas/Witness'
+          example: []
+        recipientCount:
+          type: string
+          description: The total number of recipients in the envelope.
+          example: example_value
+        currentRoutingOrder:
+          type: string
+          description: The current routing order position.
+          example: example_value
+  parameters:
+    envelopeId:
+      name: envelopeId
+      in: path
+      required: true
+      description: The envelope ID (GUID) of the envelope.
+      schema:
+        type: string
+        format: uuid
+    accountId:
+      name: accountId
+      in: path
+      required: true
+      description: The external account number (short) or account ID GUID of the DocuSign account.
+      schema:
+        type: string
+  responses:
+    Unauthorized:
+      description: Unauthorized. Authentication credentials are missing or invalid.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorDetails'
+    NotFound:
+      description: The requested resource was not found.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorDetails'
+    BadRequest:
+      description: Bad request. The request body or parameters are invalid.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorDetails'
+  securitySchemes:
+    accessCode:
+      type: oauth2
+      description: OAuth2 Access code Grant
+      flows:
+        authorizationCode:
+          authorizationUrl: https://account.docusign.com/oauth/auth
+          tokenUrl: https://account.docusign.com/oauth/auth
+          scopes:
+            organization_read: ''
+            permission_read: ''
+            group_read: ''
+            user_read: ''
+            account_read: ''
+            account_write: ''
+            user_write: ''
+            identity_provider_read: ''
+            domain_read: ''
+x-ds-categories:
+- name: UserManagement
+  summary: Methods to manage users in an account.
+  description: Methods to manage users in an account.
+- name: BulkOperations
+  summary: Methods to import and export users and accounts.
+  description: Methods to import and export users and accounts.
+- name: IdentityProviders
+  summary: Methods to get a list of identity providers.
+  description: Methods to get a list of identity providers.
+- name: ReservedDomains
+  summary: Methods to get a list of reserved domains.
+  description: Methods to get a list of reserved domains.
+- name: Organization
+  summary: Methods for working with organizations.
+  description: Methods for working with organizations.
+x-original-swagger-version: '2.0'

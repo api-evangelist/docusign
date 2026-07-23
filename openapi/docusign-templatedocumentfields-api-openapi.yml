@@ -1,0 +1,296 @@
+openapi: 3.0.1
+info:
+  title: DocuSign Admin AccountBrands TemplateDocumentFields API
+  description: An API for an organization administrator to manage organizations, accounts and users
+  termsOfService: https://www.docusign.com/company/terms-and-conditions/developers
+  contact:
+    name: DocuSign Developer Center
+    url: https://developers.docusign.com
+    email: devcenter@docusign.com
+  version: v2.1
+servers:
+- url: https://api.docusign.net/Management
+tags:
+- name: TemplateDocumentFields
+  description: "The TemplateDocumentFields resource provides methods that allow you to manage custom fields on a document.\n\nYou can create custom versions of standard fields that combine of field properties, such as font type or size, or a validation setting. \n\nNote: Some advanced features and options are supported only in certain DocuSign plans. Your account plan might not support some options discussed in this help topic. For more information about which options are available for your account, check your account plan or contact your Account Manager."
+paths:
+  /v2/accounts/{accountId}/templates/{templateId}/documents/{documentId}/fields:
+    get:
+      tags:
+      - TemplateDocumentFields
+      summary: Docusign Gets the custom document fields for a an existing template document.
+      description: Retrieves the custom document fields for an existing template document.
+      operationId: DocumentFields_GetTemplateDocumentFields
+      parameters:
+      - name: accountId
+        in: path
+        description: The external account number (int) or account id GUID.
+        required: true
+        schema:
+          type: string
+      - name: documentId
+        in: path
+        description: The ID of the document being accessed.
+        required: true
+        schema:
+          type: string
+      - name: templateId
+        in: path
+        description: The ID of the template being accessed.
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Successful response.
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/documentFieldsInformation'
+        '400':
+          description: Error encountered.
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/errorDetails'
+      deprecated: false
+      x-ds-methodname: listDocumentFields
+      x-ds-method: list
+      x-ds-service: Templates
+      x-ds-in-sdk: true
+    put:
+      tags:
+      - TemplateDocumentFields
+      summary: Docusign Updates existing custom document fields in an existing template document.
+      description: Updates existing custom document fields in an existing template document.
+      operationId: DocumentFields_PutTemplateDocumentFields
+      parameters:
+      - name: accountId
+        in: path
+        description: The external account number (int) or account id GUID.
+        required: true
+        schema:
+          type: string
+      - name: documentId
+        in: path
+        description: The ID of the document being accessed.
+        required: true
+        schema:
+          type: string
+      - name: templateId
+        in: path
+        description: The ID of the template being accessed.
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/documentFieldsInformation'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/documentFieldsInformation'
+        required: false
+      responses:
+        '200':
+          description: Successful response.
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/documentFieldsInformation'
+        '400':
+          description: Error encountered.
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/errorDetails'
+      deprecated: false
+      x-ds-methodname: updateDocumentFields
+      x-ds-method: update
+      x-ds-service: Templates
+      x-ds-in-sdk: true
+      x-codegen-request-body-name: documentFieldsInformation
+    post:
+      tags:
+      - TemplateDocumentFields
+      summary: Docusign Creates custom document fields in an existing template document.
+      description: Creates custom document fields in an existing template document.
+      operationId: DocumentFields_PostTemplateDocumentFields
+      parameters:
+      - name: accountId
+        in: path
+        description: The external account number (int) or account id GUID.
+        required: true
+        schema:
+          type: string
+      - name: documentId
+        in: path
+        description: The ID of the document being accessed.
+        required: true
+        schema:
+          type: string
+      - name: templateId
+        in: path
+        description: The ID of the template being accessed.
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/documentFieldsInformation'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/documentFieldsInformation'
+        required: false
+      responses:
+        '201':
+          description: Successful response.
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/documentFieldsInformation'
+        '400':
+          description: Error encountered.
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/errorDetails'
+      deprecated: false
+      x-ds-methodname: createDocumentFields
+      x-ds-method: create
+      x-ds-service: Templates
+      x-ds-in-sdk: true
+      x-codegen-request-body-name: documentFieldsInformation
+    delete:
+      tags:
+      - TemplateDocumentFields
+      summary: Docusign Deletes custom document fields from an existing template document.
+      description: Deletes custom document fields from an existing template document.
+      operationId: DocumentFields_DeleteTemplateDocumentFields
+      parameters:
+      - name: accountId
+        in: path
+        description: The external account number (int) or account id GUID.
+        required: true
+        schema:
+          type: string
+      - name: documentId
+        in: path
+        description: The ID of the document being accessed.
+        required: true
+        schema:
+          type: string
+      - name: templateId
+        in: path
+        description: The ID of the template being accessed.
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/documentFieldsInformation'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/documentFieldsInformation'
+        required: false
+      responses:
+        '200':
+          description: Successful response.
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/documentFieldsInformation'
+        '400':
+          description: Error encountered.
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/errorDetails'
+      deprecated: false
+      x-ds-methodname: deleteDocumentFields
+      x-ds-method: delete
+      x-ds-service: Templates
+      x-ds-in-sdk: true
+      x-codegen-request-body-name: documentFieldsInformation
+components:
+  schemas:
+    documentFieldsInformation:
+      type: object
+      properties:
+        documentFields:
+          type: array
+          description: ''
+          items:
+            $ref: '#/components/schemas/nameValue'
+      description: ''
+      x-ds-definition-name: documentFieldsInformation
+      x-ms-summary: ''
+    nameValue:
+      type: object
+      properties:
+        errorDetails:
+          $ref: '#/components/schemas/errorDetails'
+        name:
+          type: string
+          description: The name or key of a name/value pair.
+        originalValue:
+          type: string
+          description: 'The initial value of the tab when it was sent to the recipient. '
+        value:
+          type: string
+          description: The value field of a name/value pair.
+      description: ''
+      x-ds-definition-name: nameValue
+      x-ms-summary: ''
+    errorDetails:
+      type: object
+      properties:
+        errorCode:
+          type: string
+          description: An error code associated with the error.
+        message:
+          type: string
+          description: A short error message.
+      description: This object describes errors that occur. It is only valid for responses, and ignored in requests.
+      x-ds-definition-name: errorDetails
+      x-ms-summary: This object describes errors that occur. It is only valid for responses, and ignored in requests.
+  securitySchemes:
+    accessCode:
+      type: oauth2
+      description: OAuth2 Access code Grant
+      flows:
+        authorizationCode:
+          authorizationUrl: https://account.docusign.com/oauth/auth
+          tokenUrl: https://account.docusign.com/oauth/auth
+          scopes:
+            organization_read: ''
+            permission_read: ''
+            group_read: ''
+            user_read: ''
+            account_read: ''
+            account_write: ''
+            user_write: ''
+            identity_provider_read: ''
+            domain_read: ''
+x-ds-categories:
+- name: UserManagement
+  summary: Methods to manage users in an account.
+  description: Methods to manage users in an account.
+- name: BulkOperations
+  summary: Methods to import and export users and accounts.
+  description: Methods to import and export users and accounts.
+- name: IdentityProviders
+  summary: Methods to get a list of identity providers.
+  description: Methods to get a list of identity providers.
+- name: ReservedDomains
+  summary: Methods to get a list of reserved domains.
+  description: Methods to get a list of reserved domains.
+- name: Organization
+  summary: Methods for working with organizations.
+  description: Methods for working with organizations.
+x-original-swagger-version: '2.0'

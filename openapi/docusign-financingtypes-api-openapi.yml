@@ -1,0 +1,182 @@
+openapi: 3.0.1
+info:
+  title: DocuSign Admin AccountBrands FinancingTypes API
+  description: An API for an organization administrator to manage organizations, accounts and users
+  termsOfService: https://www.docusign.com/company/terms-and-conditions/developers
+  contact:
+    name: DocuSign Developer Center
+    url: https://developers.docusign.com
+    email: devcenter@docusign.com
+  version: v2.1
+servers:
+- url: https://api.docusign.net/Management
+tags:
+- name: FinancingTypes
+  description: ''
+paths:
+  /v2/financing_types:
+    get:
+      tags:
+      - FinancingTypes
+      summary: Docusign Gets financing types.
+      description: 'Returns a list of possible financing types.
+
+
+
+        ## Permissions
+
+
+        Any user with a valid access token can use this method.'
+      operationId: FinancingTypes_GetFinancingTypes
+      responses:
+        '200':
+          description: Request was successful.
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/GlobalFinancingTypes'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GlobalFinancingTypes'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/GlobalFinancingTypes'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/GlobalFinancingTypes'
+            text/xml:
+              schema:
+                $ref: '#/components/schemas/GlobalFinancingTypes'
+        '400':
+          description: Bad request. See ErrorCode and Message for details
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            text/xml:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '401':
+          description: Not authorized to make this request.
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            text/xml:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+      x-ds-methodname: GetFinancingTypes
+      x-ds-method: GetFinancingTypes
+      x-ds-service: FinancingTypes
+      x-ds-in-sdk: true
+components:
+  schemas:
+    FinancingType:
+      type: object
+      properties:
+        financingTypeId:
+          type: string
+          description: 'The ID of the financing type.
+
+
+            Example: `conv` (for `Conventional`)'
+        name:
+          type: string
+          description: 'The name of the financing type. Possible values are:
+
+
+            - `Cash`
+
+            - `Conventional`
+
+            - `FHA`
+
+            - `VA`
+
+            - `USDA`
+
+            - `Bitcoin`
+
+            - `Other`'
+      description: Contains information about a financing type.
+      x-ds-definition-name: FinancingType
+      x-ms-summary: Contains information about a financing type.
+    ApiError:
+      type: object
+      properties:
+        errorCode:
+          type: string
+          description: The code associated with the error condition.
+        message:
+          type: string
+          description: A brief message describing the error condition.
+        referenceId:
+          type: string
+          description: ''
+      description: This object describes errors that occur. It is valid only for responses and ignored in requests.
+      x-ds-definition-name: ApiError
+      x-ms-summary: This object describes errors that occur. It is valid only for responses and ignored in requests.
+    GlobalFinancingTypes:
+      type: object
+      properties:
+        financingTypes:
+          type: array
+          description: A list of financing types.
+          items:
+            $ref: '#/components/schemas/FinancingType'
+      description: Contains a list of financing types.
+      x-ds-definition-name: GlobalFinancingTypes
+      x-ms-summary: Contains a list of financing types.
+  securitySchemes:
+    accessCode:
+      type: oauth2
+      description: OAuth2 Access code Grant
+      flows:
+        authorizationCode:
+          authorizationUrl: https://account.docusign.com/oauth/auth
+          tokenUrl: https://account.docusign.com/oauth/auth
+          scopes:
+            organization_read: ''
+            permission_read: ''
+            group_read: ''
+            user_read: ''
+            account_read: ''
+            account_write: ''
+            user_write: ''
+            identity_provider_read: ''
+            domain_read: ''
+x-ds-categories:
+- name: UserManagement
+  summary: Methods to manage users in an account.
+  description: Methods to manage users in an account.
+- name: BulkOperations
+  summary: Methods to import and export users and accounts.
+  description: Methods to import and export users and accounts.
+- name: IdentityProviders
+  summary: Methods to get a list of identity providers.
+  description: Methods to get a list of identity providers.
+- name: ReservedDomains
+  summary: Methods to get a list of reserved domains.
+  description: Methods to get a list of reserved domains.
+- name: Organization
+  summary: Methods for working with organizations.
+  description: Methods for working with organizations.
+x-original-swagger-version: '2.0'

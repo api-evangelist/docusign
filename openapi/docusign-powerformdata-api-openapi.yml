@@ -1,0 +1,179 @@
+openapi: 3.0.1
+info:
+  title: DocuSign Admin AccountBrands PowerFormData API
+  description: An API for an organization administrator to manage organizations, accounts and users
+  termsOfService: https://www.docusign.com/company/terms-and-conditions/developers
+  contact:
+    name: DocuSign Developer Center
+    url: https://developers.docusign.com
+    email: devcenter@docusign.com
+  version: v2.1
+servers:
+- url: https://api.docusign.net/Management
+tags:
+- name: PowerFormData
+  description: 'The PowerFormData resource provides a method to access power form data.
+
+    '
+paths:
+  /v2/accounts/{accountId}/powerforms/{powerFormId}/form_data:
+    get:
+      tags:
+      - PowerFormData
+      summary: Docusign Returns the form data associated with the usage of a PowerForm.
+      operationId: PowerForms_GetPowerFormFormData
+      parameters:
+      - name: accountId
+        in: path
+        description: The external account number (int) or account id GUID.
+        required: true
+        schema:
+          type: string
+      - name: powerFormId
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: data_layout
+        in: query
+        schema:
+          type: string
+      - name: from_date
+        in: query
+        description: Start of the search date range. Only returns templates created on or after this date/time. If no value is specified, there is no limit on the earliest date created.
+        schema:
+          type: string
+      - name: to_date
+        in: query
+        description: End of the search date range. Only returns templates created up to this date/time. If no value is provided, this defaults to the current date.
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Successful response.
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/powerFormsFormDataResponse'
+        '400':
+          description: Error encountered.
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/errorDetails'
+      deprecated: false
+      x-ds-methodname: getPowerFormData
+      x-ds-method: list
+      x-ds-service: PowerForms
+      x-ds-in-sdk: true
+components:
+  schemas:
+    powerFormsFormDataResponse:
+      type: object
+      properties:
+        envelopes:
+          type: array
+          description: ''
+          items:
+            $ref: '#/components/schemas/powerFormFormDataEnvelope'
+      description: ''
+      x-ds-definition-name: powerFormsFormDataResponse
+      x-ms-summary: ''
+    errorDetails:
+      type: object
+      properties:
+        errorCode:
+          type: string
+          description: An error code associated with the error.
+        message:
+          type: string
+          description: A short error message.
+      description: This object describes errors that occur. It is only valid for responses, and ignored in requests.
+      x-ds-definition-name: errorDetails
+      x-ms-summary: This object describes errors that occur. It is only valid for responses, and ignored in requests.
+    powerFormFormDataEnvelope:
+      type: object
+      properties:
+        envelopeId:
+          type: string
+          description: 'The envelope''s GUID. Eg 93be49ab-afa0-4adf-933c-f752070d71ec '
+        recipients:
+          type: array
+          description: ''
+          items:
+            $ref: '#/components/schemas/powerFormFormDataRecipient'
+      description: ''
+      x-ds-definition-name: powerFormFormDataEnvelope
+      x-ms-summary: ''
+    nameValue:
+      type: object
+      properties:
+        errorDetails:
+          $ref: '#/components/schemas/errorDetails'
+        name:
+          type: string
+          description: The name or key of a name/value pair.
+        originalValue:
+          type: string
+          description: 'The initial value of the tab when it was sent to the recipient. '
+        value:
+          type: string
+          description: The value field of a name/value pair.
+      description: ''
+      x-ds-definition-name: nameValue
+      x-ms-summary: ''
+    powerFormFormDataRecipient:
+      type: object
+      properties:
+        email:
+          type: string
+          description: ''
+        formData:
+          type: array
+          description: ''
+          items:
+            $ref: '#/components/schemas/nameValue'
+        name:
+          type: string
+          description: ''
+        recipientId:
+          type: string
+          description: Unique for the recipient. It is used by the tab element to indicate which recipient is to sign the Document.
+      description: ''
+      x-ds-definition-name: powerFormFormDataRecipient
+      x-ms-summary: ''
+  securitySchemes:
+    accessCode:
+      type: oauth2
+      description: OAuth2 Access code Grant
+      flows:
+        authorizationCode:
+          authorizationUrl: https://account.docusign.com/oauth/auth
+          tokenUrl: https://account.docusign.com/oauth/auth
+          scopes:
+            organization_read: ''
+            permission_read: ''
+            group_read: ''
+            user_read: ''
+            account_read: ''
+            account_write: ''
+            user_write: ''
+            identity_provider_read: ''
+            domain_read: ''
+x-ds-categories:
+- name: UserManagement
+  summary: Methods to manage users in an account.
+  description: Methods to manage users in an account.
+- name: BulkOperations
+  summary: Methods to import and export users and accounts.
+  description: Methods to import and export users and accounts.
+- name: IdentityProviders
+  summary: Methods to get a list of identity providers.
+  description: Methods to get a list of identity providers.
+- name: ReservedDomains
+  summary: Methods to get a list of reserved domains.
+  description: Methods to get a list of reserved domains.
+- name: Organization
+  summary: Methods for working with organizations.
+  description: Methods for working with organizations.
+x-original-swagger-version: '2.0'

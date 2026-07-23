@@ -1,0 +1,1093 @@
+openapi: 3.0.1
+info:
+  title: DocuSign Admin AccountBrands MultiProductUserManagement API
+  description: An API for an organization administrator to manage organizations, accounts and users
+  termsOfService: https://www.docusign.com/company/terms-and-conditions/developers
+  contact:
+    name: DocuSign Developer Center
+    url: https://developers.docusign.com
+    email: devcenter@docusign.com
+  version: v2.1
+servers:
+- url: https://api.docusign.net/Management
+tags:
+- name: MultiProductUserManagement
+  description: Methods to manage multi-product users in an account.
+paths:
+  /v2.1/organizations/{organizationId}/accounts/{accountId}/dsgroups:
+    get:
+      tags:
+      - MultiProductUserManagement
+      summary: Docusign Returns a list of DSGroups.
+      description: 'Returns a list of DSGroups
+
+
+        - Required scopes: `user_read`'
+      operationId: DocuSignGroupsv21_GetDSGroups_V2_1
+      parameters:
+      - name: organizationId
+        in: path
+        description: 'The organization''s GUID.
+
+          '
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: accountId
+        in: path
+        description: The account ID GUID.
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: page
+        in: query
+        description: Start page of DSGroups.
+        schema:
+          type: integer
+          format: int32
+      - name: page_size
+        in: query
+        description: Page size of DSGroups.
+        schema:
+          type: integer
+          format: int32
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DSGroupListResponse'
+      security:
+      - accessCode:
+        - user_read
+      x-ds-methodname: getDSGroups
+      x-ds-method: getDSGroups
+      x-ds-service: DSGroups
+      x-ds-in-sdk: true
+    post:
+      tags:
+      - MultiProductUserManagement
+      summary: Docusign Creates a new DSGroup.
+      description: 'Creates a new DSGroup.
+
+
+        - Required scopes: `user_write`'
+      operationId: DocuSignGroupsv21_AddDSGroup_V2_1
+      parameters:
+      - name: organizationId
+        in: path
+        description: 'The organization''s GUID.
+
+          '
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: accountId
+        in: path
+        description: The account ID GUID.
+        required: true
+        schema:
+          type: string
+          format: uuid
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DSGroupAddRequest'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DSGroupResponse'
+      security:
+      - accessCode:
+        - user_write
+      x-ds-methodname: addDSGroup
+      x-ds-method: addDSGroup
+      x-ds-service: DSGroups
+      x-ds-in-sdk: true
+      x-codegen-request-body-name: addRequest
+  /v2.1/organizations/{organizationId}/accounts/{accountId}/dsgroups/{dsGroupId}:
+    get:
+      tags:
+      - MultiProductUserManagement
+      summary: Docusign Returns details about a single DSGroup.
+      description: 'Returns details about a single DSGroup.
+
+
+        - Required scopes: `user_read`'
+      operationId: DocuSignGroupsv21_GetDSGroup_V2_1
+      parameters:
+      - name: organizationId
+        in: path
+        description: 'The organization''s GUID.
+
+          '
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: accountId
+        in: path
+        description: The account ID GUID.
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: dsGroupId
+        in: path
+        description: The DSGroup's ID GUID
+        required: true
+        schema:
+          type: string
+          format: uuid
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DSGroupResponse'
+      security:
+      - accessCode:
+        - user_read
+      x-ds-methodname: getDSGroup
+      x-ds-method: getDSGroup
+      x-ds-service: DSGroups
+      x-ds-in-sdk: true
+    delete:
+      tags:
+      - MultiProductUserManagement
+      summary: Docusign Deletes a DSGroup.
+      description: 'Deletes a DSGroup
+
+
+        - Required scopes: `user_write`'
+      operationId: DocuSignGroupsv21_DeleteDSGroup_V2_1
+      parameters:
+      - name: organizationId
+        in: path
+        description: 'The organization''s GUID.
+
+          '
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: accountId
+        in: path
+        description: The account ID GUID.
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: dsGroupId
+        in: path
+        description: The DSGroup's GUID.
+        required: true
+        schema:
+          type: string
+          format: uuid
+      responses:
+        '204':
+          description: No Content
+          content: {}
+      security:
+      - accessCode:
+        - user_write
+      x-ds-methodname: deleteDSGroup
+      x-ds-method: deleteDSGroup
+      x-ds-service: DSGroups
+      x-ds-in-sdk: true
+  /v2.1/organizations/{organizationId}/accounts/{accountId}/dsgroups/{dsGroupId}/users:
+    get:
+      tags:
+      - MultiProductUserManagement
+      summary: Docusign Gets a list of users in a DSGroup.
+      description: 'Gets a list of users in a DSGroup.
+
+
+        - Required scopes: `user_read`'
+      operationId: DocuSignGroupsv21_GetDSGroupUsers_V2_1
+      parameters:
+      - name: organizationId
+        in: path
+        description: 'The organization''s GUID.
+
+          '
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: accountId
+        in: path
+        description: The account ID GUID.
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: dsGroupId
+        in: path
+        description: The DSGroup's GUID.
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: page
+        in: query
+        description: 'Start page of DSGroups.
+
+          '
+        schema:
+          type: integer
+          format: int32
+      - name: page_size
+        in: query
+        description: Page size of DSGroups.
+        schema:
+          type: integer
+          format: int32
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DSGroupAndUsersResponse'
+      security:
+      - accessCode:
+        - user_read
+      x-ds-methodname: getDSGroupUsers
+      x-ds-method: getDSGroupUsers
+      x-ds-service: DSGroups
+      x-ds-in-sdk: true
+    post:
+      tags:
+      - MultiProductUserManagement
+      summary: Docusign Adds a list of users to a DSGroup.
+      description: 'Adds a list of users to a DSGroup.
+
+
+        - Required scopes: `user_write`'
+      operationId: DocuSignGroupsv21_AddDSGroupUsers_V2_1
+      parameters:
+      - name: organizationId
+        in: path
+        description: 'The organization''s GUID.
+
+          '
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: accountId
+        in: path
+        description: The account ID GUID.
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: dsGroupId
+        in: path
+        description: The DSGroup's GUID.
+        required: true
+        schema:
+          type: string
+          format: uuid
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DSGroupUsersAddRequest'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AddDSGroupAndUsersResponse'
+      security:
+      - accessCode:
+        - user_write
+      x-ds-methodname: addDSGroupUsers
+      x-ds-method: addDSGroupUsers
+      x-ds-service: DSGroups
+      x-ds-in-sdk: true
+      x-codegen-request-body-name: dSGroupUsersAddRequest
+    delete:
+      tags:
+      - MultiProductUserManagement
+      summary: Docusign Removes a list of users from a DSGroup.
+      description: 'Removes a list of users from a DSGroup.
+
+
+        - Required scopes: `user_write`'
+      operationId: DocuSignGroupsv21_RemoveDSGroupUsers_V2_1
+      parameters:
+      - name: organizationId
+        in: path
+        description: 'The organization''s GUID.
+
+          '
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: accountId
+        in: path
+        description: The account ID GUID.
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: dsGroupId
+        in: path
+        description: The DSGroup's GUID.
+        required: true
+        schema:
+          type: string
+          format: uuid
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DSGroupUsersRemoveRequest'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RemoveDSGroupUsersResponse'
+      security:
+      - accessCode:
+        - user_write
+      x-ds-methodname: removeDSGroupUsers
+      x-ds-method: removeDSGroupUsers
+      x-ds-service: DSGroups
+      x-ds-in-sdk: true
+      x-codegen-request-body-name: dSGroupUsersRemoveRequest
+  /v2.1/organizations/{organizationId}/accounts/{accountId}/products/permission_profiles:
+    get:
+      tags:
+      - MultiProductUserManagement
+      summary: Docusign Gets products associated with the account and the available permission profiles.
+      description: 'Gets products associated with the account and the available permission profiles.
+
+
+        - Required scopes: `user_read`'
+      operationId: OrganizationProductPermissionProfile_GetProductPermissionProfiles
+      parameters:
+      - name: organizationId
+        in: path
+        description: 'The organization''s GUID.
+
+          '
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: accountId
+        in: path
+        description: The account ID GUID.
+        required: true
+        schema:
+          type: string
+          format: uuid
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProductPermissionProfilesResponse'
+      security:
+      - accessCode:
+        - user_read
+      x-ds-methodname: getProductPermissionProfiles
+      x-ds-method: getProductPermissionProfiles
+      x-ds-service: ProductPermissionProfiles
+      x-ds-in-sdk: true
+  /v2.1/organizations/{organizationId}/accounts/{accountId}/products/users/{userId}/permission_profiles:
+    get:
+      tags:
+      - MultiProductUserManagement
+      summary: Docusign Retrieves a list of user's permission profiles for each account's product.
+      description: 'Retrieves a list of user''s permission profiles for each account''s product.
+
+
+        - Required scopes: `user_read`'
+      operationId: OrganizationProductPermissionProfile_GetUserProductPermissionProfiles
+      parameters:
+      - name: organizationId
+        in: path
+        description: 'The organization''s GUID.
+
+          '
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: accountId
+        in: path
+        description: The account ID GUID.
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: userId
+        in: path
+        description: The user ID GUID.
+        required: true
+        schema:
+          type: string
+          format: uuid
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProductPermissionProfilesResponse'
+      security:
+      - accessCode:
+        - user_read
+      x-ds-methodname: getUserProductPermissionProfiles
+      x-ds-method: getUserProductPermissionProfiles
+      x-ds-service: ProductPermissionProfiles
+      x-ds-in-sdk: true
+    post:
+      tags:
+      - MultiProductUserManagement
+      summary: Docusign Assigns user to permission profiles for one or more products.
+      description: 'Assigns user to permission profiles for one or more products.
+
+
+        - Required scopes: `user_write`'
+      operationId: OrganizationProductPermissionProfile_PostUserProductPermissionProfiles
+      parameters:
+      - name: organizationId
+        in: path
+        description: 'The organization''s GUID.
+
+          '
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: accountId
+        in: path
+        description: The account ID GUID.
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: userId
+        in: path
+        description: The user ID GUID.
+        required: true
+        schema:
+          type: string
+          format: uuid
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProductPermissionProfilesRequest'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserProductPermissionProfilesResponse'
+      security:
+      - accessCode:
+        - user_write
+      x-ds-methodname: addUserProductPermissionProfiles
+      x-ds-method: addUserProductPermissionProfiles
+      x-ds-service: ProductPermissionProfiles
+      x-ds-in-sdk: true
+      x-codegen-request-body-name: productPermissionProfilesRequest
+  /v2.1/organizations/{organizationId}/accounts/{accountId}/users:
+    post:
+      tags:
+      - MultiProductUserManagement
+      summary: Docusign Creates and updates a multi-product user.
+      description: 'Creates and updates a multi-product user.
+
+
+        - Required scopes: `user_write`'
+      operationId: OrganizationUser_OrganizationUsers_PostAccountUsersV2_1
+      parameters:
+      - name: organizationId
+        in: path
+        description: 'The organization''s GUID.
+
+          '
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: accountId
+        in: path
+        description: The account ID GUID.
+        required: true
+        schema:
+          type: string
+          format: uuid
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NewMultiProductUserAddRequest'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AddUserResponse'
+      security:
+      - accessCode:
+        - user_write
+      x-ds-methodname: addOrUpdateUser
+      x-ds-method: addOrUpdateUser
+      x-ds-service: Users
+      x-ds-in-sdk: true
+      x-codegen-request-body-name: request
+components:
+  schemas:
+    RemoveDSGroupUsersResponse:
+      type: object
+      properties:
+        is_success:
+          type: boolean
+          description: ''
+        failed_users:
+          type: array
+          description: ''
+          items:
+            $ref: '#/components/schemas/DSGroupUserResponse'
+      description: ''
+      x-ds-definition-name: RemoveDSGroupUsersResponse
+      x-ms-summary: ''
+    AddUserResponse:
+      type: object
+      properties:
+        id:
+          type: string
+          description: ''
+          format: uuid
+          example: 00000000-0000-0000-0000-000000000000
+        site_id:
+          type: integer
+          description: ''
+          format: int32
+        user_name:
+          type: string
+          description: The full name of the user.
+        first_name:
+          type: string
+          description: The user's first name.
+        last_name:
+          type: string
+          description: The user's last name.
+        email:
+          type: string
+          description: The email address.
+        language_culture:
+          type: string
+          description: "The language and culture of the user.\n\n  * Chinese Simplified: `zh_CN`\n  * Chinese Traditional: `zh_TW`\n  * Dutch: `nl`\n  * English: `en`\n  * French: `fr`\n  * German: `de`\n  * Italian: `it`\n  * Japanese: `ja`\n  * Korean: `ko`\n  * Portuguese: `pt`\n  * Portuguese Brazil: `pt_BR`\n  * Russian: `ru`\n  * Spanish: `es`\n"
+        federated_status:
+          type: string
+          description: 'The user''s federated status. One of:
+
+
+            - `RemoveStatus`
+
+            - `FedAuthRequired`
+
+            - `FedAuthBypass`
+
+            - `Evicted`'
+        accounts:
+          type: array
+          description: ''
+          readOnly: true
+          items:
+            $ref: '#/components/schemas/AddUserResponseAccountProperties'
+      description: ''
+      x-ds-definition-name: AddUserResponse
+      x-ms-summary: ''
+    DSGroupUsersAddRequest:
+      required:
+      - user_ids
+      type: object
+      properties:
+        user_ids:
+          type: array
+          description: ''
+          items:
+            type: string
+            format: uuid
+            example: 00000000-0000-0000-0000-000000000000
+      description: ''
+      x-ds-definition-name: DSGroupUsersAddRequest
+      x-ms-summary: ''
+    DSGroupUsersResponse:
+      type: object
+      properties:
+        page:
+          type: integer
+          description: The page number.
+          format: int32
+        page_size:
+          type: integer
+          description: The number of items per page.
+          format: int32
+        total_count:
+          type: integer
+          description: ''
+          format: int32
+        users:
+          type: array
+          description: A list of users.
+          items:
+            $ref: '#/components/schemas/DSGroupUserResponse'
+      description: ''
+      x-ds-definition-name: DSGroupUsersResponse
+      x-ms-summary: ''
+    ProductPermissionProfileResponse:
+      type: object
+      properties:
+        product_id:
+          type: string
+          description: ''
+          format: uuid
+          example: 00000000-0000-0000-0000-000000000000
+        product_name:
+          type: string
+          description: ''
+        permission_profiles:
+          type: array
+          description: ''
+          items:
+            $ref: '#/components/schemas/PermissionProfileResponse2_1'
+        error_message:
+          type: string
+          description: ''
+      description: ''
+      x-ds-definition-name: ProductPermissionProfileResponse
+      x-ms-summary: ''
+    AddDSGroupAndUsersResponse:
+      type: object
+      properties:
+        group:
+          $ref: '#/components/schemas/DSGroupResponse'
+        group_users:
+          $ref: '#/components/schemas/AddDSGroupUsersResponse'
+      description: ''
+      x-ds-definition-name: AddDSGroupAndUsersResponse
+      x-ms-summary: ''
+    UserProductPermissionProfilesResponse:
+      type: object
+      properties:
+        user_id:
+          type: string
+          description: ''
+          format: uuid
+          example: 00000000-0000-0000-0000-000000000000
+        account_id:
+          type: string
+          description: Select users that are members of the specified account. At least one of `email`, `account_id` or `organization_reserved_domain_id` must be specified.
+          format: uuid
+          example: 00000000-0000-0000-0000-000000000000
+        product_permission_profiles:
+          type: array
+          description: ''
+          items:
+            $ref: '#/components/schemas/ProductPermissionProfileResponse'
+      description: ''
+      x-ds-definition-name: UserProductPermissionProfilesResponse
+      x-ms-summary: ''
+    AddUserResponseAccountProperties:
+      type: object
+      properties:
+        id:
+          type: string
+          description: ''
+          format: uuid
+          example: 00000000-0000-0000-0000-000000000000
+        site_id:
+          type: integer
+          description: ''
+          format: int32
+        product_permission_profiles:
+          type: array
+          description: ''
+          readOnly: true
+          items:
+            $ref: '#/components/schemas/ProductPermissionProfileResponse'
+        ds_groups:
+          type: array
+          description: ''
+          readOnly: true
+          items:
+            $ref: '#/components/schemas/DSGroupResponse'
+        company_name:
+          type: string
+          description: The user's company name.
+        job_title:
+          type: string
+          description: The user's job title.
+      description: ''
+      x-ds-definition-name: AddUserResponseAccountProperties
+      x-ms-summary: ''
+    DSGroupAndUsersResponse:
+      type: object
+      properties:
+        group:
+          $ref: '#/components/schemas/DSGroupResponse'
+        group_users:
+          $ref: '#/components/schemas/DSGroupUsersResponse'
+      description: ''
+      x-ds-definition-name: DSGroupAndUsersResponse
+      x-ms-summary: ''
+    DSGroupResponse:
+      type: object
+      properties:
+        ds_group_id:
+          type: string
+          description: ''
+          format: uuid
+          example: 00000000-0000-0000-0000-000000000000
+        account_id:
+          type: string
+          description: Select users that are members of the specified account. At least one of `email`, `account_id` or `organization_reserved_domain_id` must be specified.
+          format: uuid
+          example: 00000000-0000-0000-0000-000000000000
+        source_product_name:
+          type: string
+          description: ''
+        group_id:
+          type: string
+          description: ''
+        group_name:
+          type: string
+          description: ''
+        description:
+          type: string
+          description: ''
+        is_admin:
+          type: boolean
+          description: ''
+        last_modified_on:
+          type: string
+          description: ''
+          format: date-time
+        user_count:
+          type: integer
+          description: ''
+          format: int32
+        external_account_id:
+          type: integer
+          description: ''
+          format: int64
+        account_name:
+          type: string
+          description: ''
+      description: ''
+      x-ds-definition-name: DSGroupResponse
+      x-ms-summary: ''
+    PermissionProfileResponse2_1:
+      type: object
+      properties:
+        permission_profile_id:
+          type: string
+          description: ''
+        permission_profile_name:
+          type: string
+          description: ''
+      description: ''
+      x-ds-definition-name: PermissionProfileResponse2_1
+      x-ms-summary: ''
+    ErrorDetails:
+      type: object
+      properties:
+        error:
+          type: string
+          description: The code for the error.
+        error_description:
+          type: string
+          description: A description of the error.
+      description: Errors.
+      x-ds-definition-name: ErrorDetails
+      x-ms-summary: Errors.
+    ProductPermissionProfilesResponse:
+      type: object
+      properties:
+        product_permission_profiles:
+          type: array
+          description: ''
+          readOnly: true
+          items:
+            $ref: '#/components/schemas/ProductPermissionProfileResponse'
+      description: ''
+      x-ds-definition-name: ProductPermissionProfilesResponse
+      x-ms-summary: ''
+    ProductPermissionProfileRequest:
+      required:
+      - permission_profile_id
+      - product_id
+      type: object
+      properties:
+        product_id:
+          type: string
+          description: ''
+          format: uuid
+          example: 00000000-0000-0000-0000-000000000000
+        permission_profile_id:
+          type: string
+          description: ''
+      description: ''
+      x-ds-definition-name: ProductPermissionProfileRequest
+      x-ms-summary: ''
+    DSGroupUsersRemoveRequest:
+      required:
+      - user_ids
+      type: object
+      properties:
+        user_ids:
+          type: array
+          description: ''
+          items:
+            type: string
+            format: uuid
+            example: 00000000-0000-0000-0000-000000000000
+      description: ''
+      x-ds-definition-name: DSGroupUsersRemoveRequest
+      x-ms-summary: ''
+    ProductPermissionProfilesRequest:
+      required:
+      - product_permission_profiles
+      type: object
+      properties:
+        product_permission_profiles:
+          type: array
+          description: ''
+          items:
+            $ref: '#/components/schemas/ProductPermissionProfileRequest'
+      description: ''
+      x-ds-definition-name: ProductPermissionProfilesRequest
+      x-ms-summary: ''
+    DSGroupUserResponse:
+      type: object
+      properties:
+        user_id:
+          type: string
+          description: ''
+          format: uuid
+          example: 00000000-0000-0000-0000-000000000000
+        account_id:
+          type: string
+          description: Select users that are members of the specified account. At least one of `email`, `account_id` or `organization_reserved_domain_id` must be specified.
+          format: uuid
+          example: 00000000-0000-0000-0000-000000000000
+        user_name:
+          type: string
+          description: The full name of the user.
+        first_name:
+          type: string
+          description: The user's first name.
+        last_name:
+          type: string
+          description: The user's last name.
+        middle_name:
+          type: string
+          description: ''
+        status:
+          type: string
+          description: Status.
+        error_details:
+          $ref: '#/components/schemas/ErrorDetails'
+      description: ''
+      x-ds-definition-name: DSGroupUserResponse
+      x-ms-summary: ''
+    DSGroupAddRequest:
+      required:
+      - group_name
+      type: object
+      properties:
+        group_name:
+          type: string
+          description: ''
+        description:
+          type: string
+          description: ''
+      description: ''
+      x-ds-definition-name: DSGroupAddRequest
+      x-ms-summary: ''
+    DSGroupListResponse:
+      type: object
+      properties:
+        page:
+          type: integer
+          description: The page number.
+          format: int32
+        page_size:
+          type: integer
+          description: The number of items per page.
+          format: int32
+        total_count:
+          type: integer
+          description: ''
+          format: int32
+        account_id:
+          type: string
+          description: Select users that are members of the specified account. At least one of `email`, `account_id` or `organization_reserved_domain_id` must be specified.
+          format: uuid
+          example: 00000000-0000-0000-0000-000000000000
+        ds_groups:
+          type: array
+          description: ''
+          readOnly: true
+          items:
+            $ref: '#/components/schemas/DSGroupResponse'
+      description: ''
+      x-ds-definition-name: DSGroupListResponse
+      x-ms-summary: ''
+    NewMultiProductUserAddRequest:
+      required:
+      - email
+      - product_permission_profiles
+      type: object
+      properties:
+        product_permission_profiles:
+          type: array
+          description: ''
+          items:
+            $ref: '#/components/schemas/ProductPermissionProfileRequest'
+        ds_groups:
+          type: array
+          description: ''
+          items:
+            $ref: '#/components/schemas/DSGroupRequest'
+        user_name:
+          type: string
+          description: The full name of the user.
+        first_name:
+          type: string
+          description: The user's first name.
+        last_name:
+          type: string
+          description: The user's last name.
+        email:
+          type: string
+          description: The email address.
+        default_account_id:
+          type: string
+          description: ''
+          format: uuid
+          example: 00000000-0000-0000-0000-000000000000
+        language_culture:
+          type: string
+          description: "The language and culture of the user.\n\n  * Chinese Simplified: `zh_CN`\n  * Chinese Traditional: `zh_TW`\n  * Dutch: `nl`\n  * English: `en`\n  * French: `fr`\n  * German: `de`\n  * Italian: `it`\n  * Japanese: `ja`\n  * Korean: `ko`\n  * Portuguese: `pt`\n  * Portuguese Brazil: `pt_BR`\n  * Russian: `ru`\n  * Spanish: `es`\n"
+        access_code:
+          type: string
+          description: The access code that the user needs to activate an account.
+        federated_status:
+          type: string
+          description: 'The user''s federated status. One of:
+
+
+            - `RemoveStatus`
+
+            - `FedAuthRequired`
+
+            - `FedAuthBypass`
+
+            - `Evicted`'
+        auto_activate_memberships:
+          type: boolean
+          description: If **true**, the user's account is activated automatically.
+      description: ''
+      x-ds-definition-name: NewMultiProductUserAddRequest
+      x-ms-summary: ''
+    AddDSGroupUsersResponse:
+      type: object
+      properties:
+        is_success:
+          type: boolean
+          description: ''
+        TotalCount:
+          type: integer
+          description: ''
+          format: int32
+        users:
+          type: array
+          description: A list of users.
+          items:
+            $ref: '#/components/schemas/DSGroupUserResponse'
+      description: ''
+      x-ds-definition-name: AddDSGroupUsersResponse
+      x-ms-summary: ''
+    DSGroupRequest:
+      required:
+      - ds_group_id
+      type: object
+      properties:
+        ds_group_id:
+          type: string
+          description: ''
+          format: uuid
+          example: 00000000-0000-0000-0000-000000000000
+      description: ''
+      x-ds-definition-name: DSGroupRequest
+      x-ms-summary: ''
+  securitySchemes:
+    accessCode:
+      type: oauth2
+      description: OAuth2 Access code Grant
+      flows:
+        authorizationCode:
+          authorizationUrl: https://account.docusign.com/oauth/auth
+          tokenUrl: https://account.docusign.com/oauth/auth
+          scopes:
+            organization_read: ''
+            permission_read: ''
+            group_read: ''
+            user_read: ''
+            account_read: ''
+            account_write: ''
+            user_write: ''
+            identity_provider_read: ''
+            domain_read: ''
+x-ds-categories:
+- name: UserManagement
+  summary: Methods to manage users in an account.
+  description: Methods to manage users in an account.
+- name: BulkOperations
+  summary: Methods to import and export users and accounts.
+  description: Methods to import and export users and accounts.
+- name: IdentityProviders
+  summary: Methods to get a list of identity providers.
+  description: Methods to get a list of identity providers.
+- name: ReservedDomains
+  summary: Methods to get a list of reserved domains.
+  description: Methods to get a list of reserved domains.
+- name: Organization
+  summary: Methods for working with organizations.
+  description: Methods for working with organizations.
+x-original-swagger-version: '2.0'

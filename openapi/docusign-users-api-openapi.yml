@@ -1,0 +1,2705 @@
+openapi: 3.0.1
+info:
+  title: DocuSign Admin AccountBrands Users API
+  description: An API for an organization administrator to manage organizations, accounts and users
+  termsOfService: https://www.docusign.com/company/terms-and-conditions/developers
+  contact:
+    name: DocuSign Developer Center
+    url: https://developers.docusign.com
+    email: devcenter@docusign.com
+  version: v2.1
+servers:
+- url: https://api.docusign.net/Management
+tags:
+- name: Users
+  description: Methods to manage users in an account.
+paths:
+  /v2/organizations/{organizationId}/users/email_addresses:
+    post:
+      tags:
+      - Users
+      summary: Docusign Updates a user's email address.
+      description: 'Updates a user''s email address.
+
+
+        - Required scopes: `user_write`
+
+
+        '
+      operationId: User_Users_UpdateEmailAddressesV2
+      parameters:
+      - name: organizationId
+        in: path
+        description: The organization ID Guid
+        required: true
+        schema:
+          type: string
+          format: uuid
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateUsersEmailRequest'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UsersUpdateResponse'
+      security:
+      - accessCode:
+        - user_write
+      x-ds-methodname: updateEmailAddress
+      x-ds-method: updateEmailAddress
+      x-ds-service: Users
+      x-ds-in-sdk: true
+      x-codegen-request-body-name: request
+  /v2/organizations/{organizationId}/users:
+    get:
+      tags:
+      - Users
+      summary: Docusign Returns information about the users in an organization.
+      description: 'Returns information about the users in an organization.
+
+
+
+        - Required scopes: `user_read`
+
+
+        You must include at least one of the following query parameters in the request:
+
+
+        - `account_id`: The id of an account associated with the organization.
+
+        - `organization_reserved_domain_id`: The id of one of the organization''s reserved domains.
+
+        - `email`: An email address associated with the users that you want to return.'
+      operationId: OrganizationUser_OrganizationUsers_GetV2
+      parameters:
+      - name: organizationId
+        in: path
+        description: The organization ID Guid
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: start
+        in: query
+        description: Index of first item to include in the response. The default value is 0.
+        schema:
+          type: integer
+          format: int32
+      - name: take
+        in: query
+        description: Page size of the response. The default value is 20.
+        schema:
+          type: integer
+          format: int32
+      - name: end
+        in: query
+        description: Index of the last item to include in the response. Ignored if `take` parameter is specified.
+        schema:
+          type: integer
+          format: int32
+      - name: email
+        in: query
+        description: Email address of the desired user. At least one of `email`, `account_id` or `organization_reserved_domain_id` must be specified.
+        schema:
+          type: string
+      - name: email_user_name_like
+        in: query
+        description: Selects users by pattern matching on the user's email address
+        schema:
+          type: string
+      - name: status
+        in: query
+        description: Status.
+        schema:
+          type: string
+      - name: membership_status
+        in: query
+        description: 'The user''s membership status. One of:
+
+
+          - `activation_required`
+
+          - `activation_sent`
+
+          - `active`
+
+          - `closed`
+
+          - `disabled`
+
+          '
+        schema:
+          type: string
+      - name: account_id
+        in: query
+        description: Select users that are members of the specified account. At least one of `email`, `account_id` or `organization_reserved_domain_id` must be specified.
+        schema:
+          type: string
+          format: uuid
+      - name: organization_reserved_domain_id
+        in: query
+        description: Select users that are in the specified domain. At least one of `email`, `account_id` or `organization_reserved_domain_id` must be specified.
+        schema:
+          type: string
+          format: uuid
+      - name: last_modified_since
+        in: query
+        description: Select users whose data have been modified since the date specified. `account_id` or `organization_reserved_domain_id` must be specified.
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrganizationUsersResponse'
+      security:
+      - accessCode:
+        - user_read
+      x-ds-methodname: getUsers
+      x-ds-method: getUsers
+      x-ds-service: Users
+      x-ds-in-sdk: true
+  /v2/accounts/{accountId}/users:
+    get:
+      tags:
+      - Users
+      summary: Docusign Retrieves the list of users for the specified account.
+      description: 'Retrieves the list of users for the specified account.
+
+
+        The response returns the list of users for the account along with the information about the result set. If the `additional_info` query was added to the endpoint and set to **true**, the full user information is returned for each user'
+      operationId: Users_GetUsers
+      parameters:
+      - name: accountId
+        in: path
+        description: The external account number (int) or account id GUID.
+        required: true
+        schema:
+          type: string
+      - name: additional_info
+        in: query
+        description: When set to **true**, the full list of user information is returned for each user in the account.
+        schema:
+          type: string
+      - name: count
+        in: query
+        description: 'Number of records to return. The number must be greater than 0 and less than or equal to 100. '
+        schema:
+          type: string
+      - name: email
+        in: query
+        schema:
+          type: string
+      - name: email_substring
+        in: query
+        description: Filters the returned user records by the email address or a sub-string of email address.
+        schema:
+          type: string
+      - name: group_id
+        in: query
+        description: Filters user records returned by one or more group Id's.
+        schema:
+          type: string
+      - name: login_status
+        in: query
+        schema:
+          type: string
+      - name: not_group_id
+        in: query
+        schema:
+          type: string
+      - name: start_position
+        in: query
+        description: 'Starting value for the list. '
+        schema:
+          type: string
+      - name: status
+        in: query
+        description: 'Filters the user records by account status. One of:
+
+
+          * ActivationRequired
+
+          * ActivationSent
+
+          * Active
+
+          * Closed
+
+          * Disabled
+
+          '
+        schema:
+          type: string
+      - name: user_name_substring
+        in: query
+        description: Filters the user records returned by the user name or a sub-string of user name.
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Successful response.
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/userInformationList'
+        '400':
+          description: Error encountered.
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/errorDetails'
+      deprecated: false
+      x-ds-methodname: list
+      x-ds-method: list
+      x-ds-service: Users
+      x-ds-in-sdk: true
+    put:
+      tags:
+      - Users
+      summary: Docusign Change one or more user in the specified account.
+      operationId: Users_PutUsers
+      parameters:
+      - name: accountId
+        in: path
+        description: The external account number (int) or account id GUID.
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/userInformationList'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/userInformationList'
+        required: false
+      responses:
+        '200':
+          description: Successful response.
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/userInformationList'
+        '400':
+          description: Error encountered.
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/errorDetails'
+      deprecated: false
+      x-ds-methodname: updateUsers
+      x-ds-method: updateList
+      x-ds-service: Users
+      x-ds-in-sdk: true
+      x-codegen-request-body-name: userInformationList
+    post:
+      tags:
+      - Users
+      summary: Docusign Adds news user to the specified account.
+      description: "Adds new users to an account.\n\nThe body of this request\nis an array\nof [`Users`][usersobject] objects.\nFor each new user,\nyou must provide at least\nthe `userName`\nand\nan `email`.\n\nThe\n[`userSettings` property](#user-settings)\nis a [name/value][nameValue]\nlist that specifies the actions users can\nperform.\nIn the example below,\nTal Mason\nwill be able to send envelopes,\nand the activation email\nwill be in French\nbecause the `locale`\nis set to `fr`.\n\n\n```\nPOST /restapi/v2/accounts/{accountId}/users\nContent-Type: application/json\n```\n```\n{\n  \"newUsers\": [\n    {\n      \"userName\": \"Claire Horace\",\n      \"email\": \"claire@example.com.com\"\n    },\n    {\n      \"userName\": \"Tal Mason\",\n      \"email\": \"tal@example.com.com\",\n      \"userSettings\": [\n        {\n          \"name\": \"canSendEnvelope\",\n          \"value\": \"true\"\n        },\n        {\n          \"name\": \"locale\",\n          \"value\": \"fr\"\n        }\n      ]\n    }\n  ]\n}\n```\n\n\nA successful response\nis a\n`newUsers` array\nwith information about\nthe newly created users.\nIf there was problem creating a user,\nthat entry will contain\nan `errorDetails` property\nthat describes what went wrong.\n\n```json\n{\n  \"newUsers\": [\n    {\n      \"userId\": \"e064a4fc-c0da-c0c0-95fa-8bac87ede98a\",\n      \"uri\": \"/users/e064a4fc-c0da-c0c0-95fa-8bac87ede98a\",\n      \"email\": \"claire@example.com\",\n      \"userName\": \"Claire Horace\",\n      \"createdDateTime\": \"0001-01-01T08:00:00.0000000Z\",\n      \"errorDetails\": {\n        \"errorCode\": \"USER_ALREADY_EXISTS_IN_ACCOUNT\",\n        \"message\": \"Username and email combination already exists for this account.\"\n      }\n    },\n    {\n      \"userId\": \"a0e6c64b-feed-cafe-9af0-805ff3c8cffd\",\n      \"uri\": \"/users/a0e6c64b-feed-cafe-9af0-805ff3c8cffd\",\n      \"email\": \"tal@example.com\",\n      \"userName\": \"Tal Mason\",\n      \"userStatus\": \"ActivationSent\",\n      \"createdDateTime\": \"2017-09-15T05:54:36.1265683Z\"\n    }\n  ]\n}\n```\n\n\n### User Settings\n\nUser settings\nspecify the capabilities\na newly created user will have.\n\n\n| Name                             | Value   | Authorization Requried                                         | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             |\n| :------------------------------- | :------ | :------------------------------------------------------------- | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |\n| allowBulkRecipients              | Boolean | Admin                                                          | When **true**, this user can use the bulk send functionality.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           |\n| allowRecipientLanguageSelection  | Boolean | Admin                                                          | When **true**, this user can set the language used in the standard email format for a recipient when creating an envelope.                                                                                                                                                                                                                                                                                                                                                                                                                                                              |\n| allowSendOnBehalfOf              | Boolean | Admin                                                          | When **true**, this user can send envelopes 'on behalf of' other users through the API.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 |\n| apiAccountWideAccess             | Boolean | Admin                                                          | When **true**, this user can send and manage envelopes for the entire account using the DocuSign API.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |\n| canEditSharedAddressBook         | String  | Admin                                                          | Sets the address book usage and management rights for the user. Possible values: <ul> <li><code>none</code></li> <li><code>use_only_shared</code></li> <li><code>use_private_and_shared</code></li> <li><code>share</code></li> </ul>                                                                                                                                                                                                                                                                                                                                                   |\n| canManageAccount                 | Boolean | Admin &amp; not setting for self                               | When **true**, this user can manage account settings, manage user settings, add users, and remove users.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                |\n| canManageTemplates               | String  | Admin &amp; not setting for self                               | Sets the template usage and management rights for the user. Possible values: <ul> <li><code>none</code></li> <li><code>use</code></li> <li><code>create</code></li> <li><code>share</code></li> </ul>                                                                                                                                                                                                                                                                                                                                                                                   |\n| canSendAPIRequests               | Boolean | Admin &amp; [account setting][accountsettings] `usesAPI` is set| Only needed if integrator key is not used. When **true**, this user can send and manage envelopes using the DocuSign API.                                                                                                                                                                                                                                                                                                                                                                                                                                                               |\n| canSendEnvelope                  | Boolean | Admin &amp; not setting for self                               | When **true**, this user can send envelopes though the DocuSign Console.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                |\n| enableDSPro                      | Boolean | SysAdmin                                                       | When **true**, this user can send and manage envelopes from the DocuSign Desktop Client.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                |\n| enableSequentialSigningAPI       | Boolean | SysAdmin                                                       | When **true**, this user can define the routing order of recipients for envelopes sent using the DocuSign API.                                                                                                                                                                                                                                                                                                                                                                                                                                                                          |\n| enableSequentialSigningUI        | Boolean | SysAdmin                                                       | When **true**, this user can define the routing order of recipients while sending documents for signature.                                                                                                                                                                                                                                                                                                                                                                                                                                                                              |\n| enableSignerAttachments          | Boolean | Admin                                                          | When **true**, this user can add requests for attachments from signers while sending documents.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         |\n| enableSignOnPaperOverride        | Boolean | Admin                                                          | When **true**, this user can override the account setting that determines if signers may sign their documents on paper as an option to signing electronically.                                                                                                                                                                                                                                                                                                                                                                                                                          |\n| enableTransactionPoint           | Boolean | SysAdmin                                                       | When **true**, this user can select an envelope from their member console and upload the envelope documents to TransactionPoint.                                                                                                                                                                                                                                                                                                                                                                                                                                                        |\n| enableVaulting                   | Boolean | Admin                                                          | When **true**, this user can use electronic vaulting for documents.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     |\n| locale                           | String  | Admin                                                          | Sets the default language for the user. The supported languages are: <ul> <li>Chinese Simplified: <code>zh_CN</code></li> <li>Chinese Traditional: <code>zh_TW</code></li> <li>Dutch: <code>nl</code></li> <li>English US: <code>en</code></li> <li>French: <code>fr</code></li> <li>German: <code>de</code></li> <li>Italian: <code>it</code></li> <li>Japanese: <code>ja</code></li> <li>Korean: <code>ko</code></li> <li>Portuguese: <code>pt</code></li> <li>Portuguese (Brazil): <code>pt_BR</code></li> <li>Russian: <code>ru</code></li> <li>Spanish: <code>es</code></li> </ul> |\n| powerFormAdmin                   | Boolean | Admin                                                          | When **true**, this user can create, manage and download the PowerForms documents.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |\n| powerFormUser                    | Boolean | Admin                                                          | When **true**, this user can view and download PowerForms documents.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    |\n| selfSignedRecipientEmailDocument | String  | Admin                                                          | Sets how self-signed documents are presented to the email recipients. This can only be changed if the <code>selfSignedRecipientEmailDocumentUserOverride</code> <a href=\"https://developers.docusign.com/esign-rest-api/reference/Accounts/Accounts/create/#account-settings\">account setting</a> is <strong>true</strong>. This setting overrides the account setting. Possibe values are: <ul> <li><code>include_pdf</code>: A PDF of the completed document is attached to the email.</li> <li><code>include_link</code>: A secure link to the self-signed documents is included in the email.</li> </ul>                      |\n| vaultingMode                     | String  | Admin                                                          | Sets the electronic vaulting mode for the user. Possible values: <ul> <li><code>none</code></li> <li><code>estored</code></li> <li><code>electronic_original</code></li> </ul>                                                                                                                                                                                                                                                                                                                                                                                                          |\n\n[accountsettings]:  https://developers.docusign.com/esign-rest-api/reference/Accounts/Accounts/create/#account-settings\n[nameValue]:        #/definitions/nameValue\n[usersobject]:      #/definitions/Users\n"
+      operationId: Users_PostUsers
+      parameters:
+      - name: accountId
+        in: path
+        description: The external account number (int) or account id GUID.
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/newUsersDefinition'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/newUsersDefinition'
+        required: false
+      responses:
+        '201':
+          description: Successful response.
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/newUsersSummary'
+        '400':
+          description: Error encountered.
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/errorDetails'
+      deprecated: false
+      x-ds-methodname: create
+      x-ds-method: create
+      x-ds-service: Users
+      x-ds-in-sdk: true
+      x-codegen-request-body-name: newUsersDefinition
+    delete:
+      tags:
+      - Users
+      summary: Docusign Removes users account privileges.
+      description: 'This closes one or more user records in the account. Users are never deleted from an account, but closing a user prevents them from using account functions.
+
+
+        The response returns whether the API execution was successful (200 - OK) or  if it failed. The response contains a user structure similar to the request and includes the user changes. If an error occurred during the DELETE operation for any of the users, the response for that user contains an `errorDetails` node with `errorCode` and `message` properties.'
+      operationId: Users_DeleteUsers
+      parameters:
+      - name: accountId
+        in: path
+        description: The external account number (int) or account id GUID.
+        required: true
+        schema:
+          type: string
+      - name: delete
+        in: query
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/userInfoList'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/userInfoList'
+        required: false
+      responses:
+        '200':
+          description: Successful response.
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/usersResponse'
+        '400':
+          description: Error encountered.
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/errorDetails'
+      deprecated: false
+      x-ds-methodname: delete
+      x-ds-method: delete
+      x-ds-service: Users
+      x-ds-in-sdk: true
+      x-codegen-request-body-name: userInfoList
+  /v2/accounts/{accountId}/users/{userId}:
+    get:
+      tags:
+      - Users
+      summary: Docusign Gets the user information for a specified user.
+      description: "Retrieves the user information for the specified user. \n\nTo return additional user information that details the last login date, login status, and the user's password expiration date, set the optional `additional_info` query string parameter to **true**."
+      operationId: User_GetUser
+      parameters:
+      - name: accountId
+        in: path
+        description: The external account number (int) or account id GUID.
+        required: true
+        schema:
+          type: string
+      - name: userId
+        in: path
+        description: 'The user ID of the user being accessed. Generally this is the user ID of the authenticated user, but if the authenticated user is an Admin on the account, this may be another user the Admin user is accessing. **Note**: For the [GET /v2/accounts/{accountId}/envelopes](https://developers.docusign.com/esign-rest-api/reference/Envelopes/Envelopes/listStatusChanges/#envelopesInformation) method, the `user_id` query parameter is not implemented and should not be used.'
+        required: true
+        schema:
+          type: string
+      - name: additional_info
+        in: query
+        description: When set to **true**, the full list of user information is returned for each user in the account.
+        schema:
+          type: string
+      - name: email
+        in: query
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Successful response.
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/userInformation'
+        '400':
+          description: Error encountered.
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/errorDetails'
+      deprecated: false
+      x-ds-methodname: getInformation
+      x-ds-method: get
+      x-ds-service: Users
+      x-ds-in-sdk: true
+    put:
+      tags:
+      - Users
+      summary: Docusign Updates the specified user information.
+      operationId: User_PutUser
+      parameters:
+      - name: accountId
+        in: path
+        description: The external account number (int) or account id GUID.
+        required: true
+        schema:
+          type: string
+      - name: userId
+        in: path
+        description: 'The user ID of the user being accessed. Generally this is the user ID of the authenticated user, but if the authenticated user is an Admin on the account, this may be another user the Admin user is accessing. **Note**: For the [GET /v2/accounts/{accountId}/envelopes](https://developers.docusign.com/esign-rest-api/reference/Envelopes/Envelopes/listStatusChanges/#envelopesInformation) method, the `user_id` query parameter is not implemented and should not be used.'
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/userInformation'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/userInformation'
+        required: false
+      responses:
+        '200':
+          description: Successful response.
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/userInformation'
+        '400':
+          description: Error encountered.
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/errorDetails'
+      deprecated: false
+      x-ds-methodname: updateUser
+      x-ds-method: update
+      x-ds-service: Users
+      x-ds-in-sdk: true
+      x-codegen-request-body-name: userInformation
+    delete:
+      tags:
+      - Users
+      summary: Docusign Removes a user from a company account.
+      description: "Removes the specified user from the specified account.\n\n## Permissions\n\nTo remove a user who has a lower access level, you must have the `canRemoveCompanyMemberLowerAccessLevel` permission set to **true.** \n\nTo remove a user who has the same access level, you must have the `canRemoveCompanyMemberSameAccessLevel` permission set to **true.** "
+      operationId: Users_RemoveUser
+      parameters:
+      - name: userId
+        in: path
+        description: The ID of the user to remove.
+        required: true
+        schema:
+          type: integer
+          format: int32
+      - name: accountId
+        in: path
+        description: The globally unique identifier (GUID) for the account.
+        required: true
+        schema:
+          type: string
+      responses:
+        '204':
+          description: The User was successfully removed.
+          content: {}
+        '400':
+          description: The User could not be removed.
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            text/xml:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '401':
+          description: Not authorized to make this request.
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            text/xml:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+      x-ds-methodname: RemoveUser
+      x-ds-method: RemoveUser
+      x-ds-service: Users
+      x-ds-in-sdk: true
+  /v2/accounts/{accountId}/users/{userId}/profile/image:
+    get:
+      tags:
+      - Users
+      summary: Docusign Retrieves the user profile image for the specified user.
+      description: 'Retrieves the user profile picture for the specified user. The image is returned in the same format as uploaded.
+
+
+        The userId parameter specified in the endpoint must match the authenticated user''s user ID and the user must be a member of the specified account.
+
+
+        If successful, the response returns a 200 - OK and the user profile image.'
+      operationId: UserProfileImage_GetUserProfileImage
+      parameters:
+      - name: accountId
+        in: path
+        description: The external account number (int) or account id GUID.
+        required: true
+        schema:
+          type: string
+      - name: userId
+        in: path
+        description: 'The user ID of the user being accessed. Generally this is the user ID of the authenticated user, but if the authenticated user is an Admin on the account, this may be another user the Admin user is accessing. **Note**: For the [GET /v2/accounts/{accountId}/envelopes](https://developers.docusign.com/esign-rest-api/reference/Envelopes/Envelopes/listStatusChanges/#envelopesInformation) method, the `user_id` query parameter is not implemented and should not be used.'
+        required: true
+        schema:
+          type: string
+      - name: encoding
+        in: query
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Successful response.
+          content:
+            image/gif:
+              schema:
+                type: string
+                format: binary
+        '400':
+          description: Error encountered.
+          content:
+            image/gif:
+              schema:
+                $ref: '#/components/schemas/errorDetails'
+      deprecated: false
+      x-ds-methodname: getProfileImage
+      x-ds-method: getProfileImage
+      x-ds-service: Users
+      x-ds-in-sdk: true
+    put:
+      tags:
+      - Users
+      summary: Docusign Updates the user profile image for a specified user.
+      description: 'Updates the user profile image by uploading an image to the user profile.
+
+
+        The supported image formats are: gif, png, jpeg, and bmp. The file must be less than 200K. For best viewing results, DocuSign recommends that the image is no more than 79 pixels wide and high.'
+      operationId: UserProfileImage_PutUserProfileImage
+      parameters:
+      - name: accountId
+        in: path
+        description: The external account number (int) or account id GUID.
+        required: true
+        schema:
+          type: string
+      - name: userId
+        in: path
+        description: 'The user ID of the user being accessed. Generally this is the user ID of the authenticated user, but if the authenticated user is an Admin on the account, this may be another user the Admin user is accessing. **Note**: For the [GET /v2/accounts/{accountId}/envelopes](https://developers.docusign.com/esign-rest-api/reference/Envelopes/Envelopes/listStatusChanges/#envelopesInformation) method, the `user_id` query parameter is not implemented and should not be used.'
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Successful response.
+          content: {}
+        '400':
+          description: Error encountered.
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/errorDetails'
+      deprecated: false
+      x-ds-methodname: updateProfileImage
+      x-ds-method: updateProfileImage
+      x-ds-service: Users
+      x-ds-in-sdk: true
+    delete:
+      tags:
+      - Users
+      summary: Docusign Deletes the user profile image for the specified user.
+      description: 'Deletes the user profile image from the  specified user''s profile.
+
+
+        The userId parameter specified in the endpoint must match the authenticated user''s user ID and the user must be a member of the specified account.'
+      operationId: UserProfileImage_DeleteUserProfileImage
+      parameters:
+      - name: accountId
+        in: path
+        description: The external account number (int) or account id GUID.
+        required: true
+        schema:
+          type: string
+      - name: userId
+        in: path
+        description: 'The user ID of the user being accessed. Generally this is the user ID of the authenticated user, but if the authenticated user is an Admin on the account, this may be another user the Admin user is accessing. **Note**: For the [GET /v2/accounts/{accountId}/envelopes](https://developers.docusign.com/esign-rest-api/reference/Envelopes/Envelopes/listStatusChanges/#envelopesInformation) method, the `user_id` query parameter is not implemented and should not be used.'
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Successful response.
+          content: {}
+        '400':
+          description: Error encountered.
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/errorDetails'
+      deprecated: false
+      x-ds-methodname: deleteProfileImage
+      x-ds-method: deleteProfileImage
+      x-ds-service: Users
+      x-ds-in-sdk: true
+  /v2/accounts/{accountId}/users/{userId}/settings:
+    get:
+      tags:
+      - Users
+      summary: Docusign Gets the user account settings for a specified user.
+      description: 'Retrieves a list of the account settings and email notification information for the specified user.
+
+
+        The response returns the account setting name/value information and the email notification settings for the specified user. For more information about the different user settings, see the [ML:userSettings list].'
+      operationId: UserSettings_GetUserSettings
+      parameters:
+      - name: accountId
+        in: path
+        description: The external account number (int) or account id GUID.
+        required: true
+        schema:
+          type: string
+      - name: userId
+        in: path
+        description: 'The user ID of the user being accessed. Generally this is the user ID of the authenticated user, but if the authenticated user is an Admin on the account, this may be another user the Admin user is accessing. **Note**: For the [GET /v2/accounts/{accountId}/envelopes](https://developers.docusign.com/esign-rest-api/reference/Envelopes/Envelopes/listStatusChanges/#envelopesInformation) method, the `user_id` query parameter is not implemented and should not be used.'
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Successful response.
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/userSettingsInformation'
+        '400':
+          description: Error encountered.
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/errorDetails'
+      deprecated: false
+      x-ds-methodname: getSettings
+      x-ds-method: getSettings
+      x-ds-service: Users
+      x-ds-in-sdk: true
+    put:
+      tags:
+      - Users
+      summary: Docusign Updates the user account settings for a specified user.
+      description: Updates the account settings list and email notification types for the specified user.
+      operationId: UserSettings_PutUserSettings
+      parameters:
+      - name: accountId
+        in: path
+        description: The external account number (int) or account id GUID.
+        required: true
+        schema:
+          type: string
+      - name: userId
+        in: path
+        description: 'The user ID of the user being accessed. Generally this is the user ID of the authenticated user, but if the authenticated user is an Admin on the account, this may be another user the Admin user is accessing. **Note**: For the [GET /v2/accounts/{accountId}/envelopes](https://developers.docusign.com/esign-rest-api/reference/Envelopes/Envelopes/listStatusChanges/#envelopesInformation) method, the `user_id` query parameter is not implemented and should not be used.'
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/userSettingsInformation'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/userSettingsInformation'
+        required: false
+      responses:
+        '200':
+          description: Successful response.
+          content: {}
+        '400':
+          description: Error encountered.
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/errorDetails'
+      deprecated: false
+      x-ds-methodname: updateSettings
+      x-ds-method: updateSettings
+      x-ds-service: Users
+      x-ds-in-sdk: true
+      x-codegen-request-body-name: userSettingsInformation
+  /v2/accounts/{accountId}/users/invite_user:
+    post:
+      tags:
+      - Users
+      summary: Docusign Invites a user to a company account.
+      description: 'Invites a new user to join a company account. You specify the custom role and access level that you want to give to the user in the `invitee` request body.
+
+
+        ## Permissions
+
+
+        To invite users to a company, you must be either a Default Admin or another authorized user who has access to all of the locations to which the new user is being invited and one of the following `userPermissions` set to **true:**
+
+
+        - `canAddMemberAndSetRoleLowerAccessLevel`: Users can add other users who have a lower access level than their own and set those users'' roles (in offices or regions that they oversee).
+
+        - `canAddMemberAndSetRoleSameAccessLevel`: Users can add other users who have the same access level as their own or lower and set those users'' roles (in offices or regions that they oversee or belong to).
+
+
+        **Important:** DocuSign strongly recommends that you set up custom roles for your company before inviting users. If you do not, all new users will be added as administrators. For more information, see [Roles][Roles].
+
+
+        [Roles]: /docs/rooms-api/reference/Roles/Roles/'
+      operationId: Users_InviteUser
+      parameters:
+      - name: accountId
+        in: path
+        description: The globally unique identifier (GUID) for the account.
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json-patch+json:
+            schema:
+              $ref: '#/components/schemas/UserToInvite'
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserToInvite'
+          text/json:
+            schema:
+              $ref: '#/components/schemas/UserToInvite'
+          application/*+json:
+            schema:
+              $ref: '#/components/schemas/UserToInvite'
+        required: false
+      responses:
+        '201':
+          description: User successfully invited.
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/User'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/User'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/User'
+            text/xml:
+              schema:
+                $ref: '#/components/schemas/User'
+        '400':
+          description: Bad request. See ErrorCode and Message for details
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            text/xml:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '401':
+          description: Not authorized to make this request.
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            text/xml:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+      x-ds-methodname: InviteUser
+      x-ds-method: InviteUser
+      x-ds-service: Users
+      x-ds-in-sdk: true
+      x-codegen-request-body-name: body
+  /v2/accounts/{accountId}/users/{userId}/reinvite:
+    post:
+      tags:
+      - Users
+      summary: Docusign Reinvites a user to join a company account.
+      description: 'Reinvites an unactivated user to join a company account.
+
+
+        Invitations expire after 30 days and can no longer be accepted. Use this method to send a new copy of an invitation to a pending user.'
+      operationId: Users_ReinviteUser
+      parameters:
+      - name: userId
+        in: path
+        description: The ID of the user to reinvite.
+        required: true
+        schema:
+          type: integer
+          format: int32
+      - name: accountId
+        in: path
+        description: The globally unique identifier (GUID) for the account.
+        required: true
+        schema:
+          type: string
+      responses:
+        '204':
+          description: User successfully reinvited.
+          content: {}
+        '400':
+          description: Bad request. See ErrorCode and Message for details
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            text/xml:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '401':
+          description: Not authorized to make this request.
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            text/xml:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+      x-ds-methodname: ReinviteUser
+      x-ds-method: ReinviteUser
+      x-ds-service: Users
+      x-ds-in-sdk: true
+  /v2/accounts/{accountId}/users/{userId}/add_to_office:
+    post:
+      tags:
+      - Users
+      summary: Docusign Adds a user to an office.
+      description: 'Adds an existing user to a single office. You specify the office to which you want to add the user in the `designatedOffice` request body.
+
+
+        To add a user to multiple offices, you must make this call separately for each office.
+
+
+        **Note:** The `accessLevel` of the user that you are adding must be `contributor` or `office`.
+
+
+        ## Permissions
+
+
+        You must have at least one of the following permissions set to **true,** depending on the level of the user that you want to add or remove:
+
+
+        - `canManageMemberLowerAccessLevel`: Users can add and remove other users who have a lower access level than their own (in offices or regions that they oversee) from a region or office. They can also modify those users.
+
+        - `canManageMemberSameAccessLevel`: Users can add and remove other users who have the same access level as their own (in offices or regions that they oversee or belong to) from a region or office.  They can also modify those users.'
+      operationId: Users_AddUserToOffice
+      parameters:
+      - name: userId
+        in: path
+        description: The ID of the user to add.
+        required: true
+        schema:
+          type: integer
+          format: int32
+      - name: accountId
+        in: path
+        description: The globally unique identifier (GUID) for the account.
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json-patch+json:
+            schema:
+              $ref: '#/components/schemas/DesignatedOffice'
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DesignatedOffice'
+          text/json:
+            schema:
+              $ref: '#/components/schemas/DesignatedOffice'
+          application/*+json:
+            schema:
+              $ref: '#/components/schemas/DesignatedOffice'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/DesignatedOffice'
+          text/xml:
+            schema:
+              $ref: '#/components/schemas/DesignatedOffice'
+          application/*+xml:
+            schema:
+              $ref: '#/components/schemas/DesignatedOffice'
+        required: false
+      responses:
+        '204':
+          description: User successfully added to the office.
+          content: {}
+        '400':
+          description: Bad request. See ErrorCode and Message for details
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            text/xml:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '401':
+          description: Not authorized to make this request.
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            text/xml:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+      x-ds-methodname: AddUserToOffice
+      x-ds-method: AddUserToOffice
+      x-ds-service: Users
+      x-ds-in-sdk: true
+      x-codegen-request-body-name: body
+  /v2/accounts/{accountId}/users/{userId}/remove_from_office:
+    post:
+      tags:
+      - Users
+      summary: Docusign Removes a user from an office.
+      description: 'Removes a user from a single office. You specify the office from which you want to remove the user in the `designatedOffice` request body.
+
+
+        The user still maintains their other office, region, company, and account associations.
+
+
+        **Note:** You cannot remove a user from their default office. You must first assign the user a different default office by using the [Users: updateUser][updateUser] method.
+
+
+        [updateUser]: /docs/rooms-api/reference/Users/Users/UpdateUser/
+
+
+        ## Permissions
+
+
+        You must have at least one of the following permissions set to **true,** depending on the level of the user that you want to add or remove:
+
+
+        - `canManageMemberLowerAccessLevel`: Users can add or remove other users who have a lower access level than their own (in offices or regions that they oversee) from a region or office.
+
+        - `canManageMemberSameAccessLevel`: Users can modify other users who have the same access level as their own (in offices or regions that they oversee or belong to) from a region or office.'
+      operationId: Users_RemoveUserFromOffice
+      parameters:
+      - name: userId
+        in: path
+        description: The ID of the user to remove.
+        required: true
+        schema:
+          type: integer
+          format: int32
+      - name: accountId
+        in: path
+        description: The globally unique identifier (GUID) for the account.
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json-patch+json:
+            schema:
+              $ref: '#/components/schemas/DesignatedOffice'
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DesignatedOffice'
+          text/json:
+            schema:
+              $ref: '#/components/schemas/DesignatedOffice'
+          application/*+json:
+            schema:
+              $ref: '#/components/schemas/DesignatedOffice'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/DesignatedOffice'
+          text/xml:
+            schema:
+              $ref: '#/components/schemas/DesignatedOffice'
+          application/*+xml:
+            schema:
+              $ref: '#/components/schemas/DesignatedOffice'
+        required: false
+      responses:
+        '204':
+          description: User successfully removed from the office.
+          content: {}
+        '400':
+          description: Bad request. See ErrorCode and Message for details
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            text/xml:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '401':
+          description: Not authorized to make this request.
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            text/xml:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+      x-ds-methodname: RemoveUserFromOffice
+      x-ds-method: RemoveUserFromOffice
+      x-ds-service: Users
+      x-ds-in-sdk: true
+      x-codegen-request-body-name: body
+  /v2/accounts/{accountId}/users/{userId}/add_to_region:
+    post:
+      tags:
+      - Users
+      summary: Docusign Adds a user to a region.
+      description: 'Adds an existing user to a region. You specify the region to which you want to add the user in the `designatedRegion` request body.
+
+
+        To add a user to multiple regions, you must make this call separately for each region.
+
+
+        **Note:** The `accessLevel` of the user that you are adding must be `region`.
+
+
+        ## Permissions
+
+
+        You must have at least one of the following permissions set to **true,** depending on the level of the user that you want to add or remove:
+
+
+        - `canManageMemberLowerAccessLevel`: Users can add or remove other users who have a lower access level than their own (in offices or regions that they oversee).
+
+        - `canManageMemberSameAccessLevel`: Users can modify other users who have the same access level as their own (in offices or regions that they oversee or belong to).'
+      operationId: Users_AddUserToRegion
+      parameters:
+      - name: userId
+        in: path
+        description: The ID of the user to add.
+        required: true
+        schema:
+          type: integer
+          format: int32
+      - name: accountId
+        in: path
+        description: The globally unique identifier (GUID) for the account.
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json-patch+json:
+            schema:
+              $ref: '#/components/schemas/DesignatedRegion'
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DesignatedRegion'
+          text/json:
+            schema:
+              $ref: '#/components/schemas/DesignatedRegion'
+          application/*+json:
+            schema:
+              $ref: '#/components/schemas/DesignatedRegion'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/DesignatedRegion'
+          text/xml:
+            schema:
+              $ref: '#/components/schemas/DesignatedRegion'
+          application/*+xml:
+            schema:
+              $ref: '#/components/schemas/DesignatedRegion'
+        required: false
+      responses:
+        '204':
+          description: User successfully added to the region.
+          content: {}
+        '400':
+          description: Bad request. See ErrorCode and Message for details
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            text/xml:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '401':
+          description: Not authorized to make this request.
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            text/xml:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+      x-ds-methodname: AddUserToRegion
+      x-ds-method: AddUserToRegion
+      x-ds-service: Users
+      x-ds-in-sdk: true
+      x-codegen-request-body-name: body
+  /v2/accounts/{accountId}/users/{userId}/remove_from_region:
+    post:
+      tags:
+      - Users
+      summary: Docusign Removes a user from a region.
+      description: 'Removes a user from a single region. You specify the region from which you want to remove the user in the `designatedRegion` request body.
+
+
+        The user still maintains their other region, company, and account associations.
+
+
+        ## Permissions
+
+
+        You must have at least one of the following permissions set to **true,** depending on the level of the user that you want to add or remove:
+
+
+        - `canManageMemberLowerAccessLevel`: Users can add or remove other users who have a lower access level than their own (in offices or regions that they oversee) from a region or office.
+
+        - `canManageMemberSameAccessLevel`: Users can modify other users who have the same access level as their own (in offices or regions that they oversee or belong to) from a region or office.
+
+
+        **Note:** You cannot remove a user from the region that contains their default office. You must first change the user''s default office by using the Users: UpdateUser method.'
+      operationId: Users_RemoveUserFromRegion
+      parameters:
+      - name: userId
+        in: path
+        description: The ID of the user to remove.
+        required: true
+        schema:
+          type: integer
+          format: int32
+      - name: accountId
+        in: path
+        description: The globally unique identifier (GUID) for the account.
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json-patch+json:
+            schema:
+              $ref: '#/components/schemas/DesignatedRegion'
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DesignatedRegion'
+          text/json:
+            schema:
+              $ref: '#/components/schemas/DesignatedRegion'
+          application/*+json:
+            schema:
+              $ref: '#/components/schemas/DesignatedRegion'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/DesignatedRegion'
+          text/xml:
+            schema:
+              $ref: '#/components/schemas/DesignatedRegion'
+          application/*+xml:
+            schema:
+              $ref: '#/components/schemas/DesignatedRegion'
+        required: false
+      responses:
+        '204':
+          description: User successfully removed from the region.
+          content: {}
+        '400':
+          description: Bad request. See ErrorCode and Message for details
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            text/xml:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '401':
+          description: Not authorized to make this request.
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            text/xml:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+      x-ds-methodname: RemoveUserFromRegion
+      x-ds-method: RemoveUserFromRegion
+      x-ds-service: Users
+      x-ds-in-sdk: true
+      x-codegen-request-body-name: body
+  /v2/accounts/{accountId}/users/{userId}/lock:
+    post:
+      tags:
+      - Users
+      summary: Docusign Locks a user's account.
+      description: "Locks the account of the specified user. Use the `reason` property in the request body to specify why the account was locked.\n\n## Permissions\n\nTo lock a user who has a lower access level than you, you must have the `canManageMemberLowerAccessLevel` permission set to **true.**\nTo lock a user who has the same access level as you, you must have the `canManageMemberSameAccessLevel` permission set to **true** \n"
+      operationId: Users_LockUser
+      parameters:
+      - name: userId
+        in: path
+        description: ID of the user to lock.
+        required: true
+        schema:
+          type: integer
+          format: int32
+      - name: accountId
+        in: path
+        description: The globally unique identifier (GUID) for the account.
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json-patch+json:
+            schema:
+              $ref: '#/components/schemas/LockedOutDetails'
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LockedOutDetails'
+          text/json:
+            schema:
+              $ref: '#/components/schemas/LockedOutDetails'
+          application/*+json:
+            schema:
+              $ref: '#/components/schemas/LockedOutDetails'
+        required: false
+      responses:
+        '204':
+          description: User has been successfully locked out.
+          content: {}
+        '400':
+          description: Bad request. See ErrorCode and Message for details
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            text/xml:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '401':
+          description: Not authorized to make this request.
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            text/xml:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+      x-ds-methodname: LockUser
+      x-ds-method: LockUser
+      x-ds-service: Users
+      x-ds-in-sdk: true
+      x-codegen-request-body-name: body
+  /v2/accounts/{accountId}/users/{userId}/unlock:
+    post:
+      tags:
+      - Users
+      summary: Docusign Unlocks  a user's account.
+      description: 'Unlocks the account of  the specified user.
+
+
+        ## Permissions
+
+
+        - To unlock a user who has a lower access level than you, you must have the `canManageMemberLowerAccessLevel` permission set to **true.**
+
+        - To unlock a user who has the same access level as you, you must have the `canManageMemberSameAccessLevel` permission set to **true.**'
+      operationId: Users_UnlockUser
+      parameters:
+      - name: userId
+        in: path
+        description: The ID of the user to unlock.
+        required: true
+        schema:
+          type: integer
+          format: int32
+      - name: accountId
+        in: path
+        description: The globally unique identifier (GUID) for the account.
+        required: true
+        schema:
+          type: string
+      responses:
+        '204':
+          description: User has been successfully unlocked.
+          content: {}
+        '400':
+          description: Bad request. See ErrorCode and Message for details
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            text/xml:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '401':
+          description: Not authorized to make this request.
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            text/xml:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+      x-ds-methodname: UnlockUser
+      x-ds-method: UnlockUser
+      x-ds-service: Users
+      x-ds-in-sdk: true
+components:
+  schemas:
+    LockedOutDetails:
+      required:
+      - reason
+      type: object
+      properties:
+        reason:
+          type: string
+          description: The reason the account was locked.
+      description: Details about a locked account.
+      x-ds-definition-name: LockedOutDetails
+      x-ms-summary: Details about a locked account.
+    userInfo:
+      type: object
+      properties:
+        activationAccessCode:
+          type: string
+          description: ''
+        email:
+          type: string
+          description: ''
+        errorDetails:
+          $ref: '#/components/schemas/errorDetails'
+        loginStatus:
+          type: string
+          description: ''
+        sendActivationEmail:
+          type: string
+          description: ''
+        uri:
+          type: string
+          description: ''
+        userId:
+          type: string
+          description: 'The user ID of the user being accessed. Generally this is the user ID of the authenticated user, but if the authenticated user is an Admin on the account, this may be another user the Admin user is accessing. **Note**: For the [GET /v2/accounts/{accountId}/envelopes](https://developers.docusign.com/esign-rest-api/reference/Envelopes/Envelopes/listStatusChanges/#envelopesInformation) method, the `user_id` query parameter is not implemented and should not be used.'
+        userName:
+          type: string
+          description: ''
+        userStatus:
+          type: string
+          description: 'Status of the user''s account. One of:
+
+
+            * ActivationRequired
+
+            * ActivationSent
+
+            * Active
+
+            * Closed
+
+            * Disabled
+
+            '
+        userType:
+          type: string
+          description: ''
+      description: ''
+      x-ds-definition-name: userInfo
+      x-ms-summary: ''
+    addressInformation_v2:
+      type: object
+      properties:
+        address1:
+          type: string
+          description: 'First Line of the address.
+
+            Maximum length: 100 characters.'
+        address2:
+          type: string
+          description: 'Second Line of the address.
+
+            Maximum length: 100 characters.'
+        city:
+          type: string
+          description: ''
+        country:
+          type: string
+          description: Specifies the country associated with the address.
+        fax:
+          type: string
+          description: ''
+        phone:
+          type: string
+          description: ''
+        postalCode:
+          type: string
+          description: ''
+        stateOrProvince:
+          type: string
+          description: The state or province associated with the address.
+      description: ''
+      x-ds-definition-name: addressInformation_v2
+      x-ms-summary: ''
+    settingsMetadata:
+      type: object
+      properties:
+        is21CFRPart11:
+          type: string
+          description: When set to **true**, indicates that this module is enabled on the account.
+        options:
+          type: array
+          description: ''
+          items:
+            type: string
+        rights:
+          type: string
+          description: ''
+        uiHint:
+          type: string
+          description: ''
+        uiOrder:
+          type: string
+          description: ''
+        uiType:
+          type: string
+          description: ''
+      description: ''
+      x-ds-definition-name: settingsMetadata
+      x-ms-summary: ''
+    OrganizationUsersResponse:
+      type: object
+      properties:
+        users:
+          type: array
+          description: A list of users.
+          items:
+            $ref: '#/components/schemas/OrganizationUserResponse'
+        paging:
+          $ref: '#/components/schemas/PagingResponseProperties'
+      description: A response containing information about users.
+      x-ds-definition-name: OrganizationUsersResponse
+      x-ms-summary: A response containing information about users.
+    newUser:
+      type: object
+      properties:
+        apiPassword:
+          type: string
+          description: Contains a token that can be used for authentication in API calls instead of using the user name and password.
+        createdDateTime:
+          type: string
+          description: Indicates the date and time the item was created.
+        email:
+          type: string
+          description: ''
+        errorDetails:
+          $ref: '#/components/schemas/errorDetails'
+        membershipId:
+          type: string
+          description: ''
+        permissionProfileId:
+          type: string
+          description: ''
+        permissionProfileName:
+          type: string
+          description: ''
+        uri:
+          type: string
+          description: ''
+        userId:
+          type: string
+          description: Specifies the user ID for the new user.
+        userName:
+          type: string
+          description: ''
+        userStatus:
+          type: string
+          description: 'Status of the user''s account. One of:
+
+
+            * ActivationRequired
+
+            * ActivationSent
+
+            * Active
+
+            * Closed
+
+            * Disabled
+
+            '
+      description: ''
+      x-ds-definition-name: newUser
+      x-ms-summary: ''
+    senderEmailNotifications:
+      type: object
+      properties:
+        changedSigner:
+          type: string
+          description: When set to **true**, the sender receives notification if the signer changes.
+        commentsOnlyPrivateAndMention:
+          type: string
+          description: ''
+        commentsReceiveAll:
+          type: string
+          description: ''
+        deliveryFailed:
+          type: string
+          description: When set to **true**, the sender receives notification if the delivery of the envelope fails.
+        envelopeComplete:
+          type: string
+          description: When set to **true**, the user receives notification that the envelope has been completed.
+        offlineSigningFailed:
+          type: string
+          description: When set to **true**, the user receives notification if the offline signing failed.
+        powerformResponsesLimitNotificationEmail:
+          type: string
+          description: ''
+        recipientViewed:
+          type: string
+          description: When set to **true**, the sender receives notification that the recipient viewed the enveloper.
+        senderEnvelopeDeclined:
+          type: string
+          description: ''
+        withdrawnConsent:
+          type: string
+          description: When set to **true**, the user receives notification if consent is withdrawn.
+      description: ''
+      x-ds-definition-name: senderEmailNotifications
+      x-ms-summary: ''
+    nameValue:
+      type: object
+      properties:
+        errorDetails:
+          $ref: '#/components/schemas/errorDetails'
+        name:
+          type: string
+          description: The name or key of a name/value pair.
+        originalValue:
+          type: string
+          description: 'The initial value of the tab when it was sent to the recipient. '
+        value:
+          type: string
+          description: The value field of a name/value pair.
+      description: ''
+      x-ds-definition-name: nameValue
+      x-ms-summary: ''
+    userInfoList:
+      type: object
+      properties:
+        users:
+          type: array
+          description: ''
+          items:
+            $ref: '#/components/schemas/userInfo'
+      description: ''
+      x-ds-definition-name: userInfoList
+      x-ms-summary: ''
+    userSettingsInformation:
+      type: object
+      properties:
+        accountManagementGranular:
+          $ref: '#/components/schemas/userAccountManagementGranularInformation'
+        senderEmailNotifications:
+          $ref: '#/components/schemas/senderEmailNotifications'
+        signerEmailNotifications:
+          $ref: '#/components/schemas/signerEmailNotifications'
+        userSettings:
+          type: array
+          description: ''
+          items:
+            $ref: '#/components/schemas/nameValue'
+      description: ''
+      x-ds-definition-name: userSettingsInformation
+      x-ms-summary: ''
+    ClassicManagerPermissions:
+      type: object
+      properties:
+        isVisibleInTransactionRooms:
+          type: boolean
+          description: 'When **true,** the user is visible in company rooms.
+
+
+            **Note:** Inherited managers are automatically added to rooms and are visible in those rooms unless this setting is set to **false.** Inherited managers are users who oversee others and have the **auto-access to rooms of members the user manages** permission enabled.'
+        canDeleteCompanyRooms:
+          type: boolean
+          description: When **true,** the user can delete company rooms.
+        canDeleteCompanyDocuments:
+          type: boolean
+          description: When **true,** the user can delete company documents.
+        canManageCompanyRooms:
+          type: boolean
+          description: When **true,** the user can manage company rooms.
+        canManageCompanyAccount:
+          type: boolean
+          description: When **true,** the user can manage the company's account.
+        canManageCompanySharedLibrary:
+          type: boolean
+          description: When **true,** the user can manage the company's shared library.
+        canManageCompanyMembers:
+          type: boolean
+          description: When **true,** the user can manage other users on the company's account.
+        canCloseCompanyRooms:
+          type: boolean
+          description: When **true,** the user can close company rooms.
+        canApproveCompanyChecklists:
+          type: boolean
+          description: When **true,** the user can approve company checklists.
+        isCompanySystemAdmin:
+          type: boolean
+          description: When **true,** the user is a system administrator for the company.
+        isRegionManager:
+          type: boolean
+          description: When **true,** the user is a region manager.
+        isOfficeManager:
+          type: boolean
+          description: When **true,** the user is an office manager.
+        autoAccessToCompanyRooms:
+          type: boolean
+          description: When **true,** the user is automatically added to new company rooms and is visible in those rooms.
+      description: This object contains details about user permissions. These permissions are associated only with Rooms v5.
+      x-ds-definition-name: ClassicManagerPermissions
+      x-ms-summary: This object contains details about user permissions. These permissions are associated only with Rooms v5.
+    userInformation:
+      type: object
+      properties:
+        accountManagementGranular:
+          $ref: '#/components/schemas/userAccountManagementGranularInformation'
+        activationAccessCode:
+          type: string
+          description: ''
+        countryCode:
+          type: string
+          description: ''
+        createdDateTime:
+          type: string
+          description: Indicates the date and time the item was created.
+        customSettings:
+          type: array
+          description: The name/value pair information for the user custom setting.
+          items:
+            $ref: '#/components/schemas/nameValue'
+        email:
+          type: string
+          description: ''
+        enableConnectForUser:
+          type: string
+          description: 'Specifies whether the user is enabled for updates from DocuSign Connect. Valid values: true or false.'
+        errorDetails:
+          $ref: '#/components/schemas/errorDetails'
+        firstName:
+          type: string
+          description: "The user's first name. \nMaximum Length: 50 characters."
+        forgottenPasswordInfo:
+          $ref: '#/components/schemas/forgottenPasswordInformation'
+        groupList:
+          type: array
+          description: "A list of the group information for groups to add the user to. Group information can be found by calling [ML:GET group information]. The only required parameter is groupId. \n\nThe parameters are:\n\n* groupId - The DocuSign group ID for the group.\n* groupName - The name of the group\n* permissionProfileId - The ID of the permission profile associated with the group.\n* groupType - The group type.\n"
+          items:
+            $ref: '#/components/schemas/group'
+        homeAddress:
+          $ref: '#/components/schemas/addressInformation_v2'
+        initialsImageUri:
+          type: string
+          description: Contains the URI for an endpoint that you can use to retrieve the initials image.
+        isAdmin:
+          type: string
+          description: Determines if the feature set is actively set as part of the plan.
+        jobTitle:
+          type: string
+          description: ''
+        lastLogin:
+          type: string
+          description: The date-time when the user last logged on to the system.
+        lastName:
+          type: string
+          description: The recipient's last name.
+        loginStatus:
+          type: string
+          description: ''
+        middleName:
+          type: string
+          description: "The user's middle name. \nLimit: 50 characters."
+        password:
+          type: string
+          description: ''
+        passwordExpiration:
+          type: string
+          description: If password expiration is enabled, the date-time when the user's password expires.
+        permissionProfileId:
+          type: string
+          description: ''
+        permissionProfileName:
+          type: string
+          description: ''
+        profileImageUri:
+          type: string
+          description: ''
+        sendActivationEmail:
+          type: string
+          description: ''
+        sendActivationOnInvalidLogin:
+          type: string
+          description: 'When set to **true**, specifies that an additional activation email is sent to the user if they fail a log on before activating their account. '
+        signatureImageUri:
+          type: string
+          description: Contains the URI for an endpoint that you can use to retrieve the signature image.
+        subscribe:
+          type: string
+          description: ''
+        suffixName:
+          type: string
+          description: 'The suffix for the user''s name, such as Jr, IV, PhD, etc.
+
+
+            Limit: 50 characters. '
+        title:
+          type: string
+          description: The title of the user.
+        uri:
+          type: string
+          description: ''
+        userId:
+          type: string
+          description: 'The user ID of the user being accessed. Generally this is the user ID of the authenticated user, but if the authenticated user is an Admin on the account, this may be another user the Admin user is accessing. **Note**: For the [GET /v2/accounts/{accountId}/envelopes](https://developers.docusign.com/esign-rest-api/reference/Envelopes/Envelopes/listStatusChanges/#envelopesInformation) method, the `user_id` query parameter is not implemented and should not be used.'
+        userName:
+          type: string
+          description: ''
+        userProfileLastModifiedDate:
+          type: string
+          description: The date-time when the user's profile was last modified.
+        userSettings:
+          type: array
+          description: ''
+          items:
+            $ref: '#/components/schemas/nameValue'
+        userStatus:
+          type: string
+          description: 'Status of the user''s account. One of:
+
+
+            * ActivationRequired
+
+            * ActivationSent
+
+            * Active
+
+            * Closed
+
+            * Disabled
+
+            '
+        userType:
+          type: string
+          description: ''
+        workAddress:
+          $ref: '#/components/schemas/addressInformation_v2'
+      description: ''
+      x-ds-definition-name: userInformation
+      x-ms-summary: ''
+    UpdateUsersEmailRequest:
+      type: object
+      properties:
+        users:
+          type: array
+          description: A list of users whose email address to change.
+          items:
+            $ref: '#/components/schemas/UpdateUserEmailRequest'
+      description: A change email request.
+      x-ds-definition-name: UpdateUsersEmailRequest
+      x-ms-summary: A change email request.
+    errorDetails:
+      type: object
+      properties:
+        errorCode:
+          type: string
+          description: An error code associated with the error.
+        message:
+          type: string
+          description: A short error message.
+      description: This object describes errors that occur. It is only valid for responses, and ignored in requests.
+      x-ds-definition-name: errorDetails
+      x-ms-summary: This object describes errors that occur. It is only valid for responses, and ignored in requests.
+    newUsersSummary:
+      type: object
+      properties:
+        newUsers:
+          type: array
+          description: ''
+          items:
+            $ref: '#/components/schemas/newUser'
+      description: ''
+      x-ds-definition-name: newUsersSummary
+      x-ms-summary: ''
+    DSGroupResponse:
+      type: object
+      properties:
+        ds_group_id:
+          type: string
+          description: ''
+          format: uuid
+          example: 00000000-0000-0000-0000-000000000000
+        account_id:
+          type: string
+          description: Select users that are members of the specified account. At least one of `email`, `account_id` or `organization_reserved_domain_id` must be specified.
+          format: uuid
+          example: 00000000-0000-0000-0000-000000000000
+        source_product_name:
+          type: string
+          description: ''
+        group_id:
+          type: string
+          description: ''
+        group_name:
+          type: string
+          description: ''
+        description:
+          type: string
+          description: ''
+        is_admin:
+          type: boolean
+          description: ''
+        last_modified_on:
+          type: string
+          description: ''
+          format: date-time
+        user_count:
+          type: integer
+          description: ''
+          format: int32
+        external_account_id:
+          type: integer
+          description: ''
+          format: int64
+        account_name:
+          type: string
+          description: ''
+      description: ''
+      x-ds-definition-name: DSGroupResponse
+      x-ms-summary: ''
+    ErrorDetails:
+      type: object
+      properties:
+        error:
+          type: string
+          description: The code for the error.
+        error_description:
+          type: string
+          description: A description of the error.
+      description: Errors.
+      x-ds-definition-name: ErrorDetails
+      x-ms-summary: Errors.
+    PagingResponseProperties:
+      type: object
+      properties:
+        result_set_size:
+          type: integer
+          description: ''
+          format: int32
+        result_set_start_position:
+          type: integer
+          description: ''
+          format: int32
+        result_set_end_position:
+          type: integer
+          description: ''
+          format: int32
+        total_set_size:
+          type: integer
+          description: ''
+          format: int32
+        next:
+          type: string
+          description: ''
+        previous:
+          type: string
+          description: ''
+      description: ''
+      x-ds-definition-name: PagingResponseProperties
+      x-ms-summary: ''
+    group:
+      type: object
+      properties:
+        errorDetails:
+          $ref: '#/components/schemas/errorDetails'
+        groupId:
+          type: string
+          description: The DocuSign group ID for the group.
+        groupName:
+          type: string
+          description: The name of the group.
+        groupType:
+          type: string
+          description: The group type.
+        permissionProfileId:
+          type: string
+          description: The ID of the permission profile associated with the group.
+        users:
+          type: array
+          description: List of users in the group.
+          items:
+            $ref: '#/components/schemas/userInfo'
+      description: Information about groups.
+      x-ds-definition-name: group
+      x-ms-summary: Information about groups.
+    forgottenPasswordInformation:
+      type: object
+      properties:
+        forgottenPasswordAnswer1:
+          type: string
+          description: The answer to the first forgotten password challenge question.
+        forgottenPasswordAnswer2:
+          type: string
+          description: The answer to the second forgotten password challenge question.
+        forgottenPasswordAnswer3:
+          type: string
+          description: The answer to the third forgotten password challenge question.
+        forgottenPasswordAnswer4:
+          type: string
+          description: The answer to the fourth forgotten password challenge question.
+        forgottenPasswordQuestion1:
+          type: string
+          description: The first challenge question presented to a user who has forgotten their password.
+        forgottenPasswordQuestion2:
+          type: string
+          description: The second challenge question presented to a user who has forgotten their password.
+        forgottenPasswordQuestion3:
+          type: string
+          description: The third challenge question presented to a user who has forgotten their password.
+        forgottenPasswordQuestion4:
+          type: string
+          description: The fourth challenge question presented to a user who has forgotten their password.
+      description: A complex element that has up to four Question/Answer pairs for forgotten password information.
+      x-ds-definition-name: forgottenPasswordInformation
+      x-ms-summary: A complex element that has up to four Question/Answer pairs for forgotten password information.
+    UsersUpdateResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          description: If **true**, the request to change user information succeeded.
+        users:
+          type: array
+          description: A list of users whose email addresses have been updated.
+          items:
+            $ref: '#/components/schemas/UserUpdateResponse'
+      description: The results of changing a user's information.
+      x-ds-definition-name: UsersUpdateResponse
+      x-ms-summary: The results of changing a user's information.
+    OrganizationUserResponse:
+      type: object
+      properties:
+        id:
+          type: string
+          description: The user's unique ID.
+          format: uuid
+          example: 00000000-0000-0000-0000-000000000000
+        user_name:
+          type: string
+          description: The full name of the user.
+        first_name:
+          type: string
+          description: The user's first name.
+        last_name:
+          type: string
+          description: The user's last name.
+        user_status:
+          type: string
+          description: 'The user''s status. One of:
+
+
+            - `active`
+
+            - `created`
+
+            - `closed`
+
+            '
+        membership_status:
+          type: string
+          description: 'The user''s membership status. One of:
+
+
+            - `activation_required`
+
+            - `activation_sent`
+
+            - `active`
+
+            - `closed`
+
+            - `disabled`
+
+            '
+        email:
+          type: string
+          description: The email address.
+        created_on:
+          type: string
+          description: The date the user's account was created.
+          format: date-time
+        membership_created_on:
+          type: string
+          description: The date on which the user became a member of the organization.
+          format: date-time
+        ds_groups:
+          type: array
+          description: ''
+          items:
+            $ref: '#/components/schemas/DSGroupResponse'
+        membership_id:
+          type: string
+          description: ''
+          format: uuid
+          example: 00000000-0000-0000-0000-000000000000
+      description: Information about a user.
+      x-ds-definition-name: OrganizationUserResponse
+      x-ms-summary: Information about a user.
+    signerEmailNotifications:
+      type: object
+      properties:
+        agentNotification:
+          type: string
+          description: When set to **true**, the user receives agent notification emails.
+        carbonCopyNotification:
+          type: string
+          description: When set to **true**, the user receives notifications of carbon copy deliveries.
+        certifiedDeliveryNotification:
+          type: string
+          description: When set to **true**, the user receives notifications of certified deliveries.
+        commentsOnlyPrivateAndMention:
+          type: string
+          description: ''
+        commentsReceiveAll:
+          type: string
+          description: ''
+        documentMarkupActivation:
+          type: string
+          description: When set to **true**, the user receives notification that document markup has been activated.
+        envelopeActivation:
+          type: string
+          description: When set to **true**, the user receives notification that the envelope has been activated.
+        envelopeComplete:
+          type: string
+          description: When set to **true**, the user receives notification that the envelope has been completed.
+        envelopeCorrected:
+          type: string
+          description: When set to **true**, the user receives notification that the envelope has been corrected.
+        envelopeDeclined:
+          type: string
+          description: When set to **true**, the user receives notification that the envelope has been declined.
+        envelopeVoided:
+          type: string
+          description: When set to **true**, the user receives notification that the envelope has been voided.
+        faxReceived:
+          type: string
+          description: 'Reserved:'
+        offlineSigningFailed:
+          type: string
+          description: When set to **true**, the user receives notification if the offline signing failed.
+        purgeDocuments:
+          type: string
+          description: When set to **true**, the user receives notification of document purges.
+        reassignedSigner:
+          type: string
+          description: When set to **true**, the user receives notification that the envelope has been reassigned.
+        whenSigningGroupMember:
+          type: string
+          description: ''
+      description: An array of email notifications that specifies the email the user receives when they are a sender. When the specific email notification is set to true, the user receives those types of email notifications from DocuSign. The user inherits the default account sender email notification settings when the user is created.
+      x-ds-definition-name: signerEmailNotifications
+      x-ms-summary: An array of email notifications that specifies the email the user receives when they are a sender. When the specific email notification is set to true, the user receives those types of email notifications from DocuSign. The user inherits the default account sender email notification settings when the user is created.
+    UserUpdateResponse:
+      type: object
+      properties:
+        id:
+          type: string
+          description: The ID of the user whose email address has been updated.
+          format: uuid
+          example: 00000000-0000-0000-0000-000000000000
+        site_id:
+          type: integer
+          description: The site ID.
+          format: int32
+        email:
+          type: string
+          description: The email address.
+        error_details:
+          $ref: '#/components/schemas/ErrorDetails'
+      description: Error result of attempting to change a user's email address.
+      x-ds-definition-name: UserUpdateResponse
+      x-ms-summary: Error result of attempting to change a user's email address.
+    User:
+      type: object
+      properties:
+        userId:
+          type: integer
+          description: The ID of the user.
+          format: int32
+        email:
+          type: string
+          description: The user's email address.
+        firstName:
+          type: string
+          description: The user's first name.
+        lastName:
+          type: string
+          description: The user's last name.
+        isLockedOut:
+          type: boolean
+          description: When **true,** an administrator has locked the user's account. For example, an administrator might want to lock an agent's account after they leave the brokerage until they determine how to transfer the agent's rooms and data to another active user.
+        status:
+          type: string
+          description: 'The user''s status. This property is read-only. Possible values are:
+
+
+            - `Active`: The user is active.
+
+            - `Pending`: The user has been invited but has not yet accepted the invitation.'
+        accessLevel:
+          type: string
+          description: 'The user''s level of access to the account. This property determines what the user can see in the system.
+
+
+            In contrast, a user''s permissions determine the actions that they can take in a room. For example, a user who has `accessLevel` set to `Company` can see all of the rooms associated with their company. However, if they do not have a role for which the **Add documents to room** permission is set to **true,** they can''t add documents to those rooms.
+
+
+            Valid values are:
+
+
+            - `Company`: The user has access to rooms, and if they have permission to manage users, they have access to users across the entire company. What they can do in the rooms and with users is controlled by their permissions. This is the default for the Users::InviteClassicAdmin method.
+
+            - `Region`: The user has access to rooms and, if they have permission to manage users, they have access to users across their regions.
+
+            - `Office`: The user has access to rooms and, if they have permission to manage users, they have access to users across their offices.
+
+            - `Contributor`: The user has access only to their own rooms and those to which they are invited. They cannot perform any user management actions because they do not oversee other users. For example, agents typically have the `Contributor` access level.
+
+
+            **Note:** In requests, the values that you may use for this property depend on your permissions and whether you can add users at your access level or lower.'
+          enum:
+          - Contributor
+          - Office
+          - Region
+          - Company
+          - Admin
+        defaultOfficeId:
+          type: integer
+          description: The ID of the user's default office.
+          format: int32
+        titleId:
+          type: integer
+          description: This field is deprecated in Rooms Version 6.
+          format: int32
+        roleId:
+          type: integer
+          description: The ID of the company role assigned to the user. You can assign external roles to users who aren't a part of your organization.
+          format: int32
+        profileImageUrl:
+          type: string
+          description: The URL for the user's profile image.
+        offices:
+          type: array
+          description: An array of office IDs for the offices in which a user with an `Office` or `Contributor` `accessLevel` has been granted the ability to participate.
+          items:
+            type: integer
+            format: int32
+        regions:
+          type: array
+          description: An array of region IDs for the regions in which a user with the `Region accessLevel` has been granted the ability to participate.
+          items:
+            type: integer
+            format: int32
+        permissions:
+          $ref: '#/components/schemas/ClassicManagerPermissions'
+      description: Contains details about a user.
+      x-ds-definition-name: User
+      x-ms-summary: Contains details about a user.
+    newUsersDefinition:
+      type: object
+      properties:
+        newUsers:
+          type: array
+          description: ''
+          items:
+            $ref: '#/components/schemas/userInformation'
+      description: ''
+      x-ds-definition-name: newUsersDefinition
+      x-ms-summary: ''
+    userAccountManagementGranularInformation:
+      type: object
+      properties:
+        canManageAccountSecuritySettings:
+          type: string
+          description: ''
+        canManageAccountSecuritySettingsMetadata:
+          $ref: '#/components/schemas/settingsMetadata'
+        canManageAccountSettings:
+          type: string
+          description: ''
+        canManageAccountSettingsMetadata:
+          $ref: '#/components/schemas/settingsMetadata'
+        canManageAdmins:
+          type: string
+          description: '**True**
+
+            if the user can manage
+
+            admins.'
+        canManageAdminsMetadata:
+          $ref: '#/components/schemas/settingsMetadata'
+        canManageEnvelopeTransfer:
+          type: string
+          description: ''
+        canManageEnvelopeTransferMetadata:
+          $ref: '#/components/schemas/settingsMetadata'
+        canManageGroups:
+          type: string
+          description: '**True**
+
+            if the user can manage
+
+            groups.'
+        canManageGroupsMetadata:
+          $ref: '#/components/schemas/settingsMetadata'
+        canManageReporting:
+          type: string
+          description: ''
+        canManageReportingMetadata:
+          $ref: '#/components/schemas/settingsMetadata'
+        canManageSharing:
+          type: string
+          description: ''
+        canManageSharingMetadata:
+          $ref: '#/components/schemas/settingsMetadata'
+        canManageSigningGroups:
+          type: string
+          description: ''
+        canManageSigningGroupsMetadata:
+          $ref: '#/components/schemas/settingsMetadata'
+        canManageUsers:
+          type: string
+          description: '**True**
+
+            if the user can manage
+
+            users.'
+        canManageUsersMetadata:
+          $ref: '#/components/schemas/settingsMetadata'
+        canViewUsers:
+          type: string
+          description: ''
+        canViewUsersMetadata:
+          $ref: '#/components/schemas/settingsMetadata'
+      description: Describes which account management capabilities a user has.
+      x-ds-definition-name: userAccountManagementGranularInformation
+      x-ms-summary: Describes which account management capabilities a user has.
+    UpdateUserEmailRequest:
+      required:
+      - email
+      - id
+      - site_id
+      type: object
+      properties:
+        id:
+          type: string
+          description: The ID of the users whose email address you want to change.
+          format: uuid
+          example: 00000000-0000-0000-0000-000000000000
+        site_id:
+          type: integer
+          description: The site ID.
+          format: int32
+        email:
+          type: string
+          description: The new email address.
+      description: And individual change of email.
+      x-ds-definition-name: UpdateUserEmailRequest
+      x-ms-summary: And individual change of email.
+    DesignatedRegion:
+      required:
+      - regionId
+      type: object
+      properties:
+        regionId:
+          type: integer
+          description: (Required) The ID of the region. This is the ID that the system generated when you created the region.
+          format: int32
+      description: This object contains information about the region associated with the member.
+      x-ds-definition-name: DesignatedRegion
+      x-ms-summary: This object contains information about the region associated with the member.
+    usersResponse:
+      type: object
+      properties:
+        endPosition:
+          type: string
+          description: 'The last position in the result set. '
+        nextUri:
+          type: string
+          description: 'The URI for the next chunk of records based on the search request. It is `null` if this is the last set of results for the search. '
+        previousUri:
+          type: string
+          description: 'The URI for the prior chunk of records based on the search request. It is `null` if this is the first set of results for the search. '
+        resultSetSize:
+          type: string
+          description: 'The number of results returned in this response. '
+        startPosition:
+          type: string
+          description: Starting position of the current result set.
+        totalSetSize:
+          type: string
+          description: The total number of items in the search's result set. It will always be greater than or equal to the value of the `resultSetSize` field.
+        users:
+          type: array
+          description: ''
+          items:
+            $ref: '#/components/schemas/userInfo'
+      description: ''
+      x-ds-definition-name: usersResponse
+      x-ms-summary: ''
+    userInformationList:
+      type: object
+      properties:
+        endPosition:
+          type: string
+          description: 'The last position in the result set. '
+        nextUri:
+          type: string
+          description: 'The URI for the next chunk of records based on the search request. It is `null` if this is the last set of results for the search. '
+        previousUri:
+          type: string
+          description: 'The URI for the prior chunk of records based on the search request. It is `null` if this is the first set of results for the search. '
+        resultSetSize:
+          type: string
+          description: 'The number of results returned in this response. '
+        startPosition:
+          type: string
+          description: Starting position of the current result set.
+        totalSetSize:
+          type: string
+          description: The total number of items in the search's result set. It will always be greater than or equal to the value of the `resultSetSize` field.
+        users:
+          type: array
+          description: ''
+          items:
+            $ref: '#/components/schemas/userInformation'
+      description: ''
+      x-ds-definition-name: userInformationList
+      x-ms-summary: ''
+    DesignatedOffice:
+      required:
+      - officeId
+      type: object
+      properties:
+        officeId:
+          type: integer
+          description: (Required) The ID of the office. This is the ID that the system generated when you created the office.
+          format: int32
+      description: This object contains information about the office that you want to add a member to or remove a member from.
+      x-ds-definition-name: DesignatedOffice
+      x-ms-summary: This object contains information about the office that you want to add a member to or remove a member from.
+    UserToInvite:
+      required:
+      - accessLevel
+      - defaultOfficeId
+      - eSignPermissionProfileId
+      - email
+      - firstName
+      - lastName
+      - roleId
+      type: object
+      properties:
+        firstName:
+          type: string
+          description: (Required) The user's first name.
+        lastName:
+          type: string
+          description: (Required) The user's last name.
+        email:
+          type: string
+          description: (Required) The user's email address.
+        roleId:
+          type: integer
+          description: '(Required) The ID of the company role assigned to the user.
+
+
+            You can assign external roles to users who are not part of your organization.
+
+            '
+          format: int32
+        accessLevel:
+          type: string
+          description: '(Required) The user''s level of access to the account. This property determines what the user can see in the system.
+
+
+            In contrast, a user''s permissions determine the actions that they can take in a room. For example, a user who has `accessLevel` set to `Company` can see all of the rooms associated with their company. However, if they do not have a role for which the **Add documents to room** permission is set to **true,** they can''t add documents to those rooms.
+
+
+            Valid values are:
+
+
+            - `Company`: The user has access to rooms, and if they have permission to manage users, they have access to users across the entire company. What they can do in the rooms and with users is controlled by their permissions.
+
+            - `Region`: The user has access to rooms and, and if they have permission to manage users, they have access to users across their regions.
+
+            - `Office`: The user has access to rooms, and if they have permission to manage users, they have access to users across their regions.
+
+            - `Contributor`: The user has access only to their own rooms and those to which they are invited. They cannot perform any user management actions because they do not oversee other users. For example, agents typically have the `Contributor` access level.
+
+
+            **Note:** In requests, the values that you may use for this property depend on your permissions and whether you can add users at your access level or lower.'
+          enum:
+          - Contributor
+          - Office
+          - Region
+          - Company
+          - Admin
+        defaultOfficeId:
+          type: integer
+          description: (Required) The ID of the user's default office.
+          format: int32
+        regions:
+          type: array
+          description: An array of region IDs for the regions in which a user with the `Region accessLevel` has been granted the ability to participate. If the value for `accessLevel` is `Region`, this property is required.
+          items:
+            type: integer
+            format: int32
+        offices:
+          type: array
+          description: An array of office IDs for the offices in which a user with an `Office` or `Contributor` `accessLevel` has been granted the ability to participate. If the value for `accessLevel` is `Office`, this property is required.
+          items:
+            type: integer
+            format: int32
+        subscribeToRoomsActivityNotifications:
+          type: boolean
+          description: ''
+          default: true
+        eSignPermissionProfileId:
+          type: string
+          description: (Required) When an administrator or authorized member invites a new user to become an account member, the system also creates an eSignature account for the invitee at the same time. The eSignPermissionProfileId is the ID of the eSignature permission set to assign to the member.
+        redirectUrl:
+          type: string
+          description: URL to redirect to after inviting.
+          format: uri
+      description: This request object contains information about the user that you are inviting.
+      x-ds-definition-name: UserToInvite
+      x-ms-summary: This request object contains information about the user that you are inviting.
+    ApiError:
+      type: object
+      properties:
+        errorCode:
+          type: string
+          description: The code associated with the error condition.
+        message:
+          type: string
+          description: A brief message describing the error condition.
+        referenceId:
+          type: string
+          description: ''
+      description: This object describes errors that occur. It is valid only for responses and ignored in requests.
+      x-ds-definition-name: ApiError
+      x-ms-summary: This object describes errors that occur. It is valid only for responses and ignored in requests.
+  securitySchemes:
+    accessCode:
+      type: oauth2
+      description: OAuth2 Access code Grant
+      flows:
+        authorizationCode:
+          authorizationUrl: https://account.docusign.com/oauth/auth
+          tokenUrl: https://account.docusign.com/oauth/auth
+          scopes:
+            organization_read: ''
+            permission_read: ''
+            group_read: ''
+            user_read: ''
+            account_read: ''
+            account_write: ''
+            user_write: ''
+            identity_provider_read: ''
+            domain_read: ''
+x-ds-categories:
+- name: UserManagement
+  summary: Methods to manage users in an account.
+  description: Methods to manage users in an account.
+- name: BulkOperations
+  summary: Methods to import and export users and accounts.
+  description: Methods to import and export users and accounts.
+- name: IdentityProviders
+  summary: Methods to get a list of identity providers.
+  description: Methods to get a list of identity providers.
+- name: ReservedDomains
+  summary: Methods to get a list of reserved domains.
+  description: Methods to get a list of reserved domains.
+- name: Organization
+  summary: Methods for working with organizations.
+  description: Methods for working with organizations.
+x-original-swagger-version: '2.0'

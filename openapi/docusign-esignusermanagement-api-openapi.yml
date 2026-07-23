@@ -1,0 +1,1273 @@
+openapi: 3.0.1
+info:
+  title: DocuSign Admin AccountBrands eSignUserManagement API
+  description: An API for an organization administrator to manage organizations, accounts and users
+  termsOfService: https://www.docusign.com/company/terms-and-conditions/developers
+  contact:
+    name: DocuSign Developer Center
+    url: https://developers.docusign.com
+    email: devcenter@docusign.com
+  version: v2.1
+servers:
+- url: https://api.docusign.net/Management
+tags:
+- name: eSignUserManagement
+  description: Methods to manage eSignature users in an account.
+paths:
+  /v2/organizations/{organizationId}/accounts/{accountId}/permissions:
+    get:
+      tags:
+      - eSignUserManagement
+      summary: Docusign Returns the list of permission profiles in an account.
+      description: 'Returns the list of permission profiles in an account.
+
+
+        - Required scopes: `permission_read`
+
+
+        '
+      operationId: Account_Accounts_GetPermissionProfilesV2
+      parameters:
+      - name: organizationId
+        in: path
+        description: The organization ID Guid
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: accountId
+        in: path
+        description: The account ID Guid
+        required: true
+        schema:
+          type: string
+          format: uuid
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PermissionsResponse'
+      security:
+      - accessCode:
+        - permission_read
+      x-ds-methodname: getPermissions
+      x-ds-method: getPermissions
+      x-ds-service: Accounts
+      x-ds-in-sdk: true
+  /v2/organizations/{organizationId}/accounts/{accountId}/groups:
+    get:
+      tags:
+      - eSignUserManagement
+      summary: Docusign Returns the list of groups in an account.
+      description: 'Returns the list of groups in an account.
+
+
+        - Required scopes: `group_read`
+
+        '
+      operationId: Account_Accounts_GetGroupsV2
+      parameters:
+      - name: organizationId
+        in: path
+        description: The organization ID Guid
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: accountId
+        in: path
+        description: The account ID Guid
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: start
+        in: query
+        description: Index of first item to include in the response. The default value is 0.
+        schema:
+          type: integer
+          format: int32
+      - name: take
+        in: query
+        description: Page size of the response. The default value is 20.
+        schema:
+          type: integer
+          format: int32
+      - name: end
+        in: query
+        description: Index of the last item to include in the response. Ignored if `take` parameter is specified.
+        schema:
+          type: integer
+          format: int32
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MemberGroupsResponse'
+      security:
+      - accessCode:
+        - group_read
+      x-ds-methodname: getGroups
+      x-ds-method: getGroups
+      x-ds-service: Accounts
+      x-ds-in-sdk: true
+  /v2/organizations/{organizationId}/users/profiles:
+    post:
+      tags:
+      - eSignUserManagement
+      summary: Docusign Updates a user's information.
+      description: 'Updates a user''s information.
+
+
+        - Required scopes: `user_write`
+
+
+        '
+      operationId: User_Users_UpdateV2
+      parameters:
+      - name: organizationId
+        in: path
+        description: The organization ID Guid
+        required: true
+        schema:
+          type: string
+          format: uuid
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateUsersRequest'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UsersUpdateResponse'
+      security:
+      - accessCode:
+        - user_write
+      x-ds-methodname: updateUser
+      x-ds-method: updateUser
+      x-ds-service: Users
+      x-ds-in-sdk: true
+      x-codegen-request-body-name: request
+  /v2/organizations/{organizationId}/users/{userId}/accounts:
+    delete:
+      tags:
+      - eSignUserManagement
+      summary: Docusign Closes a user's memberships.
+      description: 'Closes a user''s memberships.
+
+
+        - Required scopes: `user_write`
+
+
+        '
+      operationId: User_Users_CloseMembershipsV2
+      parameters:
+      - name: organizationId
+        in: path
+        description: The organization ID Guid
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: userId
+        in: path
+        description: The user ID Guid
+        required: true
+        schema:
+          type: string
+          format: uuid
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DeleteMembershipsRequest'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeleteMembershipsResponse'
+      security:
+      - accessCode:
+        - user_write
+      x-ds-methodname: closeMemberships
+      x-ds-method: closeMemberships
+      x-ds-service: Users
+      x-ds-in-sdk: true
+      x-codegen-request-body-name: request
+  /v2/organizations/{organizationId}/users:
+    post:
+      tags:
+      - eSignUserManagement
+      summary: Docusign Creates a new user.
+      description: 'Creates a new user.
+
+
+        - Required scopes: `user_write`
+
+
+        '
+      operationId: OrganizationUser_Users_AddV2
+      parameters:
+      - name: organizationId
+        in: path
+        description: The organization ID Guid
+        required: true
+        schema:
+          type: string
+          format: uuid
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NewUserRequest'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NewUserResponse'
+      security:
+      - accessCode:
+        - user_write
+      x-ds-methodname: createUser
+      x-ds-method: createUser
+      x-ds-service: Users
+      x-ds-in-sdk: true
+      x-codegen-request-body-name: request
+  /v2/organizations/{organizationId}/users/{userId}/memberships/{membershipId}:
+    post:
+      tags:
+      - eSignUserManagement
+      summary: Docusign Activates user memberships.
+      description: 'Activates user memberships.
+
+
+        - Required scopes: `user_write`
+
+        '
+      operationId: OrganizationUser_Users_ActivateMembershipV2
+      parameters:
+      - name: organizationId
+        in: path
+        description: The organization ID Guid
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: userId
+        in: path
+        description: The user ID Guid
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: membershipId
+        in: path
+        description: The membership ID GUID.
+        required: true
+        schema:
+          type: string
+          format: uuid
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ForceActivateMembershipRequest'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UpdateResponse'
+      security:
+      - accessCode:
+        - user_write
+      x-ds-methodname: activateMembership
+      x-ds-method: activateMembership
+      x-ds-service: Users
+      x-ds-in-sdk: true
+      x-codegen-request-body-name: request
+  /v2/organizations/{organizationId}/users/profile:
+    get:
+      tags:
+      - eSignUserManagement
+      summary: Docusign Returns information about recently modified users.
+      description: 'Returns information about recently modified users.
+
+
+        - Required scopes: `user_read`
+
+
+        The response includes up to the first 20 users modified
+
+        in the last 10 days.
+
+
+
+
+
+        '
+      operationId: OrganizationUser_OrganizationUsers_GetProfileV2
+      parameters:
+      - name: organizationId
+        in: path
+        description: The organization ID Guid
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: email
+        in: query
+        description: The email address associated with the users you want to retrieve.
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UsersDrilldownResponse'
+      security:
+      - accessCode:
+        - user_read
+      x-ds-methodname: getUserProfiles
+      x-ds-method: getUserProfiles
+      x-ds-service: Users
+      x-ds-in-sdk: true
+  /v2/organizations/{organizationId}/users/{userId}/identities:
+    delete:
+      tags:
+      - eSignUserManagement
+      summary: Docusign Deletes user identities.
+      description: 'Deletes user identities.
+
+
+        - Required scopes: `user_write`
+
+
+        '
+      operationId: OrganizationUser_DeleteIdentitiesV2
+      parameters:
+      - name: organizationId
+        in: path
+        description: The organization ID Guid
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: userId
+        in: path
+        description: The user ID Guid
+        required: true
+        schema:
+          type: string
+          format: uuid
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DeleteUserIdentityRequest'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeleteResponse'
+      security:
+      - accessCode:
+        - user_write
+      x-ds-methodname: deleteIdentities
+      x-ds-method: deleteIdentities
+      x-ds-service: Users
+      x-ds-in-sdk: true
+      x-codegen-request-body-name: requestModel
+  /v2/organizations/{organizationId}/accounts/{accountId}/users:
+    post:
+      tags:
+      - eSignUserManagement
+      summary: Docusign Adds users to an account.
+      description: 'Adds users to an account.
+
+
+        - Required scopes: `user_write`
+
+
+        '
+      operationId: OrganizationUser_OrganizationUsers_PostAccountUsersV2
+      parameters:
+      - name: organizationId
+        in: path
+        description: The organization ID Guid
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: accountId
+        in: path
+        description: The account ID Guid
+        required: true
+        schema:
+          type: string
+          format: uuid
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NewAccountUserRequest'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NewUserResponse'
+      security:
+      - accessCode:
+        - user_write
+      x-ds-methodname: addUsers
+      x-ds-method: addUsers
+      x-ds-service: Users
+      x-ds-in-sdk: true
+      x-codegen-request-body-name: request
+components:
+  schemas:
+    NewUserResponse:
+      type: object
+      properties:
+        id:
+          type: string
+          description: The ID of the added user
+          format: uuid
+          example: 00000000-0000-0000-0000-000000000000
+        site_id:
+          type: integer
+          description: The site ID of the added user.
+          format: int32
+        user_name:
+          type: string
+          description: The full name of the user.
+        first_name:
+          type: string
+          description: The user's first name.
+        last_name:
+          type: string
+          description: The user's last name.
+        email:
+          type: string
+          description: The primary email address of the user.
+        language_culture:
+          type: string
+          description: "The language and culture of the user.\n\n  * Chinese Simplified: `zh_CN`\n  * Chinese Traditional: `zh_TW`\n  * Dutch: `nl`\n  * English: `en`\n  * French: `fr`\n  * German: `de`\n  * Italian: `it`\n  * Japanese: `ja`\n  * Korean: `ko`\n  * Portuguese: `pt`\n  * Portuguese Brazil: `pt_BR`\n  * Russian: `ru`\n  * Spanish: `es`\n"
+        federated_status:
+          type: string
+          description: 'The user''s federated status. One of:
+
+
+            - `RemoveStatus`
+
+            - `FedAuthRequired`
+
+            - `FedAuthBypass`
+
+            - `Evicted`
+
+            '
+        accounts:
+          type: array
+          description: A list of accounts the user belongs to.
+          items:
+            $ref: '#/components/schemas/NewUserResponseAccountProperties'
+      description: Information about a newly created user.
+      x-ds-definition-name: NewUserResponse
+      x-ms-summary: Information about a newly created user.
+    DeleteResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          description: If **true**, the request succeeded.
+        identities:
+          type: array
+          description: A list of identities to delete.
+          items:
+            $ref: '#/components/schemas/UserIdentityResponse'
+      description: Results of deleting identities.
+      x-ds-definition-name: DeleteResponse
+      x-ms-summary: Results of deleting identities.
+    UpdateUsersRequest:
+      type: object
+      properties:
+        users:
+          type: array
+          description: A list of users whose information you want to change.
+          items:
+            $ref: '#/components/schemas/UpdateUserRequest'
+      description: A list of users whose information you want to change.
+      x-ds-definition-name: UpdateUsersRequest
+      x-ms-summary: A list of users whose information you want to change.
+    DeleteMembershipsResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          description: If **true**, the request to close the accounts succeeded.
+        accounts:
+          type: array
+          description: A list of accounts that were closed.
+          items:
+            $ref: '#/components/schemas/DeleteMembershipResponse'
+      description: The results of closing a user's account.
+      x-ds-definition-name: DeleteMembershipsResponse
+      x-ms-summary: The results of closing a user's account.
+    DeleteUserIdentityRequest:
+      required:
+      - identities
+      type: object
+      properties:
+        identities:
+          type: array
+          description: A list of identities.
+          items:
+            $ref: '#/components/schemas/UserIdentityRequest'
+      description: Request to delete a user's identities,
+      x-ds-definition-name: DeleteUserIdentityRequest
+      x-ms-summary: Request to delete a user's identities,
+    NewUserResponseAccountProperties:
+      type: object
+      properties:
+        id:
+          type: string
+          description: The user's unique ID.
+          format: uuid
+          example: 00000000-0000-0000-0000-000000000000
+        site_id:
+          type: integer
+          description: The site ID of the account.
+          format: int32
+        permission_profile:
+          $ref: '#/components/schemas/PermissionProfileResponse'
+        groups:
+          type: array
+          description: A list of groups that the user belongs to.
+          items:
+            $ref: '#/components/schemas/MemberGroupResponse'
+        company_name:
+          type: string
+          description: The user's company name.
+        job_title:
+          type: string
+          description: The job title of the user.
+      description: Information about a newly created user.
+      x-ds-definition-name: NewUserResponseAccountProperties
+      x-ms-summary: Information about a newly created user.
+    DeleteMembershipRequest:
+      required:
+      - id
+      type: object
+      properties:
+        id:
+          type: string
+          description: The ID of a user's account you want to close.
+          format: uuid
+          example: 00000000-0000-0000-0000-000000000000
+      description: ''
+      x-ds-definition-name: DeleteMembershipRequest
+      x-ms-summary: ''
+    PermissionProfileResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: The ID of the permission profile.
+          format: int64
+        name:
+          type: string
+          description: "The name of the permission profile. \n\nExample: `DocuSign Sender`"
+      description: This object is an individual permission profile response.
+      x-ds-definition-name: PermissionProfileResponse
+      x-ms-summary: This object is an individual permission profile response.
+    PermissionProfileRequest:
+      required:
+      - id
+      type: object
+      properties:
+        id:
+          type: integer
+          description: The ID of the permission profile.
+          format: int64
+        name:
+          type: string
+          description: The name of the permission profile.
+      description: A permission profile.
+      x-ds-definition-name: PermissionProfileRequest
+      x-ms-summary: A permission profile.
+    DeleteMembershipResponse:
+      type: object
+      properties:
+        id:
+          type: string
+          description: The ID of an account that could not be closed.
+          format: uuid
+          example: 00000000-0000-0000-0000-000000000000
+        error_details:
+          $ref: '#/components/schemas/ErrorDetails'
+      description: Results of closing accounts.
+      x-ds-definition-name: DeleteMembershipResponse
+      x-ms-summary: Results of closing accounts.
+    ForceActivateMembershipRequest:
+      required:
+      - site_id
+      type: object
+      properties:
+        site_id:
+          type: integer
+          description: ''
+          format: int32
+      description: ''
+      x-ds-definition-name: ForceActivateMembershipRequest
+      x-ms-summary: ''
+    DeleteMembershipsRequest:
+      required:
+      - accounts
+      type: object
+      properties:
+        accounts:
+          type: array
+          description: A list of accounts to close for a user.
+          items:
+            $ref: '#/components/schemas/DeleteMembershipRequest'
+      description: A list of accounts to close for a user.
+      x-ds-definition-name: DeleteMembershipsRequest
+      x-ms-summary: A list of accounts to close for a user.
+    UserIdentityRequest:
+      type: object
+      properties:
+        id:
+          type: string
+          description: The ID of the identity.
+          format: uuid
+          example: 00000000-0000-0000-0000-000000000000
+      description: User identity,
+      x-ds-definition-name: UserIdentityRequest
+      x-ms-summary: User identity,
+    UsersDrilldownResponse:
+      type: object
+      properties:
+        users:
+          type: array
+          description: A list of users.
+          items:
+            $ref: '#/components/schemas/UserDrilldownResponse'
+      description: Information about a list of users.
+      x-ds-definition-name: UsersDrilldownResponse
+      x-ms-summary: Information about a list of users.
+    UserIdentityResponse:
+      type: object
+      properties:
+        id:
+          type: string
+          description: The ID of the result.
+          format: uuid
+          example: 00000000-0000-0000-0000-000000000000
+        provider_id:
+          type: string
+          description: The ID of the identity provider.
+          format: uuid
+          example: 00000000-0000-0000-0000-000000000000
+        user_id:
+          type: string
+          description: The user ID.
+          format: uuid
+          example: 00000000-0000-0000-0000-000000000000
+        immutable_id:
+          type: string
+          description: A unique ID to identify the removed user.
+        error_details:
+          $ref: '#/components/schemas/ErrorDetails'
+      description: Results of deleting a user identity.
+      x-ds-definition-name: UserIdentityResponse
+      x-ms-summary: Results of deleting a user identity.
+    UserDrilldownResponse:
+      type: object
+      properties:
+        id:
+          type: string
+          description: The user's unique ID.
+          format: uuid
+          example: 00000000-0000-0000-0000-000000000000
+        site_id:
+          type: integer
+          description: The site ID of the organization.
+          format: int32
+        site_name:
+          type: string
+          description: The site name of the account.
+        user_name:
+          type: string
+          description: The full name of the user.
+        first_name:
+          type: string
+          description: The user's first name.
+        last_name:
+          type: string
+          description: The user's last name.
+        user_status:
+          type: string
+          description: 'The user''s status. One of:
+
+
+            - `active`
+
+            - `created`
+
+            - `closed`
+
+            '
+        default_account_id:
+          type: string
+          description: The ID of the user's default account.
+          format: uuid
+          example: 00000000-0000-0000-0000-000000000000
+        default_account_name:
+          type: string
+          description: The name of the user's default account.
+        language_culture:
+          type: string
+          description: "The language and culture of the user.\n\n  * Chinese Simplified: `zh_CN`\n  * Chinese Traditional: `zh_TW`\n  * Dutch: `nl`\n  * English: `en`\n  * French: `fr`\n  * German: `de`\n  * Italian: `it`\n  * Japanese: `ja`\n  * Korean: `ko`\n  * Portuguese: `pt`\n  * Portuguese Brazil: `pt_BR`\n  * Russian: `ru`\n  * Spanish: `es`\n"
+        selected_languages:
+          type: string
+          description: ''
+        federated_status:
+          type: string
+          description: 'The user''s federated status. One of:
+
+
+            - `RemoveStatus`
+
+            - `FedAuthRequired`
+
+            - `FedAuthBypass`
+
+            - `Evicted`
+
+            '
+        is_organization_admin:
+          type: boolean
+          description: If **true**, the user has organization administration privileges.
+        created_on:
+          type: string
+          description: The date the user's account was created.
+          format: date-time
+        last_login:
+          type: string
+          description: The last time the user logged in.
+          format: date-time
+        memberships:
+          type: array
+          description: A list of organizations that have groups that the user is a member of.
+          items:
+            $ref: '#/components/schemas/MembershipResponse'
+        identities:
+          type: array
+          description: A list of identities associated with the user.
+          items:
+            $ref: '#/components/schemas/UserIdentityResponse'
+        device_verification_enabled:
+          type: boolean
+          description: ''
+      description: Information about a user.
+      x-ds-definition-name: UserDrilldownResponse
+      x-ms-summary: Information about a user.
+    MemberGroupResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: The unique ID of the group.
+          format: int64
+        name:
+          type: string
+          description: The name of the group.
+        type:
+          type: string
+          description: 'The type of group. One of:
+
+
+            - `invalid`
+
+            - `admin_group`
+
+            - `everyone_group`
+
+            - `custom_group`'
+      description: And individual group responses,.
+      x-ds-definition-name: MemberGroupResponse
+      x-ms-summary: And individual group responses,.
+    UpdateMembershipRequest:
+      required:
+      - account_id
+      type: object
+      properties:
+        account_id:
+          type: string
+          description: The user's unique ID.
+          format: uuid
+          example: 00000000-0000-0000-0000-000000000000
+        permission_profile:
+          $ref: '#/components/schemas/PermissionProfileRequest'
+        groups:
+          type: array
+          description: The user's requested groups.
+          items:
+            $ref: '#/components/schemas/GroupRequest'
+        company_name:
+          type: string
+          description: The user's company name.
+        job_title:
+          type: string
+          description: The user's job title.
+        send_activation:
+          type: boolean
+          description: If **true**, send an activation request after the update.
+        access_code:
+          type: string
+          description: The access code that the user needs to activate an account.
+      description: A request to update group membership.
+      x-ds-definition-name: UpdateMembershipRequest
+      x-ms-summary: A request to update group membership.
+    ErrorDetails:
+      type: object
+      properties:
+        error:
+          type: string
+          description: The code for the error.
+        error_description:
+          type: string
+          description: A description of the error.
+      description: Errors.
+      x-ds-definition-name: ErrorDetails
+      x-ms-summary: Errors.
+    PagingResponseProperties:
+      type: object
+      properties:
+        result_set_size:
+          type: integer
+          description: ''
+          format: int32
+        result_set_start_position:
+          type: integer
+          description: ''
+          format: int32
+        result_set_end_position:
+          type: integer
+          description: ''
+          format: int32
+        total_set_size:
+          type: integer
+          description: ''
+          format: int32
+        next:
+          type: string
+          description: ''
+        previous:
+          type: string
+          description: ''
+      description: ''
+      x-ds-definition-name: PagingResponseProperties
+      x-ms-summary: ''
+    MembershipResponse:
+      type: object
+      properties:
+        email:
+          type: string
+          description: The email address.
+        account_id:
+          type: string
+          description: The ID of the account.
+          format: uuid
+          example: 00000000-0000-0000-0000-000000000000
+        external_account_id:
+          type: string
+          description: The external account ID.
+        account_name:
+          type: string
+          description: The name of the account.
+        is_external_account:
+          type: boolean
+          description: 'If **true**,
+
+            this is an external account.'
+        status:
+          type: string
+          description: The status of the user's membership.
+        permission_profile:
+          $ref: '#/components/schemas/PermissionProfileResponse'
+        created_on:
+          type: string
+          description: The date the user's account was created.
+          format: date-time
+        groups:
+          type: array
+          description: A list of groups the user is a member of in this account,
+          items:
+            $ref: '#/components/schemas/MemberGroupResponse'
+        is_admin:
+          type: boolean
+          description: "If **true**,\nthe user has administration \nprivileges on the account."
+      description: Information about group membership.
+      x-ds-definition-name: MembershipResponse
+      x-ms-summary: Information about group membership.
+    NewAccountUserRequest:
+      required:
+      - email
+      type: object
+      properties:
+        permission_profile:
+          $ref: '#/components/schemas/PermissionProfileRequest'
+        groups:
+          type: array
+          description: The new user's requested groups.
+          items:
+            $ref: '#/components/schemas/GroupRequest'
+        user_name:
+          type: string
+          description: The full name of the user.
+        first_name:
+          type: string
+          description: The user's first name.
+        last_name:
+          type: string
+          description: The user's last name.
+        email:
+          type: string
+          description: The email address of the user.
+        default_account_id:
+          type: string
+          description: The account ID of the user's default account.
+          format: uuid
+          example: 00000000-0000-0000-0000-000000000000
+        language_culture:
+          type: string
+          description: "The language and culture of the user.\n\n  * Chinese Simplified: `zh_CN`\n  * Chinese Traditional: `zh_TW`\n  * Dutch: `nl`\n  * English: `en`\n  * French: `fr`\n  * German: `de`\n  * Italian: `it`\n  * Japanese: `ja`\n  * Korean: `ko`\n  * Portuguese: `pt`\n  * Portuguese Brazil: `pt_BR`\n  * Russian: `ru`\n  * Spanish: `es`\n"
+        selected_languages:
+          type: string
+          description: ''
+        access_code:
+          type: string
+          description: The access code that the user needs to activate an account.
+        federated_status:
+          type: string
+          description: 'The user''s federated status. One of:
+
+
+            - `RemoveStatus`
+
+            - `FedAuthRequired`
+
+            - `FedAuthBypass`
+
+            - `Evicted`
+
+            '
+        auto_activate_memberships:
+          type: boolean
+          description: If **true**, the user's account is activated automatically.
+      description: A new user request.
+      x-ds-definition-name: NewAccountUserRequest
+      x-ms-summary: A new user request.
+    UpdateResponse:
+      type: object
+      properties:
+        status:
+          type: string
+          description: 'The status of the request.
+
+            '
+      description: A response.
+      x-ds-definition-name: UpdateResponse
+      x-ms-summary: A response.
+    UsersUpdateResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          description: If **true**, the request to change user information succeeded.
+        users:
+          type: array
+          description: A list of users whose email addresses have been updated.
+          items:
+            $ref: '#/components/schemas/UserUpdateResponse'
+      description: The results of changing a user's information.
+      x-ds-definition-name: UsersUpdateResponse
+      x-ms-summary: The results of changing a user's information.
+    NewUserRequestAccountProperties:
+      required:
+      - id
+      type: object
+      properties:
+        id:
+          type: string
+          description: The account ID.
+          format: uuid
+          example: 00000000-0000-0000-0000-000000000000
+        permission_profile:
+          $ref: '#/components/schemas/PermissionProfileRequest'
+        groups:
+          type: array
+          description: The new user's requested groups.
+          items:
+            $ref: '#/components/schemas/GroupRequest'
+        company_name:
+          type: string
+          description: The user's company name.
+        job_title:
+          type: string
+          description: The user's job title.
+      description: An individual new account user.
+      x-ds-definition-name: NewUserRequestAccountProperties
+      x-ms-summary: An individual new account user.
+    UserUpdateResponse:
+      type: object
+      properties:
+        id:
+          type: string
+          description: The ID of the user whose email address has been updated.
+          format: uuid
+          example: 00000000-0000-0000-0000-000000000000
+        site_id:
+          type: integer
+          description: The site ID.
+          format: int32
+        email:
+          type: string
+          description: The email address.
+        error_details:
+          $ref: '#/components/schemas/ErrorDetails'
+      description: Error result of attempting to change a user's email address.
+      x-ds-definition-name: UserUpdateResponse
+      x-ms-summary: Error result of attempting to change a user's email address.
+    NewUserRequest:
+      required:
+      - accounts
+      - email
+      type: object
+      properties:
+        accounts:
+          type: array
+          description: A list of accounts the user will belong to.
+          items:
+            $ref: '#/components/schemas/NewUserRequestAccountProperties'
+        user_name:
+          type: string
+          description: The full name of the user.
+        first_name:
+          type: string
+          description: The user's first name.
+        last_name:
+          type: string
+          description: The user's last name.
+        email:
+          type: string
+          description: The email address.
+        default_account_id:
+          type: string
+          description: The account ID of the user's default account.
+          format: uuid
+          example: 00000000-0000-0000-0000-000000000000
+        language_culture:
+          type: string
+          description: "The language and culture of the user.\n\n  * Chinese Simplified: `zh_CN`\n  * Chinese Traditional: `zh_TW`\n  * Dutch: `nl`\n  * English: `en`\n  * French: `fr`\n  * German: `de`\n  * Italian: `it`\n  * Japanese: `ja`\n  * Korean: `ko`\n  * Portuguese: `pt`\n  * Portuguese Brazil: `pt_BR`\n  * Russian: `ru`\n  * Spanish: `es`\n"
+        selected_languages:
+          type: string
+          description: ''
+        access_code:
+          type: string
+          description: The access code that the user needs to activate an account.
+        federated_status:
+          type: string
+          description: 'The user''s federated status. One of:
+
+
+            - `RemoveStatus`
+
+            - `FedAuthRequired`
+
+            - `FedAuthBypass`
+
+            - `Evicted`'
+        auto_activate_memberships:
+          type: boolean
+          description: If **true**, the user's account is activated automatically.
+      description: Information about a new user.
+      x-ds-definition-name: NewUserRequest
+      x-ms-summary: Information about a new user.
+    MemberGroupsResponse:
+      type: object
+      properties:
+        groups:
+          type: array
+          description: A list of the responses.
+          items:
+            $ref: '#/components/schemas/MemberGroupResponse'
+        paging:
+          $ref: '#/components/schemas/PagingResponseProperties'
+      description: A response about member groups. It contains the groups and paging information.
+      x-ds-definition-name: MemberGroupsResponse
+      x-ms-summary: A response about member groups. It contains the groups and paging information.
+    GroupRequest:
+      required:
+      - id
+      type: object
+      properties:
+        id:
+          type: integer
+          description: The ID of the group.
+          format: int64
+        name:
+          type: string
+          description: The name of the group.
+        type:
+          type: string
+          description: 'The type of group. One of:
+
+
+            - `invalid`
+
+            - `admin_group`
+
+            - `everyone_group`
+
+            - `custom_group`'
+      description: A group for a user to belong to.
+      x-ds-definition-name: GroupRequest
+      x-ms-summary: A group for a user to belong to.
+    PermissionsResponse:
+      type: object
+      properties:
+        permissions:
+          type: array
+          description: An array of permission profile responses.
+          items:
+            $ref: '#/components/schemas/PermissionProfileResponse'
+      description: A list of permission profiles for a given account.
+      x-ds-definition-name: PermissionsResponse
+      x-ms-summary: A list of permission profiles for a given account.
+    UpdateUserRequest:
+      required:
+      - id
+      - site_id
+      type: object
+      properties:
+        id:
+          type: string
+          description: The user's unique ID.
+          format: uuid
+          example: 00000000-0000-0000-0000-000000000000
+        site_id:
+          type: integer
+          description: The site ID.
+          format: int32
+        user_name:
+          type: string
+          description: The full name of the user.
+        first_name:
+          type: string
+          description: The user's first name.
+        last_name:
+          type: string
+          description: The user's last name.
+        email:
+          type: string
+          description: The email address.
+        default_account_id:
+          type: string
+          description: The account ID of the user's default account.
+          format: uuid
+          example: 00000000-0000-0000-0000-000000000000
+        language_culture:
+          type: string
+          description: "The language and culture of the user.\n\n  * Chinese Simplified: `zh_CN`\n  * Chinese Traditional: `zh_TW`\n  * Dutch: `nl`\n  * English: `en`\n  * French: `fr`\n  * German: `de`\n  * Italian: `it`\n  * Japanese: `ja`\n  * Korean: `ko`\n  * Portuguese: `pt`\n  * Portuguese Brazil: `pt_BR`\n  * Russian: `ru`\n  * Spanish: `es`\n"
+        selected_languages:
+          type: string
+          description: ''
+        federated_status:
+          type: string
+          description: 'The user''s federated status. One of:
+
+
+            - `RemoveStatus`
+
+            - `FedAuthRequired`
+
+            - `FedAuthBypass`
+
+            - `Evicted`'
+        force_password_change:
+          type: boolean
+          description: If **true**, the user will be required to change the account password.
+        memberships:
+          type: array
+          description: A list of group membership requests.
+          items:
+            $ref: '#/components/schemas/UpdateMembershipRequest'
+        device_verification_enabled:
+          type: boolean
+          description: ''
+      description: Request to change a user's information.
+      x-ds-definition-name: UpdateUserRequest
+      x-ms-summary: Request to change a user's information.
+  securitySchemes:
+    accessCode:
+      type: oauth2
+      description: OAuth2 Access code Grant
+      flows:
+        authorizationCode:
+          authorizationUrl: https://account.docusign.com/oauth/auth
+          tokenUrl: https://account.docusign.com/oauth/auth
+          scopes:
+            organization_read: ''
+            permission_read: ''
+            group_read: ''
+            user_read: ''
+            account_read: ''
+            account_write: ''
+            user_write: ''
+            identity_provider_read: ''
+            domain_read: ''
+x-ds-categories:
+- name: UserManagement
+  summary: Methods to manage users in an account.
+  description: Methods to manage users in an account.
+- name: BulkOperations
+  summary: Methods to import and export users and accounts.
+  description: Methods to import and export users and accounts.
+- name: IdentityProviders
+  summary: Methods to get a list of identity providers.
+  description: Methods to get a list of identity providers.
+- name: ReservedDomains
+  summary: Methods to get a list of reserved domains.
+  description: Methods to get a list of reserved domains.
+- name: Organization
+  summary: Methods for working with organizations.
+  description: Methods for working with organizations.
+x-original-swagger-version: '2.0'

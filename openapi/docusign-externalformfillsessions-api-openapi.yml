@@ -1,0 +1,205 @@
+openapi: 3.0.1
+info:
+  title: DocuSign Admin AccountBrands ExternalFormFillSessions API
+  description: An API for an organization administrator to manage organizations, accounts and users
+  termsOfService: https://www.docusign.com/company/terms-and-conditions/developers
+  contact:
+    name: DocuSign Developer Center
+    url: https://developers.docusign.com
+    email: devcenter@docusign.com
+  version: v2.1
+servers:
+- url: https://api.docusign.net/Management
+tags:
+- name: ExternalFormFillSessions
+  description: ''
+paths:
+  /v2/accounts/{accountId}/external_form_fill_sessions:
+    post:
+      tags:
+      - ExternalFormFillSessions
+      summary: Docusign Creates an external form fill session.
+      description: Returns a URL for a new external form fill session, based on the `roomId` and `formId` that you specify in the `formFillSessionForCreate` request body.
+      operationId: ExternalFormFillSessions_CreateExternalFormFillSession
+      parameters:
+      - name: accountId
+        in: path
+        description: The globally unique identifier (GUID) for the account.
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json-patch+json:
+            schema:
+              $ref: '#/components/schemas/ExternalFormFillSessionForCreate'
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ExternalFormFillSessionForCreate'
+          text/json:
+            schema:
+              $ref: '#/components/schemas/ExternalFormFillSessionForCreate'
+          application/*+json:
+            schema:
+              $ref: '#/components/schemas/ExternalFormFillSessionForCreate'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/ExternalFormFillSessionForCreate'
+          text/xml:
+            schema:
+              $ref: '#/components/schemas/ExternalFormFillSessionForCreate'
+          application/*+xml:
+            schema:
+              $ref: '#/components/schemas/ExternalFormFillSessionForCreate'
+        required: false
+      responses:
+        '201':
+          description: Created
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/ExternalFormFillSession'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ExternalFormFillSession'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/ExternalFormFillSession'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/ExternalFormFillSession'
+            text/xml:
+              schema:
+                $ref: '#/components/schemas/ExternalFormFillSession'
+        '400':
+          description: Bad request. See ErrorCode and Message for details
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            text/xml:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '401':
+          description: Not authorized to make this request.
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            text/xml:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+      x-ds-methodname: CreateExternalFormFillSession
+      x-ds-method: CreateExternalFormFillSession
+      x-ds-service: ExternalFormFillSessions
+      x-ds-in-sdk: true
+      x-codegen-request-body-name: body
+components:
+  schemas:
+    ApiError:
+      type: object
+      properties:
+        errorCode:
+          type: string
+          description: The code associated with the error condition.
+        message:
+          type: string
+          description: A brief message describing the error condition.
+        referenceId:
+          type: string
+          description: ''
+      description: This object describes errors that occur. It is valid only for responses and ignored in requests.
+      x-ds-definition-name: ApiError
+      x-ms-summary: This object describes errors that occur. It is valid only for responses and ignored in requests.
+    ExternalFormFillSession:
+      type: object
+      properties:
+        url:
+          type: string
+          description: The URL for the new form fill session.
+          format: uri
+      description: Contains the URL for the new form fill session.
+      x-ds-definition-name: ExternalFormFillSession
+      x-ms-summary: Contains the URL for the new form fill session.
+    ExternalFormFillSessionForCreate:
+      required:
+      - roomId
+      type: object
+      properties:
+        formId:
+          type: string
+          description: '(Required) The ID of the form.
+
+
+            Example: `5be324eb-xxxx-xxxx-xxxx-208065181be9`
+
+            '
+        roomId:
+          type: integer
+          description: (Required) The ID of the room.
+          format: int32
+        formIds:
+          type: array
+          description: ''
+          items:
+            type: string
+            format: uuid
+        xFrameAllowedUrl:
+          type: string
+          description: (Optional) This property specifies the origin on which the page is allowed to display in a frame.
+      description: Contains the details required to create a form fill session.
+      x-ds-definition-name: ExternalFormFillSessionForCreate
+      x-ms-summary: Contains the details required to create a form fill session.
+  securitySchemes:
+    accessCode:
+      type: oauth2
+      description: OAuth2 Access code Grant
+      flows:
+        authorizationCode:
+          authorizationUrl: https://account.docusign.com/oauth/auth
+          tokenUrl: https://account.docusign.com/oauth/auth
+          scopes:
+            organization_read: ''
+            permission_read: ''
+            group_read: ''
+            user_read: ''
+            account_read: ''
+            account_write: ''
+            user_write: ''
+            identity_provider_read: ''
+            domain_read: ''
+x-ds-categories:
+- name: UserManagement
+  summary: Methods to manage users in an account.
+  description: Methods to manage users in an account.
+- name: BulkOperations
+  summary: Methods to import and export users and accounts.
+  description: Methods to import and export users and accounts.
+- name: IdentityProviders
+  summary: Methods to get a list of identity providers.
+  description: Methods to get a list of identity providers.
+- name: ReservedDomains
+  summary: Methods to get a list of reserved domains.
+  description: Methods to get a list of reserved domains.
+- name: Organization
+  summary: Methods for working with organizations.
+  description: Methods for working with organizations.
+x-original-swagger-version: '2.0'

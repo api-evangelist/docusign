@@ -1,0 +1,909 @@
+openapi: 3.0.1
+info:
+  title: DocuSign Admin AccountBrands Roles API
+  description: An API for an organization administrator to manage organizations, accounts and users
+  termsOfService: https://www.docusign.com/company/terms-and-conditions/developers
+  contact:
+    name: DocuSign Developer Center
+    url: https://developers.docusign.com
+    email: devcenter@docusign.com
+  version: v2.1
+servers:
+- url: https://api.docusign.net/Management
+tags:
+- name: Roles
+  description: 'Each role is associated with specific permissions. Each new member is assigned a role when you create them, automatically granting them the permissions associated with that role.
+
+
+    Roles use the following permission types to control the actions that users can perform:
+
+
+    - Room
+
+    - Room Details
+
+    - Documents
+
+    - Envelopes
+
+    - Member Management
+
+    - Company Settings
+
+
+    Rooms enables you to configure custom roles containing permissions that make sense for your company. Because each new member is assigned a role, you must set up these roles before you can invite members to join your account.
+
+
+    Permissions for roles are tied to the `roleId` property and not yet exposed. You can learn more about these permission types and configure them in the console.
+
+
+    ### Internal and External Roles
+
+
+    In Rooms, a role can be either internal or external. You assign internal roles to people inside your company. You assign external roles to people outside your company when you invite them to a room.
+
+
+    Each member inside your company has a default company role. However, they can also be assigned additional roles with different permissions on a per-room basis. Regardless of the member''s default company role, what they can do in a room is entirely controlled by their role in that particular room.'
+paths:
+  /v2/accounts/{accountId}/roles:
+    get:
+      tags:
+      - Roles
+      summary: Docusign Gets roles.
+      description: "Returns a list of roles associated with a company account.\n\n## Permissions \n\nAny user with a valid access token can call this method."
+      operationId: Roles_GetRoles
+      parameters:
+      - name: onlyAssignable
+        in: query
+        description: This parameter is deprecated. Use `filterContext` instead. Note that `filterContext=AssignableRolesBasedOnCompanyPermissions` is equivalent to `onlyAssignable=true`.
+        schema:
+          type: boolean
+          default: false
+      - name: filterContext
+        in: query
+        description: 'Filters the roles by the calling user''s permissions. Valid values are:
+
+
+          - `AllRoles` (default): All roles are returned.
+
+          - `AssignableRolesBasedOnAllPermissions`: Only roles that the current user can assign to someone else are returned. In other words, given the permission set of the current user, only roles with a subset of those permissions (including the same exact permissions) will be returned.
+
+          - `AssignableRolesBasedOnCompanyPermissions`: Only roles that the current user can assign to someone else based on company permissions are returned. Other permissions are not taken into account. In other words, given the company permissions of the current user, only roles with a subset of those company permissions (including the same exact company permissions) will be returned.'
+        schema: {}
+      - name: filter
+        in: query
+        description: "A search filter that returns roles by the beginning of the role name. You can enter the beginning of the role name only to return all of the roles that begin with the text that you entered. \n\nFor example, if your company has set up roles such as Manager Beginner, Manager Pro, Agent Expert, and Agent Superstar, you could enter `Manager` to return all of the Manager roles (Manager Beginner and Manager Pro).\n\n**Note:** You do not enter a wildcard (*) at the end of the name fragment."
+        schema:
+          type: string
+      - name: startPosition
+        in: query
+        description: The starting zero-based index position of the result set. The default value is 0.
+        schema:
+          type: integer
+          format: int32
+          default: 0
+      - name: count
+        in: query
+        description: The number of results to return. This value must be a number between `1` and `100` (default).
+        schema:
+          type: integer
+          format: int32
+          default: 100
+      - name: accountId
+        in: path
+        description: The globally unique identifier (GUID) for the account.
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Roles successfully retrieved.
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/RoleSummaryList'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RoleSummaryList'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/RoleSummaryList'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/RoleSummaryList'
+            text/xml:
+              schema:
+                $ref: '#/components/schemas/RoleSummaryList'
+        '400':
+          description: Bad request. See ErrorCode and Message for details
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            text/xml:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '401':
+          description: Not authorized to make this request.
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            text/xml:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+      x-ds-methodname: GetRoles
+      x-ds-method: GetRoles
+      x-ds-service: Roles
+      x-ds-in-sdk: true
+    post:
+      tags:
+      - Roles
+      summary: Docusign Creates a role.
+      description: 'Creates a new company role.
+
+
+        ## Permissions
+
+
+        To use this method, you must have the `canManageAccount` permission set to **true.**'
+      operationId: Roles_CreateRole
+      parameters:
+      - name: accountId
+        in: path
+        description: The globally unique identifier (GUID) for the account.
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json-patch+json:
+            schema:
+              $ref: '#/components/schemas/RoleForCreate'
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RoleForCreate'
+          text/json:
+            schema:
+              $ref: '#/components/schemas/RoleForCreate'
+          application/*+json:
+            schema:
+              $ref: '#/components/schemas/RoleForCreate'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/RoleForCreate'
+          text/xml:
+            schema:
+              $ref: '#/components/schemas/RoleForCreate'
+          application/*+xml:
+            schema:
+              $ref: '#/components/schemas/RoleForCreate'
+        required: false
+      responses:
+        '201':
+          description: Role successfully created.
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/Role'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Role'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/Role'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Role'
+            text/xml:
+              schema:
+                $ref: '#/components/schemas/Role'
+        '400':
+          description: Bad request. See ErrorCode and Message for details
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            text/xml:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '401':
+          description: Not authorized to make this request.
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            text/xml:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+      x-ds-methodname: CreateRole
+      x-ds-method: CreateRole
+      x-ds-service: Roles
+      x-ds-in-sdk: true
+      x-codegen-request-body-name: body
+  /v2/accounts/{accountId}/roles/{roleId}:
+    get:
+      tags:
+      - Roles
+      summary: Docusign Gets a role.
+      description: Returns details about a role, including the associated permissions.
+      operationId: Roles_GetRole
+      parameters:
+      - name: roleId
+        in: path
+        description: The ID of the role.
+        required: true
+        schema:
+          type: integer
+          format: int32
+      - name: includeIsAssigned
+        in: query
+        description: When **true,** the response includes the `isAssigned` property, which specifies whether the role is currently assigned to any users. The default is **false.**
+        schema:
+          type: boolean
+          default: false
+      - name: accountId
+        in: path
+        description: (Required) The globally unique identifier (GUID) for the account.
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Role successfully retrieved.
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/Role'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Role'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/Role'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Role'
+            text/xml:
+              schema:
+                $ref: '#/components/schemas/Role'
+        '400':
+          description: Bad request. See ErrorCode and Message for details
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            text/xml:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '401':
+          description: Not authorized to make this request.
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            text/xml:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+      x-ds-methodname: GetRole
+      x-ds-method: GetRole
+      x-ds-service: Roles
+      x-ds-in-sdk: true
+    put:
+      tags:
+      - Roles
+      summary: Docusign Updates a role.
+      description: 'Modifies the specified company role.
+
+
+        ## Permissions
+
+
+        To use this method, you must have the `canManageAccount` permission set to **true.**'
+      operationId: Roles_UpdateRole
+      parameters:
+      - name: roleId
+        in: path
+        description: The ID of the role.
+        required: true
+        schema:
+          type: integer
+          format: int32
+      - name: accountId
+        in: path
+        description: The globally unique identifier (GUID) for the account.
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json-patch+json:
+            schema:
+              $ref: '#/components/schemas/RoleForUpdate'
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RoleForUpdate'
+          text/json:
+            schema:
+              $ref: '#/components/schemas/RoleForUpdate'
+          application/*+json:
+            schema:
+              $ref: '#/components/schemas/RoleForUpdate'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/RoleForUpdate'
+          text/xml:
+            schema:
+              $ref: '#/components/schemas/RoleForUpdate'
+          application/*+xml:
+            schema:
+              $ref: '#/components/schemas/RoleForUpdate'
+        required: false
+      responses:
+        '200':
+          description: Role successfully updated.
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/Role'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Role'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/Role'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Role'
+            text/xml:
+              schema:
+                $ref: '#/components/schemas/Role'
+        '400':
+          description: Bad request. See ErrorCode and Message for details
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            text/xml:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '401':
+          description: Not authorized to make this request.
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            text/xml:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+      x-ds-methodname: UpdateRole
+      x-ds-method: UpdateRole
+      x-ds-service: Roles
+      x-ds-in-sdk: true
+      x-codegen-request-body-name: body
+    delete:
+      tags:
+      - Roles
+      summary: Docusign Deletes a role.
+      description: "Deletes a role from a company account.\n\n## Permissions \n\nTo use this method, you must have the `canManageAccount` permission set to **true.**"
+      operationId: Roles_DeleteRole
+      parameters:
+      - name: roleId
+        in: path
+        description: The ID of the role to delete.
+        required: true
+        schema:
+          type: integer
+          format: int32
+      - name: accountId
+        in: path
+        description: The globally unique identifier (GUID) for the account.
+        required: true
+        schema:
+          type: string
+      responses:
+        '204':
+          description: Role successfully deleted.
+          content: {}
+        '400':
+          description: Bad request. See ErrorCode and Message for details
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            text/xml:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '401':
+          description: Not authorized to make this request.
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            text/xml:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+      x-ds-methodname: DeleteRole
+      x-ds-method: DeleteRole
+      x-ds-service: Roles
+      x-ds-in-sdk: true
+components:
+  schemas:
+    Role:
+      type: object
+      properties:
+        roleId:
+          type: integer
+          description: The ID of the company role assigned to the user.
+          format: int32
+        legacyRoleId:
+          type: string
+          description: This field is deprecated in Rooms Version 6.
+        name:
+          type: string
+          description: The name of the role.
+        isDefaultForAdmin:
+          type: boolean
+          description: When **true,** the role is the default for account administrators.
+        isExternal:
+          type: boolean
+          description: When **true,** the role is an external role. You assign external roles to people from outside your company when you invite them into a room.
+        createdDate:
+          type: string
+          description: 'The UTC date and time when the item was created. This is a read-only value that the service assigns.
+
+
+            Example: `2019-07-17T17:45:42.783Z`
+
+
+            '
+          format: date-time
+        isAssigned:
+          type: boolean
+          description: When **true,** indicates that this role is currently assigned to a user.
+        permissions:
+          $ref: '#/components/schemas/Permissions'
+      description: Contains details about a company role.
+      x-ds-definition-name: Role
+      x-ms-summary: Contains details about a company role.
+    RoleForUpdate:
+      type: object
+      properties:
+        name:
+          type: string
+          description: The name of the role.
+        isExternal:
+          type: boolean
+          description: When **true,** the role is an external role. You assign external roles to people from outside your company when you invite them into a room.
+        permissions:
+          $ref: '#/components/schemas/Permissions'
+      description: This request object contains the details to use for the update.
+      x-ds-definition-name: RoleForUpdate
+      x-ms-summary: This request object contains the details to use for the update.
+    RoleSummary:
+      type: object
+      properties:
+        roleId:
+          type: integer
+          description: The ID of the company role assigned to the user.
+          format: int32
+        legacyRoleId:
+          type: string
+          description: This field is deprecated in Rooms Version 6.
+        name:
+          type: string
+          description: The name of the role.
+        isDefaultForAdmin:
+          type: boolean
+          description: When **true,** the role is the default for account administrators.
+        isExternal:
+          type: boolean
+          description: When **true,** the role is an external role. You assign external roles to people from outside your company when you invite them into a room.
+        createdDate:
+          type: string
+          description: 'The UTC date and time when the item was created. This is a read-only value that the service assigns.
+
+
+            Example: `2019-07-17T17:45:42.783Z`
+
+
+            '
+          format: date-time
+      description: Contains details about a role.
+      x-ds-definition-name: RoleSummary
+      x-ms-summary: Contains details about a role.
+    Permissions:
+      type: object
+      properties:
+        canAddUsersToRooms:
+          type: boolean
+          description: When **true,** users can see the **Invite** button on the room's **People** tab and can invite people into a room.
+        canCreateRooms:
+          type: boolean
+          description: When **true,** users can see the **New** button on the **Rooms** tab and can create a room.
+        canSubmitRoomsForReview:
+          type: boolean
+          description: When **true,** users can submit rooms for review that are owned by them or someone they manage.
+        canCloseRooms:
+          type: boolean
+          description: When **true,** users can review and close rooms that are owned by them or someone they manage.
+        canReopenRooms:
+          type: boolean
+          description: When **true,** users can reopen rooms that are owned by them or someone they manage.
+        canDeleteOwnedRooms:
+          type: boolean
+          description: When **true,** the user can delete rooms that are owned by them or someone they manage.
+        autoAccessToRooms:
+          type: boolean
+          description: When **true,** users are automatically added to new rooms when someone with an internal role in their office or region creates or is invited to a room.
+        canExportRoomActivityDetailsPeople:
+          type: boolean
+          description: When **true,** users can export the details, people, and history of a room to a PDF or CSV file.
+        canCopyRoomDetails:
+          type: boolean
+          description: When **true,** users see a **Copy** room option in the room **Actions** menu, which copies the room's detail information to populate a new room.
+        canEditAnyRoomRole:
+          type: boolean
+          description: ''
+        canEditInvitedRoomRole:
+          type: boolean
+          description: ''
+        canEditRoomSide:
+          type: boolean
+          description: ''
+        canManageAnyUserRoomAccess:
+          type: boolean
+          description: ''
+        canManageInvitedUserRoomAccess:
+          type: boolean
+          description: ''
+        isHiddenInRoom:
+          type: boolean
+          description: ''
+        canManageRoomOwners:
+          type: boolean
+          description: ''
+        canDeleteRooms:
+          type: boolean
+          description: ''
+        canConnectToMortgageCadence:
+          type: boolean
+          description: ''
+        autoAccessToRoomsInOfficeOnly:
+          type: boolean
+          description: ''
+        canViewRoomDetails:
+          type: boolean
+          description: When **true,** users can view all room detail fields that the company Admin has set to **Use.**
+        canViewAndEditRoomDetails:
+          type: boolean
+          description: When **true,** users can view and make edits to any room detail fields.
+        canSendRoomDetailsToLoneWolf:
+          type: boolean
+          description: ''
+        canAddDocuments:
+          type: boolean
+          description: When **true,** users can add documents to rooms and share the documents that they own with other people in the room.
+        canAddDocumentsFromFormGroups:
+          type: boolean
+          description: When **true,** users can add documents from form groups to rooms.
+        canAddDocumentsFromFormLibraries:
+          type: boolean
+          description: When **true,** users can add documents from form libraries to rooms.
+        documentsViewableByOthersInRoomFromOffice:
+          type: boolean
+          description: When a user for whom this permission is set to **true** adds a document, the document is automatically shared with other room users that are in the user's office.
+        documentsAutoOwnedByPeers:
+          type: boolean
+          description: When a user for whom this permission is set to **true** adds a document, the document is automatically seen and owned by those users' peers. Peers are others in the same office or region who have the same access level as the user.
+        canDeleteOwnedDocuments:
+          type: boolean
+          description: When **true,** users can delete documents that they own from rooms.
+        canDeleteSignedDocuments:
+          type: boolean
+          description: ''
+        canDeleteUnsignedDocuments:
+          type: boolean
+          description: ''
+        canManageSharedDocs:
+          type: boolean
+          description: When **true,** users can manage all documents, including ones that another user has shared with them.
+        canManageFormGroups:
+          type: boolean
+          description: When **true,** users have access to **Admin > Forms** and can manage form groups and form libraries for the company.
+        canShareDocsNotOwned:
+          type: boolean
+          description: When **true,** users can share documents that they do not own (documents that another user has shared with them).
+        canCreateFormTemplates:
+          type: boolean
+          description: ''
+        canManageFormPackets:
+          type: boolean
+          description: ''
+        canAddTasksToAnyTaskLists:
+          type: boolean
+          description: When **true,** users can add tasks to any task list, including lists that they do not own.
+        canEditEditableTasks:
+          type: boolean
+          description: When **true,** users can edit editable tasks.
+        canEditAnyTasks:
+          type: boolean
+          description: When **true,** users can edit tasks in rooms, even if the task owner has not marked the task as editable.
+        canDeleteDeletableTasks:
+          type: boolean
+          description: When **true,** users can delete deletable tasks.
+        canDeleteAnyTasks:
+          type: boolean
+          description: When **true,** users can delete tasks, even if the task owner has not marked the task as deletable.
+        canApplyTaskList:
+          type: boolean
+          description: When **true,** users see the **Attach Task List** option in the room's **Actions** menu and can apply task lists to rooms.
+        canRemoveAnyTaskList:
+          type: boolean
+          description: 'When **true,** users can use the **Remove Task List** option in the room''s **Actions** menu to remove task lists owned by others.
+
+
+            **Note:** Users can already remove task lists that they own.'
+        canSubmitTaskList:
+          type: boolean
+          description: When **true,** users can use the **Submit Task List** option in the room's **Actions** menu to submit task lists for review.
+        canAutoSubmitTaskList:
+          type: boolean
+          description: When **true,** users can use the **Submit Task List** option in the room's **Actions** menu to submit task lists for review.
+        canReviewTaskList:
+          type: boolean
+          description: When **true,** users can approve or decline a task list. Declining a task list sends it back to open status for the assignee to complete. The assignee also receives a notification.
+        canAutoApproveTaskList:
+          type: boolean
+          description: When **true** and a room is approved, the task lists associated with the room auto-approve if all of the tasks are approved.
+        canManageTaskTemplatesForAllRegionsAllOffices:
+          type: boolean
+          description: When **true,** users have access to the **Admin > Company > Task List Templates** menu so that they can create, edit, and delete task list templates for all regions and offices.
+        canApplyRoomTemplates:
+          type: boolean
+          description: When **true,** users can apply a room template when they create a room.
+        canAddTasksToRooms:
+          type: boolean
+          description: When **true,** users can add tasks to rooms.
+        canReviewAnyTask:
+          type: boolean
+          description: ''
+        canManageDocsOnAnyTask:
+          type: boolean
+          description: ''
+        canAddMemberAndSetRoleLowerAccessLevel:
+          type: boolean
+          description: When **true,** users can add other users with a lower access level than their own to offices or regions that they oversee and set those users' roles.
+        canAddMemberAndSetRoleSameAccessLevel:
+          type: boolean
+          description: When **true,** users can add other users with the same access level as their own to offices or regions that they oversee and set those users' roles.
+        canChangeMemberRoleLowerAccessLevel:
+          type: boolean
+          description: When **true,** users can edit the roles of other users who have a lower access level than their own and that belong to offices or regions that they oversee.
+        canChangeMemberRoleSameAccessLevel:
+          type: boolean
+          description: When **true,** users can edit the roles of other users who have the same access level as their own and that belong to offices or regions that they oversee.
+        canManageMemberLowerAccessLevel:
+          type: boolean
+          description: When **true,** users can change the access level, office, region, and eSignature permission set of other users who have a lower access level than their own.
+        canManageMemberSameAccessLevel:
+          type: boolean
+          description: When **true,** users can change the access level, office, region, and eSignature permission set of other users who have the same access level as their own.
+        canRemoveCompanyMemberLowerAccessLevel:
+          type: boolean
+          description: When **true,** users can remove other users who have a lower access level than their own and that belong to offices or regions that they oversee from the company account.
+        canRemoveCompanyMemberSameAccessLevel:
+          type: boolean
+          description: When **true,** users can remove other users who have the same access level as their own and that belong to offices or regions that they oversee from the company account.
+        canManageAccount:
+          type: boolean
+          description: When **true,** users can access the **Company Settings** tab under **Rooms > Admin > Company** to manage company account settings and change the company name, contact information, currency, offices, and regions.
+        canManageLogo:
+          type: boolean
+          description: When **true,** users can access the **Company Logo** section in **Company Settings** to add or change the company logo.
+        canManageRolesAndPermissions:
+          type: boolean
+          description: ''
+        canManageRoomDetails:
+          type: boolean
+          description: When **true,** users see the **Room Details** tab under **Rooms > Admin > Company** and can use it to configure room details. They can also add additional contact fields.
+        canManageRoomTemplates:
+          type: boolean
+          description: When **true,** users see the **Room Templates** option in the **Rooms > Admin** menu, which enables them to add, edit, and delete room templates.
+        canManageIntegrationSettings:
+          type: boolean
+          description: ''
+        canExportCompanyUsageReport:
+          type: boolean
+          description: ''
+      description: Contains details about permissions.
+      x-ds-definition-name: Permissions
+      x-ms-summary: Contains details about permissions.
+    RoleForCreate:
+      type: object
+      properties:
+        name:
+          type: string
+          description: The name of the role.
+        isExternal:
+          type: boolean
+          description: When **true,** the role is an external role. You assign external roles to people from outside your company when you invite them into a room.
+        permissions:
+          $ref: '#/components/schemas/Permissions'
+      description: Contains details about the role that you want to create.
+      x-ds-definition-name: RoleForCreate
+      x-ms-summary: Contains details about the role that you want to create.
+    ApiError:
+      type: object
+      properties:
+        errorCode:
+          type: string
+          description: The code associated with the error condition.
+        message:
+          type: string
+          description: A brief message describing the error condition.
+        referenceId:
+          type: string
+          description: ''
+      description: This object describes errors that occur. It is valid only for responses and ignored in requests.
+      x-ds-definition-name: ApiError
+      x-ms-summary: This object describes errors that occur. It is valid only for responses and ignored in requests.
+    RoleSummaryList:
+      type: object
+      properties:
+        roles:
+          type: array
+          description: An array of `role` objects.
+          items:
+            $ref: '#/components/schemas/RoleSummary'
+        resultSetSize:
+          type: integer
+          description: The number of results returned in this response.
+          format: int32
+        startPosition:
+          type: integer
+          description: The starting zero-based index position of the results set. When this property is used as a query parameter, the default value is `0`.
+          format: int32
+        endPosition:
+          type: integer
+          description: The last zero-based index position in the result set.
+          format: int32
+          readOnly: true
+        nextUri:
+          type: string
+          description: The URI for the next chunk of records based on the search request. This property is `null` for the last set of search results.
+        priorUri:
+          type: string
+          description: The URI for the previous chunk of records based on the search request. This property is `null` for the first set of search results.
+        totalRowCount:
+          type: integer
+          description: ''
+          format: int32
+      description: This complex type contains details about the roles that are associated with an account.
+      x-ds-definition-name: RoleSummaryList
+      x-ms-summary: This complex type contains details about the roles that are associated with an account.
+  securitySchemes:
+    accessCode:
+      type: oauth2
+      description: OAuth2 Access code Grant
+      flows:
+        authorizationCode:
+          authorizationUrl: https://account.docusign.com/oauth/auth
+          tokenUrl: https://account.docusign.com/oauth/auth
+          scopes:
+            organization_read: ''
+            permission_read: ''
+            group_read: ''
+            user_read: ''
+            account_read: ''
+            account_write: ''
+            user_write: ''
+            identity_provider_read: ''
+            domain_read: ''
+x-ds-categories:
+- name: UserManagement
+  summary: Methods to manage users in an account.
+  description: Methods to manage users in an account.
+- name: BulkOperations
+  summary: Methods to import and export users and accounts.
+  description: Methods to import and export users and accounts.
+- name: IdentityProviders
+  summary: Methods to get a list of identity providers.
+  description: Methods to get a list of identity providers.
+- name: ReservedDomains
+  summary: Methods to get a list of reserved domains.
+  description: Methods to get a list of reserved domains.
+- name: Organization
+  summary: Methods for working with organizations.
+  description: Methods for working with organizations.
+x-original-swagger-version: '2.0'

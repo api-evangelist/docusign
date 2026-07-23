@@ -1,0 +1,368 @@
+openapi: 3.0.1
+info:
+  title: DocuSign Admin AccountBrands AccountSettingsImport API
+  description: An API for an organization administrator to manage organizations, accounts and users
+  termsOfService: https://www.docusign.com/company/terms-and-conditions/developers
+  contact:
+    name: DocuSign Developer Center
+    url: https://developers.docusign.com
+    email: devcenter@docusign.com
+  version: v2.1
+servers:
+- url: https://api.docusign.net/Management
+tags:
+- name: AccountSettingsImport
+  description: Methods and objects to update account settings.
+paths:
+  /v2/organizations/{organizationId}/imports/account_settings:
+    get:
+      tags:
+      - AccountSettingsImport
+      summary: Docusign Returns the details and metadata for Bulk Account Settings Import requests in the organization.
+      description: 'Returns the details and metadata for Bulk Account Settings Import requests in the organization.
+
+
+        - Required scopes: `account_read`'
+      operationId: OrganizationImport_OrganizationImportAccountSettings_Get
+      parameters:
+      - name: organizationId
+        in: path
+        description: The organization ID Guid
+        required: true
+        schema:
+          type: string
+          format: uuid
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/OrganizationAccountSettingsImportResponse'
+      security:
+      - accessCode:
+        - account_read
+      x-ds-methodname: getBulkAccountSettingsImports
+      x-ds-method: getBulkAccountSettingsImports
+      x-ds-service: BulkImports
+      x-ds-in-sdk: true
+    post:
+      tags:
+      - AccountSettingsImport
+      summary: Docusign Creates a new account settings import request.
+      description: 'Creates a new account settings import request.
+
+
+
+        - Required scopes: `account_write`'
+      operationId: OrganizationImport_OrganizationImportAccountSettings_Post
+      parameters:
+      - name: organizationId
+        in: path
+        description: The organization ID GUID.
+        required: true
+        schema:
+          type: string
+          format: uuid
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              required:
+              - file.csv
+              type: object
+              properties:
+                file.csv:
+                  type: string
+                  description: CSV file.
+                  format: binary
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrganizationAccountSettingsImportResponse'
+      security:
+      - accessCode:
+        - account_write
+      x-ds-methodname: addBulkAccountSettingsImport
+      x-ds-method: addBulkAccountSettingsImport
+      x-ds-service: BulkImports
+      x-ds-in-sdk: true
+  /v2/organizations/{organizationId}/imports/account_settings/{importId}:
+    get:
+      tags:
+      - AccountSettingsImport
+      summary: Docusign Returns the details/metadata for a Bulk Account Settings Import request.
+      description: 'Returns the details/metadata for a Bulk Account Settings Import request.
+
+
+        Required - scopes: `account_read`
+
+
+
+
+        Given an import ID, this method returns the results of an account settings import request.
+
+        To get a list of all the import requests, use `getAccountSettingsImports`.
+
+
+        '
+      operationId: OrganizationImport_OrganizationImportAccountSettings_GetById
+      parameters:
+      - name: organizationId
+        in: path
+        description: The organization ID Guid
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: importId
+        in: path
+        description: The import ID GUID for the request.
+        required: true
+        schema:
+          type: string
+          format: uuid
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrganizationAccountSettingsImportResponse'
+      security:
+      - accessCode:
+        - account_read
+      x-ds-methodname: getBulkAccountSettingsImport
+      x-ds-method: getBulkAccountSettingsImport
+      x-ds-service: BulkImports
+      x-ds-in-sdk: true
+    delete:
+      tags:
+      - AccountSettingsImport
+      summary: Docusign Deletes a Bulk Account Settings Import request.
+      description: 'Deletes a single account settings import request.
+
+        Any data associated with the request is also deleted.
+
+
+        - Required scopes: `account_write`'
+      operationId: OrganizationImport_OrganizationImportAccountSettings_DeleteById
+      parameters:
+      - name: organizationId
+        in: path
+        description: The organization ID Guid
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: importId
+        in: path
+        description: The import ID GUID for the request.
+        required: true
+        schema:
+          type: string
+          format: uuid
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+      security:
+      - accessCode:
+        - account_write
+      x-ds-methodname: deleteBulkAccountSettingsImport
+      x-ds-method: deleteBulkAccountSettingsImport
+      x-ds-service: BulkImports
+      x-ds-in-sdk: true
+components:
+  schemas:
+    OrganizationAccountSettingsImportResultResponse:
+      type: object
+      properties:
+        id:
+          type: string
+          description: ''
+          format: uuid
+          example: 00000000-0000-0000-0000-000000000000
+        site_id:
+          type: integer
+          description: ''
+          format: int32
+        url:
+          type: string
+          description: ''
+        number_processed_accounts:
+          type: integer
+          description: ''
+          format: int64
+        error_details:
+          $ref: '#/components/schemas/OASIRR_ErrorDetails'
+        processing_issues_by_account:
+          type: array
+          description: ''
+          items:
+            $ref: '#/components/schemas/OASIRR_OrganizationAccountSettingsErrorDataResponse'
+        number_unprocessed_accounts:
+          type: integer
+          description: ''
+          format: int64
+      description: ''
+      x-ds-definition-name: OrganizationAccountSettingsImportResultResponse
+      x-ms-summary: ''
+    OASIRR_ErrorDetails:
+      type: object
+      properties:
+        error:
+          type: string
+          description: The error number.
+        error_description:
+          type: string
+          description: A longer description of the error.
+      description: ''
+      x-ds-definition-name: OASIRR_ErrorDetails
+      x-ms-summary: ''
+    OrganizationAccountSettingsImportResponse:
+      type: object
+      properties:
+        created:
+          type: string
+          description: ''
+          format: date-time
+        last_modified:
+          type: string
+          description: ''
+          format: date-time
+        completed:
+          type: string
+          description: ''
+          format: date-time
+        expires:
+          type: string
+          description: ''
+          format: date-time
+        percent_completed:
+          type: integer
+          description: ''
+          format: int32
+        number_processed_accounts:
+          type: integer
+          description: ''
+          format: int64
+        number_unprocessed_accounts:
+          type: integer
+          description: ''
+          format: int64
+        results:
+          type: array
+          description: ''
+          items:
+            $ref: '#/components/schemas/OrganizationAccountSettingsImportResultResponse'
+        success:
+          type: boolean
+          description: ''
+        skipped_settings_by_account:
+          type: object
+          additionalProperties:
+            type: array
+            items:
+              type: string
+          description: ''
+        id:
+          type: string
+          description: ''
+        organization_id:
+          type: string
+          description: ''
+        status:
+          type: string
+          description: Status.
+        type:
+          type: string
+          description: ''
+        requestor:
+          $ref: '#/components/schemas/OrganizationAccountSettingsImportRequestorResponse'
+      description: ''
+      x-ds-definition-name: OrganizationAccountSettingsImportResponse
+      x-ms-summary: ''
+    OrganizationAccountSettingsImportRequestorResponse:
+      type: object
+      properties:
+        id:
+          type: string
+          description: ''
+        type:
+          type: string
+          description: ''
+        name:
+          type: string
+          description: ''
+        email:
+          type: string
+          description: The email address.
+      description: ''
+      x-ds-definition-name: OrganizationAccountSettingsImportRequestorResponse
+      x-ms-summary: ''
+    OASIRR_OrganizationAccountSettingsErrorDataResponse:
+      type: object
+      properties:
+        account_id:
+          type: string
+          description: Select users that are members of the specified account. At least one of `email`, `account_id` or `organization_reserved_domain_id` must be specified.
+        account_name:
+          type: string
+          description: ''
+        error:
+          type: string
+          description: The error number.
+        error_key:
+          type: string
+          description: ''
+        setting_key:
+          type: string
+          description: ''
+      description: ''
+      x-ds-definition-name: OASIRR_OrganizationAccountSettingsErrorDataResponse
+      x-ms-summary: ''
+  securitySchemes:
+    accessCode:
+      type: oauth2
+      description: OAuth2 Access code Grant
+      flows:
+        authorizationCode:
+          authorizationUrl: https://account.docusign.com/oauth/auth
+          tokenUrl: https://account.docusign.com/oauth/auth
+          scopes:
+            organization_read: ''
+            permission_read: ''
+            group_read: ''
+            user_read: ''
+            account_read: ''
+            account_write: ''
+            user_write: ''
+            identity_provider_read: ''
+            domain_read: ''
+x-ds-categories:
+- name: UserManagement
+  summary: Methods to manage users in an account.
+  description: Methods to manage users in an account.
+- name: BulkOperations
+  summary: Methods to import and export users and accounts.
+  description: Methods to import and export users and accounts.
+- name: IdentityProviders
+  summary: Methods to get a list of identity providers.
+  description: Methods to get a list of identity providers.
+- name: ReservedDomains
+  summary: Methods to get a list of reserved domains.
+  description: Methods to get a list of reserved domains.
+- name: Organization
+  summary: Methods for working with organizations.
+  description: Methods for working with organizations.
+x-original-swagger-version: '2.0'

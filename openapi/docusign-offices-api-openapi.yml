@@ -1,0 +1,732 @@
+openapi: 3.0.1
+info:
+  title: DocuSign Admin AccountBrands Offices API
+  description: An API for an organization administrator to manage organizations, accounts and users
+  termsOfService: https://www.docusign.com/company/terms-and-conditions/developers
+  contact:
+    name: DocuSign Developer Center
+    url: https://developers.docusign.com
+    email: devcenter@docusign.com
+  version: v2.1
+servers:
+- url: https://api.docusign.net/Management
+tags:
+- name: Offices
+  description: The `Offices` resource enables you to create and manage offices for your company. You can also retrieve the number and type of objects that reference an office.
+paths:
+  /v2/accounts/{accountId}/offices:
+    get:
+      tags:
+      - Offices
+      summary: Docusign Gets offices.
+      description: This method returns a list of offices associated with an account.
+      operationId: Offices_GetOffices
+      parameters:
+      - name: count
+        in: query
+        description: The number of results to return. This value must be a number between `1` and `100` (default).
+        schema:
+          type: integer
+          format: int32
+          default: 100
+      - name: startPosition
+        in: query
+        description: The starting zero-based index position of the results set from which to begin returning values. The default value is `0`.
+        schema:
+          type: integer
+          format: int32
+          default: 0
+      - name: onlyAccessible
+        in: query
+        description: When **true,** the response only includes the offices that are accessible to the current user.
+        schema:
+          type: boolean
+          default: false
+      - name: search
+        in: query
+        description: Filters returned records by the specified string. The response only includes records containing this string in the office `name` field.
+        schema:
+          type: string
+      - name: accountId
+        in: path
+        description: The globally unique identifier (GUID) for the account.
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Offices successfully retrieved.
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/OfficeSummaryList'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OfficeSummaryList'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/OfficeSummaryList'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/OfficeSummaryList'
+            text/xml:
+              schema:
+                $ref: '#/components/schemas/OfficeSummaryList'
+        '400':
+          description: Bad request. See ErrorCode and Message for details
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            text/xml:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '401':
+          description: Not authorized to make this request.
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            text/xml:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+      x-ds-methodname: GetOffices
+      x-ds-method: GetOffices
+      x-ds-service: Offices
+      x-ds-in-sdk: true
+    post:
+      tags:
+      - Offices
+      summary: Docusign Creates an office.
+      description: 'This method creates an office in a Rooms account. You can configure the following information for the new office:
+
+
+        - Office name
+
+        - Region
+
+        - Address
+
+        - Country ID and time zone
+
+        - Phone number
+
+
+        When you create an office, the Rooms API service assigns it an ID (`officeId`) and timestamp (`createdDate`), which are returned in the response along with the above data elements you specified. See the `Offices` object for descriptions of these data elements.
+
+
+        Use the [Users: AddUserToOffice](/docs/rooms-api/reference/users/users/addusertooffice/)
+
+        method to add users to the office.'
+      operationId: Offices_CreateOffice
+      parameters:
+      - name: accountId
+        in: path
+        description: The globally unique identifier (GUID) for the account.
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json-patch+json:
+            schema:
+              $ref: '#/components/schemas/OfficeForCreate'
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OfficeForCreate'
+          text/json:
+            schema:
+              $ref: '#/components/schemas/OfficeForCreate'
+          application/*+json:
+            schema:
+              $ref: '#/components/schemas/OfficeForCreate'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/OfficeForCreate'
+          text/xml:
+            schema:
+              $ref: '#/components/schemas/OfficeForCreate'
+          application/*+xml:
+            schema:
+              $ref: '#/components/schemas/OfficeForCreate'
+        required: false
+      responses:
+        '201':
+          description: Office successfully created.
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/Office'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Office'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/Office'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Office'
+            text/xml:
+              schema:
+                $ref: '#/components/schemas/Office'
+        '400':
+          description: Bad request. See ErrorCode and Message for details
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            text/xml:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '401':
+          description: Not authorized to make this request.
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            text/xml:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+      x-ds-methodname: CreateOffice
+      x-ds-method: CreateOffice
+      x-ds-service: Offices
+      x-ds-in-sdk: true
+      x-codegen-request-body-name: body
+  /v2/accounts/{accountId}/offices/{officeId}:
+    get:
+      tags:
+      - Offices
+      summary: Docusign Gets information about an office.
+      description: This method returns information about an office.
+      operationId: Offices_GetOffice
+      parameters:
+      - name: officeId
+        in: path
+        description: The ID of the office.
+        required: true
+        schema:
+          type: integer
+          format: int32
+      - name: accountId
+        in: path
+        description: The globally unique identifier (GUID) for the account.
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Office successfully retrieved.
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/Office'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Office'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/Office'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Office'
+            text/xml:
+              schema:
+                $ref: '#/components/schemas/Office'
+        '400':
+          description: Bad request. See ErrorCode and Message for details
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            text/xml:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '401':
+          description: Not authorized to make this request.
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            text/xml:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+      x-ds-methodname: GetOffice
+      x-ds-method: GetOffice
+      x-ds-service: Offices
+      x-ds-in-sdk: true
+    delete:
+      tags:
+      - Offices
+      summary: Docusign Deletes an office.
+      description: This method deletes an office from a Rooms account.
+      operationId: Offices_DeleteOffice
+      parameters:
+      - name: officeId
+        in: path
+        description: The ID of the office.
+        required: true
+        schema:
+          type: integer
+          format: int32
+      - name: accountId
+        in: path
+        description: The globally unique identifier (GUID) for the account.
+        required: true
+        schema:
+          type: string
+      responses:
+        '204':
+          description: Office successfully deleted.
+          content: {}
+        '400':
+          description: Bad request. See ErrorCode and Message for details
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            text/xml:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '401':
+          description: Not authorized to make this request.
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            text/xml:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+      x-ds-methodname: DeleteOffice
+      x-ds-method: DeleteOffice
+      x-ds-service: Offices
+      x-ds-in-sdk: true
+  /v2/accounts/{accountId}/offices/{officeId}/reference_counts:
+    get:
+      tags:
+      - Offices
+      summary: Docusign Retrieves the number and type of objects that reference an office.
+      description: This method returns a list of each type of object and the number of objects of that type referencing the specified office. Note that an office cannot be deleted while existing objects reference it.
+      operationId: Offices_GetReferenceCounts
+      parameters:
+      - name: officeId
+        in: path
+        description: The ID of the office.
+        required: true
+        schema:
+          type: integer
+          format: int32
+      - name: accountId
+        in: path
+        description: The globally unique identifier (GUID) for the account.
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Reference counts successfully retrieved.
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/OfficeReferenceCountList'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OfficeReferenceCountList'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/OfficeReferenceCountList'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/OfficeReferenceCountList'
+            text/xml:
+              schema:
+                $ref: '#/components/schemas/OfficeReferenceCountList'
+        '400':
+          description: Bad request. See ErrorCode and Message for details
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            text/xml:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '401':
+          description: Not authorized to make this request.
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            text/xml:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+      x-ds-methodname: GetReferenceCounts
+      x-ds-method: GetReferenceCounts
+      x-ds-service: Offices
+      x-ds-in-sdk: true
+components:
+  schemas:
+    OfficeReferenceCountList:
+      type: object
+      properties:
+        referencesCounts:
+          type: array
+          description: A list of each type of object and the number of objects of that type referencing the office.
+          items:
+            $ref: '#/components/schemas/OfficeReferenceCount'
+      description: Contains a list of each type of object and the number of objects of that type referencing the office.
+      x-ds-definition-name: OfficeReferenceCountList
+      x-ms-summary: Contains a list of each type of object and the number of objects of that type referencing the office.
+    OfficeReferenceCount:
+      type: object
+      properties:
+        referenceType:
+          type: string
+          description: The type of object referencing the office.
+        referencedCount:
+          type: integer
+          description: The number of objects of this type referencing the office.
+          format: int32
+          readOnly: true
+      description: A complex element containing the number and type of each object referencing the office.
+      x-ds-definition-name: OfficeReferenceCount
+      x-ms-summary: A complex element containing the number and type of each object referencing the office.
+    Office:
+      required:
+      - name
+      type: object
+      properties:
+        officeId:
+          type: integer
+          description: The ID of the office. This is the ID that the system generated when you created the office.
+          format: int32
+        name:
+          type: string
+          description: The name of the office.
+        regionId:
+          type: integer
+          description: The ID of the region. This is the ID that the system generated when you created the region.
+          format: int32
+        address1:
+          type: string
+          description: First line of the office street address.
+        address2:
+          type: string
+          description: Second line of the office street address.
+        city:
+          type: string
+          description: City name or metropolitan area of the office address.
+        stateId:
+          type: string
+          description: 'A concatenation of the two-letter country code with the state/province/region of the office address.
+
+
+            Example: `US-OH` (for Ohio)'
+        postalCode:
+          type: string
+          description: Postal code or ZIP code of the office address.
+        countryId:
+          type: string
+          description: The two-letter country code of the office address (for example, "UK" for United Kingdom).
+        timeZoneId:
+          type: string
+          description: 'The ID of the time zone for the office address.
+
+
+            Example: `eastern` (for the Eastern US Time Zone)'
+        phone:
+          type: string
+          description: Phone number of the office.
+        createdDate:
+          type: string
+          description: 'The UTC date and time when the item was created. This is a read-only value that the service assigns.
+
+
+            Example: `2019-07-17T17:45:42.783Z`
+
+
+            '
+          format: date-time
+      description: Contains information about an office.
+      x-ds-definition-name: Office
+      x-ms-summary: Contains information about an office.
+    OfficeForCreate:
+      required:
+      - name
+      type: object
+      properties:
+        name:
+          type: string
+          description: The name of the office.
+        regionId:
+          type: integer
+          description: The ID of the region. This is the ID that the system generated when you created the region.
+          format: int32
+        address1:
+          type: string
+          description: First line of the office street address.
+        address2:
+          type: string
+          description: Second line of the office street address.
+        city:
+          type: string
+          description: City name or metropolitan area of the office address.
+        stateId:
+          type: string
+          description: 'A concatenation of the two-letter country code with the state/province/region of the office address.
+
+
+            Example: `US-OH` (for Ohio)'
+        postalCode:
+          type: string
+          description: Postal code or ZIP code of the office address.
+        countryId:
+          type: string
+          description: The two-letter country code of the office address (for example, "UK" for United Kingdom).
+        timeZoneId:
+          type: string
+          description: 'The ID of the time zone for the office address.
+
+
+            Example: `eastern` (for the Eastern US Time Zone)'
+        phone:
+          type: string
+          description: Phone number of the office.
+      description: Contains details about the office that you want to create.
+      x-ds-definition-name: OfficeForCreate
+      x-ms-summary: Contains details about the office that you want to create.
+    OfficeSummaryList:
+      type: object
+      properties:
+        officeSummaries:
+          type: array
+          description: A list of `OfficeSummary` objects containing summary information about an office.
+          items:
+            $ref: '#/components/schemas/OfficeSummary'
+        resultSetSize:
+          type: integer
+          description: The number of results returned in this response.
+          format: int32
+        startPosition:
+          type: integer
+          description: The index position within the total result set from which returned values start.
+          format: int32
+        endPosition:
+          type: integer
+          description: The index position within the total result set at which returned values end.
+          format: int32
+          readOnly: true
+        nextUri:
+          type: string
+          description: The URI for the next chunk of records based on the search request. This property is `null` for the last set of search results.
+        priorUri:
+          type: string
+          description: The URI for the previous chunk of records based on the search request. This property is `null` for the first set of search results.
+        totalRowCount:
+          type: integer
+          description: ''
+          format: int32
+      description: Object that contains a summary of information about a requested group of offices in the Rooms account.
+      x-ds-definition-name: OfficeSummaryList
+      x-ms-summary: Object that contains a summary of information about a requested group of offices in the Rooms account.
+    ApiError:
+      type: object
+      properties:
+        errorCode:
+          type: string
+          description: The code associated with the error condition.
+        message:
+          type: string
+          description: A brief message describing the error condition.
+        referenceId:
+          type: string
+          description: ''
+      description: This object describes errors that occur. It is valid only for responses and ignored in requests.
+      x-ds-definition-name: ApiError
+      x-ms-summary: This object describes errors that occur. It is valid only for responses and ignored in requests.
+    OfficeSummary:
+      type: object
+      properties:
+        officeId:
+          type: integer
+          description: The ID of the office. This is the ID that the system generated when you created the office.
+          format: int32
+          readOnly: true
+        name:
+          type: string
+          description: The name of the office.
+          readOnly: true
+        regionId:
+          type: integer
+          description: The ID of the region. This is the ID that the system generated when you created the region.
+          format: int32
+          readOnly: true
+        address1:
+          type: string
+          description: First line of the office street address.
+          readOnly: true
+        address2:
+          type: string
+          description: Second line of the office street address.
+          readOnly: true
+        city:
+          type: string
+          description: City name or metropolitan area of the office address.
+          readOnly: true
+        stateId:
+          type: string
+          description: 'A concatenation of the two-letter country code with the state/province/region of the office address.
+
+
+            Example: `US-OH` (for Ohio)'
+          readOnly: true
+        postalCode:
+          type: string
+          description: Postal code or ZIP code of the office address.
+          readOnly: true
+        countryId:
+          type: string
+          description: The two-letter country code of the office address (for example, "UK" for United Kingdom).
+          readOnly: true
+        timeZoneId:
+          type: string
+          description: 'The ID of the time zone for the office address.
+
+
+            Example: `eastern` (for the Eastern US Time Zone)'
+          readOnly: true
+        phone:
+          type: string
+          description: Phone number of the office.
+          readOnly: true
+        createdDate:
+          type: string
+          description: UTC datetime that the office was created (for example, "2019-07-17T17:45:42.783"). Note that the service assigns this value, so it is read-only.
+          format: date-time
+          readOnly: true
+      description: A complex element containing summary information on an office; the elements of this object are identical to those of the `Offices` object.
+      x-ds-definition-name: OfficeSummary
+      x-ms-summary: A complex element containing summary information on an office; the elements of this object are identical to those of the `Offices` object.
+  securitySchemes:
+    accessCode:
+      type: oauth2
+      description: OAuth2 Access code Grant
+      flows:
+        authorizationCode:
+          authorizationUrl: https://account.docusign.com/oauth/auth
+          tokenUrl: https://account.docusign.com/oauth/auth
+          scopes:
+            organization_read: ''
+            permission_read: ''
+            group_read: ''
+            user_read: ''
+            account_read: ''
+            account_write: ''
+            user_write: ''
+            identity_provider_read: ''
+            domain_read: ''
+x-ds-categories:
+- name: UserManagement
+  summary: Methods to manage users in an account.
+  description: Methods to manage users in an account.
+- name: BulkOperations
+  summary: Methods to import and export users and accounts.
+  description: Methods to import and export users and accounts.
+- name: IdentityProviders
+  summary: Methods to get a list of identity providers.
+  description: Methods to get a list of identity providers.
+- name: ReservedDomains
+  summary: Methods to get a list of reserved domains.
+  description: Methods to get a list of reserved domains.
+- name: Organization
+  summary: Methods for working with organizations.
+  description: Methods for working with organizations.
+x-original-swagger-version: '2.0'

@@ -1,0 +1,336 @@
+openapi: 3.0.1
+info:
+  title: DocuSign Admin AccountBrands ChunkedUploads API
+  description: An API for an organization administrator to manage organizations, accounts and users
+  termsOfService: https://www.docusign.com/company/terms-and-conditions/developers
+  contact:
+    name: DocuSign Developer Center
+    url: https://developers.docusign.com
+    email: devcenter@docusign.com
+  version: v2.1
+servers:
+- url: https://api.docusign.net/Management
+tags:
+- name: ChunkedUploads
+  description: The ChunkedUploads resource provides methods to complete integrity checks, and to add, commit, retrieve, initiate and delete chunked uploads.
+paths:
+  /v2/accounts/{accountId}/chunked_uploads:
+    post:
+      tags:
+      - ChunkedUploads
+      summary: Docusign Initiate a new ChunkedUpload.
+      operationId: ChunkedUploads_PostChunkedUploads
+      parameters:
+      - name: accountId
+        in: path
+        description: The external account number (int) or account id GUID.
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/chunkedUploadRequest'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/chunkedUploadRequest'
+        required: false
+      responses:
+        '201':
+          description: Successful response.
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/chunkedUploadResponse'
+        '400':
+          description: Error encountered.
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/errorDetails'
+      deprecated: false
+      x-ds-methodname: createChunkedUpload
+      x-ds-api-status: beta
+      x-ds-method: create
+      x-ds-service: Envelopes
+      x-ds-in-sdk: true
+      x-codegen-request-body-name: chunkedUploadRequest
+  /v2/accounts/{accountId}/chunked_uploads/{chunkedUploadId}:
+    get:
+      tags:
+      - ChunkedUploads
+      summary: Docusign Retrieves the current metadata of a ChunkedUpload.
+      operationId: ChunkedUploads_GetChunkedUpload
+      parameters:
+      - name: accountId
+        in: path
+        description: The external account number (int) or account id GUID.
+        required: true
+        schema:
+          type: string
+      - name: chunkedUploadId
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: include
+        in: query
+        description: "A comma-separated list of additional information to include in the response. Valid values are: \n\n- `recipients`: Includes information about template recipients.\n- `folders`: Includes information about the folder that holds the template. \n- `documents` : Includes information about template documents.\n- `custom_fields`: Includes information about template custom fields.\n- `notifications`: Includes information about the notification settings for templates.\n- `advanced_templates`: Includes advanced templates in the response. For example, these include templates that use advanced recipient routing. We recommend that you use this option to ensure that the response includes all relevant templates. "
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Successful response.
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/chunkedUploadResponse'
+        '400':
+          description: Error encountered.
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/errorDetails'
+      deprecated: false
+      x-ds-methodname: getChunkedUpload
+      x-ds-api-status: beta
+      x-ds-method: get
+      x-ds-service: Envelopes
+      x-ds-in-sdk: true
+    put:
+      tags:
+      - ChunkedUploads
+      summary: Docusign Integrity-Check and Commit a ChunkedUpload, readying it for use elsewhere.
+      operationId: ChunkedUploads_PutChunkedUploads
+      parameters:
+      - name: accountId
+        in: path
+        description: The external account number (int) or account id GUID.
+        required: true
+        schema:
+          type: string
+      - name: chunkedUploadId
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: action
+        in: query
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Successful response.
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/chunkedUploadResponse'
+        '400':
+          description: Error encountered.
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/errorDetails'
+      deprecated: false
+      x-ds-methodname: updateChunkedUpload
+      x-ds-api-status: beta
+      x-ds-method: commit
+      x-ds-service: Envelopes
+      x-ds-in-sdk: true
+    delete:
+      tags:
+      - ChunkedUploads
+      summary: Docusign Delete an existing ChunkedUpload.
+      operationId: ChunkedUploads_DeleteChunkedUpload
+      parameters:
+      - name: accountId
+        in: path
+        description: The external account number (int) or account id GUID.
+        required: true
+        schema:
+          type: string
+      - name: chunkedUploadId
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Successful response.
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/chunkedUploadResponse'
+        '400':
+          description: Error encountered.
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/errorDetails'
+      deprecated: false
+      x-ds-methodname: deleteChunkedUpload
+      x-ds-api-status: beta
+      x-ds-method: delete
+      x-ds-service: Envelopes
+      x-ds-in-sdk: true
+  /v2/accounts/{accountId}/chunked_uploads/{chunkedUploadId}/{chunkedUploadPartSeq}:
+    put:
+      tags:
+      - ChunkedUploads
+      summary: Docusign Add a chunk, a chunk 'part', to an existing ChunkedUpload.
+      operationId: ChunkedUploads_PutChunkedUploadPart
+      parameters:
+      - name: accountId
+        in: path
+        description: The external account number (int) or account id GUID.
+        required: true
+        schema:
+          type: string
+      - name: chunkedUploadId
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: chunkedUploadPartSeq
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/chunkedUploadRequest'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/chunkedUploadRequest'
+        required: false
+      responses:
+        '200':
+          description: Successful response.
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/chunkedUploadResponse'
+        '400':
+          description: Error encountered.
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/errorDetails'
+      deprecated: false
+      x-ds-methodname: updateChunkedUploadPart
+      x-ds-api-status: beta
+      x-ds-method: update
+      x-ds-service: Envelopes
+      x-ds-in-sdk: true
+      x-codegen-request-body-name: chunkedUploadRequest
+components:
+  schemas:
+    chunkedUploadRequest:
+      type: object
+      properties:
+        chunkedUploadId:
+          type: string
+          description: ''
+        data:
+          type: string
+          description: ''
+      description: ''
+      x-ds-definition-name: chunkedUploadRequest
+      x-ms-summary: ''
+    chunkedUploadPart:
+      type: object
+      properties:
+        sequence:
+          type: string
+          description: ''
+        size:
+          type: string
+          description: 'Reserved: TBD'
+      description: ''
+      x-ds-definition-name: chunkedUploadPart
+      x-ms-summary: ''
+    chunkedUploadResponse:
+      type: object
+      properties:
+        checksum:
+          type: string
+          description: ''
+        chunkedUploadId:
+          type: string
+          description: ''
+        chunkedUploadParts:
+          type: array
+          description: ''
+          items:
+            $ref: '#/components/schemas/chunkedUploadPart'
+        chunkedUploadUri:
+          type: string
+          description: ''
+        committed:
+          type: string
+          description: ''
+        expirationDateTime:
+          type: string
+          description: ''
+        maxChunkedUploadParts:
+          type: string
+          description: ''
+        maxTotalSize:
+          type: string
+          description: ''
+        totalSize:
+          type: string
+          description: ''
+      description: ''
+      x-ds-definition-name: chunkedUploadResponse
+      x-ms-summary: ''
+    errorDetails:
+      type: object
+      properties:
+        errorCode:
+          type: string
+          description: An error code associated with the error.
+        message:
+          type: string
+          description: A short error message.
+      description: This object describes errors that occur. It is only valid for responses, and ignored in requests.
+      x-ds-definition-name: errorDetails
+      x-ms-summary: This object describes errors that occur. It is only valid for responses, and ignored in requests.
+  securitySchemes:
+    accessCode:
+      type: oauth2
+      description: OAuth2 Access code Grant
+      flows:
+        authorizationCode:
+          authorizationUrl: https://account.docusign.com/oauth/auth
+          tokenUrl: https://account.docusign.com/oauth/auth
+          scopes:
+            organization_read: ''
+            permission_read: ''
+            group_read: ''
+            user_read: ''
+            account_read: ''
+            account_write: ''
+            user_write: ''
+            identity_provider_read: ''
+            domain_read: ''
+x-ds-categories:
+- name: UserManagement
+  summary: Methods to manage users in an account.
+  description: Methods to manage users in an account.
+- name: BulkOperations
+  summary: Methods to import and export users and accounts.
+  description: Methods to import and export users and accounts.
+- name: IdentityProviders
+  summary: Methods to get a list of identity providers.
+  description: Methods to get a list of identity providers.
+- name: ReservedDomains
+  summary: Methods to get a list of reserved domains.
+  description: Methods to get a list of reserved domains.
+- name: Organization
+  summary: Methods for working with organizations.
+  description: Methods for working with organizations.
+x-original-swagger-version: '2.0'

@@ -1,0 +1,227 @@
+openapi: 3.0.1
+info:
+  title: DocuSign Admin AccountBrands UserSocialAccountLogins API
+  description: An API for an organization administrator to manage organizations, accounts and users
+  termsOfService: https://www.docusign.com/company/terms-and-conditions/developers
+  contact:
+    name: DocuSign Developer Center
+    url: https://developers.docusign.com
+    email: devcenter@docusign.com
+  version: v2.1
+servers:
+- url: https://api.docusign.net/Management
+tags:
+- name: UserSocialAccountLogins
+  description: 'The UserSocialAccountLogins resource provides methods that allow you to manage the social login accounts for a user.  '
+paths:
+  /v2/accounts/{accountId}/users/{userId}/social:
+    get:
+      tags:
+      - UserSocialAccountLogins
+      summary: Docusign Gets a list of a user's social accounts.
+      description: Retrieves a list of social accounts linked to a user's account.
+      operationId: UserSocialLogin_GetUserSocialLogin
+      parameters:
+      - name: accountId
+        in: path
+        description: The external account number (int) or account id GUID.
+        required: true
+        schema:
+          type: string
+      - name: userId
+        in: path
+        description: 'The user ID of the user being accessed. Generally this is the user ID of the authenticated user, but if the authenticated user is an Admin on the account, this may be another user the Admin user is accessing. **Note**: For the [GET /v2/accounts/{accountId}/envelopes](https://developers.docusign.com/esign-rest-api/reference/Envelopes/Envelopes/listStatusChanges/#envelopesInformation) method, the `user_id` query parameter is not implemented and should not be used.'
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Successful response.
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/userSocialIdResult'
+        '400':
+          description: Error encountered.
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/errorDetails'
+      deprecated: false
+      x-ds-methodname: listSocialLogins
+      x-ds-method: list
+      x-ds-service: Authentication
+      x-ds-in-sdk: true
+    put:
+      tags:
+      - UserSocialAccountLogins
+      summary: Docusign Adds social account for a user.
+      description: Adds a new social account to a user's account.
+      operationId: UserSocialLogin_PutUserSocialLogin
+      parameters:
+      - name: accountId
+        in: path
+        description: The external account number (int) or account id GUID.
+        required: true
+        schema:
+          type: string
+      - name: userId
+        in: path
+        description: 'The user ID of the user being accessed. Generally this is the user ID of the authenticated user, but if the authenticated user is an Admin on the account, this may be another user the Admin user is accessing. **Note**: For the [GET /v2/accounts/{accountId}/envelopes](https://developers.docusign.com/esign-rest-api/reference/Envelopes/Envelopes/listStatusChanges/#envelopesInformation) method, the `user_id` query parameter is not implemented and should not be used.'
+        required: true
+        schema:
+          type: string
+      requestBody:
+        description: Contains properties that map a DocuSign user to a social account (Facebook, Yahoo, etc.)
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/socialAccountInformation'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/socialAccountInformation'
+        required: false
+      responses:
+        '200':
+          description: Successful response.
+          content: {}
+        '400':
+          description: Error encountered.
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/errorDetails'
+      deprecated: false
+      x-ds-methodname: updateSocialLogin
+      x-ds-method: update
+      x-ds-service: Authentication
+      x-ds-in-sdk: true
+      x-codegen-request-body-name: socialAccountInformation
+    delete:
+      tags:
+      - UserSocialAccountLogins
+      summary: Docusign Deletes user's social account.
+      description: Deletes a social account from a use's account.
+      operationId: UserSocialLogin_DeleteUserSocialLogin
+      parameters:
+      - name: accountId
+        in: path
+        description: The external account number (int) or account id GUID.
+        required: true
+        schema:
+          type: string
+      - name: userId
+        in: path
+        description: 'The user ID of the user being accessed. Generally this is the user ID of the authenticated user, but if the authenticated user is an Admin on the account, this may be another user the Admin user is accessing. **Note**: For the [GET /v2/accounts/{accountId}/envelopes](https://developers.docusign.com/esign-rest-api/reference/Envelopes/Envelopes/listStatusChanges/#envelopesInformation) method, the `user_id` query parameter is not implemented and should not be used.'
+        required: true
+        schema:
+          type: string
+      requestBody:
+        description: Contains properties that map a DocuSign user to a social account (Facebook, Yahoo, etc.)
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/socialAccountInformation'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/socialAccountInformation'
+        required: false
+      responses:
+        '200':
+          description: Successful response.
+          content: {}
+        '400':
+          description: Error encountered.
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/errorDetails'
+      deprecated: false
+      x-ds-methodname: deleteSocialLogin
+      x-ds-method: delete
+      x-ds-service: Authentication
+      x-ds-in-sdk: true
+      x-codegen-request-body-name: socialAccountInformation
+components:
+  schemas:
+    socialAccountInformation:
+      type: object
+      properties:
+        email:
+          type: string
+          description: ''
+        errorDetails:
+          $ref: '#/components/schemas/errorDetails'
+        provider:
+          type: string
+          description: The social account provider (Facebook, Yahoo, etc.)
+        socialId:
+          type: string
+          description: The ID provided by the Socal Account.
+        userName:
+          type: string
+          description: ''
+      description: ''
+      x-ds-definition-name: socialAccountInformation
+      x-ms-summary: ''
+    userSocialIdResult:
+      type: object
+      properties:
+        socialAccountInformation:
+          type: array
+          description: Contains properties that map a DocuSign user to a social account (Facebook, Yahoo, etc.)
+          items:
+            $ref: '#/components/schemas/socialAccountInformation'
+        userId:
+          type: string
+          description: 'The user ID of the user being accessed. Generally this is the user ID of the authenticated user, but if the authenticated user is an Admin on the account, this may be another user the Admin user is accessing. **Note**: For the [GET /v2/accounts/{accountId}/envelopes](https://developers.docusign.com/esign-rest-api/reference/Envelopes/Envelopes/listStatusChanges/#envelopesInformation) method, the `user_id` query parameter is not implemented and should not be used.'
+      description: ''
+      x-ds-definition-name: userSocialIdResult
+      x-ms-summary: ''
+    errorDetails:
+      type: object
+      properties:
+        errorCode:
+          type: string
+          description: An error code associated with the error.
+        message:
+          type: string
+          description: A short error message.
+      description: This object describes errors that occur. It is only valid for responses, and ignored in requests.
+      x-ds-definition-name: errorDetails
+      x-ms-summary: This object describes errors that occur. It is only valid for responses, and ignored in requests.
+  securitySchemes:
+    accessCode:
+      type: oauth2
+      description: OAuth2 Access code Grant
+      flows:
+        authorizationCode:
+          authorizationUrl: https://account.docusign.com/oauth/auth
+          tokenUrl: https://account.docusign.com/oauth/auth
+          scopes:
+            organization_read: ''
+            permission_read: ''
+            group_read: ''
+            user_read: ''
+            account_read: ''
+            account_write: ''
+            user_write: ''
+            identity_provider_read: ''
+            domain_read: ''
+x-ds-categories:
+- name: UserManagement
+  summary: Methods to manage users in an account.
+  description: Methods to manage users in an account.
+- name: BulkOperations
+  summary: Methods to import and export users and accounts.
+  description: Methods to import and export users and accounts.
+- name: IdentityProviders
+  summary: Methods to get a list of identity providers.
+  description: Methods to get a list of identity providers.
+- name: ReservedDomains
+  summary: Methods to get a list of reserved domains.
+  description: Methods to get a list of reserved domains.
+- name: Organization
+  summary: Methods for working with organizations.
+  description: Methods for working with organizations.
+x-original-swagger-version: '2.0'

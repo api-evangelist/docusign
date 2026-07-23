@@ -1,0 +1,378 @@
+openapi: 3.0.1
+info:
+  title: DocuSign Admin AccountBrands Fields API
+  description: An API for an organization administrator to manage organizations, accounts and users
+  termsOfService: https://www.docusign.com/company/terms-and-conditions/developers
+  contact:
+    name: DocuSign Developer Center
+    url: https://developers.docusign.com
+    email: devcenter@docusign.com
+  version: v2.1
+servers:
+- url: https://api.docusign.net/Management
+tags:
+- name: Fields
+  description: Information about field sets.
+paths:
+  /v2/accounts/{accountId}/field_sets/{fieldSetId}:
+    get:
+      tags:
+      - Fields
+      summary: Docusign Gets a field set.
+      description: Returns a field set. This is a set of fields that can appear on a room's Details tab in the console, such as `contactName` and `phone`.
+      operationId: Fields_GetFieldSet
+      parameters:
+      - name: fieldSetId
+        in: path
+        description: 'The ID of the field set.
+
+
+          Example: `4aef602b-xxxx-xxxx-xxxx-08d76696f678`
+
+          '
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: fieldsCustomDataFilters
+        in: query
+        description: 'An comma-separated list that limits the fields to return:
+
+
+          - `IsRequiredOnCreate`: include fields that are required in room creation.
+
+          - `IsRequiredOnSubmit`: include fields that are required when submitting a room for review.
+
+          '
+        style: form
+        explode: false
+        schema:
+          type: array
+          items:
+            type: string
+            enum:
+            - None
+            - IsRequiredOnCreate
+            - IsRequiredOnSubmit
+      - name: accountId
+        in: path
+        description: The globally unique identifier (GUID) for the account.
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: FieldSet successfully retrieved.
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/FieldSet'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FieldSet'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/FieldSet'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/FieldSet'
+            text/xml:
+              schema:
+                $ref: '#/components/schemas/FieldSet'
+        '400':
+          description: Bad request. See ErrorCode and Message for details
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            text/xml:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '401':
+          description: Not authorized to make this request.
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            text/xml:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+      x-ds-methodname: GetFieldSet
+      x-ds-method: GetFieldSet
+      x-ds-service: Fields
+      x-ds-in-sdk: true
+components:
+  schemas:
+    SelectListFieldOption:
+      type: object
+      properties:
+        id:
+          type: object
+          description: 'The ID of the list option.
+
+
+            Example: `AU`'
+          readOnly: true
+        title:
+          type: string
+          description: 'The title or name of the list option.
+
+
+            Example: `Australia`'
+          readOnly: true
+        order:
+          type: integer
+          description: 'The order of the list option in the list.
+
+
+            Example: `3`'
+          format: int32
+          readOnly: true
+      description: Contains details about an option in a list.
+      x-ds-definition-name: SelectListFieldOption
+      x-ms-summary: Contains details about an option in a list.
+    Field:
+      type: object
+      properties:
+        fieldId:
+          type: string
+          description: An ID that uniquely identifies the instance of a `fieldDefinition` within a field set.
+          format: uuid
+          readOnly: true
+        fieldDefinitionId:
+          type: string
+          description: The ID of the DocuSign field definition from which this field derives. When an Admin user configures a field set by using the API, this is the ID that they use to add this field definition to the field set. The original field definition associated with this ID contains more information about the field, such as the default title, default API name, and configurations such as the maximum length or the maximum value allowed.
+          format: uuid
+          readOnly: true
+        title:
+          type: string
+          description: 'The human-readable title or name of the field.
+
+
+            Example: `Company contact name`'
+          readOnly: true
+        apiName:
+          type: string
+          description: "The name that the Rooms API uses for the field. \n\nExample: `companyContactName`\n\n**Note:** When you create a new room, you use the `apiName` values for fields to specify the details that you want to appear on the room's **Details** tab."
+          readOnly: true
+        type:
+          type: string
+          description: 'The type of field. Valid values:
+
+
+            - `Date`
+
+            - `Text`
+
+            - `Checkbox`
+
+            - `Currency`
+
+            - `Numeric`
+
+            - `SelectList`
+
+            - `TextArea`
+
+            - `Percentage`
+
+            - `Integer`
+
+
+            '
+          readOnly: true
+        fields:
+          type: array
+          description: An array of subfields.
+          readOnly: true
+          items:
+            $ref: '#/components/schemas/Field'
+        configuration:
+          $ref: '#/components/schemas/FieldConfiguration'
+        customData:
+          $ref: '#/components/schemas/CustomData'
+      description: Contains details about a field in a field set.
+      x-ds-definition-name: Field
+      x-ms-summary: Contains details about a field in a field set.
+    FieldConfiguration:
+      type: object
+      properties:
+        maxValue:
+          type: number
+          description: The maximum value allowed for the field.
+          format: double
+          readOnly: true
+        minValue:
+          type: number
+          description: The minimum value allowed for the field.
+          format: double
+          readOnly: true
+        multipleOf:
+          type: number
+          description: This property is used for validation. When you set a number value for this property, the value for the field must be a multiple of it.
+          format: double
+          readOnly: true
+        maxLength:
+          type: integer
+          description: The maximum length of the field.
+          format: int32
+          readOnly: true
+        minLength:
+          type: integer
+          description: The minimum length of the field.
+          format: int32
+          readOnly: true
+        pattern:
+          type: string
+          description: The regular expression pattern to use to validate the value of the field.
+          readOnly: true
+        isPublisher:
+          type: boolean
+          description: When **true,** the field is a parent field on which one or more child fields depend.
+          readOnly: true
+        dependsOn:
+          type: array
+          description: This property applies to child fields. It contains information about the parent field that must have a value set in order for this field to have a value. For example, you must specify a country before you can select a state.
+          readOnly: true
+          items:
+            $ref: '#/components/schemas/DependsOn'
+        options:
+          type: array
+          description: An array of options in a list.
+          readOnly: true
+          items:
+            $ref: '#/components/schemas/SelectListFieldOption'
+      description: Contains details about how a field is configured.
+      x-ds-definition-name: FieldConfiguration
+      x-ms-summary: Contains details about how a field is configured.
+    FieldSet:
+      type: object
+      properties:
+        fieldSetId:
+          type: string
+          description: 'The ID of the field set.
+
+
+            Example: `4aef602b-xxxx-xxxx-xxxx-08d76696f678`
+
+            '
+          format: uuid
+          readOnly: true
+        title:
+          type: string
+          description: The title or name of the field set.
+          readOnly: true
+        fields:
+          type: array
+          description: An array of fields.
+          readOnly: true
+          items:
+            $ref: '#/components/schemas/Field'
+      description: Contains details about a field set.
+      x-ds-definition-name: FieldSet
+      x-ms-summary: Contains details about a field set.
+    CustomData:
+      type: object
+      properties:
+        isRequiredOnCreate:
+          type: boolean
+          description: When **true,** the field is required when a new room is created.
+          readOnly: true
+        isRequiredOnSubmit:
+          type: boolean
+          description: When **true,** the field is required when a room is submitted for review.
+          readOnly: true
+      description: Contains information about whether the field is required when a room is created or submitted for review.
+      x-ds-definition-name: CustomData
+      x-ms-summary: Contains information about whether the field is required when a room is created or submitted for review.
+    DependsOn:
+      type: object
+      properties:
+        actionType:
+          type: string
+          description: 'The child field action that depends on the parent field.
+
+
+            Example: `visibility`
+
+
+            For example, in the console, you must select a country for a list of states to become visible.'
+          readOnly: true
+        parentApiName:
+          type: string
+          description: 'The name that the Rooms API uses for the parent field.
+
+
+            Example: `country`'
+          readOnly: true
+      description: Contains information about a parent field on which this field depends.
+      x-ds-definition-name: DependsOn
+      x-ms-summary: Contains information about a parent field on which this field depends.
+    ApiError:
+      type: object
+      properties:
+        errorCode:
+          type: string
+          description: The code associated with the error condition.
+        message:
+          type: string
+          description: A brief message describing the error condition.
+        referenceId:
+          type: string
+          description: ''
+      description: This object describes errors that occur. It is valid only for responses and ignored in requests.
+      x-ds-definition-name: ApiError
+      x-ms-summary: This object describes errors that occur. It is valid only for responses and ignored in requests.
+  securitySchemes:
+    accessCode:
+      type: oauth2
+      description: OAuth2 Access code Grant
+      flows:
+        authorizationCode:
+          authorizationUrl: https://account.docusign.com/oauth/auth
+          tokenUrl: https://account.docusign.com/oauth/auth
+          scopes:
+            organization_read: ''
+            permission_read: ''
+            group_read: ''
+            user_read: ''
+            account_read: ''
+            account_write: ''
+            user_write: ''
+            identity_provider_read: ''
+            domain_read: ''
+x-ds-categories:
+- name: UserManagement
+  summary: Methods to manage users in an account.
+  description: Methods to manage users in an account.
+- name: BulkOperations
+  summary: Methods to import and export users and accounts.
+  description: Methods to import and export users and accounts.
+- name: IdentityProviders
+  summary: Methods to get a list of identity providers.
+  description: Methods to get a list of identity providers.
+- name: ReservedDomains
+  summary: Methods to get a list of reserved domains.
+  description: Methods to get a list of reserved domains.
+- name: Organization
+  summary: Methods for working with organizations.
+  description: Methods for working with organizations.
+x-original-swagger-version: '2.0'

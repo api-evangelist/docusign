@@ -1,0 +1,400 @@
+openapi: 3.0.1
+info:
+  title: DocuSign Admin AccountBrands EnvelopeTemplates API
+  description: An API for an organization administrator to manage organizations, accounts and users
+  termsOfService: https://www.docusign.com/company/terms-and-conditions/developers
+  contact:
+    name: DocuSign Developer Center
+    url: https://developers.docusign.com
+    email: devcenter@docusign.com
+  version: v2.1
+servers:
+- url: https://api.docusign.net/Management
+tags:
+- name: EnvelopeTemplates
+  description: The EnvelopeTemplates resource provides methods that allow you to add and delete templates on envelopes and documents.
+paths:
+  /v2/accounts/{accountId}/envelopes/{envelopeId}/documents/{documentId}/templates:
+    get:
+      tags:
+      - EnvelopeTemplates
+      summary: Docusign Gets the templates associated with a document in an existing envelope.
+      description: Retrieves the templates associated with a document in the specified envelope.
+      operationId: Templates_GetDocumentTemplates
+      parameters:
+      - name: accountId
+        in: path
+        description: The external account number (int) or account id GUID.
+        required: true
+        schema:
+          type: string
+      - name: documentId
+        in: path
+        description: The ID of the document being accessed.
+        required: true
+        schema:
+          type: string
+      - name: envelopeId
+        in: path
+        description: 'The envelope''s GUID. Eg 93be49ab-afa0-4adf-933c-f752070d71ec '
+        required: true
+        schema:
+          type: string
+      - name: include
+        in: query
+        description: 'A comma-separated list
+
+          that limits the results.
+
+          Valid values:
+
+
+          * applied
+
+          * matched
+
+          '
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Successful response.
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/templateInformation'
+        '400':
+          description: Error encountered.
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/errorDetails'
+      deprecated: false
+      x-ds-methodname: listTemplatesForDocument
+      x-ds-method: listByDocument
+      x-ds-service: Envelopes
+      x-ds-in-sdk: true
+    post:
+      tags:
+      - EnvelopeTemplates
+      summary: Docusign Adds templates to a document in an  envelope.
+      description: Adds templates to a document in the specified envelope.
+      operationId: Templates_PostDocumentTemplates
+      parameters:
+      - name: accountId
+        in: path
+        description: The external account number (int) or account id GUID.
+        required: true
+        schema:
+          type: string
+      - name: documentId
+        in: path
+        description: The ID of the document being accessed.
+        required: true
+        schema:
+          type: string
+      - name: envelopeId
+        in: path
+        description: 'The envelope''s GUID. Eg 93be49ab-afa0-4adf-933c-f752070d71ec '
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/documentTemplateList'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/documentTemplateList'
+        required: false
+      responses:
+        '201':
+          description: Successful response.
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/documentTemplateList'
+        '400':
+          description: Error encountered.
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/errorDetails'
+      deprecated: false
+      x-ds-methodname: applyTemplateToDocument
+      x-ds-method: applyToDocument
+      x-ds-service: Envelopes
+      x-ds-in-sdk: true
+      x-codegen-request-body-name: documentTemplateList
+  /v2/accounts/{accountId}/envelopes/{envelopeId}/documents/{documentId}/templates/{templateId}:
+    delete:
+      tags:
+      - EnvelopeTemplates
+      summary: Docusign Deletes a template from a document in an existing envelope.
+      description: Deletes the specified template from a document in an existing envelope.
+      operationId: Templates_DeleteDocumentTemplates
+      parameters:
+      - name: accountId
+        in: path
+        description: The external account number (int) or account id GUID.
+        required: true
+        schema:
+          type: string
+      - name: documentId
+        in: path
+        description: The ID of the document being accessed.
+        required: true
+        schema:
+          type: string
+      - name: envelopeId
+        in: path
+        description: 'The envelope''s GUID. Eg 93be49ab-afa0-4adf-933c-f752070d71ec '
+        required: true
+        schema:
+          type: string
+      - name: templateId
+        in: path
+        description: The ID of the template being accessed.
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Successful response.
+          content: {}
+        '400':
+          description: Error encountered.
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/errorDetails'
+      deprecated: false
+      x-ds-methodname: deleteTemplatesFromDocument
+      x-ds-method: delete
+      x-ds-service: Envelopes
+      x-ds-in-sdk: true
+  /v2/accounts/{accountId}/envelopes/{envelopeId}/templates:
+    get:
+      tags:
+      - EnvelopeTemplates
+      summary: Docusign Get List of Templates used in an Envelope
+      description: 'This returns a list of the server-side templates, their name and ID, used in an envelope.
+
+        '
+      operationId: Templates_GetEnvelopeTemplates
+      parameters:
+      - name: accountId
+        in: path
+        description: The external account number (int) or account id GUID.
+        required: true
+        schema:
+          type: string
+      - name: envelopeId
+        in: path
+        description: 'The envelope''s GUID. Eg 93be49ab-afa0-4adf-933c-f752070d71ec '
+        required: true
+        schema:
+          type: string
+      - name: include
+        in: query
+        description: 'The possible values are:  matching_applied - This returns template matching information for the template.'
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Successful response.
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/templateInformation'
+        '400':
+          description: Error encountered.
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/errorDetails'
+      deprecated: false
+      x-ds-methodname: listTemplates
+      x-ds-method: list
+      x-ds-service: Envelopes
+      x-ds-in-sdk: true
+    post:
+      tags:
+      - EnvelopeTemplates
+      summary: Docusign Adds templates to an envelope.
+      description: Adds templates to the specified envelope.
+      operationId: Templates_PostEnvelopeTemplates
+      parameters:
+      - name: accountId
+        in: path
+        description: The external account number (int) or account id GUID.
+        required: true
+        schema:
+          type: string
+      - name: envelopeId
+        in: path
+        description: 'The envelope''s GUID. Eg 93be49ab-afa0-4adf-933c-f752070d71ec '
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/documentTemplateList'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/documentTemplateList'
+        required: false
+      responses:
+        '201':
+          description: Successful response.
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/documentTemplateList'
+        '400':
+          description: Error encountered.
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/errorDetails'
+      deprecated: false
+      x-ds-methodname: applyTemplate
+      x-ds-method: apply
+      x-ds-service: Envelopes
+      x-ds-in-sdk: true
+      x-codegen-request-body-name: documentTemplateList
+components:
+  schemas:
+    templateInformation:
+      type: object
+      properties:
+        templates:
+          type: array
+          description: ''
+          items:
+            $ref: '#/components/schemas/templateSummary'
+      description: ''
+      x-ds-definition-name: templateInformation
+      x-ms-summary: ''
+    templateSummary:
+      type: object
+      properties:
+        applied:
+          type: string
+          description: 'Reserved: TBD'
+        documentId:
+          type: string
+          description: Specifies the document ID number that the tab is placed on. This must refer to an existing Document's ID attribute.
+        documentName:
+          type: string
+          description: ''
+        name:
+          type: string
+          description: ''
+        templateId:
+          type: string
+          description: 'The unique identifier of the template. If this is not provided, DocuSign will generate a value. '
+        templateMatch:
+          $ref: '#/components/schemas/templateMatch'
+        uri:
+          type: string
+          description: ''
+      description: ''
+      x-ds-definition-name: templateSummary
+      x-ms-summary: ''
+    errorDetails:
+      type: object
+      properties:
+        errorCode:
+          type: string
+          description: An error code associated with the error.
+        message:
+          type: string
+          description: A short error message.
+      description: This object describes errors that occur. It is only valid for responses, and ignored in requests.
+      x-ds-definition-name: errorDetails
+      x-ms-summary: This object describes errors that occur. It is only valid for responses, and ignored in requests.
+    templateMatch:
+      type: object
+      properties:
+        documentEndPage:
+          type: string
+          description: ''
+        documentStartPage:
+          type: string
+          description: ''
+        matchPercentage:
+          type: string
+          description: ''
+      description: ''
+      x-ds-definition-name: templateMatch
+      x-ms-summary: ''
+    documentTemplate:
+      type: object
+      properties:
+        documentEndPage:
+          type: string
+          description: ''
+        documentId:
+          type: string
+          description: Specifies the document ID number that the tab is placed on. This must refer to an existing Document's ID attribute.
+        documentStartPage:
+          type: string
+          description: ''
+        errorDetails:
+          $ref: '#/components/schemas/errorDetails'
+        templateId:
+          type: string
+          description: The unique identifier of the template. If this is not provided, DocuSign generates an error and the call fails.
+      description: ''
+      x-ds-definition-name: documentTemplate
+      x-ms-summary: ''
+    documentTemplateList:
+      type: object
+      properties:
+        documentTemplates:
+          type: array
+          description: ''
+          items:
+            $ref: '#/components/schemas/documentTemplate'
+      description: ''
+      x-ds-definition-name: documentTemplateList
+      x-ms-summary: ''
+  securitySchemes:
+    accessCode:
+      type: oauth2
+      description: OAuth2 Access code Grant
+      flows:
+        authorizationCode:
+          authorizationUrl: https://account.docusign.com/oauth/auth
+          tokenUrl: https://account.docusign.com/oauth/auth
+          scopes:
+            organization_read: ''
+            permission_read: ''
+            group_read: ''
+            user_read: ''
+            account_read: ''
+            account_write: ''
+            user_write: ''
+            identity_provider_read: ''
+            domain_read: ''
+x-ds-categories:
+- name: UserManagement
+  summary: Methods to manage users in an account.
+  description: Methods to manage users in an account.
+- name: BulkOperations
+  summary: Methods to import and export users and accounts.
+  description: Methods to import and export users and accounts.
+- name: IdentityProviders
+  summary: Methods to get a list of identity providers.
+  description: Methods to get a list of identity providers.
+- name: ReservedDomains
+  summary: Methods to get a list of reserved domains.
+  description: Methods to get a list of reserved domains.
+- name: Organization
+  summary: Methods for working with organizations.
+  description: Methods for working with organizations.
+x-original-swagger-version: '2.0'

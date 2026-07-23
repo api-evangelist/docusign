@@ -1,0 +1,439 @@
+openapi: 3.0.1
+info:
+  title: DocuSign Admin AccountBrands Documents API
+  description: An API for an organization administrator to manage organizations, accounts and users
+  termsOfService: https://www.docusign.com/company/terms-and-conditions/developers
+  contact:
+    name: DocuSign Developer Center
+    url: https://developers.docusign.com
+    email: devcenter@docusign.com
+  version: v2.1
+servers:
+- url: https://api.docusign.net/Management
+tags:
+- name: Documents
+  description: Methods to grant access, delete, and get information, including contents, to a document.
+paths:
+  /v2/accounts/{accountId}/documents/{documentId}:
+    get:
+      tags:
+      - Documents
+      summary: Docusign Gets information about or the contents of a document.
+      description: 'Returns information about a document in a room. You can optionally request the contents of the document, which is returned in base64-encoded format.
+
+
+        To find the `documentId` of the document that you want to retrieve, use the Rooms: GetDocuments method.'
+      operationId: Documents_GetDocument
+      parameters:
+      - name: documentId
+        in: path
+        description: The ID of the document.
+        required: true
+        schema:
+          type: integer
+          format: int32
+      - name: includeContents
+        in: query
+        description: When **true,** includes the contents of the document in the `base64Contents` property of the response. The default value is **false.**
+        schema:
+          type: boolean
+          default: false
+      - name: accountId
+        in: path
+        description: The globally unique identifier (GUID) for the account.
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Document successfully retrieved.
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/Document'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Document'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/Document'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Document'
+            text/xml:
+              schema:
+                $ref: '#/components/schemas/Document'
+        '400':
+          description: Bad request. See ErrorCode and Message for details
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            text/xml:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '401':
+          description: Not authorized to make this request.
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            text/xml:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+      x-ds-methodname: GetDocument
+      x-ds-method: GetDocument
+      x-ds-service: Documents
+      x-ds-in-sdk: true
+    delete:
+      tags:
+      - Documents
+      summary: Docusign Deletes a specified document.
+      description: 'Permanently deletes a document. To find the `documentId` of a document that you want to delete, use the Rooms: GetDocuments method.
+
+
+        If the document is deleted successfully, the HTTP response code is 204 (No Content), so the response body is empty.'
+      operationId: Documents_DeleteDocument
+      parameters:
+      - name: documentId
+        in: path
+        description: The ID of the document.
+        required: true
+        schema:
+          type: integer
+          format: int32
+      - name: accountId
+        in: path
+        description: The globally unique identifier (GUID) for the account.
+        required: true
+        schema:
+          type: string
+      responses:
+        '204':
+          description: Document has been successfully deleted.
+          content: {}
+        '400':
+          description: Bad request. See ErrorCode and Message for details
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            text/xml:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '401':
+          description: Not authorized to make this request.
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            text/xml:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+      x-ds-methodname: DeleteDocument
+      x-ds-method: DeleteDocument
+      x-ds-service: Documents
+      x-ds-in-sdk: true
+  /v2/accounts/{accountId}/documents/{documentId}/users:
+    post:
+      tags:
+      - Documents
+      summary: Docusign Grants a user access to a document.
+      description: Grants a user access to a document. You specify the user's `userId` in the request body. The response is an object that specifies the access the user has.
+      operationId: Documents_CreateDocumentUser
+      parameters:
+      - name: documentId
+        in: path
+        description: The ID of the document.
+        required: true
+        schema:
+          type: integer
+          format: int32
+      - name: accountId
+        in: path
+        description: The globally unique identifier (GUID) for the account.
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json-patch+json:
+            schema:
+              $ref: '#/components/schemas/DocumentUserForCreate'
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DocumentUserForCreate'
+          text/json:
+            schema:
+              $ref: '#/components/schemas/DocumentUserForCreate'
+          application/*+json:
+            schema:
+              $ref: '#/components/schemas/DocumentUserForCreate'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/DocumentUserForCreate'
+          text/xml:
+            schema:
+              $ref: '#/components/schemas/DocumentUserForCreate'
+          application/*+xml:
+            schema:
+              $ref: '#/components/schemas/DocumentUserForCreate'
+        required: false
+      responses:
+        '201':
+          description: User successfully granted access to document.
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/DocumentUser'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DocumentUser'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/DocumentUser'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/DocumentUser'
+            text/xml:
+              schema:
+                $ref: '#/components/schemas/DocumentUser'
+        '400':
+          description: Bad request. See ErrorCode and Message for details
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            text/xml:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '401':
+          description: Not authorized to make this request.
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            text/xml:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+      x-ds-methodname: CreateDocumentUser
+      x-ds-method: CreateDocumentUser
+      x-ds-service: Documents
+      x-ds-in-sdk: true
+      x-codegen-request-body-name: body
+components:
+  schemas:
+    Document:
+      required:
+      - base64Contents
+      - name
+      type: object
+      properties:
+        documentId:
+          type: integer
+          description: The ID of the document.
+          format: int32
+        name:
+          type: string
+          description: The file name associated with the document.
+        roomId:
+          type: integer
+          description: The ID of the room associated with the document.
+          format: int32
+        ownerId:
+          type: integer
+          description: The ID of the user who owns the document.
+          format: int32
+        size:
+          type: integer
+          description: The size of the document in bytes.
+          format: int64
+        folderId:
+          type: integer
+          description: The ID of the folder that holds the document.
+          format: int32
+        createdDate:
+          type: string
+          description: 'The date and time when the document was created. This is a read-only value that the service assigns.
+
+
+            Example: `2019-11-11T17:15:14.82`'
+          format: date-time
+        isSigned:
+          type: boolean
+          description: When **true,** indicates that the document is signed.
+        contentType:
+          type: string
+          description: ''
+        base64Contents:
+          type: string
+          description: The base64-encoded contents of the document. This property is only included in the response when you use the `includeContents` query parameter and set it to **true.**
+        isDynamic:
+          type: boolean
+          description: ''
+      description: Contains information about a document.
+      x-ds-definition-name: Document
+      x-ms-summary: Contains information about a document.
+    ApiError:
+      type: object
+      properties:
+        errorCode:
+          type: string
+          description: The code associated with the error condition.
+        message:
+          type: string
+          description: A brief message describing the error condition.
+        referenceId:
+          type: string
+          description: ''
+      description: This object describes errors that occur. It is valid only for responses and ignored in requests.
+      x-ds-definition-name: ApiError
+      x-ms-summary: This object describes errors that occur. It is valid only for responses and ignored in requests.
+    DocumentUserForCreate:
+      required:
+      - userId
+      type: object
+      properties:
+        userId:
+          type: integer
+          description: The ID of the user.
+          format: int32
+      description: ''
+      x-ds-definition-name: DocumentUserForCreate
+      x-ms-summary: ''
+    DocumentUser:
+      type: object
+      properties:
+        userId:
+          type: integer
+          description: The ID of the user.
+          format: int32
+        documentId:
+          type: integer
+          description: The ID of the document.
+          format: int32
+        name:
+          type: string
+          description: The file name associated with the document.
+        hasAccess:
+          type: boolean
+          description: '**True** if the user `userId` has access to this document.'
+        canApproveTask:
+          type: boolean
+          description: '**True** if the user `userId` has can approve a task for this document.'
+        canAssignToTaskList:
+          type: boolean
+          description: '**True** if the user `userId` can assign this document to a task list.'
+        canCopy:
+          type: boolean
+          description: '**True** if the user `userId` can make a copy of this document.'
+        canDelete:
+          type: boolean
+          description: '**True** if the user `userId` can delete this document.'
+        canRemoveFromTaskList:
+          type: boolean
+          description: '**True** if the user `userId` can remove this document from a task list.'
+        canRemoveApproval:
+          type: boolean
+          description: '**True** if the user `userId` can remove approval for this document.'
+        canRename:
+          type: boolean
+          description: '**True** if the user `userId` can rename this document.'
+        canShare:
+          type: boolean
+          description: '**True** if the user `userId` can share this document.'
+        canViewActivity:
+          type: boolean
+          description: '**True** if the user `userId` can view activity on this document.'
+      description: ''
+      x-ds-definition-name: DocumentUser
+      x-ms-summary: ''
+  securitySchemes:
+    accessCode:
+      type: oauth2
+      description: OAuth2 Access code Grant
+      flows:
+        authorizationCode:
+          authorizationUrl: https://account.docusign.com/oauth/auth
+          tokenUrl: https://account.docusign.com/oauth/auth
+          scopes:
+            organization_read: ''
+            permission_read: ''
+            group_read: ''
+            user_read: ''
+            account_read: ''
+            account_write: ''
+            user_write: ''
+            identity_provider_read: ''
+            domain_read: ''
+x-ds-categories:
+- name: UserManagement
+  summary: Methods to manage users in an account.
+  description: Methods to manage users in an account.
+- name: BulkOperations
+  summary: Methods to import and export users and accounts.
+  description: Methods to import and export users and accounts.
+- name: IdentityProviders
+  summary: Methods to get a list of identity providers.
+  description: Methods to get a list of identity providers.
+- name: ReservedDomains
+  summary: Methods to get a list of reserved domains.
+  description: Methods to get a list of reserved domains.
+- name: Organization
+  summary: Methods for working with organizations.
+  description: Methods for working with organizations.
+x-original-swagger-version: '2.0'

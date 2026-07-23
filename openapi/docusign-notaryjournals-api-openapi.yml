@@ -1,0 +1,235 @@
+openapi: 3.0.1
+info:
+  title: DocuSign Admin AccountBrands NotaryJournals API
+  description: An API for an organization administrator to manage organizations, accounts and users
+  termsOfService: https://www.docusign.com/company/terms-and-conditions/developers
+  contact:
+    name: DocuSign Developer Center
+    url: https://developers.docusign.com
+    email: devcenter@docusign.com
+  version: v2.1
+servers:
+- url: https://api.docusign.net/Management
+tags:
+- name: NotaryJournals
+  description: ''
+paths:
+  /v2/current_user/notary/journals:
+    get:
+      tags:
+      - NotaryJournals
+      operationId: NotaryJournals_GetNotaryJournals
+      parameters:
+      - name: count
+        in: query
+        description: The maximum number of results to be returned by this request.
+        schema:
+          type: string
+      - name: search_text
+        in: query
+        schema:
+          type: string
+      - name: start_position
+        in: query
+        description: The position within the total result set from which to start returning values. The value **thumbnail** may be used to return the page image.
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Successful response.
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/notaryJournalList'
+        '400':
+          description: Error encountered.
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/errorDetails'
+      deprecated: false
+      x-ds-methodname: listNotaryJournals
+      x-ds-method: list
+      x-ds-service: Notary
+      x-ds-in-sdk: true
+components:
+  schemas:
+    notaryJournal:
+      type: object
+      properties:
+        createdDate:
+          type: string
+          description: ''
+        documentName:
+          type: string
+          description: ''
+        jurisdiction:
+          $ref: '#/components/schemas/jurisdiction'
+        notaryJournalId:
+          type: string
+          description: ''
+        notaryJournalMetaData:
+          $ref: '#/components/schemas/notaryJournalMetaData'
+        signerName:
+          type: string
+          description: 'The in-person signer''s full legal name.
+
+
+            Required when `inPersonSigningType` is `inPersonSigner`.
+
+            For eNotary flow, use `name` instead.
+
+
+            Maximum Length: 100 characters.
+
+            '
+      description: ''
+      x-ds-definition-name: notaryJournal
+      x-ms-summary: ''
+    notaryJournalList:
+      type: object
+      properties:
+        endPosition:
+          type: string
+          description: 'The last position in the result set. '
+        nextUri:
+          type: string
+          description: 'The URI for the next chunk of records based on the search request. It is `null` if this is the last set of results for the search. '
+        notaryJournals:
+          type: array
+          description: ''
+          items:
+            $ref: '#/components/schemas/notaryJournal'
+        previousUri:
+          type: string
+          description: 'The URI for the prior chunk of records based on the search request. It is `null` if this is the first set of results for the search. '
+        resultSetSize:
+          type: string
+          description: 'The number of results returned in this response. '
+        startPosition:
+          type: string
+          description: Starting position of the current result set.
+        totalSetSize:
+          type: string
+          description: The total number of items in the search's result set. It will always be greater than or equal to the value of the `resultSetSize` field.
+      description: ''
+      x-ds-definition-name: notaryJournalList
+      x-ms-summary: ''
+    errorDetails:
+      type: object
+      properties:
+        errorCode:
+          type: string
+          description: An error code associated with the error.
+        message:
+          type: string
+          description: A short error message.
+      description: This object describes errors that occur. It is only valid for responses, and ignored in requests.
+      x-ds-definition-name: errorDetails
+      x-ms-summary: This object describes errors that occur. It is only valid for responses, and ignored in requests.
+    jurisdiction:
+      type: object
+      properties:
+        allowSystemCreatedSeal:
+          type: string
+          description: ''
+        allowUserUploadedSeal:
+          type: string
+          description: ''
+        commissionIdInSeal:
+          type: string
+          description: ''
+        county:
+          type: string
+          description: ''
+        countyInSeal:
+          type: string
+          description: ''
+        enabled:
+          type: string
+          description: ''
+        jurisdictionId:
+          type: string
+          description: ''
+        name:
+          type: string
+          description: ''
+        notaryPublicInSeal:
+          type: string
+          description: ''
+        stateNameInSeal:
+          type: string
+          description: ''
+      description: ''
+      x-ds-definition-name: jurisdiction
+      x-ms-summary: ''
+    notaryJournalMetaData:
+      type: object
+      properties:
+        comment:
+          type: string
+          description: ''
+        credibleWitnesses:
+          type: array
+          description: ''
+          items:
+            $ref: '#/components/schemas/notaryJournalCredibleWitness'
+        signatureImage:
+          type: string
+          description: ''
+        signerIdType:
+          type: string
+          description: ''
+      description: ''
+      x-ds-definition-name: notaryJournalMetaData
+      x-ms-summary: ''
+    notaryJournalCredibleWitness:
+      type: object
+      properties:
+        address:
+          type: string
+          description: ''
+        name:
+          type: string
+          description: ''
+        signatureImage:
+          type: string
+          description: ''
+      description: ''
+      x-ds-definition-name: notaryJournalCredibleWitness
+      x-ms-summary: ''
+  securitySchemes:
+    accessCode:
+      type: oauth2
+      description: OAuth2 Access code Grant
+      flows:
+        authorizationCode:
+          authorizationUrl: https://account.docusign.com/oauth/auth
+          tokenUrl: https://account.docusign.com/oauth/auth
+          scopes:
+            organization_read: ''
+            permission_read: ''
+            group_read: ''
+            user_read: ''
+            account_read: ''
+            account_write: ''
+            user_write: ''
+            identity_provider_read: ''
+            domain_read: ''
+x-ds-categories:
+- name: UserManagement
+  summary: Methods to manage users in an account.
+  description: Methods to manage users in an account.
+- name: BulkOperations
+  summary: Methods to import and export users and accounts.
+  description: Methods to import and export users and accounts.
+- name: IdentityProviders
+  summary: Methods to get a list of identity providers.
+  description: Methods to get a list of identity providers.
+- name: ReservedDomains
+  summary: Methods to get a list of reserved domains.
+  description: Methods to get a list of reserved domains.
+- name: Organization
+  summary: Methods for working with organizations.
+  description: Methods for working with organizations.
+x-original-swagger-version: '2.0'

@@ -1,0 +1,374 @@
+openapi: 3.0.1
+info:
+  title: DocuSign Admin AccountBrands Contacts API
+  description: An API for an organization administrator to manage organizations, accounts and users
+  termsOfService: https://www.docusign.com/company/terms-and-conditions/developers
+  contact:
+    name: DocuSign Developer Center
+    url: https://developers.docusign.com
+    email: devcenter@docusign.com
+  version: v2.1
+servers:
+- url: https://api.docusign.net/Management
+tags:
+- name: Contacts
+  description: 'The Contacts resource provides methods that allow you to manage contacts.
+
+    '
+paths:
+  /v2/accounts/{accountId}/contacts:
+    put:
+      tags:
+      - Contacts
+      summary: Replaces contacts associated with an account for the DocuSign service.
+      operationId: Contacts_PutContacts
+      parameters:
+      - name: accountId
+        in: path
+        description: The external account number (int) or account id GUID.
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/contactModRequest'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/contactModRequest'
+        required: false
+      responses:
+        '200':
+          description: Successful response.
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/contactUpdateResponse'
+        '400':
+          description: Error encountered.
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/errorDetails'
+      deprecated: false
+      x-ds-methodname: putContacts
+      x-ds-method: update
+      x-ds-service: Users
+      x-ds-in-sdk: true
+      x-codegen-request-body-name: contactModRequest
+    post:
+      tags:
+      - Contacts
+      summary: Docusign Imports multiple new contacts into the contacts collection from CSV, JSON, or XML (based on content type).
+      operationId: Contacts_PostContacts
+      parameters:
+      - name: accountId
+        in: path
+        description: The external account number (int) or account id GUID.
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/contactModRequest'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/contactModRequest'
+        required: false
+      responses:
+        '201':
+          description: Successful response.
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/contactUpdateResponse'
+        '400':
+          description: Error encountered.
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/errorDetails'
+      deprecated: false
+      x-ds-methodname: postContacts
+      x-ds-method: create
+      x-ds-service: Users
+      x-ds-in-sdk: true
+      x-codegen-request-body-name: contactModRequest
+    delete:
+      tags:
+      - Contacts
+      summary: Delete contacts associated with an account for the DocuSign service.
+      operationId: Contacts_DeleteContacts
+      parameters:
+      - name: accountId
+        in: path
+        description: The external account number (int) or account id GUID.
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/contactModRequest'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/contactModRequest'
+        required: false
+      responses:
+        '200':
+          description: Successful response.
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/contactUpdateResponse'
+        '400':
+          description: Error encountered.
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/errorDetails'
+      deprecated: false
+      x-ds-methodname: deleteContacts
+      x-ds-method: deleteList
+      x-ds-service: Users
+      x-ds-in-sdk: true
+      x-codegen-request-body-name: contactModRequest
+  /v2/accounts/{accountId}/contacts/{contactId}:
+    get:
+      tags:
+      - Contacts
+      summary: Docusign Gets a particular contact associated with the user's account.
+      operationId: Contacts_GetContactById
+      parameters:
+      - name: accountId
+        in: path
+        description: The external account number (int) or account id GUID.
+        required: true
+        schema:
+          type: string
+      - name: contactId
+        in: path
+        description: The unique identifier of a person in the contacts address book.
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Successful response.
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/contactGetResponse'
+        '400':
+          description: Error encountered.
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/errorDetails'
+      deprecated: false
+      x-ds-methodname: getContactById
+      x-ds-method: get
+      x-ds-service: Users
+      x-ds-in-sdk: true
+    delete:
+      tags:
+      - Contacts
+      summary: Replaces a particular contact associated with an account for the DocuSign service.
+      operationId: Contacts_DeleteContactWithId
+      parameters:
+      - name: accountId
+        in: path
+        description: The external account number (int) or account id GUID.
+        required: true
+        schema:
+          type: string
+      - name: contactId
+        in: path
+        description: The unique identifier of a person in the contacts address book.
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Successful response.
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/contactUpdateResponse'
+        '400':
+          description: Error encountered.
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/errorDetails'
+      deprecated: false
+      x-ds-methodname: deleteContactWithId
+      x-ds-method: delete
+      x-ds-service: Users
+      x-ds-in-sdk: true
+components:
+  schemas:
+    contactPhoneNumber:
+      type: object
+      properties:
+        phoneNumber:
+          type: string
+          description: ''
+        phoneType:
+          type: string
+          description: ''
+      description: ''
+      x-ds-definition-name: contactPhoneNumber
+      x-ms-summary: ''
+    contact:
+      type: object
+      properties:
+        contactId:
+          type: string
+          description: The unique identifier of a person in the contacts address book.
+        contactPhoneNumbers:
+          type: array
+          description: 'A list of the contact''s phone numbers.
+
+
+            **Note**: The phone numbers associated with shared contacts do not display to users other than the user who added the contact. Additionally, in the following scenarios, the phone number of a shared contact does not populate automatically for anyone other than the user who added the contact:
+
+
+            - Sending an envelope by using SMS
+
+            - Using phone authentication
+
+
+            You must ask the user who added the contact for the phone number and then manually enter it into the authentication box.'
+          items:
+            $ref: '#/components/schemas/contactPhoneNumber'
+        contactUri:
+          type: string
+          description: The URI for retrieving information about the contact.
+        emails:
+          type: array
+          description: ''
+          items:
+            type: string
+        errorDetails:
+          $ref: '#/components/schemas/errorDetails'
+        name:
+          type: string
+          description: ''
+        organization:
+          type: string
+          description: ''
+        shared:
+          type: string
+          description: ''
+        signingGroup:
+          type: string
+          description: ''
+        signingGroupName:
+          type: string
+          description: "The display name for the signing group. \n\nMaximum Length: 100 characters. "
+      description: ''
+      x-ds-definition-name: contact
+      x-ms-summary: ''
+    contactUpdateResponse:
+      type: object
+      properties:
+        contacts:
+          type: array
+          description: ''
+          items:
+            $ref: '#/components/schemas/contact'
+      description: ''
+      x-ds-definition-name: contactUpdateResponse
+      x-ms-summary: ''
+    errorDetails:
+      type: object
+      properties:
+        errorCode:
+          type: string
+          description: An error code associated with the error.
+        message:
+          type: string
+          description: A short error message.
+      description: This object describes errors that occur. It is only valid for responses, and ignored in requests.
+      x-ds-definition-name: errorDetails
+      x-ms-summary: This object describes errors that occur. It is only valid for responses, and ignored in requests.
+    contactGetResponse:
+      type: object
+      properties:
+        contacts:
+          type: array
+          description: ''
+          items:
+            $ref: '#/components/schemas/contact'
+        endPosition:
+          type: string
+          description: 'The last position in the result set. '
+        nextUri:
+          type: string
+          description: 'The URI for the next chunk of records based on the search request. It is `null` if this is the last set of results for the search. '
+        previousUri:
+          type: string
+          description: 'The URI for the prior chunk of records based on the search request. It is `null` if this is the first set of results for the search. '
+        resultSetSize:
+          type: string
+          description: 'The number of results returned in this response. '
+        startPosition:
+          type: string
+          description: Starting position of the current result set.
+        totalSetSize:
+          type: string
+          description: The total number of items in the search's result set. It will always be greater than or equal to the value of the `resultSetSize` field.
+      description: ''
+      x-ds-definition-name: contactGetResponse
+      x-ms-summary: ''
+    contactModRequest:
+      type: object
+      properties:
+        contacts:
+          type: array
+          description: ''
+          items:
+            $ref: '#/components/schemas/contact'
+      description: ''
+      x-ds-definition-name: contactModRequest
+      x-ms-summary: ''
+  securitySchemes:
+    accessCode:
+      type: oauth2
+      description: OAuth2 Access code Grant
+      flows:
+        authorizationCode:
+          authorizationUrl: https://account.docusign.com/oauth/auth
+          tokenUrl: https://account.docusign.com/oauth/auth
+          scopes:
+            organization_read: ''
+            permission_read: ''
+            group_read: ''
+            user_read: ''
+            account_read: ''
+            account_write: ''
+            user_write: ''
+            identity_provider_read: ''
+            domain_read: ''
+x-ds-categories:
+- name: UserManagement
+  summary: Methods to manage users in an account.
+  description: Methods to manage users in an account.
+- name: BulkOperations
+  summary: Methods to import and export users and accounts.
+  description: Methods to import and export users and accounts.
+- name: IdentityProviders
+  summary: Methods to get a list of identity providers.
+  description: Methods to get a list of identity providers.
+- name: ReservedDomains
+  summary: Methods to get a list of reserved domains.
+  description: Methods to get a list of reserved domains.
+- name: Organization
+  summary: Methods for working with organizations.
+  description: Methods for working with organizations.
+x-original-swagger-version: '2.0'

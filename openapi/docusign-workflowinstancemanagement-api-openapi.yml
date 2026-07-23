@@ -1,0 +1,516 @@
+openapi: 3.0.1
+info:
+  title: DocuSign Admin AccountBrands WorkflowInstanceManagement API
+  description: An API for an organization administrator to manage organizations, accounts and users
+  termsOfService: https://www.docusign.com/company/terms-and-conditions/developers
+  contact:
+    name: DocuSign Developer Center
+    url: https://developers.docusign.com
+    email: devcenter@docusign.com
+  version: v2.1
+servers:
+- url: https://api.docusign.net/Management
+tags:
+- name: WorkflowInstanceManagement
+  description: Methods to get information about workflow instances.
+paths:
+  /v1/accounts/{accountId}/management/instances/{instanceId}/cancel:
+    post:
+      tags:
+      - WorkflowInstanceManagement
+      summary: Docusign Cancels a running workflow instance.
+      description: "Cancels a running \n[workflow][workflows-concept]\ninstance.\n\n<!-- maestro beta notice -->\n\n<ds-inlinemessage>\n  The Maestro API is currently only available\n  as part of a beta program.\n  See <a href=\"/docs/maestro-api/get-access/\">Get access to Maestro API</a>\n  for details.\n</ds-inlinemessage>\n\n<!-- end maestro beta notice -->\n\n### Related topics\n\n- [How to cancel a Maestro workflow instance][howto-cancel]\n\n\n[howto-cancel]:       /docs/maestro-api/how-to/cancel-workflow/\n[workflows-concept]:  /docs/maestro-api/maestro101/workflows/"
+      operationId: cancelWorkflowInstance
+      parameters:
+      - name: accountId
+        in: path
+        description: The account ID.
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: instanceId
+        in: path
+        description: The instance ID of the workflow to cancel.
+        required: true
+        schema:
+          type: string
+          format: uuid
+      responses:
+        '200':
+          description: Return Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CancelResponse'
+        '401':
+          description: Authentication details are invalid
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: The requested resource was not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      security:
+      - DSAuth:
+        - aow_manage
+        - signature
+      - DSBearerAuth: []
+      x-ds-methodname: cancelWorkflowInstance
+      x-ds-method: cancelWorkflowInstance
+      x-ds-service: Workflow Instance Management
+      x-ds-in-sdk: true
+  /v1/accounts/{accountId}/management/workflow_definitions/{workflowDefinitionId}/config_instances:
+    get:
+      tags:
+      - WorkflowInstanceManagement
+      summary: Docusign Gets a list of configuration instances for a workflow definition
+      description: "Gets a list of configuration instances for a workflow definition\n<!-- maestro beta notice -->\n\n<ds-inlinemessage>\n  The Maestro API is currently only available\n  as part of a beta program.\n  See <a href=\"/docs/maestro-api/get-access/\">Get access to Maestro API</a>\n  for details.\n</ds-inlinemessage>\n\n<!-- end maestro beta notice -->"
+      operationId: getConfigInstances
+      parameters:
+      - name: accountId
+        in: path
+        description: The account ID.
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: workflowDefinitionId
+        in: path
+        description: Workflow definition ID.
+        required: true
+        schema:
+          type: string
+          format: uuid
+      responses:
+        '200':
+          description: Returns a list of configuration instances for a workflow definition
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetConfigurationInstancesResponse'
+        '400':
+          description: Bad request received
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: Authentication details are invalid
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '403':
+          description: Authorization details are invalid
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: Resource not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      security:
+      - DSAuth:
+        - aow_manage
+        - signature
+      - DSBearerAuth: []
+      x-ds-methodname: getWorkflowDefinitionConfigInstances
+      x-ds-method: getWorkflowDefinitionConfigInstances
+      x-ds-service: Workflow Management
+      x-ds-in-sdk: true
+  /v1/accounts/{accountId}/management/workflow_definitions/{workflowDefinitionId}/instances:
+    get:
+      tags:
+      - WorkflowInstanceManagement
+      summary: Docusign Get a list of instances of a deployed workflow definition.
+      description: "Get a list of instances of a deployed workflow definition.\n<!-- maestro beta notice -->\n\n<ds-inlinemessage>\n  The Maestro API is currently only available\n  as part of a beta program.\n  See <a href=\"/docs/maestro-api/get-access/\">Get access to Maestro API</a>\n  for details.\n</ds-inlinemessage>\n\n<!-- end maestro beta notice -->\n\nA successful response is an array of \n[`WorkflowInstance`](/docs/maestro-api/reference/workflowinstancemanagement/workflowinstancemanagement/getworkflowinstance/#schema_200_workflowinstance_workflowinstance)\nobjects.\n"
+      operationId: getWorkflowInstances
+      parameters:
+      - name: accountId
+        in: path
+        description: The account ID.
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: workflowDefinitionId
+        in: path
+        description: The ID of the workflow definition to delete.
+        required: true
+        schema:
+          type: string
+          format: uuid
+      responses:
+        '200':
+          description: A list of workflow instances for a workflow definition in the specified account.
+          content:
+            application/json:
+              schema:
+                type: array
+                description: A list of workflow instances (0 or more).
+                items:
+                  $ref: '#/components/schemas/WorkflowInstance'
+        '401':
+          description: Authentication details are invalid
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '403':
+          description: Authorization details are invalid
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: The requested resource was not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      security:
+      - DSAuth:
+        - aow_manage
+        - signature
+      - DSBearerAuth: []
+      x-ds-methodname: getWorkflowInstances
+      x-ds-method: getWorkflowInstances
+      x-ds-service: Workflow Instance Management
+      x-ds-in-sdk: true
+  /v1/accounts/{accountId}/management/workflow_definitions/{workflowDefinitionId}/instances/{instanceId}:
+    get:
+      tags:
+      - WorkflowInstanceManagement
+      summary: Docusign Gets the details for a specific instance for a deployed workflow definition.
+      description: "Gets the details for a specific instance for a deployed workflow definition.\n\n<!-- maestro beta notice -->\n\n<ds-inlinemessage>\n  The Maestro API is currently only available\n  as part of a beta program.\n  See <a href=\"/docs/maestro-api/get-access/\">Get access to Maestro API</a>\n  for details.\n</ds-inlinemessage>\n\n<!-- end maestro beta notice -->\n\n\n### Related topics\n\n- [How to get the status of a Maestro workflow instance][howto-status]\n\n[howto-status]: /docs/maestro-api/how-to/get-workflow-status/\n"
+      operationId: getWorkflowInstance
+      parameters:
+      - name: accountId
+        in: path
+        description: The account ID.
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: workflowDefinitionId
+        in: path
+        description: Workflow definition ID.
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: instanceId
+        in: path
+        description: 'Workflow instance ID. <!-- dacid -->
+
+          A string in UUID format: 4a6d6a08-xxxx-xxxx-xxxx-bae4fecc99c8
+
+          '
+        required: true
+        schema:
+          type: string
+          format: uuid
+      responses:
+        '200':
+          description: Details for a specific instance for a workflow definition in the specified account.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WorkflowInstance'
+        '401':
+          description: Authentication details are invalid
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '403':
+          description: Authorization details are invalid
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: The requested resource was not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      security:
+      - DSAuth:
+        - aow_manage
+        - signature
+      - DSBearerAuth: []
+      x-ds-methodname: getWorkflowInstance
+      x-ds-method: getWorkflowInstance
+      x-ds-service: Workflow Instance Management
+      x-ds-in-sdk: true
+components:
+  schemas:
+    WorkflowCreatorId:
+      type: string
+      description: The Docusign Admin user ID who has the ability to create workflow definitions.
+      format: uuid
+      example: 00000000-0000-0000-0000-000000000000
+      x-ds-definition-name: WorkflowCreatorId
+      x-ms-summary: The Docusign Admin user ID who has the ability to create workflow definitions.
+    WorkflowDateTime:
+      type: string
+      description: A date-time string.
+      format: date-time
+      x-ds-definition-name: WorkflowDateTime
+      x-ms-summary: A date-time string.
+    WorkflowInstanceState:
+      type: string
+      description: Current workflow instance state (`completed`, `failed`, `In-progress`)
+      enum:
+      - Created
+      - In Progress
+      - Completed
+      - Failed
+      - Canceled
+      x-ds-definition-name: WorkflowInstanceState
+      x-ms-summary: Current workflow instance state (`completed`, `failed`, `In-progress`)
+    ErrorCodes:
+      type: string
+      description: Internal Error Codes
+      enum:
+      - ERR_10001
+      - ERR_10002
+      - ERR_10003
+      - ERR_10004
+      - ERR_10005
+      - ERR_10006
+      - ERR_10007
+      - ERR_10008
+      - ERR_10009
+      - ERR_10101
+      - ERR_10201
+      - ERR_10202
+      - ERR_10301
+      - ERR_10302
+      - ERR_10401
+      - ERR_10801
+      - ERR_10802
+      - ERR_10999
+      x-ds-definition-name: ErrorCodes
+      x-ms-summary: Internal Error Codes
+    TemplateId:
+      type: string
+      description: Workflow definition ID.
+      format: uuid
+      example: 00000000-0000-0000-0000-000000000000
+      x-ds-definition-name: TemplateId
+      x-ms-summary: Workflow definition ID.
+    WorkflowInstance:
+      required:
+      - creatorId
+      - dacId
+      - instanceState
+      - templateId
+      - users
+      type: object
+      properties:
+        accountId:
+          $ref: '#/components/schemas/AccountId'
+        creatorId:
+          $ref: '#/components/schemas/WorkflowCreatorId'
+        dacId:
+          $ref: '#/components/schemas/WorkflowInstanceId'
+        endDate:
+          $ref: '#/components/schemas/WorkflowDateTime'
+        instanceName:
+          type: string
+          description: The friendly name of the particular workflow instance
+        instanceState:
+          $ref: '#/components/schemas/WorkflowInstanceState'
+        progress:
+          $ref: '#/components/schemas/ProgressInstance'
+        startDate:
+          $ref: '#/components/schemas/WorkflowDateTime'
+        startedBy:
+          $ref: '#/components/schemas/StartedByInstance'
+        templateId:
+          $ref: '#/components/schemas/TemplateId'
+        users:
+          type: object
+          additionalProperties:
+            type: string
+          description: Contains the list of Users and Steps mapping
+      description: Details of a workflow instance triggered for a workflow definition.
+      x-ds-definition-name: WorkflowInstance
+      x-ms-summary: Details of a workflow instance triggered for a workflow definition.
+    ProgressInstance:
+      type: object
+      properties:
+        completedSteps:
+          type: number
+          description: The number of completed steps for this workflow instance
+        currentCompletedStepName:
+          type: string
+          description: The last completed step name
+        totalSteps:
+          type: number
+          description: The total number of steps for this workflow instance
+      description: The progress information for a workflow instance
+      x-ds-definition-name: ProgressInstance
+      x-ms-summary: The progress information for a workflow instance
+    WorkflowInstanceId:
+      type: string
+      description: 'Workflow instance ID.
+
+        A string in UUID format: 4a6d6a08-xxxx-xxxx-xxxx-bae4fecc99c8'
+      format: uuid
+      example: 00000000-0000-0000-0000-000000000000
+      x-ds-definition-name: WorkflowInstanceId
+      x-ms-summary: 'Workflow instance ID.
+
+        A string in UUID format: 4a6d6a08-xxxx-xxxx-xxxx-bae4fecc99c8'
+    ErrorResponse:
+      type: object
+      properties:
+        errorCode:
+          $ref: '#/components/schemas/ErrorCodes'
+        message:
+          type: string
+          description: Human-readable description of the error.
+      description: Returns error with a status message
+      x-ds-definition-name: ErrorResponse
+      x-ms-summary: Returns error with a status message
+    AccountId:
+      type: string
+      description: Account Id
+      format: uuid
+      example: 00000000-0000-0000-0000-000000000000
+      x-ds-definition-name: AccountId
+      x-ms-summary: Account Id
+    GetConfigurationInstancesResponse:
+      type: object
+      properties:
+        configInstances:
+          type: array
+          description: ''
+          items:
+            type: object
+            properties:
+              savedValues:
+                type: object
+                additionalProperties: true
+              stepId:
+                type: string
+                format: uuid
+        count:
+          type: number
+          description: Total number of definitions returned
+        workflowDefinitionId:
+          type: string
+          description: Workflow definition ID.
+          format: uuid
+      description: ''
+      x-ds-definition-name: GetConfigurationInstancesResponse
+      x-ms-summary: ''
+    AowUUIDString:
+      type: string
+      description: 'A string in UUID format: 4a6d6a08-xxxx-xxxx-xxxx-bae4fecc99c8'
+      format: uuid
+      x-ds-definition-name: AowUUIDString
+      x-ms-summary: 'A string in UUID format: 4a6d6a08-xxxx-xxxx-xxxx-bae4fecc99c8'
+    StartedByInstance:
+      type: object
+      properties:
+        startedById:
+          $ref: '#/components/schemas/AowUUIDString'
+        startedByName:
+          type: string
+          description: The user name of the person who starts a workflow Instance
+        startedByType:
+          type: string
+          description: ''
+          enum:
+          - Anonymous
+          - Preparer
+          - Participant
+          - OnBehalfOf
+      description: The started by information for a workflow instance
+      x-ds-definition-name: StartedByInstance
+      x-ms-summary: The started by information for a workflow instance
+    CancelResponse:
+      required:
+      - message
+      type: object
+      properties:
+        code:
+          type: string
+          description: Error code message
+        message:
+          type: string
+          description: Human-readable description of the error.
+      description: Cancel workflow instance response.
+      x-ds-definition-name: CancelResponse
+      x-ms-summary: Cancel workflow instance response.
+  securitySchemes:
+    accessCode:
+      type: oauth2
+      description: OAuth2 Access code Grant
+      flows:
+        authorizationCode:
+          authorizationUrl: https://account.docusign.com/oauth/auth
+          tokenUrl: https://account.docusign.com/oauth/auth
+          scopes:
+            organization_read: ''
+            permission_read: ''
+            group_read: ''
+            user_read: ''
+            account_read: ''
+            account_write: ''
+            user_write: ''
+            identity_provider_read: ''
+            domain_read: ''
+x-ds-categories:
+- name: UserManagement
+  summary: Methods to manage users in an account.
+  description: Methods to manage users in an account.
+- name: BulkOperations
+  summary: Methods to import and export users and accounts.
+  description: Methods to import and export users and accounts.
+- name: IdentityProviders
+  summary: Methods to get a list of identity providers.
+  description: Methods to get a list of identity providers.
+- name: ReservedDomains
+  summary: Methods to get a list of reserved domains.
+  description: Methods to get a list of reserved domains.
+- name: Organization
+  summary: Methods for working with organizations.
+  description: Methods for working with organizations.
+x-original-swagger-version: '2.0'

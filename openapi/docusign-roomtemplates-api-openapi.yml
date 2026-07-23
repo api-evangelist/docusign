@@ -1,0 +1,235 @@
+openapi: 3.0.1
+info:
+  title: DocuSign Admin AccountBrands RoomTemplates API
+  description: An API for an organization administrator to manage organizations, accounts and users
+  termsOfService: https://www.docusign.com/company/terms-and-conditions/developers
+  contact:
+    name: DocuSign Developer Center
+    url: https://developers.docusign.com
+    email: devcenter@docusign.com
+  version: v2.1
+servers:
+- url: https://api.docusign.net/Management
+tags:
+- name: RoomTemplates
+  description: You can use a room template to set the transaction side and task lists for rooms. For example, a broker can create a room template for agents to use. You can enable the room template for all regions and offices, or just for specific ones. You create room templates and the task templates that room templates use in the console.
+paths:
+  /v2/accounts/{accountId}/room_templates:
+    get:
+      tags:
+      - RoomTemplates
+      summary: Docusign Gets room templates.
+      description: 'This method returns a list of room templates that the user can use to create a new room. The response includes company and region-level templates.
+
+
+        '
+      operationId: RoomTemplates_GetRoomTemplates
+      parameters:
+      - name: officeId
+        in: query
+        description: 'The ID of the office for which the user wants to create a room. When you pass in a value for this parameter, only room templates that are valid for that office appear in the results. For users who are not Admins, the default is the ID of the user''s default office.
+
+          However, you can specify a value if the user belongs to multiple offices.
+
+
+          If the user is an Admin, set the `forAdmin` search parameter to **true** instead and omit the `officeId` parameter. '
+        schema:
+          type: integer
+          format: int32
+      - name: onlyAssignable
+        in: query
+        description: When **true,** returns only the roles that the current user can assign to someone else. The default value is **false.**
+        schema:
+          type: boolean
+          default: false
+      - name: onlyEnabled
+        in: query
+        description: When true, only returns room templates that are not disabled.
+        schema:
+          type: boolean
+          default: true
+      - name: count
+        in: query
+        description: The number of results. When this property is used as a request parameter specifying the number of results to return, the value must be a number between `1` and `100` (default).
+        schema:
+          type: integer
+          format: int32
+          default: 100
+      - name: startPosition
+        in: query
+        description: The index position within the total result set from which to start returning values. The default value is `0`.
+        schema:
+          type: integer
+          format: int32
+          default: 0
+      - name: accountId
+        in: path
+        description: The globally unique identifier (GUID) for the account.
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Successfully retrieved room templates for the caller
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/RoomTemplatesSummaryList'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RoomTemplatesSummaryList'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/RoomTemplatesSummaryList'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/RoomTemplatesSummaryList'
+            text/xml:
+              schema:
+                $ref: '#/components/schemas/RoomTemplatesSummaryList'
+        '400':
+          description: Bad request. See ErrorCode and Message for details
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            text/xml:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '401':
+          description: Not authorized to make this request.
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            text/xml:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+      x-ds-methodname: GetRoomTemplates
+      x-ds-method: GetRoomTemplates
+      x-ds-service: RoomTemplates
+      x-ds-in-sdk: true
+components:
+  schemas:
+    ApiError:
+      type: object
+      properties:
+        errorCode:
+          type: string
+          description: The code associated with the error condition.
+        message:
+          type: string
+          description: A brief message describing the error condition.
+        referenceId:
+          type: string
+          description: ''
+      description: This object describes errors that occur. It is valid only for responses and ignored in requests.
+      x-ds-definition-name: ApiError
+      x-ms-summary: This object describes errors that occur. It is valid only for responses and ignored in requests.
+    RoomTemplate:
+      type: object
+      properties:
+        roomTemplateId:
+          type: integer
+          description: The ID of the room template.
+          format: int32
+          readOnly: true
+        name:
+          type: string
+          description: The name of the office.
+          readOnly: true
+        taskTemplateCount:
+          type: integer
+          description: The total number of task templates that the room template uses.
+          format: int32
+          readOnly: true
+      description: Contains details about a room template.
+      x-ds-definition-name: RoomTemplate
+      x-ms-summary: Contains details about a room template.
+    RoomTemplatesSummaryList:
+      type: object
+      properties:
+        roomTemplates:
+          type: array
+          description: An array of `roomTemplate` objects.
+          items:
+            $ref: '#/components/schemas/RoomTemplate'
+        resultSetSize:
+          type: integer
+          description: The number of results returned in this response.
+          format: int32
+        startPosition:
+          type: integer
+          description: The starting zero-based index position of the results set. When this property is used as a query parameter, the default value is `0`.
+          format: int32
+        endPosition:
+          type: integer
+          description: The last zero-based index position in the result set.
+          format: int32
+          readOnly: true
+        nextUri:
+          type: string
+          description: The URI for the next chunk of records based on the search request. This property is `null` for the last set of search results.
+        priorUri:
+          type: string
+          description: The URI for the previous chunk of records based on the search request. This property is `null` for the first set of search results.
+        totalRowCount:
+          type: integer
+          description: ''
+          format: int32
+      description: This complex type contains information about room templates.
+      x-ds-definition-name: RoomTemplatesSummaryList
+      x-ms-summary: This complex type contains information about room templates.
+  securitySchemes:
+    accessCode:
+      type: oauth2
+      description: OAuth2 Access code Grant
+      flows:
+        authorizationCode:
+          authorizationUrl: https://account.docusign.com/oauth/auth
+          tokenUrl: https://account.docusign.com/oauth/auth
+          scopes:
+            organization_read: ''
+            permission_read: ''
+            group_read: ''
+            user_read: ''
+            account_read: ''
+            account_write: ''
+            user_write: ''
+            identity_provider_read: ''
+            domain_read: ''
+x-ds-categories:
+- name: UserManagement
+  summary: Methods to manage users in an account.
+  description: Methods to manage users in an account.
+- name: BulkOperations
+  summary: Methods to import and export users and accounts.
+  description: Methods to import and export users and accounts.
+- name: IdentityProviders
+  summary: Methods to get a list of identity providers.
+  description: Methods to get a list of identity providers.
+- name: ReservedDomains
+  summary: Methods to get a list of reserved domains.
+  description: Methods to get a list of reserved domains.
+- name: Organization
+  summary: Methods for working with organizations.
+  description: Methods for working with organizations.
+x-original-swagger-version: '2.0'

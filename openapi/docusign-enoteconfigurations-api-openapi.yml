@@ -1,0 +1,191 @@
+openapi: 3.0.1
+info:
+  title: DocuSign Admin AccountBrands ENoteConfigurations API
+  description: An API for an organization administrator to manage organizations, accounts and users
+  termsOfService: https://www.docusign.com/company/terms-and-conditions/developers
+  contact:
+    name: DocuSign Developer Center
+    url: https://developers.docusign.com
+    email: devcenter@docusign.com
+  version: v2.1
+servers:
+- url: https://api.docusign.net/Management
+tags:
+- name: ENoteConfigurations
+  description: 'The ENoteConfigurations resource provides methods that allow you to manage
+
+    information for the eNote eOriginal integration.
+
+    '
+paths:
+  /v2/accounts/{accountId}/settings/enote_configuration:
+    get:
+      tags:
+      - ENoteConfigurations
+      summary: Docusign Returns the configuration information for the eNote eOriginal integration.
+      operationId: ENoteConfiguration_GetENoteConfiguration
+      parameters:
+      - name: accountId
+        in: path
+        description: The external account number (int) or account id GUID.
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Successful response.
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/eNoteConfiguration'
+        '400':
+          description: Error encountered.
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/errorDetails'
+      deprecated: false
+      x-ds-methodname: getENoteConfiguration
+      x-ds-api-status: beta
+      x-ds-method: get
+      x-ds-service: Accounts
+      x-ds-in-sdk: true
+    put:
+      tags:
+      - ENoteConfigurations
+      summary: Docusign Updates configuration information for the eNote eOriginal integration.
+      operationId: ENoteConfiguration_PutENoteConfiguration
+      parameters:
+      - name: accountId
+        in: path
+        description: The external account number (int) or account id GUID.
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/eNoteConfiguration'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/eNoteConfiguration'
+        required: false
+      responses:
+        '200':
+          description: Successful response.
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/eNoteConfiguration'
+        '400':
+          description: Error encountered.
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/errorDetails'
+      deprecated: false
+      x-ds-methodname: updateENoteConfiguration
+      x-ds-api-status: beta
+      x-ds-method: update
+      x-ds-service: Accounts
+      x-ds-in-sdk: true
+      x-codegen-request-body-name: eNoteConfiguration
+    delete:
+      tags:
+      - ENoteConfigurations
+      summary: Docusign Deletes configuration information for the eNote eOriginal integration.
+      operationId: ENoteConfiguration_DeleteENoteConfiguration
+      parameters:
+      - name: accountId
+        in: path
+        description: The external account number (int) or account id GUID.
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Successful response.
+          content: {}
+        '400':
+          description: Error encountered.
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/errorDetails'
+      deprecated: false
+      x-ds-methodname: deleteENoteConfiguration
+      x-ds-api-status: beta
+      x-ds-method: delete
+      x-ds-service: Accounts
+      x-ds-in-sdk: true
+components:
+  schemas:
+    eNoteConfiguration:
+      type: object
+      properties:
+        connectConfigured:
+          type: string
+          description: ''
+        eNoteConfigured:
+          type: string
+          description: ''
+        organization:
+          type: string
+          description: ''
+        password:
+          type: string
+          description: ''
+        userName:
+          type: string
+          description: ''
+      description: ''
+      x-ds-definition-name: eNoteConfiguration
+      x-ms-summary: ''
+    errorDetails:
+      type: object
+      properties:
+        errorCode:
+          type: string
+          description: An error code associated with the error.
+        message:
+          type: string
+          description: A short error message.
+      description: This object describes errors that occur. It is only valid for responses, and ignored in requests.
+      x-ds-definition-name: errorDetails
+      x-ms-summary: This object describes errors that occur. It is only valid for responses, and ignored in requests.
+  securitySchemes:
+    accessCode:
+      type: oauth2
+      description: OAuth2 Access code Grant
+      flows:
+        authorizationCode:
+          authorizationUrl: https://account.docusign.com/oauth/auth
+          tokenUrl: https://account.docusign.com/oauth/auth
+          scopes:
+            organization_read: ''
+            permission_read: ''
+            group_read: ''
+            user_read: ''
+            account_read: ''
+            account_write: ''
+            user_write: ''
+            identity_provider_read: ''
+            domain_read: ''
+x-ds-categories:
+- name: UserManagement
+  summary: Methods to manage users in an account.
+  description: Methods to manage users in an account.
+- name: BulkOperations
+  summary: Methods to import and export users and accounts.
+  description: Methods to import and export users and accounts.
+- name: IdentityProviders
+  summary: Methods to get a list of identity providers.
+  description: Methods to get a list of identity providers.
+- name: ReservedDomains
+  summary: Methods to get a list of reserved domains.
+  description: Methods to get a list of reserved domains.
+- name: Organization
+  summary: Methods for working with organizations.
+  description: Methods for working with organizations.
+x-original-swagger-version: '2.0'

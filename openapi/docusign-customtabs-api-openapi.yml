@@ -1,0 +1,592 @@
+openapi: 3.0.1
+info:
+  title: DocuSign Admin AccountBrands CustomTabs API
+  description: An API for an organization administrator to manage organizations, accounts and users
+  termsOfService: https://www.docusign.com/company/terms-and-conditions/developers
+  contact:
+    name: DocuSign Developer Center
+    url: https://developers.docusign.com
+    email: devcenter@docusign.com
+  version: v2.1
+servers:
+- url: https://api.docusign.net/Management
+tags:
+- name: CustomTabs
+  description: 'The CustomTabs resource provides methods that allow you create and manage custom tabs based on the existing DocuSign tabs.
+
+
+    You can create a tab with pre-defined properties, such as a text tab with a certain font type and validation pattern. Users can access the custom tabs when sending documents through the DocuSign web application.
+
+
+    Custom tabs can be created based on the  approve, checkbox, company, date, date signed, decline, email, email address, envelope ID, first name, formula, full name, initial here, last name, list, note, number, radio, sign here, signer attachment, SSN, text, title, and zip tabs.'
+paths:
+  /v2/accounts/{accountId}/tab_definitions:
+    get:
+      tags:
+      - CustomTabs
+      summary: Docusign Gets a list of all account tabs.
+      description: Retrieves a list of all tabs associated with the account.
+      operationId: Tabs_GetTabDefinitions
+      parameters:
+      - name: accountId
+        in: path
+        description: The external account number (int) or account id GUID.
+        required: true
+        schema:
+          type: string
+      - name: custom_tab_only
+        in: query
+        description: 'When set to **true**, only custom tabs are returned in the response. '
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Successful response.
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/tabMetadataList'
+        '400':
+          description: Error encountered.
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/errorDetails'
+      deprecated: false
+      x-ds-methodname: list
+      x-ds-method: list
+      x-ds-service: CustomTabs
+      x-ds-in-sdk: true
+    post:
+      tags:
+      - CustomTabs
+      summary: Docusign Creates a custom tab.
+      description: 'Creates a tab with pre-defined properties, such as a text tab with a certain font type and validation pattern. Users can access the custom tabs when sending documents through the DocuSign web application.
+
+
+        Custom tabs can be created for approve, checkbox, company, date, date signed, decline, email, email address, envelope ID, first name, formula, full name, initial here, last name, list, note, number, radio, sign here, signer attachment, SSN, text, title, and zip tabs.'
+      operationId: Tabs_PostTabDefinitions
+      parameters:
+      - name: accountId
+        in: path
+        description: The external account number (int) or account id GUID.
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/tabMetadata'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/tabMetadata'
+        required: false
+      responses:
+        '201':
+          description: Successful response.
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/tabMetadata'
+        '400':
+          description: Error encountered.
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/errorDetails'
+      deprecated: false
+      x-ds-methodname: create
+      x-ds-method: create
+      x-ds-service: CustomTabs
+      x-ds-in-sdk: true
+      x-codegen-request-body-name: tabMetadata
+  /v2/accounts/{accountId}/tab_definitions/{customTabId}:
+    get:
+      tags:
+      - CustomTabs
+      summary: Docusign Gets custom tab information.
+      description: Retrieves information about the requested custom tab on the specified account.
+      operationId: Tab_GetCustomTab
+      parameters:
+      - name: accountId
+        in: path
+        description: The external account number (int) or account id GUID.
+        required: true
+        schema:
+          type: string
+      - name: customTabId
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Successful response.
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/tabMetadata'
+        '400':
+          description: Error encountered.
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/errorDetails'
+      deprecated: false
+      x-ds-methodname: get
+      x-ds-method: get
+      x-ds-service: CustomTabs
+      x-ds-in-sdk: true
+    put:
+      tags:
+      - CustomTabs
+      summary: Docusign Updates custom tab information.
+      description: Updates the information in a custom tab for the specified account.
+      operationId: Tab_PutCustomTab
+      parameters:
+      - name: accountId
+        in: path
+        description: The external account number (int) or account id GUID.
+        required: true
+        schema:
+          type: string
+      - name: customTabId
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/tabMetadata'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/tabMetadata'
+        required: false
+      responses:
+        '200':
+          description: Successful response.
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/tabMetadata'
+        '400':
+          description: Error encountered.
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/errorDetails'
+      deprecated: false
+      x-ds-methodname: update
+      x-ds-method: update
+      x-ds-service: CustomTabs
+      x-ds-in-sdk: true
+      x-codegen-request-body-name: tabMetadata
+    delete:
+      tags:
+      - CustomTabs
+      summary: Docusign Deletes custom tab information.
+      description: Deletes the custom from the specified account.
+      operationId: Tab_DeleteCustomTab
+      parameters:
+      - name: accountId
+        in: path
+        description: The external account number (int) or account id GUID.
+        required: true
+        schema:
+          type: string
+      - name: customTabId
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Successful response.
+          content: {}
+        '400':
+          description: Error encountered.
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/errorDetails'
+      deprecated: false
+      x-ds-methodname: delete
+      x-ds-method: delete
+      x-ds-service: CustomTabs
+      x-ds-in-sdk: true
+components:
+  schemas:
+    tabMetadata:
+      type: object
+      properties:
+        anchor:
+          type: string
+          description: An optional string that is used to auto-match tabs to strings located in the documents of an envelope.
+        anchorCaseSensitive:
+          type: string
+          description: 'Reserved for DocuSign.
+
+            <!--
+
+            When set to **true**, the anchor string does not consider case when matching strings in the document. The default value is **true**.
+
+            -->'
+        anchorHorizontalAlignment:
+          type: string
+          description: 'Reserved for DocuSign.
+
+            <!--
+
+            Specifies the alignment of anchor tabs with anchor strings. Possible values are **left** or **right**. The default value is **left**.
+
+            -->
+
+            '
+        anchorIgnoreIfNotPresent:
+          type: string
+          description: When set to **true**, this tab is ignored if anchorString is not found in the document.
+        anchorMatchWholeWord:
+          type: string
+          description: 'Reserved for DocuSign.
+
+            <!--
+
+            When set to **true**, the anchor string in this tab matches whole words only (strings embedded in other strings are ignored.) The default value is **true**.
+
+            -->
+
+            '
+        anchorUnits:
+          type: string
+          description: 'Specifies units of the
+
+            `anchorXOffset` and
+
+            `anchorYOffset`.
+
+            Valid units are:
+
+
+            - `pixels`
+
+            - `inches`
+
+            - `mms`
+
+            - `cms`
+
+            '
+        anchorXOffset:
+          type: string
+          description: 'Specifies the X axis location of the tab in `anchorUnits` relative to the `anchorString`.
+
+            '
+        anchorYOffset:
+          type: string
+          description: 'Specifies the Y axis location of the tab in `anchorUnits` relative to the `anchorString`.
+
+            '
+        bold:
+          type: string
+          description: When set to **true**, the information in the tab is bold.
+        collaborative:
+          type: string
+          description: ''
+        concealValueOnDocument:
+          type: string
+          description: 'When set to **true**, the field appears normally while the recipient is adding or modifying the information in the field, but the data is not visible (the characters are hidden by asterisks) to any other signer or the sender.
+
+
+            When an envelope is completed the information is available to the sender through the Form Data link in the DocuSign Console.
+
+
+            This setting applies only to text boxes and does not affect list boxes, radio buttons, or check boxes.'
+        createdByDisplayName:
+          type: string
+          description: The user name of the DocuSign user who created this object.
+        createdByUserId:
+          type: string
+          description: The userId of the DocuSign user who created this object.
+        customTabId:
+          type: string
+          description: ''
+        disableAutoSize:
+          type: string
+          description: When set to **true**, disables the auto sizing of single line text boxes in the signing screen when the signer enters data. If disabled users will only be able enter as much data as the text box can hold. By default this is false. This property only affects single line text boxes.
+        editable:
+          type: string
+          description: When set to **true**, the custom tab is editable. Otherwise the custom tab cannot be modified.
+        font:
+          type: string
+          description: 'The font to be used for the tab value. Supported Fonts include:
+
+
+            - Default
+
+            - Arial
+
+            - ArialNarrow
+
+            - Calibri
+
+            - CourierNew
+
+            - Garamond
+
+            - Georgia
+
+            - Helvetica
+
+            - LucidaConsole
+
+            - MSGothic
+
+            - MSMincho
+
+            - OCR-A
+
+            - Tahoma
+
+            - TimesNewRoman
+
+            - Trebuchet
+
+            - Verdana
+
+            '
+        fontColor:
+          type: string
+          description: "The font color used for the information in the tab. Possible values are: \n\n- Black\n- BrightBlue\n- BrightRed\n- DarkGreen\n- DarkRed\n- Gold\n- Green\n- NavyBlue\n- Purple\n- White\n"
+        fontSize:
+          type: string
+          description: 'The font size used for the information in the tab. Possible values are:
+
+
+            - Size7
+
+            - Size8
+
+            - Size9
+
+            - Size10
+
+            - Size11
+
+            - Size12
+
+            - Size14
+
+            - Size16
+
+            - Size18
+
+            - Size20
+
+            - Size22
+
+            - Size24
+
+            - Size26
+
+            - Size28
+
+            - Size36
+
+            - Size48
+
+            - Size72'
+        height:
+          type: string
+          description: Height of the tab in pixels.
+        includedInEmail:
+          type: string
+          description: When set to **true**, the tab is included in e-mails related to the envelope on which it exists. This applies to only specific tabs.
+        initialValue:
+          type: string
+          description: The original value of the tab.
+        italic:
+          type: string
+          description: When set to **true**, the information in the tab is italic.
+        items:
+          type: array
+          description: ''
+          items:
+            type: string
+        lastModified:
+          type: string
+          description: Utc date and time the comment was last updated (can only be done by creator.)
+        lastModifiedByDisplayName:
+          type: string
+          description: The User Name of the DocuSign user who last modified this object.
+        lastModifiedByUserId:
+          type: string
+          description: The userId of the DocuSign user who last modified this object.
+        locked:
+          type: string
+          description: When set to **true**, the signer cannot change the data of the custom tab.
+        maximumLength:
+          type: string
+          description: ''
+        mergeField:
+          $ref: '#/components/schemas/mergeField'
+        name:
+          type: string
+          description: ''
+        paymentItemCode:
+          type: string
+          description: ''
+        paymentItemDescription:
+          type: string
+          description: ''
+        paymentItemName:
+          type: string
+          description: ''
+        requireAll:
+          type: string
+          description: 'When set to **true** and shared is true, information must be entered in this field to complete the envelope. '
+        required:
+          type: string
+          description: When set to **true**, the signer is required to fill out this tab
+        requireInitialOnSharedChange:
+          type: string
+          description: Optional element for field markup. When set to **true**, the signer is required to initial when they modify a shared field.
+        scaleValue:
+          type: string
+          description: ''
+        selected:
+          type: string
+          description: When set to **true**, the radio button is selected.
+        shared:
+          type: string
+          description: ''
+        stampType:
+          type: string
+          description: ''
+        stampTypeMetadata:
+          $ref: '#/components/schemas/propertyMetadata'
+        tabLabel:
+          type: string
+          description: 'The label string associated with the tab.
+
+            The string may be the empty string.
+
+            If no value is provided, the tab type is used as the value.
+
+
+            Maximum of 500 characters.
+
+            '
+        type:
+          type: string
+          description: 'Type of the user. Valid values: type_owner, type_participant.'
+        underline:
+          type: string
+          description: When set to **true**, the information in the tab is underlined.
+        validationMessage:
+          type: string
+          description: The message displayed if the custom tab fails input validation (either custom of embedded).
+        validationPattern:
+          type: string
+          description: A regular expressionn used to validate input for the tab.
+        width:
+          type: string
+          description: Width of the tab in pixels.
+      description: ''
+      x-ds-definition-name: tabMetadata
+      x-ms-summary: ''
+    errorDetails:
+      type: object
+      properties:
+        errorCode:
+          type: string
+          description: An error code associated with the error.
+        message:
+          type: string
+          description: A short error message.
+      description: This object describes errors that occur. It is only valid for responses, and ignored in requests.
+      x-ds-definition-name: errorDetails
+      x-ms-summary: This object describes errors that occur. It is only valid for responses, and ignored in requests.
+    mergeField:
+      type: object
+      properties:
+        allowSenderToEdit:
+          type: string
+          description: When set to **true**, the sender can modify the value of the custom tab during the sending process.
+        configurationType:
+          type: string
+          description: If merge field's are being used, specifies the type of the merge field. The only  supported value is **salesforce**.
+        path:
+          type: string
+          description: Sets the object associated with the custom tab. Currently this is the Salesforce Object.
+        row:
+          type: string
+          description: Specifies the row number in a Salesforce table that the merge field value corresponds to.
+        writeBack:
+          type: string
+          description: When wet to true, the information entered in the tab automatically updates the related Salesforce data when an envelope is completed.
+      description: Contains information for transfering values between Salesforce data fields and DocuSign Tabs.
+      x-ds-definition-name: mergeField
+      x-ms-summary: Contains information for transfering values between Salesforce data fields and DocuSign Tabs.
+    propertyMetadata:
+      type: object
+      properties:
+        options:
+          type: array
+          description: ''
+          items:
+            type: string
+        rights:
+          type: string
+          description: ''
+      description: ''
+      x-ds-definition-name: propertyMetadata
+      x-ms-summary: ''
+    tabMetadataList:
+      type: object
+      properties:
+        tabs:
+          type: array
+          description: ''
+          items:
+            $ref: '#/components/schemas/tabMetadata'
+      description: ''
+      x-ds-definition-name: tabMetadataList
+      x-ms-summary: ''
+  securitySchemes:
+    accessCode:
+      type: oauth2
+      description: OAuth2 Access code Grant
+      flows:
+        authorizationCode:
+          authorizationUrl: https://account.docusign.com/oauth/auth
+          tokenUrl: https://account.docusign.com/oauth/auth
+          scopes:
+            organization_read: ''
+            permission_read: ''
+            group_read: ''
+            user_read: ''
+            account_read: ''
+            account_write: ''
+            user_write: ''
+            identity_provider_read: ''
+            domain_read: ''
+x-ds-categories:
+- name: UserManagement
+  summary: Methods to manage users in an account.
+  description: Methods to manage users in an account.
+- name: BulkOperations
+  summary: Methods to import and export users and accounts.
+  description: Methods to import and export users and accounts.
+- name: IdentityProviders
+  summary: Methods to get a list of identity providers.
+  description: Methods to get a list of identity providers.
+- name: ReservedDomains
+  summary: Methods to get a list of reserved domains.
+  description: Methods to get a list of reserved domains.
+- name: Organization
+  summary: Methods for working with organizations.
+  description: Methods for working with organizations.
+x-original-swagger-version: '2.0'

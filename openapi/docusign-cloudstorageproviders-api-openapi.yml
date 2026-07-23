@@ -1,0 +1,347 @@
+openapi: 3.0.1
+info:
+  title: DocuSign Admin AccountBrands CloudStorageProviders API
+  description: An API for an organization administrator to manage organizations, accounts and users
+  termsOfService: https://www.docusign.com/company/terms-and-conditions/developers
+  contact:
+    name: DocuSign Developer Center
+    url: https://developers.docusign.com
+    email: devcenter@docusign.com
+  version: v2.1
+servers:
+- url: https://api.docusign.net/Management
+tags:
+- name: CloudStorageProviders
+  description: 'The CloudStorageProviders resource provides methods that allow you to manage the cloud storage providers associate with an account.
+
+
+    The following providers are supported:
+
+
+    * Google Drive
+
+    * Dropbox
+
+    * Box
+
+    * Evernote
+
+    * OneDrive
+
+
+    To use cloud storage files, you must first give DocuSign access to your cloud storage provider. You can disconnect authorized a cloud storage provider at any time.'
+paths:
+  /v2/accounts/{accountId}/users/{userId}/cloud_storage:
+    get:
+      tags:
+      - CloudStorageProviders
+      summary: Docusign Get the Cloud Storage Provider configuration for the specified user.
+      description: 'Retrieves the list of cloud storage providers enabled for the account and the configuration information for the user.
+
+        '
+      operationId: CloudStorage_GetCloudStorageProviders
+      parameters:
+      - name: accountId
+        in: path
+        description: The external account number (int) or account id GUID.
+        required: true
+        schema:
+          type: string
+      - name: userId
+        in: path
+        description: 'The user ID of the user being accessed. Generally this is the user ID of the authenticated user, but if the authenticated user is an Admin on the account, this may be another user the Admin user is accessing. **Note**: For the [GET /v2/accounts/{accountId}/envelopes](https://developers.docusign.com/esign-rest-api/reference/Envelopes/Envelopes/listStatusChanges/#envelopesInformation) method, the `user_id` query parameter is not implemented and should not be used.'
+        required: true
+        schema:
+          type: string
+      - name: redirectUrl
+        in: query
+        description: " The URL the user is redirected to after the cloud storage provider authenticates the user. Using this will append the redirectUrl to the authenticationUrl.\n\nThe redirectUrl is restricted to URLs in the docusign.com or docusign.net domains.\n "
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Successful response.
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/cloudStorageProviders'
+        '400':
+          description: Error encountered.
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/errorDetails'
+      deprecated: false
+      x-ds-methodname: listProviders
+      x-ds-method: list
+      x-ds-service: CloudStorage
+      x-ds-in-sdk: true
+    post:
+      tags:
+      - CloudStorageProviders
+      summary: Docusign Configures the redirect URL information  for one or more cloud storage providers for the specified user.
+      description: Configures the redirect URL information  for one or more cloud storage providers for the specified user. The redirect URL is added to the authentication URL to complete the return route.
+      operationId: CloudStorage_PostCloudStorage
+      parameters:
+      - name: accountId
+        in: path
+        description: The external account number (int) or account id GUID.
+        required: true
+        schema:
+          type: string
+      - name: userId
+        in: path
+        description: 'The user ID of the user being accessed. Generally this is the user ID of the authenticated user, but if the authenticated user is an Admin on the account, this may be another user the Admin user is accessing. **Note**: For the [GET /v2/accounts/{accountId}/envelopes](https://developers.docusign.com/esign-rest-api/reference/Envelopes/Envelopes/listStatusChanges/#envelopesInformation) method, the `user_id` query parameter is not implemented and should not be used.'
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/cloudStorageProviders'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/cloudStorageProviders'
+        required: false
+      responses:
+        '201':
+          description: Successful response.
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/cloudStorageProviders'
+        '400':
+          description: Error encountered.
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/errorDetails'
+      deprecated: false
+      x-ds-methodname: createProvider
+      x-ds-method: create
+      x-ds-service: CloudStorage
+      x-ds-in-sdk: true
+      x-codegen-request-body-name: cloudStorageProviders
+    delete:
+      tags:
+      - CloudStorageProviders
+      summary: Docusign Deletes the user authentication information for one or more cloud storage providers.
+      description: Deletes the user authentication information for one or more cloud storage providers. The next time the user tries to access the cloud storage provider, they must pass normal authentication.
+      operationId: CloudStorage_DeleteCloudStorageProviders
+      parameters:
+      - name: accountId
+        in: path
+        description: The external account number (int) or account id GUID.
+        required: true
+        schema:
+          type: string
+      - name: userId
+        in: path
+        description: 'The user ID of the user being accessed. Generally this is the user ID of the authenticated user, but if the authenticated user is an Admin on the account, this may be another user the Admin user is accessing. **Note**: For the [GET /v2/accounts/{accountId}/envelopes](https://developers.docusign.com/esign-rest-api/reference/Envelopes/Envelopes/listStatusChanges/#envelopesInformation) method, the `user_id` query parameter is not implemented and should not be used.'
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/cloudStorageProviders'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/cloudStorageProviders'
+        required: false
+      responses:
+        '200':
+          description: Successful response.
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/cloudStorageProviders'
+        '400':
+          description: Error encountered.
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/errorDetails'
+      deprecated: false
+      x-ds-methodname: deleteProviders
+      x-ds-method: deleteList
+      x-ds-service: CloudStorage
+      x-ds-in-sdk: true
+      x-codegen-request-body-name: cloudStorageProviders
+  /v2/accounts/{accountId}/users/{userId}/cloud_storage/{serviceId}:
+    get:
+      tags:
+      - CloudStorageProviders
+      summary: Docusign Gets the specified Cloud Storage Provider configuration for the User.
+      description: Retrieves the list of cloud storage providers enabled for the account and the configuration information for the user.
+      operationId: CloudStorage_GetCloudStorage
+      parameters:
+      - name: accountId
+        in: path
+        description: The external account number (int) or account id GUID.
+        required: true
+        schema:
+          type: string
+      - name: serviceId
+        in: path
+        description: "The ID of the service to access. \n\nValid values are the service name (\"Box\") or the numerical serviceId (\"4136\")."
+        required: true
+        schema:
+          type: string
+      - name: userId
+        in: path
+        description: 'The user ID of the user being accessed. Generally this is the user ID of the authenticated user, but if the authenticated user is an Admin on the account, this may be another user the Admin user is accessing. **Note**: For the [GET /v2/accounts/{accountId}/envelopes](https://developers.docusign.com/esign-rest-api/reference/Envelopes/Envelopes/listStatusChanges/#envelopesInformation) method, the `user_id` query parameter is not implemented and should not be used.'
+        required: true
+        schema:
+          type: string
+      - name: redirectUrl
+        in: query
+        description: " The URL the user is redirected to after the cloud storage provider authenticates the user. Using this will append the redirectUrl to the authenticationUrl.\n\nThe redirectUrl is restricted to URLs in the docusign.com or docusign.net domains.\n "
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Successful response.
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/cloudStorageProviders'
+        '400':
+          description: Error encountered.
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/errorDetails'
+      deprecated: false
+      x-ds-methodname: getProvider
+      x-ds-method: get
+      x-ds-service: CloudStorage
+      x-ds-in-sdk: true
+    delete:
+      tags:
+      - CloudStorageProviders
+      summary: Docusign Deletes the user authentication information for the specified cloud storage provider.
+      description: Deletes the user authentication information for the specified cloud storage provider. The next time the user tries to access the cloud storage provider, they must pass normal authentication for this cloud storage provider.
+      operationId: CloudStorage_DeleteCloudStorage
+      parameters:
+      - name: accountId
+        in: path
+        description: The external account number (int) or account id GUID.
+        required: true
+        schema:
+          type: string
+      - name: serviceId
+        in: path
+        description: "The ID of the service to access. \n\nValid values are the service name (\"Box\") or the numerical serviceId (\"4136\")."
+        required: true
+        schema:
+          type: string
+      - name: userId
+        in: path
+        description: 'The user ID of the user being accessed. Generally this is the user ID of the authenticated user, but if the authenticated user is an Admin on the account, this may be another user the Admin user is accessing. **Note**: For the [GET /v2/accounts/{accountId}/envelopes](https://developers.docusign.com/esign-rest-api/reference/Envelopes/Envelopes/listStatusChanges/#envelopesInformation) method, the `user_id` query parameter is not implemented and should not be used.'
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Successful response.
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/cloudStorageProviders'
+        '400':
+          description: Error encountered.
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/errorDetails'
+      deprecated: false
+      x-ds-methodname: deleteProvider
+      x-ds-method: delete
+      x-ds-service: CloudStorage
+      x-ds-in-sdk: true
+components:
+  schemas:
+    cloudStorageProvider:
+      type: object
+      properties:
+        authenticationUrl:
+          type: string
+          description: 'The authentication URL used for the cloud storage provider. This information is only included in the response if the user has not passed authentication for the cloud storage provider. If the redirectUrl query string is provided, the returnUrl is appended to the authenticationUrl. '
+        errorDetails:
+          $ref: '#/components/schemas/errorDetails'
+        redirectUrl:
+          type: string
+          description: 'The URL the user is redirected to after the cloud storage provider authenticates the user. Using this will append the redirectUrl to the authenticationUrl.
+
+
+            The redirectUrl is restricted to URLs in the docusign.com or docusign.net domains.'
+        service:
+          type: string
+          description: The service name for the cloud storage provider.
+        serviceId:
+          type: string
+          description: The DocuSign generated ID for the cloud storage provider
+      description: ''
+      x-ds-definition-name: cloudStorageProvider
+      x-ms-summary: ''
+    cloudStorageProviders:
+      type: object
+      properties:
+        storageProviders:
+          type: array
+          description: An Array containing the storage providers associated with the user.
+          items:
+            $ref: '#/components/schemas/cloudStorageProvider'
+      description: ''
+      x-ds-definition-name: cloudStorageProviders
+      x-ms-summary: ''
+    errorDetails:
+      type: object
+      properties:
+        errorCode:
+          type: string
+          description: An error code associated with the error.
+        message:
+          type: string
+          description: A short error message.
+      description: This object describes errors that occur. It is only valid for responses, and ignored in requests.
+      x-ds-definition-name: errorDetails
+      x-ms-summary: This object describes errors that occur. It is only valid for responses, and ignored in requests.
+  securitySchemes:
+    accessCode:
+      type: oauth2
+      description: OAuth2 Access code Grant
+      flows:
+        authorizationCode:
+          authorizationUrl: https://account.docusign.com/oauth/auth
+          tokenUrl: https://account.docusign.com/oauth/auth
+          scopes:
+            organization_read: ''
+            permission_read: ''
+            group_read: ''
+            user_read: ''
+            account_read: ''
+            account_write: ''
+            user_write: ''
+            identity_provider_read: ''
+            domain_read: ''
+x-ds-categories:
+- name: UserManagement
+  summary: Methods to manage users in an account.
+  description: Methods to manage users in an account.
+- name: BulkOperations
+  summary: Methods to import and export users and accounts.
+  description: Methods to import and export users and accounts.
+- name: IdentityProviders
+  summary: Methods to get a list of identity providers.
+  description: Methods to get a list of identity providers.
+- name: ReservedDomains
+  summary: Methods to get a list of reserved domains.
+  description: Methods to get a list of reserved domains.
+- name: Organization
+  summary: Methods for working with organizations.
+  description: Methods for working with organizations.
+x-original-swagger-version: '2.0'

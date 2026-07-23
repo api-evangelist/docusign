@@ -1,0 +1,456 @@
+openapi: 3.0.1
+info:
+  title: DocuSign Admin AccountBrands Authentication API
+  description: An API for an organization administrator to manage organizations, accounts and users
+  termsOfService: https://www.docusign.com/company/terms-and-conditions/developers
+  contact:
+    name: DocuSign Developer Center
+    url: https://developers.docusign.com
+    email: devcenter@docusign.com
+  version: v2.1
+servers:
+- url: https://api.docusign.net/Management
+tags:
+- name: Authentication
+  description: '**Note:**  This information is provided for legacy reference only. Please see our supported forms of authentication referenced below and use our [REST API Authentication Guides](https://developers.docusign.com/esign-rest-api/guides/authentication) for more information.
+
+
+    The Authentication resource provides access to methods that allow you to authenticate user credentials and change a user''s password.
+
+
+    The methods in this resource are suitable
+
+    only for [service integrations](https://developers.docusign.com/esign-rest-api/guides/common-terms)
+
+    that use [Legacy Header Authentication](https://developers.docusign.com/esign-rest-api/guides/authentication/legacy).
+
+    For authentication methods for
+
+    [user applications](https://developers.docusign.com/esign-rest-api/guides/common-terms)
+
+    and to learn more about
+
+    DocuSign authentication
+
+    see [Authentication Overview](https://developers.docusign.com/esign-rest-api/guides/authentication).
+
+
+    When accessing the API resources
+
+    and Legacy Header Authentication,
+
+    the GET [Authentication:login method](https://developers.docusign.com/esign-rest-api/reference/Authentication/Authentication/login) allows you to determine whether a user is authenticated and provides the information you will need to make subsequent API requests.
+
+    '
+paths:
+  /v2/login_information:
+    get:
+      tags:
+      - Authentication
+      summary: Docusign Gets login information for a specified user.
+      description: 'Retrieves account information for the authenticated user. Since the API is sessionless, this method does not actually log you in.
+
+        Instead, the method returns information about the account or accounts that the authenticated user has access to.
+
+
+        ###### Important: This method must only be used for the [Legacy Header Authentication](https://developers.docusign.com/esign-rest-api/guides/authentication/legacy) flow. Use the [`AccountServer: userInfo` method](https://developers.docusign.com/esign-rest-api/guides/authentication/user-info-endpoints) for the OAuth2 Authentication Code and [Implicit Grant flows](https://developers.docusign.com/esign-rest-api/guides/authentication/oauth2-implicit).
+
+
+        Each account has a `baseUrl` property, returned in the response.
+
+        Use this `baseUrl` in all future API calls as the base of the request URL.
+
+
+        For each account, the `baseUrl` property includes the DocuSign server, the API version, and the `accountId` property.
+
+
+        It is not uncommon for an authenticated user to have access to more than one account (and more than one `baseUrl`). Depending on your integration''s use case, your integration may choose to:
+
+
+        * Use the account whose `isDefault` field is `true`.
+
+        * List the available accounts and ask the user to choose one.
+
+        * Enable the system administrator to set the account that should be used by your integration.
+
+
+        If this method returns successfully, then you also know that the user has successfully authenticated with the DocuSign Signature platform.
+
+
+        For more information on Authentication Login, please see our [REST API Authentication Guides](https://developers.docusign.com/esign-rest-api/guides/authentication).
+
+
+        ###### Note: Certain reference items maybe out of date and the latest information is available in the new Authentication Guides.
+
+        '
+      operationId: LoginInformation_GetLoginInformation
+      parameters:
+      - name: api_password
+        in: query
+        description: 'Reserved for DocuSign.
+
+          '
+        schema:
+          type: string
+      - name: embed_account_id_guid
+        in: query
+        schema:
+          type: string
+      - name: include_account_id_guid
+        in: query
+        description: When set to **true**, shows the account ID GUID in the response.
+        schema:
+          type: string
+      - name: login_settings
+        in: query
+        description: "Determines whether login settings are returned in the response.\n\nValid Values:\n\n* all -  All the login settings are returned. \n* none - no login settings are returned."
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Successful response.
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/loginInformation'
+        '400':
+          description: Error encountered.
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/errorDetails'
+      deprecated: false
+      x-ds-methodname: login
+      x-ds-method: login
+      x-ds-service: Authentication
+      x-ds-in-sdk: true
+      x-ds-examples:
+      - description: 'This example shows a typical response to calling
+
+          this method with the default parameters.
+
+          Note that the `name` of the account
+
+          may be different than the `userName`.
+
+          '
+        direction: response
+        format: json
+        response:
+          loginAccounts:
+          - accountId: '1703061'
+            baseUrl: https://demo.docusign.net/restapi/v2/accounts/1703061
+            email: nirving@example.com
+            isDefault: 'true'
+            name: LoanCo
+            siteDescription: ''
+            userId: 1470ff66-f92e-4e8e-ab81-8c46f140da37
+            userName: Nat Irving
+        style: custom
+        title: Authentication Success Response Example
+      - description: 'This example shows a typical response when the integrator key is invalid.
+
+          '
+        direction: response
+        format: json
+        response:
+          errorCode: PARTNER_AUTHENTICATION_FAILED
+          message: The specified Integrator Key was not found or is disabled. An Integrator key was not specified.
+        style: custom
+        title: Authentication Failure Response Example
+  /v2/login_information/{loginPart}:
+    put:
+      tags:
+      - Authentication
+      summary: Docusign Updates the password for a specified user.
+      description: Updates the password for a specified user.
+      operationId: LoginInformation_PutLoginInformation
+      parameters:
+      - name: loginPart
+        in: path
+        description: Currently, only the value **password** is supported.
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/userPasswordInformation'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/userPasswordInformation'
+        required: false
+      responses:
+        '200':
+          description: Successful response.
+          content: {}
+        '400':
+          description: Error encountered.
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/errorDetails'
+      deprecated: false
+      x-ds-methodname: updatePassword
+      x-ds-method: updatePassword
+      x-ds-service: Authentication
+      x-ds-in-sdk: true
+      x-codegen-request-body-name: userPasswordInformation
+  /v2/oauth2/revoke:
+    post:
+      tags:
+      - Authentication
+      summary: Docusign **Deprecated** Revokes an authorization token.
+      description: '**Deprecated**
+
+
+        **Note:**  This information is provided for legacy reference only. Please see our supported forms of authentication referenced below and use our [REST API Authentication Guides](https://developers.docusign.com/esign-rest-api/guides/authentication) for more information.<p>
+
+        Revokes an OAuth2 authorization server token. After the revocation is complete, a caller must re-authenticate to restore access.
+
+        '
+      operationId: OAuth2_PostRevoke
+      responses:
+        '201':
+          description: Successful response.
+          content: {}
+        '400':
+          description: Error encountered.
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/errorDetails'
+      deprecated: false
+      x-ds-methodname: revokeOAuthToken
+      x-ds-method: revokeOAuthToken
+      x-ds-service: Authentication
+      x-ds-in-sdk: true
+  /v2/oauth2/token:
+    post:
+      tags:
+      - Authentication
+      summary: Docusign **Deprecated** Creates an authorization token.
+      description: '**Deprecated**
+
+
+        **Note:**  This information is provided for legacy reference only. Please see our supported forms of authentication referenced below and use our [REST API Authentication Guides](https://developers.docusign.com/esign-rest-api/guides/authentication) for more information.<p>
+
+        Creates an OAuth2 authorization server token endpoint. For more information about OAuth 2.0 please see [OAuth2.0](https://oauth.net/2/).
+
+        '
+      operationId: OAuth2_PostToken
+      responses:
+        '201':
+          description: Successful response.
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/oauthAccess'
+        '400':
+          description: Error encountered.
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/errorDetails'
+      deprecated: false
+      x-ds-methodname: getOAuthToken
+      x-ds-method: getOAuthToken
+      x-ds-service: Authentication
+      x-ds-in-sdk: true
+components:
+  schemas:
+    loginAccount:
+      type: object
+      properties:
+        accountId:
+          type: string
+          description: The account ID associated with the envelope.
+        accountIdGuid:
+          type: string
+          description: The GUID associated with the account ID.
+        baseUrl:
+          type: string
+          description: The URL that should be used for successive calls to this account. It includes the protocal (https), the DocuSign server where the account is located, and the account number. Use this Url to make API calls against this account. Many of the API calls provide Uri's that are relative to this baseUrl.
+        email:
+          type: string
+          description: The email address for the user.
+        isDefault:
+          type: string
+          description: This value is true if this is the default account for the user, otherwise false is returned.
+        loginAccountSettings:
+          type: array
+          description: A list of settings on the acccount that indicate what features are available.
+          items:
+            $ref: '#/components/schemas/nameValue'
+        loginUserSettings:
+          type: array
+          description: A list of user-level settings that indicate what user-specific features are available.
+          items:
+            $ref: '#/components/schemas/nameValue'
+        name:
+          type: string
+          description: The name associated with the account.
+        siteDescription:
+          type: string
+          description: An optional descirption of the site that hosts the account.
+        userId:
+          type: string
+          description: 'The user ID of the user being accessed. Generally this is the user ID of the authenticated user, but if the authenticated user is an Admin on the account, this may be another user the Admin user is accessing. **Note**: For the [GET /v2/accounts/{accountId}/envelopes](https://developers.docusign.com/esign-rest-api/reference/Envelopes/Envelopes/listStatusChanges/#envelopesInformation) method, the `user_id` query parameter is not implemented and should not be used.'
+        userName:
+          type: string
+          description: The name of this user as defined by the account.
+      description: ''
+      x-ds-definition-name: loginAccount
+      x-ms-summary: ''
+    oauthAccess:
+      type: object
+      properties:
+        access_token:
+          type: string
+          description: Access token information.
+        data:
+          type: array
+          description: ''
+          items:
+            $ref: '#/components/schemas/nameValue'
+        expires_in:
+          type: string
+          description: ''
+        refresh_token:
+          type: string
+          description: ''
+        scope:
+          type: string
+          description: Must be set to "api".
+        token_type:
+          type: string
+          description: ''
+      description: ''
+      x-ds-definition-name: oauthAccess
+      x-ms-summary: ''
+    loginInformation:
+      type: object
+      properties:
+        apiPassword:
+          type: string
+          description: Contains a token that can be used for authentication in API calls instead of using the user name and password.
+        loginAccounts:
+          type: array
+          description: The list of accounts that authenticating user is a member of.
+          items:
+            $ref: '#/components/schemas/loginAccount'
+      description: ''
+      x-ds-definition-name: loginInformation
+      x-ms-summary: ''
+    forgottenPasswordInformation:
+      type: object
+      properties:
+        forgottenPasswordAnswer1:
+          type: string
+          description: The answer to the first forgotten password challenge question.
+        forgottenPasswordAnswer2:
+          type: string
+          description: The answer to the second forgotten password challenge question.
+        forgottenPasswordAnswer3:
+          type: string
+          description: The answer to the third forgotten password challenge question.
+        forgottenPasswordAnswer4:
+          type: string
+          description: The answer to the fourth forgotten password challenge question.
+        forgottenPasswordQuestion1:
+          type: string
+          description: The first challenge question presented to a user who has forgotten their password.
+        forgottenPasswordQuestion2:
+          type: string
+          description: The second challenge question presented to a user who has forgotten their password.
+        forgottenPasswordQuestion3:
+          type: string
+          description: The third challenge question presented to a user who has forgotten their password.
+        forgottenPasswordQuestion4:
+          type: string
+          description: The fourth challenge question presented to a user who has forgotten their password.
+      description: A complex element that has up to four Question/Answer pairs for forgotten password information.
+      x-ds-definition-name: forgottenPasswordInformation
+      x-ms-summary: A complex element that has up to four Question/Answer pairs for forgotten password information.
+    errorDetails:
+      type: object
+      properties:
+        errorCode:
+          type: string
+          description: An error code associated with the error.
+        message:
+          type: string
+          description: A short error message.
+      description: This object describes errors that occur. It is only valid for responses, and ignored in requests.
+      x-ds-definition-name: errorDetails
+      x-ms-summary: This object describes errors that occur. It is only valid for responses, and ignored in requests.
+    userPasswordInformation:
+      type: object
+      properties:
+        currentPassword:
+          type: string
+          description: The user's current password to be changed.
+        email:
+          type: string
+          description: The user's email address for the associated account.
+        forgottenPasswordInfo:
+          $ref: '#/components/schemas/forgottenPasswordInformation'
+        newPassword:
+          type: string
+          description: The user's new password.
+      description: ''
+      x-ds-definition-name: userPasswordInformation
+      x-ms-summary: ''
+    nameValue:
+      type: object
+      properties:
+        errorDetails:
+          $ref: '#/components/schemas/errorDetails'
+        name:
+          type: string
+          description: The name or key of a name/value pair.
+        originalValue:
+          type: string
+          description: 'The initial value of the tab when it was sent to the recipient. '
+        value:
+          type: string
+          description: The value field of a name/value pair.
+      description: ''
+      x-ds-definition-name: nameValue
+      x-ms-summary: ''
+  securitySchemes:
+    accessCode:
+      type: oauth2
+      description: OAuth2 Access code Grant
+      flows:
+        authorizationCode:
+          authorizationUrl: https://account.docusign.com/oauth/auth
+          tokenUrl: https://account.docusign.com/oauth/auth
+          scopes:
+            organization_read: ''
+            permission_read: ''
+            group_read: ''
+            user_read: ''
+            account_read: ''
+            account_write: ''
+            user_write: ''
+            identity_provider_read: ''
+            domain_read: ''
+x-ds-categories:
+- name: UserManagement
+  summary: Methods to manage users in an account.
+  description: Methods to manage users in an account.
+- name: BulkOperations
+  summary: Methods to import and export users and accounts.
+  description: Methods to import and export users and accounts.
+- name: IdentityProviders
+  summary: Methods to get a list of identity providers.
+  description: Methods to get a list of identity providers.
+- name: ReservedDomains
+  summary: Methods to get a list of reserved domains.
+  description: Methods to get a list of reserved domains.
+- name: Organization
+  summary: Methods for working with organizations.
+  description: Methods for working with organizations.
+x-original-swagger-version: '2.0'

@@ -1,0 +1,187 @@
+openapi: 3.0.1
+info:
+  title: DocuSign Admin AccountBrands PropertyTypes API
+  description: An API for an organization administrator to manage organizations, accounts and users
+  termsOfService: https://www.docusign.com/company/terms-and-conditions/developers
+  contact:
+    name: DocuSign Developer Center
+    url: https://developers.docusign.com
+    email: devcenter@docusign.com
+  version: v2.1
+servers:
+- url: https://api.docusign.net/Management
+tags:
+- name: PropertyTypes
+  description: In the console, these are the values that can appear on a room's **Details** tab in the **Property type** field.
+paths:
+  /v2/property_types:
+    get:
+      tags:
+      - PropertyTypes
+      summary: Docusign Gets property types.
+      description: 'Returns a list of property types.
+
+
+        ## Permissions
+
+
+        Anyone with a valid access token can call this method.'
+      operationId: PropertyTypes_GetPropertyTypes
+      responses:
+        '200':
+          description: Request was successful.
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/GlobalPropertyTypes'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GlobalPropertyTypes'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/GlobalPropertyTypes'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/GlobalPropertyTypes'
+            text/xml:
+              schema:
+                $ref: '#/components/schemas/GlobalPropertyTypes'
+        '400':
+          description: Bad request. See ErrorCode and Message for details
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            text/xml:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '401':
+          description: Not authorized to make this request.
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            text/xml:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+      x-ds-methodname: GetPropertyTypes
+      x-ds-method: GetPropertyTypes
+      x-ds-service: PropertyTypes
+      x-ds-in-sdk: true
+components:
+  schemas:
+    PropertyType:
+      type: object
+      properties:
+        propertyTypeId:
+          type: string
+          description: 'The ID of the property type.
+
+
+            Example: `resd` (for `Residential Detached`)'
+        name:
+          type: string
+          description: 'The name of the property type. Possible values are:
+
+
+            - `Residential Detached`
+
+            - `Residential Attached`
+
+            - `New Construction`
+
+            - `Residential Developed Lots`
+
+            - `Land/Farm`
+
+            - `Rental`
+
+            - `Commercial`
+
+            - `Condominium`
+
+            - `Mobile Home`
+
+            '
+      description: Contains information about a property type.
+      x-ds-definition-name: PropertyType
+      x-ms-summary: Contains information about a property type.
+    ApiError:
+      type: object
+      properties:
+        errorCode:
+          type: string
+          description: The code associated with the error condition.
+        message:
+          type: string
+          description: A brief message describing the error condition.
+        referenceId:
+          type: string
+          description: ''
+      description: This object describes errors that occur. It is valid only for responses and ignored in requests.
+      x-ds-definition-name: ApiError
+      x-ms-summary: This object describes errors that occur. It is valid only for responses and ignored in requests.
+    GlobalPropertyTypes:
+      type: object
+      properties:
+        propertyTypes:
+          type: array
+          description: A list of property types.
+          items:
+            $ref: '#/components/schemas/PropertyType'
+      description: Contains a list of property types.
+      x-ds-definition-name: GlobalPropertyTypes
+      x-ms-summary: Contains a list of property types.
+  securitySchemes:
+    accessCode:
+      type: oauth2
+      description: OAuth2 Access code Grant
+      flows:
+        authorizationCode:
+          authorizationUrl: https://account.docusign.com/oauth/auth
+          tokenUrl: https://account.docusign.com/oauth/auth
+          scopes:
+            organization_read: ''
+            permission_read: ''
+            group_read: ''
+            user_read: ''
+            account_read: ''
+            account_write: ''
+            user_write: ''
+            identity_provider_read: ''
+            domain_read: ''
+x-ds-categories:
+- name: UserManagement
+  summary: Methods to manage users in an account.
+  description: Methods to manage users in an account.
+- name: BulkOperations
+  summary: Methods to import and export users and accounts.
+  description: Methods to import and export users and accounts.
+- name: IdentityProviders
+  summary: Methods to get a list of identity providers.
+  description: Methods to get a list of identity providers.
+- name: ReservedDomains
+  summary: Methods to get a list of reserved domains.
+  description: Methods to get a list of reserved domains.
+- name: Organization
+  summary: Methods for working with organizations.
+  description: Methods for working with organizations.
+x-original-swagger-version: '2.0'

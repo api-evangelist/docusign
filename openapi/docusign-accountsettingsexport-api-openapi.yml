@@ -1,0 +1,382 @@
+openapi: 3.0.1
+info:
+  title: DocuSign Admin AccountBrands AccountSettingsExport API
+  description: An API for an organization administrator to manage organizations, accounts and users
+  termsOfService: https://www.docusign.com/company/terms-and-conditions/developers
+  contact:
+    name: DocuSign Developer Center
+    url: https://developers.docusign.com
+    email: devcenter@docusign.com
+  version: v2.1
+servers:
+- url: https://api.docusign.net/Management
+tags:
+- name: AccountSettingsExport
+  description: Methods and objects to get account information.
+paths:
+  /v2/organizations/{organizationId}/exports/account_settings:
+    get:
+      tags:
+      - AccountSettingsExport
+      summary: Docusign Returns a list of pending and completed account settings export request.
+      description: 'Returns a list of pending and completed account settings export request.
+
+
+        - Required scopes: `account_read`
+
+        '
+      operationId: OrganizationExport_OrganizationExport_GetAccountCompare
+      parameters:
+      - name: organizationId
+        in: path
+        description: The organization ID Guid
+        required: true
+        schema:
+          type: string
+          format: uuid
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrganizationExportsResponse'
+      security:
+      - accessCode:
+        - account_read
+      x-ds-methodname: getAccountSettingsExports
+      x-ds-method: getAccountSettingsExports
+      x-ds-service: BulkExports
+      x-ds-in-sdk: true
+    post:
+      tags:
+      - AccountSettingsExport
+      summary: Docusign Creates a  new account settings export request.
+      description: "Creates a  new account settings export request.\n\nSpecify the accounts whose settings you are requesting as JSON in the body of method, like this:\n\n``` json\n{\n  \"accounts\":\t[\n  \t{ \"account_id\": \"9ca037f4-xxxx-xxxx-xxxx-212e57d4f22e\"},\n  \t{ \"account_id\": \"624e3e00-xxxx-xxxx-xxxx-43918c520dab\"}\n\n  ]\n}\n```\n"
+      operationId: OrganizationExport_OrganizationExport_AccountCompare
+      parameters:
+      - name: organizationId
+        in: path
+        description: The organization ID Guid
+        required: true
+        schema:
+          type: string
+          format: uuid
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OrganizationAccountsRequest'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrganizationExportResponse'
+      security:
+      - accessCode:
+        - account_read
+      x-ds-methodname: createAccountSettingsExport
+      x-ds-method: createAccountSettingsExport
+      x-ds-service: BulkExports
+      x-ds-in-sdk: true
+      x-codegen-request-body-name: request
+  /v2/organizations/{organizationId}/exports/account_settings/{exportId}:
+    get:
+      tags:
+      - AccountSettingsExport
+      summary: Docusign Returns the results for a single account settings export request.
+      description: "Returns the results for a single account settings export request.\n\n- Required scopes: `account_read`\n\nGiven an export id, this method returns the results of an account settings export request.\nTo get a list of all the export requests, use `getAccountSettingsExports`.\n\nYou can find the actual list of settings at  `results[n].url` in the response. The settings export is formatted like this:\n\n``` json\n{\n  \"accounts\": [\n    {\n      \"account_id\": \"9ca037f4-xxxx-xxxx-xxxx-212e57d4f22e\",\n      \"name\": \"The Happy Company\",\n      . . .\n    },\n    {\n      \"account_id\": \"624e3e00-xxxx-xxxx-xxxx-43918c520dab\",\n      \"name\": \"LoanCo\",\n      . . .\n    }\n  ],\n  \"settings\": [\n    . . .\n    {\n      \"category\": \"Signing\",\n      \"name\": \"SignerCanSignOnMobile\",\n      \"account_values\": [\n        {\n          \"account_id\": \"9ca037f4-xxxx-xxxx-xxxx-212e57d4f22e\",\n          \"value\": \"true\",\n          \"rights\": \"editable\"\n        },\n        {\n          \"account_id\": \"624e3e00-xxxx-xxxx-xxxx-43918c520dab\",\n          \"value\": \"true\",\n          \"rights\": \"editable\"\n        }\n      ]\n    },\n    . . .\n  ]\n}\n\n```\n"
+      operationId: OrganizationExport_OrganizationExport_GetAccountSettingsExportByExportId
+      parameters:
+      - name: organizationId
+        in: path
+        description: The organization ID Guid
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: exportId
+        in: path
+        description: The export ID GUID for the request.
+        required: true
+        schema:
+          type: string
+          format: uuid
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrganizationExportResponse'
+      security:
+      - accessCode:
+        - account_read
+      x-ds-methodname: getAccountSettingsExport
+      x-ds-method: getAccountSettingsExport
+      x-ds-service: BulkExports
+      x-ds-in-sdk: true
+    delete:
+      tags:
+      - AccountSettingsExport
+      summary: Docusign Deletes a single account settings export request.
+      description: 'Deletes a single account settings export request.
+
+        Any data associated with the request is also deleted.
+
+
+        - Required scopes: `account_read`
+
+
+        '
+      operationId: OrganizationExport_OrganizationExport_DeleteByAccountSettingsExportId
+      parameters:
+      - name: organizationId
+        in: path
+        description: The organization ID Guid
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: exportId
+        in: path
+        description: The export ID GUID for the request.
+        required: true
+        schema:
+          type: string
+          format: uuid
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+      security:
+      - accessCode:
+        - account_read
+      x-ds-methodname: deleteAccountSettingsExport
+      x-ds-method: deleteAccountSettingsExport
+      x-ds-service: BulkExports
+      x-ds-in-sdk: true
+components:
+  schemas:
+    OrganizationExportTaskResponse:
+      type: object
+      properties:
+        id:
+          type: string
+          description: ''
+          format: uuid
+          example: 00000000-0000-0000-0000-000000000000
+        site_id:
+          type: integer
+          description: ''
+          format: int32
+        url:
+          type: string
+          description: ''
+        number_rows:
+          type: integer
+          description: ''
+          format: int64
+        size_bytes:
+          type: integer
+          description: ''
+          format: int64
+        error_details:
+          $ref: '#/components/schemas/OETR_ErrorDetails'
+      description: ''
+      x-ds-definition-name: OrganizationExportTaskResponse
+      x-ms-summary: ''
+    OrganizationExportResponse:
+      type: object
+      properties:
+        id:
+          type: string
+          description: ''
+          format: uuid
+          example: 00000000-0000-0000-0000-000000000000
+        type:
+          type: string
+          description: ''
+        requestor:
+          $ref: '#/components/schemas/OrganizationExportRequestorResponse'
+        created:
+          type: string
+          description: ''
+          format: date-time
+        last_modified:
+          type: string
+          description: ''
+          format: date-time
+        completed:
+          type: string
+          description: ''
+          format: date-time
+        expires:
+          type: string
+          description: ''
+          format: date-time
+        status:
+          type: string
+          description: Status.
+        selected_accounts:
+          type: array
+          description: ''
+          items:
+            $ref: '#/components/schemas/OrgExportSelectedAccount'
+        selected_domains:
+          type: array
+          description: ''
+          items:
+            $ref: '#/components/schemas/OrgExportSelectedDomain'
+        metadata_url:
+          type: string
+          description: ''
+        percent_completed:
+          type: integer
+          description: ''
+          format: int32
+        number_rows:
+          type: integer
+          description: ''
+          format: int64
+        size_bytes:
+          type: integer
+          description: ''
+          format: int64
+        results:
+          type: array
+          description: ''
+          items:
+            $ref: '#/components/schemas/OrganizationExportTaskResponse'
+        success:
+          type: boolean
+          description: ''
+      description: ''
+      x-ds-definition-name: OrganizationExportResponse
+      x-ms-summary: ''
+    OrganizationAccountsRequest:
+      type: object
+      properties:
+        accounts:
+          type: array
+          description: ''
+          items:
+            $ref: '#/components/schemas/OrganizationAccountRequest'
+      description: ''
+      x-ds-definition-name: OrganizationAccountsRequest
+      x-ms-summary: ''
+    OrganizationExportRequestorResponse:
+      type: object
+      properties:
+        name:
+          type: string
+          description: ''
+        id:
+          type: string
+          description: ''
+        type:
+          type: string
+          description: ''
+        email:
+          type: string
+          description: The email address.
+      description: ''
+      x-ds-definition-name: OrganizationExportRequestorResponse
+      x-ms-summary: ''
+    OrganizationAccountRequest:
+      required:
+      - account_id
+      type: object
+      properties:
+        account_id:
+          type: string
+          description: Select users that are members of the specified account. At least one of `email`, `account_id` or `organization_reserved_domain_id` must be specified.
+          format: uuid
+          example: 00000000-0000-0000-0000-000000000000
+      description: ''
+      x-ds-definition-name: OrganizationAccountRequest
+      x-ms-summary: ''
+    OrgExportSelectedAccount:
+      type: object
+      properties:
+        account_id:
+          type: string
+          description: Select users that are members of the specified account. At least one of `email`, `account_id` or `organization_reserved_domain_id` must be specified.
+          format: uuid
+          example: 00000000-0000-0000-0000-000000000000
+      description: ''
+      x-ds-definition-name: OrgExportSelectedAccount
+      x-ms-summary: ''
+    OrganizationExportsResponse:
+      type: object
+      properties:
+        exports:
+          type: array
+          description: ''
+          items:
+            $ref: '#/components/schemas/OrganizationExportResponse'
+      description: ''
+      x-ds-definition-name: OrganizationExportsResponse
+      x-ms-summary: ''
+    OrgExportSelectedDomain:
+      type: object
+      properties:
+        domain:
+          type: string
+          description: ''
+      description: ''
+      x-ds-definition-name: OrgExportSelectedDomain
+      x-ms-summary: ''
+    OETR_ErrorDetails:
+      type: object
+      properties:
+        error:
+          type: string
+          description: The error number.
+        error_description:
+          type: string
+          description: A longer description of the error.
+      description: ''
+      x-ds-definition-name: OETR_ErrorDetails
+      x-ms-summary: ''
+  securitySchemes:
+    accessCode:
+      type: oauth2
+      description: OAuth2 Access code Grant
+      flows:
+        authorizationCode:
+          authorizationUrl: https://account.docusign.com/oauth/auth
+          tokenUrl: https://account.docusign.com/oauth/auth
+          scopes:
+            organization_read: ''
+            permission_read: ''
+            group_read: ''
+            user_read: ''
+            account_read: ''
+            account_write: ''
+            user_write: ''
+            identity_provider_read: ''
+            domain_read: ''
+x-ds-categories:
+- name: UserManagement
+  summary: Methods to manage users in an account.
+  description: Methods to manage users in an account.
+- name: BulkOperations
+  summary: Methods to import and export users and accounts.
+  description: Methods to import and export users and accounts.
+- name: IdentityProviders
+  summary: Methods to get a list of identity providers.
+  description: Methods to get a list of identity providers.
+- name: ReservedDomains
+  summary: Methods to get a list of reserved domains.
+  description: Methods to get a list of reserved domains.
+- name: Organization
+  summary: Methods for working with organizations.
+  description: Methods for working with organizations.
+x-original-swagger-version: '2.0'

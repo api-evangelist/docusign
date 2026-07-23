@@ -1,0 +1,339 @@
+openapi: 3.0.1
+info:
+  title: DocuSign Admin AccountBrands AccountCustomFields API
+  description: An API for an organization administrator to manage organizations, accounts and users
+  termsOfService: https://www.docusign.com/company/terms-and-conditions/developers
+  contact:
+    name: DocuSign Developer Center
+    url: https://developers.docusign.com
+    email: devcenter@docusign.com
+  version: v2.1
+servers:
+- url: https://api.docusign.net/Management
+tags:
+- name: AccountCustomFields
+  description: "The CustomFields resource provides a method that enables you to retrieve the custom fields associated with an account.\n\nThese fields can be used with your account's envelopes to record information about the envelopes. The fields can be searched to find matching envelopes and track information. \n\nThe envelope custom fields are shown in the DocuSign member console's Envelope Settings section when a user creates an envelope. The envelope custom fields are not seen by envelope recipients.\n\nThere are two types of envelope custom fields, text and list. A text custom field lets the sender enter the value for the field. The list custom field lets the sender select the value of the field from a pre-determined list."
+paths:
+  /v2/accounts/{accountId}/custom_fields:
+    get:
+      tags:
+      - AccountCustomFields
+      summary: Docusign Gets a list of custom fields associated with the account.
+      description: 'Retrieves a list of envelope custom fields associated with the account. You can use these fields in the envelopes for your account to record information about the envelope, help search for envelopes and track information. The envelope custom fields are shown in the Envelope Settings section when a user is creating an envelope in the DocuSign member console. The envelope custom fields are not seen by the envelope recipients.
+
+
+        There are two types of envelope custom fields, text, and list. A text custom field lets the sender enter the value for the field. The list custom field lets the sender select the value of the field from a list you provide.'
+      operationId: AccountCustomFields_GetAccountCustomFields
+      parameters:
+      - name: accountId
+        in: path
+        description: The external account number (int) or account id GUID.
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Successful response.
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AccountCustomFields'
+        '400':
+          description: Error encountered.
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/errorDetails'
+      deprecated: false
+      x-ds-methodname: listCustomFields
+      x-ds-method: list
+      x-ds-service: Accounts
+      x-ds-in-sdk: true
+    post:
+      tags:
+      - AccountCustomFields
+      summary: Docusign Creates an acount custom field.
+      operationId: AccountCustomFields_PostAccountCustomFields
+      parameters:
+      - name: accountId
+        in: path
+        description: The external account number (int) or account id GUID.
+        required: true
+        schema:
+          type: string
+      - name: apply_to_templates
+        in: query
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/customField'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/customField'
+        required: false
+      responses:
+        '201':
+          description: Successful response.
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AccountCustomFields'
+        '400':
+          description: Error encountered.
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/errorDetails'
+      deprecated: false
+      x-ds-methodname: createCustomField
+      x-ds-method: create
+      x-ds-service: Accounts
+      x-ds-in-sdk: true
+      x-codegen-request-body-name: customField
+  /v2/accounts/{accountId}/custom_fields/{customFieldId}:
+    put:
+      tags:
+      - AccountCustomFields
+      summary: Docusign Updates an existing account custom field.
+      operationId: AccountCustomFields_PutAccountCustomFields
+      parameters:
+      - name: accountId
+        in: path
+        description: The external account number (int) or account id GUID.
+        required: true
+        schema:
+          type: string
+      - name: customFieldId
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: apply_to_templates
+        in: query
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/customField'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/customField'
+        required: false
+      responses:
+        '200':
+          description: Successful response.
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AccountCustomFields'
+        '400':
+          description: Error encountered.
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/errorDetails'
+      deprecated: false
+      x-ds-methodname: updateCustomField
+      x-ds-method: update
+      x-ds-service: Accounts
+      x-ds-in-sdk: true
+      x-codegen-request-body-name: customField
+    delete:
+      tags:
+      - AccountCustomFields
+      summary: Docusign Delete an existing account custom field.
+      operationId: AccountCustomFields_DeleteAccountCustomFields
+      parameters:
+      - name: accountId
+        in: path
+        description: The external account number (int) or account id GUID.
+        required: true
+        schema:
+          type: string
+      - name: customFieldId
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: apply_to_templates
+        in: query
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Successful response.
+          content: {}
+        '400':
+          description: Error encountered.
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/errorDetails'
+      deprecated: false
+      x-ds-methodname: deleteCustomField
+      x-ds-method: delete
+      x-ds-service: Accounts
+      x-ds-in-sdk: true
+components:
+  schemas:
+    customField:
+      type: object
+      properties:
+        customFieldType:
+          type: string
+          description: ''
+        errorDetails:
+          $ref: '#/components/schemas/errorDetails'
+        fieldId:
+          type: string
+          description: An ID used to specify a custom field.
+        listItems:
+          type: array
+          description: ''
+          items:
+            type: string
+        name:
+          type: string
+          description: ''
+        required:
+          type: string
+          description: When set to **true**, the signer is required to fill out this tab
+        show:
+          type: string
+          description: 'A boolean indicating if the value should be displayed.  If this value is set to **true**, the custom field is displayed at the top of the certificate of completion. If this value is left blank/ or set to **false**, then it does not appear in the certificate of completion. '
+        value:
+          type: string
+          description: 'Specifies the value of the tab. '
+      description: ''
+      x-ds-definition-name: customField
+      x-ms-summary: ''
+    textCustomField:
+      type: object
+      properties:
+        configurationType:
+          type: string
+          description: If merge field's are being used, specifies the type of the merge field. The only  supported value is **salesforce**.
+        errorDetails:
+          $ref: '#/components/schemas/errorDetails'
+        fieldId:
+          type: string
+          description: An ID used to specify a custom field.
+        name:
+          type: string
+          description: The name of the custom field.
+        required:
+          type: string
+          description: When set to **true**, the signer is required to fill out this tab
+        show:
+          type: string
+          description: 'A boolean indicating if the value should be displayed.  If this value is set to **true**, the custom field is displayed at the top of the certificate of completion. If this value is left blank/ or set to **false**, then it does not appear in the certificate of completion. '
+        value:
+          type: string
+          description: The value of the custom field.
+      description: ''
+      x-ds-definition-name: textCustomField
+      x-ms-summary: ''
+    AccountCustomFields:
+      type: object
+      properties:
+        listCustomFields:
+          type: array
+          description: An array of list custom fields.
+          items:
+            $ref: '#/components/schemas/listCustomField'
+        textCustomFields:
+          type: array
+          description: An array of text custom fields.
+          items:
+            $ref: '#/components/schemas/textCustomField'
+      description: Custom Fields
+      x-ds-definition-name: customFields
+      x-ds-category: Accounts
+      x-ds-order: '30'
+      x-ms-summary: Custom Fields
+    errorDetails:
+      type: object
+      properties:
+        errorCode:
+          type: string
+          description: An error code associated with the error.
+        message:
+          type: string
+          description: A short error message.
+      description: This object describes errors that occur. It is only valid for responses, and ignored in requests.
+      x-ds-definition-name: errorDetails
+      x-ms-summary: This object describes errors that occur. It is only valid for responses, and ignored in requests.
+    listCustomField:
+      type: object
+      properties:
+        configurationType:
+          type: string
+          description: If merge field's are being used, specifies the type of the merge field. The only  supported value is **salesforce**.
+        errorDetails:
+          $ref: '#/components/schemas/errorDetails'
+        fieldId:
+          type: string
+          description: An ID used to specify a custom field.
+        listItems:
+          type: array
+          description: ''
+          items:
+            type: string
+        name:
+          type: string
+          description: The name of the custom field.
+        required:
+          type: string
+          description: When set to **true**, the signer is required to fill out this tab
+        show:
+          type: string
+          description: 'A boolean indicating if the value should be displayed.  If this value is set to **true**, the custom field is displayed at the top of the certificate of completion. If this value is left blank/ or set to **false**, then it does not appear in the certificate of completion. '
+        value:
+          type: string
+          description: 'The value of the custom field.
+
+
+            Maximum Length: 100 characters.'
+      description: ''
+      x-ds-definition-name: listCustomField
+      x-ms-summary: ''
+  securitySchemes:
+    accessCode:
+      type: oauth2
+      description: OAuth2 Access code Grant
+      flows:
+        authorizationCode:
+          authorizationUrl: https://account.docusign.com/oauth/auth
+          tokenUrl: https://account.docusign.com/oauth/auth
+          scopes:
+            organization_read: ''
+            permission_read: ''
+            group_read: ''
+            user_read: ''
+            account_read: ''
+            account_write: ''
+            user_write: ''
+            identity_provider_read: ''
+            domain_read: ''
+x-ds-categories:
+- name: UserManagement
+  summary: Methods to manage users in an account.
+  description: Methods to manage users in an account.
+- name: BulkOperations
+  summary: Methods to import and export users and accounts.
+  description: Methods to import and export users and accounts.
+- name: IdentityProviders
+  summary: Methods to get a list of identity providers.
+  description: Methods to get a list of identity providers.
+- name: ReservedDomains
+  summary: Methods to get a list of reserved domains.
+  description: Methods to get a list of reserved domains.
+- name: Organization
+  summary: Methods for working with organizations.
+  description: Methods for working with organizations.
+x-original-swagger-version: '2.0'

@@ -1,0 +1,219 @@
+openapi: 3.0.1
+info:
+  title: DocuSign Admin AccountBrands WorkflowTrigger API
+  description: An API for an organization administrator to manage organizations, accounts and users
+  termsOfService: https://www.docusign.com/company/terms-and-conditions/developers
+  contact:
+    name: DocuSign Developer Center
+    url: https://developers.docusign.com
+    email: devcenter@docusign.com
+  version: v2.1
+servers:
+- url: https://api.docusign.net/Management
+tags:
+- name: WorkflowTrigger
+  description: Method to trigger a workflow.
+paths:
+  /v1/accounts/{accountId}/workflow_definitions/{workflowDefinitionId}/trigger:
+    post:
+      tags:
+      - WorkflowTrigger
+      summary: Docusign Triggers a new instance of the workflow.
+      description: "Creates a new workflow instance, triggering the workflow.\n\n<ds-inlinemessage>\n  The Maestro API is currently only available\n  as part of a beta program.\n  See <a href=\"/docs/maestro-api/get-access/\">Get access to Maestro API</a>\n  for details.\n</ds-inlinemessage>\n\n### Related topics\n\n- [How to trigger a Maestro workflow](/docs/maestro-api/how-to/trigger-workflow/)"
+      operationId: triggerWorkflowViaPost
+      parameters:
+      - name: accountId
+        in: path
+        description: The account ID.
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: workflowDefinitionId
+        in: path
+        description: Workflow definition ID.
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: mtid
+        in: query
+        description: Managed Token Id registered with Docusign Account Server
+        schema:
+          type: string
+          format: uuid
+      - name: mtsec
+        in: query
+        description: Managed Token Secret registered with Docusign account server
+        schema:
+          type: string
+          format: uuid
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TriggerPayload'
+        required: true
+      responses:
+        '201':
+          description: Returns a workflow instance trigger URL that can be used to trigger a new instance or return to an instance in progress
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TriggerWorkflowViaPostResponse'
+        '400':
+          description: Bad Request received
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: Authentication details are invalid
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '403':
+          description: Authorization Denied
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: Resource not found when workflow definition id or workflow instance id doesn't exist
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      security:
+      - DSAuth:
+        - aow_manage
+        - signature
+      - DSBearerAuth: []
+      x-ds-methodname: triggerWorkflow
+      x-ds-method: triggerWorkflow
+      x-ds-service: Workflow Trigger
+      x-ds-in-sdk: true
+      x-codegen-request-body-name: body
+components:
+  schemas:
+    TriggerPayload:
+      type: object
+      properties:
+        instanceName:
+          type: string
+          description: The friendly name of the particular workflow instance
+        metadata:
+          type: object
+          properties: {}
+          description: ''
+        participants:
+          type: object
+          properties: {}
+          description: ''
+        payload:
+          type: object
+          properties: {}
+          description: ''
+      description: JSON payload that will be passed to the triggered workflow
+      x-ds-definition-name: TriggerPayload
+      x-ms-summary: JSON payload that will be passed to the triggered workflow
+    WorkflowInstanceId:
+      type: string
+      description: 'Workflow instance ID.
+
+        A string in UUID format: 4a6d6a08-xxxx-xxxx-xxxx-bae4fecc99c8'
+      format: uuid
+      example: 00000000-0000-0000-0000-000000000000
+      x-ds-definition-name: WorkflowInstanceId
+      x-ms-summary: 'Workflow instance ID.
+
+        A string in UUID format: 4a6d6a08-xxxx-xxxx-xxxx-bae4fecc99c8'
+    ErrorResponse:
+      type: object
+      properties:
+        errorCode:
+          $ref: '#/components/schemas/ErrorCodes'
+        message:
+          type: string
+          description: Human-readable description of the error.
+      description: Returns error with a status message
+      x-ds-definition-name: ErrorResponse
+      x-ms-summary: Returns error with a status message
+    TriggerWorkflowViaPostResponse:
+      type: object
+      properties:
+        instanceId:
+          $ref: '#/components/schemas/WorkflowInstanceId'
+        workflowInstanceUrl:
+          type: string
+          description: Instance-specific URL that can be used redirect to a workflow instance
+          format: uri
+      description: Trigger workflow via POST response details
+      x-ds-definition-name: TriggerWorkflowViaPostResponse
+      x-ms-summary: Trigger workflow via POST response details
+    ErrorCodes:
+      type: string
+      description: Internal Error Codes
+      enum:
+      - ERR_10001
+      - ERR_10002
+      - ERR_10003
+      - ERR_10004
+      - ERR_10005
+      - ERR_10006
+      - ERR_10007
+      - ERR_10008
+      - ERR_10009
+      - ERR_10101
+      - ERR_10201
+      - ERR_10202
+      - ERR_10301
+      - ERR_10302
+      - ERR_10401
+      - ERR_10801
+      - ERR_10802
+      - ERR_10999
+      x-ds-definition-name: ErrorCodes
+      x-ms-summary: Internal Error Codes
+  securitySchemes:
+    accessCode:
+      type: oauth2
+      description: OAuth2 Access code Grant
+      flows:
+        authorizationCode:
+          authorizationUrl: https://account.docusign.com/oauth/auth
+          tokenUrl: https://account.docusign.com/oauth/auth
+          scopes:
+            organization_read: ''
+            permission_read: ''
+            group_read: ''
+            user_read: ''
+            account_read: ''
+            account_write: ''
+            user_write: ''
+            identity_provider_read: ''
+            domain_read: ''
+x-ds-categories:
+- name: UserManagement
+  summary: Methods to manage users in an account.
+  description: Methods to manage users in an account.
+- name: BulkOperations
+  summary: Methods to import and export users and accounts.
+  description: Methods to import and export users and accounts.
+- name: IdentityProviders
+  summary: Methods to get a list of identity providers.
+  description: Methods to get a list of identity providers.
+- name: ReservedDomains
+  summary: Methods to get a list of reserved domains.
+  description: Methods to get a list of reserved domains.
+- name: Organization
+  summary: Methods for working with organizations.
+  description: Methods for working with organizations.
+x-original-swagger-version: '2.0'

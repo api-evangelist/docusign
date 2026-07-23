@@ -1,0 +1,153 @@
+openapi: 3.0.1
+info:
+  title: DocuSign Admin AccountBrands TemplateViews API
+  description: An API for an organization administrator to manage organizations, accounts and users
+  termsOfService: https://www.docusign.com/company/terms-and-conditions/developers
+  contact:
+    name: DocuSign Developer Center
+    url: https://developers.docusign.com
+    email: devcenter@docusign.com
+  version: v2.1
+servers:
+- url: https://api.docusign.net/Management
+tags:
+- name: TemplateViews
+  description: 'The TemplateViews resource
+
+    provides a method returns a URL
+
+    that you can embed into your application
+
+    to provide access to the DocuSign UI.
+
+
+    One template view is available:
+
+
+    * Edit View - the DocuSign UI for editing a template.
+
+
+    This resource is related to the [EnvelopeViews][envelopeviews] resource.
+
+    Both enable you to embed the DocuSign UI into your application.
+
+
+
+    [envelopeviews]: https://developers.docusign.com/esign-rest-api/reference/Envelopes/EnvelopeViews/
+
+    '
+paths:
+  /v2/accounts/{accountId}/templates/{templateId}/views/edit:
+    post:
+      tags:
+      - TemplateViews
+      summary: Docusign Provides a URL to start an edit view of the Template UI
+      operationId: Views_PostTemplateEditView
+      parameters:
+      - name: accountId
+        in: path
+        description: The external account number (int) or account id GUID.
+        required: true
+        schema:
+          type: string
+      - name: templateId
+        in: path
+        description: The ID of the template being accessed.
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/returnUrlRequest'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/returnUrlRequest'
+        required: false
+      responses:
+        '201':
+          description: Successful response.
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/viewUrl'
+        '400':
+          description: Error encountered.
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/errorDetails'
+      deprecated: false
+      x-ds-methodname: createEditView
+      x-ds-method: createEdit
+      x-ds-service: Templates
+      x-ds-in-sdk: true
+      x-codegen-request-body-name: returnUrlRequest
+components:
+  schemas:
+    returnUrlRequest:
+      type: object
+      properties:
+        returnUrl:
+          type: string
+          description: "Your app's return url that the user will be redirected to after sending the envelope or completing the sending/tagging view. Query parameters `envelopeId` and `event` will be added to the URL. The event parameter values: \n\n* `Send` (the user sent the envelope)\n* `Save` (the user saved the envelope, it is still a draft)\n* `Cancel` (the user canceled the sending transaction)\n* `Error` (there was an error during the send operation)\n* `SessionEnd` (the sending session ended before the user completed a different action)"
+      description: 'The request body for the EnvelopeViews: createSender method.'
+      x-ds-definition-name: returnUrlRequest
+      x-ms-summary: 'The request body for the EnvelopeViews: createSender method.'
+    viewUrl:
+      type: object
+      properties:
+        url:
+          type: string
+          description: The endpoint to which webhook notification messages are sent via an HTTP/S POST request. For the DocuSign production platform, the url must start with https. For the demo platform, either http or https is ok.
+      description: ''
+      x-ds-definition-name: viewUrl
+      x-ms-summary: ''
+    errorDetails:
+      type: object
+      properties:
+        errorCode:
+          type: string
+          description: An error code associated with the error.
+        message:
+          type: string
+          description: A short error message.
+      description: This object describes errors that occur. It is only valid for responses, and ignored in requests.
+      x-ds-definition-name: errorDetails
+      x-ms-summary: This object describes errors that occur. It is only valid for responses, and ignored in requests.
+  securitySchemes:
+    accessCode:
+      type: oauth2
+      description: OAuth2 Access code Grant
+      flows:
+        authorizationCode:
+          authorizationUrl: https://account.docusign.com/oauth/auth
+          tokenUrl: https://account.docusign.com/oauth/auth
+          scopes:
+            organization_read: ''
+            permission_read: ''
+            group_read: ''
+            user_read: ''
+            account_read: ''
+            account_write: ''
+            user_write: ''
+            identity_provider_read: ''
+            domain_read: ''
+x-ds-categories:
+- name: UserManagement
+  summary: Methods to manage users in an account.
+  description: Methods to manage users in an account.
+- name: BulkOperations
+  summary: Methods to import and export users and accounts.
+  description: Methods to import and export users and accounts.
+- name: IdentityProviders
+  summary: Methods to get a list of identity providers.
+  description: Methods to get a list of identity providers.
+- name: ReservedDomains
+  summary: Methods to get a list of reserved domains.
+  description: Methods to get a list of reserved domains.
+- name: Organization
+  summary: Methods for working with organizations.
+  description: Methods for working with organizations.
+x-original-swagger-version: '2.0'

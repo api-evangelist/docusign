@@ -1,0 +1,469 @@
+openapi: 3.0.1
+info:
+  title: DocuSign Admin AccountBrands AccountConsumerDisclosures API
+  description: An API for an organization administrator to manage organizations, accounts and users
+  termsOfService: https://www.docusign.com/company/terms-and-conditions/developers
+  contact:
+    name: DocuSign Developer Center
+    url: https://developers.docusign.com
+    email: devcenter@docusign.com
+  version: v2.1
+servers:
+- url: https://api.docusign.net/Management
+tags:
+- name: AccountConsumerDisclosures
+  description: The AccountConsumerDisclosures resource provides methods that allow you to retrieve the consumer disclosures associated with the account.
+paths:
+  /v2/accounts/{accountId}/consumer_disclosure:
+    get:
+      tags:
+      - AccountConsumerDisclosures
+      summary: Docusign Gets the Electronic Record and Signature Disclosure for the account.
+      description: Retrieves the Electronic Record and Signature Disclosure, with HTML formatting, associated with the account. You can use an optional query string to set the language for the disclosure.
+      operationId: ConsumerDisclosure_GetConsumerDisclosure
+      parameters:
+      - name: accountId
+        in: path
+        description: The external account number (int) or account id GUID.
+        required: true
+        schema:
+          type: string
+      - name: langCode
+        in: query
+        description: "Specifies the language used in the response. The supported languages, with the language value shown in parenthesis, are: Arabic (ar), Bulgarian (bg), Czech (cs), Chinese Simplified (zh_CN), Chinese Traditional (zh_TW), Croatian (hr), Danish (da), Dutch (nl), English US (en), English UK (en_GB), Estonian (et), Farsi (fa), Finnish (fi), French (fr), French Canada (fr_CA), German (de), Greek (el), Hebrew (he), Hindi (hi), Hungarian (hu), Bahasa Indonesia (id), Italian (it), Japanese (ja), Korean (ko), Latvian (lv), Lithuanian (lt), Bahasa Melayu (ms), Norwegian (no), Polish (pl), Portuguese (pt), Portuguese Brazil (pt_BR), Romanian (ro), Russian (ru), Serbian (sr), Slovak (sk), Slovenian (sl), Spanish (es),Spanish Latin America (es_MX), Swedish (sv), Thai (th), Turkish (tr), Ukrainian (uk), and Vietnamese (vi).\n\nAdditionally, the value can be set to `browser` to automatically detect the browser language being used by the viewer and display the disclosure in that language. \n"
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Successful response.
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AccountConsumerDisclosures'
+        '400':
+          description: Error encountered.
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/errorDetails'
+      deprecated: false
+      x-ds-methodname: getConsumerDisclosureDefault
+      x-ds-method: getDefault
+      x-ds-service: Accounts
+      x-ds-in-sdk: true
+  /v2/accounts/{accountId}/consumer_disclosure/{langCode}:
+    get:
+      tags:
+      - AccountConsumerDisclosures
+      summary: Docusign Gets the Electronic Record and Signature Disclosure.
+      description: 'Retrieves the Electronic Record and Signature Disclosure, with HTML formatting, for the requested envelope recipient. This might be different than the current account disclosure depending on account settings, such as branding, and when the account disclosure was last updated. An optional query string can be included to return the language for the disclosure.  '
+      operationId: ConsumerDisclosure_GetConsumerDisclosureLangCode
+      parameters:
+      - name: accountId
+        in: path
+        description: The external account number (int) or account id GUID.
+        required: true
+        schema:
+          type: string
+      - name: langCode
+        in: path
+        description: The simple type enumeration the language used in the response. The supported languages, with the language value shown in parenthesis, are:Arabic (ar), Bulgarian (bg), Czech (cs), Chinese Simplified (zh_CN), Chinese Traditional (zh_TW), Croatian (hr), Danish (da), Dutch (nl), English US (en), English UK (en_GB), Estonian (et), Farsi (fa), Finnish (fi), French (fr), French Canada (fr_CA), German (de), Greek (el), Hebrew (he), Hindi (hi), Hungarian (hu), Bahasa Indonesia (id), Italian (it), Japanese (ja), Korean (ko), Latvian (lv), Lithuanian (lt), Bahasa Melayu (ms), Norwegian (no), Polish (pl), Portuguese (pt), Portuguese Brazil (pt_BR), Romanian (ro), Russian (ru), Serbian (sr), Slovak (sk), Slovenian (sl), Spanish (es),Spanish Latin America (es_MX), Swedish (sv), Thai (th), Turkish (tr), Ukrainian (uk) and Vietnamese (vi). Additionally, the value can be set to "browser" to automatically detect the browser language being used by the viewer and display the disclosure in that language.
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Successful response.
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AccountConsumerDisclosures'
+        '400':
+          description: Error encountered.
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/errorDetails'
+      deprecated: false
+      x-ds-methodname: getConsumerDisclosure
+      x-ds-method: get
+      x-ds-service: Accounts
+      x-ds-in-sdk: true
+    put:
+      tags:
+      - AccountConsumerDisclosures
+      summary: Docusign Update Consumer Disclosure.
+      operationId: ConsumerDisclosure_PutConsumerDisclosure
+      parameters:
+      - name: accountId
+        in: path
+        description: The external account number (int) or account id GUID.
+        required: true
+        schema:
+          type: string
+      - name: langCode
+        in: path
+        description: The simple type enumeration the language used in the response. The supported languages, with the language value shown in parenthesis, are:Arabic (ar), Bulgarian (bg), Czech (cs), Chinese Simplified (zh_CN), Chinese Traditional (zh_TW), Croatian (hr), Danish (da), Dutch (nl), English US (en), English UK (en_GB), Estonian (et), Farsi (fa), Finnish (fi), French (fr), French Canada (fr_CA), German (de), Greek (el), Hebrew (he), Hindi (hi), Hungarian (hu), Bahasa Indonesia (id), Italian (it), Japanese (ja), Korean (ko), Latvian (lv), Lithuanian (lt), Bahasa Melayu (ms), Norwegian (no), Polish (pl), Portuguese (pt), Portuguese Brazil (pt_BR), Romanian (ro), Russian (ru), Serbian (sr), Slovak (sk), Slovenian (sl), Spanish (es),Spanish Latin America (es_MX), Swedish (sv), Thai (th), Turkish (tr), Ukrainian (uk) and Vietnamese (vi). Additionally, the value can be set to "browser" to automatically detect the browser language being used by the viewer and display the disclosure in that language.
+        required: true
+        schema:
+          type: string
+      - name: include_metadata
+        in: query
+        description: 'Reserved for DocuSign.
+
+          '
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/consumerDisclosure'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/consumerDisclosure'
+        required: false
+      responses:
+        '200':
+          description: Successful response.
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/consumerDisclosure'
+        '400':
+          description: Error encountered.
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/errorDetails'
+      deprecated: false
+      x-ds-methodname: updateConsumerDisclosure
+      x-ds-method: update
+      x-ds-service: Accounts
+      x-ds-in-sdk: true
+      x-codegen-request-body-name: consumerDisclosure
+components:
+  schemas:
+    errorDetails:
+      type: object
+      properties:
+        errorCode:
+          type: string
+          description: An error code associated with the error.
+        message:
+          type: string
+          description: A short error message.
+      description: This object describes errors that occur. It is only valid for responses, and ignored in requests.
+      x-ds-definition-name: errorDetails
+      x-ms-summary: This object describes errors that occur. It is only valid for responses, and ignored in requests.
+    consumerDisclosure:
+      type: object
+      properties:
+        accountEsignId:
+          type: string
+          description: A GUID identifying the account associated with the consumer disclosure
+        allowCDWithdraw:
+          type: string
+          description: Indicates whether the customer can withdraw their acceptance of the consumer disclosure.
+        allowCDWithdrawMetadata:
+          $ref: '#/components/schemas/settingsMetadata'
+        changeEmail:
+          type: string
+          description: ''
+        changeEmailOther:
+          type: string
+          description: ''
+        companyName:
+          type: string
+          description: The name of the user's Company.
+        companyPhone:
+          type: string
+          description: The phone number of the company associated with the consumer disclosure.
+        copyCostPerPage:
+          type: string
+          description: ''
+        copyFeeCollectionMethod:
+          type: string
+          description: 'Specifies the fee collection method for cases in which the customer requires paper copies of the document.
+
+
+            Maximum Length: 255 characters'
+        copyRequestEmail:
+          type: string
+          description: ''
+        custom:
+          type: string
+          description: ''
+        enableEsign:
+          type: string
+          description: ''
+        esignAgreement:
+          type: string
+          description: The Electronic Record and Signature Disclosure text. The disclosure text includes the html formatting.
+        esignText:
+          type: string
+          description: ''
+        languageCode:
+          type: string
+          description: ''
+        mustAgreeToEsign:
+          type: string
+          description: ''
+        pdfId:
+          type: string
+          description: "**Deprecated**\n\nThe `\x80\x9CpdfId` property in the consumer_disclosure PUT request is deprecated. For security reasons going forward, any value provided in the request packet must be ignored. "
+        useBrand:
+          type: string
+          description: ''
+        useConsumerDisclosureWithinAccount:
+          type: string
+          description: ''
+        useConsumerDisclosureWithinAccountMetadata:
+          $ref: '#/components/schemas/settingsMetadata'
+        withdrawAddressLine1:
+          type: string
+          description: 'Contains the first address line of the postal address to which a customer can send a consent withdrawal notification.
+
+
+            Maximum length: 100 characters. '
+        withdrawAddressLine2:
+          type: string
+          description: 'Contains the second address line of the postal address to which a customer can send a consent withdrawal notification.
+
+
+            Maximum length: 100 characters. '
+        withdrawByEmail:
+          type: string
+          description: Indicates whether the customer can withdraw consent by email.
+        withdrawByMail:
+          type: string
+          description: Indicates whether the customer can withdraw consent by postal mail.
+        withdrawByPhone:
+          type: string
+          description: Indicates whether the customer can withdraw consent by phone.
+        withdrawCity:
+          type: string
+          description: 'Contains the city of the postal address to which a customer can send a consent withdrawal notification.
+
+
+            Maximum length: 50 characters. '
+        withdrawConsequences:
+          type: string
+          description: Indicates the consequences of withdrawing consent.
+        withdrawEmail:
+          type: string
+          description: 'Contains the email address to which a customer can send a consent withdrawal notification.
+
+
+            Maximum length: 100 characters. '
+        withdrawOther:
+          type: string
+          description: 'Indicates other information need to withdraw consent.
+
+
+            Maximum length: 255 characters.'
+        withdrawPhone:
+          type: string
+          description: 'Contains the phone number which a customer can call to register consent withdrawal notification.
+
+
+            Maximum length: 20 characters. '
+        withdrawPostalCode:
+          type: string
+          description: 'Contains the postal code of the postal address to which a customer can send a consent withdrawal notification.
+
+
+            Maximum length: 20 characters. '
+        withdrawState:
+          type: string
+          description: Contains the state of the postal address to which a customer can send a consent withdrawal notification.
+      description: ''
+      x-ds-definition-name: consumerDisclosure
+      x-ms-summary: ''
+    settingsMetadata:
+      type: object
+      properties:
+        is21CFRPart11:
+          type: string
+          description: When set to **true**, indicates that this module is enabled on the account.
+        options:
+          type: array
+          description: ''
+          items:
+            type: string
+        rights:
+          type: string
+          description: ''
+        uiHint:
+          type: string
+          description: ''
+        uiOrder:
+          type: string
+          description: ''
+        uiType:
+          type: string
+          description: ''
+      description: ''
+      x-ds-definition-name: settingsMetadata
+      x-ms-summary: ''
+    AccountConsumerDisclosures:
+      type: object
+      properties:
+        accountEsignId:
+          type: string
+          description: A GUID identifying the account associated with the consumer disclosure
+        allowCDWithdraw:
+          type: string
+          description: Indicates whether the customer can withdraw their acceptance of the consumer disclosure.
+        allowCDWithdrawMetadata:
+          $ref: '#/components/schemas/settingsMetadata'
+        changeEmail:
+          type: string
+          description: ''
+        changeEmailOther:
+          type: string
+          description: ''
+        companyName:
+          type: string
+          description: The name of the company associated with the consumer disclosure.
+        companyPhone:
+          type: string
+          description: The phone number of the company associated with the consumer disclosure.
+        copyCostPerPage:
+          type: string
+          description: ''
+        copyFeeCollectionMethod:
+          type: string
+          description: 'Specifies the fee collection method for cases in which the customer requires paper copies of the document.
+
+
+            Maximum Length: 255 characters'
+        copyRequestEmail:
+          type: string
+          description: ''
+        custom:
+          type: string
+          description: ''
+        enableEsign:
+          type: string
+          description: ''
+        esignAgreement:
+          type: string
+          description: The Electronic Record and Signature Disclosure text. The disclosure text includes the html formatting.
+        esignText:
+          type: string
+          description: ''
+        languageCode:
+          type: string
+          description: ''
+        mustAgreeToEsign:
+          type: string
+          description: ''
+        pdfId:
+          type: string
+          description: "**Deprecated**\n\nThe `\x80\x9CpdfId` property in the consumer_disclosure PUT request is deprecated. For security reasons going forward, any value provided in the request packet must be ignored. "
+        useBrand:
+          type: string
+          description: ''
+        useConsumerDisclosureWithinAccount:
+          type: string
+          description: ''
+        useConsumerDisclosureWithinAccountMetadata:
+          $ref: '#/components/schemas/settingsMetadata'
+        withdrawAddressLine1:
+          type: string
+          description: 'Contains the first address line of the postal address to which a customer can send a consent withdrawal notification.
+
+
+            Maximum length: 100 characters. '
+        withdrawAddressLine2:
+          type: string
+          description: 'Contains the second address line of the postal address to which a customer can send a consent withdrawal notification.
+
+
+            Maximum length: 100 characters. '
+        withdrawByEmail:
+          type: string
+          description: Indicates whether the customer can withdraw consent by email.
+        withdrawByMail:
+          type: string
+          description: Indicates whether the customer can withdraw consent by postal mail.
+        withdrawByPhone:
+          type: string
+          description: Indicates whether the customer can withdraw consent by phone.
+        withdrawCity:
+          type: string
+          description: 'Contains the city of the postal address to which a customer can send a consent withdrawal notification.
+
+
+            Maximum length: 50 characters. '
+        withdrawConsequences:
+          type: string
+          description: Indicates the consequences of withdrawing consent.
+        withdrawEmail:
+          type: string
+          description: 'Contains the email address to which a customer can send a consent withdrawal notification.
+
+
+            Maximum length: 100 characters. '
+        withdrawOther:
+          type: string
+          description: 'Indicates other information need to withdraw consent.
+
+
+            Maximum length: 255 characters.'
+        withdrawPhone:
+          type: string
+          description: 'Contains the phone number which a customer can call to register consent withdrawal notification.
+
+
+            Maximum length: 20 characters. '
+        withdrawPostalCode:
+          type: string
+          description: 'Contains the postal code of the postal address to which a customer can send a consent withdrawal notification.
+
+
+            Maximum length: 20 characters. '
+        withdrawState:
+          type: string
+          description: Contains the state of the postal address to which a customer can send a consent withdrawal notification.
+      description: Account consumer disclosures
+      x-ds-definition-name: consumerDisclosure
+      x-ds-category: Accounts
+      x-ds-order: '20'
+      x-ms-summary: Account consumer disclosures
+  securitySchemes:
+    accessCode:
+      type: oauth2
+      description: OAuth2 Access code Grant
+      flows:
+        authorizationCode:
+          authorizationUrl: https://account.docusign.com/oauth/auth
+          tokenUrl: https://account.docusign.com/oauth/auth
+          scopes:
+            organization_read: ''
+            permission_read: ''
+            group_read: ''
+            user_read: ''
+            account_read: ''
+            account_write: ''
+            user_write: ''
+            identity_provider_read: ''
+            domain_read: ''
+x-ds-categories:
+- name: UserManagement
+  summary: Methods to manage users in an account.
+  description: Methods to manage users in an account.
+- name: BulkOperations
+  summary: Methods to import and export users and accounts.
+  description: Methods to import and export users and accounts.
+- name: IdentityProviders
+  summary: Methods to get a list of identity providers.
+  description: Methods to get a list of identity providers.
+- name: ReservedDomains
+  summary: Methods to get a list of reserved domains.
+  description: Methods to get a list of reserved domains.
+- name: Organization
+  summary: Methods for working with organizations.
+  description: Methods for working with organizations.
+x-original-swagger-version: '2.0'

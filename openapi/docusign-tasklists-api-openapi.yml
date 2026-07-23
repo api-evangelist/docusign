@@ -1,0 +1,509 @@
+openapi: 3.0.1
+info:
+  title: DocuSign Admin AccountBrands TaskLists API
+  description: An API for an organization administrator to manage organizations, accounts and users
+  termsOfService: https://www.docusign.com/company/terms-and-conditions/developers
+  contact:
+    name: DocuSign Developer Center
+    url: https://developers.docusign.com
+    email: devcenter@docusign.com
+  version: v2.1
+servers:
+- url: https://api.docusign.net/Management
+tags:
+- name: TaskLists
+  description: ''
+paths:
+  /v2/accounts/{accountId}/rooms/{roomId}/task_lists:
+    get:
+      tags:
+      - TaskLists
+      summary: Docusign Gets task lists for a room.
+      description: "Returns the task lists associated with a room.\n\n## Permissions\n\nYou must either be a member of the room who has been added to one or more tasks, or have one of the following permissions set to **true:** \n\n- `canAddTasksToAnyTaskLists`\n- `canApplyTaskList`\n- `canRemoveAnyTaskList`\n- `canSubmitTaskList`\n- `canReviewTaskList`\n\n**Note:** If a room has multiple tasks lists, you only see the task lists that contain tasks to which you have been added."
+      operationId: TaskLists_GetTaskLists
+      parameters:
+      - name: roomId
+        in: path
+        description: The ID of the room.
+        required: true
+        schema:
+          type: integer
+          format: int32
+      - name: accountId
+        in: path
+        description: The globally unique identifier (GUID) for the account.
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Task lists successfully retrieved.
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/TaskListSummaryList'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TaskListSummaryList'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/TaskListSummaryList'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/TaskListSummaryList'
+            text/xml:
+              schema:
+                $ref: '#/components/schemas/TaskListSummaryList'
+        '400':
+          description: Bad request. See ErrorCode and Message for details
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            text/xml:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '401':
+          description: Not authorized to make this request.
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            text/xml:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+      x-ds-methodname: GetTaskLists
+      x-ds-method: GetTaskLists
+      x-ds-service: TaskLists
+      x-ds-in-sdk: true
+    post:
+      tags:
+      - TaskLists
+      summary: Docusign Applies a task list to a room.
+      description: "Applies a task list to a room, based on the `taskTemplateId` that you specify in the `taskList` request body.\n\n**Note:** You must first create a task list template in the console. You cannot create a task list template by using the API at this time. To get the `taskListTemplateId`, use the \tTaskListTemplates: GetTaskListTemplates method.\n\n## Permissions\n\nYou must have the `canApplyTaskList` permission set to **true.**"
+      operationId: TaskLists_CreateTaskList
+      parameters:
+      - name: roomId
+        in: path
+        description: The ID of the room.
+        required: true
+        schema:
+          type: integer
+          format: int32
+      - name: accountId
+        in: path
+        description: The globally unique identifier (GUID) for the account.
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json-patch+json:
+            schema:
+              $ref: '#/components/schemas/TaskListForCreate'
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TaskListForCreate'
+          text/json:
+            schema:
+              $ref: '#/components/schemas/TaskListForCreate'
+          application/*+json:
+            schema:
+              $ref: '#/components/schemas/TaskListForCreate'
+        required: false
+      responses:
+        '201':
+          description: Task lists successfully created.
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/TaskList'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TaskList'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/TaskList'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/TaskList'
+            text/xml:
+              schema:
+                $ref: '#/components/schemas/TaskList'
+        '400':
+          description: Bad request. See ErrorCode and Message for details
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            text/xml:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '401':
+          description: Not authorized to make this request.
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            text/xml:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+      x-ds-methodname: CreateTaskList
+      x-ds-method: CreateTaskList
+      x-ds-service: TaskLists
+      x-ds-in-sdk: true
+      x-codegen-request-body-name: body
+  /v2/accounts/{accountId}/task_lists/{taskListId}:
+    delete:
+      tags:
+      - TaskLists
+      summary: Docusign Deletes a task list from a room.
+      description: 'Deletes the specified task list from a room. If there are attached documents, they will remain in the associated room.
+
+
+        ## Permissions
+
+
+        You must have the `canRemoveAnyTaskList` permission set to **true.**'
+      operationId: TaskLists_DeleteTaskList
+      parameters:
+      - name: taskListId
+        in: path
+        description: The ID of the task list.
+        required: true
+        schema:
+          type: integer
+          format: int32
+      - name: accountId
+        in: path
+        description: The globally unique identifier (GUID) for the account.
+        required: true
+        schema:
+          type: string
+      responses:
+        '204':
+          description: Task list successfully deleted.
+          content: {}
+        '400':
+          description: Bad request. See ErrorCode and Message for details
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            text/xml:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '401':
+          description: Not authorized to make this request.
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            text/xml:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+      x-ds-methodname: DeleteTaskList
+      x-ds-method: DeleteTaskList
+      x-ds-service: TaskLists
+      x-ds-in-sdk: true
+components:
+  schemas:
+    TaskListSummaryList:
+      type: object
+      properties:
+        taskListSummaries:
+          type: array
+          description: A list of task list summaries.
+          items:
+            $ref: '#/components/schemas/TaskListSummary'
+      description: Contains a list of task list summaries.
+      x-ds-definition-name: TaskListSummaryList
+      x-ms-summary: Contains a list of task list summaries.
+    TaskSummary:
+      type: object
+      properties:
+        taskId:
+          type: integer
+          description: The ID of the task list.
+          format: int32
+        name:
+          type: string
+          description: The name of the task list.
+        requiresApproval:
+          type: boolean
+          description: When **true,** the task must be completed and reviewed before it can be closed.
+        dueDateTypeId:
+          type: string
+          description: The ID of the due date type (such as Actual Close Date or Contract Date).
+        dueDateOffset:
+          type: integer
+          description: The number of days before or after the due date (specified by the `dueDateTypeId`) within which the task must be completed. A negative number indicates that the task must be completed within a certain number of days before the due date. A positive number indicates that the task must be completed within a certain number of days after the due date.
+          format: int32
+        fixedDueDate:
+          type: string
+          description: 'A specific calendar due date for the task.
+
+
+            In the API, this value is a UTC DateTime that does not actually include a time.
+
+
+            Example: 2019-07-17T00:00:00.000Z'
+          format: date-time
+        ownerUserId:
+          type: integer
+          description: The ID of the user who owns the task.
+          format: int32
+        completionDate:
+          type: string
+          description: 'The UTC DateTime when the task was completed.
+
+
+            Example: 2019-07-17T17:45:42.783Z'
+          format: date-time
+        approvalDate:
+          type: string
+          description: 'The UTC DateTime when the task was approved.
+
+
+            Example: 2019-07-17T17:45:42.783Z'
+          format: date-time
+        rejectedDate:
+          type: string
+          description: The date on which the reviewer rejected the task.
+          format: date-time
+        createdDate:
+          type: string
+          description: "\t\nThe UTC date and time when the task was created. This is a read-only value that the service assigns.\n\nExample: 2019-07-17T17:45:42.783Z"
+          format: date-time
+        isDocumentTask:
+          type: boolean
+          description: When **true,** the task is associated with a document.
+        requiresReview:
+          type: boolean
+          description: When **true,** the task is optional. If the task is completed (if a document is added or the task is marked complete), it must be reviewed before it can be closed.
+      description: Contains information about a task list.
+      x-ds-definition-name: TaskSummary
+      x-ms-summary: Contains information about a task list.
+    TaskListSummary:
+      type: object
+      properties:
+        taskListId:
+          type: integer
+          description: The ID of the task list.
+          format: int32
+          readOnly: true
+        name:
+          type: string
+          description: The name of the task list.
+          readOnly: true
+        taskListTemplateId:
+          type: integer
+          description: The ID of the task list template.
+          format: int32
+          readOnly: true
+        submittedForReviewDate:
+          type: string
+          description: The UTC DateTime when the task list was submitted for review.
+          format: date-time
+          readOnly: true
+        approvalDate:
+          type: string
+          description: The UTC DateTime when the task list was approved.
+          format: date-time
+          readOnly: true
+        rejectedDate:
+          type: string
+          description: The date on which the reviewer rejected the task list.
+          format: date-time
+          readOnly: true
+        createdDate:
+          type: string
+          description: 'The UTC date and time when the task list was created. This is a read-only value that the service assigns.
+
+
+            Example: 2019-07-17T17:45:42.783Z'
+          format: date-time
+          readOnly: true
+        approvedByUserId:
+          type: integer
+          description: The ID of the user who approved the task list.
+          format: int32
+          readOnly: true
+        rejectedByUserId:
+          type: integer
+          description: The ID of the user who rejected the task list.
+          format: int32
+          readOnly: true
+        comment:
+          type: string
+          description: Contains a user comment about the task list.
+          readOnly: true
+      description: Contains information about a task list.
+      x-ds-definition-name: TaskListSummary
+      x-ms-summary: Contains information about a task list.
+    TaskList:
+      type: object
+      properties:
+        taskListId:
+          type: integer
+          description: The ID of the task list.
+          format: int32
+        name:
+          type: string
+          description: The name of the task list.
+        taskListTemplateId:
+          type: integer
+          description: The ID of the task list template used to create the task list.
+          format: int32
+        submittedForReviewDate:
+          type: string
+          description: The UTC DateTime when the task list was submitted for review.
+          format: date-time
+        approvalDate:
+          type: string
+          description: The UTC DateTime when the task list was approved.
+          format: date-time
+        rejectedDate:
+          type: string
+          description: 'The UTC DateTime when the reviewer rejected the task list. '
+          format: date-time
+        createdDate:
+          type: string
+          description: 'The UTC date and time when the task list was created. This is a read-only value that the service assigns.
+
+
+            Example: 2019-07-17T17:45:42.783Z'
+          format: date-time
+        approvedByUserId:
+          type: integer
+          description: The ID of the user who approved the task list.
+          format: int32
+        rejectedByUserId:
+          type: integer
+          description: The ID of the user who rejected the task list.
+          format: int32
+        comment:
+          type: string
+          description: Contains a comment about the task list.
+        tasks:
+          type: array
+          description: A list of tasks in the task list.
+          items:
+            $ref: '#/components/schemas/TaskSummary'
+      description: This response object contains details about the new task list.
+      x-ds-definition-name: TaskList
+      x-ms-summary: This response object contains details about the new task list.
+    TaskListForCreate:
+      type: object
+      properties:
+        taskListTemplateId:
+          type: integer
+          description: (Required) The ID of the task list template.
+          format: int32
+      description: Contains information about the task list template to use to create the new task list.
+      x-ds-definition-name: TaskListForCreate
+      x-ms-summary: Contains information about the task list template to use to create the new task list.
+    ApiError:
+      type: object
+      properties:
+        errorCode:
+          type: string
+          description: The code associated with the error condition.
+        message:
+          type: string
+          description: A brief message describing the error condition.
+        referenceId:
+          type: string
+          description: ''
+      description: This object describes errors that occur. It is valid only for responses and ignored in requests.
+      x-ds-definition-name: ApiError
+      x-ms-summary: This object describes errors that occur. It is valid only for responses and ignored in requests.
+  securitySchemes:
+    accessCode:
+      type: oauth2
+      description: OAuth2 Access code Grant
+      flows:
+        authorizationCode:
+          authorizationUrl: https://account.docusign.com/oauth/auth
+          tokenUrl: https://account.docusign.com/oauth/auth
+          scopes:
+            organization_read: ''
+            permission_read: ''
+            group_read: ''
+            user_read: ''
+            account_read: ''
+            account_write: ''
+            user_write: ''
+            identity_provider_read: ''
+            domain_read: ''
+x-ds-categories:
+- name: UserManagement
+  summary: Methods to manage users in an account.
+  description: Methods to manage users in an account.
+- name: BulkOperations
+  summary: Methods to import and export users and accounts.
+  description: Methods to import and export users and accounts.
+- name: IdentityProviders
+  summary: Methods to get a list of identity providers.
+  description: Methods to get a list of identity providers.
+- name: ReservedDomains
+  summary: Methods to get a list of reserved domains.
+  description: Methods to get a list of reserved domains.
+- name: Organization
+  summary: Methods for working with organizations.
+  description: Methods for working with organizations.
+x-original-swagger-version: '2.0'

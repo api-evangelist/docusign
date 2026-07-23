@@ -1,0 +1,1051 @@
+openapi: 3.0.1
+info:
+  title: DocuSign Admin AccountBrands WorkflowManagement API
+  description: An API for an organization administrator to manage organizations, accounts and users
+  termsOfService: https://www.docusign.com/company/terms-and-conditions/developers
+  contact:
+    name: DocuSign Developer Center
+    url: https://developers.docusign.com
+    email: devcenter@docusign.com
+  version: v2.1
+servers:
+- url: https://api.docusign.net/Management
+tags:
+- name: WorkflowManagement
+  description: Returns the history of the workflow instance steps.
+paths:
+  /v1/accounts/{accountId}/management/instances/{instanceId}/history:
+    get:
+      tags:
+      - WorkflowManagement
+      summary: Docusign Gets the step history for a workflow instance.
+      description: "Gets the step history for a workflow instance.\n<!-- maestro beta notice -->\n\n<ds-inlinemessage>\n  The Maestro API is currently only available\n  as part of a beta program.\n  See <a href=\"/docs/maestro-api/get-access/\">Get access to Maestro API</a>\n  for details.\n</ds-inlinemessage>\n\n<!-- end maestro beta notice -->"
+      operationId: getWorkflowHistory
+      parameters:
+      - name: accountId
+        in: path
+        description: The account ID.
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: instanceId
+        in: path
+        description: 'Workflow instance ID. <!-- dacid -->
+
+          A string in UUID format: 4a6d6a08-xxxx-xxxx-xxxx-bae4fecc99c8
+
+          '
+        required: true
+        schema:
+          type: string
+          format: uuid
+      responses:
+        '200':
+          description: History of workflow steps is returned
+          content:
+            application/json:
+              schema:
+                type: array
+                description: Returns Array of Workflow Step History.
+                items:
+                  $ref: '#/components/schemas/WorkflowStepHistory'
+        '401':
+          description: Authentication details are invalid
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '403':
+          description: Authorization details are invalid
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: The requested resource was not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      security:
+      - DSAuth:
+        - aow_manage
+        - signature
+      - DSBearerAuth: []
+      x-ds-methodname: getWorkflowHistory
+      x-ds-method: getWorkflowHistory
+      x-ds-service: Workflow Instance Management
+      x-ds-in-sdk: true
+  /v1/accounts/{accountId}/management/workflow_definitions:
+    get:
+      tags:
+      - WorkflowManagement
+      summary: Docusign Gets a list of  workflow definition metadata.
+      description: "Gets a list of  workflow definition metadata.\n<!-- maestro beta notice -->\n\n<ds-inlinemessage>\n  The Maestro API is currently only available\n  as part of a beta program.\n  See <a href=\"/docs/maestro-api/get-access/\">Get access to Maestro API</a>\n  for details.\n</ds-inlinemessage>\n\n<!-- end maestro beta notice -->"
+      operationId: getWorkflowDefinitions
+      parameters:
+      - name: accountId
+        in: path
+        description: The account ID.
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: status
+        in: query
+        description: Workflow definition metadata status. <!-- filter -->
+        schema:
+          type: string
+          enum:
+          - active
+          - inactive
+          - publishing
+          - unpublishing
+          - archived
+          - archiving
+      responses:
+        '200':
+          description: Returns a list of workflow definitions' metadata.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WorkflowDefinitionList'
+        '400':
+          description: Bad Request received
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: Authentication details are invalid
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '403':
+          description: Authorization details are invalid
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      security:
+      - DSAuth:
+        - aow_manage
+        - signature
+      - DSBearerAuth: []
+      x-ds-methodname: getWorkflowDefinitions
+      x-ds-method: getWorkflowDefinitions
+      x-ds-service: Workflow Management
+      x-ds-in-sdk: true
+    post:
+      tags:
+      - WorkflowManagement
+      summary: Docusign Creates a workflow definition.
+      description: "Creates a workflow definition. In general, it is much easier to create a workflow through the web interface.\n\n<!-- maestro beta notice -->\n\n<ds-inlinemessage>\n  The Maestro API is currently only available\n  as part of a beta program.\n  See <a href=\"/docs/maestro-api/get-access/\">Get access to Maestro API</a>\n  for details.\n</ds-inlinemessage>\n\n<!-- end maestro beta notice -->\n\nA Maestro workflow is an object that represents your end-to-end agreement workflow, including all pre and post-signing steps. You can add and order steps as necessary for your workflow and add conditional logic to create branches within that workflow. \n\nTo learn the basics of workflows and to see an example workflow definition,\nsee [Workflows](/docs/maestro-api/maestro101/workflows/) in\nthe Maestro API concepts guide.\n\n"
+      operationId: createNewWorkflowDefinition
+      parameters:
+      - name: accountId
+        in: path
+        description: The account ID.
+        required: true
+        schema:
+          type: string
+          format: uuid
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateOrUpdateWorkflowDefinitionRequestBody'
+        required: true
+      responses:
+        '200':
+          description: Return Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NewOrUpdatedWorkflowDefinitionResponse'
+        '401':
+          description: Authentication details are invalid
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: The requested resource was not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      security:
+      - DSAuth:
+        - aow_manage
+        - signature
+      - DSBearerAuth: []
+      x-ds-methodname: createWorkflowDefinition
+      x-ds-method: createWorkflowDefinition
+      x-ds-service: Workflow Management
+      x-ds-in-sdk: true
+      x-codegen-request-body-name: body
+  /v1/accounts/{accountId}/management/workflow_definitions/{workflowDefinitionId}:
+    get:
+      tags:
+      - WorkflowManagement
+      summary: Docusign Gets a workflow definition.
+      description: "Returns a workflow definition.\n<!-- maestro beta notice -->\n\n<ds-inlinemessage>\n  The Maestro API is currently only available\n  as part of a beta program.\n  See <a href=\"/docs/maestro-api/get-access/\">Get access to Maestro API</a>\n  for details.\n</ds-inlinemessage>\n\n<!-- end maestro beta notice -->\n\n### Related topics\n\n- [How to trigger a Maestro workflow][howto-trigger]\n\n[howto-trigger]:      /docs/maestro-api/how-to/trigger-workflow/\n\n"
+      operationId: getWorkflowDefinition
+      parameters:
+      - name: accountId
+        in: path
+        description: The account ID.
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: workflowDefinitionId
+        in: path
+        description: Workflow definition ID.
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: lastDeployedId
+        in: query
+        description: The ID of the deployed workflow definition.
+        schema:
+          type: string
+          format: string
+      responses:
+        '200':
+          description: Returns a workflow definition.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WorkflowDefinitionWithId'
+        '400':
+          description: Bad Request received
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: Authentication details are invalid
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '403':
+          description: Authorization details are invalid
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      security:
+      - DSAuth:
+        - aow_manage
+        - signature
+      - DSBearerAuth: []
+      x-ds-methodname: getWorkflowDefinition
+      x-ds-method: getWorkflowDefinition
+      x-ds-service: Workflow Management
+      x-ds-in-sdk: true
+    put:
+      tags:
+      - WorkflowManagement
+      summary: Docusign Updates a workflow definition.
+      description: "Updates a workflow definition.\n<!-- maestro beta notice -->\n\n<ds-inlinemessage>\n  The Maestro API is currently only available\n  as part of a beta program.\n  See <a href=\"/docs/maestro-api/get-access/\">Get access to Maestro API</a>\n  for details.\n</ds-inlinemessage>\n\n<!-- end maestro beta notice -->\n\nA Maestro workflow is an object that represents your end-to-end agreement workflow, including all pre and post-signing steps. You can add and order steps as necessary for your workflow and add conditional logic to create branches within that workflow.\n\nTo learn the basics of workflows and to see an example workflow definition,\nsee [Workflows](/docs/maestro-api/maestro101/workflows/) in\nthe Maestro API concepts guide.\n\n"
+      operationId: updateWorkflowDefinition
+      parameters:
+      - name: accountId
+        in: path
+        description: The account ID.
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: workflowDefinitionId
+        in: path
+        description: Workflow definition ID.
+        required: true
+        schema:
+          type: string
+          format: uuid
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateOrUpdateWorkflowDefinitionRequestBody'
+        required: true
+      responses:
+        '200':
+          description: Return Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NewOrUpdatedWorkflowDefinitionResponse'
+        '400':
+          description: Bad request, malformed input
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: Authentication details are invalid
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: The requested resource was not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      security:
+      - DSAuth:
+        - aow_manage
+        - signature
+      - DSBearerAuth: []
+      x-ds-methodname: updateWorkflowDefinition
+      x-ds-method: updateWorkflowDefinition
+      x-ds-service: Workflow Management
+      x-ds-in-sdk: true
+      x-codegen-request-body-name: body
+    delete:
+      tags:
+      - WorkflowManagement
+      summary: Docusign Deletes a workflow definition.
+      description: "Deletes a workflow definition.\n<!-- maestro beta notice -->\n\n<ds-inlinemessage>\n  The Maestro API is currently only available\n  as part of a beta program.\n  See <a href=\"/docs/maestro-api/get-access/\">Get access to Maestro API</a>\n  for details.\n</ds-inlinemessage>\n\n<!-- end maestro beta notice -->"
+      operationId: deleteWorkflowDefinition
+      parameters:
+      - name: accountId
+        in: path
+        description: The account ID.
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: workflowDefinitionId
+        in: path
+        description: The ID of the workflow definition to delete.
+        required: true
+        schema:
+          type: string
+          format: uuid
+      responses:
+        '200':
+          description: Returns Delete Successful.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WorkflowDeleteResponse'
+        '404':
+          description: Resource not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      security:
+      - DSAuth:
+        - aow_manage
+        - signature
+      - DSBearerAuth: []
+      x-ds-methodname: deleteWorkflowDefinition
+      x-ds-method: deleteWorkflowDefinition
+      x-ds-service: Workflow Management
+      x-ds-in-sdk: true
+  /v1/accounts/{accountId}/management/workflow_definitions/{workflowDefinitionId}/publish:
+    post:
+      tags:
+      - WorkflowManagement
+      summary: Docusign Publishes or unpublishes a workflow definition.
+      description: "Publishes or unpublishes a workflow definition.\n<!-- maestro beta notice -->\n\n<ds-inlinemessage>\n  The Maestro API is currently only available\n  as part of a beta program.\n  See <a href=\"/docs/maestro-api/get-access/\">Get access to Maestro API</a>\n  for details.\n</ds-inlinemessage>\n\n<!-- end maestro beta notice -->"
+      operationId: publishOrUnPublishWorkflowDefinition
+      parameters:
+      - name: accountId
+        in: path
+        description: The account ID.
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: workflowDefinitionId
+        in: path
+        description: Workflow definition ID.
+        required: true
+        schema:
+          type: string
+          format: uuid
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DeployRequest'
+        required: true
+      responses:
+        '200':
+          description: Return Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeployResponse'
+        '400':
+          description: Workflow Definition is invalid
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InvalidWorkflowResponse'
+        '401':
+          description: Authentication details are invalid
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: The requested resource was not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      security:
+      - DSAuth:
+        - aow_manage
+        - signature
+      - DSBearerAuth: []
+      x-ds-methodname: publishOrUnPublishWorkflowDefinition
+      x-ds-method: publishOrUnPublishWorkflowDefinition
+      x-ds-service: Workflow Management
+      x-ds-in-sdk: true
+      x-codegen-request-body-name: body
+components:
+  schemas:
+    WorkflowDefinition:
+      required:
+      - accountId
+      - documentVersion
+      - schemaVersion
+      - steps
+      - trigger
+      - variables
+      - workflowDescription
+      - workflowName
+      type: object
+      properties:
+        accountId:
+          $ref: '#/components/schemas/AowUUIDString'
+        createdByName:
+          type: string
+          description: The name of the user who created this workflow definition
+        documentVersion:
+          $ref: '#/components/schemas/VersionString'
+        participants:
+          type: object
+          additionalProperties:
+            $ref: '#/components/schemas/Participant'
+          description: A maestro [participant](/docs/maestro-api/maestro101/participants/) record
+        schemaVersion:
+          $ref: '#/components/schemas/VersionString'
+        steps:
+          type: array
+          description: ''
+          items:
+            type: object
+            properties: {}
+        trigger:
+          $ref: '#/components/schemas/DSWorkflowTrigger'
+        variables:
+          type: object
+          additionalProperties:
+            type: object
+            properties: {}
+            description: 'Reference of #/definitions/DSWorkflowVariable. DS Workflow Variables'
+          description: ''
+        workflowDescription:
+          type: string
+          description: A human-readable description of the workflow.
+        workflowName:
+          type: string
+          description: The human-readable name of the workflow.
+      description: A Maestro workflow definition.
+      x-ds-definition-name: WorkflowDefinition
+      x-ms-summary: A Maestro workflow definition.
+    WorkflowDateTime:
+      type: string
+      description: A date-time string.
+      format: date-time
+      x-ds-definition-name: WorkflowDateTime
+      x-ms-summary: A date-time string.
+    UserId:
+      type: string
+      description: Participant User ID
+      format: uuid
+      x-ds-definition-name: UserId
+      x-ms-summary: Participant User ID
+    AccountId:
+      type: string
+      description: Account Id
+      format: uuid
+      example: 00000000-0000-0000-0000-000000000000
+      x-ds-definition-name: AccountId
+      x-ms-summary: Account Id
+    WorkflowDefinitionWithId:
+      required:
+      - id
+      type: object
+      properties:
+        accountId:
+          $ref: '#/components/schemas/AowUUIDString'
+        createdDate:
+          type: string
+          description: The date the workflow was created
+          format: date-time
+        id:
+          $ref: '#/components/schemas/AowUUID'
+        isDraft:
+          type: boolean
+          description: '**True,** if this definition is a draft.'
+        lastDeployedId:
+          $ref: '#/components/schemas/LastDeployedId'
+        lastDeployedVersion:
+          type: string
+          description: The version number of the last deployed workflow.
+        lastDeployedWorkflowDefinition:
+          $ref: '#/components/schemas/WorkflowDefinition'
+        lastUpdatedDate:
+          type: string
+          description: The date the workflow was last updated
+          format: date-time
+        status:
+          $ref: '#/components/schemas/WorkflowMetadataStatus'
+        triggerUrl:
+          type: string
+          description: The URL you will use to [trigger the worflow](/docs/maestro-api/how-to/trigger-workflow/).
+          format: uri
+        validationErrors:
+          type: array
+          description: An array of validation errors.
+          items:
+            $ref: '#/components/schemas/ValidationErrors'
+        workflowDefinition:
+          $ref: '#/components/schemas/WorkflowDefinition'
+      description: A Maestro workflow definition with metadata.
+      x-ds-definition-name: WorkflowDefinitionWithId
+      x-ms-summary: A Maestro workflow definition with metadata.
+    WorkflowStepHistoryState:
+      type: string
+      description: Workflow step history state (`completed`, `failed`, `In-progress`)
+      enum:
+      - In Progress
+      - Completed
+      - Failed
+      - Canceled
+      x-ds-definition-name: WorkflowStepHistoryState
+      x-ms-summary: Workflow step history state (`completed`, `failed`, `In-progress`)
+    EventTypes:
+      type: string
+      description: The Trigger Event types
+      enum:
+      - envelope-sent
+      - envelope-delivered
+      - envelope-completed
+      - envelope-declined
+      - envelope-voided
+      - envelope-created
+      - envelope-resent
+      - envelope-corrected
+      - envelope-purge
+      - envelope-deleted
+      - envelope-discard
+      - Delivery Failed
+      - Authentication Failed
+      - Sent
+      - Delivered
+      - Signed
+      - Completed
+      x-ds-definition-name: EventTypes
+      x-ms-summary: The Trigger Event types
+    ErrorCodes:
+      type: string
+      description: Internal Error Codes
+      enum:
+      - ERR_10001
+      - ERR_10002
+      - ERR_10003
+      - ERR_10004
+      - ERR_10005
+      - ERR_10006
+      - ERR_10007
+      - ERR_10008
+      - ERR_10009
+      - ERR_10101
+      - ERR_10201
+      - ERR_10202
+      - ERR_10301
+      - ERR_10302
+      - ERR_10401
+      - ERR_10801
+      - ERR_10802
+      - ERR_10999
+      x-ds-definition-name: ErrorCodes
+      x-ms-summary: Internal Error Codes
+    AowUUID:
+      type: string
+      description: ''
+      format: uuid
+      example: 00000000-0000-0000-0000-000000000000
+      x-ds-definition-name: AowUUID
+      x-ms-summary: ''
+    DeployStatus:
+      type: string
+      description: ''
+      enum:
+      - Publish
+      - UnPublish
+      - Disable
+      x-ds-definition-name: DeployStatus
+      x-ms-summary: ''
+    DSWorkflowTriggerTypes:
+      type: string
+      description: The DS Workflow Trigger types
+      enum:
+      - Http
+      - Http-API
+      x-ds-definition-name: DSWorkflowTriggerTypes
+      x-ms-summary: The DS Workflow Trigger types
+    CreateOrUpdateWorkflowDefinitionRequestBody:
+      type: object
+      properties:
+        workflowDefinition:
+          $ref: '#/components/schemas/WorkflowDefinition'
+      description: Request body to create or update a workflow definition.
+      x-ds-definition-name: CreateOrUpdateWorkflowDefinitionRequestBody
+      x-ms-summary: Request body to create or update a workflow definition.
+    WorkflowInstanceId:
+      type: string
+      description: 'Workflow instance ID.
+
+        A string in UUID format: 4a6d6a08-xxxx-xxxx-xxxx-bae4fecc99c8'
+      format: uuid
+      example: 00000000-0000-0000-0000-000000000000
+      x-ds-definition-name: WorkflowInstanceId
+      x-ms-summary: 'Workflow instance ID.
+
+        A string in UUID format: 4a6d6a08-xxxx-xxxx-xxxx-bae4fecc99c8'
+    LastDeployedId:
+      type: string
+      description: ''
+      format: string
+      example: 64655d8192f160c93b2366a1
+      x-ds-definition-name: LastDeployedId
+      x-ms-summary: ''
+    ErrorResponse:
+      type: object
+      properties:
+        errorCode:
+          $ref: '#/components/schemas/ErrorCodes'
+        message:
+          type: string
+          description: Human-readable description of the error.
+      description: Returns error with a status message
+      x-ds-definition-name: ErrorResponse
+      x-ms-summary: Returns error with a status message
+    WorkflowStepError:
+      type: object
+      properties:
+        code:
+          type: string
+          description: Error code message
+        endTime:
+          $ref: '#/components/schemas/WorkflowDateTime'
+        error:
+          type: object
+          properties:
+            code:
+              type: string
+              description: The Error Code Message
+            message:
+              type: string
+              description: Error Message which shares more details
+          description: ''
+        name:
+          type: string
+          description: The workflow step name where the error occurred
+        startTime:
+          $ref: '#/components/schemas/WorkflowDateTime'
+      description: Workflow step history error
+      x-ds-definition-name: WorkflowStepError
+      x-ms-summary: Workflow step history error
+    NewOrUpdatedWorkflowDefinitionResponse:
+      required:
+      - isValidWorkflowDefinition
+      - validationErrors
+      - workflowDefinition
+      - workflowDefinitionId
+      type: object
+      properties:
+        isValidWorkflowDefinition:
+          type: boolean
+          description: '**True** if this is a valid workflow definition.'
+        validationErrors:
+          type: array
+          description: An array of validation errors.
+          items:
+            $ref: '#/components/schemas/ValidationErrors'
+        workflowDefinition:
+          $ref: '#/components/schemas/WorkflowDefinition'
+        workflowDefinitionId:
+          $ref: '#/components/schemas/AowUUIDString'
+      description: ''
+      x-ds-definition-name: NewOrUpdatedWorkflowDefinitionResponse
+      x-ms-summary: ''
+    DeployResponse:
+      required:
+      - message
+      - pollUrl
+      type: object
+      properties:
+        message:
+          type: string
+          description: Human-readable description of the error.
+        method:
+          type: string
+          description: ''
+        pollUrl:
+          type: string
+          description: The URL to poll the request.
+          format: uri
+        receivedTime:
+          type: string
+          description: ''
+          format: date-time
+      description: ''
+      x-ds-definition-name: DeployResponse
+      x-ms-summary: ''
+    DSWorkflowTrigger:
+      required:
+      - httpType
+      - id
+      - input
+      - name
+      - output
+      - type
+      type: object
+      properties:
+        eventType:
+          $ref: '#/components/schemas/EventTypes'
+        httpType:
+          $ref: '#/components/schemas/HttpTypes'
+        id:
+          $ref: '#/components/schemas/AowUUIDString'
+        input:
+          type: object
+          additionalProperties:
+            type: object
+            properties: {}
+            description: 'Reference of #/definitions/DSWorkflowVariable. DS Workflow Variables'
+          description: 'The input [variable](/docs/maestro-api/maestro101/variables/)
+
+            record.'
+        name:
+          type: string
+          description: The name of the trigger.
+        output:
+          type: object
+          additionalProperties:
+            type: object
+            properties: {}
+            description: 'Reference of #/definitions/DSWorkflowVariable. DS Workflow Variables'
+          description: 'The output [variable](/docs/maestro-api/maestro101/variables/)
+
+            record.'
+        type:
+          $ref: '#/components/schemas/DSWorkflowTriggerTypes'
+      description: A Maestro workflow trigger.
+      x-ds-definition-name: DSWorkflowTrigger
+      x-ms-summary: A Maestro workflow trigger.
+    WorkflowDeleteResponse:
+      required:
+      - pollUrl
+      - workflowDefinitionId
+      type: object
+      properties:
+        pollUrl:
+          type: string
+          description: The URL to poll the request.
+          format: uri
+        workflowDefinitionId:
+          $ref: '#/components/schemas/AowUUIDString'
+      description: The response to a request to delete a workflow.
+      x-ds-definition-name: WorkflowDeleteResponse
+      x-ms-summary: The response to a request to delete a workflow.
+    HttpTypes:
+      type: string
+      description: The Trigger Http types
+      enum:
+      - Get
+      - Post
+      - Put
+      - Delete
+      x-ds-definition-name: HttpTypes
+      x-ms-summary: The Trigger Http types
+    Participant:
+      required:
+      - participantEmail
+      - participantFirstName
+      - participantLastName
+      - participantRole
+      type: object
+      properties:
+        participantEmail:
+          $ref: '#/components/schemas/AowUUIDString'
+        participantFirstName:
+          $ref: '#/components/schemas/AowUUIDString'
+        participantLastName:
+          $ref: '#/components/schemas/AowUUIDString'
+        participantRole:
+          type: string
+          description: ''
+      description: 'A Maestro workflow
+
+        [participant](/docs/maestro-api/maestro101/participants/).'
+      x-ds-definition-name: Participant
+      x-ms-summary: 'A Maestro workflow
+
+        [participant](/docs/maestro-api/maestro101/participants/).'
+    VersionString:
+      type: string
+      description: 'A string in version number format: `3.14.159`'
+      example: 1.0.0
+      x-ds-definition-name: VersionString
+      x-ms-summary: 'A string in version number format: `3.14.159`'
+    WorkflowStepHistory:
+      required:
+      - dacId
+      - stepName
+      - stepState
+      - userId
+      type: object
+      properties:
+        accountId:
+          $ref: '#/components/schemas/AccountId'
+        dacId:
+          $ref: '#/components/schemas/WorkflowInstanceId'
+        dsStepId:
+          $ref: '#/components/schemas/DsStepId'
+        endDate:
+          $ref: '#/components/schemas/WorkflowDateTime'
+        error:
+          $ref: '#/components/schemas/WorkflowStepError'
+        outputModuleProperties:
+          type: object
+          additionalProperties: true
+          description: ''
+        startDate:
+          $ref: '#/components/schemas/WorkflowDateTime'
+        stepId:
+          $ref: '#/components/schemas/AowUUID'
+        stepName:
+          type: string
+          description: Name of the workflow step (DS Scope)
+        stepState:
+          $ref: '#/components/schemas/WorkflowStepHistoryState'
+        userId:
+          $ref: '#/components/schemas/UserId'
+      description: Details (history) of a workflow instance step.
+      x-ds-definition-name: WorkflowStepHistory
+      x-ms-summary: Details (history) of a workflow instance step.
+    WorkflowDefinitionList:
+      type: object
+      properties:
+        count:
+          type: number
+          description: Total number of definitions returned
+          example: 1.0
+        value:
+          type: array
+          description: Array of workflow definition metadata
+          items:
+            $ref: '#/components/schemas/WorkflowDefinitionMetadata'
+      description: Returns a list of workflow definitions' metadata (0 or more).
+      x-ds-definition-name: WorkflowDefinitionList
+      x-ms-summary: Returns a list of workflow definitions' metadata (0 or more).
+    InvalidWorkflowResponse:
+      required:
+      - message
+      - validationErrors
+      type: object
+      properties:
+        message:
+          type: string
+          description: Human-readable description of the error.
+        validationErrors:
+          type: array
+          description: An array of validation errors.
+          items:
+            $ref: '#/components/schemas/ValidationErrors'
+      description: ''
+      x-ds-definition-name: InvalidWorkflowResponse
+      x-ms-summary: ''
+    DsStepId:
+      type: string
+      description: DS Step Id <TODO>
+      format: uuid
+      x-ds-definition-name: DsStepId
+      x-ms-summary: DS Step Id <TODO>
+    WorkflowMetadataStatus:
+      type: string
+      description: Workflow definition metadata status.
+      enum:
+      - active
+      - inactive
+      - publishing
+      - unpublishing
+      - archived
+      - archiving
+      x-ds-definition-name: WorkflowMetadataStatus
+      x-ms-summary: Workflow definition metadata status.
+    WorkflowDefinitionMetadata:
+      required:
+      - id
+      type: object
+      properties:
+        accountId:
+          $ref: '#/components/schemas/AowUUIDString'
+        createdDate:
+          type: string
+          description: The date the workflow was created
+          format: date-time
+        id:
+          $ref: '#/components/schemas/AowUUID'
+        isDraft:
+          type: boolean
+          description: '**True,** if this definition is a draft.'
+        lastDeployedId:
+          $ref: '#/components/schemas/LastDeployedId'
+        lastDeployedVersion:
+          type: string
+          description: ''
+        lastUpdatedDate:
+          type: string
+          description: The date the workflow was last updated
+          format: date-time
+        name:
+          type: string
+          description: The workflow step name where the error occurred
+        status:
+          $ref: '#/components/schemas/WorkflowMetadataStatus'
+        triggerUrl:
+          type: string
+          description: The URL you will use to [trigger the worflow](/docs/maestro-api/how-to/trigger-workflow/).
+          format: uri
+      description: A Maestro workflow definition's metadata.
+      x-ds-definition-name: WorkflowDefinitionMetadata
+      x-ms-summary: A Maestro workflow definition's metadata.
+    DeployRequest:
+      required:
+      - deploymentStatus
+      type: object
+      properties:
+        deploymentStatus:
+          $ref: '#/components/schemas/DeployStatus'
+      description: ''
+      x-ds-definition-name: DeployRequest
+      x-ms-summary: ''
+    AowUUIDString:
+      type: string
+      description: 'A string in UUID format: 4a6d6a08-xxxx-xxxx-xxxx-bae4fecc99c8'
+      format: uuid
+      x-ds-definition-name: AowUUIDString
+      x-ms-summary: 'A string in UUID format: 4a6d6a08-xxxx-xxxx-xxxx-bae4fecc99c8'
+    ValidationErrors:
+      required:
+      - code
+      - message
+      type: object
+      properties:
+        code:
+          type: string
+          description: Error code message
+        message:
+          type: string
+          description: Human-readable description of the error.
+      description: ''
+      x-ds-definition-name: ValidationErrors
+      x-ms-summary: ''
+  securitySchemes:
+    accessCode:
+      type: oauth2
+      description: OAuth2 Access code Grant
+      flows:
+        authorizationCode:
+          authorizationUrl: https://account.docusign.com/oauth/auth
+          tokenUrl: https://account.docusign.com/oauth/auth
+          scopes:
+            organization_read: ''
+            permission_read: ''
+            group_read: ''
+            user_read: ''
+            account_read: ''
+            account_write: ''
+            user_write: ''
+            identity_provider_read: ''
+            domain_read: ''
+x-ds-categories:
+- name: UserManagement
+  summary: Methods to manage users in an account.
+  description: Methods to manage users in an account.
+- name: BulkOperations
+  summary: Methods to import and export users and accounts.
+  description: Methods to import and export users and accounts.
+- name: IdentityProviders
+  summary: Methods to get a list of identity providers.
+  description: Methods to get a list of identity providers.
+- name: ReservedDomains
+  summary: Methods to get a list of reserved domains.
+  description: Methods to get a list of reserved domains.
+- name: Organization
+  summary: Methods for working with organizations.
+  description: Methods for working with organizations.
+x-original-swagger-version: '2.0'

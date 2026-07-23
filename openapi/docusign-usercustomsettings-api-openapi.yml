@@ -1,0 +1,297 @@
+openapi: 3.0.1
+info:
+  title: DocuSign Admin AccountBrands UserCustomSettings API
+  description: An API for an organization administrator to manage organizations, accounts and users
+  termsOfService: https://www.docusign.com/company/terms-and-conditions/developers
+  contact:
+    name: DocuSign Developer Center
+    url: https://developers.docusign.com
+    email: devcenter@docusign.com
+  version: v2.1
+servers:
+- url: https://api.docusign.net/Management
+tags:
+- name: UserCustomSettings
+  description: 'The UserCustomSettings resource provides methods that allow you to manage the custom settings for a user.
+
+
+    Custom settings are a flexible way to store and retrieve custom user information that can be used in your own system.
+
+
+    There is a limit on the size for all the custom user settings for a single user. All the custom user settings for a single user is limited to 4,000 characters, which includes the xml and json structure for the settings.'
+paths:
+  /v2/accounts/{accountId}/users/{userId}/custom_settings:
+    get:
+      tags:
+      - UserCustomSettings
+      summary: Docusign Retrieves the custom user settings for a specified user.
+      description: 'Retrieves a list of custom user settings for a single user.
+
+
+        Custom settings provide a flexible way to store and retrieve custom user information that can be used in your own system.
+
+
+        ###### Note: Custom user settings are not the same as user account settings.
+
+
+        ###Getting Grouped Custom User Settings###
+
+
+        If the custom user settings you want to retrieve are grouped, you must include the following information in the header, after Content-Type, in the request:
+
+
+        `X-DocuSign-User-Settings-Key:group_name`
+
+
+        Where the `group_name` is your designated name for the group of customer user settings.
+
+
+        If the extra header information is not included, only the custom user settings that were added without a group are retrieved.'
+      operationId: UserCustomSettings_GetCustomSettings
+      parameters:
+      - name: accountId
+        in: path
+        description: The external account number (int) or account id GUID.
+        required: true
+        schema:
+          type: string
+      - name: userId
+        in: path
+        description: 'The user ID of the user being accessed. Generally this is the user ID of the authenticated user, but if the authenticated user is an Admin on the account, this may be another user the Admin user is accessing. **Note**: For the [GET /v2/accounts/{accountId}/envelopes](https://developers.docusign.com/esign-rest-api/reference/Envelopes/Envelopes/listStatusChanges/#envelopesInformation) method, the `user_id` query parameter is not implemented and should not be used.'
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Successful response.
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/customSettingsInformation'
+        '400':
+          description: Error encountered.
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/errorDetails'
+      deprecated: false
+      x-ds-methodname: listCustomSettings
+      x-ds-method: list
+      x-ds-service: Users
+      x-ds-in-sdk: true
+    put:
+      tags:
+      - UserCustomSettings
+      summary: Docusign Adds or updates custom user settings for the specified user.
+      description: 'Adds or updates custom user settings for the specified user.
+
+
+        ###### Note: Custom user settings are not the same as user account settings.
+
+
+        Custom settings provide a flexible way to store and retrieve custom user information that you can use in your own system.
+
+
+        **Important**: There is a limit on the size for all the custom user settings for a single user. The limit is 4,000 characters, which includes the XML and JSON structure for the settings.
+
+
+        ### Grouping Custom User Settings ###
+
+
+        You can group custom user settings when adding them. Grouping allows you to retrieve settings that are in a specific group, instead of retrieving all the user custom settings.
+
+
+        To group custom user settings, add the following information in the header, after Content-Type:
+
+
+        `X-DocuSign-User-Settings-Key:group_name`
+
+
+        Where the `group_name` is your designated name for the group of customer user settings. Grouping is shown in the Example Request Body below.
+
+
+        When getting or deleting grouped custom user settings, you must include the extra header information.
+
+
+        Grouping custom user settings is not required and if the extra header information is not included, the custom user settings are added normally and can be retrieved or deleted without including the additional header.'
+      operationId: UserCustomSettings_PutCustomSettings
+      parameters:
+      - name: accountId
+        in: path
+        description: The external account number (int) or account id GUID.
+        required: true
+        schema:
+          type: string
+      - name: userId
+        in: path
+        description: 'The user ID of the user being accessed. Generally this is the user ID of the authenticated user, but if the authenticated user is an Admin on the account, this may be another user the Admin user is accessing. **Note**: For the [GET /v2/accounts/{accountId}/envelopes](https://developers.docusign.com/esign-rest-api/reference/Envelopes/Envelopes/listStatusChanges/#envelopesInformation) method, the `user_id` query parameter is not implemented and should not be used.'
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/customSettingsInformation'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/customSettingsInformation'
+        required: false
+      responses:
+        '200':
+          description: Successful response.
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/customSettingsInformation'
+        '400':
+          description: Error encountered.
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/errorDetails'
+      deprecated: false
+      x-ds-methodname: updateCustomSettings
+      x-ds-method: update
+      x-ds-service: Users
+      x-ds-in-sdk: true
+      x-codegen-request-body-name: customSettingsInformation
+    delete:
+      tags:
+      - UserCustomSettings
+      summary: Docusign Deletes custom user settings for a specified user.
+      description: 'Deletes the specified custom user settings for a single user.
+
+
+        ###Deleting Grouped Custom User Settings###
+
+
+        If the custom user settings you want to delete are grouped, you must include the following information in the header, after Content-Type, in the request:
+
+
+        `X-DocuSign-User-Settings-Key:group_name`
+
+
+        Where the `group_name` is your designated name for the group of customer user settings.
+
+
+        If the extra header information is not included, only the custom user settings that were added without a group are deleted.'
+      operationId: UserCustomSettings_DeleteCustomSettings
+      parameters:
+      - name: accountId
+        in: path
+        description: The external account number (int) or account id GUID.
+        required: true
+        schema:
+          type: string
+      - name: userId
+        in: path
+        description: 'The user ID of the user being accessed. Generally this is the user ID of the authenticated user, but if the authenticated user is an Admin on the account, this may be another user the Admin user is accessing. **Note**: For the [GET /v2/accounts/{accountId}/envelopes](https://developers.docusign.com/esign-rest-api/reference/Envelopes/Envelopes/listStatusChanges/#envelopesInformation) method, the `user_id` query parameter is not implemented and should not be used.'
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/customSettingsInformation'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/customSettingsInformation'
+        required: false
+      responses:
+        '200':
+          description: Successful response.
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/customSettingsInformation'
+        '400':
+          description: Error encountered.
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/errorDetails'
+      deprecated: false
+      x-ds-methodname: deleteCustomSettings
+      x-ds-method: delete
+      x-ds-service: Users
+      x-ds-in-sdk: true
+      x-codegen-request-body-name: customSettingsInformation
+components:
+  schemas:
+    customSettingsInformation:
+      type: object
+      properties:
+        customSettings:
+          type: array
+          description: The name/value pair information for the user custom setting.
+          items:
+            $ref: '#/components/schemas/nameValue'
+      description: ''
+      x-ds-definition-name: customSettingsInformation
+      x-ms-summary: ''
+    nameValue:
+      type: object
+      properties:
+        errorDetails:
+          $ref: '#/components/schemas/errorDetails'
+        name:
+          type: string
+          description: The name or key of a name/value pair.
+        originalValue:
+          type: string
+          description: 'The initial value of the tab when it was sent to the recipient. '
+        value:
+          type: string
+          description: The value field of a name/value pair.
+      description: ''
+      x-ds-definition-name: nameValue
+      x-ms-summary: ''
+    errorDetails:
+      type: object
+      properties:
+        errorCode:
+          type: string
+          description: An error code associated with the error.
+        message:
+          type: string
+          description: A short error message.
+      description: This object describes errors that occur. It is only valid for responses, and ignored in requests.
+      x-ds-definition-name: errorDetails
+      x-ms-summary: This object describes errors that occur. It is only valid for responses, and ignored in requests.
+  securitySchemes:
+    accessCode:
+      type: oauth2
+      description: OAuth2 Access code Grant
+      flows:
+        authorizationCode:
+          authorizationUrl: https://account.docusign.com/oauth/auth
+          tokenUrl: https://account.docusign.com/oauth/auth
+          scopes:
+            organization_read: ''
+            permission_read: ''
+            group_read: ''
+            user_read: ''
+            account_read: ''
+            account_write: ''
+            user_write: ''
+            identity_provider_read: ''
+            domain_read: ''
+x-ds-categories:
+- name: UserManagement
+  summary: Methods to manage users in an account.
+  description: Methods to manage users in an account.
+- name: BulkOperations
+  summary: Methods to import and export users and accounts.
+  description: Methods to import and export users and accounts.
+- name: IdentityProviders
+  summary: Methods to get a list of identity providers.
+  description: Methods to get a list of identity providers.
+- name: ReservedDomains
+  summary: Methods to get a list of reserved domains.
+  description: Methods to get a list of reserved domains.
+- name: Organization
+  summary: Methods for working with organizations.
+  description: Methods for working with organizations.
+x-original-swagger-version: '2.0'

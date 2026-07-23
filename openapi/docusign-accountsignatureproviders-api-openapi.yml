@@ -1,0 +1,167 @@
+openapi: 3.0.1
+info:
+  title: DocuSign Admin AccountBrands AccountSignatureProviders API
+  description: An API for an organization administrator to manage organizations, accounts and users
+  termsOfService: https://www.docusign.com/company/terms-and-conditions/developers
+  contact:
+    name: DocuSign Developer Center
+    url: https://developers.docusign.com
+    email: devcenter@docusign.com
+  version: v2.1
+servers:
+- url: https://api.docusign.net/Management
+tags:
+- name: AccountSignatureProviders
+  description: This resource provides information on the Standards Based Signature providers that have been provisioned for this account.
+paths:
+  /v2/accounts/{accountId}/signatureProviders:
+    get:
+      tags:
+      - AccountSignatureProviders
+      summary: Docusign Returns Account available signature providers for specified account.
+      operationId: AccountSignatureProviders_GetSignatureProviders
+      parameters:
+      - name: accountId
+        in: path
+        description: The external account number (int) or account id GUID.
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Successful response.
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/accountSignatureProviders'
+        '400':
+          description: Error encountered.
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/errorDetails'
+      deprecated: false
+      x-ds-methodname: listSignatureProviders
+      x-ds-method: list
+      x-ds-service: Accounts
+      x-ds-in-sdk: true
+components:
+  schemas:
+    accountSignatureProvider:
+      type: object
+      properties:
+        isRequired:
+          type: string
+          description: ''
+        priority:
+          type: string
+          description: ''
+        signatureProviderDisplayName:
+          type: string
+          description: ''
+        signatureProviderId:
+          type: string
+          description: ''
+        signatureProviderName:
+          type: string
+          description: The name of an Electronic or Standards Based Signature (digital signature) provider for the signer to use. [The current provider list.](https://developers.docusign.com/esign-rest-api/guides/standards-based-signatures)
+        signatureProviderOptionsMetadata:
+          type: array
+          description: ''
+          items:
+            $ref: '#/components/schemas/accountSignatureProviderOption'
+        signatureProviderRequiredOptions:
+          type: array
+          description: ''
+          items:
+            $ref: '#/components/schemas/signatureProviderRequiredOption'
+      description: ''
+      x-ds-definition-name: accountSignatureProvider
+      x-ms-summary: ''
+    signatureProviderRequiredOption:
+      type: object
+      properties:
+        requiredSignatureProviderOptionIds:
+          type: array
+          description: ''
+          items:
+            type: string
+        signerType:
+          type: string
+          description: ''
+      description: ''
+      x-ds-definition-name: signatureProviderRequiredOption
+      x-ms-summary: ''
+    errorDetails:
+      type: object
+      properties:
+        errorCode:
+          type: string
+          description: An error code associated with the error.
+        message:
+          type: string
+          description: A short error message.
+      description: This object describes errors that occur. It is only valid for responses, and ignored in requests.
+      x-ds-definition-name: errorDetails
+      x-ms-summary: This object describes errors that occur. It is only valid for responses, and ignored in requests.
+    accountSignatureProviders:
+      type: object
+      properties:
+        signatureProviders:
+          type: array
+          description: ''
+          items:
+            $ref: '#/components/schemas/accountSignatureProvider'
+      description: ''
+      x-ds-definition-name: accountSignatureProviders
+      x-ms-summary: ''
+    accountSignatureProviderOption:
+      type: object
+      properties:
+        signatureProviderOptionDisplayName:
+          type: string
+          description: ''
+        signatureProviderOptionId:
+          type: string
+          description: ''
+        signatureProviderOptionName:
+          type: string
+          description: ''
+      description: ''
+      x-ds-definition-name: accountSignatureProviderOption
+      x-ms-summary: ''
+  securitySchemes:
+    accessCode:
+      type: oauth2
+      description: OAuth2 Access code Grant
+      flows:
+        authorizationCode:
+          authorizationUrl: https://account.docusign.com/oauth/auth
+          tokenUrl: https://account.docusign.com/oauth/auth
+          scopes:
+            organization_read: ''
+            permission_read: ''
+            group_read: ''
+            user_read: ''
+            account_read: ''
+            account_write: ''
+            user_write: ''
+            identity_provider_read: ''
+            domain_read: ''
+x-ds-categories:
+- name: UserManagement
+  summary: Methods to manage users in an account.
+  description: Methods to manage users in an account.
+- name: BulkOperations
+  summary: Methods to import and export users and accounts.
+  description: Methods to import and export users and accounts.
+- name: IdentityProviders
+  summary: Methods to get a list of identity providers.
+  description: Methods to get a list of identity providers.
+- name: ReservedDomains
+  summary: Methods to get a list of reserved domains.
+  description: Methods to get a list of reserved domains.
+- name: Organization
+  summary: Methods for working with organizations.
+  description: Methods for working with organizations.
+x-original-swagger-version: '2.0'

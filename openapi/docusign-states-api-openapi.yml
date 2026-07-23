@@ -1,0 +1,354 @@
+openapi: 3.0.1
+info:
+  title: DocuSign Admin AccountBrands States API
+  description: An API for an organization administrator to manage organizations, accounts and users
+  termsOfService: https://www.docusign.com/company/terms-and-conditions/developers
+  contact:
+    name: DocuSign Developer Center
+    url: https://developers.docusign.com
+    email: devcenter@docusign.com
+  version: v2.1
+servers:
+- url: https://api.docusign.net/Management
+tags:
+- name: States
+  description: ''
+paths:
+  /v2/states:
+    get:
+      tags:
+      - States
+      summary: Docusign Gets states.
+      description: 'Returns a list of states.
+
+
+        **Note:** You do not enter an `accountId` with this method.
+
+
+        ## Permissions
+
+
+        Anyone with a valid access token can call this method.'
+      operationId: States_GetStates
+      responses:
+        '200':
+          description: Request was successful.
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/GlobalStates'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GlobalStates'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/GlobalStates'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/GlobalStates'
+            text/xml:
+              schema:
+                $ref: '#/components/schemas/GlobalStates'
+        '400':
+          description: Bad request. See ErrorCode and Message for details
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            text/xml:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '401':
+          description: Not authorized to make this request.
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            text/xml:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+      x-ds-methodname: GetStates
+      x-ds-method: GetStates
+      x-ds-service: States
+      x-ds-in-sdk: true
+components:
+  schemas:
+    ApiError:
+      type: object
+      properties:
+        errorCode:
+          type: string
+          description: The code associated with the error condition.
+        message:
+          type: string
+          description: A brief message describing the error condition.
+        referenceId:
+          type: string
+          description: ''
+      description: This object describes errors that occur. It is valid only for responses and ignored in requests.
+      x-ds-definition-name: ApiError
+      x-ms-summary: This object describes errors that occur. It is valid only for responses and ignored in requests.
+    GlobalStates:
+      type: object
+      properties:
+        states:
+          type: array
+          description: A list of states.
+          items:
+            $ref: '#/components/schemas/State'
+      description: Contains a list of supported states.
+      x-ds-definition-name: GlobalStates
+      x-ms-summary: Contains a list of supported states.
+    State:
+      type: object
+      properties:
+        stateId:
+          type: string
+          description: 'A concatenation of the two-letter country code with the state/province/region of the office address.
+
+
+            Example: `US-OH` (for Ohio)'
+        name:
+          type: string
+          description: 'The name of the state. Possible values are:
+
+
+            - `Alberta`
+
+            - `Auckland`
+
+            - `New South Wales`
+
+            - `Alabama`
+
+            - `Alaska`
+
+            - `Bay of Plenty`
+
+            - `British Columbia`
+
+            - `Queensland`
+
+            - `South Australia`
+
+            - `Manitoba`
+
+            - `Canterbury`
+
+            - `Arizona`
+
+            - `Arkansas`
+
+            - `New Brunswick`
+
+            - `Tasmania`
+
+            - `Hawke''s Bay`
+
+            - `Manawatu-Wanganui`
+
+            - `Victoria`
+
+            - `Newfoundland and Labrador`
+
+            - `California`
+
+            - `Colorado`
+
+            - `Western Australia`
+
+            - `Northwest Territories`
+
+            - `Northland`
+
+            - `Otago`
+
+            - `Australian Capital Territory`
+
+            - `Nova Scotia`
+
+            - `Connecticut`
+
+            - `Delaware`
+
+            - `Nunavut`
+
+            - `Northern Territory`
+
+            - `Southland`
+
+            - `Taranaki`
+
+            - `Ontario`
+
+            - `District of Columbia`
+
+            - `Florida`
+
+            - `Prince Edward Island`
+
+            - `Waikato`
+
+            - `Wellington`
+
+            - `Quebec`
+
+            - `Georgia`
+
+            - `Guam`
+
+            - `Saskatchewan`
+
+            - `West Coast`
+
+            - `Gisborne District`
+
+            - `Yukon`
+
+            - `Hawaii`
+
+            - `Idaho`
+
+            - `Marlborough District`
+
+            - `Nelson City`
+
+            - `Illinois`
+
+            - `Indiana`
+
+            - `Tasman District`
+
+            - `Chatham Islands Territory`
+
+            - `Iowa`
+
+            - `Kansas`
+
+            - `Kentucky`
+
+            - `Louisiana`
+
+            - `Maine`
+
+            - `Maryland`
+
+            - `Massachusetts`
+
+            - `Michigan`
+
+            - `Minnesota`
+
+            - `Mississippi`
+
+            - `Missouri`
+
+            - `Montana`
+
+            - `Nebraska`
+
+            - `Nevada`
+
+            - `New Hampshire`
+
+            - `New Jersey`
+
+            - `New Mexico`
+
+            - `New York`
+
+            - `North Carolina`
+
+            - `North Dakota`
+
+            - `Ohio`
+
+            - `Oklahoma`
+
+            - `Oregon`
+
+            - `Pennsylvania`
+
+            - `Puerto Rico`
+
+            - `Rhode Island`
+
+            - `South Carolina`
+
+            - `South Dakota`
+
+            - `Tennessee`
+
+            - `Texas`
+
+            - `US Virgin Islands`
+
+            - `Utah`
+
+            - `Vermont`
+
+            - `Virginia`
+
+            - `Washington`
+
+            - `West Virginia`
+
+            - `Wisconsin`
+
+            - `Wyoming`'
+      description: Contains information about a state.
+      x-ds-definition-name: State
+      x-ms-summary: Contains information about a state.
+  securitySchemes:
+    accessCode:
+      type: oauth2
+      description: OAuth2 Access code Grant
+      flows:
+        authorizationCode:
+          authorizationUrl: https://account.docusign.com/oauth/auth
+          tokenUrl: https://account.docusign.com/oauth/auth
+          scopes:
+            organization_read: ''
+            permission_read: ''
+            group_read: ''
+            user_read: ''
+            account_read: ''
+            account_write: ''
+            user_write: ''
+            identity_provider_read: ''
+            domain_read: ''
+x-ds-categories:
+- name: UserManagement
+  summary: Methods to manage users in an account.
+  description: Methods to manage users in an account.
+- name: BulkOperations
+  summary: Methods to import and export users and accounts.
+  description: Methods to import and export users and accounts.
+- name: IdentityProviders
+  summary: Methods to get a list of identity providers.
+  description: Methods to get a list of identity providers.
+- name: ReservedDomains
+  summary: Methods to get a list of reserved domains.
+  description: Methods to get a list of reserved domains.
+- name: Organization
+  summary: Methods for working with organizations.
+  description: Methods for working with organizations.
+x-original-swagger-version: '2.0'

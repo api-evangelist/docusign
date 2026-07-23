@@ -1,0 +1,582 @@
+openapi: 3.0.1
+info:
+  title: DocuSign Admin AccountBrands Regions API
+  description: An API for an organization administrator to manage organizations, accounts and users
+  termsOfService: https://www.docusign.com/company/terms-and-conditions/developers
+  contact:
+    name: DocuSign Developer Center
+    url: https://developers.docusign.com
+    email: devcenter@docusign.com
+  version: v2.1
+servers:
+- url: https://api.docusign.net/Management
+tags:
+- name: Regions
+  description: ''
+paths:
+  /v2/accounts/{accountId}/regions:
+    get:
+      tags:
+      - Regions
+      summary: Docusign Gets regions.
+      description: This method returns a list of regions that are associated with a Rooms account.
+      operationId: Regions_GetRegions
+      parameters:
+      - name: count
+        in: query
+        description: The number of results to return. This value must be a number between `1` and `100` (default).
+        schema:
+          type: integer
+          format: int32
+          default: 100
+      - name: startPosition
+        in: query
+        description: The starting zero-based index position of the results set from which to begin returning values. The default value is `0`.
+        schema:
+          type: integer
+          format: int32
+          default: 0
+      - name: managedOnly
+        in: query
+        description: When **true,** only the regions that the current user manages are returned. The default value is **false.**
+        schema:
+          type: boolean
+          default: false
+      - name: accountId
+        in: path
+        description: The globally unique identifier (GUID) for the account.
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Regions successfully retrieved.
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/RegionSummaryList'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RegionSummaryList'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/RegionSummaryList'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/RegionSummaryList'
+            text/xml:
+              schema:
+                $ref: '#/components/schemas/RegionSummaryList'
+        '400':
+          description: Bad request. See ErrorCode and Message for details
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            text/xml:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '401':
+          description: Not authorized to make this request.
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            text/xml:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+      x-ds-methodname: GetRegions
+      x-ds-method: GetRegions
+      x-ds-service: Regions
+      x-ds-in-sdk: true
+    post:
+      tags:
+      - Regions
+      summary: Docusign Creates a region.
+      description: This method creates a new region. When you create a region, you specify only the name. The service will assign and return a region ID (`regionId`) and a creation timestamp (`createdDate`).
+      operationId: Regions_CreateRegion
+      parameters:
+      - name: accountId
+        in: path
+        description: The globally unique identifier (GUID) for the account.
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json-patch+json:
+            schema:
+              $ref: '#/components/schemas/Region'
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Region'
+          text/json:
+            schema:
+              $ref: '#/components/schemas/Region'
+          application/*+json:
+            schema:
+              $ref: '#/components/schemas/Region'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/Region'
+          text/xml:
+            schema:
+              $ref: '#/components/schemas/Region'
+          application/*+xml:
+            schema:
+              $ref: '#/components/schemas/Region'
+        required: false
+      responses:
+        '201':
+          description: The region was successfully created
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/Region'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Region'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/Region'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Region'
+            text/xml:
+              schema:
+                $ref: '#/components/schemas/Region'
+        '400':
+          description: Bad request. See ErrorCode and Message for details
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            text/xml:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '401':
+          description: Not authorized to make this request.
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            text/xml:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+      x-ds-methodname: CreateRegion
+      x-ds-method: CreateRegion
+      x-ds-service: Regions
+      x-ds-in-sdk: true
+      x-codegen-request-body-name: body
+  /v2/accounts/{accountId}/regions/{regionId}:
+    get:
+      tags:
+      - Regions
+      summary: Docusign Gets information about a region.
+      description: This method returns information about a specific region.
+      operationId: Regions_GetRegion
+      parameters:
+      - name: regionId
+        in: path
+        description: The ID of the region.
+        required: true
+        schema:
+          type: integer
+          format: int32
+      - name: accountId
+        in: path
+        description: The globally unique identifier (GUID) for the account.
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: The region was found.
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/Region'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Region'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/Region'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Region'
+            text/xml:
+              schema:
+                $ref: '#/components/schemas/Region'
+        '400':
+          description: Bad request. See ErrorCode and Message for details
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            text/xml:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '401':
+          description: Not authorized to make this request.
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            text/xml:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+      x-ds-methodname: GetRegion
+      x-ds-method: GetRegion
+      x-ds-service: Regions
+      x-ds-in-sdk: true
+    delete:
+      tags:
+      - Regions
+      summary: Docusign Deletes a region.
+      description: This method deletes a region from a Rooms account.
+      operationId: Regions_DeleteRegion
+      parameters:
+      - name: regionId
+        in: path
+        description: The ID of the region.
+        required: true
+        schema:
+          type: integer
+          format: int32
+      - name: accountId
+        in: path
+        description: The globally unique identifier (GUID) for the account.
+        required: true
+        schema:
+          type: string
+      responses:
+        '204':
+          description: Region successfully deleted.
+          content: {}
+        '400':
+          description: Bad request. See ErrorCode and Message for details
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            text/xml:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '401':
+          description: Not authorized to make this request.
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            text/xml:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+      x-ds-methodname: DeleteRegion
+      x-ds-method: DeleteRegion
+      x-ds-service: Regions
+      x-ds-in-sdk: true
+  /v2/accounts/{accountId}/regions/{regionId}/reference_counts:
+    get:
+      tags:
+      - Regions
+      summary: Docusign Retrieves the number and type of objects that reference a region.
+      description: "This method returns a list of each type of object and the number of objects of that type referencing the specified region. \n\n**Note:** A region cannot be deleted while existing objects reference it."
+      operationId: Regions_GetRegionReferenceCounts
+      parameters:
+      - name: regionId
+        in: path
+        description: The ID of the region.
+        required: true
+        schema:
+          type: integer
+          format: int32
+      - name: accountId
+        in: path
+        description: The globally unique identifier (GUID) for the account.
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Reference counts successfully retrieved.
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/RegionReferenceCountList'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RegionReferenceCountList'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/RegionReferenceCountList'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/RegionReferenceCountList'
+            text/xml:
+              schema:
+                $ref: '#/components/schemas/RegionReferenceCountList'
+        '400':
+          description: Bad request. See ErrorCode and Message for details
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            text/xml:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '401':
+          description: Not authorized to make this request.
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            text/xml:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+      x-ds-methodname: GetRegionReferenceCounts
+      x-ds-method: GetRegionReferenceCounts
+      x-ds-service: Regions
+      x-ds-in-sdk: true
+components:
+  schemas:
+    RegionSummary:
+      type: object
+      properties:
+        regionId:
+          type: integer
+          description: The ID of the region. This is the ID that the system generated when you created the region.
+          format: int32
+        name:
+          type: string
+          description: String that specifies the region name.
+        createdDate:
+          type: string
+          description: UTC datetime that the region was created (for example "2019-06-27T19:32:46.943"). Note that the service assigns this value, so it is read-only.
+          format: date-time
+      description: A complex element containing summary information on a region; the elements of this object are identical to those of the `Regions` object.
+      x-ds-definition-name: RegionSummary
+      x-ms-summary: A complex element containing summary information on a region; the elements of this object are identical to those of the `Regions` object.
+    RegionReferenceCount:
+      type: object
+      properties:
+        referenceType:
+          type: string
+          description: The type of object referencing the region.
+        referenceCount:
+          type: integer
+          description: The number of objects of this type referencing the region.
+          format: int32
+      description: A complex element containing the number and type of each object referencing the region.
+      x-ds-definition-name: RegionReferenceCount
+      x-ms-summary: A complex element containing the number and type of each object referencing the region.
+    RegionSummaryList:
+      type: object
+      properties:
+        regionSummaries:
+          type: array
+          description: A list of `RegionSummary` objects containing summary information on a region; the elements of this object are identical to those of the `Regions` object.
+          items:
+            $ref: '#/components/schemas/RegionSummary'
+        resultSetSize:
+          type: integer
+          description: The number of results returned in this response.
+          format: int32
+        startPosition:
+          type: integer
+          description: The starting zero-based index position of the results set. When this property is used as a query parameter, the default value is `0`.
+          format: int32
+        endPosition:
+          type: integer
+          description: The last zero-based index position in the result set.
+          format: int32
+          readOnly: true
+        nextUri:
+          type: string
+          description: The URI for the next chunk of records based on the search request. This property is `null` for the last set of search results.
+        priorUri:
+          type: string
+          description: The URI for the previous chunk of records based on the search request. This property is `null` for the first set of search results.
+        totalRowCount:
+          type: integer
+          description: ''
+          format: int32
+      description: Object that contains a summary of information about a requested group of regions in the Rooms account.
+      x-ds-definition-name: RegionSummaryList
+      x-ms-summary: Object that contains a summary of information about a requested group of regions in the Rooms account.
+    Region:
+      required:
+      - name
+      type: object
+      properties:
+        regionId:
+          type: integer
+          description: The ID of the region. This is the ID that the system generated when you created the region.
+          format: int32
+        name:
+          type: string
+          description: The name of the office.
+        createdDate:
+          type: string
+          description: 'The UTC date and time when the item was created. This is a read-only value that the service assigns.
+
+
+            Example: `2019-07-17T17:45:42.783Z`
+
+
+            '
+          format: date-time
+      description: Contains information about a region.
+      x-ds-definition-name: Region
+      x-ms-summary: Contains information about a region.
+    ApiError:
+      type: object
+      properties:
+        errorCode:
+          type: string
+          description: The code associated with the error condition.
+        message:
+          type: string
+          description: A brief message describing the error condition.
+        referenceId:
+          type: string
+          description: ''
+      description: This object describes errors that occur. It is valid only for responses and ignored in requests.
+      x-ds-definition-name: ApiError
+      x-ms-summary: This object describes errors that occur. It is valid only for responses and ignored in requests.
+    RegionReferenceCountList:
+      type: object
+      properties:
+        referenceCounts:
+          type: array
+          description: A list of each type of object and the number of objects of that type referencing the region.
+          items:
+            $ref: '#/components/schemas/RegionReferenceCount'
+      description: Contains a list of each type of object and the number of objects of that type referencing the region.
+      x-ds-definition-name: RegionReferenceCountList
+      x-ms-summary: Contains a list of each type of object and the number of objects of that type referencing the region.
+  securitySchemes:
+    accessCode:
+      type: oauth2
+      description: OAuth2 Access code Grant
+      flows:
+        authorizationCode:
+          authorizationUrl: https://account.docusign.com/oauth/auth
+          tokenUrl: https://account.docusign.com/oauth/auth
+          scopes:
+            organization_read: ''
+            permission_read: ''
+            group_read: ''
+            user_read: ''
+            account_read: ''
+            account_write: ''
+            user_write: ''
+            identity_provider_read: ''
+            domain_read: ''
+x-ds-categories:
+- name: UserManagement
+  summary: Methods to manage users in an account.
+  description: Methods to manage users in an account.
+- name: BulkOperations
+  summary: Methods to import and export users and accounts.
+  description: Methods to import and export users and accounts.
+- name: IdentityProviders
+  summary: Methods to get a list of identity providers.
+  description: Methods to get a list of identity providers.
+- name: ReservedDomains
+  summary: Methods to get a list of reserved domains.
+  description: Methods to get a list of reserved domains.
+- name: Organization
+  summary: Methods for working with organizations.
+  description: Methods for working with organizations.
+x-original-swagger-version: '2.0'

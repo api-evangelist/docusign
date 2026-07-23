@@ -1,0 +1,263 @@
+openapi: 3.0.1
+info:
+  title: DocuSign Admin AccountBrands Payments API
+  description: An API for an organization administrator to manage organizations, accounts and users
+  termsOfService: https://www.docusign.com/company/terms-and-conditions/developers
+  contact:
+    name: DocuSign Developer Center
+    url: https://developers.docusign.com
+    email: devcenter@docusign.com
+  version: v2.1
+servers:
+- url: https://api.docusign.net/Management
+tags:
+- name: Payments
+  description: 'The Payments resource provides methods that allow you to manage payments for an account.
+
+
+    These calls can only be used by users with account administrator privileges.'
+paths:
+  /v2/accounts/{accountId}/billing_payments:
+    get:
+      tags:
+      - Payments
+      summary: Docusign Gets payment information for one or more payments.
+      description: "Retrieves a list containing information about one or more payments. If the from date or to date queries are not used, the response returns payment information for the last 365 days. \n\nPrivileges required: account administrator "
+      operationId: BillingPayments_GetPaymentList
+      parameters:
+      - name: accountId
+        in: path
+        description: The external account number (int) or account id GUID.
+        required: true
+        schema:
+          type: string
+      - name: from_date
+        in: query
+        description: Specifies the date/time of the earliest payment in the account to retrieve.
+        schema:
+          type: string
+      - name: to_date
+        in: query
+        description: Specifies the date/time of the latest payment in the account to retrieve.
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Successful response.
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/billingPaymentsResponse'
+        '400':
+          description: Error encountered.
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/errorDetails'
+      deprecated: false
+      x-ds-methodname: listPayments
+      x-ds-method: list
+      x-ds-service: Billing
+      x-ds-in-sdk: true
+    post:
+      tags:
+      - Payments
+      summary: Docusign Posts a payment to a past due invoice.
+      description: "Posts a payment to a past due invoice. \n\n###### Note: This can only be used if the `paymentAllowed` value for a past due invoice is true. This can be determined calling [ML:GetBillingInvoicesPastDue].\n\nThe response returns information for a single payment, if a payment ID was used in the endpoint, or a list of payments. If the from date or to date queries or payment ID are not used, the response returns payment information for the last 365 days. If the request was for a single payment ID, the `nextUri` and `previousUri` properties are not returned.\n\nPrivileges required: account administrator"
+      operationId: BillingPayments_PostPayment
+      parameters:
+      - name: accountId
+        in: path
+        description: The external account number (int) or account id GUID.
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/billingPaymentRequest'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/billingPaymentRequest'
+        required: false
+      responses:
+        '201':
+          description: Successful response.
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/billingPaymentResponse'
+        '400':
+          description: Error encountered.
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/errorDetails'
+      deprecated: false
+      x-ds-methodname: makePayment
+      x-ds-method: create
+      x-ds-service: Billing
+      x-ds-in-sdk: true
+      x-codegen-request-body-name: billingPaymentRequest
+  /v2/accounts/{accountId}/billing_payments/{paymentId}:
+    get:
+      tags:
+      - Payments
+      summary: Docusign Gets billing payment information for a specific payment.
+      description: "Retrieves the information for a specified payment. \n\nPrivileges required: account administrator "
+      operationId: BillingPayments_GetPayment
+      parameters:
+      - name: accountId
+        in: path
+        description: The external account number (int) or account id GUID.
+        required: true
+        schema:
+          type: string
+      - name: paymentId
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Successful response.
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/billingPaymentItem'
+        '400':
+          description: Error encountered.
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/errorDetails'
+      deprecated: false
+      x-ds-methodname: getPayment
+      x-ds-method: get
+      x-ds-service: Billing
+      x-ds-in-sdk: true
+components:
+  schemas:
+    billingPaymentRequest:
+      type: object
+      properties:
+        paymentAmount:
+          type: string
+          description: The payment amount for the past due invoices. This value must match the pastDueBalance value retrieved using Get Past Due Invoices.
+      description: ''
+      x-ds-definition-name: billingPaymentRequest
+      x-ms-summary: ''
+    billingPayment:
+      type: object
+      properties:
+        amount:
+          type: string
+          description: 'Reserved: TBD'
+        invoiceId:
+          type: string
+          description: 'Reserved: TBD'
+        paymentId:
+          type: string
+          description: ''
+      description: Contains information on a billing plan.
+      x-ds-definition-name: billingPayment
+      x-ms-summary: Contains information on a billing plan.
+    billingPaymentItem:
+      type: object
+      properties:
+        amount:
+          type: string
+          description: The total amount of the purchase.
+        description:
+          type: string
+          description: 'A sender-defined description of the line item.
+
+            '
+        paymentDate:
+          type: string
+          description: ''
+        paymentId:
+          type: string
+          description: ''
+        paymentNumber:
+          type: string
+          description: "When set to **true**, a PDF version of the invoice is available. \n\nTo get the PDF, make the call again and change \"Accept:\" in the header to \"Accept: application/pdf\"."
+      description: ''
+      x-ds-definition-name: billingPaymentItem
+      x-ms-summary: ''
+    billingPaymentResponse:
+      type: object
+      properties:
+        billingPayments:
+          type: array
+          description: 'Reserved: TBD'
+          items:
+            $ref: '#/components/schemas/billingPayment'
+      description: Defines an billing payment response object.
+      x-ds-definition-name: billingPaymentResponse
+      x-ms-summary: Defines an billing payment response object.
+    errorDetails:
+      type: object
+      properties:
+        errorCode:
+          type: string
+          description: An error code associated with the error.
+        message:
+          type: string
+          description: A short error message.
+      description: This object describes errors that occur. It is only valid for responses, and ignored in requests.
+      x-ds-definition-name: errorDetails
+      x-ms-summary: This object describes errors that occur. It is only valid for responses, and ignored in requests.
+    billingPaymentsResponse:
+      type: object
+      properties:
+        billingPayments:
+          type: array
+          description: 'Reserved: TBD'
+          items:
+            $ref: '#/components/schemas/billingPaymentItem'
+        nextUri:
+          type: string
+          description: 'The URI for the next chunk of records based on the search request. It is `null` if this is the last set of results for the search. '
+        previousUri:
+          type: string
+          description: 'The URI for the prior chunk of records based on the search request. It is `null` if this is the first set of results for the search. '
+      description: Defines a billing payments response object.
+      x-ds-definition-name: billingPaymentsResponse
+      x-ms-summary: Defines a billing payments response object.
+  securitySchemes:
+    accessCode:
+      type: oauth2
+      description: OAuth2 Access code Grant
+      flows:
+        authorizationCode:
+          authorizationUrl: https://account.docusign.com/oauth/auth
+          tokenUrl: https://account.docusign.com/oauth/auth
+          scopes:
+            organization_read: ''
+            permission_read: ''
+            group_read: ''
+            user_read: ''
+            account_read: ''
+            account_write: ''
+            user_write: ''
+            identity_provider_read: ''
+            domain_read: ''
+x-ds-categories:
+- name: UserManagement
+  summary: Methods to manage users in an account.
+  description: Methods to manage users in an account.
+- name: BulkOperations
+  summary: Methods to import and export users and accounts.
+  description: Methods to import and export users and accounts.
+- name: IdentityProviders
+  summary: Methods to get a list of identity providers.
+  description: Methods to get a list of identity providers.
+- name: ReservedDomains
+  summary: Methods to get a list of reserved domains.
+  description: Methods to get a list of reserved domains.
+- name: Organization
+  summary: Methods for working with organizations.
+  description: Methods for working with organizations.
+x-original-swagger-version: '2.0'

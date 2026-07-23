@@ -1,0 +1,375 @@
+openapi: 3.0.1
+info:
+  title: DocuSign Admin AccountBrands Workspaces API
+  description: An API for an organization administrator to manage organizations, accounts and users
+  termsOfService: https://www.docusign.com/company/terms-and-conditions/developers
+  contact:
+    name: DocuSign Developer Center
+    url: https://developers.docusign.com
+    email: devcenter@docusign.com
+  version: v2.1
+servers:
+- url: https://api.docusign.net/Management
+tags:
+- name: Workspaces
+  description: 'The Workspaces resource provides methods that allow you to manage workspaces.
+
+    '
+paths:
+  /v2/accounts/{accountId}/workspaces:
+    get:
+      tags:
+      - Workspaces
+      summary: Docusign List Workspaces
+      description: Gets information about the Workspaces that have been created.
+      operationId: Workspace_GetWorkspaces
+      parameters:
+      - name: accountId
+        in: path
+        description: The external account number (int) or account id GUID.
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Successful response.
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/workspaceList'
+        '400':
+          description: Error encountered.
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/errorDetails'
+      deprecated: false
+      x-ds-methodname: listWorkspaces
+      x-ds-method: list
+      x-ds-service: Workspaces
+      x-ds-in-sdk: true
+    post:
+      tags:
+      - Workspaces
+      summary: Docusign Create a Workspace
+      description: Creates a new workspace.
+      operationId: Workspace_PostWorkspace
+      parameters:
+      - name: accountId
+        in: path
+        description: The external account number (int) or account id GUID.
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/workspace'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/workspace'
+        required: false
+      responses:
+        '201':
+          description: Successful response.
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/workspace'
+        '400':
+          description: Error encountered.
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/errorDetails'
+      deprecated: false
+      x-ds-methodname: createWorkspace
+      x-ds-method: create
+      x-ds-service: Workspaces
+      x-ds-in-sdk: true
+      x-codegen-request-body-name: workspace
+  /v2/accounts/{accountId}/workspaces/{workspaceId}:
+    get:
+      tags:
+      - Workspaces
+      summary: Docusign Get Workspace
+      description: 'Retrives properties about a workspace given a unique workspaceId. '
+      operationId: Workspace_GetWorkspace
+      parameters:
+      - name: accountId
+        in: path
+        description: The external account number (int) or account id GUID.
+        required: true
+        schema:
+          type: string
+      - name: workspaceId
+        in: path
+        description: Specifies the workspace ID GUID.
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Successful response.
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/workspace'
+        '400':
+          description: Error encountered.
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/errorDetails'
+      deprecated: false
+      x-ds-methodname: getWorkspace
+      x-ds-method: get
+      x-ds-service: Workspaces
+      x-ds-in-sdk: true
+    put:
+      tags:
+      - Workspaces
+      summary: Docusign Update Workspace
+      description: Updates information about a specific workspace.
+      operationId: Workspace_PutWorkspace
+      parameters:
+      - name: accountId
+        in: path
+        description: The external account number (int) or account id GUID.
+        required: true
+        schema:
+          type: string
+      - name: workspaceId
+        in: path
+        description: Specifies the workspace ID GUID.
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/workspace'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/workspace'
+        required: false
+      responses:
+        '200':
+          description: Successful response.
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/workspace'
+        '400':
+          description: Error encountered.
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/errorDetails'
+      deprecated: false
+      x-ds-methodname: updateWorkspace
+      x-ds-method: update
+      x-ds-service: Workspaces
+      x-ds-in-sdk: true
+      x-codegen-request-body-name: workspace
+    delete:
+      tags:
+      - Workspaces
+      summary: Docusign Delete Workspace
+      description: Deletes an existing workspace (logically).
+      operationId: Workspace_DeleteWorkspace
+      parameters:
+      - name: accountId
+        in: path
+        description: The external account number (int) or account id GUID.
+        required: true
+        schema:
+          type: string
+      - name: workspaceId
+        in: path
+        description: Specifies the workspace ID GUID.
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Successful response.
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/workspace'
+        '400':
+          description: Error encountered.
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/errorDetails'
+      deprecated: false
+      x-ds-methodname: deleteWorkspace
+      x-ds-method: delete
+      x-ds-service: Workspaces
+      x-ds-in-sdk: true
+components:
+  schemas:
+    workspace:
+      type: object
+      properties:
+        billableAccountId:
+          type: string
+          description: ''
+        created:
+          type: string
+          description: The UTC DateTime when the workspace user authorization was created.
+        createdByInformation:
+          $ref: '#/components/schemas/workspaceUser'
+        lastModified:
+          type: string
+          description: Utc date and time the comment was last updated (can only be done by creator.)
+        lastModifiedByInformation:
+          $ref: '#/components/schemas/workspaceUser'
+        status:
+          type: string
+          description: Item status. <!-- TODO -->
+        workspaceBaseUrl:
+          type: string
+          description: The relative URL that may be used to access the workspace.
+        workspaceDescription:
+          type: string
+          description: Text describing the purpose of the workspace.
+        workspaceId:
+          type: string
+          description: Specifies the workspace ID GUID.
+        workspaceName:
+          type: string
+          description: The name of the workspace.
+        workspaceUri:
+          type: string
+          description: The relative URI that may be used to access the workspace.
+      description: ''
+      x-ds-definition-name: workspace
+      x-ms-summary: ''
+    workspaceList:
+      type: object
+      properties:
+        endPosition:
+          type: string
+          description: 'The last position in the result set. '
+        resultSetSize:
+          type: string
+          description: 'The number of results returned in this response. '
+        startPosition:
+          type: string
+          description: Starting position of the current result set.
+        totalSetSize:
+          type: string
+          description: The total number of items in the search's result set. It will always be greater than or equal to the value of the `resultSetSize` field.
+        workspaces:
+          type: array
+          description: A list of workspaces.
+          items:
+            $ref: '#/components/schemas/workspace'
+      description: Provides properties that describe the workspaces avaialble.
+      x-ds-definition-name: workspaceList
+      x-ms-summary: Provides properties that describe the workspaces avaialble.
+    workspaceUser:
+      type: object
+      properties:
+        accountId:
+          type: string
+          description: The account ID associated with the envelope.
+        accountName:
+          type: string
+          description: The name of the account that the workspace user belongs to.
+        activeSince:
+          type: string
+          description: ''
+        created:
+          type: string
+          description: The UTC DateTime when the workspace user was created.
+        createdById:
+          type: string
+          description: ''
+        email:
+          type: string
+          description: ''
+        errorDetails:
+          $ref: '#/components/schemas/errorDetails'
+        lastModified:
+          type: string
+          description: Utc date and time the comment was last updated (can only be done by creator.)
+        lastModifiedById:
+          type: string
+          description: ''
+        status:
+          type: string
+          description: "Filters the results by user status.\nYou can specify a comma-separated\nlist of the following statuses:\n\n* ActivationRequired \n* ActivationSent \n* Active\n* Closed \n* Disabled"
+        type:
+          type: string
+          description: 'Type of the user. Valid values: type_owner, type_participant.'
+        userId:
+          type: string
+          description: 'The user ID of the user being accessed. Generally this is the user ID of the authenticated user, but if the authenticated user is an Admin on the account, this may be another user the Admin user is accessing. **Note**: For the [GET /v2/accounts/{accountId}/envelopes](https://developers.docusign.com/esign-rest-api/reference/Envelopes/Envelopes/listStatusChanges/#envelopesInformation) method, the `user_id` query parameter is not implemented and should not be used.'
+        userName:
+          type: string
+          description: ''
+        workspaceId:
+          type: string
+          description: Specifies the workspace ID GUID.
+        workspaceUserBaseUrl:
+          type: string
+          description: The relative URI that may be used to access a workspace user.
+        workspaceUserId:
+          type: string
+          description: ''
+      description: 'A workspaceUser representing the user. This property is only returned in response to user specific GET call. '
+      x-ds-definition-name: workspaceUser
+      x-ms-summary: 'A workspaceUser representing the user. This property is only returned in response to user specific GET call. '
+    errorDetails:
+      type: object
+      properties:
+        errorCode:
+          type: string
+          description: An error code associated with the error.
+        message:
+          type: string
+          description: A short error message.
+      description: This object describes errors that occur. It is only valid for responses, and ignored in requests.
+      x-ds-definition-name: errorDetails
+      x-ms-summary: This object describes errors that occur. It is only valid for responses, and ignored in requests.
+  securitySchemes:
+    accessCode:
+      type: oauth2
+      description: OAuth2 Access code Grant
+      flows:
+        authorizationCode:
+          authorizationUrl: https://account.docusign.com/oauth/auth
+          tokenUrl: https://account.docusign.com/oauth/auth
+          scopes:
+            organization_read: ''
+            permission_read: ''
+            group_read: ''
+            user_read: ''
+            account_read: ''
+            account_write: ''
+            user_write: ''
+            identity_provider_read: ''
+            domain_read: ''
+x-ds-categories:
+- name: UserManagement
+  summary: Methods to manage users in an account.
+  description: Methods to manage users in an account.
+- name: BulkOperations
+  summary: Methods to import and export users and accounts.
+  description: Methods to import and export users and accounts.
+- name: IdentityProviders
+  summary: Methods to get a list of identity providers.
+  description: Methods to get a list of identity providers.
+- name: ReservedDomains
+  summary: Methods to get a list of reserved domains.
+  description: Methods to get a list of reserved domains.
+- name: Organization
+  summary: Methods for working with organizations.
+  description: Methods for working with organizations.
+x-original-swagger-version: '2.0'

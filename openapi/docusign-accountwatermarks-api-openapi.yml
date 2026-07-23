@@ -1,0 +1,282 @@
+openapi: 3.0.1
+info:
+  title: DocuSign Admin AccountBrands AccountWatermarks API
+  description: An API for an organization administrator to manage organizations, accounts and users
+  termsOfService: https://www.docusign.com/company/terms-and-conditions/developers
+  contact:
+    name: DocuSign Developer Center
+    url: https://developers.docusign.com
+    email: devcenter@docusign.com
+  version: v2.1
+servers:
+- url: https://api.docusign.net/Management
+tags:
+- name: AccountWatermarks
+  description: The AccountWatermarks resource provides methods that allow you to obtain, preview and update watermark information.
+paths:
+  /v2/accounts/{accountId}/watermark:
+    get:
+      tags:
+      - AccountWatermarks
+      summary: Docusign Get watermark information.
+      operationId: Watermark_GetWatermark
+      parameters:
+      - name: accountId
+        in: path
+        description: The external account number (int) or account id GUID.
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Successful response.
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/watermark'
+        '400':
+          description: Error encountered.
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/errorDetails'
+      deprecated: false
+      x-ds-methodname: getWatermark
+      x-ds-method: get
+      x-ds-service: Accounts
+      x-ds-in-sdk: true
+    put:
+      tags:
+      - AccountWatermarks
+      summary: Docusign Update watermark information.
+      operationId: Watermark_PutWatermark
+      parameters:
+      - name: accountId
+        in: path
+        description: The external account number (int) or account id GUID.
+        required: true
+        schema:
+          type: string
+      requestBody:
+        description: 'When set to **true**, the account has the watermark feature enabled, and the envelope is not complete, the watermark for the account is added to the PDF documents. This option can remove the watermark. '
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/watermark'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/watermark'
+        required: false
+      responses:
+        '200':
+          description: Successful response.
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/watermark'
+        '400':
+          description: Error encountered.
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/errorDetails'
+      deprecated: false
+      x-ds-methodname: updateWatermark
+      x-ds-method: update
+      x-ds-service: Accounts
+      x-ds-in-sdk: true
+      x-codegen-request-body-name: watermark
+  /v2/accounts/{accountId}/watermark/preview:
+    put:
+      tags:
+      - AccountWatermarks
+      summary: Docusign Get watermark preview.
+      operationId: WatermarkPreview_PutWatermarkPreview
+      parameters:
+      - name: accountId
+        in: path
+        description: The external account number (int) or account id GUID.
+        required: true
+        schema:
+          type: string
+      requestBody:
+        description: 'When set to **true**, the account has the watermark feature enabled, and the envelope is not complete, the watermark for the account is added to the PDF documents. This option can remove the watermark. '
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/watermark'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/watermark'
+        required: false
+      responses:
+        '200':
+          description: Successful response.
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/watermark'
+        '400':
+          description: Error encountered.
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/errorDetails'
+      deprecated: false
+      x-ds-methodname: getWatermarkPreview
+      x-ds-method: preview
+      x-ds-service: Accounts
+      x-ds-in-sdk: true
+      x-codegen-request-body-name: watermark
+components:
+  schemas:
+    watermark:
+      type: object
+      properties:
+        displayAngle:
+          type: string
+          description: ''
+        enabled:
+          type: string
+          description: ''
+        font:
+          type: string
+          description: 'The font to be used for the tab value. Supported Fonts include:
+
+
+            - Default
+
+            - Arial
+
+            - ArialNarrow
+
+            - Calibri
+
+            - CourierNew
+
+            - Garamond
+
+            - Georgia
+
+            - Helvetica
+
+            - LucidaConsole
+
+            - MSGothic
+
+            - MSMincho
+
+            - OCR-A
+
+            - Tahoma
+
+            - TimesNewRoman
+
+            - Trebuchet
+
+            - Verdana
+
+            '
+        fontColor:
+          type: string
+          description: "The font color used for the information in the tab. Possible values are: \n\n- Black\n- BrightBlue\n- BrightRed\n- DarkGreen\n- DarkRed\n- Gold\n- Green\n- NavyBlue\n- Purple\n- White\n"
+        fontSize:
+          type: string
+          description: 'The font size used for the information in the tab. Possible values are:
+
+
+            - Size7
+
+            - Size8
+
+            - Size9
+
+            - Size10
+
+            - Size11
+
+            - Size12
+
+            - Size14
+
+            - Size16
+
+            - Size18
+
+            - Size20
+
+            - Size22
+
+            - Size24
+
+            - Size26
+
+            - Size28
+
+            - Size36
+
+            - Size48
+
+            - Size72'
+        id:
+          type: string
+          description: ''
+        imageBase64:
+          type: string
+          description: ''
+        transparency:
+          type: string
+          description: ''
+        watermarkText:
+          type: string
+          description: ''
+      description: ''
+      x-ds-definition-name: watermark
+      x-ms-summary: ''
+    errorDetails:
+      type: object
+      properties:
+        errorCode:
+          type: string
+          description: An error code associated with the error.
+        message:
+          type: string
+          description: A short error message.
+      description: This object describes errors that occur. It is only valid for responses, and ignored in requests.
+      x-ds-definition-name: errorDetails
+      x-ms-summary: This object describes errors that occur. It is only valid for responses, and ignored in requests.
+  securitySchemes:
+    accessCode:
+      type: oauth2
+      description: OAuth2 Access code Grant
+      flows:
+        authorizationCode:
+          authorizationUrl: https://account.docusign.com/oauth/auth
+          tokenUrl: https://account.docusign.com/oauth/auth
+          scopes:
+            organization_read: ''
+            permission_read: ''
+            group_read: ''
+            user_read: ''
+            account_read: ''
+            account_write: ''
+            user_write: ''
+            identity_provider_read: ''
+            domain_read: ''
+x-ds-categories:
+- name: UserManagement
+  summary: Methods to manage users in an account.
+  description: Methods to manage users in an account.
+- name: BulkOperations
+  summary: Methods to import and export users and accounts.
+  description: Methods to import and export users and accounts.
+- name: IdentityProviders
+  summary: Methods to get a list of identity providers.
+  description: Methods to get a list of identity providers.
+- name: ReservedDomains
+  summary: Methods to get a list of reserved domains.
+  description: Methods to get a list of reserved domains.
+- name: Organization
+  summary: Methods for working with organizations.
+  description: Methods for working with organizations.
+x-original-swagger-version: '2.0'

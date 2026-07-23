@@ -1,0 +1,275 @@
+openapi: 3.0.1
+info:
+  title: DocuSign Admin AccountBrands EnvelopeDocumentHtmlDefinitions API
+  description: An API for an organization administrator to manage organizations, accounts and users
+  termsOfService: https://www.docusign.com/company/terms-and-conditions/developers
+  contact:
+    name: DocuSign Developer Center
+    url: https://developers.docusign.com
+    email: devcenter@docusign.com
+  version: v2.1
+servers:
+- url: https://api.docusign.net/Management
+tags:
+- name: EnvelopeDocumentHtmlDefinitions
+  description: ''
+paths:
+  /v2/accounts/{accountId}/envelopes/{envelopeId}/documents/{documentId}/html_definitions:
+    get:
+      tags:
+      - EnvelopeDocumentHtmlDefinitions
+      operationId: ResponsiveHtml_GetEnvelopeDocumentHtmlDefinitions
+      parameters:
+      - name: accountId
+        in: path
+        description: The external account number (int) or account id GUID.
+        required: true
+        schema:
+          type: string
+      - name: documentId
+        in: path
+        description: The ID of the document being accessed.
+        required: true
+        schema:
+          type: string
+      - name: envelopeId
+        in: path
+        description: 'The envelope''s GUID. Eg 93be49ab-afa0-4adf-933c-f752070d71ec '
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Successful response.
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/documentHtmlDefinitionOriginals'
+        '400':
+          description: Error encountered.
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/errorDetails'
+      deprecated: false
+      x-ds-methodname: getEnvelopeDocumentHtmlDefinitions
+      x-ds-method: get
+      x-ds-service: Uncategorized
+      x-ds-in-sdk: true
+components:
+  schemas:
+    documentHtmlCollapsibleDisplaySettings:
+      type: object
+      properties:
+        arrowClosed:
+          type: string
+          description: ''
+        arrowColor:
+          type: string
+          description: ''
+        arrowLocation:
+          type: string
+          description: ''
+        arrowOpen:
+          type: string
+          description: ''
+        arrowSize:
+          type: string
+          description: ''
+        arrowStyle:
+          type: string
+          description: ''
+        containerStyle:
+          type: string
+          description: ''
+        labelStyle:
+          type: string
+          description: ''
+        onlyArrowIsClickable:
+          type: boolean
+          description: ''
+        outerLabelAndArrowStyle:
+          type: string
+          description: ''
+      description: ''
+      x-ds-definition-name: documentHtmlCollapsibleDisplaySettings
+      x-ms-summary: ''
+    documentHtmlDefinitionOriginals:
+      type: object
+      properties:
+        htmlDefinitions:
+          type: array
+          description: ''
+          items:
+            $ref: '#/components/schemas/documentHtmlDefinitionOriginal'
+      description: ''
+      x-ds-definition-name: documentHtmlDefinitionOriginals
+      x-ms-summary: ''
+    documentHtmlDefinition:
+      type: object
+      properties:
+        displayAnchorPrefix:
+          type: string
+          description: ''
+        displayAnchors:
+          type: array
+          description: ''
+          items:
+            $ref: '#/components/schemas/documentHtmlDisplayAnchor'
+        displayOrder:
+          type: string
+          description: ''
+        displayPageNumber:
+          type: string
+          description: ''
+        documentGuid:
+          type: string
+          description: ''
+        documentId:
+          type: string
+          description: The ID of the document being accessed.
+        headerLabel:
+          type: string
+          description: ''
+        maxScreenWidth:
+          type: string
+          description: ''
+        removeEmptyTags:
+          type: string
+          description: ''
+        showMobileOptimizedToggle:
+          type: string
+          description: ''
+        source:
+          type: string
+          description: ''
+      description: ''
+      x-ds-definition-name: documentHtmlDefinition
+      x-ms-summary: ''
+    documentHtmlDisplaySettings:
+      type: object
+      properties:
+        cellStyle:
+          type: string
+          description: ''
+        collapsibleSettings:
+          $ref: '#/components/schemas/documentHtmlCollapsibleDisplaySettings'
+        display:
+          type: string
+          description: "This string sets the display and behavior properties of\nthe document during signing. The possible values are:\n\n* `modal`<br>\n  The document is shown as a supplement action strip\n  and can be viewed, downloaded, or printed in a modal window.\n  This is the recommended value for supplemental documents. \n\n* `download`<br>\n  The document is shown as a supplement action strip\n  and can be viewed, downloaded, or printed in a new browser window. \n\n* `inline`<br>\n  The document is shown in the normal signing window.\n  This value is not used with supplemental documents,\n  but is the default value for all other documents.\n"
+        displayLabel:
+          type: string
+          description: ''
+        displayOrder:
+          type: integer
+          description: ''
+          format: int32
+        displayPageNumber:
+          type: integer
+          description: ''
+          format: int32
+        hideLabelWhenOpened:
+          type: boolean
+          description: ''
+        inlineOuterStyle:
+          type: string
+          description: ''
+        labelWhenOpened:
+          type: string
+          description: ''
+        preLabel:
+          type: string
+          description: ''
+        scrollToTopWhenOpened:
+          type: boolean
+          description: ''
+        tableStyle:
+          type: string
+          description: ''
+      description: ''
+      x-ds-definition-name: documentHtmlDisplaySettings
+      x-ms-summary: ''
+    errorDetails:
+      type: object
+      properties:
+        errorCode:
+          type: string
+          description: An error code associated with the error.
+        message:
+          type: string
+          description: A short error message.
+      description: This object describes errors that occur. It is only valid for responses, and ignored in requests.
+      x-ds-definition-name: errorDetails
+      x-ms-summary: This object describes errors that occur. It is only valid for responses, and ignored in requests.
+    documentHtmlDisplayAnchor:
+      type: object
+      properties:
+        caseSensitive:
+          type: boolean
+          description: ''
+        displaySettings:
+          $ref: '#/components/schemas/documentHtmlDisplaySettings'
+        endAnchor:
+          type: string
+          description: ''
+        removeEndAnchor:
+          type: boolean
+          description: ''
+        removeStartAnchor:
+          type: boolean
+          description: ''
+        startAnchor:
+          type: string
+          description: ''
+      description: ''
+      x-ds-definition-name: documentHtmlDisplayAnchor
+      x-ms-summary: ''
+    documentHtmlDefinitionOriginal:
+      type: object
+      properties:
+        documentId:
+          type: string
+          description: The ID of the document being accessed.
+        documentIdGuid:
+          type: string
+          description: ''
+        htmlDefinition:
+          $ref: '#/components/schemas/documentHtmlDefinition'
+      description: ''
+      x-ds-definition-name: documentHtmlDefinitionOriginal
+      x-ms-summary: ''
+  securitySchemes:
+    accessCode:
+      type: oauth2
+      description: OAuth2 Access code Grant
+      flows:
+        authorizationCode:
+          authorizationUrl: https://account.docusign.com/oauth/auth
+          tokenUrl: https://account.docusign.com/oauth/auth
+          scopes:
+            organization_read: ''
+            permission_read: ''
+            group_read: ''
+            user_read: ''
+            account_read: ''
+            account_write: ''
+            user_write: ''
+            identity_provider_read: ''
+            domain_read: ''
+x-ds-categories:
+- name: UserManagement
+  summary: Methods to manage users in an account.
+  description: Methods to manage users in an account.
+- name: BulkOperations
+  summary: Methods to import and export users and accounts.
+  description: Methods to import and export users and accounts.
+- name: IdentityProviders
+  summary: Methods to get a list of identity providers.
+  description: Methods to get a list of identity providers.
+- name: ReservedDomains
+  summary: Methods to get a list of reserved domains.
+  description: Methods to get a list of reserved domains.
+- name: Organization
+  summary: Methods for working with organizations.
+  description: Methods for working with organizations.
+x-original-swagger-version: '2.0'

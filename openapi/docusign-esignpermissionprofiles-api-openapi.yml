@@ -1,0 +1,189 @@
+openapi: 3.0.1
+info:
+  title: DocuSign Admin AccountBrands ESignPermissionProfiles API
+  description: An API for an organization administrator to manage organizations, accounts and users
+  termsOfService: https://www.docusign.com/company/terms-and-conditions/developers
+  contact:
+    name: DocuSign Developer Center
+    url: https://developers.docusign.com
+    email: devcenter@docusign.com
+  version: v2.1
+servers:
+- url: https://api.docusign.net/Management
+tags:
+- name: ESignPermissionProfiles
+  description: This resource provides a method that returns a list of the  eSignature permission profiles that the current user can assign to a new member.
+paths:
+  /v2/accounts/{accountId}/esign_permission_profiles:
+    get:
+      tags:
+      - ESignPermissionProfiles
+      summary: Docusign Gets eSignature Permission Profiles.
+      description: When you create or invite a new member in Rooms, the system creates an eSignature account for the member at the same time. This method returns a list of the eSignature permission profiles that the current user may be able to assign to a new member. The current user may not assign a permission higher than their own permission.
+      operationId: ESignPermissionProfiles_GetESignPermissionProfiles
+      parameters:
+      - name: accountId
+        in: path
+        description: The globally unique identifier (GUID) for the account.
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Permission profiles successfully retrieved.
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/ESignPermissionProfileList'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ESignPermissionProfileList'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/ESignPermissionProfileList'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/ESignPermissionProfileList'
+            text/xml:
+              schema:
+                $ref: '#/components/schemas/ESignPermissionProfileList'
+        '400':
+          description: Bad request. See ErrorCode and Message for details
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            text/xml:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '401':
+          description: Not authorized to make this request.
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            text/xml:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+      x-ds-methodname: GetESignPermissionProfiles
+      x-ds-method: GetESignPermissionProfiles
+      x-ds-service: ESignPermissionProfiles
+      x-ds-in-sdk: true
+components:
+  schemas:
+    ESignPermissionProfile:
+      type: object
+      properties:
+        eSignPermissionProfileId:
+          type: string
+          description: When an administrator or authorized member invites a new user to become an account member, the system also creates an eSignature account for the invitee at the same time. The `eSignPermissionProfileId` is the ID of the eSignature permission set to assign to the member.
+        name:
+          type: string
+          description: 'The name of the eSignature permission profile. Valid values are:'
+        settings:
+          $ref: '#/components/schemas/ESignAccountRoleSettings'
+      description: 'When an administrator or authorized member invites a new user to become an account member, the system also creates an eSignature account for the invitee at the same time. This object contains information about the eSignature permission profile, which controls member access to the eSignature account. '
+      x-ds-definition-name: ESignPermissionProfile
+      x-ms-summary: 'When an administrator or authorized member invites a new user to become an account member, the system also creates an eSignature account for the invitee at the same time. This object contains information about the eSignature permission profile, which controls member access to the eSignature account. '
+    ESignAccountRoleSettings:
+      type: object
+      properties:
+        allowAccountManagement:
+          type: boolean
+          description: 'A Boolean specifying whether users with this eSignature permission profile can manage the Rooms account. This property is read-only and has the following values:
+
+
+            - `DS Admin` permission profile: **true**
+
+            - `DS Sender` permission profile: **false**
+
+            - `DS Viewer` permission profile: **false**
+
+
+
+
+
+            '
+      description: This object contains details about the permissions associated with a eSignature permission profile.
+      x-ds-definition-name: ESignAccountRoleSettings
+      x-ms-summary: This object contains details about the permissions associated with a eSignature permission profile.
+    ESignPermissionProfileList:
+      type: object
+      properties:
+        permissionProfiles:
+          type: array
+          description: An array of eSignature `permissionProfile` objects.
+          readOnly: true
+          items:
+            $ref: '#/components/schemas/ESignPermissionProfile'
+      description: This object contains a list of eSignature permission profiles.
+      x-ds-definition-name: ESignPermissionProfileList
+      x-ms-summary: This object contains a list of eSignature permission profiles.
+    ApiError:
+      type: object
+      properties:
+        errorCode:
+          type: string
+          description: The code associated with the error condition.
+        message:
+          type: string
+          description: A brief message describing the error condition.
+        referenceId:
+          type: string
+          description: ''
+      description: This object describes errors that occur. It is valid only for responses and ignored in requests.
+      x-ds-definition-name: ApiError
+      x-ms-summary: This object describes errors that occur. It is valid only for responses and ignored in requests.
+  securitySchemes:
+    accessCode:
+      type: oauth2
+      description: OAuth2 Access code Grant
+      flows:
+        authorizationCode:
+          authorizationUrl: https://account.docusign.com/oauth/auth
+          tokenUrl: https://account.docusign.com/oauth/auth
+          scopes:
+            organization_read: ''
+            permission_read: ''
+            group_read: ''
+            user_read: ''
+            account_read: ''
+            account_write: ''
+            user_write: ''
+            identity_provider_read: ''
+            domain_read: ''
+x-ds-categories:
+- name: UserManagement
+  summary: Methods to manage users in an account.
+  description: Methods to manage users in an account.
+- name: BulkOperations
+  summary: Methods to import and export users and accounts.
+  description: Methods to import and export users and accounts.
+- name: IdentityProviders
+  summary: Methods to get a list of identity providers.
+  description: Methods to get a list of identity providers.
+- name: ReservedDomains
+  summary: Methods to get a list of reserved domains.
+  description: Methods to get a list of reserved domains.
+- name: Organization
+  summary: Methods for working with organizations.
+  description: Methods for working with organizations.
+x-original-swagger-version: '2.0'

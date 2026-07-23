@@ -1,0 +1,127 @@
+openapi: 3.0.1
+info:
+  title: DocuSign Admin AccountBrands DataSet API
+  description: An API for an organization administrator to manage organizations, accounts and users
+  termsOfService: https://www.docusign.com/company/terms-and-conditions/developers
+  contact:
+    name: DocuSign Developer Center
+    url: https://developers.docusign.com
+    email: devcenter@docusign.com
+  version: v2.1
+servers:
+- url: https://api.docusign.net/Management
+tags:
+- name: DataSet
+  description: The DataSet resource provides methods that allow you to fetch organization event data. The `dataSet` path parameter must be set to `monitor`.
+paths:
+  /api/v{version}/datasets/{dataSetName}/stream:
+    get:
+      tags:
+      - DataSet
+      summary: Docusign Gets customer event data for an organization.
+      description: 'Gets customer event data for the organization that owns the integration key.
+
+
+        The results for this endpoint are paginated by event timestamp. Use the `cursor` parameter to specify where the query begins in the dataset. Use the `limit` parameter to set the number of records returned.
+
+        '
+      operationId: Api_Version_DatasetsByDataSetNameStreamGet
+      parameters:
+      - name: dataSetName
+        in: path
+        description: Must be `monitor`.
+        required: true
+        schema:
+          type: string
+      - name: version
+        in: path
+        description: 'Must be `2`.
+
+          '
+        required: true
+        schema:
+          type: string
+          default: '2.0'
+      - name: cursor
+        in: query
+        description: 'Specifies a pointer into the dataset where your query will begin. You can either provide an ISO DateTime or a string cursor (from the `endCursor` value in the response). If no value is provided, the query begins from seven days ago.
+
+
+          For example, to fetch event data beginning from January 1, 2022, set this value to `2022-01-01T00:00:00Z`. The response will include data about events starting from that date in chronological order. The response also includes an `endCursor` property. To fetch the next page of event data, call this endpoint again with `cursor` set to the previous `endCursor` value.
+
+          '
+        schema:
+          type: string
+      - name: limit
+        in: query
+        description: The maximum number of records to return. The default value is 1000.
+        schema:
+          type: integer
+          format: int32
+          default: 1000
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CursoredResult'
+      security:
+      - accessCode:
+        - impersonation
+      x-ds-methodname: getStream
+      x-ds-method: getStream
+      x-ds-service: DataSet
+      x-ds-in-sdk: true
+components:
+  schemas:
+    CursoredResult:
+      type: object
+      properties:
+        endCursor:
+          type: string
+          description: ''
+        data:
+          type: array
+          description: ''
+          items:
+            type: object
+            properties: {}
+      description: ''
+      x-ds-definition-name: CursoredResult
+      x-ms-summary: ''
+  securitySchemes:
+    accessCode:
+      type: oauth2
+      description: OAuth2 Access code Grant
+      flows:
+        authorizationCode:
+          authorizationUrl: https://account.docusign.com/oauth/auth
+          tokenUrl: https://account.docusign.com/oauth/auth
+          scopes:
+            organization_read: ''
+            permission_read: ''
+            group_read: ''
+            user_read: ''
+            account_read: ''
+            account_write: ''
+            user_write: ''
+            identity_provider_read: ''
+            domain_read: ''
+x-ds-categories:
+- name: UserManagement
+  summary: Methods to manage users in an account.
+  description: Methods to manage users in an account.
+- name: BulkOperations
+  summary: Methods to import and export users and accounts.
+  description: Methods to import and export users and accounts.
+- name: IdentityProviders
+  summary: Methods to get a list of identity providers.
+  description: Methods to get a list of identity providers.
+- name: ReservedDomains
+  summary: Methods to get a list of reserved domains.
+  description: Methods to get a list of reserved domains.
+- name: Organization
+  summary: Methods for working with organizations.
+  description: Methods for working with organizations.
+x-original-swagger-version: '2.0'

@@ -1,0 +1,272 @@
+openapi: 3.0.1
+info:
+  title: DocuSign Admin AccountBrands Invoices API
+  description: An API for an organization administrator to manage organizations, accounts and users
+  termsOfService: https://www.docusign.com/company/terms-and-conditions/developers
+  contact:
+    name: DocuSign Developer Center
+    url: https://developers.docusign.com
+    email: devcenter@docusign.com
+  version: v2.1
+servers:
+- url: https://api.docusign.net/Management
+tags:
+- name: Invoices
+  description: The Invoices resource provides methods that allow you to manage the invoices for an account.
+paths:
+  /v2/accounts/{accountId}/billing_invoices:
+    get:
+      tags:
+      - Invoices
+      summary: Docusign Get a List of Billing Invoices
+      description: 'Retrieves a list of invoices for the account. If the from date or to date queries are not specified, the response returns invoices for the last 365 days.
+
+
+        Privileges required: account administrator '
+      operationId: BillingInvoices_GetBillingInvoices
+      parameters:
+      - name: accountId
+        in: path
+        description: The external account number (int) or account id GUID.
+        required: true
+        schema:
+          type: string
+      - name: from_date
+        in: query
+        description: Specifies the date/time of the earliest invoice in the account to retrieve.
+        schema:
+          type: string
+      - name: to_date
+        in: query
+        description: Specifies the date/time of the latest invoice in the account to retrieve.
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Successful response.
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/billingInvoicesResponse'
+        '400':
+          description: Error encountered.
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/errorDetails'
+      deprecated: false
+      x-ds-methodname: listInvoices
+      x-ds-method: list
+      x-ds-service: Billing
+      x-ds-in-sdk: true
+  /v2/accounts/{accountId}/billing_invoices/{invoiceId}:
+    get:
+      tags:
+      - Invoices
+      summary: Docusign Retrieves a billing invoice.
+      description: "Retrieves the specified invoice. \n\n###### Note: If the `pdfAvailable` property in the response is set to *true*, you can download a PDF version of the invoice. To download the PDF, make the call again and change the value of the `Accept` property in the header to `Accept: application/pdf`.\n\nPrivileges required: account administrator\n\nThe response returns a list of charges and information about the charges. Quantities are usually shown as 'unlimited' or an integer. Amounts are shown in the currency set for the account.\n\n**Response**\nThe following table provides a description of the different `chargeName` property values. The information will grow as more chargeable items are added to the system.\n\n| chargeName | Description |\n| --- | --- |\n| id_check | ID Check Charge |\n| in_person_signing | In Person Signing charge |\n| envelopes Included | Sent Envelopes for the account |\n| age_verify | Age verification check |\n| ofac | OFAC Check |\n| id_confirm | ID confirmation check |\n| student_authentication | STAN PIN authentication check |\n| wet_sign_fax | Pages for returning signed documents by fax |\n| attachment_fax | Pages for returning attachments by fax |\n| phone_authentication | Phone authentication charge |\n| powerforms | PowerForm envelopes sent |\n| signer_payments | Payment processing charge |\n| outbound_fax | Send by fax charge |\n| bulk_recipient_envelopes | Bulk Recipient Envelopes sent |\n| sms_authentications | SMS authentication charge |\n| saml_authentications | SAML authentication charge |\n| express_signer_certificate | DocuSign Express Certificate charge |\n| personal_signer_certificate | Personal Signer Certificate charge |\n| safe_certificate | SAFE BioPharma Signer Certificate charge |\n| seats | Included active seats charge |\n| open_trust_certificate | OpenTrust Signer Certificate charge | "
+      operationId: BillingInvoices_GetBillingInvoice
+      parameters:
+      - name: accountId
+        in: path
+        description: The external account number (int) or account id GUID.
+        required: true
+        schema:
+          type: string
+      - name: invoiceId
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Successful response.
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/billingInvoice'
+        '400':
+          description: Error encountered.
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/errorDetails'
+      deprecated: false
+      x-ds-methodname: getInvoice
+      x-ds-method: get
+      x-ds-service: Billing
+      x-ds-in-sdk: true
+  /v2/accounts/{accountId}/billing_invoices_past_due:
+    get:
+      tags:
+      - Invoices
+      summary: Docusign Get a list of past due invoices.
+      description: "Returns a list past due invoices for the account and notes if payment can be made through the REST API. \n\nPrivileges Required: account administrator"
+      operationId: BillingInvoices_GetBillingInvoicesPastDue
+      parameters:
+      - name: accountId
+        in: path
+        description: The external account number (int) or account id GUID.
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Successful response.
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/billingInvoicesSummary'
+        '400':
+          description: Error encountered.
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/errorDetails'
+      deprecated: false
+      x-ds-methodname: listInvoicesPastDue
+      x-ds-method: listPastDue
+      x-ds-service: Billing
+      x-ds-in-sdk: true
+components:
+  schemas:
+    billingInvoiceItem:
+      type: object
+      properties:
+        chargeAmount:
+          type: string
+          description: 'Reserved: TBD'
+        chargeName:
+          type: string
+          description: 'Reserved: TBD'
+        invoiceItemId:
+          type: string
+          description: 'Reserved: TBD'
+        quantity:
+          type: string
+          description: The quantity of envelopes to add to the account.
+        unitPrice:
+          type: string
+          description: 'Reserved: TBD'
+      description: Contains information about an item on a billing invoice.
+      x-ds-definition-name: billingInvoiceItem
+      x-ms-summary: Contains information about an item on a billing invoice.
+    billingInvoicesSummary:
+      type: object
+      properties:
+        billingInvoices:
+          type: array
+          description: 'Reserved: TBD'
+          items:
+            $ref: '#/components/schemas/billingInvoice'
+        pastDueBalance:
+          type: string
+          description: ''
+        paymentAllowed:
+          type: string
+          description: ''
+      description: ''
+      x-ds-definition-name: billingInvoicesSummary
+      x-ms-summary: ''
+    billingInvoicesResponse:
+      type: object
+      properties:
+        billingInvoices:
+          type: array
+          description: 'Reserved: TBD'
+          items:
+            $ref: '#/components/schemas/billingInvoice'
+        nextUri:
+          type: string
+          description: 'The URI for the next chunk of records based on the search request. It is `null` if this is the last set of results for the search. '
+        previousUri:
+          type: string
+          description: 'The URI for the prior chunk of records based on the search request. It is `null` if this is the first set of results for the search. '
+      description: Defines a billing invoice response object.
+      x-ds-definition-name: billingInvoicesResponse
+      x-ms-summary: Defines a billing invoice response object.
+    billingInvoice:
+      type: object
+      properties:
+        amount:
+          type: string
+          description: The total amount of the purchase.
+        balance:
+          type: string
+          description: 'Reserved: TBD'
+        dueDate:
+          type: string
+          description: 'Reserved: TBD'
+        invoiceId:
+          type: string
+          description: ''
+        invoiceItems:
+          type: array
+          description: 'Reserved: TBD'
+          items:
+            $ref: '#/components/schemas/billingInvoiceItem'
+        invoiceNumber:
+          type: string
+          description: 'Reserved: TBD'
+        invoiceUri:
+          type: string
+          description: Contains a URI for an endpoint that you can use to retrieve invoice information.
+        nonTaxableAmount:
+          type: string
+          description: ''
+        pdfAvailable:
+          type: string
+          description: ''
+        taxableAmount:
+          type: string
+          description: ''
+      description: ''
+      x-ds-definition-name: billingInvoice
+      x-ms-summary: ''
+    errorDetails:
+      type: object
+      properties:
+        errorCode:
+          type: string
+          description: An error code associated with the error.
+        message:
+          type: string
+          description: A short error message.
+      description: This object describes errors that occur. It is only valid for responses, and ignored in requests.
+      x-ds-definition-name: errorDetails
+      x-ms-summary: This object describes errors that occur. It is only valid for responses, and ignored in requests.
+  securitySchemes:
+    accessCode:
+      type: oauth2
+      description: OAuth2 Access code Grant
+      flows:
+        authorizationCode:
+          authorizationUrl: https://account.docusign.com/oauth/auth
+          tokenUrl: https://account.docusign.com/oauth/auth
+          scopes:
+            organization_read: ''
+            permission_read: ''
+            group_read: ''
+            user_read: ''
+            account_read: ''
+            account_write: ''
+            user_write: ''
+            identity_provider_read: ''
+            domain_read: ''
+x-ds-categories:
+- name: UserManagement
+  summary: Methods to manage users in an account.
+  description: Methods to manage users in an account.
+- name: BulkOperations
+  summary: Methods to import and export users and accounts.
+  description: Methods to import and export users and accounts.
+- name: IdentityProviders
+  summary: Methods to get a list of identity providers.
+  description: Methods to get a list of identity providers.
+- name: ReservedDomains
+  summary: Methods to get a list of reserved domains.
+  description: Methods to get a list of reserved domains.
+- name: Organization
+  summary: Methods for working with organizations.
+  description: Methods for working with organizations.
+x-original-swagger-version: '2.0'

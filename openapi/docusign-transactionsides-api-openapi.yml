@@ -1,0 +1,177 @@
+openapi: 3.0.1
+info:
+  title: DocuSign Admin AccountBrands TransactionSides API
+  description: An API for an organization administrator to manage organizations, accounts and users
+  termsOfService: https://www.docusign.com/company/terms-and-conditions/developers
+  contact:
+    name: DocuSign Developer Center
+    url: https://developers.docusign.com
+    email: devcenter@docusign.com
+  version: v2.1
+servers:
+- url: https://api.docusign.net/Management
+tags:
+- name: TransactionSides
+  description: ''
+paths:
+  /v2/transaction_sides:
+    get:
+      tags:
+      - TransactionSides
+      summary: Docusign Gets transaction sides.
+      description: "Returns a list of real estate transaction sides. \n\n## Permissions\n\nAny user with a valid access token can use this method."
+      operationId: TransactionSides_GetTransactionSides
+      responses:
+        '200':
+          description: Request was successful.
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/GlobalTransactionSides'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GlobalTransactionSides'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/GlobalTransactionSides'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/GlobalTransactionSides'
+            text/xml:
+              schema:
+                $ref: '#/components/schemas/GlobalTransactionSides'
+        '400':
+          description: Bad request. See ErrorCode and Message for details
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            text/xml:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '401':
+          description: Not authorized to make this request.
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            text/xml:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+      x-ds-methodname: GetTransactionSides
+      x-ds-method: GetTransactionSides
+      x-ds-service: TransactionSides
+      x-ds-in-sdk: true
+components:
+  schemas:
+    ApiError:
+      type: object
+      properties:
+        errorCode:
+          type: string
+          description: The code associated with the error condition.
+        message:
+          type: string
+          description: A brief message describing the error condition.
+        referenceId:
+          type: string
+          description: ''
+      description: This object describes errors that occur. It is valid only for responses and ignored in requests.
+      x-ds-definition-name: ApiError
+      x-ms-summary: This object describes errors that occur. It is valid only for responses and ignored in requests.
+    TransactionSide:
+      type: object
+      properties:
+        transactionSideId:
+          type: string
+          description: 'The ID of the transaction side. Valid values are:
+
+
+            - `buy`
+
+            - `sell`
+
+            - `listbuy`
+
+            - `refi`'
+        name:
+          type: string
+          description: 'The name of the transaction side. Valid values are:
+
+
+            - `List Side`
+
+            - `Buy Side`
+
+            - `List & Buy Side`
+
+            - `Refinance`
+
+            '
+      description: Contains information about a real estate transaction side.
+      x-ds-definition-name: TransactionSide
+      x-ms-summary: Contains information about a real estate transaction side.
+    GlobalTransactionSides:
+      type: object
+      properties:
+        transactionSides:
+          type: array
+          description: A list of transaction sides.
+          items:
+            $ref: '#/components/schemas/TransactionSide'
+      description: Contains a list of transaction sides.
+      x-ds-definition-name: GlobalTransactionSides
+      x-ms-summary: Contains a list of transaction sides.
+  securitySchemes:
+    accessCode:
+      type: oauth2
+      description: OAuth2 Access code Grant
+      flows:
+        authorizationCode:
+          authorizationUrl: https://account.docusign.com/oauth/auth
+          tokenUrl: https://account.docusign.com/oauth/auth
+          scopes:
+            organization_read: ''
+            permission_read: ''
+            group_read: ''
+            user_read: ''
+            account_read: ''
+            account_write: ''
+            user_write: ''
+            identity_provider_read: ''
+            domain_read: ''
+x-ds-categories:
+- name: UserManagement
+  summary: Methods to manage users in an account.
+  description: Methods to manage users in an account.
+- name: BulkOperations
+  summary: Methods to import and export users and accounts.
+  description: Methods to import and export users and accounts.
+- name: IdentityProviders
+  summary: Methods to get a list of identity providers.
+  description: Methods to get a list of identity providers.
+- name: ReservedDomains
+  summary: Methods to get a list of reserved domains.
+  description: Methods to get a list of reserved domains.
+- name: Organization
+  summary: Methods for working with organizations.
+  description: Methods for working with organizations.
+x-original-swagger-version: '2.0'

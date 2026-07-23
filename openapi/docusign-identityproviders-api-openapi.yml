@@ -1,0 +1,254 @@
+openapi: 3.0.1
+info:
+  title: DocuSign Admin AccountBrands IdentityProviders API
+  description: An API for an organization administrator to manage organizations, accounts and users
+  termsOfService: https://www.docusign.com/company/terms-and-conditions/developers
+  contact:
+    name: DocuSign Developer Center
+    url: https://developers.docusign.com
+    email: devcenter@docusign.com
+  version: v2.1
+servers:
+- url: https://api.docusign.net/Management
+tags:
+- name: IdentityProviders
+  description: Methods to get a list of identity providers.
+paths:
+  /v2/organizations/{organizationId}/identity_providers:
+    get:
+      tags:
+      - IdentityProviders
+      summary: Docusign Returns the list of identity providers for an organization.
+      description: 'Returns the list of identity providers for an organization.
+
+
+        - Required scopes: `identity_provider_read`
+
+        '
+      operationId: Organization_GetIdentityProviders
+      parameters:
+      - name: organizationId
+        in: path
+        description: The organization ID Guid
+        required: true
+        schema:
+          type: string
+          format: uuid
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/IdentityProvidersResponse'
+      security:
+      - accessCode:
+        - identity_provider_read
+      x-ds-methodname: getIdentityProviders
+      x-ds-method: getIdentityProviders
+      x-ds-service: IdentityProviders
+      x-ds-in-sdk: true
+components:
+  schemas:
+    IdentityProvidersResponse:
+      type: object
+      properties:
+        identity_providers:
+          type: array
+          description: ''
+          items:
+            $ref: '#/components/schemas/IdentityProviderResponse'
+      description: ''
+      x-ds-definition-name: IdentityProvidersResponse
+      x-ms-summary: ''
+    LinkResponse:
+      type: object
+      properties:
+        rel:
+          type: string
+          description: The kind of linked item.
+        href:
+          type: string
+          description: The URL of the linked item.
+      description: A link to a useful URL.
+      x-ds-definition-name: LinkResponse
+      x-ms-summary: A link to a useful URL.
+    RequiredAttributeMappingResponse:
+      type: object
+      properties:
+        required_attribute_id:
+          type: integer
+          description: The unique ID of the attribute.
+          format: int32
+        required_attribute_name:
+          type: string
+          description: The name of the attribute.
+        required_attribute_friendly_name:
+          type: string
+          description: The human-readable name of the attribute.
+        substitute_attribute_name:
+          type: string
+          description: The name of the substitute attribute.
+      description: A single attribute mapping response.
+      x-ds-definition-name: RequiredAttributeMappingResponse
+      x-ms-summary: A single attribute mapping response.
+    SettingResponse:
+      type: object
+      properties:
+        key:
+          type: string
+          description: The key of the setting.
+        value:
+          type: object
+          properties: {}
+          description: The value of the setting.
+        type:
+          type: string
+          description: 'The type of the setting. One of:
+
+
+            - `unknown`
+
+            - `guid`
+
+            - `text`
+
+            - `integer`
+
+            - `boolean`
+
+            - `datetime`
+
+            - `enumeration`'
+      description: A key/value list of settings.
+      x-ds-definition-name: SettingResponse
+      x-ms-summary: A key/value list of settings.
+    Saml2IdentityProviderResponse:
+      type: object
+      properties:
+        issuer:
+          type: string
+          description: The name of the certificate issuer.
+        settings:
+          type: array
+          description: A list of settings.
+          items:
+            $ref: '#/components/schemas/SettingResponse'
+        certificates:
+          type: array
+          description: A list of certificates responses.
+          items:
+            $ref: '#/components/schemas/CertificateResponse'
+        attribute_mappings:
+          type: array
+          description: A list of attribute mappings.
+          items:
+            $ref: '#/components/schemas/RequiredAttributeMappingResponse'
+      description: Information about a SAML 2.0 identity provider.
+      x-ds-definition-name: Saml2IdentityProviderResponse
+      x-ms-summary: Information about a SAML 2.0 identity provider.
+    IdentityProviderResponse:
+      type: object
+      properties:
+        id:
+          type: string
+          description: The unique ID of the identity provider.
+          format: uuid
+          example: 00000000-0000-0000-0000-000000000000
+        friendly_name:
+          type: string
+          description: The human-readable name of the identity provider.
+        auto_provision_users:
+          type: boolean
+          description: 'If **true**, users who use this identity provider are automatically provisioned. '
+        type:
+          type: string
+          description: 'The type of the identity provider. One of:
+
+
+            - `none`
+
+            - `saml_20`
+
+            - `saml_11`
+
+            - `saml_10`
+
+            - `ws_federation`
+
+            - `open_id_connect`'
+        saml_20:
+          $ref: '#/components/schemas/Saml2IdentityProviderResponse'
+        links:
+          type: array
+          description: A list of useful URLs.
+          items:
+            $ref: '#/components/schemas/LinkResponse'
+      description: Information about a single identity provider.
+      x-ds-definition-name: IdentityProviderResponse
+      x-ms-summary: Information about a single identity provider.
+    CertificateResponse:
+      type: object
+      properties:
+        id:
+          type: string
+          description: The unique ID of the certificate.
+          format: uuid
+          example: 00000000-0000-0000-0000-000000000000
+        issuer:
+          type: string
+          description: The certificate issuer.
+        thumbprint:
+          type: string
+          description: The thumbprint of the certificate.
+        expiration_date:
+          type: string
+          description: The date when the certificate expires.
+          format: date-time
+        is_valid:
+          type: boolean
+          description: If **true**, the certificate is valid.
+          readOnly: true
+        links:
+          type: array
+          description: A list of useful links.
+          items:
+            $ref: '#/components/schemas/LinkResponse'
+      description: Information about a single certificate.
+      x-ds-definition-name: CertificateResponse
+      x-ms-summary: Information about a single certificate.
+  securitySchemes:
+    accessCode:
+      type: oauth2
+      description: OAuth2 Access code Grant
+      flows:
+        authorizationCode:
+          authorizationUrl: https://account.docusign.com/oauth/auth
+          tokenUrl: https://account.docusign.com/oauth/auth
+          scopes:
+            organization_read: ''
+            permission_read: ''
+            group_read: ''
+            user_read: ''
+            account_read: ''
+            account_write: ''
+            user_write: ''
+            identity_provider_read: ''
+            domain_read: ''
+x-ds-categories:
+- name: UserManagement
+  summary: Methods to manage users in an account.
+  description: Methods to manage users in an account.
+- name: BulkOperations
+  summary: Methods to import and export users and accounts.
+  description: Methods to import and export users and accounts.
+- name: IdentityProviders
+  summary: Methods to get a list of identity providers.
+  description: Methods to get a list of identity providers.
+- name: ReservedDomains
+  summary: Methods to get a list of reserved domains.
+  description: Methods to get a list of reserved domains.
+- name: Organization
+  summary: Methods for working with organizations.
+  description: Methods for working with organizations.
+x-original-swagger-version: '2.0'

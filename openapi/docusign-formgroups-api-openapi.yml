@@ -1,0 +1,1242 @@
+openapi: 3.0.1
+info:
+  title: DocuSign Admin AccountBrands FormGroups API
+  description: An API for an organization administrator to manage organizations, accounts and users
+  termsOfService: https://www.docusign.com/company/terms-and-conditions/developers
+  contact:
+    name: DocuSign Developer Center
+    url: https://developers.docusign.com
+    email: devcenter@docusign.com
+  version: v2.1
+servers:
+- url: https://api.docusign.net/Management
+tags:
+- name: FormGroups
+  description: With the appropriate permissions, form administrators at your company can create form groups, or curated set of forms gathered from the association **form libraries** to which DocuSign provides access. Form groups enable agents to know which forms to add to rooms based on the type of transaction they are working on. When creating groups, administrators can make certain forms required, ensuring compliance. If you don't create groups, agents will have to choose forms they need from a list of association forms.
+paths:
+  /v2/accounts/{accountId}/form_groups:
+    get:
+      tags:
+      - FormGroups
+      summary: Docusign Gets form groups.
+      description: "Returns the company form groups to which the current user has access.\n\n## Permissions \n\nYou must have a role for which the `canManageFormGroups` permission is set to **true.**"
+      operationId: FormGroups_GetFormGroups
+      parameters:
+      - name: count
+        in: query
+        description: The number of results to return. This value must be a number between `1` and `100` (default).
+        schema:
+          type: integer
+          format: int32
+          default: 100
+      - name: startPosition
+        in: query
+        description: The starting zero-based index position of the results set. The default value is `0`.
+        schema:
+          type: integer
+          format: int32
+          default: 0
+      - name: accountId
+        in: path
+        description: The globally unique identifier (GUID) for the account.
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Successfully retrieved Form Groups.
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/FormGroupSummaryList'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FormGroupSummaryList'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/FormGroupSummaryList'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/FormGroupSummaryList'
+            text/xml:
+              schema:
+                $ref: '#/components/schemas/FormGroupSummaryList'
+        '400':
+          description: Bad request. See ErrorCode and Message for details
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            text/xml:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '401':
+          description: Not authorized to make this request.
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            text/xml:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+      x-ds-methodname: GetFormGroups
+      x-ds-method: GetFormGroups
+      x-ds-service: FormGroups
+      x-ds-in-sdk: true
+    post:
+      tags:
+      - FormGroups
+      summary: Docusign Creates a form group.
+      description: 'Creates a new form group with the name given in the `name` property of the request body.
+
+
+        ## Permissions
+
+
+        You must have a role for which the `canManageFormGroups` permission is set to **true.**'
+      operationId: FormGroups_CreateFormGroup
+      parameters:
+      - name: accountId
+        in: path
+        description: The globally unique identifier (GUID) for the account.
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json-patch+json:
+            schema:
+              $ref: '#/components/schemas/FormGroupForCreate'
+          application/json:
+            schema:
+              $ref: '#/components/schemas/FormGroupForCreate'
+          text/json:
+            schema:
+              $ref: '#/components/schemas/FormGroupForCreate'
+          application/*+json:
+            schema:
+              $ref: '#/components/schemas/FormGroupForCreate'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/FormGroupForCreate'
+          text/xml:
+            schema:
+              $ref: '#/components/schemas/FormGroupForCreate'
+          application/*+xml:
+            schema:
+              $ref: '#/components/schemas/FormGroupForCreate'
+        required: false
+      responses:
+        '201':
+          description: Successfully created form group.
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/FormGroup'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FormGroup'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/FormGroup'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/FormGroup'
+            text/xml:
+              schema:
+                $ref: '#/components/schemas/FormGroup'
+        '400':
+          description: Bad request. See ErrorCode and Message for details
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            text/xml:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '401':
+          description: Not authorized to make this request.
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            text/xml:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+      x-ds-methodname: CreateFormGroup
+      x-ds-method: CreateFormGroup
+      x-ds-service: FormGroups
+      x-ds-in-sdk: true
+      x-codegen-request-body-name: body
+  /v2/accounts/{accountId}/form_groups/{formGroupId}:
+    get:
+      tags:
+      - FormGroups
+      summary: Docusign Gets a form group.
+      description: 'Get the specified form group.
+
+
+        ## Permissions
+
+
+        You must have a role for which the `canManageFormGroups` permission is set to **true.**'
+      operationId: FormGroups_GetFormGroup
+      parameters:
+      - name: formGroupId
+        in: path
+        description: 'The ID of the form group.
+
+
+          Example: `7b879c89-xxxx-xxxx-xxxx-819d6a85e0a1`
+
+          '
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: accountId
+        in: path
+        description: The globally unique identifier (GUID) for the account.
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Successfully retrieved form group.
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/FormGroup'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FormGroup'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/FormGroup'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/FormGroup'
+            text/xml:
+              schema:
+                $ref: '#/components/schemas/FormGroup'
+        '400':
+          description: Bad request. See ErrorCode and Message for details
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            text/xml:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '401':
+          description: Not authorized to make this request.
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            text/xml:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+      x-ds-methodname: GetFormGroup
+      x-ds-method: GetFormGroup
+      x-ds-service: FormGroups
+      x-ds-in-sdk: true
+    put:
+      tags:
+      - FormGroups
+      summary: Docusign Renames a form group.
+      description: 'Renames the specified form group with the name given in the `name` property of the request.
+
+
+        ## Permissions
+
+
+        You must have a role for which the `canManageFormGroups` permission is set to **true.**'
+      operationId: FormGroups_RenameFormGroup
+      parameters:
+      - name: formGroupId
+        in: path
+        description: 'The ID of the form group.
+
+
+          Example: `7b879c89-xxxx-xxxx-xxxx-819d6a85e0a1`
+
+          '
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: accountId
+        in: path
+        description: The globally unique identifier (GUID) for the account.
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json-patch+json:
+            schema:
+              $ref: '#/components/schemas/FormGroupForUpdate'
+          application/json:
+            schema:
+              $ref: '#/components/schemas/FormGroupForUpdate'
+          text/json:
+            schema:
+              $ref: '#/components/schemas/FormGroupForUpdate'
+          application/*+json:
+            schema:
+              $ref: '#/components/schemas/FormGroupForUpdate'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/FormGroupForUpdate'
+          text/xml:
+            schema:
+              $ref: '#/components/schemas/FormGroupForUpdate'
+          application/*+xml:
+            schema:
+              $ref: '#/components/schemas/FormGroupForUpdate'
+        required: false
+      responses:
+        '200':
+          description: Successfully updated form group.
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/FormGroup'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FormGroup'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/FormGroup'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/FormGroup'
+            text/xml:
+              schema:
+                $ref: '#/components/schemas/FormGroup'
+        '400':
+          description: Bad request. See ErrorCode and Message for details
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            text/xml:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '401':
+          description: Not authorized to make this request.
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            text/xml:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+      x-ds-methodname: RenameFormGroup
+      x-ds-method: RenameFormGroup
+      x-ds-service: FormGroups
+      x-ds-in-sdk: true
+      x-codegen-request-body-name: body
+    delete:
+      tags:
+      - FormGroups
+      summary: Docusign Deletes a form group.
+      description: 'Deletes the specified form group.
+
+
+        ## Permissions
+
+
+        You must have a role for which the `canManageFormGroups` permission is set to **true.**'
+      operationId: FormGroups_DeleteFormGroup
+      parameters:
+      - name: formGroupId
+        in: path
+        description: 'The ID of the form group.
+
+
+          Example: `7b879c89-xxxx-xxxx-xxxx-819d6a85e0a1`
+
+          '
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: accountId
+        in: path
+        description: The globally unique identifier (GUID) for the account.
+        required: true
+        schema:
+          type: string
+      responses:
+        '204':
+          description: Successfully deleted form group.
+          content: {}
+        '400':
+          description: Bad request. See ErrorCode and Message for details
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            text/xml:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '401':
+          description: Not authorized to make this request.
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            text/xml:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+      x-ds-methodname: DeleteFormGroup
+      x-ds-method: DeleteFormGroup
+      x-ds-service: FormGroups
+      x-ds-in-sdk: true
+  /v2/accounts/{accountId}/form_groups/{formGroupId}/forms:
+    get:
+      tags:
+      - FormGroups
+      summary: Docusign Gets the user's form group forms.
+      description: Get forms of the specified form group.
+      operationId: FormGroupForms_GetFormGroupForms
+      parameters:
+      - name: formGroupId
+        in: path
+        description: 'The ID of the form group.
+
+
+          Example: `7b879c89-xxxx-xxxx-xxxx-819d6a85e0a1`
+
+          '
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: count
+        in: query
+        description: "The number of results to return. \nDefault value is 100 and max value is 100\n"
+        schema:
+          type: integer
+          format: int32
+          default: 100
+      - name: startPosition
+        in: query
+        description: 'The starting point of the list. The default is 0.
+
+          '
+        schema:
+          type: integer
+          format: int32
+          default: 0
+      - name: accountId
+        in: path
+        description: The globally unique identifier (GUID) for the account.
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Successfully retrieved form group's forms.
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/FormGroupFormList'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FormGroupFormList'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/FormGroupFormList'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/FormGroupFormList'
+            text/xml:
+              schema:
+                $ref: '#/components/schemas/FormGroupFormList'
+        '400':
+          description: Bad request. See ErrorCode and Message for details
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            text/xml:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '401':
+          description: Not authorized to make this request.
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            text/xml:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+      x-ds-methodname: GetFormGroupForms
+      x-ds-method: GetFormGroupForms
+      x-ds-service: FormGroupForms
+      x-ds-in-sdk: true
+  /v2/accounts/{accountId}/form_groups/{formGroupId}/unassign_form/{formId}:
+    post:
+      tags:
+      - FormGroups
+      summary: Docusign Removes a form from a form group.
+      description: 'Removes the form `formId` from the form group `formGroupId`.
+
+
+        ## Permissions
+
+
+        You must have a role for which the `canManageFormGroups` permission is set to **true.**'
+      operationId: FormGroups_RemoveFormGroupForm
+      parameters:
+      - name: formGroupId
+        in: path
+        description: 'The ID of the form group.
+
+
+          Example: `7b879c89-xxxx-xxxx-xxxx-819d6a85e0a1`
+
+          '
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: formId
+        in: path
+        description: The ID of the form.
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: accountId
+        in: path
+        description: The globally unique identifier (GUID) for the account.
+        required: true
+        schema:
+          type: string
+      responses:
+        '204':
+          description: Form was successfully removed from the form group
+          content: {}
+        '400':
+          description: Bad request. See ErrorCode and Message for details
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            text/xml:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '401':
+          description: Not authorized to make this request.
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            text/xml:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+      x-ds-methodname: RemoveFormGroupForm
+      x-ds-method: RemoveFormGroupForm
+      x-ds-service: FormGroups
+      x-ds-in-sdk: true
+  /v2/accounts/{accountId}/form_groups/{formGroupId}/assign_form:
+    post:
+      tags:
+      - FormGroups
+      summary: Docusign Assigns a form to a form group.
+      description: 'Assigns the form specified in the `formId` property of the request to the form group `formGroupId`. Set the `isRequired` property in the request body to **true** if this is a required form.
+
+
+        ## Permissions
+
+
+        You must have a role for which the `canManageFormGroups` permission is set to **true.**
+
+        '
+      operationId: FormGroups_AssignFormGroupForm
+      parameters:
+      - name: formGroupId
+        in: path
+        description: 'The ID of the form group.
+
+
+          Example: `7b879c89-xxxx-xxxx-xxxx-819d6a85e0a1`
+
+          '
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: accountId
+        in: path
+        description: The globally unique identifier (GUID) for the account.
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json-patch+json:
+            schema:
+              $ref: '#/components/schemas/FormGroupFormToAssign'
+          application/json:
+            schema:
+              $ref: '#/components/schemas/FormGroupFormToAssign'
+          text/json:
+            schema:
+              $ref: '#/components/schemas/FormGroupFormToAssign'
+          application/*+json:
+            schema:
+              $ref: '#/components/schemas/FormGroupFormToAssign'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/FormGroupFormToAssign'
+          text/xml:
+            schema:
+              $ref: '#/components/schemas/FormGroupFormToAssign'
+          application/*+xml:
+            schema:
+              $ref: '#/components/schemas/FormGroupFormToAssign'
+        required: false
+      responses:
+        '204':
+          description: Successfully assigned form to form group.
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/FormGroupFormToAssign'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FormGroupFormToAssign'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/FormGroupFormToAssign'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/FormGroupFormToAssign'
+            text/xml:
+              schema:
+                $ref: '#/components/schemas/FormGroupFormToAssign'
+        '400':
+          description: Bad request. See ErrorCode and Message for details
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            text/xml:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '401':
+          description: Not authorized to make this request.
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            text/xml:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+      x-ds-methodname: AssignFormGroupForm
+      x-ds-method: AssignFormGroupForm
+      x-ds-service: FormGroups
+      x-ds-in-sdk: true
+      x-codegen-request-body-name: body
+  /v2/accounts/{accountId}/form_groups/{formGroupId}/grant_office_access/{officeId}:
+    post:
+      tags:
+      - FormGroups
+      summary: Docusign Grants an office access to a form group.
+      description: 'Grants the office `officeId` access to the form group `formGroupId`.
+
+
+        ## Permissions
+
+
+        You must have a role for which the `canManageFormGroups` permission is set to **true.**'
+      operationId: FormGroups_GrantOfficeAccessToFormGroup
+      parameters:
+      - name: formGroupId
+        in: path
+        description: 'The ID of the form group.
+
+
+          Example: `7b879c89-xxxx-xxxx-xxxx-819d6a85e0a1`
+
+          '
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: officeId
+        in: path
+        description: The ID of the office. This is the ID that the system generated when you created the office.
+        required: true
+        schema:
+          type: integer
+          format: int32
+      - name: accountId
+        in: path
+        description: The globally unique identifier (GUID) for the account.
+        required: true
+        schema:
+          type: string
+      responses:
+        '204':
+          description: Office was successfully assigned to the form group
+          content: {}
+        '400':
+          description: Bad request. See ErrorCode and Message for details
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            text/xml:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '401':
+          description: Not authorized to make this request.
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            text/xml:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+      x-ds-methodname: GrantOfficeAccessToFormGroup
+      x-ds-method: GrantOfficeAccessToFormGroup
+      x-ds-service: FormGroups
+      x-ds-in-sdk: true
+  /v2/accounts/{accountId}/form_groups/{formGroupId}/revoke_office_access/{officeId}:
+    post:
+      tags:
+      - FormGroups
+      summary: Docusign Revoke an office's access to a form group.
+      description: 'Revoke access to the form group `formGroupId` from the office `officeId`.
+
+
+        ## Permissions
+
+
+        You must have a role for which the `canManageFormGroups` permission is set to **true.**'
+      operationId: FormGroups_RevokeOfficeAccessFromFormGroup
+      parameters:
+      - name: formGroupId
+        in: path
+        description: 'The ID of the form group.
+
+
+          Example: `7b879c89-xxxx-xxxx-xxxx-819d6a85e0a1`
+
+          '
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: officeId
+        in: path
+        description: The ID of the office. This is the ID that the system generated when you created the office.
+        required: true
+        schema:
+          type: integer
+          format: int32
+      - name: accountId
+        in: path
+        description: The globally unique identifier (GUID) for the account.
+        required: true
+        schema:
+          type: string
+      responses:
+        '204':
+          description: Office was successfully removed from the form group
+          content: {}
+        '400':
+          description: Bad request. See ErrorCode and Message for details
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            text/xml:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '401':
+          description: Not authorized to make this request.
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            text/xml:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+      x-ds-methodname: RevokeOfficeAccessFromFormGroup
+      x-ds-method: RevokeOfficeAccessFromFormGroup
+      x-ds-service: FormGroups
+      x-ds-in-sdk: true
+components:
+  schemas:
+    FormGroupForCreate:
+      required:
+      - name
+      type: object
+      properties:
+        name:
+          type: string
+          description: The name of the group.
+      description: 'Request object for FormGroup: CreateFormGroup.'
+      x-ds-definition-name: FormGroupForCreate
+      x-ms-summary: 'Request object for FormGroup: CreateFormGroup.'
+    FormGroup:
+      type: object
+      properties:
+        formGroupId:
+          type: string
+          description: 'The ID of the form group.
+
+
+            Example: `7b879c89-xxxx-xxxx-xxxx-819d6a85e0a1`
+
+            '
+          format: uuid
+          readOnly: true
+        name:
+          type: string
+          description: The name of the office.
+          readOnly: true
+        officeIds:
+          uniqueItems: true
+          type: array
+          description: An array of office IDs.
+          readOnly: true
+          items:
+            type: integer
+            format: int32
+        forms:
+          type: array
+          description: A list of forms.
+          readOnly: true
+          items:
+            $ref: '#/components/schemas/GroupForm'
+      description: Result from getting a form group.
+      x-ds-definition-name: FormGroup
+      x-ms-summary: Result from getting a form group.
+    GroupForm:
+      type: object
+      properties:
+        formId:
+          type: string
+          description: 'The ID of the form.
+
+
+            Example: `5be324eb-xxxx-xxxx-xxxx-208065181be9`
+
+            '
+          format: uuid
+          readOnly: true
+        name:
+          type: string
+          description: The name of the office.
+          readOnly: true
+        isRequired:
+          type: boolean
+          description: '**True** if the form is required.'
+          readOnly: true
+        lastUpdatedDate:
+          type: string
+          description: 'The UTC date and time when the item was last updated. This is a read-only value that the service assigns.
+
+
+            Example: 2019-07-17T17:45:42.783Z'
+          format: date-time
+          readOnly: true
+        viewingUserHasAccess:
+          type: boolean
+          description: ''
+          readOnly: true
+      description: Description of a single form in a group.
+      x-ds-definition-name: GroupForm
+      x-ms-summary: Description of a single form in a group.
+    FormGroupFormToAssign:
+      required:
+      - formId
+      type: object
+      properties:
+        formId:
+          type: string
+          description: 'The ID of the form.
+
+
+            Example: `5be324eb-xxxx-xxxx-xxxx-208065181be9`
+
+            '
+          format: uuid
+        isRequired:
+          type: boolean
+          description: '**True** if the form is required.'
+      description: ''
+      x-ds-definition-name: FormGroupFormToAssign
+      x-ms-summary: ''
+    FormGroupSummaryList:
+      type: object
+      properties:
+        formGroups:
+          type: array
+          description: A list of form groups.
+          items:
+            $ref: '#/components/schemas/FormGroupSummary'
+        resultSetSize:
+          type: integer
+          description: The number of results returned in this response.
+          format: int32
+        startPosition:
+          type: integer
+          description: The starting zero-based index position of the results set. When this property is used as a query parameter, the default value is `0`.
+          format: int32
+        endPosition:
+          type: integer
+          description: The last zero-based index position in the result set.
+          format: int32
+          readOnly: true
+        nextUri:
+          type: string
+          description: The URI for the next chunk of records based on the search request. This property is `null` for the last set of search results.
+        priorUri:
+          type: string
+          description: The URI for the previous chunk of records based on the search request. This property is `null` for the first set of search results.
+        totalRowCount:
+          type: integer
+          description: ''
+          format: int32
+      description: Contains a list of form groups.
+      x-ds-definition-name: FormGroupSummaryList
+      x-ms-summary: Contains a list of form groups.
+    FormGroupFormList:
+      type: object
+      properties:
+        forms:
+          type: array
+          description: A list of forms.
+          items:
+            $ref: '#/components/schemas/FormGroupForm'
+        resultSetSize:
+          type: integer
+          description: The number of results returned in this response.
+          format: int32
+        startPosition:
+          type: integer
+          description: The starting zero-based index position of the results set. When this property is used as a query parameter, the default value is `0`.
+          format: int32
+        endPosition:
+          type: integer
+          description: The last zero-based index position in the result set.
+          format: int32
+          readOnly: true
+        nextUri:
+          type: string
+          description: The URI for the next chunk of records based on the search request. This property is `null` for the last set of search results.
+        priorUri:
+          type: string
+          description: The URI for the previous chunk of records based on the search request. This property is `null` for the first set of search results.
+        totalRowCount:
+          type: integer
+          description: ''
+          format: int32
+      description: ''
+      x-ds-definition-name: FormGroupFormList
+      x-ms-summary: ''
+    FormGroupSummary:
+      type: object
+      properties:
+        formGroupId:
+          type: string
+          description: 'The ID of the form group.
+
+
+            Example: `7b879c89-xxxx-xxxx-xxxx-819d6a85e0a1`
+
+            '
+          readOnly: true
+        name:
+          type: string
+          description: "The name of the form group. \n\nExample: `Apartment Rental`"
+          readOnly: true
+        formCount:
+          type: integer
+          description: 'The number of forms in the form group.
+
+
+            Example: `10`'
+          format: int32
+          readOnly: true
+      description: Contains details about a form group.
+      x-ds-definition-name: FormGroupSummary
+      x-ms-summary: Contains details about a form group.
+    ApiError:
+      type: object
+      properties:
+        errorCode:
+          type: string
+          description: The code associated with the error condition.
+        message:
+          type: string
+          description: A brief message describing the error condition.
+        referenceId:
+          type: string
+          description: ''
+      description: This object describes errors that occur. It is valid only for responses and ignored in requests.
+      x-ds-definition-name: ApiError
+      x-ms-summary: This object describes errors that occur. It is valid only for responses and ignored in requests.
+    FormGroupForUpdate:
+      required:
+      - name
+      type: object
+      properties:
+        name:
+          type: string
+          description: The name of the office.
+      description: ''
+      x-ds-definition-name: FormGroupForUpdate
+      x-ms-summary: ''
+    FormGroupForm:
+      type: object
+      properties:
+        formId:
+          type: string
+          description: 'The ID of the form.
+
+
+            Example: `5be324eb-xxxx-xxxx-xxxx-208065181be9`
+
+            '
+          format: uuid
+        name:
+          type: string
+          description: The name of the office.
+        isRequired:
+          type: boolean
+          description: '**True** if the form is required.'
+        lastUpdatedDate:
+          type: string
+          description: 'The UTC date and time when the item was last updated. This is a read-only value that the service assigns.
+
+
+            Example: 2019-07-17T17:45:42.783Z'
+          format: date-time
+      description: ''
+      x-ds-definition-name: FormGroupForm
+      x-ms-summary: ''
+  securitySchemes:
+    accessCode:
+      type: oauth2
+      description: OAuth2 Access code Grant
+      flows:
+        authorizationCode:
+          authorizationUrl: https://account.docusign.com/oauth/auth
+          tokenUrl: https://account.docusign.com/oauth/auth
+          scopes:
+            organization_read: ''
+            permission_read: ''
+            group_read: ''
+            user_read: ''
+            account_read: ''
+            account_write: ''
+            user_write: ''
+            identity_provider_read: ''
+            domain_read: ''
+x-ds-categories:
+- name: UserManagement
+  summary: Methods to manage users in an account.
+  description: Methods to manage users in an account.
+- name: BulkOperations
+  summary: Methods to import and export users and accounts.
+  description: Methods to import and export users and accounts.
+- name: IdentityProviders
+  summary: Methods to get a list of identity providers.
+  description: Methods to get a list of identity providers.
+- name: ReservedDomains
+  summary: Methods to get a list of reserved domains.
+  description: Methods to get a list of reserved domains.
+- name: Organization
+  summary: Methods for working with organizations.
+  description: Methods for working with organizations.
+x-original-swagger-version: '2.0'

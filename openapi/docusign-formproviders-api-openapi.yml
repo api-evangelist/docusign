@@ -1,0 +1,237 @@
+openapi: 3.0.1
+info:
+  title: DocuSign Admin AccountBrands FormProviders API
+  description: An API for an organization administrator to manage organizations, accounts and users
+  termsOfService: https://www.docusign.com/company/terms-and-conditions/developers
+  contact:
+    name: DocuSign Developer Center
+    url: https://developers.docusign.com
+    email: devcenter@docusign.com
+  version: v2.1
+servers:
+- url: https://api.docusign.net/Management
+tags:
+- name: FormProviders
+  description: ''
+paths:
+  /v2/accounts/{accountId}/form_providers/{providerId}/associations:
+    get:
+      tags:
+      - FormProviders
+      summary: Docusign Gets all associations by provider.
+      description: 'Gets all associations by provider.
+
+        '
+      operationId: FormProviderAssociations_GetFormProviderAssociations
+      parameters:
+      - name: providerId
+        in: path
+        description: 'The provider ID.
+
+          <!-- like nar, nwmls etc.. -->
+
+          '
+        required: true
+        schema:
+          type: string
+      - name: count
+        in: query
+        description: 'The total number of associations to be returned.
+
+          '
+        schema:
+          type: integer
+          format: int32
+          default: 100
+      - name: startPosition
+        in: query
+        description: 'The starting position on the list.
+
+          '
+        schema:
+          type: integer
+          format: int32
+          default: 0
+      - name: accountId
+        in: path
+        description: The globally unique identifier (GUID) for the account.
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Successfully retrieved Form Associations by provider type.
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/FormProviderAssociationsSummaryList'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FormProviderAssociationsSummaryList'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/FormProviderAssociationsSummaryList'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/FormProviderAssociationsSummaryList'
+            text/xml:
+              schema:
+                $ref: '#/components/schemas/FormProviderAssociationsSummaryList'
+        '400':
+          description: Bad request. See ErrorCode and Message for details
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            text/xml:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '401':
+          description: Not authorized to make this request.
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            text/xml:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+      x-ds-methodname: GetFormProviderAssociations
+      x-ds-method: GetFormProviderAssociations
+      x-ds-service: FormProviderAssociations
+      x-ds-in-sdk: true
+components:
+  schemas:
+    ApiError:
+      type: object
+      properties:
+        errorCode:
+          type: string
+          description: The code associated with the error condition.
+        message:
+          type: string
+          description: A brief message describing the error condition.
+        referenceId:
+          type: string
+          description: ''
+      description: This object describes errors that occur. It is valid only for responses and ignored in requests.
+      x-ds-definition-name: ApiError
+      x-ms-summary: This object describes errors that occur. It is valid only for responses and ignored in requests.
+    FormProviderAssociationsSummaryList:
+      type: object
+      properties:
+        formProviderAssociations:
+          type: array
+          description: ''
+          items:
+            $ref: '#/components/schemas/FormProviderAssociationSummary'
+        resultSetSize:
+          type: integer
+          description: The number of results returned in this response.
+          format: int32
+        startPosition:
+          type: integer
+          description: The starting zero-based index position of the results set. When this property is used as a query parameter, the default value is `0`.
+          format: int32
+        endPosition:
+          type: integer
+          description: The last zero-based index position in the result set.
+          format: int32
+          readOnly: true
+        nextUri:
+          type: string
+          description: The URI for the next chunk of records based on the search request. This property is `null` for the last set of search results.
+        priorUri:
+          type: string
+          description: The URI for the previous chunk of records based on the search request. This property is `null` for the first set of search results.
+        totalRowCount:
+          type: integer
+          description: ''
+          format: int32
+      description: ''
+      x-ds-definition-name: FormProviderAssociationsSummaryList
+      x-ms-summary: ''
+    FormProviderAssociationSummary:
+      type: object
+      properties:
+        associationId:
+          type: string
+          description: ''
+          readOnly: true
+        providerId:
+          type: string
+          description: 'The provider ID.
+
+            <!-- like nar, nwmls etc.. -->
+
+            '
+          readOnly: true
+        lastUpdateDate:
+          type: string
+          description: ''
+          format: date-time
+          readOnly: true
+        formProviderAssociationGuid:
+          type: string
+          description: ''
+          format: uuid
+          readOnly: true
+        formProviderAssociationName:
+          type: string
+          description: ''
+          readOnly: true
+      description: ''
+      x-ds-definition-name: FormProviderAssociationSummary
+      x-ms-summary: ''
+  securitySchemes:
+    accessCode:
+      type: oauth2
+      description: OAuth2 Access code Grant
+      flows:
+        authorizationCode:
+          authorizationUrl: https://account.docusign.com/oauth/auth
+          tokenUrl: https://account.docusign.com/oauth/auth
+          scopes:
+            organization_read: ''
+            permission_read: ''
+            group_read: ''
+            user_read: ''
+            account_read: ''
+            account_write: ''
+            user_write: ''
+            identity_provider_read: ''
+            domain_read: ''
+x-ds-categories:
+- name: UserManagement
+  summary: Methods to manage users in an account.
+  description: Methods to manage users in an account.
+- name: BulkOperations
+  summary: Methods to import and export users and accounts.
+  description: Methods to import and export users and accounts.
+- name: IdentityProviders
+  summary: Methods to get a list of identity providers.
+  description: Methods to get a list of identity providers.
+- name: ReservedDomains
+  summary: Methods to get a list of reserved domains.
+  description: Methods to get a list of reserved domains.
+- name: Organization
+  summary: Methods for working with organizations.
+  description: Methods for working with organizations.
+x-original-swagger-version: '2.0'

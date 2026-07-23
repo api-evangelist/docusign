@@ -1,0 +1,281 @@
+openapi: 3.0.1
+info:
+  title: DocuSign Admin AccountBrands EnvelopeEmailSettings API
+  description: An API for an organization administrator to manage organizations, accounts and users
+  termsOfService: https://www.docusign.com/company/terms-and-conditions/developers
+  contact:
+    name: DocuSign Developer Center
+    url: https://developers.docusign.com
+    email: devcenter@docusign.com
+  version: v2.1
+servers:
+- url: https://api.docusign.net/Management
+tags:
+- name: EnvelopeEmailSettings
+  description: 'The EnvelopeEmailSettings provide methods that allow you to manage the email override settings for an envelope.
+
+
+    Email override settings change the reply to email address, name, or the BCC for email archive information, for the envelope. Note that changing email settings will only affect email communications that occur after the addition was made.
+
+
+    The BCC Email address feature is designed to provide a copy of all email communications for external archiving purposes. DocuSign recommends that envelopes sent using the BCC for Email Archive feature, including the BCC Email Override option, include additional signer authentication options. To send a copy of the envelope to a recipient who does not need to sign, use a Carbon Copies or Certified Deliveries Recipient Type.'
+paths:
+  /v2/accounts/{accountId}/envelopes/{envelopeId}/email_settings:
+    get:
+      tags:
+      - EnvelopeEmailSettings
+      summary: Docusign Gets the email setting overrides for an envelope.
+      description: Retrieves the email override settings for the specified envelope.
+      operationId: EmailSettings_GetEmailSettings
+      parameters:
+      - name: accountId
+        in: path
+        description: The external account number (int) or account id GUID.
+        required: true
+        schema:
+          type: string
+      - name: envelopeId
+        in: path
+        description: 'The envelope''s GUID. Eg 93be49ab-afa0-4adf-933c-f752070d71ec '
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Successful response.
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/emailSettings'
+        '400':
+          description: Error encountered.
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/errorDetails'
+      deprecated: false
+      x-ds-methodname: getEmailSettings
+      x-ds-method: get
+      x-ds-service: Envelopes
+      x-ds-in-sdk: true
+    put:
+      tags:
+      - EnvelopeEmailSettings
+      summary: Docusign Updates the email setting overrides for an envelope.
+      description: 'Updates the existing email override settings for the specified envelope. Note that modifying email settings will only affect email communications that occur after the modification was made.
+
+
+        This can also be used to delete an individual email override setting by using an empty string for the value to be deleted.'
+      operationId: EmailSettings_PutEmailSettings
+      parameters:
+      - name: accountId
+        in: path
+        description: The external account number (int) or account id GUID.
+        required: true
+        schema:
+          type: string
+      - name: envelopeId
+        in: path
+        description: 'The envelope''s GUID. Eg 93be49ab-afa0-4adf-933c-f752070d71ec '
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/emailSettings'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/emailSettings'
+        required: false
+      responses:
+        '200':
+          description: Successful response.
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/emailSettings'
+        '400':
+          description: Error encountered.
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/errorDetails'
+      deprecated: false
+      x-ds-methodname: updateEmailSettings
+      x-ds-method: update
+      x-ds-service: Envelopes
+      x-ds-in-sdk: true
+      x-codegen-request-body-name: emailSettings
+    post:
+      tags:
+      - EnvelopeEmailSettings
+      summary: Docusign Adds email setting overrides to an envelope.
+      description: 'Adds email override settings, changing the email address to reply to an email address, name, or the BCC for email archive information, for the envelope. Note that adding email settings will only affect email communications that occur after the addition was made.
+
+
+        ### Important: The BCC Email address feature is designed to provide a copy of all email communications for external archiving purposes. DocuSign recommends that envelopes sent using the BCC for Email Archive feature, including the BCC Email Override option, include additional signer authentication options. To send a copy of the envelope to a recipient who does not need to sign, use a Carbon Copy or Certified Delivery recipient type.'
+      operationId: EmailSettings_PostEmailSettings
+      parameters:
+      - name: accountId
+        in: path
+        description: The external account number (int) or account id GUID.
+        required: true
+        schema:
+          type: string
+      - name: envelopeId
+        in: path
+        description: 'The envelope''s GUID. Eg 93be49ab-afa0-4adf-933c-f752070d71ec '
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/emailSettings'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/emailSettings'
+        required: false
+      responses:
+        '201':
+          description: Successful response.
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/emailSettings'
+        '400':
+          description: Error encountered.
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/errorDetails'
+      deprecated: false
+      x-ds-methodname: createEmailSettings
+      x-ds-method: create
+      x-ds-service: Envelopes
+      x-ds-in-sdk: true
+      x-codegen-request-body-name: emailSettings
+    delete:
+      tags:
+      - EnvelopeEmailSettings
+      summary: Docusign Deletes the email setting overrides for an envelope.
+      description: Deletes all existing email override settings for the envelope. If you want to delete an individual email override setting, use the PUT and set the value to an empty string. Note that deleting email settings will only affect email communications that occur after the deletion and the normal account email settings are used for future email communications.
+      operationId: EmailSettings_DeleteEmailSettings
+      parameters:
+      - name: accountId
+        in: path
+        description: The external account number (int) or account id GUID.
+        required: true
+        schema:
+          type: string
+      - name: envelopeId
+        in: path
+        description: 'The envelope''s GUID. Eg 93be49ab-afa0-4adf-933c-f752070d71ec '
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Successful response.
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/emailSettings'
+        '400':
+          description: Error encountered.
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/errorDetails'
+      deprecated: false
+      x-ds-methodname: deleteEmailSettings
+      x-ds-method: delete
+      x-ds-service: Envelopes
+      x-ds-in-sdk: true
+components:
+  schemas:
+    bccEmailAddress:
+      type: object
+      properties:
+        bccEmailAddressId:
+          type: string
+          description: "Only users with canManageAccount setting can use this option. An array of up to 5 email addresses the envelope is sent to as a BCC email. \n \nExample: If your account has BCC for Email Archive set up for the email address 'archive@mycompany.com' and you send an envelope using the BCC Email Override to send a BCC email to 'salesarchive@mycompany.com', then a copy of the envelope is only sent to the 'salesarchive@mycompany.com' email address."
+        email:
+          type: string
+          description: 'Specifies the BCC email address. DocuSign verifies that the email format is correct, but does not verify that the email is active.Using this overrides the BCC for Email Archive information setting for this envelope.
+
+
+            Maximum of length: 100 characters. '
+      description: Contains information about the BCC email address.
+      x-ds-definition-name: bccEmailAddress
+      x-ms-summary: Contains information about the BCC email address.
+    errorDetails:
+      type: object
+      properties:
+        errorCode:
+          type: string
+          description: An error code associated with the error.
+        message:
+          type: string
+          description: A short error message.
+      description: This object describes errors that occur. It is only valid for responses, and ignored in requests.
+      x-ds-definition-name: errorDetails
+      x-ms-summary: This object describes errors that occur. It is only valid for responses, and ignored in requests.
+    emailSettings:
+      type: object
+      properties:
+        bccEmailAddresses:
+          type: array
+          description: 'An array containing the email address that should receive a copy of all email communications related to an envelope for archiving purposes. Maximum Length: 100 characters.
+
+
+            **Note**: While this property is an array, it takes only a single email address.'
+          items:
+            $ref: '#/components/schemas/bccEmailAddress'
+        replyEmailAddressOverride:
+          type: string
+          description: ''
+        replyEmailNameOverride:
+          type: string
+          description: ''
+      description: ''
+      x-ds-definition-name: emailSettings
+      x-ms-summary: ''
+  securitySchemes:
+    accessCode:
+      type: oauth2
+      description: OAuth2 Access code Grant
+      flows:
+        authorizationCode:
+          authorizationUrl: https://account.docusign.com/oauth/auth
+          tokenUrl: https://account.docusign.com/oauth/auth
+          scopes:
+            organization_read: ''
+            permission_read: ''
+            group_read: ''
+            user_read: ''
+            account_read: ''
+            account_write: ''
+            user_write: ''
+            identity_provider_read: ''
+            domain_read: ''
+x-ds-categories:
+- name: UserManagement
+  summary: Methods to manage users in an account.
+  description: Methods to manage users in an account.
+- name: BulkOperations
+  summary: Methods to import and export users and accounts.
+  description: Methods to import and export users and accounts.
+- name: IdentityProviders
+  summary: Methods to get a list of identity providers.
+  description: Methods to get a list of identity providers.
+- name: ReservedDomains
+  summary: Methods to get a list of reserved domains.
+  description: Methods to get a list of reserved domains.
+- name: Organization
+  summary: Methods for working with organizations.
+  description: Methods for working with organizations.
+x-original-swagger-version: '2.0'

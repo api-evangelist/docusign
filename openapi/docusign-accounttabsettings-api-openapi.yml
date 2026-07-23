@@ -1,0 +1,267 @@
+openapi: 3.0.1
+info:
+  title: DocuSign Admin AccountBrands AccountTabSettings API
+  description: An API for an organization administrator to manage organizations, accounts and users
+  termsOfService: https://www.docusign.com/company/terms-and-conditions/developers
+  contact:
+    name: DocuSign Developer Center
+    url: https://developers.docusign.com
+    email: devcenter@docusign.com
+  version: v2.1
+servers:
+- url: https://api.docusign.net/Management
+tags:
+- name: AccountTabSettings
+  description: 'The AccountTabSettings resource provides methods that allow you to manage
+
+    tab settings for an account.
+
+    '
+paths:
+  /v2/accounts/{accountId}/settings/tabs:
+    get:
+      tags:
+      - AccountTabSettings
+      summary: Docusign Returns tab settings list for specified account
+      operationId: TabSettings_GetTabSettings
+      parameters:
+      - name: accountId
+        in: path
+        description: The external account number (int) or account id GUID.
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Successful response.
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/tabAccountSettings'
+        '400':
+          description: Error encountered.
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/errorDetails'
+      deprecated: false
+      x-ds-methodname: getAccountTabSettings
+      x-ds-method: get
+      x-ds-service: Accounts
+      x-ds-in-sdk: true
+    put:
+      tags:
+      - AccountTabSettings
+      summary: Docusign Modifies tab settings for specified account
+      operationId: TabSettings_PutSettings
+      parameters:
+      - name: accountId
+        in: path
+        description: The external account number (int) or account id GUID.
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/tabAccountSettings'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/tabAccountSettings'
+        required: false
+      responses:
+        '200':
+          description: Successful response.
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/tabAccountSettings'
+        '400':
+          description: Error encountered.
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/errorDetails'
+      deprecated: false
+      x-ds-methodname: updateAccountTabSettings
+      x-ds-method: update
+      x-ds-service: Accounts
+      x-ds-in-sdk: true
+      x-codegen-request-body-name: tabAccountSettings
+components:
+  schemas:
+    tabAccountSettings:
+      type: object
+      properties:
+        allowTabOrder:
+          type: string
+          description: ''
+        allowTabOrderMetadata:
+          $ref: '#/components/schemas/settingsMetadata'
+        approveDeclineTabsEnabled:
+          type: string
+          description: ''
+        approveDeclineTabsMetadata:
+          $ref: '#/components/schemas/settingsMetadata'
+        calculatedFieldsEnabled:
+          type: string
+          description: ''
+        calculatedFieldsMetadata:
+          $ref: '#/components/schemas/settingsMetadata'
+        checkboxTabsEnabled:
+          type: string
+          description: ''
+        checkboxTabsMetadata:
+          $ref: '#/components/schemas/settingsMetadata'
+        dataFieldRegexEnabled:
+          type: string
+          description: ''
+        dataFieldRegexMetadata:
+          $ref: '#/components/schemas/settingsMetadata'
+        dataFieldSizeEnabled:
+          type: string
+          description: ''
+        dataFieldSizeMetadata:
+          $ref: '#/components/schemas/settingsMetadata'
+        firstLastEmailTabsEnabled:
+          type: string
+          description: ''
+        firstLastEmailTabsMetadata:
+          $ref: '#/components/schemas/settingsMetadata'
+        listTabsEnabled:
+          type: string
+          description: ''
+        listTabsMetadata:
+          $ref: '#/components/schemas/settingsMetadata'
+        noteTabsEnabled:
+          type: string
+          description: ''
+        noteTabsMetadata:
+          $ref: '#/components/schemas/settingsMetadata'
+        radioTabsEnabled:
+          type: string
+          description: ''
+        radioTabsMetadata:
+          $ref: '#/components/schemas/settingsMetadata'
+        savingCustomTabsEnabled:
+          type: string
+          description: ''
+        savingCustomTabsMetadata:
+          $ref: '#/components/schemas/settingsMetadata'
+        senderToChangeTabAssignmentsEnabled:
+          type: string
+          description: ''
+        senderToChangeTabAssignmentsMetadata:
+          $ref: '#/components/schemas/settingsMetadata'
+        sharedCustomTabsEnabled:
+          type: string
+          description: ''
+        sharedCustomTabsMetadata:
+          $ref: '#/components/schemas/settingsMetadata'
+        tabDataLabelEnabled:
+          type: string
+          description: ''
+        tabDataLabelMetadata:
+          $ref: '#/components/schemas/settingsMetadata'
+        tabLocationEnabled:
+          type: string
+          description: ''
+        tabLocationMetadata:
+          $ref: '#/components/schemas/settingsMetadata'
+        tabLockingEnabled:
+          type: string
+          description: ''
+        tabLockingMetadata:
+          $ref: '#/components/schemas/settingsMetadata'
+        tabScaleEnabled:
+          type: string
+          description: ''
+        tabScaleMetadata:
+          $ref: '#/components/schemas/settingsMetadata'
+        tabTextFormattingEnabled:
+          type: string
+          description: ''
+        tabTextFormattingMetadata:
+          $ref: '#/components/schemas/settingsMetadata'
+        textTabsEnabled:
+          type: string
+          description: ''
+        textTabsMetadata:
+          $ref: '#/components/schemas/settingsMetadata'
+      description: ''
+      x-ds-definition-name: tabAccountSettings
+      x-ms-summary: ''
+    settingsMetadata:
+      type: object
+      properties:
+        is21CFRPart11:
+          type: string
+          description: When set to **true**, indicates that this module is enabled on the account.
+        options:
+          type: array
+          description: ''
+          items:
+            type: string
+        rights:
+          type: string
+          description: ''
+        uiHint:
+          type: string
+          description: ''
+        uiOrder:
+          type: string
+          description: ''
+        uiType:
+          type: string
+          description: ''
+      description: ''
+      x-ds-definition-name: settingsMetadata
+      x-ms-summary: ''
+    errorDetails:
+      type: object
+      properties:
+        errorCode:
+          type: string
+          description: An error code associated with the error.
+        message:
+          type: string
+          description: A short error message.
+      description: This object describes errors that occur. It is only valid for responses, and ignored in requests.
+      x-ds-definition-name: errorDetails
+      x-ms-summary: This object describes errors that occur. It is only valid for responses, and ignored in requests.
+  securitySchemes:
+    accessCode:
+      type: oauth2
+      description: OAuth2 Access code Grant
+      flows:
+        authorizationCode:
+          authorizationUrl: https://account.docusign.com/oauth/auth
+          tokenUrl: https://account.docusign.com/oauth/auth
+          scopes:
+            organization_read: ''
+            permission_read: ''
+            group_read: ''
+            user_read: ''
+            account_read: ''
+            account_write: ''
+            user_write: ''
+            identity_provider_read: ''
+            domain_read: ''
+x-ds-categories:
+- name: UserManagement
+  summary: Methods to manage users in an account.
+  description: Methods to manage users in an account.
+- name: BulkOperations
+  summary: Methods to import and export users and accounts.
+  description: Methods to import and export users and accounts.
+- name: IdentityProviders
+  summary: Methods to get a list of identity providers.
+  description: Methods to get a list of identity providers.
+- name: ReservedDomains
+  summary: Methods to get a list of reserved domains.
+  description: Methods to get a list of reserved domains.
+- name: Organization
+  summary: Methods for working with organizations.
+  description: Methods for working with organizations.
+x-original-swagger-version: '2.0'

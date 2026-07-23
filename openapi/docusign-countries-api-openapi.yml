@@ -1,0 +1,166 @@
+openapi: 3.0.1
+info:
+  title: DocuSign Admin AccountBrands Countries API
+  description: An API for an organization administrator to manage organizations, accounts and users
+  termsOfService: https://www.docusign.com/company/terms-and-conditions/developers
+  contact:
+    name: DocuSign Developer Center
+    url: https://developers.docusign.com
+    email: devcenter@docusign.com
+  version: v2.1
+servers:
+- url: https://api.docusign.net/Management
+tags:
+- name: Countries
+  description: ''
+paths:
+  /v2/countries:
+    get:
+      tags:
+      - Countries
+      summary: Docusign Gets countries.
+      description: 'Returns a list of countries that the API supports. This is a list of countries in which you can create an office.
+
+
+        You do not specify an `accountId` or any other parameters with this method.
+
+
+        ## Permissions
+
+
+        Any user with a valid access token can use this method.'
+      operationId: Countries_GetCountries
+      responses:
+        '200':
+          description: Request was successful.
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/GlobalCountries'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GlobalCountries'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/GlobalCountries'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/GlobalCountries'
+            text/xml:
+              schema:
+                $ref: '#/components/schemas/GlobalCountries'
+        '400':
+          description: Bad request. See ErrorCode and Message for details
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            text/xml:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '401':
+          description: Not authorized to make this request.
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            text/xml:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+      x-ds-methodname: GetCountries
+      x-ds-method: GetCountries
+      x-ds-service: Countries
+      x-ds-in-sdk: true
+components:
+  schemas:
+    Country:
+      type: object
+      properties:
+        countryId:
+          type: string
+          description: "The two-letter code for the country. \n\nExample: `NZ`"
+        name:
+          type: string
+          description: "The name of the country. \n\nExample: `New Zealand`"
+      description: Contains details about a supported country.
+      x-ds-definition-name: Country
+      x-ms-summary: Contains details about a supported country.
+    ApiError:
+      type: object
+      properties:
+        errorCode:
+          type: string
+          description: The code associated with the error condition.
+        message:
+          type: string
+          description: A brief message describing the error condition.
+        referenceId:
+          type: string
+          description: ''
+      description: This object describes errors that occur. It is valid only for responses and ignored in requests.
+      x-ds-definition-name: ApiError
+      x-ms-summary: This object describes errors that occur. It is valid only for responses and ignored in requests.
+    GlobalCountries:
+      type: object
+      properties:
+        countries:
+          type: array
+          description: An array of country objects.
+          items:
+            $ref: '#/components/schemas/Country'
+      description: Contains a list of supported countries.
+      x-ds-definition-name: GlobalCountries
+      x-ms-summary: Contains a list of supported countries.
+  securitySchemes:
+    accessCode:
+      type: oauth2
+      description: OAuth2 Access code Grant
+      flows:
+        authorizationCode:
+          authorizationUrl: https://account.docusign.com/oauth/auth
+          tokenUrl: https://account.docusign.com/oauth/auth
+          scopes:
+            organization_read: ''
+            permission_read: ''
+            group_read: ''
+            user_read: ''
+            account_read: ''
+            account_write: ''
+            user_write: ''
+            identity_provider_read: ''
+            domain_read: ''
+x-ds-categories:
+- name: UserManagement
+  summary: Methods to manage users in an account.
+  description: Methods to manage users in an account.
+- name: BulkOperations
+  summary: Methods to import and export users and accounts.
+  description: Methods to import and export users and accounts.
+- name: IdentityProviders
+  summary: Methods to get a list of identity providers.
+  description: Methods to get a list of identity providers.
+- name: ReservedDomains
+  summary: Methods to get a list of reserved domains.
+  description: Methods to get a list of reserved domains.
+- name: Organization
+  summary: Methods for working with organizations.
+  description: Methods for working with organizations.
+x-original-swagger-version: '2.0'

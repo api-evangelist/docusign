@@ -1,0 +1,172 @@
+openapi: 3.0.1
+info:
+  title: DocuSign Admin AccountBrands ClosingStatuses API
+  description: An API for an organization administrator to manage organizations, accounts and users
+  termsOfService: https://www.docusign.com/company/terms-and-conditions/developers
+  contact:
+    name: DocuSign Developer Center
+    url: https://developers.docusign.com
+    email: devcenter@docusign.com
+  version: v2.1
+servers:
+- url: https://api.docusign.net/Management
+tags:
+- name: ClosingStatuses
+  description: ''
+paths:
+  /v2/closing_statuses:
+    get:
+      tags:
+      - ClosingStatuses
+      summary: Docusign Gets closing statuses.
+      description: 'Returns a list of closing statuses, or valid reasons for closing a room.
+
+
+        You do not specify an `accountId` or any other parameters with this method.
+
+
+        ## Permissions
+
+
+        Any user with a valid access token can use this method.'
+      operationId: ClosingStatuses_GetClosingStatuses
+      responses:
+        '200':
+          description: Request was successful.
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/GlobalClosingStatuses'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GlobalClosingStatuses'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/GlobalClosingStatuses'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/GlobalClosingStatuses'
+            text/xml:
+              schema:
+                $ref: '#/components/schemas/GlobalClosingStatuses'
+        '400':
+          description: Bad request. See ErrorCode and Message for details
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            text/xml:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '401':
+          description: Not authorized to make this request.
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            text/xml:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+      x-ds-methodname: GetClosingStatuses
+      x-ds-method: GetClosingStatuses
+      x-ds-service: ClosingStatuses
+      x-ds-in-sdk: true
+components:
+  schemas:
+    ApiError:
+      type: object
+      properties:
+        errorCode:
+          type: string
+          description: The code associated with the error condition.
+        message:
+          type: string
+          description: A brief message describing the error condition.
+        referenceId:
+          type: string
+          description: ''
+      description: This object describes errors that occur. It is valid only for responses and ignored in requests.
+      x-ds-definition-name: ApiError
+      x-ms-summary: This object describes errors that occur. It is valid only for responses and ignored in requests.
+    GlobalClosingStatuses:
+      type: object
+      properties:
+        closingStatuses:
+          type: array
+          description: A list of closing statuses (reasons for closing a room).
+          items:
+            $ref: '#/components/schemas/ClosingStatus'
+      description: Contains a list of valid closing statuses, or reasons for closing a room.
+      x-ds-definition-name: GlobalClosingStatuses
+      x-ms-summary: Contains a list of valid closing statuses, or reasons for closing a room.
+    ClosingStatus:
+      type: object
+      properties:
+        closingStatusId:
+          type: string
+          description: 'The ID of the closing status.
+
+
+            Example: `exp`'
+        name:
+          type: string
+          description: 'The name of the closing status.
+
+
+            Example: `Listing Expired`'
+      description: Contains information about a closing status, or reason for closing a room.
+      x-ds-definition-name: ClosingStatus
+      x-ms-summary: Contains information about a closing status, or reason for closing a room.
+  securitySchemes:
+    accessCode:
+      type: oauth2
+      description: OAuth2 Access code Grant
+      flows:
+        authorizationCode:
+          authorizationUrl: https://account.docusign.com/oauth/auth
+          tokenUrl: https://account.docusign.com/oauth/auth
+          scopes:
+            organization_read: ''
+            permission_read: ''
+            group_read: ''
+            user_read: ''
+            account_read: ''
+            account_write: ''
+            user_write: ''
+            identity_provider_read: ''
+            domain_read: ''
+x-ds-categories:
+- name: UserManagement
+  summary: Methods to manage users in an account.
+  description: Methods to manage users in an account.
+- name: BulkOperations
+  summary: Methods to import and export users and accounts.
+  description: Methods to import and export users and accounts.
+- name: IdentityProviders
+  summary: Methods to get a list of identity providers.
+  description: Methods to get a list of identity providers.
+- name: ReservedDomains
+  summary: Methods to get a list of reserved domains.
+  description: Methods to get a list of reserved domains.
+- name: Organization
+  summary: Methods for working with organizations.
+  description: Methods for working with organizations.
+x-original-swagger-version: '2.0'

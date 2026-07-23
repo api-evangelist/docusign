@@ -1,0 +1,3001 @@
+openapi: 3.0.1
+info:
+  title: DocuSign Admin AccountBrands Rooms API
+  description: An API for an organization administrator to manage organizations, accounts and users
+  termsOfService: https://www.docusign.com/company/terms-and-conditions/developers
+  contact:
+    name: DocuSign Developer Center
+    url: https://developers.docusign.com
+    email: devcenter@docusign.com
+  version: v2.1
+servers:
+- url: https://api.docusign.net/Management
+tags:
+- name: Rooms
+  description: A room can hold documents, envelopes, a list of tasks comprising a workflow, and other related information. You can invite others to this space and assign them permissions on a per-room basis.
+paths:
+  /v2/accounts/{accountId}/rooms/{roomId}/envelopes:
+    post:
+      tags:
+      - Rooms
+      summary: Docusign Creates an envelope with the given documents. Returns the eSignature envelope ID of the envelope that was created.
+      description: 'Creates an envelope with the given documents. Returns the eSignature envelope ID of the envelope that was created.
+
+        '
+      operationId: RoomEnvelopes_CreateRoomEnvelope
+      parameters:
+      - name: roomId
+        in: path
+        description: 'The room ID.
+
+          '
+        required: true
+        schema:
+          type: integer
+          format: int32
+      - name: accountId
+        in: path
+        description: The globally unique identifier (GUID) for the account.
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json-patch+json:
+            schema:
+              $ref: '#/components/schemas/EnvelopeForCreate'
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EnvelopeForCreate'
+          text/json:
+            schema:
+              $ref: '#/components/schemas/EnvelopeForCreate'
+          application/*+json:
+            schema:
+              $ref: '#/components/schemas/EnvelopeForCreate'
+        required: false
+      responses:
+        '200':
+          description: Success
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/Envelope'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Envelope'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/Envelope'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Envelope'
+            text/xml:
+              schema:
+                $ref: '#/components/schemas/Envelope'
+        '201':
+          description: The envelope was successfully created.
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/Envelope'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Envelope'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/Envelope'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Envelope'
+            text/xml:
+              schema:
+                $ref: '#/components/schemas/Envelope'
+        '400':
+          description: Bad request. See ErrorCode and Message for details
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            text/xml:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '401':
+          description: Not authorized to make this request.
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            text/xml:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+      x-ds-methodname: CreateRoomEnvelope
+      x-ds-method: CreateRoomEnvelope
+      x-ds-service: RoomEnvelopes
+      x-ds-in-sdk: true
+      x-codegen-request-body-name: body
+  /v2/accounts/{accountId}/rooms/{roomId}/field_data:
+    get:
+      tags:
+      - Rooms
+      summary: Docusign Gets a room's field data.
+      description: 'Returns the field data associated with a room. This is the information that appears on the room''s **Details** tab.
+
+
+        To better understand the room''s field data, use
+
+        the [Rooms: GetRoomFieldSet](/docs/rooms-api/reference/rooms/rooms/getroomfieldset/) method to retrieve the set of fields that the room uses.'
+      operationId: Rooms_GetRoomFieldData
+      parameters:
+      - name: roomId
+        in: path
+        description: The ID of the room.
+        required: true
+        schema:
+          type: integer
+          format: int32
+      - name: accountId
+        in: path
+        description: The globally unique identifier (GUID) for the account.
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Field data successfully retrieved.
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/FieldData'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FieldData'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/FieldData'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/FieldData'
+            text/xml:
+              schema:
+                $ref: '#/components/schemas/FieldData'
+        '400':
+          description: Bad request. See ErrorCode and Message for details
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            text/xml:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '401':
+          description: Not authorized to make this request.
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            text/xml:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+      x-ds-methodname: GetRoomFieldData
+      x-ds-method: GetRoomFieldData
+      x-ds-service: Rooms
+      x-ds-in-sdk: true
+    put:
+      tags:
+      - Rooms
+      summary: Docusign Updates a room's field data.
+      description: "This method lets you update one or more fields in a room's field data, the information that appears in the room's **Details** tab.\nTo better understand the room's field data,\nuse the [Rooms: GetRoomFieldSet](/docs/rooms-api/reference/rooms/rooms/getroomfieldset/) method to retrieve the set of fields that the room uses.\n\nTo get the current values of a room's field data,\nuse [Rooms: GetRoomFieldData](/docs/rooms-api/reference/rooms/rooms/getroomfieldset/).\n\nFor example, to update the \"Tax annual amount\" and Buyer1's name fields in a room, you would use a request body that looks like this:\n\n```\n{\n  \"data\": {\n    \"taxAnnualAmount\": 3389.12,\n    \"buyer1\": {\n      \"name\": \"Elizabeth Bennet\"\n    }\n  }\n}\n```\n\nIf successful, the response body will have the same contents as the request body.\n\n\nAll of the fields must be updated successfully for the method to succeed.\nFor example, if you were to set the tax amount to a negative number,\nthe method will fail and none of the fields will be updated."
+      operationId: Rooms_UpdateRoomFieldData
+      parameters:
+      - name: roomId
+        in: path
+        description: The ID of the room.
+        required: true
+        schema:
+          type: integer
+          format: int32
+      - name: accountId
+        in: path
+        description: The globally unique identifier (GUID) for the account.
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json-patch+json:
+            schema:
+              $ref: '#/components/schemas/FieldDataForUpdate'
+          application/json:
+            schema:
+              $ref: '#/components/schemas/FieldDataForUpdate'
+          text/json:
+            schema:
+              $ref: '#/components/schemas/FieldDataForUpdate'
+          application/*+json:
+            schema:
+              $ref: '#/components/schemas/FieldDataForUpdate'
+        required: false
+      responses:
+        '200':
+          description: Field data successfully updated.
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/FieldData'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FieldData'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/FieldData'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/FieldData'
+            text/xml:
+              schema:
+                $ref: '#/components/schemas/FieldData'
+        '400':
+          description: Bad request. See ErrorCode and Message for details
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            text/xml:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '401':
+          description: Not authorized to make this request.
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            text/xml:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+      x-ds-methodname: UpdateRoomFieldData
+      x-ds-method: UpdateRoomFieldData
+      x-ds-service: Rooms
+      x-ds-in-sdk: true
+      x-codegen-request-body-name: body
+  /v2/accounts/{accountId}/rooms/{roomId}/forms:
+    post:
+      tags:
+      - Rooms
+      summary: Docusign Adds a form to a room.
+      description: 'Adds a form to a room.
+
+
+        You specify the form that you want to add in the `formForAdd` request body. To find the ID of the form that you want to add, use the [FormsLibraries: GetFormLibraryForms method][GetFormLibraryForms].
+
+
+        [GetFormLibraryForms]: /docs/rooms-api/reference/Forms/FormLibraries/GetFormLibraryForms/
+
+        ## Permissions
+
+
+        You must have a role for which the `canAddDocumentsFromFormLibraries` permission is set to **true.**'
+      operationId: Rooms_AddFormToRoom
+      parameters:
+      - name: roomId
+        in: path
+        description: The ID of the room.
+        required: true
+        schema:
+          type: integer
+          format: int32
+      - name: accountId
+        in: path
+        description: The globally unique identifier (GUID) for the account.
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json-patch+json:
+            schema:
+              $ref: '#/components/schemas/FormForAdd'
+          application/json:
+            schema:
+              $ref: '#/components/schemas/FormForAdd'
+          text/json:
+            schema:
+              $ref: '#/components/schemas/FormForAdd'
+          application/*+json:
+            schema:
+              $ref: '#/components/schemas/FormForAdd'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/FormForAdd'
+          text/xml:
+            schema:
+              $ref: '#/components/schemas/FormForAdd'
+          application/*+xml:
+            schema:
+              $ref: '#/components/schemas/FormForAdd'
+        required: false
+      responses:
+        '200':
+          description: Success
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/RoomDocument'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RoomDocument'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/RoomDocument'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/RoomDocument'
+            text/xml:
+              schema:
+                $ref: '#/components/schemas/RoomDocument'
+        '201':
+          description: The DocuSign Form was successfully added to the room
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/RoomDocument'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RoomDocument'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/RoomDocument'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/RoomDocument'
+            text/xml:
+              schema:
+                $ref: '#/components/schemas/RoomDocument'
+        '400':
+          description: Bad request. See ErrorCode and Message for details
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            text/xml:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '401':
+          description: Not authorized to make this request.
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            text/xml:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+      x-ds-methodname: AddFormToRoom
+      x-ds-method: AddFormToRoom
+      x-ds-service: Rooms
+      x-ds-in-sdk: true
+      x-codegen-request-body-name: body
+  /v2/accounts/{accountId}/rooms/{roomId}/users:
+    get:
+      tags:
+      - Rooms
+      summary: Docusign Gets a room's users.
+      description: This method returns a list of users associated with a room.
+      operationId: Rooms_GetRoomUsers
+      parameters:
+      - name: roomId
+        in: path
+        description: The ID of the room.
+        required: true
+        schema:
+          type: integer
+          format: int32
+      - name: count
+        in: query
+        description: The number of results to return. This value must be a number between `1` and `100` (default).
+        schema:
+          type: integer
+          format: int32
+          default: 100
+      - name: startPosition
+        in: query
+        description: The index position within the total result set from which to start returning values. The default value is `0`.
+        schema:
+          type: integer
+          format: int32
+          default: 0
+      - name: filter
+        in: query
+        description: "A search filter that returns users by the beginning of the user's first name, last name, or email address. You can enter the beginning of the name or email only to return all of the users whose names or email addresses begin with the text that you entered. \n\n**Note:** You do not enter a wildcard (*) at the end of the name or email fragment."
+        schema:
+          type: string
+      - name: sort
+        in: query
+        description: "The order in which to return results. Valid values are:\n\n- `firstNameAsc`: Sort on first name in ascending order. \n- `firstNameDesc`:  Sort on first name in descending order. \n- `lastNameAsc`: Sort on last name in ascending order. \n- `lastNameDesc`: Sort on last name in descending order. This is the default value."
+        schema: {}
+      - name: accountId
+        in: path
+        description: The globally unique identifier (GUID) for the account.
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: The room user was successfully retrieved.
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/RoomUsersResult'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RoomUsersResult'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/RoomUsersResult'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/RoomUsersResult'
+            text/xml:
+              schema:
+                $ref: '#/components/schemas/RoomUsersResult'
+        '400':
+          description: Bad request. See ErrorCode and Message for details
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            text/xml:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '401':
+          description: Not authorized to make this request.
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            text/xml:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '404':
+          description: The room was not found.
+          content: {}
+      x-ds-methodname: GetRoomUsers
+      x-ds-method: GetRoomUsers
+      x-ds-service: Rooms
+      x-ds-in-sdk: true
+    post:
+      tags:
+      - Rooms
+      summary: Docusign Invites a user to a room.
+      description: 'This method invites an existing or new member to a specific room.
+
+
+        You can invite anyone to join a room by specifying their email address.'
+      operationId: Rooms_InviteUser
+      parameters:
+      - name: roomId
+        in: path
+        description: The ID of the room.
+        required: true
+        schema:
+          type: integer
+          format: int32
+      - name: accountId
+        in: path
+        description: The globally unique identifier (GUID) for the account.
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json-patch+json:
+            schema:
+              $ref: '#/components/schemas/RoomInvite'
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RoomInvite'
+          text/json:
+            schema:
+              $ref: '#/components/schemas/RoomInvite'
+          application/*+json:
+            schema:
+              $ref: '#/components/schemas/RoomInvite'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/RoomInvite'
+          text/xml:
+            schema:
+              $ref: '#/components/schemas/RoomInvite'
+          application/*+xml:
+            schema:
+              $ref: '#/components/schemas/RoomInvite'
+        required: false
+      responses:
+        '200':
+          description: Success
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/RoomInviteResponse'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RoomInviteResponse'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/RoomInviteResponse'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/RoomInviteResponse'
+            text/xml:
+              schema:
+                $ref: '#/components/schemas/RoomInviteResponse'
+        '201':
+          description: The user was successfully invited to the room.
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/RoomInviteResponse'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RoomInviteResponse'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/RoomInviteResponse'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/RoomInviteResponse'
+            text/xml:
+              schema:
+                $ref: '#/components/schemas/RoomInviteResponse'
+        '400':
+          description: The user could not be invited to the room.
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            text/xml:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '401':
+          description: Not authorized to make this request.
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            text/xml:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+      x-ds-methodname: InviteUser
+      x-ds-method: InviteUser
+      x-ds-service: Rooms
+      x-ds-in-sdk: true
+      x-codegen-request-body-name: body
+  /v2/accounts/{accountId}/rooms/{roomId}/users/{userId}:
+    put:
+      tags:
+      - Rooms
+      summary: Docusign Updates a room user.
+      description: 'You can use this method to update the following information for a room user:
+
+
+        - `roleId`
+
+        - `transactionSideId`
+
+
+        In the console, this is the **Side and role** information that appears in the room''s **People** tab. You specify the information that you want to update in the `roomUserForUpdate` request body.
+
+
+        ## Permissions
+
+
+        Only the person who invited the room user to the room can update the room user.'
+      operationId: Rooms_PutRoomUser
+      parameters:
+      - name: roomId
+        in: path
+        description: The ID of the room.
+        required: true
+        schema:
+          type: integer
+          format: int32
+      - name: userId
+        in: path
+        description: The ID of the user to update.
+        required: true
+        schema:
+          type: integer
+          format: int32
+      - name: accountId
+        in: path
+        description: The globally unique identifier (GUID) for the account.
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json-patch+json:
+            schema:
+              $ref: '#/components/schemas/RoomUserForUpdate'
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RoomUserForUpdate'
+          text/json:
+            schema:
+              $ref: '#/components/schemas/RoomUserForUpdate'
+          application/*+json:
+            schema:
+              $ref: '#/components/schemas/RoomUserForUpdate'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/RoomUserForUpdate'
+          text/xml:
+            schema:
+              $ref: '#/components/schemas/RoomUserForUpdate'
+          application/*+xml:
+            schema:
+              $ref: '#/components/schemas/RoomUserForUpdate'
+        required: false
+      responses:
+        '200':
+          description: The room user was successfully updated.
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/RoomUser'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RoomUser'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/RoomUser'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/RoomUser'
+            text/xml:
+              schema:
+                $ref: '#/components/schemas/RoomUser'
+        '400':
+          description: The room user could not be updated.
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            text/xml:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '401':
+          description: Not authorized to make this request.
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            text/xml:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+      x-ds-methodname: PutRoomUser
+      x-ds-method: PutRoomUser
+      x-ds-service: Rooms
+      x-ds-in-sdk: true
+      x-codegen-request-body-name: body
+  /v2/accounts/{accountId}/rooms/{roomId}/users/{userId}/revoke_access:
+    post:
+      tags:
+      - Rooms
+      summary: Docusign Revokes the specified user's access to the room.
+      description: "Revokes the specified user's access to the room. If successful, the HTTP result is 204 (No content), and the response is empty.\n\nTo revoke access immediately, leave the request body empty.\n\nTo revoke access on a specific date, use the request body to specify a date. \n\n**Note** If a user doesn't have access to a room, and you revoke their access at a future date, the user will be granted access until the revocation date."
+      operationId: Rooms_RevokeRoomUserAccess
+      parameters:
+      - name: roomId
+        in: path
+        description: The ID of the room.
+        required: true
+        schema:
+          type: integer
+          format: int32
+      - name: userId
+        in: path
+        description: The ID of the user whose access you want to revoke.
+        required: true
+        schema:
+          type: integer
+          format: int32
+      - name: accountId
+        in: path
+        description: The globally unique identifier (GUID) for the account.
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json-patch+json:
+            schema:
+              $ref: '#/components/schemas/RoomUserRemovalDetail'
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RoomUserRemovalDetail'
+          text/json:
+            schema:
+              $ref: '#/components/schemas/RoomUserRemovalDetail'
+          application/*+json:
+            schema:
+              $ref: '#/components/schemas/RoomUserRemovalDetail'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/RoomUserRemovalDetail'
+          text/xml:
+            schema:
+              $ref: '#/components/schemas/RoomUserRemovalDetail'
+          application/*+xml:
+            schema:
+              $ref: '#/components/schemas/RoomUserRemovalDetail'
+        required: false
+      responses:
+        '204':
+          description: The room user's access was successfully revoked.
+          content: {}
+        '400':
+          description: Bad request. See ErrorCode and Message for details
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            text/xml:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '401':
+          description: Not authorized to make this request.
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            text/xml:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+      x-ds-methodname: RevokeRoomUserAccess
+      x-ds-method: RevokeRoomUserAccess
+      x-ds-service: Rooms
+      x-ds-in-sdk: true
+      x-codegen-request-body-name: body
+  /v2/accounts/{accountId}/rooms/{roomId}/users/{userId}/restore_access:
+    post:
+      tags:
+      - Rooms
+      summary: Docusign Restores the specified user's access to the room.
+      description: Restores the specified user's access to the room.
+      operationId: Rooms_RestoreRoomUserAccess
+      parameters:
+      - name: roomId
+        in: path
+        description: The ID of the room.
+        required: true
+        schema:
+          type: integer
+          format: int32
+      - name: userId
+        in: path
+        description: The ID of the user to restore to the room.
+        required: true
+        schema:
+          type: integer
+          format: int32
+      - name: accountId
+        in: path
+        description: The globally unique identifier (GUID) for the account.
+        required: true
+        schema:
+          type: string
+      responses:
+        '204':
+          description: The room user's access was successfully restored.
+          content: {}
+        '400':
+          description: The room user's access could not be restored.
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            text/xml:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '401':
+          description: Not authorized to make this request.
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            text/xml:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+      x-ds-methodname: RestoreRoomUserAccess
+      x-ds-method: RestoreRoomUserAccess
+      x-ds-service: Rooms
+      x-ds-in-sdk: true
+  /v2/accounts/{accountId}/rooms:
+    get:
+      tags:
+      - Rooms
+      summary: Docusign Returns a list of rooms.
+      description: 'This method returns details about the rooms that the current user has permissions to view.
+
+
+        The `fieldDataChangedStartDate` and `fieldDataChangedEndDate`
+
+        query parameters let you limit the results to rooms
+
+        whose [field data](/docs/rooms-api/reference/rooms/rooms/getroomfielddata/) has changed within a range of dates.
+
+
+        The `roomClosedStartDate` and `roomClosedEndDate` query parameters let you limit the results to rooms that were closed within a range of dates.
+
+
+        **Note:** By default, this method only returns open rooms. To return other rooms, use the `roomStatus` query parameter.'
+      operationId: Rooms_GetRooms
+      parameters:
+      - name: count
+        in: query
+        description: The number of results. When this property is used as a request parameter specifying the number of results to return, the value must be a number between 1 and 100 (default).
+        schema:
+          type: integer
+          format: int32
+          default: 100
+      - name: startPosition
+        in: query
+        description: The index position within the total result set from which to start returning values. The default value is `0`.
+        schema:
+          type: integer
+          format: int32
+          default: 0
+      - name: roomStatus
+        in: query
+        description: "The status of the room. Valid values are:\n\n- `active`: This is the default value.\n- `pending`\n- `open`: Includes both `active` and `pending` statuses.\n- `closed`\n\nTo return rooms with multiple statuses, enter a comma-separated list of statuses. \n\nExample:\n\n`closed,open`"
+        schema: {}
+      - name: officeId
+        in: query
+        description: The ID of the office.
+        schema:
+          type: integer
+          format: int32
+      - name: fieldDataChangedStartDate
+        in: query
+        description: 'Starting date and time to filter rooms whose field data has changed after this date. Date and time is always given as UTC. If the time (`hh:mm:ss`) is omitted, it defaults to `00:00:00`.
+
+
+          Valid formats:
+
+
+          - `yyyy-mm-dd hh:mm:ss`
+
+          - `yyyy/mm/dd hh:mm:ss`
+
+
+          The default start date is the beginning of time.
+
+          '
+        schema:
+          type: string
+      - name: fieldDataChangedEndDate
+        in: query
+        description: 'Ending date and time to filter rooms whose field data has changed before this date. Date and time is always given as UTC. If the time (`hh:mm:ss`) is omitted, it defaults to `00:00:00`.
+
+
+
+          Valid formats:
+
+
+          - `yyyy-mm-dd hh:mm:ss`
+
+          - `yyyy/mm/dd hh:mm:ss`
+
+
+          If this query parameter is omitted, the default end date is now.
+
+          '
+        schema:
+          type: string
+      - name: roomClosedStartDate
+        in: query
+        description: 'Starting date and time to filter rooms that were closed this date. Date and time is always given as UTC. If the time (`hh:mm:ss`) is omitted, it defaults to `00:00:00`.
+
+
+          Valid formats:
+
+
+          - `yyyy-mm-dd hh:mm:ss`
+
+          - `yyyy/mm/dd hh:mm:ss`
+
+
+          The default start date is the beginning of time.
+
+          '
+        schema:
+          type: string
+      - name: roomClosedEndDate
+        in: query
+        description: 'Ending date and time to filter rooms that were closed before this date. Date and time is always given as UTC. If the time (`hh:mm:ss`) is omitted, it defaults to `00:00:00`.
+
+
+          Valid formats:
+
+
+          - `yyyy-mm-dd hh:mm:ss`
+
+          - `yyyy/mm/dd hh:mm:ss`
+
+
+          If this query parameter is omitted, the default end date is now.'
+        schema:
+          type: string
+      - name: accountId
+        in: path
+        description: The globally unique identifier (GUID) for the account.
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Rooms successfully retrieved.
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/RoomSummaryList'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RoomSummaryList'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/RoomSummaryList'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/RoomSummaryList'
+            text/xml:
+              schema:
+                $ref: '#/components/schemas/RoomSummaryList'
+        '400':
+          description: Bad request. See ErrorCode and Message for details
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            text/xml:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '401':
+          description: Not authorized to make this request.
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            text/xml:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+      x-ds-methodname: GetRooms
+      x-ds-method: GetRooms
+      x-ds-service: Rooms
+      x-ds-in-sdk: true
+    post:
+      tags:
+      - Rooms
+      summary: Docusign Creates a room.
+      description: 'This method creates a new room.
+
+
+        **Note:** To use this method, your company must have at least one office set up.
+
+
+        ## Permissions
+
+
+        You must be assigned to a role that has the **Create Rooms** permission set to **true.**'
+      operationId: Rooms_CreateRoom
+      parameters:
+      - name: accountId
+        in: path
+        description: The globally unique identifier (GUID) for the account.
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json-patch+json:
+            schema:
+              $ref: '#/components/schemas/RoomForCreate'
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RoomForCreate'
+          text/json:
+            schema:
+              $ref: '#/components/schemas/RoomForCreate'
+          application/*+json:
+            schema:
+              $ref: '#/components/schemas/RoomForCreate'
+        required: false
+      responses:
+        '201':
+          description: Room successfully created.
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/Room'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Room'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/Room'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Room'
+            text/xml:
+              schema:
+                $ref: '#/components/schemas/Room'
+        '400':
+          description: Bad request. See ErrorCode and Message for details
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            text/xml:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '401':
+          description: Not authorized to make this request.
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            text/xml:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+      x-ds-methodname: CreateRoom
+      x-ds-method: CreateRoom
+      x-ds-service: Rooms
+      x-ds-in-sdk: true
+      x-codegen-request-body-name: body
+  /v2/accounts/{accountId}/rooms/{roomId}:
+    get:
+      tags:
+      - Rooms
+      summary: Docusign Gets a room.
+      description: This method returns details about a specific room.
+      operationId: Rooms_GetRoom
+      parameters:
+      - name: roomId
+        in: path
+        description: The ID of the room.
+        required: true
+        schema:
+          type: integer
+          format: int32
+      - name: includeFieldData
+        in: query
+        description: When **true,** the response includes the field data from the room. This is the information that appears on the room's **Details** tab.
+        schema:
+          type: boolean
+          default: false
+      - name: accountId
+        in: path
+        description: The globally unique identifier (GUID) for the account.
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Room successfully retrieved.
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/Room'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Room'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/Room'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Room'
+            text/xml:
+              schema:
+                $ref: '#/components/schemas/Room'
+        '400':
+          description: Bad request. See ErrorCode and Message for details
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            text/xml:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '401':
+          description: Not authorized to make this request.
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            text/xml:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+      x-ds-methodname: GetRoom
+      x-ds-method: GetRoom
+      x-ds-service: Rooms
+      x-ds-in-sdk: true
+    delete:
+      tags:
+      - Rooms
+      summary: Docusign Deletes a room.
+      description: 'This method deletes a room.
+
+
+        **Note:** To use this method, you must be assigned a role that has the **Delete Owned Rooms** permission set to **true** in the console. If you manage other members, this permission also enables you to delete rooms that are owned by the users that you manage.'
+      operationId: Rooms_DeleteRoom
+      parameters:
+      - name: roomId
+        in: path
+        description: The ID of the room.
+        required: true
+        schema:
+          type: integer
+          format: int32
+      - name: accountId
+        in: path
+        description: The globally unique identifier (GUID) for the account.
+        required: true
+        schema:
+          type: string
+      responses:
+        '204':
+          description: Room successfully deleted.
+          content: {}
+        '400':
+          description: Bad request. See ErrorCode and Message for details
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            text/xml:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '401':
+          description: Not authorized to make this request.
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            text/xml:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+      x-ds-methodname: DeleteRoom
+      x-ds-method: DeleteRoom
+      x-ds-service: Rooms
+      x-ds-in-sdk: true
+  /v2/accounts/{accountId}/rooms/{roomId}/assignable_roles:
+    get:
+      tags:
+      - Rooms
+      summary: Docusign Gets assignable room-level roles in v6.
+      description: 'This method returns the room-level roles that the current user can assign to the members that they invite to a room.
+
+
+        **Note:** This method works only for Rooms v6 and only returns roles that have `isExternal` set to **true.**'
+      operationId: Rooms_GetAssignableRoles
+      parameters:
+      - name: roomId
+        in: path
+        description: The ID of the room.
+        required: true
+        schema:
+          type: integer
+          format: int32
+      - name: assigneeEmail
+        in: query
+        description: The email address of a specific member. Using this parameter returns only the roles that the current user can assign to the member with that email address.
+        schema:
+          type: string
+      - name: filter
+        in: query
+        description: 'A search filter that returns assignable roles by the beginning of the role name.
+
+
+          **Note:** You do not enter a wildcard (*) at the end of the name fragment.'
+        schema:
+          type: string
+      - name: startPosition
+        in: query
+        description: The index position within the total result set from which to start returning values. The default value is `0`.
+        schema:
+          type: integer
+          format: int32
+          default: 0
+      - name: count
+        in: query
+        description: The number of results to return. This value must be a number between `1` and `100` (default).
+        schema:
+          type: integer
+          format: int32
+          default: 100
+      - name: accountId
+        in: path
+        description: The globally unique identifier (GUID) for the account.
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Assignable roles successfully retrieved.
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/AssignableRoles'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AssignableRoles'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/AssignableRoles'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/AssignableRoles'
+            text/xml:
+              schema:
+                $ref: '#/components/schemas/AssignableRoles'
+        '400':
+          description: Bad request. See ErrorCode and Message for details
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            text/xml:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '401':
+          description: Not authorized to make this request.
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            text/xml:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+      x-ds-methodname: GetAssignableRoles
+      x-ds-method: GetAssignableRoles
+      x-ds-service: Rooms
+      x-ds-in-sdk: true
+  /v2/accounts/{accountId}/rooms/{roomId}/documents:
+    get:
+      tags:
+      - Rooms
+      summary: Docusign Gets a list of documents in a room.
+      description: This method returns a list of documents that the current user can access for a specific room.
+      operationId: Rooms_GetDocuments
+      parameters:
+      - name: roomId
+        in: path
+        description: The ID of the room.
+        required: true
+        schema:
+          type: integer
+          format: int32
+      - name: count
+        in: query
+        description: The number of results to return. This value must be a number between `1` and `100` (default).
+        schema:
+          type: integer
+          format: int32
+          default: 100
+      - name: startPosition
+        in: query
+        description: The index position within the total result set from which to start returning values. The default value is `0`.
+        schema:
+          type: integer
+          format: int32
+          default: 0
+      - name: requireContentForDynamicDocuments
+        in: query
+        description: When **true,** dynamic documents without content will not be returned. The default value is **false.**
+        schema:
+          type: boolean
+          default: false
+      - name: roomFolderId
+        in: query
+        description: Filters results by `folderId`. If this property is not set, no filtering is applied.
+        schema:
+          type: integer
+          format: int32
+      - name: nameFilter
+        in: query
+        description: Filters results by `name`. If this property is not set, no filtering is applied.
+        schema:
+          type: string
+      - name: includeArchived
+        in: query
+        description: Filters results by `isArchived`. For example, when **true,** only documents with the property `isArchived=true` will be returned. If this property is not set, no filtering is applied.
+        schema:
+          type: boolean
+          default: true
+      - name: accountId
+        in: path
+        description: The globally unique identifier (GUID) for the account.
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Documents successfully retrieved.
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/RoomDocumentList'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RoomDocumentList'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/RoomDocumentList'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/RoomDocumentList'
+            text/xml:
+              schema:
+                $ref: '#/components/schemas/RoomDocumentList'
+        '400':
+          description: Bad request. See ErrorCode and Message for details
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            text/xml:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '401':
+          description: Not authorized to make this request.
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            text/xml:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+      x-ds-methodname: GetDocuments
+      x-ds-method: GetDocuments
+      x-ds-service: Rooms
+      x-ds-in-sdk: true
+    post:
+      tags:
+      - Rooms
+      summary: Docusign Adds a document to a room.
+      description: "Adds a document to a room.\n\nThe following properties in the request body are required. The `folderId` property is optional. All other properties are ignored.\n\n- `name`\n- `base64Contents`\n\nIf a document with the specified name already exists, a counter is added to the name to make it unique.\n\nFor example, to create a document named **hello.txt** that contains the text `hello, world`, the body of your request would look like this:\n\n```\n{\n  \"name\": \"hello.txt\",\n  \"base64Contents\": \"aGVsbG8sIHdvcmxkCg==\"\n}\n```\n\n"
+      operationId: Rooms_AddDocumentToRoom
+      parameters:
+      - name: roomId
+        in: path
+        description: The ID of the room.
+        required: true
+        schema:
+          type: integer
+          format: int32
+      - name: accountId
+        in: path
+        description: The globally unique identifier (GUID) for the account.
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json-patch+json:
+            schema:
+              $ref: '#/components/schemas/Document'
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Document'
+          text/json:
+            schema:
+              $ref: '#/components/schemas/Document'
+          application/*+json:
+            schema:
+              $ref: '#/components/schemas/Document'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/Document'
+          text/xml:
+            schema:
+              $ref: '#/components/schemas/Document'
+          application/*+xml:
+            schema:
+              $ref: '#/components/schemas/Document'
+        required: false
+      responses:
+        '201':
+          description: Document successfully added.
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/RoomDocument'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RoomDocument'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/RoomDocument'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/RoomDocument'
+            text/xml:
+              schema:
+                $ref: '#/components/schemas/RoomDocument'
+        '400':
+          description: Bad request. See ErrorCode and Message for details
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            text/xml:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '401':
+          description: Not authorized to make this request.
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            text/xml:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+      x-ds-methodname: AddDocumentToRoom
+      x-ds-method: AddDocumentToRoom
+      x-ds-service: Rooms
+      x-ds-in-sdk: true
+      x-codegen-request-body-name: body
+  /v2/accounts/{accountId}/rooms/{roomId}/documents/contents:
+    post:
+      tags:
+      - Rooms
+      summary: Docusign Uploads the contents of a file as a document to a room.
+      description: "This method uploads the contents of file as a room document for the room that you specify.\n\nThis is a multipart form request. You must include the following headers:\n\n- `Content-Type: multipart/form-data` (with a `boundary`)\n- `Content-Disposition: form-data`\n- `Content-Disposition: file` (with the `filename`)\n\n\n### Related topics\n\n- [How to attach documents via binary transfer (eSignature)](/docs/esign-rest-api/how-to/send-binary/)\n  An eSignature API example that illustrates how to build a multi-part JSON request.\n- Multipart form requests in [Formatting API requests](/docs/esign-rest-api/esign101/rules-and-limits/requests/)\n\n"
+      operationId: Rooms_AddDocumentToRoomViaFileUpload
+      parameters:
+      - name: roomId
+        in: path
+        description: The ID of the room.
+        required: true
+        schema:
+          type: integer
+          format: int32
+      - name: accountId
+        in: path
+        description: The globally unique identifier (GUID) for the account.
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                file:
+                  type: string
+                  description: File to be uploaded
+                  format: binary
+      responses:
+        '201':
+          description: Document successfully added.
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/RoomDocument'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RoomDocument'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/RoomDocument'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/RoomDocument'
+            text/xml:
+              schema:
+                $ref: '#/components/schemas/RoomDocument'
+        '400':
+          description: Bad request. See ErrorCode and Message for details
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            text/xml:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '401':
+          description: Not authorized to make this request.
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            text/xml:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+      x-ds-methodname: AddDocumentToRoomViaFileUpload
+      x-ds-method: AddDocumentToRoomViaFileUpload
+      x-ds-service: Rooms
+      x-ds-in-sdk: true
+  /v2/accounts/{accountId}/rooms/{roomId}/picture:
+    put:
+      tags:
+      - Rooms
+      summary: Docusign Updates the picture for a room.
+      description: "Updates the photo for a room.\nThe image file size limit is approximately 40 MB,\nand you can use the following image formats:\n\n- jpg/jpeg\n- png\n- tiff\n- gif\n\n\nIn the request body of this endpoint,\nyou can specify the image as:\n\n- a JSON object\n- multipart form data\n- stream data\n\nTo upload an image as a JSON object,\nuse an object with two string properties:\n- `fileName`: the name of the file\n- `base64Contents`: the base64 representation of the image.\nFor example a cURL request might look like this:\n\n```bash\ncurl --request PUT '/restapi/v2/accounts/{accountId}/rooms/{roomId}/picture' \\\n     --header 'Content-Type: application/json' \\\n     --data-raw '{\n                   \"fileName\":\"name-of-file.jpg\",\n                   \"base64Contents\":\"iVBOR...RK3IAK5CYII=\"\n                 }'\n```\n\nUsing multipart form data removes the need to encode images in base64 format.\nSee _Multipart form requests_ in [Formatting API requests](/docs/esign-rest-api/esign101/rules-and-limits/requests/)\nfor details and an example.\n\nTo use other other streamed binary content types,\nuse the `Content-Disposition`  request header.\n\n```\nContent-Disposition: file; filename=\"hello.jpg\"\n```\n"
+      operationId: Rooms_UpdatePicture
+      parameters:
+      - name: roomId
+        in: path
+        description: The ID of the room.
+        required: true
+        schema:
+          type: integer
+          format: int32
+      - name: accountId
+        in: path
+        description: The globally unique identifier (GUID) for the account.
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                file:
+                  type: string
+                  description: File to be uploaded
+                  format: binary
+      responses:
+        '200':
+          description: Picture successfully updated.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RoomPicture'
+        '400':
+          description: Bad request. See ErrorCode and Message for details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '401':
+          description: Not authorized to make this request.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+      x-ds-methodname: UpdatePicture
+      x-ds-method: UpdatePicture
+      x-ds-service: Rooms
+      x-ds-in-sdk: true
+  /v2/accounts/{accountId}/rooms/{roomId}/field_set:
+    get:
+      tags:
+      - Rooms
+      summary: Docusign Gets the field set for a room.
+      description: 'Returns the field set that a room uses. This is the set of fields that appears on the room''s **Details** tab in the console, such as `contactName` and `phone`.
+
+
+        You can use this method to gain a better understanding of the room field data retrieved with
+
+        the [Rooms: GetRoomFieldData](/docs/rooms-api/reference/rooms/rooms/getroomfielddata/) method, and to determine the fields for which you can provide data when you create a new room.
+
+
+        ## Permissions
+
+
+        Anyone in the room can call this method.'
+      operationId: Rooms_GetRoomFieldSet
+      parameters:
+      - name: roomId
+        in: path
+        description: The ID of the room.
+        required: true
+        schema:
+          type: integer
+          format: int32
+      - name: accountId
+        in: path
+        description: The globally unique identifier (GUID) for the account.
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: FieldSet successfully retrieved.
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/FieldSet'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FieldSet'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/FieldSet'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/FieldSet'
+            text/xml:
+              schema:
+                $ref: '#/components/schemas/FieldSet'
+        '400':
+          description: Bad request. See ErrorCode and Message for details
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            text/xml:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '401':
+          description: Not authorized to make this request.
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            text/xml:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+      x-ds-methodname: GetRoomFieldSet
+      x-ds-method: GetRoomFieldSet
+      x-ds-service: Rooms
+      x-ds-in-sdk: true
+components:
+  schemas:
+    RoomDocumentOwner:
+      type: object
+      properties:
+        userId:
+          type: integer
+          description: The ID of the user.
+          format: int32
+        firstName:
+          type: string
+          description: The user's first name.
+        lastName:
+          type: string
+          description: The user's last name.
+        companyName:
+          type: string
+          description: The company name.
+        imageSrc:
+          type: string
+          description: The source of the user's profile picture.
+      description: ''
+      x-ds-definition-name: RoomDocumentOwner
+      x-ms-summary: ''
+    FieldConfiguration:
+      type: object
+      properties:
+        maxValue:
+          type: number
+          description: The maximum value allowed for the field.
+          format: double
+          readOnly: true
+        minValue:
+          type: number
+          description: The minimum value allowed for the field.
+          format: double
+          readOnly: true
+        multipleOf:
+          type: number
+          description: This property is used for validation. When you set a number value for this property, the value for the field must be a multiple of it.
+          format: double
+          readOnly: true
+        maxLength:
+          type: integer
+          description: The maximum length of the field.
+          format: int32
+          readOnly: true
+        minLength:
+          type: integer
+          description: The minimum length of the field.
+          format: int32
+          readOnly: true
+        pattern:
+          type: string
+          description: The regular expression pattern to use to validate the value of the field.
+          readOnly: true
+        isPublisher:
+          type: boolean
+          description: When **true,** the field is a parent field on which one or more child fields depend.
+          readOnly: true
+        dependsOn:
+          type: array
+          description: This property applies to child fields. It contains information about the parent field that must have a value set in order for this field to have a value. For example, you must specify a country before you can select a state.
+          readOnly: true
+          items:
+            $ref: '#/components/schemas/DependsOn'
+        options:
+          type: array
+          description: An array of options in a list.
+          readOnly: true
+          items:
+            $ref: '#/components/schemas/SelectListFieldOption'
+      description: Contains details about how a field is configured.
+      x-ds-definition-name: FieldConfiguration
+      x-ms-summary: Contains details about how a field is configured.
+    FieldDataForUpdate:
+      type: object
+      properties:
+        data:
+          type: object
+          additionalProperties:
+            type: object
+          description: "Field data is a collection of name/value pairs where the names correspond to the fields in the room's **Details** tab. The value of a name/value pair can be a field data collection itself. These collections are implemented as JSON objects.\n\nThe fields `address1`, `state`, `postalCode`, and `city` are required. The `state` value must be a `stateId` value returned by the [getStates](/docs/rooms-api/reference/globalresources/states/getstates/) endpoint. For example, use \"US-WA\" instead of \"Washington\".\n\nFor example, the data for fields named \"Tax annual amount\" and \"buyer1\" (along with the required fields) might look like this: \n\n```\n{\n  \"data\": {\n    \"taxAnnualAmount\": 3389.12,\n    \"buyer1\": {\n      \"name\": \"Elle Woods\",\n      \"homePhone\": \"123-456-7890\",\n      \"state\": \"US-CA\",\n      \"email\": \"elle.woods@harvard.edu\"\n    },\n    \"address1\": \"123 Harvard Street\",\n    \"state\": \"US-MA\",\n    \"postalCode\": \"02138\",\n    \"city\": \"Cambridge\"\n  }\n}\n```\n"
+      description: The field data to update. When updating field data, specify only the fields being updated.
+      x-ds-definition-name: FieldDataForUpdate
+      x-ms-summary: The field data to update. When updating field data, specify only the fields being updated.
+    EnvelopeForCreate:
+      type: object
+      properties:
+        envelopeName:
+          type: string
+          description: ''
+        documentIds:
+          type: array
+          description: ''
+          items:
+            type: integer
+            format: int32
+      description: ''
+      x-ds-definition-name: EnvelopeForCreate
+      x-ms-summary: ''
+    RoomUser:
+      type: object
+      properties:
+        userId:
+          type: integer
+          description: The ID of the user.
+          format: int32
+        email:
+          type: string
+          description: The user's email address.
+        firstName:
+          type: string
+          description: The user's first name.
+        lastName:
+          type: string
+          description: The user's last name.
+        transactionSideId:
+          type: string
+          description: 'The ID of the transaction side. Valid values are:
+
+
+            - `buy`
+
+            - `sell`
+
+            - `listbuy`
+
+            - `refi`'
+        roleId:
+          type: integer
+          description: The ID of the user's role.
+          format: int32
+        isRevoked:
+          type: boolean
+          description: When **true,** indicates that the user's access to the room has been revoked.
+        invitedByUserId:
+          type: integer
+          description: The `userId` of the person who invited the room user to the room.
+          format: int32
+      description: This object contains details about a specific room member.
+      x-ds-definition-name: RoomUser
+      x-ms-summary: This object contains details about a specific room member.
+    RoomSummaryList:
+      type: object
+      properties:
+        rooms:
+          type: array
+          description: An array of `roomSummary` objects.
+          items:
+            $ref: '#/components/schemas/RoomSummary'
+        resultSetSize:
+          type: integer
+          description: The number of results returned in this response.
+          format: int32
+        startPosition:
+          type: integer
+          description: The starting zero-based index position of the results set. When this property is used as a query parameter, the default value is `0`.
+          format: int32
+        endPosition:
+          type: integer
+          description: The last zero-based index position in the result set.
+          format: int32
+          readOnly: true
+        nextUri:
+          type: string
+          description: The URI for the next chunk of records based on the search request. This property is `null` for the last set of search results.
+        priorUri:
+          type: string
+          description: The URI for the previous chunk of records based on the search request. This property is `null` for the first set of search results.
+        totalRowCount:
+          type: integer
+          description: ''
+          format: int32
+      description: This complex type contains details about rooms.
+      x-ds-definition-name: RoomSummaryList
+      x-ms-summary: This complex type contains details about rooms.
+    SelectListFieldOption:
+      type: object
+      properties:
+        id:
+          type: object
+          description: 'The ID of the list option.
+
+
+            Example: `AU`'
+          readOnly: true
+        title:
+          type: string
+          description: 'The title or name of the list option.
+
+
+            Example: `Australia`'
+          readOnly: true
+        order:
+          type: integer
+          description: 'The order of the list option in the list.
+
+
+            Example: `3`'
+          format: int32
+          readOnly: true
+      description: Contains details about an option in a list.
+      x-ds-definition-name: SelectListFieldOption
+      x-ms-summary: Contains details about an option in a list.
+    Envelope:
+      type: object
+      properties:
+        eSignEnvelopeId:
+          type: string
+          description: ''
+      description: ''
+      x-ds-definition-name: Envelope
+      x-ms-summary: ''
+    RoomInviteResponse:
+      type: object
+      properties:
+        userId:
+          type: integer
+          description: The ID of the user.
+          format: int32
+          readOnly: true
+        roomId:
+          type: integer
+          description: The ID of the room.
+          format: int32
+          readOnly: true
+        email:
+          type: string
+          description: The user's email address.
+          readOnly: true
+        firstName:
+          type: string
+          description: The user's first name.
+          readOnly: true
+        lastName:
+          type: string
+          description: The user's last name.
+          readOnly: true
+        transactionSideId:
+          type: string
+          description: 'The ID of the transaction side. Valid values are:
+
+
+            - `buy`
+
+            - `sell`
+
+            - `listbuy`
+
+            - `refi`'
+          readOnly: true
+        roleId:
+          type: integer
+          description: 'The ID of the company role assigned to the user.
+
+
+            You can assign external roles to users who aren''t a part of your organization.'
+          format: int32
+          readOnly: true
+      description: Information about the sent invitation.
+      x-ds-definition-name: RoomInviteResponse
+      x-ms-summary: Information about the sent invitation.
+    RoomUsersResult:
+      type: object
+      properties:
+        users:
+          type: array
+          description: An array of `RoomUser` objects.
+          items:
+            $ref: '#/components/schemas/RoomUserSummary'
+        resultSetSize:
+          type: integer
+          description: The number of results returned in this response.
+          format: int32
+        startPosition:
+          type: integer
+          description: The starting zero-based index position of the results set. When this property is used as a query parameter, the default value is `0`.
+          format: int32
+        endPosition:
+          type: integer
+          description: The last zero-based index position in the result set.
+          format: int32
+          readOnly: true
+        nextUri:
+          type: string
+          description: The URI for the next chunk of records based on the search request. This property is `null` for the last set of search results.
+        priorUri:
+          type: string
+          description: The URI for the previous chunk of records based on the search request. This property is `null` for the first set of search results.
+        totalRowCount:
+          type: integer
+          description: ''
+          format: int32
+      description: This complex type contains details about the users associated with a room.
+      x-ds-definition-name: RoomUsersResult
+      x-ms-summary: This complex type contains details about the users associated with a room.
+    Room:
+      type: object
+      properties:
+        roomId:
+          type: integer
+          description: The ID of the room.
+          format: int32
+        companyId:
+          type: integer
+          description: The ID of the company.
+          format: int32
+        name:
+          type: string
+          description: The name of the room.
+        officeId:
+          type: integer
+          description: The ID of the office. This is the ID that the system generated when you created the office.
+          format: int32
+        createdDate:
+          type: string
+          description: 'The UTC date and time when the item was created. This is a read-only value that the service assigns.
+
+
+            Example: `2019-07-17T17:45:42.783Z`
+
+
+            '
+          format: date-time
+        submittedForReviewDate:
+          type: string
+          description: The UTC DateTime when the room was submitted for review. This is when a member with a role for which the **Submit rooms for review** permission is set to **true** submitted the room to a member with a role for which the **Review and close rooms** permission is set to **true.**
+          format: date-time
+        closedDate:
+          type: string
+          description: The UTC date and time when the room was closed.
+          format: date-time
+        rejectedDate:
+          type: string
+          description: The date on which the reviewer rejected the room. For example, a reviewer might reject closing a room if documentation is missing or the details are inaccurate.
+          format: date-time
+        createdByUserId:
+          type: integer
+          description: The ID of the user who created the room.
+          format: int32
+        roomOwnerIds:
+          type: array
+          description: ''
+          items:
+            type: integer
+            format: int32
+        rejectedByUserId:
+          type: integer
+          description: The ID of the user who rejected the room.
+          format: int32
+        closedStatusId:
+          type: string
+          description: "The reason why a room was closed. Possible values are:\n\n- `sold`: Property sold.\n- `dup`: Duplicate room.\n- `escrcncl`: Escrow canceled.\n- `inspctn`: Inspection issues.\n- `exp`: Listing expired.\n- `lostbuy`: Buyer withdrew.\n- `list`: Listing withdrawn. \n- `newlist`: New listing.\n- `offrrjct`: Offer not accepted.\n- `pend`: Pending. An agent might use this status to temporarily hide a room from their Active rooms view if they are blocked on a task. When they are ready to reopen the room, they can quickly find it by filtering for rooms in `pending` status.\n- `lstcanc`: Listing canceled. \n- `lstleave`: Listing released.\n- `sellwtdw`: Seller withdrew.\n- `nofin`: Buyer unable to finance.\n- `disciss`: Property disclosure issue.\n- `appiss`: Appraisal issues.\n- `mtgiss`: Mortgage issues. Use when details about why the buyer wasn't able to obtain financing are unknown.\n- `zoniss`: Zoning issues.\n- `attiss`: Attorney review issues.\n- `proplsd`: Property leased. Use for the list side of the transaction.\n- `tenlease`: Tenant signed lease. Use when an agent helps renters find a to lease.   "
+        fieldDataLastUpdatedDate:
+          type: string
+          description: ''
+          format: date-time
+        fieldData:
+          $ref: '#/components/schemas/FieldData'
+      description: Contains details about a room.
+      x-ds-definition-name: Room
+      x-ms-summary: Contains details about a room.
+    RoomDocumentList:
+      type: object
+      properties:
+        resultSetSize:
+          type: integer
+          description: The number of results returned in this response.
+          format: int32
+        startPosition:
+          type: integer
+          description: The starting zero-based index position of the results set. When this property is used as a query parameter, the default value is `0`.
+          format: int32
+        endPosition:
+          type: integer
+          description: The last zero-based index position in the result set.
+          format: int32
+          readOnly: true
+        nextUri:
+          type: string
+          description: The URI for the next chunk of records based on the search request. This property is `null` for the last set of search results.
+        priorUri:
+          type: string
+          description: The URI for the previous chunk of records based on the search request. This property is `null` for the first set of search results.
+        totalRowCount:
+          type: integer
+          description: ''
+          format: int32
+        documents:
+          type: array
+          description: An array of room documents.
+          items:
+            $ref: '#/components/schemas/RoomDocument'
+      description: A list of documents in a room.
+      x-ds-definition-name: RoomDocumentList
+      x-ms-summary: A list of documents in a room.
+    Document:
+      required:
+      - base64Contents
+      - name
+      type: object
+      properties:
+        documentId:
+          type: integer
+          description: The ID of the document.
+          format: int32
+        name:
+          type: string
+          description: The file name associated with the document.
+        roomId:
+          type: integer
+          description: The ID of the room associated with the document.
+          format: int32
+        ownerId:
+          type: integer
+          description: The ID of the user who owns the document.
+          format: int32
+        size:
+          type: integer
+          description: The size of the document in bytes.
+          format: int64
+        folderId:
+          type: integer
+          description: The ID of the folder that holds the document.
+          format: int32
+        createdDate:
+          type: string
+          description: 'The date and time when the document was created. This is a read-only value that the service assigns.
+
+
+            Example: `2019-11-11T17:15:14.82`'
+          format: date-time
+        isSigned:
+          type: boolean
+          description: When **true,** indicates that the document is signed.
+        contentType:
+          type: string
+          description: ''
+        base64Contents:
+          type: string
+          description: The base64-encoded contents of the document. This property is only included in the response when you use the `includeContents` query parameter and set it to **true.**
+        isDynamic:
+          type: boolean
+          description: ''
+      description: Contains information about a document.
+      x-ds-definition-name: Document
+      x-ms-summary: Contains information about a document.
+    RoomUserSummary:
+      type: object
+      properties:
+        userId:
+          type: integer
+          description: The ID of the user.
+          format: int32
+          readOnly: true
+        email:
+          type: string
+          description: The user's email address.
+          readOnly: true
+        firstName:
+          type: string
+          description: The user's first name.
+          readOnly: true
+        lastName:
+          type: string
+          description: The user's last name.
+          readOnly: true
+        transactionSideId:
+          type: string
+          description: 'The ID of the transaction side. Valid values are:
+
+
+            - `buy`
+
+            - `sell`
+
+            - `listbuy`
+
+            - `refi`'
+          readOnly: true
+        roleId:
+          type: integer
+          description: 'The ID of the company role assigned to the user.
+
+
+            You can assign external roles to users who aren''t a part of your organization.'
+          format: int32
+          readOnly: true
+        titleId:
+          type: integer
+          description: Deprecated in Rooms Version 6.
+          format: int32
+          readOnly: true
+        companyName:
+          type: string
+          description: The company name.
+          readOnly: true
+        roleName:
+          type: string
+          description: ''
+          readOnly: true
+      description: Contains details about a room user.
+      x-ds-definition-name: RoomUserSummary
+      x-ms-summary: Contains details about a room user.
+    RoomDocument:
+      type: object
+      properties:
+        documentId:
+          type: integer
+          description: The ID of the document.
+          format: int32
+        name:
+          type: string
+          description: 'The file name of the document.
+
+
+            Example: `Short Sale Supplement to Marketing Agreement.pdf`'
+        ownerId:
+          type: integer
+          description: The ID of the user who owns the document.
+          format: int32
+        size:
+          type: integer
+          description: The size of the document in bytes.
+          format: int64
+        folderId:
+          type: integer
+          description: The ID of the folder the document is in.
+          format: int32
+        createdDate:
+          type: string
+          description: "The UTC date and time that the document was created or uploaded. \n\nExample: `2019-07-25T22:18:56.95Z`\n"
+          format: date-time
+        isSigned:
+          type: boolean
+          description: When **true,** this property indicates that the document is signed.
+        docuSignFormId:
+          type: string
+          description: The ID of the corresponding DocuSign form.
+        isArchived:
+          type: boolean
+          description: '**True** if the document is archived.'
+        isVirtual:
+          type: boolean
+          description: '**True** if the document is virtual.'
+        isDynamic:
+          type: boolean
+          description: '**True** if the document is from a dynamic content provider like [DocuSign Forms](/docs/rooms-api/rooms101/forms/).'
+        owner:
+          $ref: '#/components/schemas/RoomDocumentOwner'
+      description: An individual document in a room.
+      x-ds-definition-name: RoomDocument
+      x-ms-summary: An individual document in a room.
+    Field:
+      type: object
+      properties:
+        fieldId:
+          type: string
+          description: An ID that uniquely identifies the instance of a `fieldDefinition` within a field set.
+          format: uuid
+          readOnly: true
+        fieldDefinitionId:
+          type: string
+          description: The ID of the DocuSign field definition from which this field derives. When an Admin user configures a field set by using the API, this is the ID that they use to add this field definition to the field set. The original field definition associated with this ID contains more information about the field, such as the default title, default API name, and configurations such as the maximum length or the maximum value allowed.
+          format: uuid
+          readOnly: true
+        title:
+          type: string
+          description: 'The human-readable title or name of the field.
+
+
+            Example: `Company contact name`'
+          readOnly: true
+        apiName:
+          type: string
+          description: "The name that the Rooms API uses for the field. \n\nExample: `companyContactName`\n\n**Note:** When you create a new room, you use the `apiName` values for fields to specify the details that you want to appear on the room's **Details** tab."
+          readOnly: true
+        type:
+          type: string
+          description: 'The type of field. Valid values:
+
+
+            - `Date`
+
+            - `Text`
+
+            - `Checkbox`
+
+            - `Currency`
+
+            - `Numeric`
+
+            - `SelectList`
+
+            - `TextArea`
+
+            - `Percentage`
+
+            - `Integer`
+
+
+            '
+          readOnly: true
+        fields:
+          type: array
+          description: An array of subfields.
+          readOnly: true
+          items:
+            $ref: '#/components/schemas/Field'
+        configuration:
+          $ref: '#/components/schemas/FieldConfiguration'
+        customData:
+          $ref: '#/components/schemas/CustomData'
+      description: Contains details about a field in a field set.
+      x-ds-definition-name: Field
+      x-ms-summary: Contains details about a field in a field set.
+    FieldDataForCreate:
+      type: object
+      properties:
+        data:
+          type: object
+          additionalProperties:
+            type: object
+          description: "Field data is a collection of name/value pairs where the names correspond to the fields in the room's **Details** tab. The value of a name/value pair can be a field data collection itself. These collections are implemented as JSON objects.\n\nThe fields `address1`, `state`, `postalCode`, and `city` are required. The `state` value must be a `stateId` value returned by the [getStates](/docs/rooms-api/reference/globalresources/states/getstates/) endpoint. For example, use \"US-WA\" instead of \"Washington\".\n\nFor example, the data for fields named \"Tax annual amount\" and \"buyer1\" (along with the required fields) might look like this: \n\n```\n{\n  \"data\": {\n    \"taxAnnualAmount\": 3389.12,\n    \"buyer1\": {\n      \"name\": \"Elle Woods\",\n      \"homePhone\": \"123-456-7890\",\n      \"state\": \"US-CA\",\n      \"email\": \"elle.woods@harvard.edu\"\n    },\n    \"address1\": \"123 Harvard Street\",\n    \"state\": \"US-MA\",\n    \"postalCode\": \"02138\",\n    \"city\": \"Cambridge\"\n  }\n}\n```\n"
+      description: Contains key-value pairs that specify the properties of the room and their values.
+      x-ds-definition-name: FieldDataForCreate
+      x-ms-summary: Contains key-value pairs that specify the properties of the room and their values.
+    FieldData:
+      type: object
+      properties:
+        data:
+          type: object
+          additionalProperties:
+            type: object
+          description: "Field data is a collection of name/value pairs where the names correspond to the fields in the room's **Details** tab. The value of a name/value pair can be a field data collection itself. These collections are implemented as JSON objects.\n\nThe fields `address1`, `state`, `postalCode`, and `city` are required. The `state` value must be a `stateId` value returned by the [getStates](/docs/rooms-api/reference/globalresources/states/getstates/) endpoint. For example, use \"US-WA\" instead of \"Washington\".\n\nFor example, the data for fields named \"Tax annual amount\" and \"buyer1\" (along with the required fields) might look like this: \n\n```\n{\n  \"data\": {\n    \"taxAnnualAmount\": 3389.12,\n    \"buyer1\": {\n      \"name\": \"Elle Woods\",\n      \"homePhone\": \"123-456-7890\",\n      \"state\": \"US-CA\",\n      \"email\": \"elle.woods@harvard.edu\"\n    },\n    \"address1\": \"123 Harvard Street\",\n    \"state\": \"US-MA\",\n    \"postalCode\": \"02138\",\n    \"city\": \"Cambridge\"\n  }\n}\n```\n"
+      description: 'The field data associated with a room.
+
+        See [Rooms: GetRoomFieldData](/docs/rooms-api/reference/rooms/rooms/getroomfielddata/).'
+      x-ds-definition-name: FieldData
+      x-ms-summary: 'The field data associated with a room.
+
+        See [Rooms: GetRoomFieldData](/docs/rooms-api/reference/rooms/rooms/getroomfielddata/).'
+    FormForAdd:
+      required:
+      - formId
+      type: object
+      properties:
+        formId:
+          type: string
+          description: (Required) The ID of the form.
+          format: uuid
+      description: Contains details about the form that you want to add.
+      x-ds-definition-name: FormForAdd
+      x-ms-summary: Contains details about the form that you want to add.
+    RoomForCreate:
+      required:
+      - name
+      - roleId
+      type: object
+      properties:
+        name:
+          type: string
+          description: (Required) The name of the room.
+        roleId:
+          type: integer
+          description: (Required) The ID of the role that the owner has in the room.
+          format: int32
+        transactionSideId:
+          type: string
+          description: 'The ID of the transaction side. Valid values are:
+
+
+            - `buy`
+
+            - `sell`
+
+            - `listbuy`
+
+            - `refi`
+
+
+            **Note:** This property is required for real estate companies, and otherwise ignored.'
+        ownerId:
+          type: integer
+          description: The ID of the user who owns the room.
+          format: int32
+        templateId:
+          type: integer
+          description: (Optional) The ID of the template to use to create the room.
+          format: int32
+        officeId:
+          type: integer
+          description: '(Optional) The ID of the office associated with the room. Required when creating a room on behalf of someone else or a Manager-owned room. '
+          format: int32
+        fieldData:
+          $ref: '#/components/schemas/FieldDataForCreate'
+        listingSource:
+          type: string
+          description: ''
+          enum:
+          - PublicRecords
+          - MLS
+      description: This request object contains the details about the new room.
+      x-ds-definition-name: RoomForCreate
+      x-ms-summary: This request object contains the details about the new room.
+    AssignableRoles:
+      type: object
+      properties:
+        currentRoleId:
+          type: integer
+          description: The ID of the invitee's company-level role. This property lets the requester know what room-level role will give the user the same permissions that they have at the company level. A value is returned only when both the requester and the invitee are internal to the company.
+          format: int32
+        roles:
+          type: array
+          description: An array of `role` objects.
+          items:
+            $ref: '#/components/schemas/RoleSummary'
+        resultSetSize:
+          type: integer
+          description: The number of results returned in this response.
+          format: int32
+        startPosition:
+          type: integer
+          description: The starting zero-based index position of the results set. When this property is used as a query parameter, the default value is `0`.
+          format: int32
+        endPosition:
+          type: integer
+          description: The last zero-based index position in the result set.
+          format: int32
+          readOnly: true
+        nextUri:
+          type: string
+          description: The URI for the next chunk of records based on the search request. This property is `null` for the last set of search results.
+        priorUri:
+          type: string
+          description: The URI for the previous chunk of records based on the search request. This property is `null` for the first set of search results.
+        totalRowCount:
+          type: integer
+          description: ''
+          format: int32
+      description: This complex type contains information about assignable roles.
+      x-ds-definition-name: AssignableRoles
+      x-ms-summary: This complex type contains information about assignable roles.
+    DependsOn:
+      type: object
+      properties:
+        actionType:
+          type: string
+          description: 'The child field action that depends on the parent field.
+
+
+            Example: `visibility`
+
+
+            For example, in the console, you must select a country for a list of states to become visible.'
+          readOnly: true
+        parentApiName:
+          type: string
+          description: 'The name that the Rooms API uses for the parent field.
+
+
+            Example: `country`'
+          readOnly: true
+      description: Contains information about a parent field on which this field depends.
+      x-ds-definition-name: DependsOn
+      x-ms-summary: Contains information about a parent field on which this field depends.
+    FieldSet:
+      type: object
+      properties:
+        fieldSetId:
+          type: string
+          description: 'The ID of the field set.
+
+
+            Example: `4aef602b-xxxx-xxxx-xxxx-08d76696f678`
+
+            '
+          format: uuid
+          readOnly: true
+        title:
+          type: string
+          description: The title or name of the field set.
+          readOnly: true
+        fields:
+          type: array
+          description: An array of fields.
+          readOnly: true
+          items:
+            $ref: '#/components/schemas/Field'
+      description: Contains details about a field set.
+      x-ds-definition-name: FieldSet
+      x-ms-summary: Contains details about a field set.
+    CustomData:
+      type: object
+      properties:
+        isRequiredOnCreate:
+          type: boolean
+          description: When **true,** the field is required when a new room is created.
+          readOnly: true
+        isRequiredOnSubmit:
+          type: boolean
+          description: When **true,** the field is required when a room is submitted for review.
+          readOnly: true
+      description: Contains information about whether the field is required when a room is created or submitted for review.
+      x-ds-definition-name: CustomData
+      x-ms-summary: Contains information about whether the field is required when a room is created or submitted for review.
+    RoomPicture:
+      type: object
+      properties:
+        url:
+          type: string
+          description: The URL for the uploaded picture.
+      description: This response object contains the URL for the uploaded picture.
+      x-ds-definition-name: RoomPicture
+      x-ms-summary: This response object contains the URL for the uploaded picture.
+    RoomUserRemovalDetail:
+      type: object
+      properties:
+        revocationDate:
+          type: string
+          description: 'The date on which the users room access should be revoked
+
+            in ISO 8601 fomat: `1973-12-31T07:54Z`.'
+          format: date-time
+      description: Details for removal.
+      x-ds-definition-name: RoomUserRemovalDetail
+      x-ms-summary: Details for removal.
+    RoomUserForUpdate:
+      type: object
+      properties:
+        roleId:
+          type: integer
+          description: 'The ID of the company role assigned to the user.
+
+
+            You can assign external roles to users who aren''t a part of your organization.'
+          format: int32
+        transactionSideId:
+          type: string
+          description: 'The ID of the transaction side. Valid values are:
+
+
+            - `buy`
+
+            - `sell`
+
+            - `listbuy`
+
+            - `refi`'
+      description: This request object contains the information that you want to update for the room user.
+      x-ds-definition-name: RoomUserForUpdate
+      x-ms-summary: This request object contains the information that you want to update for the room user.
+    RoomInvite:
+      required:
+      - email
+      - firstName
+      - lastName
+      - roleId
+      type: object
+      properties:
+        email:
+          type: string
+          description: The user's email address.
+        firstName:
+          type: string
+          description: The user's first name.
+        lastName:
+          type: string
+          description: The user's last name.
+        roleId:
+          type: integer
+          description: 'The ID of the company role assigned to the user.
+
+
+            You can assign external roles to users who aren''t a part of your organization.'
+          format: int32
+        transactionSideId:
+          type: string
+          description: Required for a real estate company; otherwise ignored.
+      description: The information to use for the invitation.
+      x-ds-definition-name: RoomInvite
+      x-ms-summary: The information to use for the invitation.
+    RoleSummary:
+      type: object
+      properties:
+        roleId:
+          type: integer
+          description: The ID of the company role assigned to the user.
+          format: int32
+        legacyRoleId:
+          type: string
+          description: This field is deprecated in Rooms Version 6.
+        name:
+          type: string
+          description: The name of the role.
+        isDefaultForAdmin:
+          type: boolean
+          description: When **true,** the role is the default for account administrators.
+        isExternal:
+          type: boolean
+          description: When **true,** the role is an external role. You assign external roles to people from outside your company when you invite them into a room.
+        createdDate:
+          type: string
+          description: 'The UTC date and time when the item was created. This is a read-only value that the service assigns.
+
+
+            Example: `2019-07-17T17:45:42.783Z`
+
+
+            '
+          format: date-time
+      description: Contains details about a role.
+      x-ds-definition-name: RoleSummary
+      x-ms-summary: Contains details about a role.
+    RoomSummary:
+      type: object
+      properties:
+        roomId:
+          type: integer
+          description: The ID of the room.
+          format: int32
+          readOnly: true
+        name:
+          type: string
+          description: The name of the room.
+          readOnly: true
+        officeId:
+          type: integer
+          description: The ID of the office. This is the ID that the system generated when you created the office.
+          format: int32
+          readOnly: true
+        createdDate:
+          type: string
+          description: 'The UTC date and time when the item was created. This is a read-only value that the service assigns.
+
+
+            Example: `2019-07-17T17:45:42.783Z`
+
+
+            '
+          format: date-time
+          readOnly: true
+        submittedForReviewDate:
+          type: string
+          description: The UTC DateTime when the room was submitted for review. This is when a member with a role for which the **Submit rooms for review** permission is set to **true** submitted the room to a member with a role for which the **Review and close rooms** permission is set to **true.**
+          format: date-time
+          readOnly: true
+        closedDate:
+          type: string
+          description: The UTC date and time when the room was closed.
+          format: date-time
+          readOnly: true
+        rejectedDate:
+          type: string
+          description: The date on which the reviewer rejected the room. For example, a reviewer might reject closing a room if documentation is missing or the details are inaccurate.
+          format: date-time
+          readOnly: true
+        createdByUserId:
+          type: integer
+          description: The ID of the user who created the room.
+          format: int32
+          readOnly: true
+        rejectedByUserId:
+          type: integer
+          description: The ID of the user who rejected the room.
+          format: int32
+          readOnly: true
+        closedStatusId:
+          type: string
+          description: "The reason why a room was closed. Possible values are:\n\n- `sold`: Property sold.\n- `dup`: Duplicate room.\n- `escrcncl`: Escrow canceled.\n- `inspctn`: Inspection issues.\n- `exp`: Listing expired.\n- `lostbuy`: Buyer withdrew.\n- `list`: Listing withdrawn. \n- `newlist`: New listing.\n- `offrrjct`: Offer not accepted.\n- `pend`: Pending. An agent might use this status to temporarily hide a room from their Active rooms view if they are blocked on a task. When they are ready to reopen the room, they can quickly find it by filtering for rooms in `pending` status.\n- `lstcanc`: Listing canceled. \n- `lstleave`: Listing released.\n- `sellwtdw`: Seller withdrew.\n- `nofin`: Buyer unable to finance.\n- `disciss`: Property disclosure issue.\n- `appiss`: Appraisal issues.\n- `mtgiss`: Mortgage issues. Use when details about why the buyer wasn't able to obtain financing are unknown.\n- `zoniss`: Zoning issues.\n- `attiss`: Attorney review issues.\n- `proplsd`: Property leased. Use for the list side of the transaction.\n- `tenlease`: Tenant signed lease. Use when an agent helps renters find a to lease.   "
+          readOnly: true
+        fieldDataLastUpdatedDate:
+          type: string
+          description: ''
+          format: date-time
+          readOnly: true
+      description: This object contains details about a room.
+      x-ds-definition-name: RoomSummary
+      x-ms-summary: This object contains details about a room.
+    ApiError:
+      type: object
+      properties:
+        errorCode:
+          type: string
+          description: The code associated with the error condition.
+        message:
+          type: string
+          description: A brief message describing the error condition.
+        referenceId:
+          type: string
+          description: ''
+      description: This object describes errors that occur. It is valid only for responses and ignored in requests.
+      x-ds-definition-name: ApiError
+      x-ms-summary: This object describes errors that occur. It is valid only for responses and ignored in requests.
+  securitySchemes:
+    accessCode:
+      type: oauth2
+      description: OAuth2 Access code Grant
+      flows:
+        authorizationCode:
+          authorizationUrl: https://account.docusign.com/oauth/auth
+          tokenUrl: https://account.docusign.com/oauth/auth
+          scopes:
+            organization_read: ''
+            permission_read: ''
+            group_read: ''
+            user_read: ''
+            account_read: ''
+            account_write: ''
+            user_write: ''
+            identity_provider_read: ''
+            domain_read: ''
+x-ds-categories:
+- name: UserManagement
+  summary: Methods to manage users in an account.
+  description: Methods to manage users in an account.
+- name: BulkOperations
+  summary: Methods to import and export users and accounts.
+  description: Methods to import and export users and accounts.
+- name: IdentityProviders
+  summary: Methods to get a list of identity providers.
+  description: Methods to get a list of identity providers.
+- name: ReservedDomains
+  summary: Methods to get a list of reserved domains.
+  description: Methods to get a list of reserved domains.
+- name: Organization
+  summary: Methods for working with organizations.
+  description: Methods for working with organizations.
+x-original-swagger-version: '2.0'

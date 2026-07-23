@@ -1,0 +1,291 @@
+openapi: 3.0.1
+info:
+  title: DocuSign Admin AccountBrands RequestLogs API
+  description: An API for an organization administrator to manage organizations, accounts and users
+  termsOfService: https://www.docusign.com/company/terms-and-conditions/developers
+  contact:
+    name: DocuSign Developer Center
+    url: https://developers.docusign.com
+    email: devcenter@docusign.com
+  version: v2.1
+servers:
+- url: https://api.docusign.net/Management
+tags:
+- name: RequestLogs
+  description: 'The RequestLogs resource provide methods that allow you to retrieve and delete the API request log files.
+
+
+    The log files contain the API requests associated with your integration. They can aid you in troubleshooting specific issues within an integration, or if DocuSign Support requests an API trace log. '
+paths:
+  /v2/diagnostics/request_logs:
+    get:
+      tags:
+      - RequestLogs
+      summary: Docusign Gets the API request logging log files.
+      description: 'Retrieves a list of log entries as a JSON or xml object or as a zip file containing the entries.
+
+
+        If the Accept header is set to application/zip, the response is a zip file containing individual text files, each representing an API request.
+
+
+        If the Accept header is set to `application/json` or `application/xml`, the response returns list of log entries in either JSON or XML. An example JSON response body is shown below. '
+      operationId: APIRequestLog_GetRequestLogs
+      parameters:
+      - name: encoding
+        in: query
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Successful response.
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/apiRequestLogsResult'
+        '400':
+          description: Error encountered.
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/errorDetails'
+      deprecated: false
+      x-ds-methodname: listRequestLogs
+      x-ds-method: list
+      x-ds-service: Diagnostics
+      x-ds-in-sdk: true
+    delete:
+      tags:
+      - RequestLogs
+      summary: Docusign Deletes the request log files.
+      description: Deletes the request log files.
+      operationId: APIRequestLog_DeleteRequestLogs
+      responses:
+        '200':
+          description: Successful response.
+          content: {}
+        '400':
+          description: Error encountered.
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/errorDetails'
+      deprecated: false
+      x-ds-methodname: deleteRequestLogs
+      x-ds-method: delete
+      x-ds-service: Diagnostics
+      x-ds-in-sdk: true
+  /v2/diagnostics/request_logs/{requestLogId}:
+    get:
+      tags:
+      - RequestLogs
+      summary: Docusign Gets a request logging log file.
+      description: 'Retrieves information for a single log entry.
+
+
+        **Request**
+
+        The `requestLogfId` property can be retrieved by getting the list of log entries. The Content-Transfer-Encoding header can be set to base64 to retrieve the API request/response as base 64 string. Otherwise the bytes of the request/response are returned.
+
+
+        **Response**
+
+        If the Content-Transfer-Encoding header was set to base64, the log is returned as a base64 string.'
+      operationId: APIRequestLog_GetRequestLog
+      parameters:
+      - name: requestLogId
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Successful response.
+          content:
+            text/plain:
+              schema:
+                type: string
+                format: binary
+        '400':
+          description: Error encountered.
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/errorDetails'
+      deprecated: false
+      x-ds-methodname: getRequestLog
+      x-ds-method: get
+      x-ds-service: Diagnostics
+      x-ds-in-sdk: true
+  /v2/diagnostics/settings:
+    get:
+      tags:
+      - RequestLogs
+      summary: Docusign Gets the API request logging settings.
+      description: 'Retrieves the current API request logging setting for the user and remaining log entries.
+
+
+        **Response**
+
+        The response includes the current API request logging setting for the user, along with the maximum log entries and remaining log entries.'
+      operationId: APIRequestLog_GetRequestLogSettings
+      responses:
+        '200':
+          description: Successful response.
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/diagnosticsSettingsInformation'
+        '400':
+          description: Error encountered.
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/errorDetails'
+      deprecated: false
+      x-ds-methodname: getRequestLogSettings
+      x-ds-method: getSettings
+      x-ds-service: Diagnostics
+      x-ds-in-sdk: true
+    put:
+      tags:
+      - RequestLogs
+      summary: Docusign Enables or disables API request logging for troubleshooting.
+      description: 'Enables or disables API request logging for troubleshooting.
+
+
+        When enabled (`apiRequestLogging` is set to true), REST API requests and responses for the user are added to a log. A log can have up to 50 requests/responses and the current number of log entries can be determined by getting the settings. Logging is automatically disabled when the log limit of 50 is reached.
+
+
+        You can call [ML:GetRequestLog] or [ML:GetRequestLogs] to download the log files (individually or as a zip file). Call [ML:DeleteRequestLogs] to clear the log by deleting current entries.
+
+
+        Private information, such as passwords and integrator key information, which is normally located in the call header is omitted from the request/response log.
+
+
+        ###### Note: API request logging only captures requests from the authenticated user. Any call that does not authenticate the user and resolve a userId isn''t logged. Meaning that login_information, NewAccounts, or other distributor-credential calls are not logged.
+
+        '
+      operationId: APIRequestLog_PutRequestLogSettings
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/diagnosticsSettingsInformation'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/diagnosticsSettingsInformation'
+        required: false
+      responses:
+        '200':
+          description: Successful response.
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/diagnosticsSettingsInformation'
+        '400':
+          description: Error encountered.
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/errorDetails'
+      deprecated: false
+      x-ds-methodname: updateRequestLogSettings
+      x-ds-method: updateSettings
+      x-ds-service: Diagnostics
+      x-ds-in-sdk: true
+      x-codegen-request-body-name: diagnosticsSettingsInformation
+components:
+  schemas:
+    diagnosticsSettingsInformation:
+      type: object
+      properties:
+        apiRequestLogging:
+          type: string
+          description: ' When set to **true**, enables API request logging for the user. '
+        apiRequestLogMaxEntries:
+          type: string
+          description: Specifies the maximum number of API requests to log.
+        apiRequestLogRemainingEntries:
+          type: string
+          description: Indicates the remaining number of API requests that can be logged.
+      description: ''
+      x-ds-definition-name: diagnosticsSettingsInformation
+      x-ms-summary: ''
+    apiRequestLog:
+      type: object
+      properties:
+        createdDateTime:
+          type: string
+          description: Indicates the date and time the item was created.
+        description:
+          type: string
+          description: 'A sender-defined description of the line item.
+
+            '
+        requestLogId:
+          type: string
+          description: ''
+        status:
+          type: string
+          description: Item status. <!-- TODO -->
+      description: Contains API request log information.
+      x-ds-definition-name: apiRequestLog
+      x-ms-summary: Contains API request log information.
+    apiRequestLogsResult:
+      type: object
+      properties:
+        apiRequestLogs:
+          type: array
+          description: 'Reserved: TBD'
+          items:
+            $ref: '#/components/schemas/apiRequestLog'
+      description: Contains information about mutiple API request logs.
+      x-ds-definition-name: apiRequestLogsResult
+      x-ms-summary: Contains information about mutiple API request logs.
+    errorDetails:
+      type: object
+      properties:
+        errorCode:
+          type: string
+          description: An error code associated with the error.
+        message:
+          type: string
+          description: A short error message.
+      description: This object describes errors that occur. It is only valid for responses, and ignored in requests.
+      x-ds-definition-name: errorDetails
+      x-ms-summary: This object describes errors that occur. It is only valid for responses, and ignored in requests.
+  securitySchemes:
+    accessCode:
+      type: oauth2
+      description: OAuth2 Access code Grant
+      flows:
+        authorizationCode:
+          authorizationUrl: https://account.docusign.com/oauth/auth
+          tokenUrl: https://account.docusign.com/oauth/auth
+          scopes:
+            organization_read: ''
+            permission_read: ''
+            group_read: ''
+            user_read: ''
+            account_read: ''
+            account_write: ''
+            user_write: ''
+            identity_provider_read: ''
+            domain_read: ''
+x-ds-categories:
+- name: UserManagement
+  summary: Methods to manage users in an account.
+  description: Methods to manage users in an account.
+- name: BulkOperations
+  summary: Methods to import and export users and accounts.
+  description: Methods to import and export users and accounts.
+- name: IdentityProviders
+  summary: Methods to get a list of identity providers.
+  description: Methods to get a list of identity providers.
+- name: ReservedDomains
+  summary: Methods to get a list of reserved domains.
+  description: Methods to get a list of reserved domains.
+- name: Organization
+  summary: Methods for working with organizations.
+  description: Methods for working with organizations.
+x-original-swagger-version: '2.0'
