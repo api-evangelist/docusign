@@ -1,0 +1,103 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "DocuSign Admin AccountBrands Documents API",
+    "version": "v2.1"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Documents",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Docusign Gets information about or the contents of a document.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.docusign.net/Management/v2/accounts/:accountId/documents/:documentId",
+            "params": [
+              {
+                "name": "documentId",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the document."
+              },
+              {
+                "name": "includeContents",
+                "value": "",
+                "type": "query",
+                "description": "When **true,** includes the contents of the document in the `base64Contents` property of the response. The default value is **false.**"
+              },
+              {
+                "name": "accountId",
+                "value": "",
+                "type": "path",
+                "description": "The globally unique identifier (GUID) for the account."
+              }
+            ]
+          },
+          "docs": "Returns information about a document in a room. You can optionally request the contents of the document, which is returned in base64-encoded format.\n\nTo find the `documentId` of the document that you want to retrieve, use the Rooms: GetDocuments method."
+        },
+        {
+          "info": {
+            "name": "Docusign Deletes a specified document.",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.docusign.net/Management/v2/accounts/:accountId/documents/:documentId",
+            "params": [
+              {
+                "name": "documentId",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the document."
+              },
+              {
+                "name": "accountId",
+                "value": "",
+                "type": "path",
+                "description": "The globally unique identifier (GUID) for the account."
+              }
+            ]
+          },
+          "docs": "Permanently deletes a document. To find the `documentId` of a document that you want to delete, use the Rooms: GetDocuments method.\n\nIf the document is deleted successfully, the HTTP response code is 204 (No Content), so the response body is empty."
+        },
+        {
+          "info": {
+            "name": "Docusign Grants a user access to a document.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.docusign.net/Management/v2/accounts/:accountId/documents/:documentId/users",
+            "params": [
+              {
+                "name": "documentId",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the document."
+              },
+              {
+                "name": "accountId",
+                "value": "",
+                "type": "path",
+                "description": "The globally unique identifier (GUID) for the account."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Grants a user access to a document. You specify the user's `userId` in the request body. The response is an object that specifies the access the user has."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

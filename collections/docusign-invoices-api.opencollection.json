@@ -1,0 +1,92 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "DocuSign Admin AccountBrands Invoices API",
+    "version": "v2.1"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Invoices",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Docusign Get a List of Billing Invoices",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.docusign.net/Management/v2/accounts/:accountId/billing_invoices",
+            "params": [
+              {
+                "name": "accountId",
+                "value": "",
+                "type": "path",
+                "description": "The external account number (int) or account id GUID."
+              },
+              {
+                "name": "from_date",
+                "value": "",
+                "type": "query",
+                "description": "Specifies the date/time of the earliest invoice in the account to retrieve."
+              },
+              {
+                "name": "to_date",
+                "value": "",
+                "type": "query",
+                "description": "Specifies the date/time of the latest invoice in the account to retrieve."
+              }
+            ]
+          },
+          "docs": "Retrieves a list of invoices for the account. If the from date or to date queries are not specified, the response returns invoices for the last 365 days.\n\nPrivileges required: account administrator "
+        },
+        {
+          "info": {
+            "name": "Docusign Retrieves a billing invoice.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.docusign.net/Management/v2/accounts/:accountId/billing_invoices/:invoiceId",
+            "params": [
+              {
+                "name": "accountId",
+                "value": "",
+                "type": "path",
+                "description": "The external account number (int) or account id GUID."
+              },
+              {
+                "name": "invoiceId",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Retrieves the specified invoice. \n\n###### Note: If the `pdfAvailable` property in the response is set to *true*, you can download a PDF version of the invoice. To download the PDF, make the call again and change the value of the `Accept` property in the header to `Accept: application/pdf`.\n\nPrivileges required: account administrator\n\nThe response returns a list of charges and information about the charges. Quantities are usually shown as 'unlimited' or an integer. Amounts are shown in the curren"
+        },
+        {
+          "info": {
+            "name": "Docusign Get a list of past due invoices.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.docusign.net/Management/v2/accounts/:accountId/billing_invoices_past_due",
+            "params": [
+              {
+                "name": "accountId",
+                "value": "",
+                "type": "path",
+                "description": "The external account number (int) or account id GUID."
+              }
+            ]
+          },
+          "docs": "Returns a list past due invoices for the account and notes if payment can be made through the REST API. \n\nPrivileges Required: account administrator"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

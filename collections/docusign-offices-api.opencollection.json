@@ -1,0 +1,159 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "DocuSign Admin AccountBrands Offices API",
+    "version": "v2.1"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Offices",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Docusign Gets offices.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.docusign.net/Management/v2/accounts/:accountId/offices",
+            "params": [
+              {
+                "name": "count",
+                "value": "",
+                "type": "query",
+                "description": "The number of results to return. This value must be a number between `1` and `100` (default)."
+              },
+              {
+                "name": "startPosition",
+                "value": "",
+                "type": "query",
+                "description": "The starting zero-based index position of the results set from which to begin returning values. The default value is `0`."
+              },
+              {
+                "name": "onlyAccessible",
+                "value": "",
+                "type": "query",
+                "description": "When **true,** the response only includes the offices that are accessible to the current user."
+              },
+              {
+                "name": "search",
+                "value": "",
+                "type": "query",
+                "description": "Filters returned records by the specified string. The response only includes records containing this string in the office `name` field."
+              },
+              {
+                "name": "accountId",
+                "value": "",
+                "type": "path",
+                "description": "The globally unique identifier (GUID) for the account."
+              }
+            ]
+          },
+          "docs": "This method returns a list of offices associated with an account."
+        },
+        {
+          "info": {
+            "name": "Docusign Creates an office.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.docusign.net/Management/v2/accounts/:accountId/offices",
+            "params": [
+              {
+                "name": "accountId",
+                "value": "",
+                "type": "path",
+                "description": "The globally unique identifier (GUID) for the account."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "This method creates an office in a Rooms account. You can configure the following information for the new office:\n\n- Office name\n- Region\n- Address\n- Country ID and time zone\n- Phone number\n\nWhen you create an office, the Rooms API service assigns it an ID (`officeId`) and timestamp (`createdDate`), which are returned in the response along with the above data elements you specified. See the `Offices` object for descriptions of these data elements.\n\nUse the [Users: AddUserToOffice](/docs/rooms-ap"
+        },
+        {
+          "info": {
+            "name": "Docusign Gets information about an office.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.docusign.net/Management/v2/accounts/:accountId/offices/:officeId",
+            "params": [
+              {
+                "name": "officeId",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the office."
+              },
+              {
+                "name": "accountId",
+                "value": "",
+                "type": "path",
+                "description": "The globally unique identifier (GUID) for the account."
+              }
+            ]
+          },
+          "docs": "This method returns information about an office."
+        },
+        {
+          "info": {
+            "name": "Docusign Deletes an office.",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.docusign.net/Management/v2/accounts/:accountId/offices/:officeId",
+            "params": [
+              {
+                "name": "officeId",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the office."
+              },
+              {
+                "name": "accountId",
+                "value": "",
+                "type": "path",
+                "description": "The globally unique identifier (GUID) for the account."
+              }
+            ]
+          },
+          "docs": "This method deletes an office from a Rooms account."
+        },
+        {
+          "info": {
+            "name": "Docusign Retrieves the number and type of objects that reference an office.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.docusign.net/Management/v2/accounts/:accountId/offices/:officeId/reference_counts",
+            "params": [
+              {
+                "name": "officeId",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the office."
+              },
+              {
+                "name": "accountId",
+                "value": "",
+                "type": "path",
+                "description": "The globally unique identifier (GUID) for the account."
+              }
+            ]
+          },
+          "docs": "This method returns a list of each type of object and the number of objects of that type referencing the specified office. Note that an office cannot be deleted while existing objects reference it."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

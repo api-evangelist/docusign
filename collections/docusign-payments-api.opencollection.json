@@ -1,0 +1,96 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "DocuSign Admin AccountBrands Payments API",
+    "version": "v2.1"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Payments",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Docusign Gets payment information for one or more payments.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.docusign.net/Management/v2/accounts/:accountId/billing_payments",
+            "params": [
+              {
+                "name": "accountId",
+                "value": "",
+                "type": "path",
+                "description": "The external account number (int) or account id GUID."
+              },
+              {
+                "name": "from_date",
+                "value": "",
+                "type": "query",
+                "description": "Specifies the date/time of the earliest payment in the account to retrieve."
+              },
+              {
+                "name": "to_date",
+                "value": "",
+                "type": "query",
+                "description": "Specifies the date/time of the latest payment in the account to retrieve."
+              }
+            ]
+          },
+          "docs": "Retrieves a list containing information about one or more payments. If the from date or to date queries are not used, the response returns payment information for the last 365 days. \n\nPrivileges required: account administrator "
+        },
+        {
+          "info": {
+            "name": "Docusign Posts a payment to a past due invoice.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.docusign.net/Management/v2/accounts/:accountId/billing_payments",
+            "params": [
+              {
+                "name": "accountId",
+                "value": "",
+                "type": "path",
+                "description": "The external account number (int) or account id GUID."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Posts a payment to a past due invoice. \n\n###### Note: This can only be used if the `paymentAllowed` value for a past due invoice is true. This can be determined calling [ML:GetBillingInvoicesPastDue].\n\nThe response returns information for a single payment, if a payment ID was used in the endpoint, or a list of payments. If the from date or to date queries or payment ID are not used, the response returns payment information for the last 365 days. If the request was for a single payment ID, the `n"
+        },
+        {
+          "info": {
+            "name": "Docusign Gets billing payment information for a specific payment.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.docusign.net/Management/v2/accounts/:accountId/billing_payments/:paymentId",
+            "params": [
+              {
+                "name": "accountId",
+                "value": "",
+                "type": "path",
+                "description": "The external account number (int) or account id GUID."
+              },
+              {
+                "name": "paymentId",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Retrieves the information for a specified payment. \n\nPrivileges required: account administrator "
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

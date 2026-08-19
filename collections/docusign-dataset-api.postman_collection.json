@@ -1,0 +1,186 @@
+{
+  "item": [
+    {
+      "id": "881917aa-9dbd-414e-8fbe-7f411cc8c192",
+      "name": "DataSet",
+      "description": {
+        "content": "The DataSet resource provides methods that allow you to fetch organization event data. The `dataSet` path parameter must be set to `monitor`.",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "ad8c91ad-1b75-4181-9029-9242ba618ea5",
+          "name": "Docusign Gets customer event data for an organization.",
+          "request": {
+            "name": "Docusign Gets customer event data for an organization.",
+            "description": {
+              "content": "Gets customer event data for the organization that owns the integration key.\n\nThe results for this endpoint are paginated by event timestamp. Use the `cursor` parameter to specify where the query begins in the dataset. Use the `limit` parameter to set the number of records returned.\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v{{version}}",
+                "datasets",
+                ":dataSetName",
+                "stream"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "cursor",
+                  "value": "<string>",
+                  "description": "Specifies a pointer into the dataset where your query will begin. You can either provide an ISO DateTime or a string cursor (from the `endCursor` value in the response). If no value is provided, the query begins from seven days ago.\n\nFor example, to fetch event data beginning from January 1, 2022, set this value to `2022-01-01T00:00:00Z`. The response will include data about events starting from that date in chronological order. The response also includes an `endCursor` property. To fetch the next page of event data, call this endpoint again with `cursor` set to the previous `endCursor` value.\n"
+                },
+                {
+                  "disabled": false,
+                  "key": "limit",
+                  "value": "1000",
+                  "description": "The maximum number of records to return. The default value is 1000."
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "dataSetName",
+                  "description": "(Required) Must be `monitor`."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "oauth2",
+              "oauth2": [
+                {
+                  "key": "scope",
+                  "value": "organization_read permission_read group_read user_read account_read account_write user_write identity_provider_read domain_read"
+                },
+                {
+                  "key": "accessTokenUrl",
+                  "value": "https://account.docusign.com/oauth/auth"
+                },
+                {
+                  "key": "authUrl",
+                  "value": "https://account.docusign.com/oauth/auth"
+                },
+                {
+                  "key": "grant_type",
+                  "value": "authorization_code"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "8c1f25b1-8f42-4222-8f02-0dfda9bbef61",
+              "name": "Success",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v{{version}}",
+                    "datasets",
+                    ":dataSetName",
+                    "stream"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "cursor",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "1000"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "dataSetName",
+                      "description": "(Required) Must be `monitor`."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"endCursor\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://api.docusign.net/Management",
+      "key": "baseUrl"
+    },
+    {
+      "disabled": false,
+      "description": {
+        "content": "(Required) Must be `2`.\n",
+        "type": "text/plain"
+      },
+      "type": "any",
+      "value": "2.0",
+      "key": "version"
+    }
+  ],
+  "info": {
+    "_postman_id": "fc0b5737-45f3-4d21-924a-751f8dfbdee4",
+    "name": "DocuSign Admin AccountBrands DataSet API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "An API for an organization administrator to manage organizations, accounts and users\n\nContact Support:\n Name: DocuSign Developer Center\n Email: devcenter@docusign.com",
+      "type": "text/plain"
+    }
+  }
+}

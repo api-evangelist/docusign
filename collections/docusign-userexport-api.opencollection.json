@@ -1,0 +1,150 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "DocuSign Admin AccountBrands UserExport API",
+    "version": "v2.1"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "UserExport",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Docusign Returns a list of pending and completed export requests.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.docusign.net/Management/v2/organizations/:organizationId/exports/user_list",
+            "params": [
+              {
+                "name": "organizationId",
+                "value": "",
+                "type": "path",
+                "description": "The organization ID Guid"
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://account.docusign.com/oauth/auth",
+              "accessTokenUrl": "https://account.docusign.com/oauth/auth",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Returns a list of pending and completed export requests.\n\n- Required scopes: `user_read`\n"
+        },
+        {
+          "info": {
+            "name": "Docusign Creates a user list export request.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.docusign.net/Management/v2/organizations/:organizationId/exports/user_list",
+            "params": [
+              {
+                "name": "organizationId",
+                "value": "",
+                "type": "path",
+                "description": "The organization ID Guid"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://account.docusign.com/oauth/auth",
+              "accessTokenUrl": "https://account.docusign.com/oauth/auth",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Create a user list export request.\n\n- Required scopes: `user_read`\n\nThis method initiates a user list export request. You specify the type of export request as JSON in the body of method, like this:\n\n``` json\n{\n\t\"type\": \"organization_memberships_export\"\n}\n```\n\n\n\n\nThe export request type is one of three values:\n\n| Value                                      | Description                                                                                             |\n| :-------------------------------"
+        },
+        {
+          "info": {
+            "name": "Docusign Returns the results for single user list export request.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.docusign.net/Management/v2/organizations/:organizationId/exports/user_list/:exportId",
+            "params": [
+              {
+                "name": "organizationId",
+                "value": "",
+                "type": "path",
+                "description": "The organization ID Guid"
+              },
+              {
+                "name": "exportId",
+                "value": "",
+                "type": "path",
+                "description": "The export ID GUID for the request."
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://account.docusign.com/oauth/auth",
+              "accessTokenUrl": "https://account.docusign.com/oauth/auth",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Returns the results for single user list export request.\n\n- Required scopes: `user_read`\n\nGiven an export id, this method returns the results of a single user list export request.\nTo get a list of all the export requests, use `getUserListExports`.\n\nNote that the `metadata_url` property of the response from `createUserListExport` is a read-to-use HTTP GET request to get the status.\n\nYou can find the actual list of users at  `results[n].url` in the response."
+        },
+        {
+          "info": {
+            "name": "Docusign Deletes a single user list export request.",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.docusign.net/Management/v2/organizations/:organizationId/exports/user_list/:exportId",
+            "params": [
+              {
+                "name": "organizationId",
+                "value": "",
+                "type": "path",
+                "description": "The organization ID Guid"
+              },
+              {
+                "name": "exportId",
+                "value": "",
+                "type": "path",
+                "description": "The export ID GUID for the request."
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://account.docusign.com/oauth/auth",
+              "accessTokenUrl": "https://account.docusign.com/oauth/auth",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Deletes a single user list export request.\nUse this method to delete pending or completed user export requests.\n\n- Required scopes: `user_read`\n\n"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

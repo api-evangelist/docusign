@@ -1,0 +1,130 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "DocuSign Admin AccountBrands TemplateLocks API",
+    "version": "v2.1"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "TemplateLocks",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Docusign Gets template lock information.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.docusign.net/Management/v2/accounts/:accountId/templates/:templateId/lock",
+            "params": [
+              {
+                "name": "accountId",
+                "value": "",
+                "type": "path",
+                "description": "The external account number (int) or account id GUID."
+              },
+              {
+                "name": "templateId",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the template being accessed."
+              }
+            ]
+          },
+          "docs": "Retrieves general information about the template lock.\n\nIf the call is made by the user who has the lock and the request has the same integrator key as original, then the `X-DocuSign-Edit` header  field and additional lock information is included in the response. This allows users to recover a lost editing session token and the `X-DocuSign-Edit` header."
+        },
+        {
+          "info": {
+            "name": "Docusign Lock a template.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.docusign.net/Management/v2/accounts/:accountId/templates/:templateId/lock",
+            "params": [
+              {
+                "name": "accountId",
+                "value": "",
+                "type": "path",
+                "description": "The external account number (int) or account id GUID."
+              },
+              {
+                "name": "templateId",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the template being accessed."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Locks the specified template, and sets the time until the lock expires, to prevent other users or recipients from accessing and changing the template.\n\n###### Note: Users must have envelope locking capability enabled to use this function (the userSetting property `canLockEnvelopes` must be set to **true** for the user)."
+        },
+        {
+          "info": {
+            "name": "Docusign Updates a template lock.",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.docusign.net/Management/v2/accounts/:accountId/templates/:templateId/lock",
+            "params": [
+              {
+                "name": "accountId",
+                "value": "",
+                "type": "path",
+                "description": "The external account number (int) or account id GUID."
+              },
+              {
+                "name": "templateId",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the template being accessed."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Updates the lock duration time or update the `lockedByApp` property information for the specified template. The user and integrator key must match the user specified by the `lockByUser` property and integrator key information and the `X-DocuSign-Edit` header must be included or an error will be generated."
+        },
+        {
+          "info": {
+            "name": "Docusign Deletes a template lock.",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.docusign.net/Management/v2/accounts/:accountId/templates/:templateId/lock",
+            "params": [
+              {
+                "name": "accountId",
+                "value": "",
+                "type": "path",
+                "description": "The external account number (int) or account id GUID."
+              },
+              {
+                "name": "templateId",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the template being accessed."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Deletes the lock from the specified template. The `X-DocuSign-Edit` header must be included in the request."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

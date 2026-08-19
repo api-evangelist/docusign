@@ -1,0 +1,230 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "DocuSign Admin AccountBrands Folders API",
+    "version": "v2.1"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Folders",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Docusign Gets a list of the folders for the account.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.docusign.net/Management/v2/accounts/:accountId/folders",
+            "params": [
+              {
+                "name": "accountId",
+                "value": "",
+                "type": "path",
+                "description": "The external account number (int) or account id GUID."
+              },
+              {
+                "name": "include",
+                "value": "",
+                "type": "query",
+                "description": "Reserved for DocuSign.\n"
+              },
+              {
+                "name": "start_position",
+                "value": "",
+                "type": "query",
+                "description": "Reserved for DocuSign.\n"
+              },
+              {
+                "name": "template",
+                "value": "",
+                "type": "query",
+                "description": "Specifies the items that are returned. Valid values are: \n\n* include - The folder list will return normal folders plus template folders. \n* only - Only the list of template folders are returned."
+              },
+              {
+                "name": "user_filter",
+                "value": "",
+                "type": "query",
+                "description": "Reserved for DocuSign.\n"
+              }
+            ]
+          },
+          "docs": "Retrieves a list of the folders for the account, including the folder hierarchy. You can specify whether to return just the template folder or template folder and normal folders by setting the `template` query string parameter."
+        },
+        {
+          "info": {
+            "name": "Docusign Gets a list of the envelopes in the specified folder.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.docusign.net/Management/v2/accounts/:accountId/folders/:folderId",
+            "params": [
+              {
+                "name": "accountId",
+                "value": "",
+                "type": "path",
+                "description": "The external account number (int) or account id GUID."
+              },
+              {
+                "name": "folderId",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the folder being accessed."
+              },
+              {
+                "name": "from_date",
+                "value": "",
+                "type": "query",
+                "description": " Only return items on or after this date. If no value is provided, the default search is the previous 30 days. "
+              },
+              {
+                "name": "owner_email",
+                "value": "",
+                "type": "query",
+                "description": " The email of the folder owner. "
+              },
+              {
+                "name": "owner_name",
+                "value": "",
+                "type": "query",
+                "description": " The name of the folder owner. "
+              },
+              {
+                "name": "search_text",
+                "value": "",
+                "type": "query",
+                "description": " The search text used to search the items of the envelope. The search looks at recipient names and emails, envelope custom fields, sender name, and subject. "
+              },
+              {
+                "name": "start_position",
+                "value": "",
+                "type": "query",
+                "description": "The position of the folder items to return. This is used for repeated calls, when the number of envelopes returned is too much for one return (calls return 100 envelopes at a time). The default value is 0."
+              },
+              {
+                "name": "status",
+                "value": "",
+                "type": "query",
+                "description": "A comma-separated list of current envelope statuses to included in the response. Possible values are:\n\n* completed\n* created\n* declined\n* deleted\n* delivered\n* processing\n* sent\n* signed\n* timedout\n* voided\n\nThe `any` value is equivalent to any status.\n\n"
+              },
+              {
+                "name": "to_date",
+                "value": "",
+                "type": "query",
+                "description": "Only return items up to this date. If no value is provided, the default search is to the current date."
+              }
+            ]
+          },
+          "docs": "Retrieves a list of the envelopes in the specified folder. You can narrow the query by specifying search criteria in the query string parameters."
+        },
+        {
+          "info": {
+            "name": "Docusign Moves an envelope from its current folder to the specified folder.",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.docusign.net/Management/v2/accounts/:accountId/folders/:folderId",
+            "params": [
+              {
+                "name": "accountId",
+                "value": "",
+                "type": "path",
+                "description": "The external account number (int) or account id GUID."
+              },
+              {
+                "name": "folderId",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the folder being accessed."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Moves an envelope from its current folder to the specified folder.\n\n###### Note: You can use this endpoint to delete envelopes by specifying `recyclebin` in the `folderId` parameter of the endpoint. Placing an in process envelope (envelope status of `sent` or `delivered`) in the recycle bin voids the envelope. You can also use this endpoint to delete templates by specifying a template ID instead of an envelope ID in the 'envelopeIds' property and specifying `recyclebin` in the `folderId` paramet"
+        },
+        {
+          "info": {
+            "name": "Docusign Gets a list of envelopes in folders matching the specified criteria.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.docusign.net/Management/v2/accounts/:accountId/search_folders/:searchFolderId",
+            "params": [
+              {
+                "name": "accountId",
+                "value": "",
+                "type": "path",
+                "description": "The external account number (int) or account id GUID."
+              },
+              {
+                "name": "searchFolderId",
+                "value": "",
+                "type": "path",
+                "description": "Specifies the envelope group that is searched by the request. These are logical groupings, not actual folder names. Valid values are: drafts, awaiting_my_signature, completed, out_for_signature."
+              },
+              {
+                "name": "all",
+                "value": "",
+                "type": "query",
+                "description": "Specifies that all envelopes that match the criteria are returned."
+              },
+              {
+                "name": "count",
+                "value": "",
+                "type": "query",
+                "description": "Specifies the number of records returned in the cache. The number must be greater than 0 and less than or equal to 100."
+              },
+              {
+                "name": "from_date",
+                "value": "",
+                "type": "query",
+                "description": "Specifies the start of the date range to return. If no value is provided, the default search is the previous 30 days."
+              },
+              {
+                "name": "include_recipients",
+                "value": "",
+                "type": "query",
+                "description": "When set to **true**, the recipient information is returned in the response."
+              },
+              {
+                "name": "order",
+                "value": "",
+                "type": "query",
+                "description": "Specifies the order in which the list is returned. Valid values are: `asc` for ascending order, and `desc` for descending order."
+              },
+              {
+                "name": "order_by",
+                "value": "",
+                "type": "query",
+                "description": "Specifies the property used to sort the list. Valid values are: `action_required`, `created`, `completed`, `sent`, `signer_list`, `status`, or `subject`."
+              },
+              {
+                "name": "start_position",
+                "value": "",
+                "type": "query",
+                "description": "Specifies the the starting location in the result set of the items that are returned."
+              },
+              {
+                "name": "to_date",
+                "value": "",
+                "type": "query",
+                "description": "Specifies the end of the date range to return."
+              }
+            ]
+          },
+          "docs": "Retrieves a list of envelopes that match the criteria specified in the query.\n\nIf the user ID of the user making the call is the same as the user ID for any returned recipient, then the userId property is added to the returned information for those recipients."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

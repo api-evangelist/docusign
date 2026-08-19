@@ -1,0 +1,175 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "DocuSign Admin AccountBrands Roles API",
+    "version": "v2.1"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Roles",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Docusign Gets roles.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.docusign.net/Management/v2/accounts/:accountId/roles",
+            "params": [
+              {
+                "name": "onlyAssignable",
+                "value": "",
+                "type": "query",
+                "description": "This parameter is deprecated. Use `filterContext` instead. Note that `filterContext=AssignableRolesBasedOnCompanyPermissions` is equivalent to `onlyAssignable=true`."
+              },
+              {
+                "name": "filterContext",
+                "value": "",
+                "type": "query",
+                "description": "Filters the roles by the calling user's permissions. Valid values are:\n\n- `AllRoles` (default): All roles are returned.\n- `AssignableRolesBasedOnAllPermissions`: Only roles that the current user can assign to someone else are returned. In other words, given the permission set of the current user, only roles with a subset of those permissions (including the same exact permissions) will be returned.\n- `AssignableRolesBasedOnCompanyPermissions`: Only roles that the current user can assign to someone else based on company permissions are returned. Other permissions are not taken into account. In other words, given the company permissions of the current user, only roles with a subset of those company permissions (including the same exact company permissions) will be returned."
+              },
+              {
+                "name": "filter",
+                "value": "",
+                "type": "query",
+                "description": "A search filter that returns roles by the beginning of the role name. You can enter the beginning of the role name only to return all of the roles that begin with the text that you entered. \n\nFor example, if your company has set up roles such as Manager Beginner, Manager Pro, Agent Expert, and Agent Superstar, you could enter `Manager` to return all of the Manager roles (Manager Beginner and Manager Pro).\n\n**Note:** You do not enter a wildcard (*) at the end of the name fragment."
+              },
+              {
+                "name": "startPosition",
+                "value": "",
+                "type": "query",
+                "description": "The starting zero-based index position of the result set. The default value is 0."
+              },
+              {
+                "name": "count",
+                "value": "",
+                "type": "query",
+                "description": "The number of results to return. This value must be a number between `1` and `100` (default)."
+              },
+              {
+                "name": "accountId",
+                "value": "",
+                "type": "path",
+                "description": "The globally unique identifier (GUID) for the account."
+              }
+            ]
+          },
+          "docs": "Returns a list of roles associated with a company account.\n\n## Permissions \n\nAny user with a valid access token can call this method."
+        },
+        {
+          "info": {
+            "name": "Docusign Creates a role.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.docusign.net/Management/v2/accounts/:accountId/roles",
+            "params": [
+              {
+                "name": "accountId",
+                "value": "",
+                "type": "path",
+                "description": "The globally unique identifier (GUID) for the account."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Creates a new company role.\n\n## Permissions\n\nTo use this method, you must have the `canManageAccount` permission set to **true.**"
+        },
+        {
+          "info": {
+            "name": "Docusign Gets a role.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.docusign.net/Management/v2/accounts/:accountId/roles/:roleId",
+            "params": [
+              {
+                "name": "roleId",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the role."
+              },
+              {
+                "name": "includeIsAssigned",
+                "value": "",
+                "type": "query",
+                "description": "When **true,** the response includes the `isAssigned` property, which specifies whether the role is currently assigned to any users. The default is **false.**"
+              },
+              {
+                "name": "accountId",
+                "value": "",
+                "type": "path",
+                "description": "(Required) The globally unique identifier (GUID) for the account."
+              }
+            ]
+          },
+          "docs": "Returns details about a role, including the associated permissions."
+        },
+        {
+          "info": {
+            "name": "Docusign Updates a role.",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.docusign.net/Management/v2/accounts/:accountId/roles/:roleId",
+            "params": [
+              {
+                "name": "roleId",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the role."
+              },
+              {
+                "name": "accountId",
+                "value": "",
+                "type": "path",
+                "description": "The globally unique identifier (GUID) for the account."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Modifies the specified company role.\n\n## Permissions\n\nTo use this method, you must have the `canManageAccount` permission set to **true.**"
+        },
+        {
+          "info": {
+            "name": "Docusign Deletes a role.",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.docusign.net/Management/v2/accounts/:accountId/roles/:roleId",
+            "params": [
+              {
+                "name": "roleId",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the role to delete."
+              },
+              {
+                "name": "accountId",
+                "value": "",
+                "type": "path",
+                "description": "The globally unique identifier (GUID) for the account."
+              }
+            ]
+          },
+          "docs": "Deletes a role from a company account.\n\n## Permissions \n\nTo use this method, you must have the `canManageAccount` permission set to **true.**"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

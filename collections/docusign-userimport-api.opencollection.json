@@ -1,0 +1,288 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "DocuSign Admin AccountBrands UserImport API",
+    "version": "v2.1"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "UserImport",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Docusign Creates a request to import new users into an account.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.docusign.net/Management/v2/organizations/:organizationId/imports/bulk_users/add",
+            "params": [
+              {
+                "name": "organizationId",
+                "value": "",
+                "type": "path",
+                "description": "The organization ID Guid"
+              }
+            ],
+            "body": {
+              "type": "multipart-form",
+              "data": [
+                {
+                  "name": "file.csv",
+                  "type": "text",
+                  "value": ""
+                }
+              ]
+            },
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://account.docusign.com/oauth/auth",
+              "accessTokenUrl": "https://account.docusign.com/oauth/auth",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Creates a request to import *new* users.\n\n- Required scopes: `user_write`\n\n\n\nYour CSV import file is made up of a header row with the column headers and a row of user or account data for each user you want to add to an account. Only new users can be imported. Any changes to existing users will be ignored. To make changes to existing users, use `updateBulkUserImports`.\n\nTo ensure your CSV is properly formatted, use the\n[Sample Bulk Add CSV file](https://admin.docusign.com/static-resources/organiz"
+        },
+        {
+          "info": {
+            "name": "Docusign Bulk updates information for existing users.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.docusign.net/Management/v2/organizations/:organizationId/imports/bulk_users/update",
+            "params": [
+              {
+                "name": "organizationId",
+                "value": "",
+                "type": "path",
+                "description": "The organization ID Guid"
+              }
+            ],
+            "body": {
+              "type": "multipart-form",
+              "data": [
+                {
+                  "name": "file.csv",
+                  "type": "text",
+                  "value": ""
+                }
+              ]
+            },
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://account.docusign.com/oauth/auth",
+              "accessTokenUrl": "https://account.docusign.com/oauth/auth",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Bulk updates information for existing users.\n\n- Required scopes: `user_write`\n\n\n\nYour CSV import file is made up of a header row with the column headers and a row of user or account data for each user you want to add to an account. Only new users can be imported. Any changes to existing users will be ignored. To make changes to existing users, use `updateBulkUserImports`.\n\n**Update limit**: You can update up to 2,000 users on an account and include up to 50 accounts per import. The maximum numbe"
+        },
+        {
+          "info": {
+            "name": "Docusign Creates a request to close the accounts of existing users.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.docusign.net/Management/v2/organizations/:organizationId/imports/bulk_users/close",
+            "params": [
+              {
+                "name": "organizationId",
+                "value": "",
+                "type": "path",
+                "description": "The organization ID Guid"
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://account.docusign.com/oauth/auth",
+              "accessTokenUrl": "https://account.docusign.com/oauth/auth",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Creates a request to close the accounts of existing users.\n\n- Required scopes: `user_write`\n\nGiven a CSV list of users, close their accounts.\n\n\nYour CSV import file is made up of a header row with the column headers and a row of user or account data for each user whose account you want to close.\n\nTo ensure your CSV is properly formatted, use the\n[Sample Bulk Update CSV file](https://admin.docusign.com/static-resources/organization-user-update-import.csv)\n as a template. The following table descr"
+        },
+        {
+          "info": {
+            "name": "Docusign Closes external memberships.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.docusign.net/Management/v2/organizations/:organizationId/imports/bulk_users/close_external",
+            "params": [
+              {
+                "name": "organizationId",
+                "value": "",
+                "type": "path",
+                "description": "The organization ID Guid"
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://account.docusign.com/oauth/auth",
+              "accessTokenUrl": "https://account.docusign.com/oauth/auth",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Closes external memberships.\n\n- Required scopes: `user_write`\n\nExternal memberships are:\n\n- Users who have an email address at a verified domain\n- But do not belong to the organization\n"
+        },
+        {
+          "info": {
+            "name": "Docusign Gets a list of all of the user import requests.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.docusign.net/Management/v2/organizations/:organizationId/imports/bulk_users",
+            "params": [
+              {
+                "name": "organizationId",
+                "value": "",
+                "type": "path",
+                "description": "The organization ID Guid"
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://account.docusign.com/oauth/auth",
+              "accessTokenUrl": "https://account.docusign.com/oauth/auth",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Gets a list of all of the user import requests.\n\n- Required scopes: `user_read`\n"
+        },
+        {
+          "info": {
+            "name": "Docusign Returns the details of a single user import request.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.docusign.net/Management/v2/organizations/:organizationId/imports/bulk_users/:importId",
+            "params": [
+              {
+                "name": "organizationId",
+                "value": "",
+                "type": "path",
+                "description": "The organization ID Guid"
+              },
+              {
+                "name": "importId",
+                "value": "",
+                "type": "path",
+                "description": "The import ID GUID for the request."
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://account.docusign.com/oauth/auth",
+              "accessTokenUrl": "https://account.docusign.com/oauth/auth",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Returns the details of a single user import request.\n\n- Required scopes: `user_read`\n\nUse this method to check the status of the request by looking at the `status` property of the response.\nOnce the status becomes `completed` (or fails), use this method to get the details.\n\nTo get a list of all of the user import requests, use `getBulkUserImportRequests`."
+        },
+        {
+          "info": {
+            "name": "Docusign Deletes a specific user import request.",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.docusign.net/Management/v2/organizations/:organizationId/imports/bulk_users/:importId",
+            "params": [
+              {
+                "name": "organizationId",
+                "value": "",
+                "type": "path",
+                "description": "The organization ID Guid"
+              },
+              {
+                "name": "importId",
+                "value": "",
+                "type": "path",
+                "description": "The import ID GUID for the request."
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://account.docusign.com/oauth/auth",
+              "accessTokenUrl": "https://account.docusign.com/oauth/auth",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Deletes a specific import request and its results.\n\n- Required scopes: `user_write`\n\n\nTo delete a user, see `closeBulkUserImportRequest`."
+        },
+        {
+          "info": {
+            "name": "Docusign Given the ID of a user import request,\nreturn the CSV file that was imported.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.docusign.net/Management/v2/organizations/:organizationId/imports/bulk_users/:importId/results_csv",
+            "params": [
+              {
+                "name": "organizationId",
+                "value": "",
+                "type": "path",
+                "description": "The organization ID Guid"
+              },
+              {
+                "name": "importId",
+                "value": "",
+                "type": "path",
+                "description": "The import ID GUID for the request."
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://account.docusign.com/oauth/auth",
+              "accessTokenUrl": "https://account.docusign.com/oauth/auth",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Returns the contents of the CSV file\nassociated with a user import request.\n\n- Required scopes: `user_read`\n\nThe results have an additional column,\n`ProcessingResults`,\nthat describes the results of importing that row.\n"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

@@ -1,0 +1,689 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "DocuSign Admin AccountBrands Rooms API",
+    "version": "v2.1"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Rooms",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Docusign Creates an envelope with the given documents. Returns the eSignature envelope ID of the envelope that was created.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.docusign.net/Management/v2/accounts/:accountId/rooms/:roomId/envelopes",
+            "params": [
+              {
+                "name": "roomId",
+                "value": "",
+                "type": "path",
+                "description": "The room ID.\n"
+              },
+              {
+                "name": "accountId",
+                "value": "",
+                "type": "path",
+                "description": "The globally unique identifier (GUID) for the account."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Creates an envelope with the given documents. Returns the eSignature envelope ID of the envelope that was created.\n"
+        },
+        {
+          "info": {
+            "name": "Docusign Gets a room's field data.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.docusign.net/Management/v2/accounts/:accountId/rooms/:roomId/field_data",
+            "params": [
+              {
+                "name": "roomId",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the room."
+              },
+              {
+                "name": "accountId",
+                "value": "",
+                "type": "path",
+                "description": "The globally unique identifier (GUID) for the account."
+              }
+            ]
+          },
+          "docs": "Returns the field data associated with a room. This is the information that appears on the room's **Details** tab.\n\nTo better understand the room's field data, use\nthe [Rooms: GetRoomFieldSet](/docs/rooms-api/reference/rooms/rooms/getroomfieldset/) method to retrieve the set of fields that the room uses."
+        },
+        {
+          "info": {
+            "name": "Docusign Updates a room's field data.",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.docusign.net/Management/v2/accounts/:accountId/rooms/:roomId/field_data",
+            "params": [
+              {
+                "name": "roomId",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the room."
+              },
+              {
+                "name": "accountId",
+                "value": "",
+                "type": "path",
+                "description": "The globally unique identifier (GUID) for the account."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "This method lets you update one or more fields in a room's field data, the information that appears in the room's **Details** tab.\nTo better understand the room's field data,\nuse the [Rooms: GetRoomFieldSet](/docs/rooms-api/reference/rooms/rooms/getroomfieldset/) method to retrieve the set of fields that the room uses.\n\nTo get the current values of a room's field data,\nuse [Rooms: GetRoomFieldData](/docs/rooms-api/reference/rooms/rooms/getroomfieldset/).\n\nFor example, to update the \"Tax annual a"
+        },
+        {
+          "info": {
+            "name": "Docusign Adds a form to a room.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.docusign.net/Management/v2/accounts/:accountId/rooms/:roomId/forms",
+            "params": [
+              {
+                "name": "roomId",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the room."
+              },
+              {
+                "name": "accountId",
+                "value": "",
+                "type": "path",
+                "description": "The globally unique identifier (GUID) for the account."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Adds a form to a room.\n\nYou specify the form that you want to add in the `formForAdd` request body. To find the ID of the form that you want to add, use the [FormsLibraries: GetFormLibraryForms method][GetFormLibraryForms].\n\n[GetFormLibraryForms]: /docs/rooms-api/reference/Forms/FormLibraries/GetFormLibraryForms/\n## Permissions\n\nYou must have a role for which the `canAddDocumentsFromFormLibraries` permission is set to **true.**"
+        },
+        {
+          "info": {
+            "name": "Docusign Gets a room's users.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.docusign.net/Management/v2/accounts/:accountId/rooms/:roomId/users",
+            "params": [
+              {
+                "name": "roomId",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the room."
+              },
+              {
+                "name": "count",
+                "value": "",
+                "type": "query",
+                "description": "The number of results to return. This value must be a number between `1` and `100` (default)."
+              },
+              {
+                "name": "startPosition",
+                "value": "",
+                "type": "query",
+                "description": "The index position within the total result set from which to start returning values. The default value is `0`."
+              },
+              {
+                "name": "filter",
+                "value": "",
+                "type": "query",
+                "description": "A search filter that returns users by the beginning of the user's first name, last name, or email address. You can enter the beginning of the name or email only to return all of the users whose names or email addresses begin with the text that you entered. \n\n**Note:** You do not enter a wildcard (*) at the end of the name or email fragment."
+              },
+              {
+                "name": "sort",
+                "value": "",
+                "type": "query",
+                "description": "The order in which to return results. Valid values are:\n\n- `firstNameAsc`: Sort on first name in ascending order. \n- `firstNameDesc`:  Sort on first name in descending order. \n- `lastNameAsc`: Sort on last name in ascending order. \n- `lastNameDesc`: Sort on last name in descending order. This is the default value."
+              },
+              {
+                "name": "accountId",
+                "value": "",
+                "type": "path",
+                "description": "The globally unique identifier (GUID) for the account."
+              }
+            ]
+          },
+          "docs": "This method returns a list of users associated with a room."
+        },
+        {
+          "info": {
+            "name": "Docusign Invites a user to a room.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.docusign.net/Management/v2/accounts/:accountId/rooms/:roomId/users",
+            "params": [
+              {
+                "name": "roomId",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the room."
+              },
+              {
+                "name": "accountId",
+                "value": "",
+                "type": "path",
+                "description": "The globally unique identifier (GUID) for the account."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "This method invites an existing or new member to a specific room.\n\nYou can invite anyone to join a room by specifying their email address."
+        },
+        {
+          "info": {
+            "name": "Docusign Updates a room user.",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.docusign.net/Management/v2/accounts/:accountId/rooms/:roomId/users/:userId",
+            "params": [
+              {
+                "name": "roomId",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the room."
+              },
+              {
+                "name": "userId",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the user to update."
+              },
+              {
+                "name": "accountId",
+                "value": "",
+                "type": "path",
+                "description": "The globally unique identifier (GUID) for the account."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "You can use this method to update the following information for a room user:\n\n- `roleId`\n- `transactionSideId`\n\nIn the console, this is the **Side and role** information that appears in the room's **People** tab. You specify the information that you want to update in the `roomUserForUpdate` request body.\n\n## Permissions\n\nOnly the person who invited the room user to the room can update the room user."
+        },
+        {
+          "info": {
+            "name": "Docusign Revokes the specified user's access to the room.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.docusign.net/Management/v2/accounts/:accountId/rooms/:roomId/users/:userId/revoke_access",
+            "params": [
+              {
+                "name": "roomId",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the room."
+              },
+              {
+                "name": "userId",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the user whose access you want to revoke."
+              },
+              {
+                "name": "accountId",
+                "value": "",
+                "type": "path",
+                "description": "The globally unique identifier (GUID) for the account."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Revokes the specified user's access to the room. If successful, the HTTP result is 204 (No content), and the response is empty.\n\nTo revoke access immediately, leave the request body empty.\n\nTo revoke access on a specific date, use the request body to specify a date. \n\n**Note** If a user doesn't have access to a room, and you revoke their access at a future date, the user will be granted access until the revocation date."
+        },
+        {
+          "info": {
+            "name": "Docusign Restores the specified user's access to the room.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.docusign.net/Management/v2/accounts/:accountId/rooms/:roomId/users/:userId/restore_access",
+            "params": [
+              {
+                "name": "roomId",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the room."
+              },
+              {
+                "name": "userId",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the user to restore to the room."
+              },
+              {
+                "name": "accountId",
+                "value": "",
+                "type": "path",
+                "description": "The globally unique identifier (GUID) for the account."
+              }
+            ]
+          },
+          "docs": "Restores the specified user's access to the room."
+        },
+        {
+          "info": {
+            "name": "Docusign Returns a list of rooms.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.docusign.net/Management/v2/accounts/:accountId/rooms",
+            "params": [
+              {
+                "name": "count",
+                "value": "",
+                "type": "query",
+                "description": "The number of results. When this property is used as a request parameter specifying the number of results to return, the value must be a number between 1 and 100 (default)."
+              },
+              {
+                "name": "startPosition",
+                "value": "",
+                "type": "query",
+                "description": "The index position within the total result set from which to start returning values. The default value is `0`."
+              },
+              {
+                "name": "roomStatus",
+                "value": "",
+                "type": "query",
+                "description": "The status of the room. Valid values are:\n\n- `active`: This is the default value.\n- `pending`\n- `open`: Includes both `active` and `pending` statuses.\n- `closed`\n\nTo return rooms with multiple statuses, enter a comma-separated list of statuses. \n\nExample:\n\n`closed,open`"
+              },
+              {
+                "name": "officeId",
+                "value": "",
+                "type": "query",
+                "description": "The ID of the office."
+              },
+              {
+                "name": "fieldDataChangedStartDate",
+                "value": "",
+                "type": "query",
+                "description": "Starting date and time to filter rooms whose field data has changed after this date. Date and time is always given as UTC. If the time (`hh:mm:ss`) is omitted, it defaults to `00:00:00`.\n\nValid formats:\n\n- `yyyy-mm-dd hh:mm:ss`\n- `yyyy/mm/dd hh:mm:ss`\n\nThe default start date is the beginning of time.\n"
+              },
+              {
+                "name": "fieldDataChangedEndDate",
+                "value": "",
+                "type": "query",
+                "description": "Ending date and time to filter rooms whose field data has changed before this date. Date and time is always given as UTC. If the time (`hh:mm:ss`) is omitted, it defaults to `00:00:00`.\n\n\nValid formats:\n\n- `yyyy-mm-dd hh:mm:ss`\n- `yyyy/mm/dd hh:mm:ss`\n\nIf this query parameter is omitted, the default end date is now.\n"
+              },
+              {
+                "name": "roomClosedStartDate",
+                "value": "",
+                "type": "query",
+                "description": "Starting date and time to filter rooms that were closed this date. Date and time is always given as UTC. If the time (`hh:mm:ss`) is omitted, it defaults to `00:00:00`.\n\nValid formats:\n\n- `yyyy-mm-dd hh:mm:ss`\n- `yyyy/mm/dd hh:mm:ss`\n\nThe default start date is the beginning of time.\n"
+              },
+              {
+                "name": "roomClosedEndDate",
+                "value": "",
+                "type": "query",
+                "description": "Ending date and time to filter rooms that were closed before this date. Date and time is always given as UTC. If the time (`hh:mm:ss`) is omitted, it defaults to `00:00:00`.\n\nValid formats:\n\n- `yyyy-mm-dd hh:mm:ss`\n- `yyyy/mm/dd hh:mm:ss`\n\nIf this query parameter is omitted, the default end date is now."
+              },
+              {
+                "name": "accountId",
+                "value": "",
+                "type": "path",
+                "description": "The globally unique identifier (GUID) for the account."
+              }
+            ]
+          },
+          "docs": "This method returns details about the rooms that the current user has permissions to view.\n\nThe `fieldDataChangedStartDate` and `fieldDataChangedEndDate`\nquery parameters let you limit the results to rooms\nwhose [field data](/docs/rooms-api/reference/rooms/rooms/getroomfielddata/) has changed within a range of dates.\n\nThe `roomClosedStartDate` and `roomClosedEndDate` query parameters let you limit the results to rooms that were closed within a range of dates.\n\n**Note:** By default, this method o"
+        },
+        {
+          "info": {
+            "name": "Docusign Creates a room.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.docusign.net/Management/v2/accounts/:accountId/rooms",
+            "params": [
+              {
+                "name": "accountId",
+                "value": "",
+                "type": "path",
+                "description": "The globally unique identifier (GUID) for the account."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "This method creates a new room.\n\n**Note:** To use this method, your company must have at least one office set up.\n\n## Permissions\n\nYou must be assigned to a role that has the **Create Rooms** permission set to **true.**"
+        },
+        {
+          "info": {
+            "name": "Docusign Gets a room.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.docusign.net/Management/v2/accounts/:accountId/rooms/:roomId",
+            "params": [
+              {
+                "name": "roomId",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the room."
+              },
+              {
+                "name": "includeFieldData",
+                "value": "",
+                "type": "query",
+                "description": "When **true,** the response includes the field data from the room. This is the information that appears on the room's **Details** tab."
+              },
+              {
+                "name": "accountId",
+                "value": "",
+                "type": "path",
+                "description": "The globally unique identifier (GUID) for the account."
+              }
+            ]
+          },
+          "docs": "This method returns details about a specific room."
+        },
+        {
+          "info": {
+            "name": "Docusign Deletes a room.",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.docusign.net/Management/v2/accounts/:accountId/rooms/:roomId",
+            "params": [
+              {
+                "name": "roomId",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the room."
+              },
+              {
+                "name": "accountId",
+                "value": "",
+                "type": "path",
+                "description": "The globally unique identifier (GUID) for the account."
+              }
+            ]
+          },
+          "docs": "This method deletes a room.\n\n**Note:** To use this method, you must be assigned a role that has the **Delete Owned Rooms** permission set to **true** in the console. If you manage other members, this permission also enables you to delete rooms that are owned by the users that you manage."
+        },
+        {
+          "info": {
+            "name": "Docusign Gets assignable room-level roles in v6.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.docusign.net/Management/v2/accounts/:accountId/rooms/:roomId/assignable_roles",
+            "params": [
+              {
+                "name": "roomId",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the room."
+              },
+              {
+                "name": "assigneeEmail",
+                "value": "",
+                "type": "query",
+                "description": "The email address of a specific member. Using this parameter returns only the roles that the current user can assign to the member with that email address."
+              },
+              {
+                "name": "filter",
+                "value": "",
+                "type": "query",
+                "description": "A search filter that returns assignable roles by the beginning of the role name.\n\n**Note:** You do not enter a wildcard (*) at the end of the name fragment."
+              },
+              {
+                "name": "startPosition",
+                "value": "",
+                "type": "query",
+                "description": "The index position within the total result set from which to start returning values. The default value is `0`."
+              },
+              {
+                "name": "count",
+                "value": "",
+                "type": "query",
+                "description": "The number of results to return. This value must be a number between `1` and `100` (default)."
+              },
+              {
+                "name": "accountId",
+                "value": "",
+                "type": "path",
+                "description": "The globally unique identifier (GUID) for the account."
+              }
+            ]
+          },
+          "docs": "This method returns the room-level roles that the current user can assign to the members that they invite to a room.\n\n**Note:** This method works only for Rooms v6 and only returns roles that have `isExternal` set to **true.**"
+        },
+        {
+          "info": {
+            "name": "Docusign Gets a list of documents in a room.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.docusign.net/Management/v2/accounts/:accountId/rooms/:roomId/documents",
+            "params": [
+              {
+                "name": "roomId",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the room."
+              },
+              {
+                "name": "count",
+                "value": "",
+                "type": "query",
+                "description": "The number of results to return. This value must be a number between `1` and `100` (default)."
+              },
+              {
+                "name": "startPosition",
+                "value": "",
+                "type": "query",
+                "description": "The index position within the total result set from which to start returning values. The default value is `0`."
+              },
+              {
+                "name": "requireContentForDynamicDocuments",
+                "value": "",
+                "type": "query",
+                "description": "When **true,** dynamic documents without content will not be returned. The default value is **false.**"
+              },
+              {
+                "name": "roomFolderId",
+                "value": "",
+                "type": "query",
+                "description": "Filters results by `folderId`. If this property is not set, no filtering is applied."
+              },
+              {
+                "name": "nameFilter",
+                "value": "",
+                "type": "query",
+                "description": "Filters results by `name`. If this property is not set, no filtering is applied."
+              },
+              {
+                "name": "includeArchived",
+                "value": "",
+                "type": "query",
+                "description": "Filters results by `isArchived`. For example, when **true,** only documents with the property `isArchived=true` will be returned. If this property is not set, no filtering is applied."
+              },
+              {
+                "name": "accountId",
+                "value": "",
+                "type": "path",
+                "description": "The globally unique identifier (GUID) for the account."
+              }
+            ]
+          },
+          "docs": "This method returns a list of documents that the current user can access for a specific room."
+        },
+        {
+          "info": {
+            "name": "Docusign Adds a document to a room.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.docusign.net/Management/v2/accounts/:accountId/rooms/:roomId/documents",
+            "params": [
+              {
+                "name": "roomId",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the room."
+              },
+              {
+                "name": "accountId",
+                "value": "",
+                "type": "path",
+                "description": "The globally unique identifier (GUID) for the account."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Adds a document to a room.\n\nThe following properties in the request body are required. The `folderId` property is optional. All other properties are ignored.\n\n- `name`\n- `base64Contents`\n\nIf a document with the specified name already exists, a counter is added to the name to make it unique.\n\nFor example, to create a document named **hello.txt** that contains the text `hello, world`, the body of your request would look like this:\n\n```\n{\n  \"name\": \"hello.txt\",\n  \"base64Contents\": \"aGVsbG8sIHdvcmxk"
+        },
+        {
+          "info": {
+            "name": "Docusign Uploads the contents of a file as a document to a room.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.docusign.net/Management/v2/accounts/:accountId/rooms/:roomId/documents/contents",
+            "params": [
+              {
+                "name": "roomId",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the room."
+              },
+              {
+                "name": "accountId",
+                "value": "",
+                "type": "path",
+                "description": "The globally unique identifier (GUID) for the account."
+              }
+            ],
+            "body": {
+              "type": "multipart-form",
+              "data": [
+                {
+                  "name": "file",
+                  "type": "text",
+                  "value": ""
+                }
+              ]
+            }
+          },
+          "docs": "This method uploads the contents of file as a room document for the room that you specify.\n\nThis is a multipart form request. You must include the following headers:\n\n- `Content-Type: multipart/form-data` (with a `boundary`)\n- `Content-Disposition: form-data`\n- `Content-Disposition: file` (with the `filename`)\n\n\n### Related topics\n\n- [How to attach documents via binary transfer (eSignature)](/docs/esign-rest-api/how-to/send-binary/)\n  An eSignature API example that illustrates how to build a mul"
+        },
+        {
+          "info": {
+            "name": "Docusign Updates the picture for a room.",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.docusign.net/Management/v2/accounts/:accountId/rooms/:roomId/picture",
+            "params": [
+              {
+                "name": "roomId",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the room."
+              },
+              {
+                "name": "accountId",
+                "value": "",
+                "type": "path",
+                "description": "The globally unique identifier (GUID) for the account."
+              }
+            ],
+            "body": {
+              "type": "multipart-form",
+              "data": [
+                {
+                  "name": "file",
+                  "type": "text",
+                  "value": ""
+                }
+              ]
+            }
+          },
+          "docs": "Updates the photo for a room.\nThe image file size limit is approximately 40 MB,\nand you can use the following image formats:\n\n- jpg/jpeg\n- png\n- tiff\n- gif\n\n\nIn the request body of this endpoint,\nyou can specify the image as:\n\n- a JSON object\n- multipart form data\n- stream data\n\nTo upload an image as a JSON object,\nuse an object with two string properties:\n- `fileName`: the name of the file\n- `base64Contents`: the base64 representation of the image.\nFor example a cURL request might look like thi"
+        },
+        {
+          "info": {
+            "name": "Docusign Gets the field set for a room.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.docusign.net/Management/v2/accounts/:accountId/rooms/:roomId/field_set",
+            "params": [
+              {
+                "name": "roomId",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the room."
+              },
+              {
+                "name": "accountId",
+                "value": "",
+                "type": "path",
+                "description": "The globally unique identifier (GUID) for the account."
+              }
+            ]
+          },
+          "docs": "Returns the field set that a room uses. This is the set of fields that appears on the room's **Details** tab in the console, such as `contactName` and `phone`.\n\nYou can use this method to gain a better understanding of the room field data retrieved with\nthe [Rooms: GetRoomFieldData](/docs/rooms-api/reference/rooms/rooms/getroomfielddata/) method, and to determine the fields for which you can provide data when you create a new room.\n\n## Permissions\n\nAnyone in the room can call this method."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

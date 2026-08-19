@@ -1,0 +1,378 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "DocuSign Admin AccountBrands Accounts API",
+    "version": "v2.1"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Accounts",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Docusign Creates new accounts.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.docusign.net/Management/v2/accounts",
+            "params": [
+              {
+                "name": "preview_billing_plan",
+                "value": "",
+                "type": "query",
+                "description": "When set to **true**, creates the account using a preview billing plan."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Creates new DocuSign accounts.\nYou can use this method to create\na single account\nor up to 100 accounts at a time.\n\nWhen creating a single account,\nthe body of the request is a\n[`newAccountDefinition`][newAccountDefinition]\nobject.\n\nIf the request succeeds.\nit returns a\n201 (Created) code.\nThe response returns the new account ID, password and the default user\ninformation for each newly created account.\n\n\nWhen creating multiple accounts,\nthe body of the request is a\n`newAccountRequests`\nobject,\nw"
+        },
+        {
+          "info": {
+            "name": "Docusign Retrieves the account information for the specified account.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.docusign.net/Management/v2/accounts/:accountId",
+            "params": [
+              {
+                "name": "accountId",
+                "value": "",
+                "type": "path",
+                "description": "The external account number (int) or account id GUID."
+              },
+              {
+                "name": "include_account_settings",
+                "value": "",
+                "type": "query",
+                "description": "When set to **true**, includes the account settings for the account in the response."
+              }
+            ]
+          },
+          "docs": "Retrieves the account information for the specified account.\n\n**Response**\nThe `canUpgrade` property contains is a Boolean that indicates whether the account can be upgraded through the API. "
+        },
+        {
+          "info": {
+            "name": "Docusign Deletes the specified account.",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.docusign.net/Management/v2/accounts/:accountId",
+            "params": [
+              {
+                "name": "accountId",
+                "value": "",
+                "type": "path",
+                "description": "The external account number (int) or account id GUID."
+              }
+            ]
+          },
+          "docs": "This closes the specified account. You must be an account admin to close your account. Once closed, an account must be reopened by DocuSign."
+        },
+        {
+          "info": {
+            "name": "Docusign Gets list of recurring and usage charges for the account.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.docusign.net/Management/v2/accounts/:accountId/billing_charges",
+            "params": [
+              {
+                "name": "accountId",
+                "value": "",
+                "type": "path",
+                "description": "The external account number (int) or account id GUID."
+              },
+              {
+                "name": "include_charges",
+                "value": "",
+                "type": "query",
+                "description": "Specifies which billing charges to return.\nValid values are:\n\n* envelopes\n* seats\n"
+              }
+            ]
+          },
+          "docs": "Retrieves the list of recurring and usage charges for the account. This can be used to determine the charge structure and usage of charge plan items. \n\nPrivileges required: account administrator "
+        },
+        {
+          "info": {
+            "name": "Docusign Deletes the signature for one or more captive recipient records.",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.docusign.net/Management/v2/accounts/:accountId/captive_recipients/:recipientPart",
+            "params": [
+              {
+                "name": "accountId",
+                "value": "",
+                "type": "path",
+                "description": "The external account number (int) or account id GUID."
+              },
+              {
+                "name": "recipientPart",
+                "value": "",
+                "type": "path",
+                "description": "Signature is the only supported value. "
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Deletes the signature for one or more captive recipient records; it is primarily used for testing. This provides a way to reset the signature associated with a client user ID so that a new signature can be created the next time the client user ID is used."
+        },
+        {
+          "info": {
+            "name": "Docusign Gets recipient names associated with an email address.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.docusign.net/Management/v2/accounts/:accountId/recipient_names",
+            "params": [
+              {
+                "name": "accountId",
+                "value": "",
+                "type": "path",
+                "description": "The external account number (int) or account id GUID."
+              },
+              {
+                "name": "email",
+                "value": "",
+                "type": "query",
+                "description": "The email address for the user"
+              }
+            ]
+          },
+          "docs": "Retrieves a list of recipients in the specified account that are associated with a email address supplied in the query string."
+        },
+        {
+          "info": {
+            "name": "Docusign Gets account settings information.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.docusign.net/Management/v2/accounts/:accountId/settings",
+            "params": [
+              {
+                "name": "accountId",
+                "value": "",
+                "type": "path",
+                "description": "The external account number (int) or account id GUID."
+              }
+            ]
+          },
+          "docs": "Retrieves the account settings information for the specified account."
+        },
+        {
+          "info": {
+            "name": "Docusign Updates the account settings for an account.",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.docusign.net/Management/v2/accounts/:accountId/settings",
+            "params": [
+              {
+                "name": "accountId",
+                "value": "",
+                "type": "path",
+                "description": "The external account number (int) or account id GUID."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Updates the account settings for the specified account."
+        },
+        {
+          "info": {
+            "name": "Docusign Reserved: Gets the shared item status for one or more users.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.docusign.net/Management/v2/accounts/:accountId/shared_access",
+            "params": [
+              {
+                "name": "accountId",
+                "value": "",
+                "type": "path",
+                "description": "The external account number (int) or account id GUID."
+              },
+              {
+                "name": "count",
+                "value": "",
+                "type": "query",
+                "description": "Specifies maximum number of results included in the response. If no value is specified, this defaults to 1000."
+              },
+              {
+                "name": "envelopes_not_shared_user_status",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "folder_ids",
+                "value": "",
+                "type": "query",
+                "description": "A comma separated list of folder IDs  for which the shared item\ninformation is being requested.\n\nIf `item_type` is `folders`, at least one folder ID is required."
+              },
+              {
+                "name": "item_type",
+                "value": "",
+                "type": "query",
+                "description": "Specifies the type of shared item being requested. The possible values are:\n\n- `envelopes`: Get information about envelope sharing between users.\n- `templates`: Get information about template sharing among users and groups.\n- `folders`: Get information about folder sharing among users and groups.\n"
+              },
+              {
+                "name": "search_text",
+                "value": "",
+                "type": "query",
+                "description": "This can be used to filter user names in the response. The wild-card '*' (asterisk) can be used around the string."
+              },
+              {
+                "name": "shared",
+                "value": "",
+                "type": "query",
+                "description": "A comma-separated list of sharing filters that specifies which users appear in the response. \n\n- `not_shared`: The response contains users who do not share items of `item_type` with the current user.\n\n- `shared_to`: The response contains users in `user_list` who are sharing items to current user.\n\n- `shared_from`: The response contains users in `user_list` who are sharing items from the current user.\n\n- `shared_to_and_from`: The response contains users in `user_list` who are sharing items to and sharing items from the current user.\n\nIf the current user does not have administrative privileges, only the `shared_to` option is valid."
+              },
+              {
+                "name": "start_position",
+                "value": "",
+                "type": "query",
+                "description": "If the number of responses is greater than `count`, the number of responses to skip. Typically this value is a multiple of `count`. Default: 0."
+              },
+              {
+                "name": "user_ids",
+                "value": "",
+                "type": "query",
+                "description": "A comma-separated list of user IDs for whom the shared item information is being requested."
+              }
+            ]
+          },
+          "docs": "Retrieves shared item status for one or more users and types of items.\n\nUsers with account administration privileges can retrieve shared access information for all account users. Users without account administrator privileges can only retrieve shared access information for themselves and the returned information is limited to the retrieving the status of all members of the account that are sharing their folders to the user. This is equivalent to setting the `shared` to `shared_from`."
+        },
+        {
+          "info": {
+            "name": "Docusign Reserved: Sets the shared access information for users.",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.docusign.net/Management/v2/accounts/:accountId/shared_access",
+            "params": [
+              {
+                "name": "accountId",
+                "value": "",
+                "type": "path",
+                "description": "The external account number (int) or account id GUID."
+              },
+              {
+                "name": "item_type",
+                "value": "",
+                "type": "query",
+                "description": "Specifies the type of shared item being requested. The possible values are:\n\n- `envelopes`: Get information about envelope sharing between users.\n- `templates`: Get information about template sharing among users and groups.\n- `folders`: Get information about folder sharing among users and groups.\n"
+              },
+              {
+                "name": "user_ids",
+                "value": "",
+                "type": "query",
+                "description": "A comma-separated list of user IDs whose shared item information is being set."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "This sets the shared access status for one or more users or templates.\n\nWhen setting user shared access, only users with account administration privileges can set shared access status for envelopes.\n\nWhen setting template shared access, only users who own a template and have sharing permission or with account administration privileges can set shared access for templates.\n\nChanges to the shared items status are not additive. The change always replaces the current status.\n\nTo change template share"
+        },
+        {
+          "info": {
+            "name": "Docusign List supported languages for the recipient language setting",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.docusign.net/Management/v2/accounts/:accountId/supported_languages",
+            "params": [
+              {
+                "name": "accountId",
+                "value": "",
+                "type": "path",
+                "description": "The external account number (int) or account id GUID."
+              }
+            ]
+          },
+          "docs": "List supported languages for the recipient language setting"
+        },
+        {
+          "info": {
+            "name": "Docusign Gets a list of unsupported file types.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.docusign.net/Management/v2/accounts/:accountId/unsupported_file_types",
+            "params": [
+              {
+                "name": "accountId",
+                "value": "",
+                "type": "path",
+                "description": "The external account number (int) or account id GUID."
+              }
+            ]
+          },
+          "docs": "Retrieves a list of file types (mime-types and file-extensions) that are not supported for upload through the DocuSign system."
+        },
+        {
+          "info": {
+            "name": "Docusign Retrieves the account provisioning information for the account.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.docusign.net/Management/v2/accounts/provisioning"
+          },
+          "docs": "Retrieves the account provisioning information for the account."
+        },
+        {
+          "info": {
+            "name": "OrganizationExports_GetAccountSettingsExport",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.docusign.net/Management/v2/organization_exports/:organizationId/account_settings/:resultId",
+            "params": [
+              {
+                "name": "organizationId",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "resultId",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

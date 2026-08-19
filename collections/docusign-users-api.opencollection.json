@@ -1,0 +1,732 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "DocuSign Admin AccountBrands Users API",
+    "version": "v2.1"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Users",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Docusign Updates a user's email address.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.docusign.net/Management/v2/organizations/:organizationId/users/email_addresses",
+            "params": [
+              {
+                "name": "organizationId",
+                "value": "",
+                "type": "path",
+                "description": "The organization ID Guid"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://account.docusign.com/oauth/auth",
+              "accessTokenUrl": "https://account.docusign.com/oauth/auth",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Updates a user's email address.\n\n- Required scopes: `user_write`\n\n"
+        },
+        {
+          "info": {
+            "name": "Docusign Returns information about the users in an organization.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.docusign.net/Management/v2/organizations/:organizationId/users",
+            "params": [
+              {
+                "name": "organizationId",
+                "value": "",
+                "type": "path",
+                "description": "The organization ID Guid"
+              },
+              {
+                "name": "start",
+                "value": "",
+                "type": "query",
+                "description": "Index of first item to include in the response. The default value is 0."
+              },
+              {
+                "name": "take",
+                "value": "",
+                "type": "query",
+                "description": "Page size of the response. The default value is 20."
+              },
+              {
+                "name": "end",
+                "value": "",
+                "type": "query",
+                "description": "Index of the last item to include in the response. Ignored if `take` parameter is specified."
+              },
+              {
+                "name": "email",
+                "value": "",
+                "type": "query",
+                "description": "Email address of the desired user. At least one of `email`, `account_id` or `organization_reserved_domain_id` must be specified."
+              },
+              {
+                "name": "email_user_name_like",
+                "value": "",
+                "type": "query",
+                "description": "Selects users by pattern matching on the user's email address"
+              },
+              {
+                "name": "status",
+                "value": "",
+                "type": "query",
+                "description": "Status."
+              },
+              {
+                "name": "membership_status",
+                "value": "",
+                "type": "query",
+                "description": "The user's membership status. One of:\n\n- `activation_required`\n- `activation_sent`\n- `active`\n- `closed`\n- `disabled`\n"
+              },
+              {
+                "name": "account_id",
+                "value": "",
+                "type": "query",
+                "description": "Select users that are members of the specified account. At least one of `email`, `account_id` or `organization_reserved_domain_id` must be specified."
+              },
+              {
+                "name": "organization_reserved_domain_id",
+                "value": "",
+                "type": "query",
+                "description": "Select users that are in the specified domain. At least one of `email`, `account_id` or `organization_reserved_domain_id` must be specified."
+              },
+              {
+                "name": "last_modified_since",
+                "value": "",
+                "type": "query",
+                "description": "Select users whose data have been modified since the date specified. `account_id` or `organization_reserved_domain_id` must be specified."
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://account.docusign.com/oauth/auth",
+              "accessTokenUrl": "https://account.docusign.com/oauth/auth",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Returns information about the users in an organization.\n\n\n- Required scopes: `user_read`\n\nYou must include at least one of the following query parameters in the request:\n\n- `account_id`: The id of an account associated with the organization.\n- `organization_reserved_domain_id`: The id of one of the organization's reserved domains.\n- `email`: An email address associated with the users that you want to return."
+        },
+        {
+          "info": {
+            "name": "Docusign Retrieves the list of users for the specified account.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.docusign.net/Management/v2/accounts/:accountId/users",
+            "params": [
+              {
+                "name": "accountId",
+                "value": "",
+                "type": "path",
+                "description": "The external account number (int) or account id GUID."
+              },
+              {
+                "name": "additional_info",
+                "value": "",
+                "type": "query",
+                "description": "When set to **true**, the full list of user information is returned for each user in the account."
+              },
+              {
+                "name": "count",
+                "value": "",
+                "type": "query",
+                "description": "Number of records to return. The number must be greater than 0 and less than or equal to 100. "
+              },
+              {
+                "name": "email",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "email_substring",
+                "value": "",
+                "type": "query",
+                "description": "Filters the returned user records by the email address or a sub-string of email address."
+              },
+              {
+                "name": "group_id",
+                "value": "",
+                "type": "query",
+                "description": "Filters user records returned by one or more group Id's."
+              },
+              {
+                "name": "login_status",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "not_group_id",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "start_position",
+                "value": "",
+                "type": "query",
+                "description": "Starting value for the list. "
+              },
+              {
+                "name": "status",
+                "value": "",
+                "type": "query",
+                "description": "Filters the user records by account status. One of:\n\n* ActivationRequired\n* ActivationSent\n* Active\n* Closed\n* Disabled\n"
+              },
+              {
+                "name": "user_name_substring",
+                "value": "",
+                "type": "query",
+                "description": "Filters the user records returned by the user name or a sub-string of user name."
+              }
+            ]
+          },
+          "docs": "Retrieves the list of users for the specified account.\n\nThe response returns the list of users for the account along with the information about the result set. If the `additional_info` query was added to the endpoint and set to **true**, the full user information is returned for each user"
+        },
+        {
+          "info": {
+            "name": "Docusign Adds news user to the specified account.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.docusign.net/Management/v2/accounts/:accountId/users",
+            "params": [
+              {
+                "name": "accountId",
+                "value": "",
+                "type": "path",
+                "description": "The external account number (int) or account id GUID."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Adds new users to an account.\n\nThe body of this request\nis an array\nof [`Users`][usersobject] objects.\nFor each new user,\nyou must provide at least\nthe `userName`\nand\nan `email`.\n\nThe\n[`userSettings` property](#user-settings)\nis a [name/value][nameValue]\nlist that specifies the actions users can\nperform.\nIn the example below,\nTal Mason\nwill be able to send envelopes,\nand the activation email\nwill be in French\nbecause the `locale`\nis set to `fr`.\n\n\n```\nPOST /restapi/v2/accounts/{accountId}/users\n"
+        },
+        {
+          "info": {
+            "name": "Docusign Change one or more user in the specified account.",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.docusign.net/Management/v2/accounts/:accountId/users",
+            "params": [
+              {
+                "name": "accountId",
+                "value": "",
+                "type": "path",
+                "description": "The external account number (int) or account id GUID."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Docusign Change one or more user in the specified account."
+        },
+        {
+          "info": {
+            "name": "Docusign Removes users account privileges.",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.docusign.net/Management/v2/accounts/:accountId/users",
+            "params": [
+              {
+                "name": "accountId",
+                "value": "",
+                "type": "path",
+                "description": "The external account number (int) or account id GUID."
+              },
+              {
+                "name": "delete",
+                "value": "",
+                "type": "query"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "This closes one or more user records in the account. Users are never deleted from an account, but closing a user prevents them from using account functions.\n\nThe response returns whether the API execution was successful (200 - OK) or  if it failed. The response contains a user structure similar to the request and includes the user changes. If an error occurred during the DELETE operation for any of the users, the response for that user contains an `errorDetails` node with `errorCode` and `messag"
+        },
+        {
+          "info": {
+            "name": "Docusign Gets the user information for a specified user.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.docusign.net/Management/v2/accounts/:accountId/users/:userId",
+            "params": [
+              {
+                "name": "accountId",
+                "value": "",
+                "type": "path",
+                "description": "The external account number (int) or account id GUID."
+              },
+              {
+                "name": "userId",
+                "value": "",
+                "type": "path",
+                "description": "The user ID of the user being accessed. Generally this is the user ID of the authenticated user, but if the authenticated user is an Admin on the account, this may be another user the Admin user is accessing. **Note**: For the [GET /v2/accounts/{accountId}/envelopes](https://developers.docusign.com/esign-rest-api/reference/Envelopes/Envelopes/listStatusChanges/#envelopesInformation) method, the `user_id` query parameter is not implemented and should not be used."
+              },
+              {
+                "name": "additional_info",
+                "value": "",
+                "type": "query",
+                "description": "When set to **true**, the full list of user information is returned for each user in the account."
+              },
+              {
+                "name": "email",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Retrieves the user information for the specified user. \n\nTo return additional user information that details the last login date, login status, and the user's password expiration date, set the optional `additional_info` query string parameter to **true**."
+        },
+        {
+          "info": {
+            "name": "Docusign Updates the specified user information.",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.docusign.net/Management/v2/accounts/:accountId/users/:userId",
+            "params": [
+              {
+                "name": "accountId",
+                "value": "",
+                "type": "path",
+                "description": "The external account number (int) or account id GUID."
+              },
+              {
+                "name": "userId",
+                "value": "",
+                "type": "path",
+                "description": "The user ID of the user being accessed. Generally this is the user ID of the authenticated user, but if the authenticated user is an Admin on the account, this may be another user the Admin user is accessing. **Note**: For the [GET /v2/accounts/{accountId}/envelopes](https://developers.docusign.com/esign-rest-api/reference/Envelopes/Envelopes/listStatusChanges/#envelopesInformation) method, the `user_id` query parameter is not implemented and should not be used."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Docusign Updates the specified user information."
+        },
+        {
+          "info": {
+            "name": "Docusign Removes a user from a company account.",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.docusign.net/Management/v2/accounts/:accountId/users/:userId",
+            "params": [
+              {
+                "name": "userId",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the user to remove."
+              },
+              {
+                "name": "accountId",
+                "value": "",
+                "type": "path",
+                "description": "The globally unique identifier (GUID) for the account."
+              }
+            ]
+          },
+          "docs": "Removes the specified user from the specified account.\n\n## Permissions\n\nTo remove a user who has a lower access level, you must have the `canRemoveCompanyMemberLowerAccessLevel` permission set to **true.** \n\nTo remove a user who has the same access level, you must have the `canRemoveCompanyMemberSameAccessLevel` permission set to **true.** "
+        },
+        {
+          "info": {
+            "name": "Docusign Retrieves the user profile image for the specified user.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.docusign.net/Management/v2/accounts/:accountId/users/:userId/profile/image",
+            "params": [
+              {
+                "name": "accountId",
+                "value": "",
+                "type": "path",
+                "description": "The external account number (int) or account id GUID."
+              },
+              {
+                "name": "userId",
+                "value": "",
+                "type": "path",
+                "description": "The user ID of the user being accessed. Generally this is the user ID of the authenticated user, but if the authenticated user is an Admin on the account, this may be another user the Admin user is accessing. **Note**: For the [GET /v2/accounts/{accountId}/envelopes](https://developers.docusign.com/esign-rest-api/reference/Envelopes/Envelopes/listStatusChanges/#envelopesInformation) method, the `user_id` query parameter is not implemented and should not be used."
+              },
+              {
+                "name": "encoding",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Retrieves the user profile picture for the specified user. The image is returned in the same format as uploaded.\n\nThe userId parameter specified in the endpoint must match the authenticated user's user ID and the user must be a member of the specified account.\n\nIf successful, the response returns a 200 - OK and the user profile image."
+        },
+        {
+          "info": {
+            "name": "Docusign Updates the user profile image for a specified user.",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.docusign.net/Management/v2/accounts/:accountId/users/:userId/profile/image",
+            "params": [
+              {
+                "name": "accountId",
+                "value": "",
+                "type": "path",
+                "description": "The external account number (int) or account id GUID."
+              },
+              {
+                "name": "userId",
+                "value": "",
+                "type": "path",
+                "description": "The user ID of the user being accessed. Generally this is the user ID of the authenticated user, but if the authenticated user is an Admin on the account, this may be another user the Admin user is accessing. **Note**: For the [GET /v2/accounts/{accountId}/envelopes](https://developers.docusign.com/esign-rest-api/reference/Envelopes/Envelopes/listStatusChanges/#envelopesInformation) method, the `user_id` query parameter is not implemented and should not be used."
+              }
+            ]
+          },
+          "docs": "Updates the user profile image by uploading an image to the user profile.\n\nThe supported image formats are: gif, png, jpeg, and bmp. The file must be less than 200K. For best viewing results, DocuSign recommends that the image is no more than 79 pixels wide and high."
+        },
+        {
+          "info": {
+            "name": "Docusign Deletes the user profile image for the specified user.",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.docusign.net/Management/v2/accounts/:accountId/users/:userId/profile/image",
+            "params": [
+              {
+                "name": "accountId",
+                "value": "",
+                "type": "path",
+                "description": "The external account number (int) or account id GUID."
+              },
+              {
+                "name": "userId",
+                "value": "",
+                "type": "path",
+                "description": "The user ID of the user being accessed. Generally this is the user ID of the authenticated user, but if the authenticated user is an Admin on the account, this may be another user the Admin user is accessing. **Note**: For the [GET /v2/accounts/{accountId}/envelopes](https://developers.docusign.com/esign-rest-api/reference/Envelopes/Envelopes/listStatusChanges/#envelopesInformation) method, the `user_id` query parameter is not implemented and should not be used."
+              }
+            ]
+          },
+          "docs": "Deletes the user profile image from the  specified user's profile.\n\nThe userId parameter specified in the endpoint must match the authenticated user's user ID and the user must be a member of the specified account."
+        },
+        {
+          "info": {
+            "name": "Docusign Gets the user account settings for a specified user.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.docusign.net/Management/v2/accounts/:accountId/users/:userId/settings",
+            "params": [
+              {
+                "name": "accountId",
+                "value": "",
+                "type": "path",
+                "description": "The external account number (int) or account id GUID."
+              },
+              {
+                "name": "userId",
+                "value": "",
+                "type": "path",
+                "description": "The user ID of the user being accessed. Generally this is the user ID of the authenticated user, but if the authenticated user is an Admin on the account, this may be another user the Admin user is accessing. **Note**: For the [GET /v2/accounts/{accountId}/envelopes](https://developers.docusign.com/esign-rest-api/reference/Envelopes/Envelopes/listStatusChanges/#envelopesInformation) method, the `user_id` query parameter is not implemented and should not be used."
+              }
+            ]
+          },
+          "docs": "Retrieves a list of the account settings and email notification information for the specified user.\n\nThe response returns the account setting name/value information and the email notification settings for the specified user. For more information about the different user settings, see the [ML:userSettings list]."
+        },
+        {
+          "info": {
+            "name": "Docusign Updates the user account settings for a specified user.",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.docusign.net/Management/v2/accounts/:accountId/users/:userId/settings",
+            "params": [
+              {
+                "name": "accountId",
+                "value": "",
+                "type": "path",
+                "description": "The external account number (int) or account id GUID."
+              },
+              {
+                "name": "userId",
+                "value": "",
+                "type": "path",
+                "description": "The user ID of the user being accessed. Generally this is the user ID of the authenticated user, but if the authenticated user is an Admin on the account, this may be another user the Admin user is accessing. **Note**: For the [GET /v2/accounts/{accountId}/envelopes](https://developers.docusign.com/esign-rest-api/reference/Envelopes/Envelopes/listStatusChanges/#envelopesInformation) method, the `user_id` query parameter is not implemented and should not be used."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Updates the account settings list and email notification types for the specified user."
+        },
+        {
+          "info": {
+            "name": "Docusign Invites a user to a company account.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.docusign.net/Management/v2/accounts/:accountId/users/invite_user",
+            "params": [
+              {
+                "name": "accountId",
+                "value": "",
+                "type": "path",
+                "description": "The globally unique identifier (GUID) for the account."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Invites a new user to join a company account. You specify the custom role and access level that you want to give to the user in the `invitee` request body.\n\n## Permissions\n\nTo invite users to a company, you must be either a Default Admin or another authorized user who has access to all of the locations to which the new user is being invited and one of the following `userPermissions` set to **true:**\n\n- `canAddMemberAndSetRoleLowerAccessLevel`: Users can add other users who have a lower access le"
+        },
+        {
+          "info": {
+            "name": "Docusign Reinvites a user to join a company account.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.docusign.net/Management/v2/accounts/:accountId/users/:userId/reinvite",
+            "params": [
+              {
+                "name": "userId",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the user to reinvite."
+              },
+              {
+                "name": "accountId",
+                "value": "",
+                "type": "path",
+                "description": "The globally unique identifier (GUID) for the account."
+              }
+            ]
+          },
+          "docs": "Reinvites an unactivated user to join a company account.\n\nInvitations expire after 30 days and can no longer be accepted. Use this method to send a new copy of an invitation to a pending user."
+        },
+        {
+          "info": {
+            "name": "Docusign Adds a user to an office.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.docusign.net/Management/v2/accounts/:accountId/users/:userId/add_to_office",
+            "params": [
+              {
+                "name": "userId",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the user to add."
+              },
+              {
+                "name": "accountId",
+                "value": "",
+                "type": "path",
+                "description": "The globally unique identifier (GUID) for the account."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Adds an existing user to a single office. You specify the office to which you want to add the user in the `designatedOffice` request body.\n\nTo add a user to multiple offices, you must make this call separately for each office.\n\n**Note:** The `accessLevel` of the user that you are adding must be `contributor` or `office`.\n\n## Permissions\n\nYou must have at least one of the following permissions set to **true,** depending on the level of the user that you want to add or remove:\n\n- `canManageMemberL"
+        },
+        {
+          "info": {
+            "name": "Docusign Removes a user from an office.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.docusign.net/Management/v2/accounts/:accountId/users/:userId/remove_from_office",
+            "params": [
+              {
+                "name": "userId",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the user to remove."
+              },
+              {
+                "name": "accountId",
+                "value": "",
+                "type": "path",
+                "description": "The globally unique identifier (GUID) for the account."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Removes a user from a single office. You specify the office from which you want to remove the user in the `designatedOffice` request body.\n\nThe user still maintains their other office, region, company, and account associations.\n\n**Note:** You cannot remove a user from their default office. You must first assign the user a different default office by using the [Users: updateUser][updateUser] method.\n\n[updateUser]: /docs/rooms-api/reference/Users/Users/UpdateUser/\n\n## Permissions\n\nYou must have at"
+        },
+        {
+          "info": {
+            "name": "Docusign Adds a user to a region.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.docusign.net/Management/v2/accounts/:accountId/users/:userId/add_to_region",
+            "params": [
+              {
+                "name": "userId",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the user to add."
+              },
+              {
+                "name": "accountId",
+                "value": "",
+                "type": "path",
+                "description": "The globally unique identifier (GUID) for the account."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Adds an existing user to a region. You specify the region to which you want to add the user in the `designatedRegion` request body.\n\nTo add a user to multiple regions, you must make this call separately for each region.\n\n**Note:** The `accessLevel` of the user that you are adding must be `region`.\n\n## Permissions\n\nYou must have at least one of the following permissions set to **true,** depending on the level of the user that you want to add or remove:\n\n- `canManageMemberLowerAccessLevel`: Users "
+        },
+        {
+          "info": {
+            "name": "Docusign Removes a user from a region.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.docusign.net/Management/v2/accounts/:accountId/users/:userId/remove_from_region",
+            "params": [
+              {
+                "name": "userId",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the user to remove."
+              },
+              {
+                "name": "accountId",
+                "value": "",
+                "type": "path",
+                "description": "The globally unique identifier (GUID) for the account."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Removes a user from a single region. You specify the region from which you want to remove the user in the `designatedRegion` request body.\n\nThe user still maintains their other region, company, and account associations.\n\n## Permissions\n\nYou must have at least one of the following permissions set to **true,** depending on the level of the user that you want to add or remove:\n\n- `canManageMemberLowerAccessLevel`: Users can add or remove other users who have a lower access level than their own (in "
+        },
+        {
+          "info": {
+            "name": "Docusign Locks a user's account.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.docusign.net/Management/v2/accounts/:accountId/users/:userId/lock",
+            "params": [
+              {
+                "name": "userId",
+                "value": "",
+                "type": "path",
+                "description": "ID of the user to lock."
+              },
+              {
+                "name": "accountId",
+                "value": "",
+                "type": "path",
+                "description": "The globally unique identifier (GUID) for the account."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Locks the account of the specified user. Use the `reason` property in the request body to specify why the account was locked.\n\n## Permissions\n\nTo lock a user who has a lower access level than you, you must have the `canManageMemberLowerAccessLevel` permission set to **true.**\nTo lock a user who has the same access level as you, you must have the `canManageMemberSameAccessLevel` permission set to **true** \n"
+        },
+        {
+          "info": {
+            "name": "Docusign Unlocks  a user's account.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.docusign.net/Management/v2/accounts/:accountId/users/:userId/unlock",
+            "params": [
+              {
+                "name": "userId",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the user to unlock."
+              },
+              {
+                "name": "accountId",
+                "value": "",
+                "type": "path",
+                "description": "The globally unique identifier (GUID) for the account."
+              }
+            ]
+          },
+          "docs": "Unlocks the account of  the specified user.\n\n## Permissions\n\n- To unlock a user who has a lower access level than you, you must have the `canManageMemberLowerAccessLevel` permission set to **true.**\n- To unlock a user who has the same access level as you, you must have the `canManageMemberSameAccessLevel` permission set to **true.**"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

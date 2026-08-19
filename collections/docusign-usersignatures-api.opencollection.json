@@ -1,0 +1,325 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "DocuSign Admin AccountBrands UserSignatures API",
+    "version": "v2.1"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "UserSignatures",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Docusign Retrieves a list of user signature definitions for a specified user.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.docusign.net/Management/v2/accounts/:accountId/users/:userId/signatures",
+            "params": [
+              {
+                "name": "accountId",
+                "value": "",
+                "type": "path",
+                "description": "The external account number (int) or account id GUID."
+              },
+              {
+                "name": "userId",
+                "value": "",
+                "type": "path",
+                "description": "The user ID of the user being accessed. Generally this is the user ID of the authenticated user, but if the authenticated user is an Admin on the account, this may be another user the Admin user is accessing. **Note**: For the [GET /v2/accounts/{accountId}/envelopes](https://developers.docusign.com/esign-rest-api/reference/Envelopes/Envelopes/listStatusChanges/#envelopesInformation) method, the `user_id` query parameter is not implemented and should not be used."
+              },
+              {
+                "name": "stamp_type",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Retrieves the signature definitions for the specified user.\n\nThe userId parameter specified in the endpoint must match the authenticated user's user ID and the user must be a member of the account.\n\nThe `signatureId` parameter accepts a signature ID or a signature name. DocuSign recommends you use signature ID (`signatureId`), since some names contain characters that do not properly encode into a URL. If you use the user name, it is likely that the name includes spaces. In that case, URL encode "
+        },
+        {
+          "info": {
+            "name": "Docusign Adds user Signature and initials images to a Signature.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.docusign.net/Management/v2/accounts/:accountId/users/:userId/signatures",
+            "params": [
+              {
+                "name": "accountId",
+                "value": "",
+                "type": "path",
+                "description": "The external account number (int) or account id GUID."
+              },
+              {
+                "name": "userId",
+                "value": "",
+                "type": "path",
+                "description": "The user ID of the user being accessed. Generally this is the user ID of the authenticated user, but if the authenticated user is an Admin on the account, this may be another user the Admin user is accessing. **Note**: For the [GET /v2/accounts/{accountId}/envelopes](https://developers.docusign.com/esign-rest-api/reference/Envelopes/Envelopes/listStatusChanges/#envelopesInformation) method, the `user_id` query parameter is not implemented and should not be used."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Adds a user signature image and/or user initials image to the specified user. \n\nThe userId property specified in the endpoint must match the authenticated user's userId and the user must be a member of the account.\n\nThe rules and processes associated with this are:\n\n* If Content-Type is set to application/json, then the default behavior for creating a default signature image, based on the name and a DocuSign font, is used.\n* If Content-Type is set to multipart/form-data, then the request must co"
+        },
+        {
+          "info": {
+            "name": "Docusign Adds/updates a user signature.",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.docusign.net/Management/v2/accounts/:accountId/users/:userId/signatures",
+            "params": [
+              {
+                "name": "accountId",
+                "value": "",
+                "type": "path",
+                "description": "The external account number (int) or account id GUID."
+              },
+              {
+                "name": "userId",
+                "value": "",
+                "type": "path",
+                "description": "The user ID of the user being accessed. Generally this is the user ID of the authenticated user, but if the authenticated user is an Admin on the account, this may be another user the Admin user is accessing. **Note**: For the [GET /v2/accounts/{accountId}/envelopes](https://developers.docusign.com/esign-rest-api/reference/Envelopes/Envelopes/listStatusChanges/#envelopesInformation) method, the `user_id` query parameter is not implemented and should not be used."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Docusign Adds/updates a user signature."
+        },
+        {
+          "info": {
+            "name": "Docusign Gets the user signature information for the specified user.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.docusign.net/Management/v2/accounts/:accountId/users/:userId/signatures/:signatureId",
+            "params": [
+              {
+                "name": "accountId",
+                "value": "",
+                "type": "path",
+                "description": "The external account number (int) or account id GUID."
+              },
+              {
+                "name": "signatureId",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the signature being accessed."
+              },
+              {
+                "name": "userId",
+                "value": "",
+                "type": "path",
+                "description": "The user ID of the user being accessed. Generally this is the user ID of the authenticated user, but if the authenticated user is an Admin on the account, this may be another user the Admin user is accessing. **Note**: For the [GET /v2/accounts/{accountId}/envelopes](https://developers.docusign.com/esign-rest-api/reference/Envelopes/Envelopes/listStatusChanges/#envelopesInformation) method, the `user_id` query parameter is not implemented and should not be used."
+              }
+            ]
+          },
+          "docs": "Retrieves the structure of a single signature with a known signature name.\n\nThe userId specified in the endpoint must match the authenticated user's user ID and the user must be a member of the account.\n\nThe `signatureId` parameter accepts a signature ID or a signature name. DocuSign recommends you use signature ID (`signatureId`), since some names contain characters that do not properly encode into a URL. If you use the user name, it is likely that the name includes spaces. In that case, URL en"
+        },
+        {
+          "info": {
+            "name": "Docusign Updates the user signature for a specified user.",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.docusign.net/Management/v2/accounts/:accountId/users/:userId/signatures/:signatureId",
+            "params": [
+              {
+                "name": "accountId",
+                "value": "",
+                "type": "path",
+                "description": "The external account number (int) or account id GUID."
+              },
+              {
+                "name": "signatureId",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the signature being accessed."
+              },
+              {
+                "name": "userId",
+                "value": "",
+                "type": "path",
+                "description": "The user ID of the user being accessed. Generally this is the user ID of the authenticated user, but if the authenticated user is an Admin on the account, this may be another user the Admin user is accessing. **Note**: For the [GET /v2/accounts/{accountId}/envelopes](https://developers.docusign.com/esign-rest-api/reference/Envelopes/Envelopes/listStatusChanges/#envelopesInformation) method, the `user_id` query parameter is not implemented and should not be used."
+              },
+              {
+                "name": "close_existing_signature",
+                "value": "",
+                "type": "query",
+                "description": "When set to **true**, closes the current signature."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Creates, or updates, the signature font and initials for the specified user. When creating a signature, you use this resource to create the signature name and then add the signature and initials images into the signature.\n\n###### Note: This will also create a default signature for the user when one does not exist.\n\nThe userId property specified in the endpoint must match the authenticated user's user ID and the user must be a member of the account.\n\nThe `signatureId` parameter accepts a signatur"
+        },
+        {
+          "info": {
+            "name": "Docusign Removes removes signature information for the specified user.",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.docusign.net/Management/v2/accounts/:accountId/users/:userId/signatures/:signatureId",
+            "params": [
+              {
+                "name": "accountId",
+                "value": "",
+                "type": "path",
+                "description": "The external account number (int) or account id GUID."
+              },
+              {
+                "name": "signatureId",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the signature being accessed."
+              },
+              {
+                "name": "userId",
+                "value": "",
+                "type": "path",
+                "description": "The user ID of the user being accessed. Generally this is the user ID of the authenticated user, but if the authenticated user is an Admin on the account, this may be another user the Admin user is accessing. **Note**: For the [GET /v2/accounts/{accountId}/envelopes](https://developers.docusign.com/esign-rest-api/reference/Envelopes/Envelopes/listStatusChanges/#envelopesInformation) method, the `user_id` query parameter is not implemented and should not be used."
+              }
+            ]
+          },
+          "docs": "Removes the signature information for the user.\n\nThe userId parameter specified in the endpoint must match the authenticated user's user ID and the user must be a member of the account.\n\nThe `signatureId` accepts a signature ID or a signature name. DocuSign recommends you use signature ID (`signatureId`), since some names contain characters that do not properly encode into a URL. If you use the user name, it is likely that the name includes spaces. In that case, URL encode the name before using "
+        },
+        {
+          "info": {
+            "name": "Docusign Retrieves the user initials image or the  user signature image for the specified user.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.docusign.net/Management/v2/accounts/:accountId/users/:userId/signatures/:signatureId/:imageType",
+            "params": [
+              {
+                "name": "accountId",
+                "value": "",
+                "type": "path",
+                "description": "The external account number (int) or account id GUID."
+              },
+              {
+                "name": "imageType",
+                "value": "",
+                "type": "path",
+                "description": "One of **signature_image** or **initials_image**."
+              },
+              {
+                "name": "signatureId",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the signature being accessed."
+              },
+              {
+                "name": "userId",
+                "value": "",
+                "type": "path",
+                "description": "The user ID of the user being accessed. Generally this is the user ID of the authenticated user, but if the authenticated user is an Admin on the account, this may be another user the Admin user is accessing. **Note**: For the [GET /v2/accounts/{accountId}/envelopes](https://developers.docusign.com/esign-rest-api/reference/Envelopes/Envelopes/listStatusChanges/#envelopesInformation) method, the `user_id` query parameter is not implemented and should not be used."
+              },
+              {
+                "name": "include_chrome",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Retrieves the specified initials image or signature image for the specified user. The image is returned in the same format as uploaded. In the request you can specify if the chrome (the added line and identifier around the initial image) is returned with the image.\n\nThe userId property specified in the endpoint must match the authenticated user's user ID and the user must be a member of the account.\n\nThe `signatureId` parameter accepts a signature ID or a signature name. DocuSign recommends you "
+        },
+        {
+          "info": {
+            "name": "Docusign Updates the user signature image or user initials image for the specified user.",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.docusign.net/Management/v2/accounts/:accountId/users/:userId/signatures/:signatureId/:imageType",
+            "params": [
+              {
+                "name": "accountId",
+                "value": "",
+                "type": "path",
+                "description": "The external account number (int) or account id GUID."
+              },
+              {
+                "name": "imageType",
+                "value": "",
+                "type": "path",
+                "description": "One of **signature_image** or **initials_image**."
+              },
+              {
+                "name": "signatureId",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the signature being accessed."
+              },
+              {
+                "name": "userId",
+                "value": "",
+                "type": "path",
+                "description": "The user ID of the user being accessed. Generally this is the user ID of the authenticated user, but if the authenticated user is an Admin on the account, this may be another user the Admin user is accessing. **Note**: For the [GET /v2/accounts/{accountId}/envelopes](https://developers.docusign.com/esign-rest-api/reference/Envelopes/Envelopes/listStatusChanges/#envelopesInformation) method, the `user_id` query parameter is not implemented and should not be used."
+              }
+            ]
+          },
+          "docs": "Updates the user signature image or user initials image for the specified user. The supported image formats for this file are: gif, png, jpeg, and bmp. The file must be less than 200K.\n\nThe userId property specified in the endpoint must match the authenticated user's user ID and the user must be a member of the account.\n\nThe `signatureId` parameter accepts a signature ID or a signature name. DocuSign recommends you use signature ID (`signatureId`), since some names contain characters that do not"
+        },
+        {
+          "info": {
+            "name": "Docusign Deletes the user initials image or the  user signature image for the specified user.",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.docusign.net/Management/v2/accounts/:accountId/users/:userId/signatures/:signatureId/:imageType",
+            "params": [
+              {
+                "name": "accountId",
+                "value": "",
+                "type": "path",
+                "description": "The external account number (int) or account id GUID."
+              },
+              {
+                "name": "imageType",
+                "value": "",
+                "type": "path",
+                "description": "One of **signature_image** or **initials_image**."
+              },
+              {
+                "name": "signatureId",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the signature being accessed."
+              },
+              {
+                "name": "userId",
+                "value": "",
+                "type": "path",
+                "description": "The user ID of the user being accessed. Generally this is the user ID of the authenticated user, but if the authenticated user is an Admin on the account, this may be another user the Admin user is accessing. **Note**: For the [GET /v2/accounts/{accountId}/envelopes](https://developers.docusign.com/esign-rest-api/reference/Envelopes/Envelopes/listStatusChanges/#envelopesInformation) method, the `user_id` query parameter is not implemented and should not be used."
+              }
+            ]
+          },
+          "docs": "Deletes the specified initials image or signature image for the specified user.\n\nThe function deletes one or the other of the image types, to delete both the initials image and signature image you must call the endpoint twice.\n\nThe userId parameter specified in the endpoint must match the authenticated user's user ID and the user must be a member of the account.\n\nThe `signatureId` parameter accepts a signature ID or a signature name. DocuSign recommends you use signature ID (`signatureId`), sinc"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

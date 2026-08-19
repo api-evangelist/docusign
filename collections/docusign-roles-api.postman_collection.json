@@ -1,0 +1,1214 @@
+{
+  "item": [
+    {
+      "id": "46e1d0a5-e815-4923-81e9-bae006e2ceb9",
+      "name": "Roles",
+      "description": {
+        "content": "Each role is associated with specific permissions. Each new member is assigned a role when you create them, automatically granting them the permissions associated with that role.\n\nRoles use the following permission types to control the actions that users can perform:\n\n- Room\n- Room Details\n- Documents\n- Envelopes\n- Member Management\n- Company Settings\n\nRooms enables you to configure custom roles containing permissions that make sense for your company. Because each new member is assigned a role, you must set up these roles before you can invite members to join your account.\n\nPermissions for roles are tied to the `roleId` property and not yet exposed. You can learn more about these permission types and configure them in the console.\n\n### Internal and External Roles\n\nIn Rooms, a role can be either internal or external. You assign internal roles to people inside your company. You assign external roles to people outside your company when you invite them to a room.\n\nEach member inside your company has a default company role. However, they can also be assigned additional roles with different permissions on a per-room basis. Regardless of the member's default company role, what they can do in a room is entirely controlled by their role in that particular room.",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "f2ff9d23-b017-493d-9751-19a5c4fc869f",
+          "name": "Docusign Gets roles.",
+          "request": {
+            "name": "Docusign Gets roles.",
+            "description": {
+              "content": "Returns a list of roles associated with a company account.\n\n## Permissions \n\nAny user with a valid access token can call this method.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v2",
+                "accounts",
+                ":accountId",
+                "roles"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "onlyAssignable",
+                  "value": "false",
+                  "description": "This parameter is deprecated. Use `filterContext` instead. Note that `filterContext=AssignableRolesBasedOnCompanyPermissions` is equivalent to `onlyAssignable=true`."
+                },
+                {
+                  "disabled": false,
+                  "key": "filter",
+                  "value": "<string>",
+                  "description": "A search filter that returns roles by the beginning of the role name. You can enter the beginning of the role name only to return all of the roles that begin with the text that you entered. \n\nFor example, if your company has set up roles such as Manager Beginner, Manager Pro, Agent Expert, and Agent Superstar, you could enter `Manager` to return all of the Manager roles (Manager Beginner and Manager Pro).\n\n**Note:** You do not enter a wildcard (*) at the end of the name fragment."
+                },
+                {
+                  "disabled": false,
+                  "key": "startPosition",
+                  "value": "0",
+                  "description": "The starting zero-based index position of the result set. The default value is 0."
+                },
+                {
+                  "disabled": false,
+                  "key": "count",
+                  "value": "100",
+                  "description": "The number of results to return. This value must be a number between `1` and `100` (default)."
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "accountId",
+                  "description": "(Required) The globally unique identifier (GUID) for the account."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "text/plain"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "5e567ea6-a42d-41ee-a9e0-d621661d6dc8",
+              "name": "Roles successfully retrieved.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "accounts",
+                    ":accountId",
+                    "roles"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "onlyAssignable",
+                      "value": "false"
+                    },
+                    {
+                      "key": "filter",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "startPosition",
+                      "value": "0"
+                    },
+                    {
+                      "key": "count",
+                      "value": "100"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "accountId",
+                      "description": "(Required) The globally unique identifier (GUID) for the account."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "text/plain"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"roles\": [\n    {\n      \"roleId\": 3621,\n      \"legacyRoleId\": \"string\",\n      \"name\": \"string\",\n      \"isDefaultForAdmin\": false,\n      \"isExternal\": false,\n      \"createdDate\": \"2021-06-26T17:21:59.381Z\"\n    },\n    {\n      \"roleId\": 6053,\n      \"legacyRoleId\": \"string\",\n      \"name\": \"string\",\n      \"isDefaultForAdmin\": false,\n      \"isExternal\": true,\n      \"createdDate\": \"2022-11-08T16:42:50.482Z\"\n    }\n  ],\n  \"resultSetSize\": 8511,\n  \"startPosition\": 5279,\n  \"endPosition\": 9807,\n  \"nextUri\": \"string\",\n  \"priorUri\": \"string\",\n  \"totalRowCount\": 7980\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "248bca35-c473-48d4-a034-faae065ed7a5",
+              "name": "Bad request. See ErrorCode and Message for details",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "accounts",
+                    ":accountId",
+                    "roles"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "onlyAssignable",
+                      "value": "false"
+                    },
+                    {
+                      "key": "filter",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "startPosition",
+                      "value": "0"
+                    },
+                    {
+                      "key": "count",
+                      "value": "100"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "accountId",
+                      "description": "(Required) The globally unique identifier (GUID) for the account."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "text/plain"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"errorCode\": \"string\",\n  \"message\": \"string\",\n  \"referenceId\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "f0de08b6-afe8-4572-9f81-915dc60da357",
+              "name": "Not authorized to make this request.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "accounts",
+                    ":accountId",
+                    "roles"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "onlyAssignable",
+                      "value": "false"
+                    },
+                    {
+                      "key": "filter",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "startPosition",
+                      "value": "0"
+                    },
+                    {
+                      "key": "count",
+                      "value": "100"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "accountId",
+                      "description": "(Required) The globally unique identifier (GUID) for the account."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "text/plain"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"errorCode\": \"string\",\n  \"message\": \"string\",\n  \"referenceId\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "e3257f0e-858f-413b-9c96-d07559e5ad55",
+          "name": "Docusign Creates a role.",
+          "request": {
+            "name": "Docusign Creates a role.",
+            "description": {
+              "content": "Creates a new company role.\n\n## Permissions\n\nTo use this method, you must have the `canManageAccount` permission set to **true.**",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v2",
+                "accounts",
+                ":accountId",
+                "roles"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "accountId",
+                  "description": "(Required) The globally unique identifier (GUID) for the account."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "text/plain"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"<string>\",\n  \"isExternal\": \"<boolean>\",\n  \"permissions\": {\n    \"canAddUsersToRooms\": \"<boolean>\",\n    \"canCreateRooms\": \"<boolean>\",\n    \"canSubmitRoomsForReview\": \"<boolean>\",\n    \"canCloseRooms\": \"<boolean>\",\n    \"canReopenRooms\": \"<boolean>\",\n    \"canDeleteOwnedRooms\": \"<boolean>\",\n    \"autoAccessToRooms\": \"<boolean>\",\n    \"canExportRoomActivityDetailsPeople\": \"<boolean>\",\n    \"canCopyRoomDetails\": \"<boolean>\",\n    \"canEditAnyRoomRole\": \"<boolean>\",\n    \"canEditInvitedRoomRole\": \"<boolean>\",\n    \"canEditRoomSide\": \"<boolean>\",\n    \"canManageAnyUserRoomAccess\": \"<boolean>\",\n    \"canManageInvitedUserRoomAccess\": \"<boolean>\",\n    \"isHiddenInRoom\": \"<boolean>\",\n    \"canManageRoomOwners\": \"<boolean>\",\n    \"canDeleteRooms\": \"<boolean>\",\n    \"canConnectToMortgageCadence\": \"<boolean>\",\n    \"autoAccessToRoomsInOfficeOnly\": \"<boolean>\",\n    \"canViewRoomDetails\": \"<boolean>\",\n    \"canViewAndEditRoomDetails\": \"<boolean>\",\n    \"canSendRoomDetailsToLoneWolf\": \"<boolean>\",\n    \"canAddDocuments\": \"<boolean>\",\n    \"canAddDocumentsFromFormGroups\": \"<boolean>\",\n    \"canAddDocumentsFromFormLibraries\": \"<boolean>\",\n    \"documentsViewableByOthersInRoomFromOffice\": \"<boolean>\",\n    \"documentsAutoOwnedByPeers\": \"<boolean>\",\n    \"canDeleteOwnedDocuments\": \"<boolean>\",\n    \"canDeleteSignedDocuments\": \"<boolean>\",\n    \"canDeleteUnsignedDocuments\": \"<boolean>\",\n    \"canManageSharedDocs\": \"<boolean>\",\n    \"canManageFormGroups\": \"<boolean>\",\n    \"canShareDocsNotOwned\": \"<boolean>\",\n    \"canCreateFormTemplates\": \"<boolean>\",\n    \"canManageFormPackets\": \"<boolean>\",\n    \"canAddTasksToAnyTaskLists\": \"<boolean>\",\n    \"canEditEditableTasks\": \"<boolean>\",\n    \"canEditAnyTasks\": \"<boolean>\",\n    \"canDeleteDeletableTasks\": \"<boolean>\",\n    \"canDeleteAnyTasks\": \"<boolean>\",\n    \"canApplyTaskList\": \"<boolean>\",\n    \"canRemoveAnyTaskList\": \"<boolean>\",\n    \"canSubmitTaskList\": \"<boolean>\",\n    \"canAutoSubmitTaskList\": \"<boolean>\",\n    \"canReviewTaskList\": \"<boolean>\",\n    \"canAutoApproveTaskList\": \"<boolean>\",\n    \"canManageTaskTemplatesForAllRegionsAllOffices\": \"<boolean>\",\n    \"canApplyRoomTemplates\": \"<boolean>\",\n    \"canAddTasksToRooms\": \"<boolean>\",\n    \"canReviewAnyTask\": \"<boolean>\",\n    \"canManageDocsOnAnyTask\": \"<boolean>\",\n    \"canAddMemberAndSetRoleLowerAccessLevel\": \"<boolean>\",\n    \"canAddMemberAndSetRoleSameAccessLevel\": \"<boolean>\",\n    \"canChangeMemberRoleLowerAccessLevel\": \"<boolean>\",\n    \"canChangeMemberRoleSameAccessLevel\": \"<boolean>\",\n    \"canManageMemberLowerAccessLevel\": \"<boolean>\",\n    \"canManageMemberSameAccessLevel\": \"<boolean>\",\n    \"canRemoveCompanyMemberLowerAccessLevel\": \"<boolean>\",\n    \"canRemoveCompanyMemberSameAccessLevel\": \"<boolean>\",\n    \"canManageAccount\": \"<boolean>\",\n    \"canManageLogo\": \"<boolean>\",\n    \"canManageRolesAndPermissions\": \"<boolean>\",\n    \"canManageRoomDetails\": \"<boolean>\",\n    \"canManageRoomTemplates\": \"<boolean>\",\n    \"canManageIntegrationSettings\": \"<boolean>\",\n    \"canExportCompanyUsageReport\": \"<boolean>\"\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "30adcaff-62ca-445c-939f-948583d27c0e",
+              "name": "Role successfully created.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "accounts",
+                    ":accountId",
+                    "roles"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "accountId",
+                      "description": "(Required) The globally unique identifier (GUID) for the account."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "text/plain"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"<string>\",\n  \"isExternal\": \"<boolean>\",\n  \"permissions\": {\n    \"canAddUsersToRooms\": \"<boolean>\",\n    \"canCreateRooms\": \"<boolean>\",\n    \"canSubmitRoomsForReview\": \"<boolean>\",\n    \"canCloseRooms\": \"<boolean>\",\n    \"canReopenRooms\": \"<boolean>\",\n    \"canDeleteOwnedRooms\": \"<boolean>\",\n    \"autoAccessToRooms\": \"<boolean>\",\n    \"canExportRoomActivityDetailsPeople\": \"<boolean>\",\n    \"canCopyRoomDetails\": \"<boolean>\",\n    \"canEditAnyRoomRole\": \"<boolean>\",\n    \"canEditInvitedRoomRole\": \"<boolean>\",\n    \"canEditRoomSide\": \"<boolean>\",\n    \"canManageAnyUserRoomAccess\": \"<boolean>\",\n    \"canManageInvitedUserRoomAccess\": \"<boolean>\",\n    \"isHiddenInRoom\": \"<boolean>\",\n    \"canManageRoomOwners\": \"<boolean>\",\n    \"canDeleteRooms\": \"<boolean>\",\n    \"canConnectToMortgageCadence\": \"<boolean>\",\n    \"autoAccessToRoomsInOfficeOnly\": \"<boolean>\",\n    \"canViewRoomDetails\": \"<boolean>\",\n    \"canViewAndEditRoomDetails\": \"<boolean>\",\n    \"canSendRoomDetailsToLoneWolf\": \"<boolean>\",\n    \"canAddDocuments\": \"<boolean>\",\n    \"canAddDocumentsFromFormGroups\": \"<boolean>\",\n    \"canAddDocumentsFromFormLibraries\": \"<boolean>\",\n    \"documentsViewableByOthersInRoomFromOffice\": \"<boolean>\",\n    \"documentsAutoOwnedByPeers\": \"<boolean>\",\n    \"canDeleteOwnedDocuments\": \"<boolean>\",\n    \"canDeleteSignedDocuments\": \"<boolean>\",\n    \"canDeleteUnsignedDocuments\": \"<boolean>\",\n    \"canManageSharedDocs\": \"<boolean>\",\n    \"canManageFormGroups\": \"<boolean>\",\n    \"canShareDocsNotOwned\": \"<boolean>\",\n    \"canCreateFormTemplates\": \"<boolean>\",\n    \"canManageFormPackets\": \"<boolean>\",\n    \"canAddTasksToAnyTaskLists\": \"<boolean>\",\n    \"canEditEditableTasks\": \"<boolean>\",\n    \"canEditAnyTasks\": \"<boolean>\",\n    \"canDeleteDeletableTasks\": \"<boolean>\",\n    \"canDeleteAnyTasks\": \"<boolean>\",\n    \"canApplyTaskList\": \"<boolean>\",\n    \"canRemoveAnyTaskList\": \"<boolean>\",\n    \"canSubmitTaskList\": \"<boolean>\",\n    \"canAutoSubmitTaskList\": \"<boolean>\",\n    \"canReviewTaskList\": \"<boolean>\",\n    \"canAutoApproveTaskList\": \"<boolean>\",\n    \"canManageTaskTemplatesForAllRegionsAllOffices\": \"<boolean>\",\n    \"canApplyRoomTemplates\": \"<boolean>\",\n    \"canAddTasksToRooms\": \"<boolean>\",\n    \"canReviewAnyTask\": \"<boolean>\",\n    \"canManageDocsOnAnyTask\": \"<boolean>\",\n    \"canAddMemberAndSetRoleLowerAccessLevel\": \"<boolean>\",\n    \"canAddMemberAndSetRoleSameAccessLevel\": \"<boolean>\",\n    \"canChangeMemberRoleLowerAccessLevel\": \"<boolean>\",\n    \"canChangeMemberRoleSameAccessLevel\": \"<boolean>\",\n    \"canManageMemberLowerAccessLevel\": \"<boolean>\",\n    \"canManageMemberSameAccessLevel\": \"<boolean>\",\n    \"canRemoveCompanyMemberLowerAccessLevel\": \"<boolean>\",\n    \"canRemoveCompanyMemberSameAccessLevel\": \"<boolean>\",\n    \"canManageAccount\": \"<boolean>\",\n    \"canManageLogo\": \"<boolean>\",\n    \"canManageRolesAndPermissions\": \"<boolean>\",\n    \"canManageRoomDetails\": \"<boolean>\",\n    \"canManageRoomTemplates\": \"<boolean>\",\n    \"canManageIntegrationSettings\": \"<boolean>\",\n    \"canExportCompanyUsageReport\": \"<boolean>\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"roleId\": 6579,\n  \"legacyRoleId\": \"string\",\n  \"name\": \"string\",\n  \"isDefaultForAdmin\": true,\n  \"isExternal\": false,\n  \"createdDate\": \"1978-04-15T16:52:20.082Z\",\n  \"isAssigned\": true,\n  \"permissions\": {\n    \"canAddUsersToRooms\": \"<boolean>\",\n    \"canCreateRooms\": \"<boolean>\",\n    \"canSubmitRoomsForReview\": \"<boolean>\",\n    \"canCloseRooms\": \"<boolean>\",\n    \"canReopenRooms\": \"<boolean>\",\n    \"canDeleteOwnedRooms\": \"<boolean>\",\n    \"autoAccessToRooms\": \"<boolean>\",\n    \"canExportRoomActivityDetailsPeople\": \"<boolean>\",\n    \"canCopyRoomDetails\": \"<boolean>\",\n    \"canEditAnyRoomRole\": \"<boolean>\",\n    \"canEditInvitedRoomRole\": \"<boolean>\",\n    \"canEditRoomSide\": \"<boolean>\",\n    \"canManageAnyUserRoomAccess\": \"<boolean>\",\n    \"canManageInvitedUserRoomAccess\": \"<boolean>\",\n    \"isHiddenInRoom\": \"<boolean>\",\n    \"canManageRoomOwners\": \"<boolean>\",\n    \"canDeleteRooms\": \"<boolean>\",\n    \"canConnectToMortgageCadence\": \"<boolean>\",\n    \"autoAccessToRoomsInOfficeOnly\": \"<boolean>\",\n    \"canViewRoomDetails\": \"<boolean>\",\n    \"canViewAndEditRoomDetails\": \"<boolean>\",\n    \"canSendRoomDetailsToLoneWolf\": \"<boolean>\",\n    \"canAddDocuments\": \"<boolean>\",\n    \"canAddDocumentsFromFormGroups\": \"<boolean>\",\n    \"canAddDocumentsFromFormLibraries\": \"<boolean>\",\n    \"documentsViewableByOthersInRoomFromOffice\": \"<boolean>\",\n    \"documentsAutoOwnedByPeers\": \"<boolean>\",\n    \"canDeleteOwnedDocuments\": \"<boolean>\",\n    \"canDeleteSignedDocuments\": \"<boolean>\",\n    \"canDeleteUnsignedDocuments\": \"<boolean>\",\n    \"canManageSharedDocs\": \"<boolean>\",\n    \"canManageFormGroups\": \"<boolean>\",\n    \"canShareDocsNotOwned\": \"<boolean>\",\n    \"canCreateFormTemplates\": \"<boolean>\",\n    \"canManageFormPackets\": \"<boolean>\",\n    \"canAddTasksToAnyTaskLists\": \"<boolean>\",\n    \"canEditEditableTasks\": \"<boolean>\",\n    \"canEditAnyTasks\": \"<boolean>\",\n    \"canDeleteDeletableTasks\": \"<boolean>\",\n    \"canDeleteAnyTasks\": \"<boolean>\",\n    \"canApplyTaskList\": \"<boolean>\",\n    \"canRemoveAnyTaskList\": \"<boolean>\",\n    \"canSubmitTaskList\": \"<boolean>\",\n    \"canAutoSubmitTaskList\": \"<boolean>\",\n    \"canReviewTaskList\": \"<boolean>\",\n    \"canAutoApproveTaskList\": \"<boolean>\",\n    \"canManageTaskTemplatesForAllRegionsAllOffices\": \"<boolean>\",\n    \"canApplyRoomTemplates\": \"<boolean>\",\n    \"canAddTasksToRooms\": \"<boolean>\",\n    \"canReviewAnyTask\": \"<boolean>\",\n    \"canManageDocsOnAnyTask\": \"<boolean>\",\n    \"canAddMemberAndSetRoleLowerAccessLevel\": \"<boolean>\",\n    \"canAddMemberAndSetRoleSameAccessLevel\": \"<boolean>\",\n    \"canChangeMemberRoleLowerAccessLevel\": \"<boolean>\",\n    \"canChangeMemberRoleSameAccessLevel\": \"<boolean>\",\n    \"canManageMemberLowerAccessLevel\": \"<boolean>\",\n    \"canManageMemberSameAccessLevel\": \"<boolean>\",\n    \"canRemoveCompanyMemberLowerAccessLevel\": \"<boolean>\",\n    \"canRemoveCompanyMemberSameAccessLevel\": \"<boolean>\",\n    \"canManageAccount\": \"<boolean>\",\n    \"canManageLogo\": \"<boolean>\",\n    \"canManageRolesAndPermissions\": \"<boolean>\",\n    \"canManageRoomDetails\": \"<boolean>\",\n    \"canManageRoomTemplates\": \"<boolean>\",\n    \"canManageIntegrationSettings\": \"<boolean>\",\n    \"canExportCompanyUsageReport\": \"<boolean>\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "227136a4-758f-4f90-845b-7b0877ef845c",
+              "name": "Bad request. See ErrorCode and Message for details",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "accounts",
+                    ":accountId",
+                    "roles"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "accountId",
+                      "description": "(Required) The globally unique identifier (GUID) for the account."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "text/plain"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"<string>\",\n  \"isExternal\": \"<boolean>\",\n  \"permissions\": {\n    \"canAddUsersToRooms\": \"<boolean>\",\n    \"canCreateRooms\": \"<boolean>\",\n    \"canSubmitRoomsForReview\": \"<boolean>\",\n    \"canCloseRooms\": \"<boolean>\",\n    \"canReopenRooms\": \"<boolean>\",\n    \"canDeleteOwnedRooms\": \"<boolean>\",\n    \"autoAccessToRooms\": \"<boolean>\",\n    \"canExportRoomActivityDetailsPeople\": \"<boolean>\",\n    \"canCopyRoomDetails\": \"<boolean>\",\n    \"canEditAnyRoomRole\": \"<boolean>\",\n    \"canEditInvitedRoomRole\": \"<boolean>\",\n    \"canEditRoomSide\": \"<boolean>\",\n    \"canManageAnyUserRoomAccess\": \"<boolean>\",\n    \"canManageInvitedUserRoomAccess\": \"<boolean>\",\n    \"isHiddenInRoom\": \"<boolean>\",\n    \"canManageRoomOwners\": \"<boolean>\",\n    \"canDeleteRooms\": \"<boolean>\",\n    \"canConnectToMortgageCadence\": \"<boolean>\",\n    \"autoAccessToRoomsInOfficeOnly\": \"<boolean>\",\n    \"canViewRoomDetails\": \"<boolean>\",\n    \"canViewAndEditRoomDetails\": \"<boolean>\",\n    \"canSendRoomDetailsToLoneWolf\": \"<boolean>\",\n    \"canAddDocuments\": \"<boolean>\",\n    \"canAddDocumentsFromFormGroups\": \"<boolean>\",\n    \"canAddDocumentsFromFormLibraries\": \"<boolean>\",\n    \"documentsViewableByOthersInRoomFromOffice\": \"<boolean>\",\n    \"documentsAutoOwnedByPeers\": \"<boolean>\",\n    \"canDeleteOwnedDocuments\": \"<boolean>\",\n    \"canDeleteSignedDocuments\": \"<boolean>\",\n    \"canDeleteUnsignedDocuments\": \"<boolean>\",\n    \"canManageSharedDocs\": \"<boolean>\",\n    \"canManageFormGroups\": \"<boolean>\",\n    \"canShareDocsNotOwned\": \"<boolean>\",\n    \"canCreateFormTemplates\": \"<boolean>\",\n    \"canManageFormPackets\": \"<boolean>\",\n    \"canAddTasksToAnyTaskLists\": \"<boolean>\",\n    \"canEditEditableTasks\": \"<boolean>\",\n    \"canEditAnyTasks\": \"<boolean>\",\n    \"canDeleteDeletableTasks\": \"<boolean>\",\n    \"canDeleteAnyTasks\": \"<boolean>\",\n    \"canApplyTaskList\": \"<boolean>\",\n    \"canRemoveAnyTaskList\": \"<boolean>\",\n    \"canSubmitTaskList\": \"<boolean>\",\n    \"canAutoSubmitTaskList\": \"<boolean>\",\n    \"canReviewTaskList\": \"<boolean>\",\n    \"canAutoApproveTaskList\": \"<boolean>\",\n    \"canManageTaskTemplatesForAllRegionsAllOffices\": \"<boolean>\",\n    \"canApplyRoomTemplates\": \"<boolean>\",\n    \"canAddTasksToRooms\": \"<boolean>\",\n    \"canReviewAnyTask\": \"<boolean>\",\n    \"canManageDocsOnAnyTask\": \"<boolean>\",\n    \"canAddMemberAndSetRoleLowerAccessLevel\": \"<boolean>\",\n    \"canAddMemberAndSetRoleSameAccessLevel\": \"<boolean>\",\n    \"canChangeMemberRoleLowerAccessLevel\": \"<boolean>\",\n    \"canChangeMemberRoleSameAccessLevel\": \"<boolean>\",\n    \"canManageMemberLowerAccessLevel\": \"<boolean>\",\n    \"canManageMemberSameAccessLevel\": \"<boolean>\",\n    \"canRemoveCompanyMemberLowerAccessLevel\": \"<boolean>\",\n    \"canRemoveCompanyMemberSameAccessLevel\": \"<boolean>\",\n    \"canManageAccount\": \"<boolean>\",\n    \"canManageLogo\": \"<boolean>\",\n    \"canManageRolesAndPermissions\": \"<boolean>\",\n    \"canManageRoomDetails\": \"<boolean>\",\n    \"canManageRoomTemplates\": \"<boolean>\",\n    \"canManageIntegrationSettings\": \"<boolean>\",\n    \"canExportCompanyUsageReport\": \"<boolean>\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"errorCode\": \"string\",\n  \"message\": \"string\",\n  \"referenceId\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "5193ec27-2635-4996-ad8e-a6d81b6fa076",
+              "name": "Not authorized to make this request.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "accounts",
+                    ":accountId",
+                    "roles"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "accountId",
+                      "description": "(Required) The globally unique identifier (GUID) for the account."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "text/plain"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"<string>\",\n  \"isExternal\": \"<boolean>\",\n  \"permissions\": {\n    \"canAddUsersToRooms\": \"<boolean>\",\n    \"canCreateRooms\": \"<boolean>\",\n    \"canSubmitRoomsForReview\": \"<boolean>\",\n    \"canCloseRooms\": \"<boolean>\",\n    \"canReopenRooms\": \"<boolean>\",\n    \"canDeleteOwnedRooms\": \"<boolean>\",\n    \"autoAccessToRooms\": \"<boolean>\",\n    \"canExportRoomActivityDetailsPeople\": \"<boolean>\",\n    \"canCopyRoomDetails\": \"<boolean>\",\n    \"canEditAnyRoomRole\": \"<boolean>\",\n    \"canEditInvitedRoomRole\": \"<boolean>\",\n    \"canEditRoomSide\": \"<boolean>\",\n    \"canManageAnyUserRoomAccess\": \"<boolean>\",\n    \"canManageInvitedUserRoomAccess\": \"<boolean>\",\n    \"isHiddenInRoom\": \"<boolean>\",\n    \"canManageRoomOwners\": \"<boolean>\",\n    \"canDeleteRooms\": \"<boolean>\",\n    \"canConnectToMortgageCadence\": \"<boolean>\",\n    \"autoAccessToRoomsInOfficeOnly\": \"<boolean>\",\n    \"canViewRoomDetails\": \"<boolean>\",\n    \"canViewAndEditRoomDetails\": \"<boolean>\",\n    \"canSendRoomDetailsToLoneWolf\": \"<boolean>\",\n    \"canAddDocuments\": \"<boolean>\",\n    \"canAddDocumentsFromFormGroups\": \"<boolean>\",\n    \"canAddDocumentsFromFormLibraries\": \"<boolean>\",\n    \"documentsViewableByOthersInRoomFromOffice\": \"<boolean>\",\n    \"documentsAutoOwnedByPeers\": \"<boolean>\",\n    \"canDeleteOwnedDocuments\": \"<boolean>\",\n    \"canDeleteSignedDocuments\": \"<boolean>\",\n    \"canDeleteUnsignedDocuments\": \"<boolean>\",\n    \"canManageSharedDocs\": \"<boolean>\",\n    \"canManageFormGroups\": \"<boolean>\",\n    \"canShareDocsNotOwned\": \"<boolean>\",\n    \"canCreateFormTemplates\": \"<boolean>\",\n    \"canManageFormPackets\": \"<boolean>\",\n    \"canAddTasksToAnyTaskLists\": \"<boolean>\",\n    \"canEditEditableTasks\": \"<boolean>\",\n    \"canEditAnyTasks\": \"<boolean>\",\n    \"canDeleteDeletableTasks\": \"<boolean>\",\n    \"canDeleteAnyTasks\": \"<boolean>\",\n    \"canApplyTaskList\": \"<boolean>\",\n    \"canRemoveAnyTaskList\": \"<boolean>\",\n    \"canSubmitTaskList\": \"<boolean>\",\n    \"canAutoSubmitTaskList\": \"<boolean>\",\n    \"canReviewTaskList\": \"<boolean>\",\n    \"canAutoApproveTaskList\": \"<boolean>\",\n    \"canManageTaskTemplatesForAllRegionsAllOffices\": \"<boolean>\",\n    \"canApplyRoomTemplates\": \"<boolean>\",\n    \"canAddTasksToRooms\": \"<boolean>\",\n    \"canReviewAnyTask\": \"<boolean>\",\n    \"canManageDocsOnAnyTask\": \"<boolean>\",\n    \"canAddMemberAndSetRoleLowerAccessLevel\": \"<boolean>\",\n    \"canAddMemberAndSetRoleSameAccessLevel\": \"<boolean>\",\n    \"canChangeMemberRoleLowerAccessLevel\": \"<boolean>\",\n    \"canChangeMemberRoleSameAccessLevel\": \"<boolean>\",\n    \"canManageMemberLowerAccessLevel\": \"<boolean>\",\n    \"canManageMemberSameAccessLevel\": \"<boolean>\",\n    \"canRemoveCompanyMemberLowerAccessLevel\": \"<boolean>\",\n    \"canRemoveCompanyMemberSameAccessLevel\": \"<boolean>\",\n    \"canManageAccount\": \"<boolean>\",\n    \"canManageLogo\": \"<boolean>\",\n    \"canManageRolesAndPermissions\": \"<boolean>\",\n    \"canManageRoomDetails\": \"<boolean>\",\n    \"canManageRoomTemplates\": \"<boolean>\",\n    \"canManageIntegrationSettings\": \"<boolean>\",\n    \"canExportCompanyUsageReport\": \"<boolean>\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"errorCode\": \"string\",\n  \"message\": \"string\",\n  \"referenceId\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "0ca64b8c-85aa-42a0-80b2-f477ab83bb62",
+          "name": "Docusign Gets a role.",
+          "request": {
+            "name": "Docusign Gets a role.",
+            "description": {
+              "content": "Returns details about a role, including the associated permissions.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v2",
+                "accounts",
+                ":accountId",
+                "roles",
+                ":roleId"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "includeIsAssigned",
+                  "value": "false",
+                  "description": "When **true,** the response includes the `isAssigned` property, which specifies whether the role is currently assigned to any users. The default is **false.**"
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<integer>",
+                  "key": "roleId",
+                  "description": "(Required) The ID of the role."
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "accountId",
+                  "description": "(Required) (Required) The globally unique identifier (GUID) for the account."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "text/plain"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "8bfb8d94-cda3-4952-9b6e-34907dff90b9",
+              "name": "Role successfully retrieved.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "accounts",
+                    ":accountId",
+                    "roles",
+                    ":roleId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "includeIsAssigned",
+                      "value": "false"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "roleId",
+                      "description": "(Required) The ID of the role."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "accountId",
+                      "description": "(Required) (Required) The globally unique identifier (GUID) for the account."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "text/plain"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"roleId\": 6579,\n  \"legacyRoleId\": \"string\",\n  \"name\": \"string\",\n  \"isDefaultForAdmin\": true,\n  \"isExternal\": false,\n  \"createdDate\": \"1978-04-15T16:52:20.082Z\",\n  \"isAssigned\": true,\n  \"permissions\": {\n    \"canAddUsersToRooms\": \"<boolean>\",\n    \"canCreateRooms\": \"<boolean>\",\n    \"canSubmitRoomsForReview\": \"<boolean>\",\n    \"canCloseRooms\": \"<boolean>\",\n    \"canReopenRooms\": \"<boolean>\",\n    \"canDeleteOwnedRooms\": \"<boolean>\",\n    \"autoAccessToRooms\": \"<boolean>\",\n    \"canExportRoomActivityDetailsPeople\": \"<boolean>\",\n    \"canCopyRoomDetails\": \"<boolean>\",\n    \"canEditAnyRoomRole\": \"<boolean>\",\n    \"canEditInvitedRoomRole\": \"<boolean>\",\n    \"canEditRoomSide\": \"<boolean>\",\n    \"canManageAnyUserRoomAccess\": \"<boolean>\",\n    \"canManageInvitedUserRoomAccess\": \"<boolean>\",\n    \"isHiddenInRoom\": \"<boolean>\",\n    \"canManageRoomOwners\": \"<boolean>\",\n    \"canDeleteRooms\": \"<boolean>\",\n    \"canConnectToMortgageCadence\": \"<boolean>\",\n    \"autoAccessToRoomsInOfficeOnly\": \"<boolean>\",\n    \"canViewRoomDetails\": \"<boolean>\",\n    \"canViewAndEditRoomDetails\": \"<boolean>\",\n    \"canSendRoomDetailsToLoneWolf\": \"<boolean>\",\n    \"canAddDocuments\": \"<boolean>\",\n    \"canAddDocumentsFromFormGroups\": \"<boolean>\",\n    \"canAddDocumentsFromFormLibraries\": \"<boolean>\",\n    \"documentsViewableByOthersInRoomFromOffice\": \"<boolean>\",\n    \"documentsAutoOwnedByPeers\": \"<boolean>\",\n    \"canDeleteOwnedDocuments\": \"<boolean>\",\n    \"canDeleteSignedDocuments\": \"<boolean>\",\n    \"canDeleteUnsignedDocuments\": \"<boolean>\",\n    \"canManageSharedDocs\": \"<boolean>\",\n    \"canManageFormGroups\": \"<boolean>\",\n    \"canShareDocsNotOwned\": \"<boolean>\",\n    \"canCreateFormTemplates\": \"<boolean>\",\n    \"canManageFormPackets\": \"<boolean>\",\n    \"canAddTasksToAnyTaskLists\": \"<boolean>\",\n    \"canEditEditableTasks\": \"<boolean>\",\n    \"canEditAnyTasks\": \"<boolean>\",\n    \"canDeleteDeletableTasks\": \"<boolean>\",\n    \"canDeleteAnyTasks\": \"<boolean>\",\n    \"canApplyTaskList\": \"<boolean>\",\n    \"canRemoveAnyTaskList\": \"<boolean>\",\n    \"canSubmitTaskList\": \"<boolean>\",\n    \"canAutoSubmitTaskList\": \"<boolean>\",\n    \"canReviewTaskList\": \"<boolean>\",\n    \"canAutoApproveTaskList\": \"<boolean>\",\n    \"canManageTaskTemplatesForAllRegionsAllOffices\": \"<boolean>\",\n    \"canApplyRoomTemplates\": \"<boolean>\",\n    \"canAddTasksToRooms\": \"<boolean>\",\n    \"canReviewAnyTask\": \"<boolean>\",\n    \"canManageDocsOnAnyTask\": \"<boolean>\",\n    \"canAddMemberAndSetRoleLowerAccessLevel\": \"<boolean>\",\n    \"canAddMemberAndSetRoleSameAccessLevel\": \"<boolean>\",\n    \"canChangeMemberRoleLowerAccessLevel\": \"<boolean>\",\n    \"canChangeMemberRoleSameAccessLevel\": \"<boolean>\",\n    \"canManageMemberLowerAccessLevel\": \"<boolean>\",\n    \"canManageMemberSameAccessLevel\": \"<boolean>\",\n    \"canRemoveCompanyMemberLowerAccessLevel\": \"<boolean>\",\n    \"canRemoveCompanyMemberSameAccessLevel\": \"<boolean>\",\n    \"canManageAccount\": \"<boolean>\",\n    \"canManageLogo\": \"<boolean>\",\n    \"canManageRolesAndPermissions\": \"<boolean>\",\n    \"canManageRoomDetails\": \"<boolean>\",\n    \"canManageRoomTemplates\": \"<boolean>\",\n    \"canManageIntegrationSettings\": \"<boolean>\",\n    \"canExportCompanyUsageReport\": \"<boolean>\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "5d351c1c-4ece-46f9-aaec-b0e34dadb0e7",
+              "name": "Bad request. See ErrorCode and Message for details",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "accounts",
+                    ":accountId",
+                    "roles",
+                    ":roleId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "includeIsAssigned",
+                      "value": "false"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "roleId",
+                      "description": "(Required) The ID of the role."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "accountId",
+                      "description": "(Required) (Required) The globally unique identifier (GUID) for the account."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "text/plain"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"errorCode\": \"string\",\n  \"message\": \"string\",\n  \"referenceId\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "22bf0151-bf10-4510-8a2f-4166e4f8d910",
+              "name": "Not authorized to make this request.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "accounts",
+                    ":accountId",
+                    "roles",
+                    ":roleId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "includeIsAssigned",
+                      "value": "false"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "roleId",
+                      "description": "(Required) The ID of the role."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "accountId",
+                      "description": "(Required) (Required) The globally unique identifier (GUID) for the account."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "text/plain"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"errorCode\": \"string\",\n  \"message\": \"string\",\n  \"referenceId\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "65453661-e529-46f9-9f9b-a0837a591e78",
+          "name": "Docusign Updates a role.",
+          "request": {
+            "name": "Docusign Updates a role.",
+            "description": {
+              "content": "Modifies the specified company role.\n\n## Permissions\n\nTo use this method, you must have the `canManageAccount` permission set to **true.**",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v2",
+                "accounts",
+                ":accountId",
+                "roles",
+                ":roleId"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<integer>",
+                  "key": "roleId",
+                  "description": "(Required) The ID of the role."
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "accountId",
+                  "description": "(Required) The globally unique identifier (GUID) for the account."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "text/plain"
+              }
+            ],
+            "method": "PUT",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"<string>\",\n  \"isExternal\": \"<boolean>\",\n  \"permissions\": {\n    \"canAddUsersToRooms\": \"<boolean>\",\n    \"canCreateRooms\": \"<boolean>\",\n    \"canSubmitRoomsForReview\": \"<boolean>\",\n    \"canCloseRooms\": \"<boolean>\",\n    \"canReopenRooms\": \"<boolean>\",\n    \"canDeleteOwnedRooms\": \"<boolean>\",\n    \"autoAccessToRooms\": \"<boolean>\",\n    \"canExportRoomActivityDetailsPeople\": \"<boolean>\",\n    \"canCopyRoomDetails\": \"<boolean>\",\n    \"canEditAnyRoomRole\": \"<boolean>\",\n    \"canEditInvitedRoomRole\": \"<boolean>\",\n    \"canEditRoomSide\": \"<boolean>\",\n    \"canManageAnyUserRoomAccess\": \"<boolean>\",\n    \"canManageInvitedUserRoomAccess\": \"<boolean>\",\n    \"isHiddenInRoom\": \"<boolean>\",\n    \"canManageRoomOwners\": \"<boolean>\",\n    \"canDeleteRooms\": \"<boolean>\",\n    \"canConnectToMortgageCadence\": \"<boolean>\",\n    \"autoAccessToRoomsInOfficeOnly\": \"<boolean>\",\n    \"canViewRoomDetails\": \"<boolean>\",\n    \"canViewAndEditRoomDetails\": \"<boolean>\",\n    \"canSendRoomDetailsToLoneWolf\": \"<boolean>\",\n    \"canAddDocuments\": \"<boolean>\",\n    \"canAddDocumentsFromFormGroups\": \"<boolean>\",\n    \"canAddDocumentsFromFormLibraries\": \"<boolean>\",\n    \"documentsViewableByOthersInRoomFromOffice\": \"<boolean>\",\n    \"documentsAutoOwnedByPeers\": \"<boolean>\",\n    \"canDeleteOwnedDocuments\": \"<boolean>\",\n    \"canDeleteSignedDocuments\": \"<boolean>\",\n    \"canDeleteUnsignedDocuments\": \"<boolean>\",\n    \"canManageSharedDocs\": \"<boolean>\",\n    \"canManageFormGroups\": \"<boolean>\",\n    \"canShareDocsNotOwned\": \"<boolean>\",\n    \"canCreateFormTemplates\": \"<boolean>\",\n    \"canManageFormPackets\": \"<boolean>\",\n    \"canAddTasksToAnyTaskLists\": \"<boolean>\",\n    \"canEditEditableTasks\": \"<boolean>\",\n    \"canEditAnyTasks\": \"<boolean>\",\n    \"canDeleteDeletableTasks\": \"<boolean>\",\n    \"canDeleteAnyTasks\": \"<boolean>\",\n    \"canApplyTaskList\": \"<boolean>\",\n    \"canRemoveAnyTaskList\": \"<boolean>\",\n    \"canSubmitTaskList\": \"<boolean>\",\n    \"canAutoSubmitTaskList\": \"<boolean>\",\n    \"canReviewTaskList\": \"<boolean>\",\n    \"canAutoApproveTaskList\": \"<boolean>\",\n    \"canManageTaskTemplatesForAllRegionsAllOffices\": \"<boolean>\",\n    \"canApplyRoomTemplates\": \"<boolean>\",\n    \"canAddTasksToRooms\": \"<boolean>\",\n    \"canReviewAnyTask\": \"<boolean>\",\n    \"canManageDocsOnAnyTask\": \"<boolean>\",\n    \"canAddMemberAndSetRoleLowerAccessLevel\": \"<boolean>\",\n    \"canAddMemberAndSetRoleSameAccessLevel\": \"<boolean>\",\n    \"canChangeMemberRoleLowerAccessLevel\": \"<boolean>\",\n    \"canChangeMemberRoleSameAccessLevel\": \"<boolean>\",\n    \"canManageMemberLowerAccessLevel\": \"<boolean>\",\n    \"canManageMemberSameAccessLevel\": \"<boolean>\",\n    \"canRemoveCompanyMemberLowerAccessLevel\": \"<boolean>\",\n    \"canRemoveCompanyMemberSameAccessLevel\": \"<boolean>\",\n    \"canManageAccount\": \"<boolean>\",\n    \"canManageLogo\": \"<boolean>\",\n    \"canManageRolesAndPermissions\": \"<boolean>\",\n    \"canManageRoomDetails\": \"<boolean>\",\n    \"canManageRoomTemplates\": \"<boolean>\",\n    \"canManageIntegrationSettings\": \"<boolean>\",\n    \"canExportCompanyUsageReport\": \"<boolean>\"\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "17143e28-2b98-448c-9c76-007cf0292342",
+              "name": "Role successfully updated.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "accounts",
+                    ":accountId",
+                    "roles",
+                    ":roleId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "roleId",
+                      "description": "(Required) The ID of the role."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "accountId",
+                      "description": "(Required) The globally unique identifier (GUID) for the account."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "text/plain"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"<string>\",\n  \"isExternal\": \"<boolean>\",\n  \"permissions\": {\n    \"canAddUsersToRooms\": \"<boolean>\",\n    \"canCreateRooms\": \"<boolean>\",\n    \"canSubmitRoomsForReview\": \"<boolean>\",\n    \"canCloseRooms\": \"<boolean>\",\n    \"canReopenRooms\": \"<boolean>\",\n    \"canDeleteOwnedRooms\": \"<boolean>\",\n    \"autoAccessToRooms\": \"<boolean>\",\n    \"canExportRoomActivityDetailsPeople\": \"<boolean>\",\n    \"canCopyRoomDetails\": \"<boolean>\",\n    \"canEditAnyRoomRole\": \"<boolean>\",\n    \"canEditInvitedRoomRole\": \"<boolean>\",\n    \"canEditRoomSide\": \"<boolean>\",\n    \"canManageAnyUserRoomAccess\": \"<boolean>\",\n    \"canManageInvitedUserRoomAccess\": \"<boolean>\",\n    \"isHiddenInRoom\": \"<boolean>\",\n    \"canManageRoomOwners\": \"<boolean>\",\n    \"canDeleteRooms\": \"<boolean>\",\n    \"canConnectToMortgageCadence\": \"<boolean>\",\n    \"autoAccessToRoomsInOfficeOnly\": \"<boolean>\",\n    \"canViewRoomDetails\": \"<boolean>\",\n    \"canViewAndEditRoomDetails\": \"<boolean>\",\n    \"canSendRoomDetailsToLoneWolf\": \"<boolean>\",\n    \"canAddDocuments\": \"<boolean>\",\n    \"canAddDocumentsFromFormGroups\": \"<boolean>\",\n    \"canAddDocumentsFromFormLibraries\": \"<boolean>\",\n    \"documentsViewableByOthersInRoomFromOffice\": \"<boolean>\",\n    \"documentsAutoOwnedByPeers\": \"<boolean>\",\n    \"canDeleteOwnedDocuments\": \"<boolean>\",\n    \"canDeleteSignedDocuments\": \"<boolean>\",\n    \"canDeleteUnsignedDocuments\": \"<boolean>\",\n    \"canManageSharedDocs\": \"<boolean>\",\n    \"canManageFormGroups\": \"<boolean>\",\n    \"canShareDocsNotOwned\": \"<boolean>\",\n    \"canCreateFormTemplates\": \"<boolean>\",\n    \"canManageFormPackets\": \"<boolean>\",\n    \"canAddTasksToAnyTaskLists\": \"<boolean>\",\n    \"canEditEditableTasks\": \"<boolean>\",\n    \"canEditAnyTasks\": \"<boolean>\",\n    \"canDeleteDeletableTasks\": \"<boolean>\",\n    \"canDeleteAnyTasks\": \"<boolean>\",\n    \"canApplyTaskList\": \"<boolean>\",\n    \"canRemoveAnyTaskList\": \"<boolean>\",\n    \"canSubmitTaskList\": \"<boolean>\",\n    \"canAutoSubmitTaskList\": \"<boolean>\",\n    \"canReviewTaskList\": \"<boolean>\",\n    \"canAutoApproveTaskList\": \"<boolean>\",\n    \"canManageTaskTemplatesForAllRegionsAllOffices\": \"<boolean>\",\n    \"canApplyRoomTemplates\": \"<boolean>\",\n    \"canAddTasksToRooms\": \"<boolean>\",\n    \"canReviewAnyTask\": \"<boolean>\",\n    \"canManageDocsOnAnyTask\": \"<boolean>\",\n    \"canAddMemberAndSetRoleLowerAccessLevel\": \"<boolean>\",\n    \"canAddMemberAndSetRoleSameAccessLevel\": \"<boolean>\",\n    \"canChangeMemberRoleLowerAccessLevel\": \"<boolean>\",\n    \"canChangeMemberRoleSameAccessLevel\": \"<boolean>\",\n    \"canManageMemberLowerAccessLevel\": \"<boolean>\",\n    \"canManageMemberSameAccessLevel\": \"<boolean>\",\n    \"canRemoveCompanyMemberLowerAccessLevel\": \"<boolean>\",\n    \"canRemoveCompanyMemberSameAccessLevel\": \"<boolean>\",\n    \"canManageAccount\": \"<boolean>\",\n    \"canManageLogo\": \"<boolean>\",\n    \"canManageRolesAndPermissions\": \"<boolean>\",\n    \"canManageRoomDetails\": \"<boolean>\",\n    \"canManageRoomTemplates\": \"<boolean>\",\n    \"canManageIntegrationSettings\": \"<boolean>\",\n    \"canExportCompanyUsageReport\": \"<boolean>\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"roleId\": 6579,\n  \"legacyRoleId\": \"string\",\n  \"name\": \"string\",\n  \"isDefaultForAdmin\": true,\n  \"isExternal\": false,\n  \"createdDate\": \"1978-04-15T16:52:20.082Z\",\n  \"isAssigned\": true,\n  \"permissions\": {\n    \"canAddUsersToRooms\": \"<boolean>\",\n    \"canCreateRooms\": \"<boolean>\",\n    \"canSubmitRoomsForReview\": \"<boolean>\",\n    \"canCloseRooms\": \"<boolean>\",\n    \"canReopenRooms\": \"<boolean>\",\n    \"canDeleteOwnedRooms\": \"<boolean>\",\n    \"autoAccessToRooms\": \"<boolean>\",\n    \"canExportRoomActivityDetailsPeople\": \"<boolean>\",\n    \"canCopyRoomDetails\": \"<boolean>\",\n    \"canEditAnyRoomRole\": \"<boolean>\",\n    \"canEditInvitedRoomRole\": \"<boolean>\",\n    \"canEditRoomSide\": \"<boolean>\",\n    \"canManageAnyUserRoomAccess\": \"<boolean>\",\n    \"canManageInvitedUserRoomAccess\": \"<boolean>\",\n    \"isHiddenInRoom\": \"<boolean>\",\n    \"canManageRoomOwners\": \"<boolean>\",\n    \"canDeleteRooms\": \"<boolean>\",\n    \"canConnectToMortgageCadence\": \"<boolean>\",\n    \"autoAccessToRoomsInOfficeOnly\": \"<boolean>\",\n    \"canViewRoomDetails\": \"<boolean>\",\n    \"canViewAndEditRoomDetails\": \"<boolean>\",\n    \"canSendRoomDetailsToLoneWolf\": \"<boolean>\",\n    \"canAddDocuments\": \"<boolean>\",\n    \"canAddDocumentsFromFormGroups\": \"<boolean>\",\n    \"canAddDocumentsFromFormLibraries\": \"<boolean>\",\n    \"documentsViewableByOthersInRoomFromOffice\": \"<boolean>\",\n    \"documentsAutoOwnedByPeers\": \"<boolean>\",\n    \"canDeleteOwnedDocuments\": \"<boolean>\",\n    \"canDeleteSignedDocuments\": \"<boolean>\",\n    \"canDeleteUnsignedDocuments\": \"<boolean>\",\n    \"canManageSharedDocs\": \"<boolean>\",\n    \"canManageFormGroups\": \"<boolean>\",\n    \"canShareDocsNotOwned\": \"<boolean>\",\n    \"canCreateFormTemplates\": \"<boolean>\",\n    \"canManageFormPackets\": \"<boolean>\",\n    \"canAddTasksToAnyTaskLists\": \"<boolean>\",\n    \"canEditEditableTasks\": \"<boolean>\",\n    \"canEditAnyTasks\": \"<boolean>\",\n    \"canDeleteDeletableTasks\": \"<boolean>\",\n    \"canDeleteAnyTasks\": \"<boolean>\",\n    \"canApplyTaskList\": \"<boolean>\",\n    \"canRemoveAnyTaskList\": \"<boolean>\",\n    \"canSubmitTaskList\": \"<boolean>\",\n    \"canAutoSubmitTaskList\": \"<boolean>\",\n    \"canReviewTaskList\": \"<boolean>\",\n    \"canAutoApproveTaskList\": \"<boolean>\",\n    \"canManageTaskTemplatesForAllRegionsAllOffices\": \"<boolean>\",\n    \"canApplyRoomTemplates\": \"<boolean>\",\n    \"canAddTasksToRooms\": \"<boolean>\",\n    \"canReviewAnyTask\": \"<boolean>\",\n    \"canManageDocsOnAnyTask\": \"<boolean>\",\n    \"canAddMemberAndSetRoleLowerAccessLevel\": \"<boolean>\",\n    \"canAddMemberAndSetRoleSameAccessLevel\": \"<boolean>\",\n    \"canChangeMemberRoleLowerAccessLevel\": \"<boolean>\",\n    \"canChangeMemberRoleSameAccessLevel\": \"<boolean>\",\n    \"canManageMemberLowerAccessLevel\": \"<boolean>\",\n    \"canManageMemberSameAccessLevel\": \"<boolean>\",\n    \"canRemoveCompanyMemberLowerAccessLevel\": \"<boolean>\",\n    \"canRemoveCompanyMemberSameAccessLevel\": \"<boolean>\",\n    \"canManageAccount\": \"<boolean>\",\n    \"canManageLogo\": \"<boolean>\",\n    \"canManageRolesAndPermissions\": \"<boolean>\",\n    \"canManageRoomDetails\": \"<boolean>\",\n    \"canManageRoomTemplates\": \"<boolean>\",\n    \"canManageIntegrationSettings\": \"<boolean>\",\n    \"canExportCompanyUsageReport\": \"<boolean>\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "a71f291b-f98d-4cbe-aacc-7e2b086b4231",
+              "name": "Bad request. See ErrorCode and Message for details",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "accounts",
+                    ":accountId",
+                    "roles",
+                    ":roleId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "roleId",
+                      "description": "(Required) The ID of the role."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "accountId",
+                      "description": "(Required) The globally unique identifier (GUID) for the account."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "text/plain"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"<string>\",\n  \"isExternal\": \"<boolean>\",\n  \"permissions\": {\n    \"canAddUsersToRooms\": \"<boolean>\",\n    \"canCreateRooms\": \"<boolean>\",\n    \"canSubmitRoomsForReview\": \"<boolean>\",\n    \"canCloseRooms\": \"<boolean>\",\n    \"canReopenRooms\": \"<boolean>\",\n    \"canDeleteOwnedRooms\": \"<boolean>\",\n    \"autoAccessToRooms\": \"<boolean>\",\n    \"canExportRoomActivityDetailsPeople\": \"<boolean>\",\n    \"canCopyRoomDetails\": \"<boolean>\",\n    \"canEditAnyRoomRole\": \"<boolean>\",\n    \"canEditInvitedRoomRole\": \"<boolean>\",\n    \"canEditRoomSide\": \"<boolean>\",\n    \"canManageAnyUserRoomAccess\": \"<boolean>\",\n    \"canManageInvitedUserRoomAccess\": \"<boolean>\",\n    \"isHiddenInRoom\": \"<boolean>\",\n    \"canManageRoomOwners\": \"<boolean>\",\n    \"canDeleteRooms\": \"<boolean>\",\n    \"canConnectToMortgageCadence\": \"<boolean>\",\n    \"autoAccessToRoomsInOfficeOnly\": \"<boolean>\",\n    \"canViewRoomDetails\": \"<boolean>\",\n    \"canViewAndEditRoomDetails\": \"<boolean>\",\n    \"canSendRoomDetailsToLoneWolf\": \"<boolean>\",\n    \"canAddDocuments\": \"<boolean>\",\n    \"canAddDocumentsFromFormGroups\": \"<boolean>\",\n    \"canAddDocumentsFromFormLibraries\": \"<boolean>\",\n    \"documentsViewableByOthersInRoomFromOffice\": \"<boolean>\",\n    \"documentsAutoOwnedByPeers\": \"<boolean>\",\n    \"canDeleteOwnedDocuments\": \"<boolean>\",\n    \"canDeleteSignedDocuments\": \"<boolean>\",\n    \"canDeleteUnsignedDocuments\": \"<boolean>\",\n    \"canManageSharedDocs\": \"<boolean>\",\n    \"canManageFormGroups\": \"<boolean>\",\n    \"canShareDocsNotOwned\": \"<boolean>\",\n    \"canCreateFormTemplates\": \"<boolean>\",\n    \"canManageFormPackets\": \"<boolean>\",\n    \"canAddTasksToAnyTaskLists\": \"<boolean>\",\n    \"canEditEditableTasks\": \"<boolean>\",\n    \"canEditAnyTasks\": \"<boolean>\",\n    \"canDeleteDeletableTasks\": \"<boolean>\",\n    \"canDeleteAnyTasks\": \"<boolean>\",\n    \"canApplyTaskList\": \"<boolean>\",\n    \"canRemoveAnyTaskList\": \"<boolean>\",\n    \"canSubmitTaskList\": \"<boolean>\",\n    \"canAutoSubmitTaskList\": \"<boolean>\",\n    \"canReviewTaskList\": \"<boolean>\",\n    \"canAutoApproveTaskList\": \"<boolean>\",\n    \"canManageTaskTemplatesForAllRegionsAllOffices\": \"<boolean>\",\n    \"canApplyRoomTemplates\": \"<boolean>\",\n    \"canAddTasksToRooms\": \"<boolean>\",\n    \"canReviewAnyTask\": \"<boolean>\",\n    \"canManageDocsOnAnyTask\": \"<boolean>\",\n    \"canAddMemberAndSetRoleLowerAccessLevel\": \"<boolean>\",\n    \"canAddMemberAndSetRoleSameAccessLevel\": \"<boolean>\",\n    \"canChangeMemberRoleLowerAccessLevel\": \"<boolean>\",\n    \"canChangeMemberRoleSameAccessLevel\": \"<boolean>\",\n    \"canManageMemberLowerAccessLevel\": \"<boolean>\",\n    \"canManageMemberSameAccessLevel\": \"<boolean>\",\n    \"canRemoveCompanyMemberLowerAccessLevel\": \"<boolean>\",\n    \"canRemoveCompanyMemberSameAccessLevel\": \"<boolean>\",\n    \"canManageAccount\": \"<boolean>\",\n    \"canManageLogo\": \"<boolean>\",\n    \"canManageRolesAndPermissions\": \"<boolean>\",\n    \"canManageRoomDetails\": \"<boolean>\",\n    \"canManageRoomTemplates\": \"<boolean>\",\n    \"canManageIntegrationSettings\": \"<boolean>\",\n    \"canExportCompanyUsageReport\": \"<boolean>\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"errorCode\": \"string\",\n  \"message\": \"string\",\n  \"referenceId\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "e1ccc0a1-6cb7-4856-b56f-73f00d39b081",
+              "name": "Not authorized to make this request.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "accounts",
+                    ":accountId",
+                    "roles",
+                    ":roleId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "roleId",
+                      "description": "(Required) The ID of the role."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "accountId",
+                      "description": "(Required) The globally unique identifier (GUID) for the account."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "text/plain"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"<string>\",\n  \"isExternal\": \"<boolean>\",\n  \"permissions\": {\n    \"canAddUsersToRooms\": \"<boolean>\",\n    \"canCreateRooms\": \"<boolean>\",\n    \"canSubmitRoomsForReview\": \"<boolean>\",\n    \"canCloseRooms\": \"<boolean>\",\n    \"canReopenRooms\": \"<boolean>\",\n    \"canDeleteOwnedRooms\": \"<boolean>\",\n    \"autoAccessToRooms\": \"<boolean>\",\n    \"canExportRoomActivityDetailsPeople\": \"<boolean>\",\n    \"canCopyRoomDetails\": \"<boolean>\",\n    \"canEditAnyRoomRole\": \"<boolean>\",\n    \"canEditInvitedRoomRole\": \"<boolean>\",\n    \"canEditRoomSide\": \"<boolean>\",\n    \"canManageAnyUserRoomAccess\": \"<boolean>\",\n    \"canManageInvitedUserRoomAccess\": \"<boolean>\",\n    \"isHiddenInRoom\": \"<boolean>\",\n    \"canManageRoomOwners\": \"<boolean>\",\n    \"canDeleteRooms\": \"<boolean>\",\n    \"canConnectToMortgageCadence\": \"<boolean>\",\n    \"autoAccessToRoomsInOfficeOnly\": \"<boolean>\",\n    \"canViewRoomDetails\": \"<boolean>\",\n    \"canViewAndEditRoomDetails\": \"<boolean>\",\n    \"canSendRoomDetailsToLoneWolf\": \"<boolean>\",\n    \"canAddDocuments\": \"<boolean>\",\n    \"canAddDocumentsFromFormGroups\": \"<boolean>\",\n    \"canAddDocumentsFromFormLibraries\": \"<boolean>\",\n    \"documentsViewableByOthersInRoomFromOffice\": \"<boolean>\",\n    \"documentsAutoOwnedByPeers\": \"<boolean>\",\n    \"canDeleteOwnedDocuments\": \"<boolean>\",\n    \"canDeleteSignedDocuments\": \"<boolean>\",\n    \"canDeleteUnsignedDocuments\": \"<boolean>\",\n    \"canManageSharedDocs\": \"<boolean>\",\n    \"canManageFormGroups\": \"<boolean>\",\n    \"canShareDocsNotOwned\": \"<boolean>\",\n    \"canCreateFormTemplates\": \"<boolean>\",\n    \"canManageFormPackets\": \"<boolean>\",\n    \"canAddTasksToAnyTaskLists\": \"<boolean>\",\n    \"canEditEditableTasks\": \"<boolean>\",\n    \"canEditAnyTasks\": \"<boolean>\",\n    \"canDeleteDeletableTasks\": \"<boolean>\",\n    \"canDeleteAnyTasks\": \"<boolean>\",\n    \"canApplyTaskList\": \"<boolean>\",\n    \"canRemoveAnyTaskList\": \"<boolean>\",\n    \"canSubmitTaskList\": \"<boolean>\",\n    \"canAutoSubmitTaskList\": \"<boolean>\",\n    \"canReviewTaskList\": \"<boolean>\",\n    \"canAutoApproveTaskList\": \"<boolean>\",\n    \"canManageTaskTemplatesForAllRegionsAllOffices\": \"<boolean>\",\n    \"canApplyRoomTemplates\": \"<boolean>\",\n    \"canAddTasksToRooms\": \"<boolean>\",\n    \"canReviewAnyTask\": \"<boolean>\",\n    \"canManageDocsOnAnyTask\": \"<boolean>\",\n    \"canAddMemberAndSetRoleLowerAccessLevel\": \"<boolean>\",\n    \"canAddMemberAndSetRoleSameAccessLevel\": \"<boolean>\",\n    \"canChangeMemberRoleLowerAccessLevel\": \"<boolean>\",\n    \"canChangeMemberRoleSameAccessLevel\": \"<boolean>\",\n    \"canManageMemberLowerAccessLevel\": \"<boolean>\",\n    \"canManageMemberSameAccessLevel\": \"<boolean>\",\n    \"canRemoveCompanyMemberLowerAccessLevel\": \"<boolean>\",\n    \"canRemoveCompanyMemberSameAccessLevel\": \"<boolean>\",\n    \"canManageAccount\": \"<boolean>\",\n    \"canManageLogo\": \"<boolean>\",\n    \"canManageRolesAndPermissions\": \"<boolean>\",\n    \"canManageRoomDetails\": \"<boolean>\",\n    \"canManageRoomTemplates\": \"<boolean>\",\n    \"canManageIntegrationSettings\": \"<boolean>\",\n    \"canExportCompanyUsageReport\": \"<boolean>\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"errorCode\": \"string\",\n  \"message\": \"string\",\n  \"referenceId\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "84020bb6-fcb0-45cf-ab46-1fdaf4c9cb33",
+          "name": "Docusign Deletes a role.",
+          "request": {
+            "name": "Docusign Deletes a role.",
+            "description": {
+              "content": "Deletes a role from a company account.\n\n## Permissions \n\nTo use this method, you must have the `canManageAccount` permission set to **true.**",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v2",
+                "accounts",
+                ":accountId",
+                "roles",
+                ":roleId"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<integer>",
+                  "key": "roleId",
+                  "description": "(Required) The ID of the role to delete."
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "accountId",
+                  "description": "(Required) The globally unique identifier (GUID) for the account."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "text/plain"
+              }
+            ],
+            "method": "DELETE",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "c311b10b-ecfa-4d3d-90d8-aa9a7cd48f4e",
+              "name": "Role successfully deleted.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "accounts",
+                    ":accountId",
+                    "roles",
+                    ":roleId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "roleId",
+                      "description": "(Required) The ID of the role to delete."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "accountId",
+                      "description": "(Required) The globally unique identifier (GUID) for the account."
+                    }
+                  ]
+                },
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "No Content",
+              "code": 204,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "5e60667b-c009-49ce-9c64-4f0a465604e5",
+              "name": "Bad request. See ErrorCode and Message for details",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "accounts",
+                    ":accountId",
+                    "roles",
+                    ":roleId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "roleId",
+                      "description": "(Required) The ID of the role to delete."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "accountId",
+                      "description": "(Required) The globally unique identifier (GUID) for the account."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "text/plain"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"errorCode\": \"string\",\n  \"message\": \"string\",\n  \"referenceId\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "a8d335fa-cdd8-4b18-8410-61785ee43327",
+              "name": "Not authorized to make this request.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "accounts",
+                    ":accountId",
+                    "roles",
+                    ":roleId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "roleId",
+                      "description": "(Required) The ID of the role to delete."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "accountId",
+                      "description": "(Required) The globally unique identifier (GUID) for the account."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "text/plain"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"errorCode\": \"string\",\n  \"message\": \"string\",\n  \"referenceId\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://api.docusign.net/Management",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "513ce3f6-688f-4180-a8f0-860606bff27a",
+    "name": "DocuSign Admin AccountBrands Roles API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "An API for an organization administrator to manage organizations, accounts and users\n\nContact Support:\n Name: DocuSign Developer Center\n Email: devcenter@docusign.com",
+      "type": "text/plain"
+    }
+  }
+}

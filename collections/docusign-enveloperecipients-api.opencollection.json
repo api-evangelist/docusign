@@ -1,0 +1,196 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "DocuSign Admin AccountBrands EnvelopeRecipients API",
+    "version": "v2.1"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "EnvelopeRecipients",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Docusign Gets the status of recipients for an envelope.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.docusign.net/Management/v2/accounts/:accountId/envelopes/:envelopeId/recipients",
+            "params": [
+              {
+                "name": "accountId",
+                "value": "",
+                "type": "path",
+                "description": "The external account number (int) or account id GUID."
+              },
+              {
+                "name": "envelopeId",
+                "value": "",
+                "type": "path",
+                "description": "The envelope's GUID. Eg 93be49ab-afa0-4adf-933c-f752070d71ec "
+              },
+              {
+                "name": "include_anchor_tab_locations",
+                "value": "",
+                "type": "query",
+                "description": " When set to **true** and `include_tabs` value is set to **true**, all tabs with anchor tab properties are included in the response. "
+              },
+              {
+                "name": "include_extended",
+                "value": "",
+                "type": "query",
+                "description": " When set to **true**, the extended properties are included in the response. "
+              },
+              {
+                "name": "include_tabs",
+                "value": "",
+                "type": "query",
+                "description": "When set to **true**, the tab information associated with the recipient is included in the response."
+              }
+            ]
+          },
+          "docs": "Retrieves the status of all recipients in a single envelope and identifies the current recipient in the routing list. This method can also be used to retrieve the tab values.\n\nThe `currentRoutingOrder` property of the response contains the `routingOrder` value of the current recipient indicating that the envelope has been sent to the recipient, but the recipient has not completed their actions."
+        },
+        {
+          "info": {
+            "name": "Docusign Adds one or more recipients to an envelope.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.docusign.net/Management/v2/accounts/:accountId/envelopes/:envelopeId/recipients",
+            "params": [
+              {
+                "name": "accountId",
+                "value": "",
+                "type": "path",
+                "description": "The external account number (int) or account id GUID."
+              },
+              {
+                "name": "envelopeId",
+                "value": "",
+                "type": "path",
+                "description": "The envelope's GUID. Eg 93be49ab-afa0-4adf-933c-f752070d71ec "
+              },
+              {
+                "name": "resend_envelope",
+                "value": "",
+                "type": "query",
+                "description": "When set to **true**, resends the   envelope if the new recipient's routing order is before or the same as the envelope's next recipient."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Adds one or more recipients to an envelope.\n\nFor an in process envelope, one that has been sent and has not been completed or voided, an email is sent to a new recipient when they are reached in the routing order. If the new recipient's routing order is before or the same as the envelope's next recipient, an email is only sent if the optional `resend_envelope` query string is set to **true**."
+        },
+        {
+          "info": {
+            "name": "Docusign Updates recipients in a draft envelope or corrects recipient information for an in process envelope.",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.docusign.net/Management/v2/accounts/:accountId/envelopes/:envelopeId/recipients",
+            "params": [
+              {
+                "name": "accountId",
+                "value": "",
+                "type": "path",
+                "description": "The external account number (int) or account id GUID."
+              },
+              {
+                "name": "envelopeId",
+                "value": "",
+                "type": "path",
+                "description": "The envelope's GUID. Eg 93be49ab-afa0-4adf-933c-f752070d71ec "
+              },
+              {
+                "name": "offline_signing",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "resend_envelope",
+                "value": "",
+                "type": "query",
+                "description": "When set to **true**, resends the   envelope if the new recipient's routing order is before or the same as the envelope's next recipient."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Updates recipients in a draft envelope or corrects recipient information for an in process envelope. \n\nFor draft envelopes, you can edit the following properties: `email`, `userName`, `routingOrder`, `faxNumber`, `deliveryMethod`, `accessCode`, and `requireIdLookup`.\n\nOnce an envelope has been sent, you can only edit: `email`, `userName`, `signerName`, `signingGroupId`, `routingOrder`, `faxNumber`, and `deliveryMethod`. You can also select to resend an envelope by using the `resend_envelope` opt"
+        },
+        {
+          "info": {
+            "name": "Docusign Deletes recipients from an envelope.",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.docusign.net/Management/v2/accounts/:accountId/envelopes/:envelopeId/recipients",
+            "params": [
+              {
+                "name": "accountId",
+                "value": "",
+                "type": "path",
+                "description": "The external account number (int) or account id GUID."
+              },
+              {
+                "name": "envelopeId",
+                "value": "",
+                "type": "path",
+                "description": "The envelope's GUID. Eg 93be49ab-afa0-4adf-933c-f752070d71ec "
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Deletes one or more recipients from a draft or sent envelope. Recipients to be deleted are listed in the request, with the `recipientId` being used as the key for deleting recipients.\n\nIf the envelope is `In Process`, meaning that it has been sent and has not  been completed or voided, recipients that have completed their actions cannot be deleted."
+        },
+        {
+          "info": {
+            "name": "Docusign Deletes a recipient from an envelope.",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.docusign.net/Management/v2/accounts/:accountId/envelopes/:envelopeId/recipients/:recipientId",
+            "params": [
+              {
+                "name": "accountId",
+                "value": "",
+                "type": "path",
+                "description": "The external account number (int) or account id GUID."
+              },
+              {
+                "name": "envelopeId",
+                "value": "",
+                "type": "path",
+                "description": "The envelope's GUID. Eg 93be49ab-afa0-4adf-933c-f752070d71ec "
+              },
+              {
+                "name": "recipientId",
+                "value": "",
+                "type": "path",
+                "description": "A local reference that senders use to map recipients to other objects, such as specific document tabs. Within an envelope, each `recipientId` must be unique, but there is no uniqueness requirement across envelopes. For example, many envelopes assign the first recipient a `recipientId` of `1`."
+              }
+            ]
+          },
+          "docs": "Deletes a recipient from a `draft` or `sent` envelope.\n\nIf the envelope is \"In Process\" (has been sent and is not completed or voided), recipients that have completed their actions cannot be deleted."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

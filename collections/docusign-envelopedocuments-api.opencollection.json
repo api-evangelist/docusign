@@ -1,0 +1,281 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "DocuSign Admin AccountBrands EnvelopeDocuments API",
+    "version": "v2.1"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "EnvelopeDocuments",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Docusign List Envelope Documents",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.docusign.net/Management/accounts/:accountId/envelopes/:envelopeId/documents",
+            "params": [
+              {
+                "name": "accountId",
+                "value": "",
+                "type": "path",
+                "description": "The external account number (short) or account ID GUID of the DocuSign account."
+              },
+              {
+                "name": "envelopeId",
+                "value": "",
+                "type": "path",
+                "description": "The envelope ID (GUID) of the envelope."
+              }
+            ]
+          },
+          "docs": "Retrieves a list of documents associated with the specified envelope. Returns metadata about each document including the document ID, name, type, and order."
+        },
+        {
+          "info": {
+            "name": "Docusign Get an Envelope Document",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.docusign.net/Management/accounts/:accountId/envelopes/:envelopeId/documents/:documentId",
+            "params": [
+              {
+                "name": "accountId",
+                "value": "",
+                "type": "path",
+                "description": "The external account number (short) or account ID GUID of the DocuSign account."
+              },
+              {
+                "name": "envelopeId",
+                "value": "",
+                "type": "path",
+                "description": "The envelope ID (GUID) of the envelope."
+              },
+              {
+                "name": "documentId",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the document within the envelope. Use \"combined\" to retrieve all documents as a single PDF."
+              }
+            ]
+          },
+          "docs": "Retrieves the specified document from the envelope. Returns the document content as a PDF or other supported format."
+        },
+        {
+          "info": {
+            "name": "Docusign Gets a list of envelope documents.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.docusign.net/Management/v2/accounts/:accountId/envelopes/:envelopeId/documents",
+            "params": [
+              {
+                "name": "accountId",
+                "value": "",
+                "type": "path",
+                "description": "The external account number (int) or account id GUID."
+              },
+              {
+                "name": "envelopeId",
+                "value": "",
+                "type": "path",
+                "description": "The envelope's GUID. Eg 93be49ab-afa0-4adf-933c-f752070d71ec "
+              },
+              {
+                "name": "include_document_size",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Retrieves a list of documents associated with the specified envelope."
+        },
+        {
+          "info": {
+            "name": "Docusign Adds one or more documents to an existing envelope document.",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.docusign.net/Management/v2/accounts/:accountId/envelopes/:envelopeId/documents",
+            "params": [
+              {
+                "name": "accountId",
+                "value": "",
+                "type": "path",
+                "description": "The external account number (int) or account id GUID."
+              },
+              {
+                "name": "envelopeId",
+                "value": "",
+                "type": "path",
+                "description": "The envelope's GUID. Eg 93be49ab-afa0-4adf-933c-f752070d71ec "
+              },
+              {
+                "name": "apply_document_fields",
+                "value": "",
+                "type": "query",
+                "description": "When **true**, document fields\ncan be added or modified\nwhile adding or modifying envelope documents.\n"
+              },
+              {
+                "name": "persist_tabs",
+                "value": "",
+                "type": "query"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Adds one or more documents to an existing envelope document.\n<p>**Note**: When adding or modifying documents for an in-process envelope, DocuSign recommends locking the envelope prior to making any changes."
+        },
+        {
+          "info": {
+            "name": "Docusign Deletes documents from a draft envelope.",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.docusign.net/Management/v2/accounts/:accountId/envelopes/:envelopeId/documents",
+            "params": [
+              {
+                "name": "accountId",
+                "value": "",
+                "type": "path",
+                "description": "The external account number (int) or account id GUID."
+              },
+              {
+                "name": "envelopeId",
+                "value": "",
+                "type": "path",
+                "description": "The envelope's GUID. Eg 93be49ab-afa0-4adf-933c-f752070d71ec "
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Deletes one or more documents from an existing envelope that has not yet been completed.\n\nTo delete a document, use only the relevant parts of the [`envelopeDefinition`](#envelopeDefinition).\nFor example, this request body specifies that you want to delete the document whose `documentId` is \"1\".\n\n\n```text\n{\n  \"documents\": [\n    {\n      \"documentId\": \"1\"\n    }\n  ]\n}\n```\n\nThe envelope status must be one of:\n\n- `created`\n- `sent`\n- `delivered`\n\n\n"
+        },
+        {
+          "info": {
+            "name": "Docusign Gets a document from an envelope.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.docusign.net/Management/v2/accounts/:accountId/envelopes/:envelopeId/documents/:documentId",
+            "params": [
+              {
+                "name": "accountId",
+                "value": "",
+                "type": "path",
+                "description": "The external account number (int) or account id GUID."
+              },
+              {
+                "name": "documentId",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the document being accessed."
+              },
+              {
+                "name": "envelopeId",
+                "value": "",
+                "type": "path",
+                "description": "The envelope's GUID. Eg 93be49ab-afa0-4adf-933c-f752070d71ec "
+              },
+              {
+                "name": "certificate",
+                "value": "",
+                "type": "query",
+                "description": "When set to **false**, the envelope signing certificate is removed from the download."
+              },
+              {
+                "name": "encoding",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "encrypt",
+                "value": "",
+                "type": "query",
+                "description": "When set to **true**, the PDF bytes returned in the response are encrypted for all the key managers configured on your DocuSign account. The documents can be decrypted with the KeyManager Decrypt Document API."
+              },
+              {
+                "name": "language",
+                "value": "",
+                "type": "query",
+                "description": "Specifies the language for the Certificate of Completion in the response. The supported languages, with the language value shown in parenthesis, are: Chinese Simplified (zh_CN), , Chinese Traditional (zh_TW), Dutch (nl), English US (en), French (fr), German (de), Italian (it), Japanese (ja), Korean (ko), Portuguese (pt), Portuguese (Brazil) (pt_BR), Russian (ru), Spanish (es). "
+              },
+              {
+                "name": "recipient_id",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "show_changes",
+                "value": "",
+                "type": "query",
+                "description": "When set to **true**, any changed fields for the returned PDF are highlighted in yellow and optional signatures or initials outlined in red. "
+              },
+              {
+                "name": "watermark",
+                "value": "",
+                "type": "query",
+                "description": "When set to **true**, the account has the watermark feature enabled, and the envelope is not complete, the watermark for the account is added to the PDF documents. This option can remove the watermark. "
+              }
+            ]
+          },
+          "docs": "Retrieves the specified document from the envelope. If the account has the Highlight Data Changes feature enabled, there is an option to request that any changes in the envelope be highlighted.\n\nThe `{documentID}` parameter takes two special values:\n\n| Value      | Description |\n| :---       | :--- |\n| `combined` | Retrieve a PDF that contains the combined content of all documents and the certificate. |\n| `archive`  | Retrieve a ZIP archive that contains all of the PDF documents, the certificate"
+        },
+        {
+          "info": {
+            "name": "Docusign Adds a document to an existing draft envelope.",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.docusign.net/Management/v2/accounts/:accountId/envelopes/:envelopeId/documents/:documentId",
+            "params": [
+              {
+                "name": "accountId",
+                "value": "",
+                "type": "path",
+                "description": "The external account number (int) or account id GUID."
+              },
+              {
+                "name": "documentId",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the document being accessed."
+              },
+              {
+                "name": "envelopeId",
+                "value": "",
+                "type": "path",
+                "description": "The envelope's GUID. Eg 93be49ab-afa0-4adf-933c-f752070d71ec "
+              },
+              {
+                "name": "apply_document_fields",
+                "value": "",
+                "type": "query",
+                "description": "When **true**, document fields\ncan be added or modified\nwhile adding or modifying envelope documents.\n"
+              }
+            ]
+          },
+          "docs": "Adds a document to an existing draft envelope.\n<p>**Note**: When adding or modifying documents for an in-process envelope, DocuSign recommends locking the envelope prior to making any changes."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

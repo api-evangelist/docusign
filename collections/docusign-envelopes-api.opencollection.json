@@ -1,0 +1,976 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "DocuSign Admin AccountBrands Envelopes API",
+    "version": "v2.1"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Envelopes",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Docusign List Envelopes",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.docusign.net/Management/accounts/:accountId/envelopes",
+            "params": [
+              {
+                "name": "accountId",
+                "value": "",
+                "type": "path",
+                "description": "The external account number (short) or account ID GUID of the DocuSign account."
+              },
+              {
+                "name": "from_date",
+                "value": "",
+                "type": "query",
+                "description": "Start date for the envelope search. Only envelopes created on or after this date are returned. Format is ISO 8601."
+              },
+              {
+                "name": "to_date",
+                "value": "",
+                "type": "query",
+                "description": "End date for the envelope search. Only envelopes created before this date are returned. Format is ISO 8601."
+              },
+              {
+                "name": "status",
+                "value": "",
+                "type": "query",
+                "description": "Filter by envelope status. Valid values include created, sent, delivered, signed, completed, declined, voided, deleted."
+              },
+              {
+                "name": "from_to_status",
+                "value": "",
+                "type": "query",
+                "description": "The status value checked for in the from_date and to_date range. Default is changed."
+              },
+              {
+                "name": "count",
+                "value": "",
+                "type": "query",
+                "description": "Maximum number of envelopes to return. Default is 100."
+              },
+              {
+                "name": "start_position",
+                "value": "",
+                "type": "query",
+                "description": "Starting index position for the result set."
+              },
+              {
+                "name": "search_text",
+                "value": "",
+                "type": "query",
+                "description": "Free text search across envelope metadata including recipient names, email addresses, and custom fields."
+              },
+              {
+                "name": "order",
+                "value": "",
+                "type": "query",
+                "description": "Sort order for results. Valid values are asc and desc."
+              },
+              {
+                "name": "order_by",
+                "value": "",
+                "type": "query",
+                "description": "The envelope property to sort by. Valid values include created, completed, last_modified, sent, status_changed."
+              },
+              {
+                "name": "folder_ids",
+                "value": "",
+                "type": "query",
+                "description": "Comma-separated list of folder IDs to search within."
+              },
+              {
+                "name": "include",
+                "value": "",
+                "type": "query",
+                "description": "Comma-separated list of additional information to include. Valid values include custom_fields, documents, attachments, extensions, folders, recipients, powerform."
+              }
+            ]
+          },
+          "docs": "Returns a list of envelopes that match the specified criteria. Use query parameters to filter by date, status, and other envelope properties."
+        },
+        {
+          "info": {
+            "name": "Docusign Create an Envelope",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.docusign.net/Management/accounts/:accountId/envelopes",
+            "params": [
+              {
+                "name": "accountId",
+                "value": "",
+                "type": "path",
+                "description": "The external account number (short) or account ID GUID of the DocuSign account."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Creates and optionally sends an envelope. An envelope is the container for documents, recipients, and the workflow information. You can create an envelope in draft status to allow for further modifications, or send it immediately upon creation."
+        },
+        {
+          "info": {
+            "name": "Docusign Get an Envelope",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.docusign.net/Management/accounts/:accountId/envelopes/:envelopeId",
+            "params": [
+              {
+                "name": "accountId",
+                "value": "",
+                "type": "path",
+                "description": "The external account number (short) or account ID GUID of the DocuSign account."
+              },
+              {
+                "name": "envelopeId",
+                "value": "",
+                "type": "path",
+                "description": "The envelope ID (GUID) of the envelope."
+              },
+              {
+                "name": "include",
+                "value": "",
+                "type": "query",
+                "description": "Comma-separated list of additional information to include. Valid values include custom_fields, documents, attachments, extensions, folders, recipients, powerform, tabs."
+              },
+              {
+                "name": "advanced_update",
+                "value": "",
+                "type": "query",
+                "description": "When true, allows sender to update an in-process envelope."
+              }
+            ]
+          },
+          "docs": "Retrieves the overall status and properties of a single envelope. Returns information about the envelope including its status, sender, recipients, and documents."
+        },
+        {
+          "info": {
+            "name": "Docusign Update an Envelope",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.docusign.net/Management/accounts/:accountId/envelopes/:envelopeId",
+            "params": [
+              {
+                "name": "accountId",
+                "value": "",
+                "type": "path",
+                "description": "The external account number (short) or account ID GUID of the DocuSign account."
+              },
+              {
+                "name": "envelopeId",
+                "value": "",
+                "type": "path",
+                "description": "The envelope ID (GUID) of the envelope."
+              },
+              {
+                "name": "resend_envelope",
+                "value": "",
+                "type": "query",
+                "description": "When true, resends the envelope to all recipients who have not yet completed their actions."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Updates the envelope specified by envelopeId. You can use this method to modify envelope properties such as the email subject and message, resend notifications, void envelopes, and purge documents."
+        },
+        {
+          "info": {
+            "name": "Docusign Gets status changes for one or more envelopes.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.docusign.net/Management/v2/accounts/:accountId/envelopes",
+            "params": [
+              {
+                "name": "accountId",
+                "value": "",
+                "type": "path",
+                "description": "The external account number (int) or account id GUID."
+              },
+              {
+                "name": "ac_status",
+                "value": "",
+                "type": "query",
+                "description": "Specifies the Authoritative Copy Status for the envelopes. The possible values are: Unknown, Original, Transferred, AuthoritativeCopy, AuthoritativeCopyExportPending, AuthoritativeCopyExported, DepositPending, Deposited, DepositedEO, or DepositFailed."
+              },
+              {
+                "name": "block",
+                "value": "",
+                "type": "query",
+                "description": "Reserved for DocuSign.\n"
+              },
+              {
+                "name": "count",
+                "value": "",
+                "type": "query",
+                "description": "Optional. Number of items to return. Currently there is no implicit maximum limit of the number of items that can be returned.\n"
+              },
+              {
+                "name": "custom_field",
+                "value": "",
+                "type": "query",
+                "description": "Optional. Specifies a envelope custom field name and value searched for in the envelopes. Format: `custom_envelope_field_name=desired_value`\n\nExample: If you have an envelope custom field named \"Region\" and you want to search for all envelopes where the value is \"West\" you would use set this parameter to `Region=West`. \n \n"
+              },
+              {
+                "name": "email",
+                "value": "",
+                "type": "query",
+                "description": "Limit results to envelopes\nsent by the account user\nwith this email address.\n\n`user_name` must be given as well,\nand both `email` and `user_name`\nmust refer to an existing account user.\n"
+              },
+              {
+                "name": "envelope_ids",
+                "value": "",
+                "type": "query",
+                "description": "Comma separated list of `envelopeId` values."
+              },
+              {
+                "name": "from_date",
+                "value": "",
+                "type": "query",
+                "description": "Specifies the date and time\nto start looking for status changes.\nThis parameter is required\nunless `envelopeIds` or `transactionIds`\nare set.\n\n\nAlthough you can use any date format\nsupported by the .NET system library's\n[`DateTime.Parse()`][msoft] function,\nDocuSign recommends\nusing [ISO 8601][] format dates\nwith an explicit time zone offset\nIf you do not provide\na time zone offset,\nthe method uses the server's time zone.\n\nFor example, the following dates and times refer to the same instant:\n\n* `2017-05-02T01:44Z`\n* `2017-05-01T21:44-04:00`\n* `2017-05-01T18:44-07:00`\n\n\n[msoft]: https://msdn.microsoft.com/en-us/library/system.datetime.parse(v=vs.110).aspx#StringToParse\n[ISO 8601]: https://en.wikipedia.org/wiki/ISO_8601"
+              },
+              {
+                "name": "from_to_status",
+                "value": "",
+                "type": "query",
+                "description": "The status value checked for in the `from_date` to `to_date` time period. \n\nPossible values are: Voided, Changed, Created, Deleted, Sent, Delivered, Signed, Completed, Declined, TimedOut and Processing.\n\nIf `Changed` is specified, then envelopes that changed status during the period will be returned. \n\nFor example, if `Created` is specified, then envelopes created during the period are found. \n\nThe default is `Changed`. "
+              },
+              {
+                "name": "start_position",
+                "value": "",
+                "type": "query",
+                "description": "This value is supported and currently has no implicit maximum items.\n"
+              },
+              {
+                "name": "status",
+                "value": "",
+                "type": "query",
+                "description": "A comma-separated list of current envelope statuses to included in the response. Possible values are:\n\n* completed\n* created\n* declined\n* deleted\n* delivered\n* processing\n* sent\n* signed\n* timedout\n* voided\n\nThe `any` value is equivalent to any status.\n\n"
+              },
+              {
+                "name": "to_date",
+                "value": "",
+                "type": "query",
+                "description": "Specifies the date and time\nto stop looking for status changes.\nThe default is the current date and time.\n\nAlthough you can use any date format\nsupported by the .NET system library's\n[`DateTime.Parse()`][msoft] function,\nDocuSign recommends\nusing [ISO 8601][] format dates\nwith an explicit time zone offset\nIf you do not provide\na time zone offset,\nthe method uses the server's time zone.\n\nFor example, the following dates and times refer to the same instant:\n\n* `2017-05-02T01:44Z`\n* `2017-05-01T21:44-04:00`\n* `2017-05-01T18:44-07:00`\n\n\n[msoft]: https://msdn.microsoft.com/en-us/library/system.datetime.parse(v=vs.110).aspx#StringToParse\n[ISO 8601]: https://en.wikipedia.org/wiki/ISO_8601\n"
+              },
+              {
+                "name": "transaction_ids",
+                "value": "",
+                "type": "query",
+                "description": "A comma-separated list of envelope transaction IDs.\nTransaction IDs are only valid for seven days.\n"
+              },
+              {
+                "name": "user_name",
+                "value": "",
+                "type": "query",
+                "description": "Limit results to envelopes\nsent by the account user\nwith this user name.\n\n`email` must be given as well,\nand both `email` and `user_name`\nmust refer to an existing account user.\n"
+              }
+            ]
+          },
+          "docs": "Retrieves a list of envelopes that match your request. \nA large set of optional filters let you filter\nby date,\nby envelope ID,\nor by status codes.\n\nYour request must include one or more of the following parameters:\n\n* `from_date`\n* `envelope_ids`\n* `transaction_ids`\n\n\nGetting envelope status using `transaction_ids` is useful\nfor offline signing situations where it can be used\ndetermine if an envelope was created or not. It can be used\nfor the cases where a network connection was lost, before\nth"
+        },
+        {
+          "info": {
+            "name": "Docusign Creates an envelope.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.docusign.net/Management/v2/accounts/:accountId/envelopes",
+            "params": [
+              {
+                "name": "accountId",
+                "value": "",
+                "type": "path",
+                "description": "The external account number (int) or account id GUID."
+              },
+              {
+                "name": "cdse_mode",
+                "value": "",
+                "type": "query",
+                "description": "Reserved for DocuSign.\n"
+              },
+              {
+                "name": "change_routing_order",
+                "value": "",
+                "type": "query",
+                "description": "When true, users can define the routing order of recipients while sending documents for signature."
+              },
+              {
+                "name": "completed_documents_only",
+                "value": "",
+                "type": "query",
+                "description": "Reserved for DocuSign.\n"
+              },
+              {
+                "name": "merge_roles_on_draft",
+                "value": "",
+                "type": "query",
+                "description": "When set to **true**, template roles will be merged, and empty recipients will be removed. This parameter applies when you create a draft envelope with multiple templates. (To create a draft envelope, the `status` field is set to `created`.)\n\n###### Note: DocuSign recommends that this parameter should be set to **true** whenever you create a draft envelope with multiple templates."
+              },
+              {
+                "name": "tab_label_exact_matches",
+                "value": "",
+                "type": "query",
+                "description": "Reserved for DocuSign.\n\n<!--\nNote from Kate Dougherty: This functionality has not been released yet. When it is (contact Alia Paddock with any questions), use the following description:\n\n\"When set to **true**, each tab in the inline template is matched and collapsed with all qualified tabs in the server template. When set to **false** (default), each tab in the inline template is matched and collapsed with at most one qualified tab in the server template.\n\nThis parameter applies when you create an envelope from a composite template.\"\n-->\n"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Creates and sends an envelope or creates a draft envelope.\nEnvelopes are fundamental resources in the DocuSign platform.\n\nWith this method you can:\n\n* Create and send an envelope\n  with [documents][], [recipients][], and [tabs][].\n* Create and send an envelope from a template.\n* Create and send an envelope from\n  a combination of documents and templates.\n* Create a draft envelope.\n\n\nWhen you use this method\nto create and send an envelope\nin a single request,\nthe following parameters in the reque"
+        },
+        {
+          "info": {
+            "name": "Docusign Gets the status of a single envelope.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.docusign.net/Management/v2/accounts/:accountId/envelopes/:envelopeId",
+            "params": [
+              {
+                "name": "accountId",
+                "value": "",
+                "type": "path",
+                "description": "The external account number (int) or account id GUID."
+              },
+              {
+                "name": "envelopeId",
+                "value": "",
+                "type": "path",
+                "description": "The envelope's GUID. Eg 93be49ab-afa0-4adf-933c-f752070d71ec "
+              },
+              {
+                "name": "advanced_update",
+                "value": "",
+                "type": "query",
+                "description": "When true, envelope information can be added or modified."
+              },
+              {
+                "name": "include",
+                "value": "",
+                "type": "query",
+                "description": "Reserved for DocuSign.\n"
+              }
+            ]
+          },
+          "docs": "Retrieves the overall status for the specified envelope. To get the status of a list of envelopes, use [Envelope: listStatusChanges ](https://developers.docusign.com/esign-rest-api/reference/Envelopes/Envelopes/listStatusChanges/)"
+        },
+        {
+          "info": {
+            "name": "Docusign Send, void, or modify a draft envelope. Purge documents from a completed envelope.",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.docusign.net/Management/v2/accounts/:accountId/envelopes/:envelopeId",
+            "params": [
+              {
+                "name": "accountId",
+                "value": "",
+                "type": "path",
+                "description": "The external account number (int) or account id GUID."
+              },
+              {
+                "name": "envelopeId",
+                "value": "",
+                "type": "path",
+                "description": "The envelope's GUID. Eg 93be49ab-afa0-4adf-933c-f752070d71ec "
+              },
+              {
+                "name": "advanced_update",
+                "value": "",
+                "type": "query",
+                "description": "When set to **true**, allows the caller to update recipients, tabs, custom fields, notification, email settings and other envelope attributes."
+              },
+              {
+                "name": "resend_envelope",
+                "value": "",
+                "type": "query",
+                "description": "When set to **true**, sends the specified envelope again."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "This method lets you make changes to an envelope.\nYou can use it to:\n\n* Send a draft envelope\n* Void an in-process envelope\n* Modify a draft envelope\n* Purge documents and envelope metadata from the DocuSign platform\n\n\n<div class=\"highlight highlight-info\">\n<p markdown=\"1\">\n\nAlthough the request body for this method\nis a complete envelope definition,\nyou only need to provide\nproperties that\nyou're updating. \n\n</p>\n</div>\n\n\n## Sending a Draft Envelope\n\nTo send a draft envelope, include this in th"
+        },
+        {
+          "info": {
+            "name": "Docusign Gets the envelope audit events for an envelope.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.docusign.net/Management/v2/accounts/:accountId/envelopes/:envelopeId/audit_events",
+            "params": [
+              {
+                "name": "accountId",
+                "value": "",
+                "type": "path",
+                "description": "The external account number (int) or account id GUID."
+              },
+              {
+                "name": "envelopeId",
+                "value": "",
+                "type": "path",
+                "description": "The envelope's GUID. Eg 93be49ab-afa0-4adf-933c-f752070d71ec "
+              }
+            ]
+          },
+          "docs": "Gets the envelope audit events for the specified envelope."
+        },
+        {
+          "info": {
+            "name": "Docusign Returns document page image(s) based on input.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.docusign.net/Management/v2/accounts/:accountId/envelopes/:envelopeId/documents/:documentId/pages",
+            "params": [
+              {
+                "name": "accountId",
+                "value": "",
+                "type": "path",
+                "description": "The external account number (int) or account id GUID."
+              },
+              {
+                "name": "documentId",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the document being accessed."
+              },
+              {
+                "name": "envelopeId",
+                "value": "",
+                "type": "path",
+                "description": "The envelope's GUID. Eg 93be49ab-afa0-4adf-933c-f752070d71ec "
+              },
+              {
+                "name": "count",
+                "value": "",
+                "type": "query",
+                "description": "The maximum number of results to be returned by this request."
+              },
+              {
+                "name": "dpi",
+                "value": "",
+                "type": "query",
+                "description": "Number of dots per inch for the resulting image. The default if not used is 94. The range is 1-310."
+              },
+              {
+                "name": "max_height",
+                "value": "",
+                "type": "query",
+                "description": "Sets the maximum height (in pixels) of the returned image."
+              },
+              {
+                "name": "max_width",
+                "value": "",
+                "type": "query",
+                "description": "Sets the maximum width (in pixels) of the returned image."
+              },
+              {
+                "name": "nocache",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "show_changes",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "start_position",
+                "value": "",
+                "type": "query",
+                "description": "The position within the total result set from which to start returning values. The value **thumbnail** may be used to return the page image."
+              }
+            ]
+          },
+          "docs": "Docusign Returns document page image(s) based on input."
+        },
+        {
+          "info": {
+            "name": "Docusign Deletes a page from a document in an envelope.",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.docusign.net/Management/v2/accounts/:accountId/envelopes/:envelopeId/documents/:documentId/pages/:pageNumber",
+            "params": [
+              {
+                "name": "accountId",
+                "value": "",
+                "type": "path",
+                "description": "The external account number (int) or account id GUID."
+              },
+              {
+                "name": "documentId",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the document being accessed."
+              },
+              {
+                "name": "envelopeId",
+                "value": "",
+                "type": "path",
+                "description": "The envelope's GUID. Eg 93be49ab-afa0-4adf-933c-f752070d71ec "
+              },
+              {
+                "name": "pageNumber",
+                "value": "",
+                "type": "path",
+                "description": "The page number being accessed."
+              }
+            ]
+          },
+          "docs": "Deletes a page from a document in an envelope based on the page number."
+        },
+        {
+          "info": {
+            "name": "Docusign Gets a page image from an envelope for display.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.docusign.net/Management/v2/accounts/:accountId/envelopes/:envelopeId/documents/:documentId/pages/:pageNumber/page_image",
+            "params": [
+              {
+                "name": "accountId",
+                "value": "",
+                "type": "path",
+                "description": "The external account number (int) or account id GUID."
+              },
+              {
+                "name": "documentId",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the document being accessed."
+              },
+              {
+                "name": "envelopeId",
+                "value": "",
+                "type": "path",
+                "description": "The envelope's GUID. Eg 93be49ab-afa0-4adf-933c-f752070d71ec "
+              },
+              {
+                "name": "pageNumber",
+                "value": "",
+                "type": "path",
+                "description": "The page number being accessed."
+              },
+              {
+                "name": "dpi",
+                "value": "",
+                "type": "query",
+                "description": "Sets the dpi for the image."
+              },
+              {
+                "name": "max_height",
+                "value": "",
+                "type": "query",
+                "description": "Sets the maximum height for the page image in pixels. The dpi is recalculated based on this setting."
+              },
+              {
+                "name": "max_width",
+                "value": "",
+                "type": "query",
+                "description": "Sets the maximum width for the page image in pixels. The dpi is recalculated based on this setting."
+              },
+              {
+                "name": "show_changes",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Retrieves a page image for display from the specified envelope."
+        },
+        {
+          "info": {
+            "name": "Docusign Rotates page image from an envelope for display.",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.docusign.net/Management/v2/accounts/:accountId/envelopes/:envelopeId/documents/:documentId/pages/:pageNumber/page_image",
+            "params": [
+              {
+                "name": "accountId",
+                "value": "",
+                "type": "path",
+                "description": "The external account number (int) or account id GUID."
+              },
+              {
+                "name": "documentId",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the document being accessed."
+              },
+              {
+                "name": "envelopeId",
+                "value": "",
+                "type": "path",
+                "description": "The envelope's GUID. Eg 93be49ab-afa0-4adf-933c-f752070d71ec "
+              },
+              {
+                "name": "pageNumber",
+                "value": "",
+                "type": "path",
+                "description": "The page number being accessed."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Rotates page image from an envelope for display. The page image can be rotated to the left or right."
+        },
+        {
+          "info": {
+            "name": "Docusign Gets envelope notification information.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.docusign.net/Management/v2/accounts/:accountId/envelopes/:envelopeId/notification",
+            "params": [
+              {
+                "name": "accountId",
+                "value": "",
+                "type": "path",
+                "description": "The external account number (int) or account id GUID."
+              },
+              {
+                "name": "envelopeId",
+                "value": "",
+                "type": "path",
+                "description": "The envelope's GUID. Eg 93be49ab-afa0-4adf-933c-f752070d71ec "
+              }
+            ]
+          },
+          "docs": "Retrieves the envelope notification, reminders and expirations, information for an existing envelope."
+        },
+        {
+          "info": {
+            "name": "Docusign Sets envelope notification (Reminders/Expirations) structure for an existing envelope.",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.docusign.net/Management/v2/accounts/:accountId/envelopes/:envelopeId/notification",
+            "params": [
+              {
+                "name": "accountId",
+                "value": "",
+                "type": "path",
+                "description": "The external account number (int) or account id GUID."
+              },
+              {
+                "name": "envelopeId",
+                "value": "",
+                "type": "path",
+                "description": "The envelope's GUID. Eg 93be49ab-afa0-4adf-933c-f752070d71ec "
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Docusign Sets envelope notification (Reminders/Expirations) structure for an existing envelope."
+        },
+        {
+          "info": {
+            "name": "Docusign Gets the initials image for a user.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.docusign.net/Management/v2/accounts/:accountId/envelopes/:envelopeId/recipients/:recipientId/initials_image",
+            "params": [
+              {
+                "name": "accountId",
+                "value": "",
+                "type": "path",
+                "description": "The external account number (int) or account id GUID."
+              },
+              {
+                "name": "envelopeId",
+                "value": "",
+                "type": "path",
+                "description": "The envelope's GUID. Eg 93be49ab-afa0-4adf-933c-f752070d71ec "
+              },
+              {
+                "name": "recipientId",
+                "value": "",
+                "type": "path",
+                "description": "A local reference that senders use to map recipients to other objects, such as specific document tabs. Within an envelope, each `recipientId` must be unique, but there is no uniqueness requirement across envelopes. For example, many envelopes assign the first recipient a `recipientId` of `1`."
+              },
+              {
+                "name": "include_chrome",
+                "value": "",
+                "type": "query",
+                "description": "The added line and identifier around the initial image. Note: Older envelopes might only have chromed images. If getting the non-chromed image fails, try getting the chromed image."
+              }
+            ]
+          },
+          "docs": "Retrieves the initials image for the specified user. The image is returned in the same format as it was uploaded. In the request you can specify if the chrome (the added line and identifier around the initial image) is returned with the image.\n\nThe userId specified in the endpoint must match the authenticated user's user id and the user must be a member of the account.\n\nThe `signatureIdOrName` paramter accepts signature ID or signature name. DocuSign recommends you use signature ID (`signatureId"
+        },
+        {
+          "info": {
+            "name": "Docusign Sets the initials image for an accountless signer.",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.docusign.net/Management/v2/accounts/:accountId/envelopes/:envelopeId/recipients/:recipientId/initials_image",
+            "params": [
+              {
+                "name": "accountId",
+                "value": "",
+                "type": "path",
+                "description": "The external account number (int) or account id GUID."
+              },
+              {
+                "name": "envelopeId",
+                "value": "",
+                "type": "path",
+                "description": "The envelope's GUID. Eg 93be49ab-afa0-4adf-933c-f752070d71ec "
+              },
+              {
+                "name": "recipientId",
+                "value": "",
+                "type": "path",
+                "description": "A local reference that senders use to map recipients to other objects, such as specific document tabs. Within an envelope, each `recipientId` must be unique, but there is no uniqueness requirement across envelopes. For example, many envelopes assign the first recipient a `recipientId` of `1`."
+              }
+            ]
+          },
+          "docs": "Updates the initials image for a signer that does not have a DocuSign account. The supported image formats for this file are: gif, png, jpeg, and bmp. The file size must be less than 200K.\n\nFor the Authentication/Authorization for this call, the credentials must match the sender of the envelope, the recipient must be an accountless signer or in person signer. The account must have the `CanSendEnvelope` property set to **true** and the `ExpressSendOnly` property in `SendingUser` structure must be"
+        },
+        {
+          "info": {
+            "name": "Docusign Gets signature information for a signer or sign-in-person recipient.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.docusign.net/Management/v2/accounts/:accountId/envelopes/:envelopeId/recipients/:recipientId/signature",
+            "params": [
+              {
+                "name": "accountId",
+                "value": "",
+                "type": "path",
+                "description": "The external account number (int) or account id GUID."
+              },
+              {
+                "name": "envelopeId",
+                "value": "",
+                "type": "path",
+                "description": "The envelope's GUID. Eg 93be49ab-afa0-4adf-933c-f752070d71ec "
+              },
+              {
+                "name": "recipientId",
+                "value": "",
+                "type": "path",
+                "description": "A local reference that senders use to map recipients to other objects, such as specific document tabs. Within an envelope, each `recipientId` must be unique, but there is no uniqueness requirement across envelopes. For example, many envelopes assign the first recipient a `recipientId` of `1`."
+              }
+            ]
+          },
+          "docs": "Retrieves signature information for a signer or sign-in-person recipient."
+        },
+        {
+          "info": {
+            "name": "Docusign Retrieve signature image information for a signer/sign-in-person recipient.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.docusign.net/Management/v2/accounts/:accountId/envelopes/:envelopeId/recipients/:recipientId/signature_image",
+            "params": [
+              {
+                "name": "accountId",
+                "value": "",
+                "type": "path",
+                "description": "The external account number (int) or account id GUID."
+              },
+              {
+                "name": "envelopeId",
+                "value": "",
+                "type": "path",
+                "description": "The envelope's GUID. Eg 93be49ab-afa0-4adf-933c-f752070d71ec "
+              },
+              {
+                "name": "recipientId",
+                "value": "",
+                "type": "path",
+                "description": "A local reference that senders use to map recipients to other objects, such as specific document tabs. Within an envelope, each `recipientId` must be unique, but there is no uniqueness requirement across envelopes. For example, many envelopes assign the first recipient a `recipientId` of `1`."
+              },
+              {
+                "name": "include_chrome",
+                "value": "",
+                "type": "query",
+                "description": "When set to **true**, indicates the chromed version of the signature image should be retrieved."
+              }
+            ]
+          },
+          "docs": "Retrieves the specified user signature image. The image is returned in the same format as uploaded. In the request you can specify if the chrome (the added line and identifier around the initial image) is returned with the image.\n\nThe userId specified in the endpoint must match the authenticated user's user ID and the user must be a member of the account.\n\nThe `signatureIdOrName` parameter accepts signature ID or signature name. DocuSign recommends you use signature ID (`signatureId`), since som"
+        },
+        {
+          "info": {
+            "name": "Docusign Sets the signature image for an accountless signer.",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.docusign.net/Management/v2/accounts/:accountId/envelopes/:envelopeId/recipients/:recipientId/signature_image",
+            "params": [
+              {
+                "name": "accountId",
+                "value": "",
+                "type": "path",
+                "description": "The external account number (int) or account id GUID."
+              },
+              {
+                "name": "envelopeId",
+                "value": "",
+                "type": "path",
+                "description": "The envelope's GUID. Eg 93be49ab-afa0-4adf-933c-f752070d71ec "
+              },
+              {
+                "name": "recipientId",
+                "value": "",
+                "type": "path",
+                "description": "A local reference that senders use to map recipients to other objects, such as specific document tabs. Within an envelope, each `recipientId` must be unique, but there is no uniqueness requirement across envelopes. For example, many envelopes assign the first recipient a `recipientId` of `1`."
+              }
+            ]
+          },
+          "docs": "Updates the signature image for an accountless signer. The supported image formats for this file are: gif, png, jpeg, and bmp. The file size must be less than 200K.\n\nFor the Authentication/Authorization for this call, the credentials must match the sender of the envelope, the recipient must be an accountless signer or in person signer. The account must have the `CanSendEnvelope` property set to **true** and the `ExpressSendOnly` property in `SendingUser` structure must be set to **false**."
+        },
+        {
+          "info": {
+            "name": "Docusign Gets the envelope status for the specified envelopes.",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.docusign.net/Management/v2/accounts/:accountId/envelopes/status",
+            "params": [
+              {
+                "name": "accountId",
+                "value": "",
+                "type": "path",
+                "description": "The external account number (int) or account id GUID."
+              },
+              {
+                "name": "ac_status",
+                "value": "",
+                "type": "query",
+                "description": "Specifies the Authoritative Copy Status for the envelopes. The possible values are: Unknown, Original, Transferred, AuthoritativeCopy, AuthoritativeCopyExportPending, AuthoritativeCopyExported, DepositPending, Deposited, DepositedEO, or DepositFailed."
+              },
+              {
+                "name": "block",
+                "value": "",
+                "type": "query",
+                "description": "Reserved for DocuSign.\n"
+              },
+              {
+                "name": "count",
+                "value": "",
+                "type": "query",
+                "description": "The maximum number of results to be returned by this request."
+              },
+              {
+                "name": "email",
+                "value": "",
+                "type": "query",
+                "description": "Reserved for DocuSign.\n"
+              },
+              {
+                "name": "envelope_ids",
+                "value": "",
+                "type": "query",
+                "description": "Comma separated list of `envelopeId` values."
+              },
+              {
+                "name": "from_date",
+                "value": "",
+                "type": "query",
+                "description": "The date/time setting that specifies when the request begins checking for status changes for envelopes in the account. This is required unless parameters `envelope_ids` and/or `transaction_Ids` are set. \n\n****Note****: This parameter must be set to a valid  `DateTime`, or  `envelope_ids` and/or `transaction_ids` must be specified."
+              },
+              {
+                "name": "from_to_status",
+                "value": "",
+                "type": "query",
+                "description": "The status value checked for in the `from_date` to `to_date` time period. \n\nPossible values are: Voided, Changed, Created, Deleted, Sent, Delivered, Signed, Completed, Declined, TimedOut and Processing.\n\nIf `Changed` is specified, then envelopes that changed status during the period will be returned. \n\nFor example, if `Created` is specified, then envelopes created during the period are found. \n\nThe default is `Changed`. "
+              },
+              {
+                "name": "start_position",
+                "value": "",
+                "type": "query",
+                "description": "Reserved for DocuSign.\n"
+              },
+              {
+                "name": "status",
+                "value": "",
+                "type": "query",
+                "description": "Item status. <!-- TODO -->"
+              },
+              {
+                "name": "to_date",
+                "value": "",
+                "type": "query",
+                "description": "Optional date/time setting\nthat specifies the last date/time \nor envelope status changes in the result set. \n\nDefault: \"now\", the time that you call the method. \n"
+              },
+              {
+                "name": "transaction_ids",
+                "value": "",
+                "type": "query",
+                "description": "A comma-separated list of envelope transaction IDs.\nTransaction IDs are only valid for seven days.\n"
+              },
+              {
+                "name": "user_name",
+                "value": "",
+                "type": "query",
+                "description": "Limit results to envelopes\nsent by the account user\nwith this user name.\n\n`email` must be given as well,\nand both `email` and `user_name`\nmust refer to an existing account user.\n"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Retrieves the envelope status for the specified envelopes."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

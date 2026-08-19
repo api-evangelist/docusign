@@ -1,0 +1,150 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "DocuSign Admin AccountBrands AccountSettingsExport API",
+    "version": "v2.1"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "AccountSettingsExport",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Docusign Returns a list of pending and completed account settings export request.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.docusign.net/Management/v2/organizations/:organizationId/exports/account_settings",
+            "params": [
+              {
+                "name": "organizationId",
+                "value": "",
+                "type": "path",
+                "description": "The organization ID Guid"
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://account.docusign.com/oauth/auth",
+              "accessTokenUrl": "https://account.docusign.com/oauth/auth",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Returns a list of pending and completed account settings export request.\n\n- Required scopes: `account_read`\n"
+        },
+        {
+          "info": {
+            "name": "Docusign Creates a  new account settings export request.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.docusign.net/Management/v2/organizations/:organizationId/exports/account_settings",
+            "params": [
+              {
+                "name": "organizationId",
+                "value": "",
+                "type": "path",
+                "description": "The organization ID Guid"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://account.docusign.com/oauth/auth",
+              "accessTokenUrl": "https://account.docusign.com/oauth/auth",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Creates a  new account settings export request.\n\nSpecify the accounts whose settings you are requesting as JSON in the body of method, like this:\n\n``` json\n{\n  \"accounts\":\t[\n  \t{ \"account_id\": \"9ca037f4-xxxx-xxxx-xxxx-212e57d4f22e\"},\n  \t{ \"account_id\": \"624e3e00-xxxx-xxxx-xxxx-43918c520dab\"}\n\n  ]\n}\n```\n"
+        },
+        {
+          "info": {
+            "name": "Docusign Returns the results for a single account settings export request.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.docusign.net/Management/v2/organizations/:organizationId/exports/account_settings/:exportId",
+            "params": [
+              {
+                "name": "organizationId",
+                "value": "",
+                "type": "path",
+                "description": "The organization ID Guid"
+              },
+              {
+                "name": "exportId",
+                "value": "",
+                "type": "path",
+                "description": "The export ID GUID for the request."
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://account.docusign.com/oauth/auth",
+              "accessTokenUrl": "https://account.docusign.com/oauth/auth",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Returns the results for a single account settings export request.\n\n- Required scopes: `account_read`\n\nGiven an export id, this method returns the results of an account settings export request.\nTo get a list of all the export requests, use `getAccountSettingsExports`.\n\nYou can find the actual list of settings at  `results[n].url` in the response. The settings export is formatted like this:\n\n``` json\n{\n  \"accounts\": [\n    {\n      \"account_id\": \"9ca037f4-xxxx-xxxx-xxxx-212e57d4f22e\",\n      \"name\": "
+        },
+        {
+          "info": {
+            "name": "Docusign Deletes a single account settings export request.",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.docusign.net/Management/v2/organizations/:organizationId/exports/account_settings/:exportId",
+            "params": [
+              {
+                "name": "organizationId",
+                "value": "",
+                "type": "path",
+                "description": "The organization ID Guid"
+              },
+              {
+                "name": "exportId",
+                "value": "",
+                "type": "path",
+                "description": "The export ID GUID for the request."
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://account.docusign.com/oauth/auth",
+              "accessTokenUrl": "https://account.docusign.com/oauth/auth",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Deletes a single account settings export request.\nAny data associated with the request is also deleted.\n\n- Required scopes: `account_read`\n\n"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

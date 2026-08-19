@@ -1,0 +1,228 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "DocuSign Admin AccountBrands ConnectEvents API",
+    "version": "v2.1"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "ConnectEvents",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Docusign Republishes Connect information for the specified envelope.",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.docusign.net/Management/v2/accounts/:accountId/connect/envelopes/:envelopeId/retry_queue",
+            "params": [
+              {
+                "name": "accountId",
+                "value": "",
+                "type": "path",
+                "description": "The external account number (int) or account id GUID."
+              },
+              {
+                "name": "envelopeId",
+                "value": "",
+                "type": "path",
+                "description": "The envelope's GUID. Eg 93be49ab-afa0-4adf-933c-f752070d71ec "
+              }
+            ]
+          },
+          "docs": "Republishes Connect information for the specified envelope."
+        },
+        {
+          "info": {
+            "name": "Docusign Republishes Connect information for multiple envelopes.",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.docusign.net/Management/v2/accounts/:accountId/connect/envelopes/retry_queue",
+            "params": [
+              {
+                "name": "accountId",
+                "value": "",
+                "type": "path",
+                "description": "The external account number (int) or account id GUID."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Republishes Connect information for the  specified set of envelopes. The primary use is to republish Connect post failures by including envelope IDs for the envelopes that failed to post in the request. The list of envelope IDs that failed to post correctly can be retrieved by calling to [ML:GetConnectLog] retrieve the failure log."
+        },
+        {
+          "info": {
+            "name": "Docusign Gets the Connect failure log information.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.docusign.net/Management/v2/accounts/:accountId/connect/failures",
+            "params": [
+              {
+                "name": "accountId",
+                "value": "",
+                "type": "path",
+                "description": "The external account number (int) or account id GUID."
+              },
+              {
+                "name": "from_date",
+                "value": "",
+                "type": "query",
+                "description": "Start of the search date range. Only returns templates created on or after this date/time. If no value is specified, there is no limit on the earliest date created."
+              },
+              {
+                "name": "to_date",
+                "value": "",
+                "type": "query",
+                "description": "End of the search date range. Only returns templates created up to this date/time. If no value is provided, this defaults to the current date."
+              }
+            ]
+          },
+          "docs": "Retrieves the Connect Failure Log information. It can be used to determine which envelopes failed to post, so a republish request can be created."
+        },
+        {
+          "info": {
+            "name": "Docusign Deletes a Connect failure log entry.",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.docusign.net/Management/v2/accounts/:accountId/connect/failures/:failureId",
+            "params": [
+              {
+                "name": "accountId",
+                "value": "",
+                "type": "path",
+                "description": "The external account number (int) or account id GUID."
+              },
+              {
+                "name": "failureId",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the failed connect log entry."
+              }
+            ]
+          },
+          "docs": "Deletes the Connect failure log information for the specified entry."
+        },
+        {
+          "info": {
+            "name": "Docusign Gets the Connect log.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.docusign.net/Management/v2/accounts/:accountId/connect/logs",
+            "params": [
+              {
+                "name": "accountId",
+                "value": "",
+                "type": "path",
+                "description": "The external account number (int) or account id GUID."
+              },
+              {
+                "name": "from_date",
+                "value": "",
+                "type": "query",
+                "description": "Start of the search date range. Only returns templates created on or after this date/time. If no value is specified, there is no limit on the earliest date created."
+              },
+              {
+                "name": "to_date",
+                "value": "",
+                "type": "query",
+                "description": "End of the search date range. Only returns templates created up to this date/time. If no value is provided, this defaults to the current date."
+              }
+            ]
+          },
+          "docs": "Retrieves a list of connect log entries for your account.\n\n###### Note: The `enableLog` setting in the Connect configuration must be set to true to enable logging. If logging is not enabled, then no log entries are recorded. "
+        },
+        {
+          "info": {
+            "name": "Docusign Gets a list of Connect log entries.",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.docusign.net/Management/v2/accounts/:accountId/connect/logs",
+            "params": [
+              {
+                "name": "accountId",
+                "value": "",
+                "type": "path",
+                "description": "The external account number (int) or account id GUID."
+              }
+            ]
+          },
+          "docs": "Retrieves a list of connect log entries for your account.\n\n###### Note: The `enableLog` property in the Connect configuration must be set to **true** to enable logging. If logging is not enabled, then no log entries are recorded."
+        },
+        {
+          "info": {
+            "name": "Docusign Get the specified Connect log entry.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.docusign.net/Management/v2/accounts/:accountId/connect/logs/:logId",
+            "params": [
+              {
+                "name": "accountId",
+                "value": "",
+                "type": "path",
+                "description": "The external account number (int) or account id GUID."
+              },
+              {
+                "name": "logId",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the connect log entry"
+              },
+              {
+                "name": "additional_info",
+                "value": "",
+                "type": "query",
+                "description": "When true, the connectDebugLog information is included in the response."
+              }
+            ]
+          },
+          "docs": "Retrieves the specified Connect log entry for your account.\n\n###### Note: The `enableLog` setting in the Connect configuration must be set to true to enable logging. If logging is not enabled, then no log entries are recorded. "
+        },
+        {
+          "info": {
+            "name": "Docusign Deletes a specified Connect log entry.",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.docusign.net/Management/v2/accounts/:accountId/connect/logs/:logId",
+            "params": [
+              {
+                "name": "accountId",
+                "value": "",
+                "type": "path",
+                "description": "The external account number (int) or account id GUID."
+              },
+              {
+                "name": "logId",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the connect log entry"
+              }
+            ]
+          },
+          "docs": "Deletes a specified entry from the Connect Log.\n"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

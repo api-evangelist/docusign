@@ -1,0 +1,810 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "DocuSign Admin AccountBrands Templates API",
+    "version": "v2.1"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Templates",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Docusign List Templates",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.docusign.net/Management/accounts/:accountId/templates",
+            "params": [
+              {
+                "name": "accountId",
+                "value": "",
+                "type": "path",
+                "description": "The external account number (short) or account ID GUID of the DocuSign account."
+              },
+              {
+                "name": "count",
+                "value": "",
+                "type": "query",
+                "description": "Maximum number of templates to return. Default is 100."
+              },
+              {
+                "name": "start_position",
+                "value": "",
+                "type": "query",
+                "description": "Starting index for the result set."
+              },
+              {
+                "name": "search_text",
+                "value": "",
+                "type": "query",
+                "description": "Search text to filter templates by name."
+              },
+              {
+                "name": "folder",
+                "value": "",
+                "type": "query",
+                "description": "Folder from which to retrieve templates. Valid values include all, drafts, inbox, sent_items, recyclebin."
+              },
+              {
+                "name": "folder_ids",
+                "value": "",
+                "type": "query",
+                "description": "Comma-separated list of folder IDs to search within."
+              },
+              {
+                "name": "shared_by_me",
+                "value": "",
+                "type": "query",
+                "description": "When true, returns templates shared by the current user."
+              },
+              {
+                "name": "order",
+                "value": "",
+                "type": "query",
+                "description": "Sort order for results. Valid values are asc and desc."
+              },
+              {
+                "name": "order_by",
+                "value": "",
+                "type": "query",
+                "description": "Template property to sort by. Valid values include name, modified, used."
+              },
+              {
+                "name": "used_from_date",
+                "value": "",
+                "type": "query",
+                "description": "Filter templates used on or after this date."
+              },
+              {
+                "name": "used_to_date",
+                "value": "",
+                "type": "query",
+                "description": "Filter templates used before this date."
+              },
+              {
+                "name": "include",
+                "value": "",
+                "type": "query",
+                "description": "Comma-separated list of additional information to include. Valid values include custom_fields, documents, folders, notifications, recipients."
+              }
+            ]
+          },
+          "docs": "Retrieves a list of templates associated with the specified account. Templates define reusable envelopes with predefined documents, recipients, tabs, and routing."
+        },
+        {
+          "info": {
+            "name": "Docusign Create a Template",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.docusign.net/Management/accounts/:accountId/templates",
+            "params": [
+              {
+                "name": "accountId",
+                "value": "",
+                "type": "path",
+                "description": "The external account number (short) or account ID GUID of the DocuSign account."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Creates a new template from scratch or from an existing template. Templates define the document content, recipients, tabs, and routing for reusable envelope workflows."
+        },
+        {
+          "info": {
+            "name": "Docusign Get a Template",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.docusign.net/Management/accounts/:accountId/templates/:templateId",
+            "params": [
+              {
+                "name": "accountId",
+                "value": "",
+                "type": "path",
+                "description": "The external account number (short) or account ID GUID of the DocuSign account."
+              },
+              {
+                "name": "templateId",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the template."
+              },
+              {
+                "name": "include",
+                "value": "",
+                "type": "query",
+                "description": "Comma-separated list of additional properties to include."
+              }
+            ]
+          },
+          "docs": "Retrieves the definition and properties of the specified template, including its documents, recipients, tabs, and routing information."
+        },
+        {
+          "info": {
+            "name": "Docusign Update a Template",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.docusign.net/Management/accounts/:accountId/templates/:templateId",
+            "params": [
+              {
+                "name": "accountId",
+                "value": "",
+                "type": "path",
+                "description": "The external account number (short) or account ID GUID of the DocuSign account."
+              },
+              {
+                "name": "templateId",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the template."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Updates the template specified by templateId. You can modify the template name, description, documents, recipients, and tabs."
+        },
+        {
+          "info": {
+            "name": "Docusign Delete a Template",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.docusign.net/Management/accounts/:accountId/templates/:templateId",
+            "params": [
+              {
+                "name": "accountId",
+                "value": "",
+                "type": "path",
+                "description": "The external account number (short) or account ID GUID of the DocuSign account."
+              },
+              {
+                "name": "templateId",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the template."
+              }
+            ]
+          },
+          "docs": "Deletes the specified template. Deleted templates are moved to the recycle bin and can be recovered within a retention period."
+        },
+        {
+          "info": {
+            "name": "Docusign List Template Recipients",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.docusign.net/Management/accounts/:accountId/templates/:templateId/recipients",
+            "params": [
+              {
+                "name": "accountId",
+                "value": "",
+                "type": "path",
+                "description": "The external account number (short) or account ID GUID of the DocuSign account."
+              },
+              {
+                "name": "templateId",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the template."
+              },
+              {
+                "name": "include_tabs",
+                "value": "",
+                "type": "query",
+                "description": "When true, includes the tabs associated with each recipient."
+              }
+            ]
+          },
+          "docs": "Retrieves the recipients defined in the specified template, including their roles, routing order, and tab assignments."
+        },
+        {
+          "info": {
+            "name": "Docusign Update Template Recipients",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.docusign.net/Management/accounts/:accountId/templates/:templateId/recipients",
+            "params": [
+              {
+                "name": "accountId",
+                "value": "",
+                "type": "path",
+                "description": "The external account number (short) or account ID GUID of the DocuSign account."
+              },
+              {
+                "name": "templateId",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the template."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Updates one or more recipients in the specified template."
+        },
+        {
+          "info": {
+            "name": "Docusign Gets the definition of a template.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.docusign.net/Management/v2/accounts/:accountId/templates",
+            "params": [
+              {
+                "name": "accountId",
+                "value": "",
+                "type": "path",
+                "description": "The external account number (int) or account id GUID."
+              },
+              {
+                "name": "count",
+                "value": "",
+                "type": "query",
+                "description": "The number of records to return."
+              },
+              {
+                "name": "folder",
+                "value": "",
+                "type": "query",
+                "description": "The query value can be a folder name or folder ID. The response will only return templates in the specified folder."
+              },
+              {
+                "name": "folder_ids",
+                "value": "",
+                "type": "query",
+                "description": "A comma-separated list of folder ID GUIDs."
+              },
+              {
+                "name": "from_date",
+                "value": "",
+                "type": "query",
+                "description": "Start of the search date range. Only returns templates created on or after this date/time. If no value is specified, there is no limit on the earliest date created."
+              },
+              {
+                "name": "include",
+                "value": "",
+                "type": "query",
+                "description": "A comma-separated list of additional information to include in the response. Valid values are: \n\n- `recipients`: Includes information about template recipients.\n- `folders`: Includes information about the folder that holds the template. \n- `documents` : Includes information about template documents.\n- `custom_fields`: Includes information about template custom fields.\n- `notifications`: Includes information about the notification settings for templates.\n- `advanced_templates`: Includes advanced templates in the response. For example, these include templates that use advanced recipient routing. We recommend that you use this option to ensure that the response includes all relevant templates. "
+              },
+              {
+                "name": "modified_from_date",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "modified_to_date",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "order",
+                "value": "",
+                "type": "query",
+                "description": "Sets the direction order used to sort the list. Valid values are: \n\n- `asc` = ascending sort order (a to z)  \n- `desc` = descending sort order (z to a)"
+              },
+              {
+                "name": "order_by",
+                "value": "",
+                "type": "query",
+                "description": "Sets the file attribute used to sort the list. Valid values are:  \n\n- `name`: template name  \n- `modified`: The date and time the template was last modified.  \n- `used`: The date and time the template was last used."
+              },
+              {
+                "name": "search_text",
+                "value": "",
+                "type": "query",
+                "description": "The search text used to search the names of templates."
+              },
+              {
+                "name": "shared_by_me",
+                "value": "",
+                "type": "query",
+                "description": "If true, the response only includes templates shared by the user. If false, the response only returns template not shared by the user. If not specified, the response is not affected."
+              },
+              {
+                "name": "start_position",
+                "value": "",
+                "type": "query",
+                "description": "The starting index for the first template shown in the response. This must be greater than or equal to 0 (zero)."
+              },
+              {
+                "name": "to_date",
+                "value": "",
+                "type": "query",
+                "description": "End of the search date range. Only returns templates created up to this date/time. If no value is provided, this defaults to the current date."
+              },
+              {
+                "name": "used_from_date",
+                "value": "",
+                "type": "query",
+                "description": "Start of the search date range. Only returns templates used or edited on or after this date/time. If no value is specified, there is no limit on the earliest date used."
+              },
+              {
+                "name": "used_to_date",
+                "value": "",
+                "type": "query",
+                "description": "End of the search date range. Only returns templates used or edited up to this date/time. If no value is provided, this defaults to the current date."
+              },
+              {
+                "name": "user_filter",
+                "value": "",
+                "type": "query",
+                "description": "Sets if the templates shown in the response Valid values are:  -owned_by_me: only shows templates the user owns.  -shared_with_me: only shows templates that are shared with the user.  -all: shows all templates owned or shared with the user."
+              },
+              {
+                "name": "user_id",
+                "value": "",
+                "type": "query",
+                "description": "The id of the user."
+              }
+            ]
+          },
+          "docs": "Retrieves the list of templates for the specified account. The request can be limited to a specific folder."
+        },
+        {
+          "info": {
+            "name": "Docusign Creates a template.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.docusign.net/Management/v2/accounts/:accountId/templates",
+            "params": [
+              {
+                "name": "accountId",
+                "value": "",
+                "type": "path",
+                "description": "The external account number (int) or account id GUID."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Creates a template definition using a multipart request.\n\n### Template Email Subject Merge Fields\n\nCall this endpoint to insert a recipient name and email address merge fields into the email subject line when creating or sending from a template.\n\nThe merge fields, based on the recipient's role name, are added to the `emailSubject` property when the template is created or when the template is used to create an envelope. After a template sender adds the name and email information for the recipient"
+        },
+        {
+          "info": {
+            "name": "Docusign Gets a list of templates for a specified account.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.docusign.net/Management/v2/accounts/:accountId/templates/:templateId",
+            "params": [
+              {
+                "name": "accountId",
+                "value": "",
+                "type": "path",
+                "description": "The external account number (int) or account id GUID."
+              },
+              {
+                "name": "templateId",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the template being accessed."
+              },
+              {
+                "name": "include",
+                "value": "",
+                "type": "query",
+                "description": "A comma-separated list of additional information to include in the response. Valid values are: \n\n- `recipients`: Includes information about template recipients.\n- `folders`: Includes information about the folder that holds the template. \n- `documents` : Includes information about template documents.\n- `custom_fields`: Includes information about template custom fields.\n- `notifications`: Includes information about the notification settings for templates.\n- `advanced_templates`: Includes advanced templates in the response. For example, these include templates that use advanced recipient routing. We recommend that you use this option to ensure that the response includes all relevant templates. "
+              }
+            ]
+          },
+          "docs": "Retrieves the definition of the specified template."
+        },
+        {
+          "info": {
+            "name": "Docusign Updates an existing template.",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.docusign.net/Management/v2/accounts/:accountId/templates/:templateId",
+            "params": [
+              {
+                "name": "accountId",
+                "value": "",
+                "type": "path",
+                "description": "The external account number (int) or account id GUID."
+              },
+              {
+                "name": "templateId",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the template being accessed."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Updates an existing template."
+        },
+        {
+          "info": {
+            "name": "Docusign Shares a template with a group",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.docusign.net/Management/v2/accounts/:accountId/templates/:templateId/:templatePart",
+            "params": [
+              {
+                "name": "accountId",
+                "value": "",
+                "type": "path",
+                "description": "The external account number (int) or account id GUID."
+              },
+              {
+                "name": "templateId",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the template being accessed."
+              },
+              {
+                "name": "templatePart",
+                "value": "",
+                "type": "path",
+                "description": "Currently, the only defined part is **groups**."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Shares a template with the specified members group."
+        },
+        {
+          "info": {
+            "name": "Docusign Removes a member group's sharing permissions for a template.",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.docusign.net/Management/v2/accounts/:accountId/templates/:templateId/:templatePart",
+            "params": [
+              {
+                "name": "accountId",
+                "value": "",
+                "type": "path",
+                "description": "The external account number (int) or account id GUID."
+              },
+              {
+                "name": "templateId",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the template being accessed."
+              },
+              {
+                "name": "templatePart",
+                "value": "",
+                "type": "path",
+                "description": "Currently, the only defined part is **groups**."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Removes a member group's sharing permissions for a specified template."
+        },
+        {
+          "info": {
+            "name": "Docusign Returns document page image(s) based on input.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.docusign.net/Management/v2/accounts/:accountId/templates/:templateId/documents/:documentId/pages",
+            "params": [
+              {
+                "name": "accountId",
+                "value": "",
+                "type": "path",
+                "description": "The external account number (int) or account id GUID."
+              },
+              {
+                "name": "documentId",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the document being accessed."
+              },
+              {
+                "name": "templateId",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the template being accessed."
+              },
+              {
+                "name": "count",
+                "value": "",
+                "type": "query",
+                "description": "The maximum number of results to be returned by this request."
+              },
+              {
+                "name": "dpi",
+                "value": "",
+                "type": "query",
+                "description": "Number of dots per inch for the resulting image. The default if not used is 94. The range is 1-310."
+              },
+              {
+                "name": "max_height",
+                "value": "",
+                "type": "query",
+                "description": "Sets the maximum height (in pixels) of the returned image."
+              },
+              {
+                "name": "max_width",
+                "value": "",
+                "type": "query",
+                "description": "Sets the maximum width (in pixels) of the returned image."
+              },
+              {
+                "name": "nocache",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "show_changes",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "start_position",
+                "value": "",
+                "type": "query",
+                "description": "The position within the total result set from which to start returning values. The value **thumbnail** may be used to return the page image."
+              }
+            ]
+          },
+          "docs": "Docusign Returns document page image(s) based on input."
+        },
+        {
+          "info": {
+            "name": "Docusign Deletes a page from a document in an template.",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.docusign.net/Management/v2/accounts/:accountId/templates/:templateId/documents/:documentId/pages/:pageNumber",
+            "params": [
+              {
+                "name": "accountId",
+                "value": "",
+                "type": "path",
+                "description": "The external account number (int) or account id GUID."
+              },
+              {
+                "name": "documentId",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the document being accessed."
+              },
+              {
+                "name": "pageNumber",
+                "value": "",
+                "type": "path",
+                "description": "The page number being accessed."
+              },
+              {
+                "name": "templateId",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the template being accessed."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Deletes a page from a document in a template based on the page number."
+        },
+        {
+          "info": {
+            "name": "Docusign Gets a page image from a template for display.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.docusign.net/Management/v2/accounts/:accountId/templates/:templateId/documents/:documentId/pages/:pageNumber/page_image",
+            "params": [
+              {
+                "name": "accountId",
+                "value": "",
+                "type": "path",
+                "description": "The external account number (int) or account id GUID."
+              },
+              {
+                "name": "documentId",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the document being accessed."
+              },
+              {
+                "name": "pageNumber",
+                "value": "",
+                "type": "path",
+                "description": "The page number being accessed."
+              },
+              {
+                "name": "templateId",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the template being accessed."
+              },
+              {
+                "name": "dpi",
+                "value": "",
+                "type": "query",
+                "description": "Number of dots per inch for the resulting image. The default if not used is 94. The range is 1-310."
+              },
+              {
+                "name": "max_height",
+                "value": "",
+                "type": "query",
+                "description": "Sets the maximum height (in pixels) of the returned image."
+              },
+              {
+                "name": "max_width",
+                "value": "",
+                "type": "query",
+                "description": "Sets the maximum width (in pixels) of the returned image."
+              },
+              {
+                "name": "show_changes",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Retrieves a page image for display from the specified template."
+        },
+        {
+          "info": {
+            "name": "Docusign Rotates page image from a template for display.",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.docusign.net/Management/v2/accounts/:accountId/templates/:templateId/documents/:documentId/pages/:pageNumber/page_image",
+            "params": [
+              {
+                "name": "accountId",
+                "value": "",
+                "type": "path",
+                "description": "The external account number (int) or account id GUID."
+              },
+              {
+                "name": "documentId",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the document being accessed."
+              },
+              {
+                "name": "pageNumber",
+                "value": "",
+                "type": "path",
+                "description": "The page number being accessed."
+              },
+              {
+                "name": "templateId",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the template being accessed."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Rotates page image from a template for display. The page image can be rotated to the left or right."
+        },
+        {
+          "info": {
+            "name": "Docusign Gets template notification information.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.docusign.net/Management/v2/accounts/:accountId/templates/:templateId/notification",
+            "params": [
+              {
+                "name": "accountId",
+                "value": "",
+                "type": "path",
+                "description": "The external account number (int) or account id GUID."
+              },
+              {
+                "name": "templateId",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the template being accessed."
+              }
+            ]
+          },
+          "docs": "Retrieves the envelope notification, reminders and expirations, information for an existing template."
+        },
+        {
+          "info": {
+            "name": "Docusign Updates the notification  structure for an existing template.",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.docusign.net/Management/v2/accounts/:accountId/templates/:templateId/notification",
+            "params": [
+              {
+                "name": "accountId",
+                "value": "",
+                "type": "path",
+                "description": "The external account number (int) or account id GUID."
+              },
+              {
+                "name": "templateId",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the template being accessed."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Updates the notification structure for an existing template. Use this endpoint to set reminder and expiration notifications."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

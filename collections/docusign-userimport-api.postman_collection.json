@@ -1,0 +1,1119 @@
+{
+  "item": [
+    {
+      "id": "d9315781-57fd-498b-8a25-570209160a9c",
+      "name": "UserImport",
+      "description": {
+        "content": "Methods to import users.\n\nTo ensure your CSV is properly formatted, use the\n[Sample Bulk Add CSV file](https://admin.docusign.com/static-resources/organization-user-import.csv)\n as a template.\n\nYou can add up to 2,000 users to an account and include up to 50 accounts per import. The maximum number of users per import is 8,000.",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "fa85d21a-986a-40db-9038-4729c281f659",
+          "name": "Docusign Creates a request to import new users into an account.",
+          "request": {
+            "name": "Docusign Creates a request to import new users into an account.",
+            "description": {
+              "content": "Creates a request to import *new* users.\n\n- Required scopes: `user_write`\n\n\n\nYour CSV import file is made up of a header row with the column headers and a row of user or account data for each user you want to add to an account. Only new users can be imported. Any changes to existing users will be ignored. To make changes to existing users, use `updateBulkUserImports`.\n\nTo ensure your CSV is properly formatted, use the\n[Sample Bulk Add CSV file](https://admin.docusign.com/static-resources/organization-user-import.csv)\n as a template. The following table describes the columns.\n\n\n\n| Column              | Required | Description                                                                                                                                                                                                                                                                                                                                                                                                         |\n| :------------------ | :------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |\n| AccountID           | yes      | The API account ID for the account to which you want you add the user. You can find this id in the Admin area for the account under **API and Keys**.                                                                                                                                                                                                                                                            |\n| AccountName         |          | The name of the user's account in your organization. The account name must match the account ID provided.                                                                                                                                                                                                                                                                                                           |\n| FirstName           | yes      | The user's first name.                                                                                                                                                                                                                                                                                                                                                                                              |\n| LastName            | yes      | The user's last name.                                                                                                                                                                                                                                                                                                                                                                                               |\n| UserEmail           | yes      | The user's complete email address.                                                                                                                                                                                                                                                                                                                                                                                  |\n| PermissionSet       | yes      | The user's permission set. The PermissionSet value must match an existing permission set for the account. This value is not case sensitive.                                                                                                                                                                                                                                                                         |\n| UserTitle           |          | The user's job title.                                                                                                                                                                                                                                                                                                                                                                                               |\n| CompanyName         |          | The user's company name.                                                                                                                                                                                                                                                                                                                                                                                            |\n| Group               |          | The user's assigned groups. The Group values must match existing Group names for the account. Additional Group columns can be added to the file to add users to more than one group. You do not need to add users to the Everyone group, since all new users are automatically added to that group.                                                                                                                 |\n| AddressLine1        |          | The user's address, first line.                                                                                                                                                                                                                                                                                                                                                                                     |\n| AddressLine2        |          | The user's address, second line.                                                                                                                                                                                                                                                                                                                                                                                    |\n| City                |          | The user's city name.                                                                                                                                                                                                                                                                                                                                                                                               |\n| StateRegionProvince |          | The user's regional location.                                                                                                                                                                                                                                                                                                                                                                                       |\n| PostalCode          |          | The user's postal code.                                                                                                                                                                                                                                                                                                                                                                                             |\n| Phone               |          | The user's phone number.                                                                                                                                                                                                                                                                                                                                                                                            |\n| Language            |          | The user's display language for their DocuSign account. Must be one of: <ul><li>Chinese Simplified: <code>zh_CN</code></li><li>Chinese Traditional: <code>zh_TW</code></li><li>Dutch: <code>nl</code></li><li>English: <code>en</code></li><li>French: <code>fr</code></li><li>German: <code>de</code></li><li>Italian: <code>it</code></li><li>Japanese: <code>ja</code></li><li>Korean: <code>ko</code></li><li>Portuguese: <code>pt</code></li><li>Portuguese Brazil: <code>pt_BR</code></li><li>Russian: <code>ru</code></li><li>Spanish: <code>es</code></li></ul>                                                                                                                                                                                                                                                                                                                                                            |\n| LoginPolicy         |          | The user's login policy. Valid values include the following: <ul> <li>Column left blank = The user is created with no policy assigned.</li> <li>FedAuthRequired = The user must log in with an Identity Provider.</li> <li>FedAuthBypass = The user may log in with an Identity Provider or their DocuSign username and password.</li> </ul> For more information on login policies, see [Setting User Login Policy](https://support.docusign.com/en/guides/org-admin-guide-user-login-policy). |\n| AutoActivate        |          | For domain users, new users can be activated automatically for domain accounts using SSO by setting the value to **true**. The user is activated automatically once the import is complete. Memberships activated in this way do not receive an activation email.                                                                                                                                                   |\n\n\nYou can add up to 2,000 users to an account and include up to 50 accounts per import. The maximum number of users per import is 8,000.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v2",
+                "organizations",
+                ":organizationId",
+                "imports",
+                "bulk_users",
+                "add"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<uuid>",
+                  "key": "organizationId",
+                  "description": "(Required) The organization ID Guid"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "multipart/form-data"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "oauth2",
+              "oauth2": [
+                {
+                  "key": "scope",
+                  "value": "organization_read permission_read group_read user_read account_read account_write user_write identity_provider_read domain_read"
+                },
+                {
+                  "key": "accessTokenUrl",
+                  "value": "https://account.docusign.com/oauth/auth"
+                },
+                {
+                  "key": "authUrl",
+                  "value": "https://account.docusign.com/oauth/auth"
+                },
+                {
+                  "key": "grant_type",
+                  "value": "authorization_code"
+                }
+              ]
+            },
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "file.csv",
+                  "type": "file",
+                  "description": "(Required) CSV file."
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "882a5202-c03b-4e9d-bd2e-f192930d588e",
+              "name": "OK",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "organizations",
+                    ":organizationId",
+                    "imports",
+                    "bulk_users",
+                    "add"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "organizationId",
+                      "description": "(Required) The organization ID Guid"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "formdata",
+                  "formdata": [
+                    {
+                      "description": {
+                        "content": "(Required) CSV file.",
+                        "type": "text/plain"
+                      },
+                      "key": "file.csv",
+                      "value": "<binary>",
+                      "type": "text"
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"00000000-0000-0000-0000-000000000000\",\n  \"type\": \"string\",\n  \"requestor\": {\n    \"name\": \"string\",\n    \"id\": \"string\",\n    \"type\": \"string\",\n    \"email\": \"string\"\n  },\n  \"created\": \"1950-06-17T19:52:30.327Z\",\n  \"last_modified\": \"2002-01-18T18:46:31.494Z\",\n  \"status\": \"string\",\n  \"user_count\": 6090,\n  \"processed_user_count\": 768,\n  \"added_user_count\": 6488,\n  \"updated_user_count\": 9488,\n  \"closed_user_count\": 4164,\n  \"no_action_required_user_count\": 2567,\n  \"error_count\": 8060,\n  \"warning_count\": 9031,\n  \"invalid_column_headers\": \"string\",\n  \"imports_not_found_or_not_available_for_accounts\": \"string\",\n  \"imports_failed_for_accounts\": \"string\",\n  \"imports_timed_out_for_accounts\": \"string\",\n  \"imports_not_found_or_not_available_for_sites\": \"string\",\n  \"imports_failed_for_sites\": \"string\",\n  \"imports_timed_out_for_sites\": \"string\",\n  \"file_level_error_rollups\": [\n    {\n      \"error_type\": \"string\",\n      \"count\": 7465\n    },\n    {\n      \"error_type\": \"string\",\n      \"count\": 5434\n    }\n  ],\n  \"user_level_error_rollups\": [\n    {\n      \"error_type\": \"string\",\n      \"count\": 2638\n    },\n    {\n      \"error_type\": \"string\",\n      \"count\": 6576\n    }\n  ],\n  \"user_level_warning_rollups\": [\n    {\n      \"warning_type\": \"string\",\n      \"count\": 5250\n    },\n    {\n      \"warning_type\": \"string\",\n      \"count\": 4110\n    }\n  ],\n  \"has_csv_results\": false,\n  \"results_uri\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "b4e5e528-834a-4013-97b0-b18207719733",
+          "name": "Docusign Bulk updates information for existing users.",
+          "request": {
+            "name": "Docusign Bulk updates information for existing users.",
+            "description": {
+              "content": "Bulk updates information for existing users.\n\n- Required scopes: `user_write`\n\n\n\nYour CSV import file is made up of a header row with the column headers and a row of user or account data for each user you want to add to an account. Only new users can be imported. Any changes to existing users will be ignored. To make changes to existing users, use `updateBulkUserImports`.\n\n**Update limit**: You can update up to 2,000 users on an account and include up to 50 accounts per import. The maximum number of updated users per import is 8,000.\n\nThis method requires the following HTTP headers:\n\n| Header | Value |\n| :--- |  :--- |\n| Content-Type | `text/csv` |\n| Content-Disposition |  `filename=filename.csv` |\n\n\n\nTo ensure your CSV is properly formatted, use the\n[Sample Bulk Update CSV file](https://admin.docusign.com/static-resources/organization-user-update-import.csv)\n as a template. The following table describes the columns.\n\nNote that the columns for bulk adding users and bulk update users are slightly different.\nThe update CSV file requires an `APIUserName` column, and does not have an `AutoActivate` column.\n\n\n\n| Column              | Required | Description                                                                                                                                                                                                                                                                                                                                                                                                         |\n| :------------------ | :------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |\n| AccountID           | yes      | The 32-character API account ID of the user's account in your organization. You can find this value in the API and Keys section of the Admin area of the account.                                                                                                                                                                                                                                                             |\n| AccountName         |          | The name of the user's account in your organization. The account name must match the account ID provided.                                                                                                                                                                                                                                                                                                           |\n| FirstName           | yes      | The user's first name.                                                                                                                                                                                                                                                                                                                                                                                              |\n| LastName            | yes      | The user's last name.                                                                                                                                                                                                                                                                                                                                                                                               |\n| UserEmail           | yes      | The user's complete email address.                                                                                                                                                                                                                                                                                                                                                                                  |\n| PermissionSet       | yes      | The user's permission set. The PermissionSet value must match an existing permission set for the account. This value is not case sensitive.                                                                                                                                                                                                                                                                         |\n| UserTitle           |          | The user's job title.                                                                                                                                                                                                                                                                                                                                                                                               |\n| CompanyName         |          | The user's company name.                                                                                                                                                                                                                                                                                                                                                                                            |\n| Group               |          | The user's assigned groups. The Group values must match existing Group names for the account. Additional Group columns can be added to the file to add users to more than one group. You do not need to add users to the Everyone group, since all new users are automatically added to that group.                                                                                                                 |\n| AddressLine1        |          | The user's address, first line.                                                                                                                                                                                                                                                                                                                                                                                     |\n| AddressLine2        |          | The user's address, second line.                                                                                                                                                                                                                                                                                                                                                                                    |\n| City                |          | The user's city name.                                                                                                                                                                                                                                                                                                                                                                                               |\n| StateRegionProvince |          | The user's regional location.                                                                                                                                                                                                                                                                                                                                                                                       |\n| PostalCode          |          | The user's postal code.                                                                                                                                                                                                                                                                                                                                                                                             |\n| Phone               |          | The user's phone number.                                                                                                                                                                                                                                                                                                                                                                                            |\n| Language            |          | The user's display language for their DocuSign account. Must be one of: <ul><li>Chinese Simplified: <code>zh_CN</code></li><li>Chinese Traditional: <code>zh_TW</code></li><li>Dutch: <code>nl</code></li><li>English: <code>en</code></li><li>French: <code>fr</code></li><li>German: <code>de</code></li><li>Italian: <code>it</code></li><li>Japanese: <code>ja</code></li><li>Korean: <code>ko</code></li><li>Portuguese: <code>pt</code></li><li>Portuguese Brazil: <code>pt_BR</code></li><li>Russian: <code>ru</code></li><li>Spanish: <code>es</code></li></ul>                                                                                                                                                                                                                                                                                                                                                            |\n| LoginPolicy         |          | The user's login policy. Valid values include the following: <ul> <li>Column left blank = The user is created with no policy assigned.</li> <li>FedAuthRequired = The user must log in with an Identity Provider.</li> <li>FedAuthBypass = The user may log in with an Identity Provider or their DocuSign username and password.</li> </ul> For more information on login policies, see [Setting User Login Policy](https://support.docusign.com/en/guides/org-admin-guide-user-login-policy). |\n| AutoActivate        |          | For domain users, new users can be activated automatically for domain accounts using SSO by setting the value to **true**. The user is activated automatically once the import is complete. Memberships activated in this way do not receive an activation email.                                                                                                                                                   |\n\n\n\n## Updating user email addresses\n\nChanging a user's email address should be done carefully. The user's email address is used to log in to DocuSign and receive documents to sign from others.\nOnce changed, existing documents that were sent or received:\n\n- Will still appear in the user's documents list.\n- Notifications about these documents will be sent to the new email address. If someone sends a new document to the old email address:\n- DocuSign will send a notification to the old address.\n- It will not appear in the documents list of the account.\n\nThis change of email address will be applied to all of the user's account memberships.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v2",
+                "organizations",
+                ":organizationId",
+                "imports",
+                "bulk_users",
+                "update"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<uuid>",
+                  "key": "organizationId",
+                  "description": "(Required) The organization ID Guid"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "multipart/form-data"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "oauth2",
+              "oauth2": [
+                {
+                  "key": "scope",
+                  "value": "organization_read permission_read group_read user_read account_read account_write user_write identity_provider_read domain_read"
+                },
+                {
+                  "key": "accessTokenUrl",
+                  "value": "https://account.docusign.com/oauth/auth"
+                },
+                {
+                  "key": "authUrl",
+                  "value": "https://account.docusign.com/oauth/auth"
+                },
+                {
+                  "key": "grant_type",
+                  "value": "authorization_code"
+                }
+              ]
+            },
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "file.csv",
+                  "type": "file",
+                  "description": "(Required) CSV file."
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "e169d8fc-38e5-4ef3-8d53-ae0403cb2691",
+              "name": "OK",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "organizations",
+                    ":organizationId",
+                    "imports",
+                    "bulk_users",
+                    "update"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "organizationId",
+                      "description": "(Required) The organization ID Guid"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "formdata",
+                  "formdata": [
+                    {
+                      "description": {
+                        "content": "(Required) CSV file.",
+                        "type": "text/plain"
+                      },
+                      "key": "file.csv",
+                      "type": "file"
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"00000000-0000-0000-0000-000000000000\",\n  \"type\": \"string\",\n  \"requestor\": {\n    \"name\": \"string\",\n    \"id\": \"string\",\n    \"type\": \"string\",\n    \"email\": \"string\"\n  },\n  \"created\": \"1985-05-06T09:54:50.772Z\",\n  \"last_modified\": \"1981-11-01T10:25:57.281Z\",\n  \"status\": \"string\",\n  \"user_count\": 8174,\n  \"processed_user_count\": 9031,\n  \"added_user_count\": 602,\n  \"updated_user_count\": 7838,\n  \"closed_user_count\": 6416,\n  \"no_action_required_user_count\": 7581,\n  \"error_count\": 7637,\n  \"warning_count\": 8366,\n  \"invalid_column_headers\": \"string\",\n  \"imports_not_found_or_not_available_for_accounts\": \"string\",\n  \"imports_failed_for_accounts\": \"string\",\n  \"imports_timed_out_for_accounts\": \"string\",\n  \"imports_not_found_or_not_available_for_sites\": \"string\",\n  \"imports_failed_for_sites\": \"string\",\n  \"imports_timed_out_for_sites\": \"string\",\n  \"file_level_error_rollups\": [\n    {\n      \"error_type\": \"string\",\n      \"count\": 9826\n    },\n    {\n      \"error_type\": \"string\",\n      \"count\": 2899\n    }\n  ],\n  \"user_level_error_rollups\": [\n    {\n      \"error_type\": \"string\",\n      \"count\": 2386\n    },\n    {\n      \"error_type\": \"string\",\n      \"count\": 1857\n    }\n  ],\n  \"user_level_warning_rollups\": [\n    {\n      \"warning_type\": \"string\",\n      \"count\": 9168\n    },\n    {\n      \"warning_type\": \"string\",\n      \"count\": 2452\n    }\n  ],\n  \"has_csv_results\": false,\n  \"results_uri\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "96fdff8b-d1f8-40ee-8f0b-da0edadc07bd",
+          "name": "Docusign Creates a request to close the accounts of existing users.",
+          "request": {
+            "name": "Docusign Creates a request to close the accounts of existing users.",
+            "description": {
+              "content": "Creates a request to close the accounts of existing users.\n\n- Required scopes: `user_write`\n\nGiven a CSV list of users, close their accounts.\n\n\nYour CSV import file is made up of a header row with the column headers and a row of user or account data for each user whose account you want to close.\n\nTo ensure your CSV is properly formatted, use the\n[Sample Bulk Update CSV file](https://admin.docusign.com/static-resources/organization-user-update-import.csv)\n as a template. The following table describes the columns.\n\n\n\n\n| Column              | Required | Description                                                                                                                                                                                                                                                                                                                                                                                                         |\n| :------------------ | :------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |\n| AccountID           | yes      | The 32-character API account ID of the user's account in your organization. You can find this value in the API and Keys section of the Admin area of the account.                                                                                                                                                                                                                                                             |\n| AccountName         |          | The name of the user's account in your organization. The account name must match the account ID provided.                                                                                                                                                                                                                                                                                                           |\n| FirstName           | yes      | The user's first name.                                                                                                                                                                                                                                                                                                                                                                                              |\n| LastName            | yes      | The user's last name.                                                                                                                                                                                                                                                                                                                                                                                               |\n| UserEmail           | yes      | The user's complete email address.                                                                                                                                                                                                                                                                                                                                                                                  |\n| PermissionSet       | yes      | The user's permission set. The PermissionSet value must match an existing permission set for the account. This value is not case sensitive.                                                                                                                                                                                                                                                                         |\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v2",
+                "organizations",
+                ":organizationId",
+                "imports",
+                "bulk_users",
+                "close"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<uuid>",
+                  "key": "organizationId",
+                  "description": "(Required) The organization ID Guid"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "oauth2",
+              "oauth2": [
+                {
+                  "key": "scope",
+                  "value": "organization_read permission_read group_read user_read account_read account_write user_write identity_provider_read domain_read"
+                },
+                {
+                  "key": "accessTokenUrl",
+                  "value": "https://account.docusign.com/oauth/auth"
+                },
+                {
+                  "key": "authUrl",
+                  "value": "https://account.docusign.com/oauth/auth"
+                },
+                {
+                  "key": "grant_type",
+                  "value": "authorization_code"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "d32523de-f82e-4992-bd20-ceb024a67c26",
+              "name": "OK",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "organizations",
+                    ":organizationId",
+                    "imports",
+                    "bulk_users",
+                    "close"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "organizationId",
+                      "description": "(Required) The organization ID Guid"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"00000000-0000-0000-0000-000000000000\",\n  \"type\": \"string\",\n  \"requestor\": {\n    \"name\": \"string\",\n    \"id\": \"string\",\n    \"type\": \"string\",\n    \"email\": \"string\"\n  },\n  \"created\": \"1985-05-06T09:54:50.772Z\",\n  \"last_modified\": \"1981-11-01T10:25:57.281Z\",\n  \"status\": \"string\",\n  \"user_count\": 8174,\n  \"processed_user_count\": 9031,\n  \"added_user_count\": 602,\n  \"updated_user_count\": 7838,\n  \"closed_user_count\": 6416,\n  \"no_action_required_user_count\": 7581,\n  \"error_count\": 7637,\n  \"warning_count\": 8366,\n  \"invalid_column_headers\": \"string\",\n  \"imports_not_found_or_not_available_for_accounts\": \"string\",\n  \"imports_failed_for_accounts\": \"string\",\n  \"imports_timed_out_for_accounts\": \"string\",\n  \"imports_not_found_or_not_available_for_sites\": \"string\",\n  \"imports_failed_for_sites\": \"string\",\n  \"imports_timed_out_for_sites\": \"string\",\n  \"file_level_error_rollups\": [\n    {\n      \"error_type\": \"string\",\n      \"count\": 9826\n    },\n    {\n      \"error_type\": \"string\",\n      \"count\": 2899\n    }\n  ],\n  \"user_level_error_rollups\": [\n    {\n      \"error_type\": \"string\",\n      \"count\": 2386\n    },\n    {\n      \"error_type\": \"string\",\n      \"count\": 1857\n    }\n  ],\n  \"user_level_warning_rollups\": [\n    {\n      \"warning_type\": \"string\",\n      \"count\": 9168\n    },\n    {\n      \"warning_type\": \"string\",\n      \"count\": 2452\n    }\n  ],\n  \"has_csv_results\": false,\n  \"results_uri\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "bfbe3f69-d171-41a0-af8d-3eb08e73d31b",
+          "name": "Docusign Closes external memberships.",
+          "request": {
+            "name": "Docusign Closes external memberships.",
+            "description": {
+              "content": "Closes external memberships.\n\n- Required scopes: `user_write`\n\nExternal memberships are:\n\n- Users who have an email address at a verified domain\n- But do not belong to the organization\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v2",
+                "organizations",
+                ":organizationId",
+                "imports",
+                "bulk_users",
+                "close_external"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<uuid>",
+                  "key": "organizationId",
+                  "description": "(Required) The organization ID Guid"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "oauth2",
+              "oauth2": [
+                {
+                  "key": "scope",
+                  "value": "organization_read permission_read group_read user_read account_read account_write user_write identity_provider_read domain_read"
+                },
+                {
+                  "key": "accessTokenUrl",
+                  "value": "https://account.docusign.com/oauth/auth"
+                },
+                {
+                  "key": "authUrl",
+                  "value": "https://account.docusign.com/oauth/auth"
+                },
+                {
+                  "key": "grant_type",
+                  "value": "authorization_code"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "22be7f6b-3dd7-4fc2-97c9-8c3c31604aa8",
+              "name": "OK",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "organizations",
+                    ":organizationId",
+                    "imports",
+                    "bulk_users",
+                    "close_external"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "organizationId",
+                      "description": "(Required) The organization ID Guid"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"00000000-0000-0000-0000-000000000000\",\n  \"type\": \"string\",\n  \"requestor\": {\n    \"name\": \"string\",\n    \"id\": \"string\",\n    \"type\": \"string\",\n    \"email\": \"string\"\n  },\n  \"created\": \"1985-05-06T09:54:50.772Z\",\n  \"last_modified\": \"1981-11-01T10:25:57.281Z\",\n  \"status\": \"string\",\n  \"user_count\": 8174,\n  \"processed_user_count\": 9031,\n  \"added_user_count\": 602,\n  \"updated_user_count\": 7838,\n  \"closed_user_count\": 6416,\n  \"no_action_required_user_count\": 7581,\n  \"error_count\": 7637,\n  \"warning_count\": 8366,\n  \"invalid_column_headers\": \"string\",\n  \"imports_not_found_or_not_available_for_accounts\": \"string\",\n  \"imports_failed_for_accounts\": \"string\",\n  \"imports_timed_out_for_accounts\": \"string\",\n  \"imports_not_found_or_not_available_for_sites\": \"string\",\n  \"imports_failed_for_sites\": \"string\",\n  \"imports_timed_out_for_sites\": \"string\",\n  \"file_level_error_rollups\": [\n    {\n      \"error_type\": \"string\",\n      \"count\": 9826\n    },\n    {\n      \"error_type\": \"string\",\n      \"count\": 2899\n    }\n  ],\n  \"user_level_error_rollups\": [\n    {\n      \"error_type\": \"string\",\n      \"count\": 2386\n    },\n    {\n      \"error_type\": \"string\",\n      \"count\": 1857\n    }\n  ],\n  \"user_level_warning_rollups\": [\n    {\n      \"warning_type\": \"string\",\n      \"count\": 9168\n    },\n    {\n      \"warning_type\": \"string\",\n      \"count\": 2452\n    }\n  ],\n  \"has_csv_results\": false,\n  \"results_uri\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "7a496b90-783c-4f0a-b412-0a8cd6ebfdfd",
+          "name": "Docusign Gets a list of all of the user import requests.",
+          "request": {
+            "name": "Docusign Gets a list of all of the user import requests.",
+            "description": {
+              "content": "Gets a list of all of the user import requests.\n\n- Required scopes: `user_read`\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v2",
+                "organizations",
+                ":organizationId",
+                "imports",
+                "bulk_users"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<uuid>",
+                  "key": "organizationId",
+                  "description": "(Required) The organization ID Guid"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "oauth2",
+              "oauth2": [
+                {
+                  "key": "scope",
+                  "value": "organization_read permission_read group_read user_read account_read account_write user_write identity_provider_read domain_read"
+                },
+                {
+                  "key": "accessTokenUrl",
+                  "value": "https://account.docusign.com/oauth/auth"
+                },
+                {
+                  "key": "authUrl",
+                  "value": "https://account.docusign.com/oauth/auth"
+                },
+                {
+                  "key": "grant_type",
+                  "value": "authorization_code"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "9f5cbff6-4063-434c-b4bb-96f683c148dc",
+              "name": "OK",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "organizations",
+                    ":organizationId",
+                    "imports",
+                    "bulk_users"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "organizationId",
+                      "description": "(Required) The organization ID Guid"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"imports\": [\n    {\n      \"id\": \"00000000-0000-0000-0000-000000000000\",\n      \"type\": \"string\",\n      \"requestor\": {\n        \"name\": \"string\",\n        \"id\": \"string\",\n        \"type\": \"string\",\n        \"email\": \"string\"\n      },\n      \"created\": \"1968-06-29T08:22:27.742Z\",\n      \"last_modified\": \"2015-08-21T02:06:49.291Z\",\n      \"status\": \"string\",\n      \"user_count\": 2349,\n      \"processed_user_count\": 8072,\n      \"added_user_count\": 5700,\n      \"updated_user_count\": 2630,\n      \"closed_user_count\": 3768,\n      \"no_action_required_user_count\": 1296,\n      \"error_count\": 6322,\n      \"warning_count\": 7024,\n      \"invalid_column_headers\": \"string\",\n      \"imports_not_found_or_not_available_for_accounts\": \"string\",\n      \"imports_failed_for_accounts\": \"string\",\n      \"imports_timed_out_for_accounts\": \"string\",\n      \"imports_not_found_or_not_available_for_sites\": \"string\",\n      \"imports_failed_for_sites\": \"string\",\n      \"imports_timed_out_for_sites\": \"string\",\n      \"file_level_error_rollups\": [\n        {\n          \"error_type\": \"string\",\n          \"count\": 4306\n        },\n        {\n          \"error_type\": \"string\",\n          \"count\": 6000\n        }\n      ],\n      \"user_level_error_rollups\": [\n        {\n          \"error_type\": \"string\",\n          \"count\": 3223\n        },\n        {\n          \"error_type\": \"string\",\n          \"count\": 2199\n        }\n      ],\n      \"user_level_warning_rollups\": [\n        {\n          \"warning_type\": \"string\",\n          \"count\": 8298\n        },\n        {\n          \"warning_type\": \"string\",\n          \"count\": 9722\n        }\n      ],\n      \"has_csv_results\": false,\n      \"results_uri\": \"string\"\n    },\n    {\n      \"id\": \"00000000-0000-0000-0000-000000000000\",\n      \"type\": \"string\",\n      \"requestor\": {\n        \"name\": \"string\",\n        \"id\": \"string\",\n        \"type\": \"string\",\n        \"email\": \"string\"\n      },\n      \"created\": \"2021-05-15T22:08:29.187Z\",\n      \"last_modified\": \"1948-02-05T01:52:55.202Z\",\n      \"status\": \"string\",\n      \"user_count\": 553,\n      \"processed_user_count\": 5163,\n      \"added_user_count\": 3171,\n      \"updated_user_count\": 9413,\n      \"closed_user_count\": 8809,\n      \"no_action_required_user_count\": 2315,\n      \"error_count\": 6196,\n      \"warning_count\": 2533,\n      \"invalid_column_headers\": \"string\",\n      \"imports_not_found_or_not_available_for_accounts\": \"string\",\n      \"imports_failed_for_accounts\": \"string\",\n      \"imports_timed_out_for_accounts\": \"string\",\n      \"imports_not_found_or_not_available_for_sites\": \"string\",\n      \"imports_failed_for_sites\": \"string\",\n      \"imports_timed_out_for_sites\": \"string\",\n      \"file_level_error_rollups\": [\n        {\n          \"error_type\": \"string\",\n          \"count\": 906\n        },\n        {\n          \"error_type\": \"string\",\n          \"count\": 4765\n        }\n      ],\n      \"user_level_error_rollups\": [\n        {\n          \"error_type\": \"string\",\n          \"count\": 4523\n        },\n        {\n          \"error_type\": \"string\",\n          \"count\": 2727\n        }\n      ],\n      \"user_level_warning_rollups\": [\n        {\n          \"warning_type\": \"string\",\n          \"count\": 5665\n        },\n        {\n          \"warning_type\": \"string\",\n          \"count\": 2979\n        }\n      ],\n      \"has_csv_results\": false,\n      \"results_uri\": \"string\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "3cd94c62-d1d2-4aec-afa4-16f132999bcf",
+          "name": "Docusign Returns the details of a single user import request.",
+          "request": {
+            "name": "Docusign Returns the details of a single user import request.",
+            "description": {
+              "content": "Returns the details of a single user import request.\n\n- Required scopes: `user_read`\n\nUse this method to check the status of the request by looking at the `status` property of the response.\nOnce the status becomes `completed` (or fails), use this method to get the details.\n\nTo get a list of all of the user import requests, use `getBulkUserImportRequests`.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v2",
+                "organizations",
+                ":organizationId",
+                "imports",
+                "bulk_users",
+                ":importId"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<uuid>",
+                  "key": "organizationId",
+                  "description": "(Required) The organization ID Guid"
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<uuid>",
+                  "key": "importId",
+                  "description": "(Required) The import ID GUID for the request."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "oauth2",
+              "oauth2": [
+                {
+                  "key": "scope",
+                  "value": "organization_read permission_read group_read user_read account_read account_write user_write identity_provider_read domain_read"
+                },
+                {
+                  "key": "accessTokenUrl",
+                  "value": "https://account.docusign.com/oauth/auth"
+                },
+                {
+                  "key": "authUrl",
+                  "value": "https://account.docusign.com/oauth/auth"
+                },
+                {
+                  "key": "grant_type",
+                  "value": "authorization_code"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "627afb97-6386-4b30-8251-88372a960bdd",
+              "name": "OK",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "organizations",
+                    ":organizationId",
+                    "imports",
+                    "bulk_users",
+                    ":importId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "organizationId",
+                      "description": "(Required) The organization ID Guid"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "importId",
+                      "description": "(Required) The import ID GUID for the request."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"00000000-0000-0000-0000-000000000000\",\n  \"type\": \"string\",\n  \"requestor\": {\n    \"name\": \"string\",\n    \"id\": \"string\",\n    \"type\": \"string\",\n    \"email\": \"string\"\n  },\n  \"created\": \"1985-05-06T09:54:50.772Z\",\n  \"last_modified\": \"1981-11-01T10:25:57.281Z\",\n  \"status\": \"string\",\n  \"user_count\": 8174,\n  \"processed_user_count\": 9031,\n  \"added_user_count\": 602,\n  \"updated_user_count\": 7838,\n  \"closed_user_count\": 6416,\n  \"no_action_required_user_count\": 7581,\n  \"error_count\": 7637,\n  \"warning_count\": 8366,\n  \"invalid_column_headers\": \"string\",\n  \"imports_not_found_or_not_available_for_accounts\": \"string\",\n  \"imports_failed_for_accounts\": \"string\",\n  \"imports_timed_out_for_accounts\": \"string\",\n  \"imports_not_found_or_not_available_for_sites\": \"string\",\n  \"imports_failed_for_sites\": \"string\",\n  \"imports_timed_out_for_sites\": \"string\",\n  \"file_level_error_rollups\": [\n    {\n      \"error_type\": \"string\",\n      \"count\": 9826\n    },\n    {\n      \"error_type\": \"string\",\n      \"count\": 2899\n    }\n  ],\n  \"user_level_error_rollups\": [\n    {\n      \"error_type\": \"string\",\n      \"count\": 2386\n    },\n    {\n      \"error_type\": \"string\",\n      \"count\": 1857\n    }\n  ],\n  \"user_level_warning_rollups\": [\n    {\n      \"warning_type\": \"string\",\n      \"count\": 9168\n    },\n    {\n      \"warning_type\": \"string\",\n      \"count\": 2452\n    }\n  ],\n  \"has_csv_results\": false,\n  \"results_uri\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "d44bcde5-ca54-420c-a5e0-6dcbc40ce247",
+          "name": "Docusign Deletes a specific user import request.",
+          "request": {
+            "name": "Docusign Deletes a specific user import request.",
+            "description": {
+              "content": "Deletes a specific import request and its results.\n\n- Required scopes: `user_write`\n\n\nTo delete a user, see `closeBulkUserImportRequest`.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v2",
+                "organizations",
+                ":organizationId",
+                "imports",
+                "bulk_users",
+                ":importId"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<uuid>",
+                  "key": "organizationId",
+                  "description": "(Required) The organization ID Guid"
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<uuid>",
+                  "key": "importId",
+                  "description": "(Required) The import ID GUID for the request."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "DELETE",
+            "auth": {
+              "type": "oauth2",
+              "oauth2": [
+                {
+                  "key": "scope",
+                  "value": "organization_read permission_read group_read user_read account_read account_write user_write identity_provider_read domain_read"
+                },
+                {
+                  "key": "accessTokenUrl",
+                  "value": "https://account.docusign.com/oauth/auth"
+                },
+                {
+                  "key": "authUrl",
+                  "value": "https://account.docusign.com/oauth/auth"
+                },
+                {
+                  "key": "grant_type",
+                  "value": "authorization_code"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "3bb29f60-8942-485a-a509-e7aab7f5f024",
+              "name": "OK",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "organizations",
+                    ":organizationId",
+                    "imports",
+                    "bulk_users",
+                    ":importId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "organizationId",
+                      "description": "(Required) The organization ID Guid"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "importId",
+                      "description": "(Required) The import ID GUID for the request."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "994705d2-c789-40b1-9e87-2ba920d9b809",
+          "name": "Docusign Given the ID of a user import request,\nreturn the CSV file that was imported.",
+          "request": {
+            "name": "Docusign Given the ID of a user import request,\nreturn the CSV file that was imported.",
+            "description": {
+              "content": "Returns the contents of the CSV file\nassociated with a user import request.\n\n- Required scopes: `user_read`\n\nThe results have an additional column,\n`ProcessingResults`,\nthat describes the results of importing that row.\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v2",
+                "organizations",
+                ":organizationId",
+                "imports",
+                "bulk_users",
+                ":importId",
+                "results_csv"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<uuid>",
+                  "key": "organizationId",
+                  "description": "(Required) The organization ID Guid"
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<uuid>",
+                  "key": "importId",
+                  "description": "(Required) The import ID GUID for the request."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "text/csv"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "oauth2",
+              "oauth2": [
+                {
+                  "key": "scope",
+                  "value": "organization_read permission_read group_read user_read account_read account_write user_write identity_provider_read domain_read"
+                },
+                {
+                  "key": "accessTokenUrl",
+                  "value": "https://account.docusign.com/oauth/auth"
+                },
+                {
+                  "key": "authUrl",
+                  "value": "https://account.docusign.com/oauth/auth"
+                },
+                {
+                  "key": "grant_type",
+                  "value": "authorization_code"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "54ffe509-6704-4ae0-8ea0-688c7e96651c",
+              "name": "OK",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "organizations",
+                    ":organizationId",
+                    "imports",
+                    "bulk_users",
+                    ":importId",
+                    "results_csv"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "organizationId",
+                      "description": "(Required) The organization ID Guid"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "importId",
+                      "description": "(Required) The import ID GUID for the request."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "text/csv"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/csv"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://api.docusign.net/Management",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "3493a585-4949-466b-a5ef-61ba9a1f0771",
+    "name": "DocuSign Admin AccountBrands UserImport API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "An API for an organization administrator to manage organizations, accounts and users\n\nContact Support:\n Name: DocuSign Developer Center\n Email: devcenter@docusign.com",
+      "type": "text/plain"
+    }
+  }
+}

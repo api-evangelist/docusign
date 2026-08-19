@@ -1,0 +1,97 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "DocuSign Admin AccountBrands TaskLists API",
+    "version": "v2.1"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "TaskLists",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Docusign Gets task lists for a room.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.docusign.net/Management/v2/accounts/:accountId/rooms/:roomId/task_lists",
+            "params": [
+              {
+                "name": "roomId",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the room."
+              },
+              {
+                "name": "accountId",
+                "value": "",
+                "type": "path",
+                "description": "The globally unique identifier (GUID) for the account."
+              }
+            ]
+          },
+          "docs": "Returns the task lists associated with a room.\n\n## Permissions\n\nYou must either be a member of the room who has been added to one or more tasks, or have one of the following permissions set to **true:** \n\n- `canAddTasksToAnyTaskLists`\n- `canApplyTaskList`\n- `canRemoveAnyTaskList`\n- `canSubmitTaskList`\n- `canReviewTaskList`\n\n**Note:** If a room has multiple tasks lists, you only see the task lists that contain tasks to which you have been added."
+        },
+        {
+          "info": {
+            "name": "Docusign Applies a task list to a room.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.docusign.net/Management/v2/accounts/:accountId/rooms/:roomId/task_lists",
+            "params": [
+              {
+                "name": "roomId",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the room."
+              },
+              {
+                "name": "accountId",
+                "value": "",
+                "type": "path",
+                "description": "The globally unique identifier (GUID) for the account."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Applies a task list to a room, based on the `taskTemplateId` that you specify in the `taskList` request body.\n\n**Note:** You must first create a task list template in the console. You cannot create a task list template by using the API at this time. To get the `taskListTemplateId`, use the \tTaskListTemplates: GetTaskListTemplates method.\n\n## Permissions\n\nYou must have the `canApplyTaskList` permission set to **true.**"
+        },
+        {
+          "info": {
+            "name": "Docusign Deletes a task list from a room.",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.docusign.net/Management/v2/accounts/:accountId/task_lists/:taskListId",
+            "params": [
+              {
+                "name": "taskListId",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the task list."
+              },
+              {
+                "name": "accountId",
+                "value": "",
+                "type": "path",
+                "description": "The globally unique identifier (GUID) for the account."
+              }
+            ]
+          },
+          "docs": "Deletes the specified task list from a room. If there are attached documents, they will remain in the associated room.\n\n## Permissions\n\nYou must have the `canRemoveAnyTaskList` permission set to **true.**"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

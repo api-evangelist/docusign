@@ -1,0 +1,572 @@
+{
+  "item": [
+    {
+      "id": "15135607-29b0-47f2-b483-5e86544031c9",
+      "name": "Authentication",
+      "description": {
+        "content": "**Note:**  This information is provided for legacy reference only. Please see our supported forms of authentication referenced below and use our [REST API Authentication Guides](https://developers.docusign.com/esign-rest-api/guides/authentication) for more information.\n\nThe Authentication resource provides access to methods that allow you to authenticate user credentials and change a user's password.\n\nThe methods in this resource are suitable\nonly for [service integrations](https://developers.docusign.com/esign-rest-api/guides/common-terms)\nthat use [Legacy Header Authentication](https://developers.docusign.com/esign-rest-api/guides/authentication/legacy).\nFor authentication methods for\n[user applications](https://developers.docusign.com/esign-rest-api/guides/common-terms)\nand to learn more about\nDocuSign authentication\nsee [Authentication Overview](https://developers.docusign.com/esign-rest-api/guides/authentication).\n\nWhen accessing the API resources\nand Legacy Header Authentication,\nthe GET [Authentication:login method](https://developers.docusign.com/esign-rest-api/reference/Authentication/Authentication/login) allows you to determine whether a user is authenticated and provides the information you will need to make subsequent API requests.\n",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "14cedf8a-696e-4371-b664-be10ea141c1b",
+          "name": "Docusign Gets login information for a specified user.",
+          "request": {
+            "name": "Docusign Gets login information for a specified user.",
+            "description": {
+              "content": "Retrieves account information for the authenticated user. Since the API is sessionless, this method does not actually log you in.\nInstead, the method returns information about the account or accounts that the authenticated user has access to.\n\n###### Important: This method must only be used for the [Legacy Header Authentication](https://developers.docusign.com/esign-rest-api/guides/authentication/legacy) flow. Use the [`AccountServer: userInfo` method](https://developers.docusign.com/esign-rest-api/guides/authentication/user-info-endpoints) for the OAuth2 Authentication Code and [Implicit Grant flows](https://developers.docusign.com/esign-rest-api/guides/authentication/oauth2-implicit).\n\nEach account has a `baseUrl` property, returned in the response.\nUse this `baseUrl` in all future API calls as the base of the request URL.\n\nFor each account, the `baseUrl` property includes the DocuSign server, the API version, and the `accountId` property.\n\nIt is not uncommon for an authenticated user to have access to more than one account (and more than one `baseUrl`). Depending on your integration's use case, your integration may choose to:\n\n* Use the account whose `isDefault` field is `true`.\n* List the available accounts and ask the user to choose one.\n* Enable the system administrator to set the account that should be used by your integration.\n\nIf this method returns successfully, then you also know that the user has successfully authenticated with the DocuSign Signature platform.\n\nFor more information on Authentication Login, please see our [REST API Authentication Guides](https://developers.docusign.com/esign-rest-api/guides/authentication).\n\n###### Note: Certain reference items maybe out of date and the latest information is available in the new Authentication Guides.\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v2",
+                "login_information"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "api_password",
+                  "value": "<string>",
+                  "description": "Reserved for DocuSign.\n"
+                },
+                {
+                  "disabled": false,
+                  "key": "embed_account_id_guid",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "include_account_id_guid",
+                  "value": "<string>",
+                  "description": "When set to **true**, shows the account ID GUID in the response."
+                },
+                {
+                  "disabled": false,
+                  "key": "login_settings",
+                  "value": "<string>",
+                  "description": "Determines whether login settings are returned in the response.\n\nValid Values:\n\n* all -  All the login settings are returned. \n* none - no login settings are returned."
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "*/*"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "4e4fc9c7-8e6f-40d3-899c-d230cf5ceff6",
+              "name": "Successful response.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "login_information"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "api_password",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "embed_account_id_guid",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "include_account_id_guid",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "login_settings",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "*/*"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "*/*"
+                }
+              ],
+              "body": "{\n  \"apiPassword\": \"string\",\n  \"loginAccounts\": [\n    {\n      \"accountId\": \"string\",\n      \"accountIdGuid\": \"string\",\n      \"baseUrl\": \"string\",\n      \"email\": \"string\",\n      \"isDefault\": \"string\",\n      \"loginAccountSettings\": [\n        {\n          \"errorDetails\": {\n            \"errorCode\": \"string\",\n            \"message\": \"string\"\n          },\n          \"name\": \"string\",\n          \"originalValue\": \"string\",\n          \"value\": \"string\"\n        },\n        {\n          \"errorDetails\": {\n            \"errorCode\": \"string\",\n            \"message\": \"string\"\n          },\n          \"name\": \"string\",\n          \"originalValue\": \"string\",\n          \"value\": \"string\"\n        }\n      ],\n      \"loginUserSettings\": [\n        {\n          \"errorDetails\": {\n            \"errorCode\": \"string\",\n            \"message\": \"string\"\n          },\n          \"name\": \"string\",\n          \"originalValue\": \"string\",\n          \"value\": \"string\"\n        },\n        {\n          \"errorDetails\": {\n            \"errorCode\": \"string\",\n            \"message\": \"string\"\n          },\n          \"name\": \"string\",\n          \"originalValue\": \"string\",\n          \"value\": \"string\"\n        }\n      ],\n      \"name\": \"string\",\n      \"siteDescription\": \"string\",\n      \"userId\": \"string\",\n      \"userName\": \"string\"\n    },\n    {\n      \"accountId\": \"string\",\n      \"accountIdGuid\": \"string\",\n      \"baseUrl\": \"string\",\n      \"email\": \"string\",\n      \"isDefault\": \"string\",\n      \"loginAccountSettings\": [\n        {\n          \"errorDetails\": {\n            \"errorCode\": \"string\",\n            \"message\": \"string\"\n          },\n          \"name\": \"string\",\n          \"originalValue\": \"string\",\n          \"value\": \"string\"\n        },\n        {\n          \"errorDetails\": {\n            \"errorCode\": \"string\",\n            \"message\": \"string\"\n          },\n          \"name\": \"string\",\n          \"originalValue\": \"string\",\n          \"value\": \"string\"\n        }\n      ],\n      \"loginUserSettings\": [\n        {\n          \"errorDetails\": {\n            \"errorCode\": \"string\",\n            \"message\": \"string\"\n          },\n          \"name\": \"string\",\n          \"originalValue\": \"string\",\n          \"value\": \"string\"\n        },\n        {\n          \"errorDetails\": {\n            \"errorCode\": \"string\",\n            \"message\": \"string\"\n          },\n          \"name\": \"string\",\n          \"originalValue\": \"string\",\n          \"value\": \"string\"\n        }\n      ],\n      \"name\": \"string\",\n      \"siteDescription\": \"string\",\n      \"userId\": \"string\",\n      \"userName\": \"string\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "99e71c82-fcc1-4d1a-8266-657b9f8c95a4",
+              "name": "Error encountered.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "login_information"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "api_password",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "embed_account_id_guid",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "include_account_id_guid",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "login_settings",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "*/*"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "*/*"
+                }
+              ],
+              "body": "{\n  \"errorCode\": \"string\",\n  \"message\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "29f90544-f4d7-40e3-8544-480255906beb",
+          "name": "Docusign Updates the password for a specified user.",
+          "request": {
+            "name": "Docusign Updates the password for a specified user.",
+            "description": {
+              "content": "Updates the password for a specified user.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v2",
+                "login_information",
+                ":loginPart"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "loginPart",
+                  "description": "(Required) Currently, only the value **password** is supported."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "*/*"
+              }
+            ],
+            "method": "PUT",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"currentPassword\": \"<string>\",\n  \"email\": \"<string>\",\n  \"forgottenPasswordInfo\": {\n    \"forgottenPasswordAnswer1\": \"<string>\",\n    \"forgottenPasswordAnswer2\": \"<string>\",\n    \"forgottenPasswordAnswer3\": \"<string>\",\n    \"forgottenPasswordAnswer4\": \"<string>\",\n    \"forgottenPasswordQuestion1\": \"<string>\",\n    \"forgottenPasswordQuestion2\": \"<string>\",\n    \"forgottenPasswordQuestion3\": \"<string>\",\n    \"forgottenPasswordQuestion4\": \"<string>\"\n  },\n  \"newPassword\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "3c400749-b115-47b3-a602-ea56380eab68",
+              "name": "Successful response.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "login_information",
+                    ":loginPart"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "loginPart",
+                      "description": "(Required) Currently, only the value **password** is supported."
+                    }
+                  ]
+                },
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"currentPassword\": \"<string>\",\n  \"email\": \"<string>\",\n  \"forgottenPasswordInfo\": {\n    \"forgottenPasswordAnswer1\": \"<string>\",\n    \"forgottenPasswordAnswer2\": \"<string>\",\n    \"forgottenPasswordAnswer3\": \"<string>\",\n    \"forgottenPasswordAnswer4\": \"<string>\",\n    \"forgottenPasswordQuestion1\": \"<string>\",\n    \"forgottenPasswordQuestion2\": \"<string>\",\n    \"forgottenPasswordQuestion3\": \"<string>\",\n    \"forgottenPasswordQuestion4\": \"<string>\"\n  },\n  \"newPassword\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "d65a143f-8a15-4c54-95a0-c59fe77c3bea",
+              "name": "Error encountered.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "login_information",
+                    ":loginPart"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "loginPart",
+                      "description": "(Required) Currently, only the value **password** is supported."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "*/*"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"currentPassword\": \"<string>\",\n  \"email\": \"<string>\",\n  \"forgottenPasswordInfo\": {\n    \"forgottenPasswordAnswer1\": \"<string>\",\n    \"forgottenPasswordAnswer2\": \"<string>\",\n    \"forgottenPasswordAnswer3\": \"<string>\",\n    \"forgottenPasswordAnswer4\": \"<string>\",\n    \"forgottenPasswordQuestion1\": \"<string>\",\n    \"forgottenPasswordQuestion2\": \"<string>\",\n    \"forgottenPasswordQuestion3\": \"<string>\",\n    \"forgottenPasswordQuestion4\": \"<string>\"\n  },\n  \"newPassword\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "*/*"
+                }
+              ],
+              "body": "{\n  \"errorCode\": \"string\",\n  \"message\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "9ae1cc72-9879-4ba9-a273-d6b51b760d9e",
+          "name": "Docusign **Deprecated** Revokes an authorization token.",
+          "request": {
+            "name": "Docusign **Deprecated** Revokes an authorization token.",
+            "description": {
+              "content": "**Deprecated**\n\n**Note:**  This information is provided for legacy reference only. Please see our supported forms of authentication referenced below and use our [REST API Authentication Guides](https://developers.docusign.com/esign-rest-api/guides/authentication) for more information.<p>\nRevokes an OAuth2 authorization server token. After the revocation is complete, a caller must re-authenticate to restore access.\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v2",
+                "oauth2",
+                "revoke"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "*/*"
+              }
+            ],
+            "method": "POST",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "3f5512e1-5678-41c8-a592-a114984f4ed3",
+              "name": "Successful response.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "oauth2",
+                    "revoke"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "method": "POST",
+                "body": {}
+              },
+              "status": "Created",
+              "code": 201,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "b80ec59d-006b-4c0e-a020-c48fa5e91ab3",
+              "name": "Error encountered.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "oauth2",
+                    "revoke"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "*/*"
+                  }
+                ],
+                "method": "POST",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "*/*"
+                }
+              ],
+              "body": "{\n  \"errorCode\": \"string\",\n  \"message\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "95a63cb5-d772-4b87-8597-bc8b431a9074",
+          "name": "Docusign **Deprecated** Creates an authorization token.",
+          "request": {
+            "name": "Docusign **Deprecated** Creates an authorization token.",
+            "description": {
+              "content": "**Deprecated**\n\n**Note:**  This information is provided for legacy reference only. Please see our supported forms of authentication referenced below and use our [REST API Authentication Guides](https://developers.docusign.com/esign-rest-api/guides/authentication) for more information.<p>\nCreates an OAuth2 authorization server token endpoint. For more information about OAuth 2.0 please see [OAuth2.0](https://oauth.net/2/).\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v2",
+                "oauth2",
+                "token"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "*/*"
+              }
+            ],
+            "method": "POST",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "7cad16fa-fec9-4588-ad36-b290eb703dfa",
+              "name": "Successful response.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "oauth2",
+                    "token"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "*/*"
+                  }
+                ],
+                "method": "POST",
+                "body": {}
+              },
+              "status": "Created",
+              "code": 201,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "*/*"
+                }
+              ],
+              "body": "{\n  \"access_token\": \"string\",\n  \"data\": [\n    {\n      \"errorDetails\": {\n        \"errorCode\": \"string\",\n        \"message\": \"string\"\n      },\n      \"name\": \"string\",\n      \"originalValue\": \"string\",\n      \"value\": \"string\"\n    },\n    {\n      \"errorDetails\": {\n        \"errorCode\": \"string\",\n        \"message\": \"string\"\n      },\n      \"name\": \"string\",\n      \"originalValue\": \"string\",\n      \"value\": \"string\"\n    }\n  ],\n  \"expires_in\": \"string\",\n  \"refresh_token\": \"string\",\n  \"scope\": \"string\",\n  \"token_type\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "c65fa316-64b4-41f8-9713-341c23068ddb",
+              "name": "Error encountered.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "oauth2",
+                    "token"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "*/*"
+                  }
+                ],
+                "method": "POST",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "*/*"
+                }
+              ],
+              "body": "{\n  \"errorCode\": \"string\",\n  \"message\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://api.docusign.net/Management",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "a513a175-6d30-4560-991f-f2f285ab5504",
+    "name": "DocuSign Admin AccountBrands Authentication API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "An API for an organization administrator to manage organizations, accounts and users\n\nContact Support:\n Name: DocuSign Developer Center\n Email: devcenter@docusign.com",
+      "type": "text/plain"
+    }
+  }
+}

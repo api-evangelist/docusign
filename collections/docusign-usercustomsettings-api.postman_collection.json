@@ -1,0 +1,585 @@
+{
+  "item": [
+    {
+      "id": "d9c9d3ff-153c-4d15-a318-e2fbd012cd38",
+      "name": "UserCustomSettings",
+      "description": {
+        "content": "The UserCustomSettings resource provides methods that allow you to manage the custom settings for a user.\n\nCustom settings are a flexible way to store and retrieve custom user information that can be used in your own system.\n\nThere is a limit on the size for all the custom user settings for a single user. All the custom user settings for a single user is limited to 4,000 characters, which includes the xml and json structure for the settings.",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "192941fb-7210-44ae-9c80-b503f6e75e0f",
+          "name": "Docusign Retrieves the custom user settings for a specified user.",
+          "request": {
+            "name": "Docusign Retrieves the custom user settings for a specified user.",
+            "description": {
+              "content": "Retrieves a list of custom user settings for a single user.\n\nCustom settings provide a flexible way to store and retrieve custom user information that can be used in your own system.\n\n###### Note: Custom user settings are not the same as user account settings.\n\n###Getting Grouped Custom User Settings###\n\nIf the custom user settings you want to retrieve are grouped, you must include the following information in the header, after Content-Type, in the request:\n\n`X-DocuSign-User-Settings-Key:group_name`\n\nWhere the `group_name` is your designated name for the group of customer user settings.\n\nIf the extra header information is not included, only the custom user settings that were added without a group are retrieved.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v2",
+                "accounts",
+                ":accountId",
+                "users",
+                ":userId",
+                "custom_settings"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "accountId",
+                  "description": "(Required) The external account number (int) or account id GUID."
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "userId",
+                  "description": "(Required) The user ID of the user being accessed. Generally this is the user ID of the authenticated user, but if the authenticated user is an Admin on the account, this may be another user the Admin user is accessing. **Note**: For the [GET /v2/accounts/{accountId}/envelopes](https://developers.docusign.com/esign-rest-api/reference/Envelopes/Envelopes/listStatusChanges/#envelopesInformation) method, the `user_id` query parameter is not implemented and should not be used."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "*/*"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "b36a532f-0860-4f6a-b21c-027a69f17acc",
+              "name": "Successful response.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "accounts",
+                    ":accountId",
+                    "users",
+                    ":userId",
+                    "custom_settings"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "accountId",
+                      "description": "(Required) The external account number (int) or account id GUID."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "userId",
+                      "description": "(Required) The user ID of the user being accessed. Generally this is the user ID of the authenticated user, but if the authenticated user is an Admin on the account, this may be another user the Admin user is accessing. **Note**: For the [GET /v2/accounts/{accountId}/envelopes](https://developers.docusign.com/esign-rest-api/reference/Envelopes/Envelopes/listStatusChanges/#envelopesInformation) method, the `user_id` query parameter is not implemented and should not be used."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "*/*"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "*/*"
+                }
+              ],
+              "body": "{\n  \"customSettings\": [\n    {\n      \"errorDetails\": {\n        \"errorCode\": \"string\",\n        \"message\": \"string\"\n      },\n      \"name\": \"string\",\n      \"originalValue\": \"string\",\n      \"value\": \"string\"\n    },\n    {\n      \"errorDetails\": {\n        \"errorCode\": \"string\",\n        \"message\": \"string\"\n      },\n      \"name\": \"string\",\n      \"originalValue\": \"string\",\n      \"value\": \"string\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "65052b6e-0c38-4631-bbf4-4605ddb019dd",
+              "name": "Error encountered.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "accounts",
+                    ":accountId",
+                    "users",
+                    ":userId",
+                    "custom_settings"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "accountId",
+                      "description": "(Required) The external account number (int) or account id GUID."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "userId",
+                      "description": "(Required) The user ID of the user being accessed. Generally this is the user ID of the authenticated user, but if the authenticated user is an Admin on the account, this may be another user the Admin user is accessing. **Note**: For the [GET /v2/accounts/{accountId}/envelopes](https://developers.docusign.com/esign-rest-api/reference/Envelopes/Envelopes/listStatusChanges/#envelopesInformation) method, the `user_id` query parameter is not implemented and should not be used."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "*/*"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "*/*"
+                }
+              ],
+              "body": "{\n  \"errorCode\": \"string\",\n  \"message\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "70e0cbbf-567a-4bea-89c9-41d01a9032a2",
+          "name": "Docusign Adds or updates custom user settings for the specified user.",
+          "request": {
+            "name": "Docusign Adds or updates custom user settings for the specified user.",
+            "description": {
+              "content": "Adds or updates custom user settings for the specified user.\n\n###### Note: Custom user settings are not the same as user account settings.\n\nCustom settings provide a flexible way to store and retrieve custom user information that you can use in your own system.\n\n**Important**: There is a limit on the size for all the custom user settings for a single user. The limit is 4,000 characters, which includes the XML and JSON structure for the settings.\n\n### Grouping Custom User Settings ###\n\nYou can group custom user settings when adding them. Grouping allows you to retrieve settings that are in a specific group, instead of retrieving all the user custom settings.\n\nTo group custom user settings, add the following information in the header, after Content-Type:\n\n`X-DocuSign-User-Settings-Key:group_name`\n\nWhere the `group_name` is your designated name for the group of customer user settings. Grouping is shown in the Example Request Body below.\n\nWhen getting or deleting grouped custom user settings, you must include the extra header information.\n\nGrouping custom user settings is not required and if the extra header information is not included, the custom user settings are added normally and can be retrieved or deleted without including the additional header.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v2",
+                "accounts",
+                ":accountId",
+                "users",
+                ":userId",
+                "custom_settings"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "accountId",
+                  "description": "(Required) The external account number (int) or account id GUID."
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "userId",
+                  "description": "(Required) The user ID of the user being accessed. Generally this is the user ID of the authenticated user, but if the authenticated user is an Admin on the account, this may be another user the Admin user is accessing. **Note**: For the [GET /v2/accounts/{accountId}/envelopes](https://developers.docusign.com/esign-rest-api/reference/Envelopes/Envelopes/listStatusChanges/#envelopesInformation) method, the `user_id` query parameter is not implemented and should not be used."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "*/*"
+              }
+            ],
+            "method": "PUT",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"customSettings\": [\n    {\n      \"errorDetails\": {\n        \"errorCode\": \"<string>\",\n        \"message\": \"<string>\"\n      },\n      \"name\": \"<string>\",\n      \"originalValue\": \"<string>\",\n      \"value\": \"<string>\"\n    },\n    {\n      \"errorDetails\": {\n        \"errorCode\": \"<string>\",\n        \"message\": \"<string>\"\n      },\n      \"name\": \"<string>\",\n      \"originalValue\": \"<string>\",\n      \"value\": \"<string>\"\n    }\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "d04120b8-8b71-4f1d-9c73-37e12f963ce8",
+              "name": "Successful response.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "accounts",
+                    ":accountId",
+                    "users",
+                    ":userId",
+                    "custom_settings"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "accountId",
+                      "description": "(Required) The external account number (int) or account id GUID."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "userId",
+                      "description": "(Required) The user ID of the user being accessed. Generally this is the user ID of the authenticated user, but if the authenticated user is an Admin on the account, this may be another user the Admin user is accessing. **Note**: For the [GET /v2/accounts/{accountId}/envelopes](https://developers.docusign.com/esign-rest-api/reference/Envelopes/Envelopes/listStatusChanges/#envelopesInformation) method, the `user_id` query parameter is not implemented and should not be used."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "*/*"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"customSettings\": [\n    {\n      \"errorDetails\": {\n        \"errorCode\": \"<string>\",\n        \"message\": \"<string>\"\n      },\n      \"name\": \"<string>\",\n      \"originalValue\": \"<string>\",\n      \"value\": \"<string>\"\n    },\n    {\n      \"errorDetails\": {\n        \"errorCode\": \"<string>\",\n        \"message\": \"<string>\"\n      },\n      \"name\": \"<string>\",\n      \"originalValue\": \"<string>\",\n      \"value\": \"<string>\"\n    }\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "*/*"
+                }
+              ],
+              "body": "{\n  \"customSettings\": [\n    {\n      \"errorDetails\": {\n        \"errorCode\": \"<string>\",\n        \"message\": \"<string>\"\n      },\n      \"name\": \"<string>\",\n      \"originalValue\": \"<string>\",\n      \"value\": \"<string>\"\n    },\n    {\n      \"errorDetails\": {\n        \"errorCode\": \"<string>\",\n        \"message\": \"<string>\"\n      },\n      \"name\": \"<string>\",\n      \"originalValue\": \"<string>\",\n      \"value\": \"<string>\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "7c5e1eed-e200-441e-b77f-5675bca7bd5d",
+              "name": "Error encountered.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "accounts",
+                    ":accountId",
+                    "users",
+                    ":userId",
+                    "custom_settings"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "accountId",
+                      "description": "(Required) The external account number (int) or account id GUID."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "userId",
+                      "description": "(Required) The user ID of the user being accessed. Generally this is the user ID of the authenticated user, but if the authenticated user is an Admin on the account, this may be another user the Admin user is accessing. **Note**: For the [GET /v2/accounts/{accountId}/envelopes](https://developers.docusign.com/esign-rest-api/reference/Envelopes/Envelopes/listStatusChanges/#envelopesInformation) method, the `user_id` query parameter is not implemented and should not be used."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "*/*"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"customSettings\": [\n    {\n      \"errorDetails\": {\n        \"errorCode\": \"<string>\",\n        \"message\": \"<string>\"\n      },\n      \"name\": \"<string>\",\n      \"originalValue\": \"<string>\",\n      \"value\": \"<string>\"\n    },\n    {\n      \"errorDetails\": {\n        \"errorCode\": \"<string>\",\n        \"message\": \"<string>\"\n      },\n      \"name\": \"<string>\",\n      \"originalValue\": \"<string>\",\n      \"value\": \"<string>\"\n    }\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "*/*"
+                }
+              ],
+              "body": "{\n  \"errorCode\": \"<string>\",\n  \"message\": \"<string>\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "ce3acd4e-21a3-4136-9995-c9e021c2912b",
+          "name": "Docusign Deletes custom user settings for a specified user.",
+          "request": {
+            "name": "Docusign Deletes custom user settings for a specified user.",
+            "description": {
+              "content": "Deletes the specified custom user settings for a single user.\n\n###Deleting Grouped Custom User Settings###\n\nIf the custom user settings you want to delete are grouped, you must include the following information in the header, after Content-Type, in the request:\n\n`X-DocuSign-User-Settings-Key:group_name`\n\nWhere the `group_name` is your designated name for the group of customer user settings.\n\nIf the extra header information is not included, only the custom user settings that were added without a group are deleted.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v2",
+                "accounts",
+                ":accountId",
+                "users",
+                ":userId",
+                "custom_settings"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "accountId",
+                  "description": "(Required) The external account number (int) or account id GUID."
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "userId",
+                  "description": "(Required) The user ID of the user being accessed. Generally this is the user ID of the authenticated user, but if the authenticated user is an Admin on the account, this may be another user the Admin user is accessing. **Note**: For the [GET /v2/accounts/{accountId}/envelopes](https://developers.docusign.com/esign-rest-api/reference/Envelopes/Envelopes/listStatusChanges/#envelopesInformation) method, the `user_id` query parameter is not implemented and should not be used."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "*/*"
+              }
+            ],
+            "method": "DELETE",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"customSettings\": [\n    {\n      \"errorDetails\": {\n        \"errorCode\": \"<string>\",\n        \"message\": \"<string>\"\n      },\n      \"name\": \"<string>\",\n      \"originalValue\": \"<string>\",\n      \"value\": \"<string>\"\n    },\n    {\n      \"errorDetails\": {\n        \"errorCode\": \"<string>\",\n        \"message\": \"<string>\"\n      },\n      \"name\": \"<string>\",\n      \"originalValue\": \"<string>\",\n      \"value\": \"<string>\"\n    }\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "29decae9-12f2-4f0d-8583-eed0b5a30075",
+              "name": "Successful response.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "accounts",
+                    ":accountId",
+                    "users",
+                    ":userId",
+                    "custom_settings"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "accountId",
+                      "description": "(Required) The external account number (int) or account id GUID."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "userId",
+                      "description": "(Required) The user ID of the user being accessed. Generally this is the user ID of the authenticated user, but if the authenticated user is an Admin on the account, this may be another user the Admin user is accessing. **Note**: For the [GET /v2/accounts/{accountId}/envelopes](https://developers.docusign.com/esign-rest-api/reference/Envelopes/Envelopes/listStatusChanges/#envelopesInformation) method, the `user_id` query parameter is not implemented and should not be used."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "*/*"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"customSettings\": [\n    {\n      \"errorDetails\": {\n        \"errorCode\": \"<string>\",\n        \"message\": \"<string>\"\n      },\n      \"name\": \"<string>\",\n      \"originalValue\": \"<string>\",\n      \"value\": \"<string>\"\n    },\n    {\n      \"errorDetails\": {\n        \"errorCode\": \"<string>\",\n        \"message\": \"<string>\"\n      },\n      \"name\": \"<string>\",\n      \"originalValue\": \"<string>\",\n      \"value\": \"<string>\"\n    }\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "*/*"
+                }
+              ],
+              "body": "{\n  \"customSettings\": [\n    {\n      \"errorDetails\": {\n        \"errorCode\": \"<string>\",\n        \"message\": \"<string>\"\n      },\n      \"name\": \"<string>\",\n      \"originalValue\": \"<string>\",\n      \"value\": \"<string>\"\n    },\n    {\n      \"errorDetails\": {\n        \"errorCode\": \"<string>\",\n        \"message\": \"<string>\"\n      },\n      \"name\": \"<string>\",\n      \"originalValue\": \"<string>\",\n      \"value\": \"<string>\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "5e211b8b-d753-40df-baff-9ba15aa2fcfd",
+              "name": "Error encountered.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "accounts",
+                    ":accountId",
+                    "users",
+                    ":userId",
+                    "custom_settings"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "accountId",
+                      "description": "(Required) The external account number (int) or account id GUID."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "userId",
+                      "description": "(Required) The user ID of the user being accessed. Generally this is the user ID of the authenticated user, but if the authenticated user is an Admin on the account, this may be another user the Admin user is accessing. **Note**: For the [GET /v2/accounts/{accountId}/envelopes](https://developers.docusign.com/esign-rest-api/reference/Envelopes/Envelopes/listStatusChanges/#envelopesInformation) method, the `user_id` query parameter is not implemented and should not be used."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "*/*"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"customSettings\": [\n    {\n      \"errorDetails\": {\n        \"errorCode\": \"<string>\",\n        \"message\": \"<string>\"\n      },\n      \"name\": \"<string>\",\n      \"originalValue\": \"<string>\",\n      \"value\": \"<string>\"\n    },\n    {\n      \"errorDetails\": {\n        \"errorCode\": \"<string>\",\n        \"message\": \"<string>\"\n      },\n      \"name\": \"<string>\",\n      \"originalValue\": \"<string>\",\n      \"value\": \"<string>\"\n    }\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "*/*"
+                }
+              ],
+              "body": "{\n  \"errorCode\": \"<string>\",\n  \"message\": \"<string>\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://api.docusign.net/Management",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "8a39401d-c2e0-4bef-b09a-7959e8eb6f49",
+    "name": "DocuSign Admin AccountBrands UserCustomSettings API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "An API for an organization administrator to manage organizations, accounts and users\n\nContact Support:\n Name: DocuSign Developer Center\n Email: devcenter@docusign.com",
+      "type": "text/plain"
+    }
+  }
+}

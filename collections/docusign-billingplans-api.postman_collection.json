@@ -1,0 +1,944 @@
+{
+  "item": [
+    {
+      "id": "a2a3b2e0-3749-4a00-b388-e71e82873811",
+      "name": "BillingPlans",
+      "description": {
+        "content": "The Billing resource provides methods that allow you to manage the billing plans,associated with an account.",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "1e49dfd2-9f20-47bc-9aec-488c396d5882",
+          "name": "Docusign Get Account Billing Plan",
+          "request": {
+            "name": "Docusign Get Account Billing Plan",
+            "description": {
+              "content": "Retrieves the billing plan information for the specified account, including the current billing plan, successor plans, billing address, and billing credit card.\n\nBy default the successor plan and credit card information is included in the response. This information can be excluded from the response by adding the appropriate optional query string with the `setting` set to **false**. \n\nResponse\n\nThe response returns the billing plan information, including the currency code, for the plan. The `billingPlan` and `succesorPlans` property values are the same as those shown in the [ML:Get Billing Plan Details] reference. the `billingAddress` and `creditCardInformation` property values are the same as those shown in the [ML:Update Billing Plan] reference.\n\n###### Note: When credit card number information is shown, a mask is applied to the response so that only the last 4 digits of the card number are visible. ",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v2",
+                "accounts",
+                ":accountId",
+                "billing_plan"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "include_credit_card_information",
+                  "value": "<string>",
+                  "description": "When set to **true**, payment information including credit card information will show in the return."
+                },
+                {
+                  "disabled": false,
+                  "key": "include_metadata",
+                  "value": "<string>",
+                  "description": "When set to **true**, the `canUpgrade` and `renewalStatus` properities are included the response and an array of `supportedCountries` property is added to the `billingAddress` information. "
+                },
+                {
+                  "disabled": false,
+                  "key": "include_successor_plans",
+                  "value": "<string>",
+                  "description": "When set to **true**, excludes successor information from the response."
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "accountId",
+                  "description": "(Required) The external account number (int) or account id GUID."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "*/*"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "f6725951-b95c-4bf5-83ac-c17493f3949d",
+              "name": "Successful response.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "accounts",
+                    ":accountId",
+                    "billing_plan"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "include_credit_card_information",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "include_metadata",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "include_successor_plans",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "accountId",
+                      "description": "(Required) The external account number (int) or account id GUID."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "*/*"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "*/*"
+                }
+              ],
+              "body": "{\n  \"billingAddress\": {\n    \"address1\": \"string\",\n    \"address2\": \"string\",\n    \"city\": \"string\",\n    \"country\": \"string\",\n    \"email\": \"string\",\n    \"fax\": \"string\",\n    \"firstName\": \"string\",\n    \"lastName\": \"string\",\n    \"phone\": \"string\",\n    \"postalCode\": \"string\",\n    \"state\": \"string\",\n    \"supportedCountries\": [\n      {\n        \"isoCode\": \"string\",\n        \"name\": \"string\",\n        \"provinces\": [\n          {\n            \"isoCode\": \"string\",\n            \"name\": \"string\"\n          },\n          {\n            \"isoCode\": \"string\",\n            \"name\": \"string\"\n          }\n        ],\n        \"provinceValidated\": \"string\"\n      },\n      {\n        \"isoCode\": \"string\",\n        \"name\": \"string\",\n        \"provinces\": [\n          {\n            \"isoCode\": \"string\",\n            \"name\": \"string\"\n          },\n          {\n            \"isoCode\": \"string\",\n            \"name\": \"string\"\n          }\n        ],\n        \"provinceValidated\": \"string\"\n      }\n    ]\n  },\n  \"billingAddressIsCreditCardAddress\": \"string\",\n  \"billingPlan\": {\n    \"addOns\": [\n      {\n        \"active\": \"string\",\n        \"addOnId\": \"string\",\n        \"id\": \"string\",\n        \"name\": \"string\"\n      },\n      {\n        \"active\": \"string\",\n        \"addOnId\": \"string\",\n        \"id\": \"string\",\n        \"name\": \"string\"\n      }\n    ],\n    \"appStoreReceiptExpirationDate\": \"string\",\n    \"appStoreReceiptPurchaseDate\": \"string\",\n    \"canCancelRenewal\": \"string\",\n    \"canUpgrade\": \"string\",\n    \"currencyCode\": \"string\",\n    \"enableSupport\": \"string\",\n    \"includedSeats\": \"string\",\n    \"incrementalSeats\": \"string\",\n    \"isDowngrade\": \"string\",\n    \"notificationType\": \"string\",\n    \"otherDiscountPercent\": \"string\",\n    \"paymentCycle\": \"string\",\n    \"paymentMethod\": \"string\",\n    \"perSeatPrice\": \"string\",\n    \"planClassification\": \"string\",\n    \"planFeatureSets\": [\n      {\n        \"currencyFeatureSetPrices\": [\n          {\n            \"currencyCode\": \"string\",\n            \"currencySymbol\": \"string\",\n            \"envelopeFee\": \"string\",\n            \"fixedFee\": \"string\",\n            \"seatFee\": \"string\"\n          },\n          {\n            \"currencyCode\": \"string\",\n            \"currencySymbol\": \"string\",\n            \"envelopeFee\": \"string\",\n            \"fixedFee\": \"string\",\n            \"seatFee\": \"string\"\n          }\n        ],\n        \"envelopeFee\": \"string\",\n        \"featureSetId\": \"string\",\n        \"fixedFee\": \"string\",\n        \"is21CFRPart11\": \"string\",\n        \"isActive\": \"string\",\n        \"isEnabled\": \"string\",\n        \"name\": \"string\",\n        \"seatFee\": \"string\"\n      },\n      {\n        \"currencyFeatureSetPrices\": [\n          {\n            \"currencyCode\": \"string\",\n            \"currencySymbol\": \"string\",\n            \"envelopeFee\": \"string\",\n            \"fixedFee\": \"string\",\n            \"seatFee\": \"string\"\n          },\n          {\n            \"currencyCode\": \"string\",\n            \"currencySymbol\": \"string\",\n            \"envelopeFee\": \"string\",\n            \"fixedFee\": \"string\",\n            \"seatFee\": \"string\"\n          }\n        ],\n        \"envelopeFee\": \"string\",\n        \"featureSetId\": \"string\",\n        \"fixedFee\": \"string\",\n        \"is21CFRPart11\": \"string\",\n        \"isActive\": \"string\",\n        \"isEnabled\": \"string\",\n        \"name\": \"string\",\n        \"seatFee\": \"string\"\n      }\n    ],\n    \"planId\": \"string\",\n    \"planName\": \"string\",\n    \"renewalStatus\": \"string\",\n    \"seatDiscounts\": [\n      {\n        \"beginSeatCount\": \"string\",\n        \"discountPercent\": \"string\",\n        \"endSeatCount\": \"string\"\n      },\n      {\n        \"beginSeatCount\": \"string\",\n        \"discountPercent\": \"string\",\n        \"endSeatCount\": \"string\"\n      }\n    ],\n    \"supportIncidentFee\": \"string\",\n    \"supportPlanFee\": \"string\"\n  },\n  \"creditCardInformation\": {\n    \"address\": {\n      \"city\": \"string\",\n      \"country\": \"string\",\n      \"fax\": \"string\",\n      \"phone\": \"string\",\n      \"state\": \"string\",\n      \"street1\": \"string\",\n      \"street2\": \"string\",\n      \"zip\": \"string\",\n      \"zipPlus4\": \"string\"\n    },\n    \"cardNumber\": \"string\",\n    \"cardType\": \"string\",\n    \"expirationMonth\": \"string\",\n    \"expirationYear\": \"string\",\n    \"nameOnCard\": \"string\"\n  },\n  \"paymentProcessorInformation\": {\n    \"address\": {\n      \"city\": \"string\",\n      \"country\": \"string\",\n      \"fax\": \"string\",\n      \"phone\": \"string\",\n      \"state\": \"string\",\n      \"street1\": \"string\",\n      \"street2\": \"string\",\n      \"zip\": \"string\",\n      \"zipPlus4\": \"string\"\n    },\n    \"billingAgreementId\": \"string\",\n    \"email\": \"string\"\n  },\n  \"referralInformation\": {\n    \"advertisementId\": \"string\",\n    \"enableSupport\": \"string\",\n    \"externalOrgId\": \"string\",\n    \"groupMemberId\": \"string\",\n    \"idType\": \"string\",\n    \"includedSeats\": \"string\",\n    \"industry\": \"string\",\n    \"planStartMonth\": \"string\",\n    \"promoCode\": \"string\",\n    \"publisherId\": \"string\",\n    \"referralCode\": \"string\",\n    \"referrerName\": \"string\",\n    \"saleDiscountAmount\": \"string\",\n    \"saleDiscountFixedAmount\": \"string\",\n    \"saleDiscountPercent\": \"string\",\n    \"saleDiscountPeriods\": \"string\",\n    \"saleDiscountSeatPriceOverride\": \"string\",\n    \"shopperId\": \"string\"\n  },\n  \"successorPlans\": [\n    {\n      \"appStoreProducts\": [\n        {\n          \"marketPlace\": \"string\",\n          \"productId\": \"string\"\n        },\n        {\n          \"marketPlace\": \"string\",\n          \"productId\": \"string\"\n        }\n      ],\n      \"currencyPlanPrices\": [\n        {\n          \"currencyCode\": \"string\",\n          \"currencySymbol\": \"string\",\n          \"perSeatPrice\": \"string\",\n          \"supportedCardTypes\": {\n            \"cardTypes\": [\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            ]\n          },\n          \"supportIncidentFee\": \"string\",\n          \"supportPlanFee\": \"string\"\n        },\n        {\n          \"currencyCode\": \"string\",\n          \"currencySymbol\": \"string\",\n          \"perSeatPrice\": \"string\",\n          \"supportedCardTypes\": {\n            \"cardTypes\": [\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            ]\n          },\n          \"supportIncidentFee\": \"string\",\n          \"supportPlanFee\": \"string\"\n        }\n      ],\n      \"enableSupport\": \"string\",\n      \"includedSeats\": \"string\",\n      \"otherDiscountPercent\": \"string\",\n      \"paymentCycle\": \"string\",\n      \"paymentMethod\": \"string\",\n      \"perSeatPrice\": \"string\",\n      \"planClassification\": \"string\",\n      \"planFeatureSets\": [\n        {\n          \"currencyFeatureSetPrices\": [\n            {\n              \"currencyCode\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"currencySymbol\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"envelopeFee\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"fixedFee\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"seatFee\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            },\n            {\n              \"currencyCode\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"currencySymbol\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"envelopeFee\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"fixedFee\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"seatFee\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            }\n          ],\n          \"envelopeFee\": \"string\",\n          \"featureSetId\": \"string\",\n          \"fixedFee\": \"string\",\n          \"is21CFRPart11\": \"string\",\n          \"isActive\": \"string\",\n          \"isEnabled\": \"string\",\n          \"name\": \"string\",\n          \"seatFee\": \"string\"\n        },\n        {\n          \"currencyFeatureSetPrices\": [\n            {\n              \"currencyCode\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"currencySymbol\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"envelopeFee\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"fixedFee\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"seatFee\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            },\n            {\n              \"currencyCode\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"currencySymbol\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"envelopeFee\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"fixedFee\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"seatFee\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            }\n          ],\n          \"envelopeFee\": \"string\",\n          \"featureSetId\": \"string\",\n          \"fixedFee\": \"string\",\n          \"is21CFRPart11\": \"string\",\n          \"isActive\": \"string\",\n          \"isEnabled\": \"string\",\n          \"name\": \"string\",\n          \"seatFee\": \"string\"\n        }\n      ],\n      \"planId\": \"string\",\n      \"planName\": \"string\",\n      \"seatDiscounts\": [\n        {\n          \"beginSeatCount\": \"string\",\n          \"discountPercent\": \"string\",\n          \"endSeatCount\": \"string\"\n        },\n        {\n          \"beginSeatCount\": \"string\",\n          \"discountPercent\": \"string\",\n          \"endSeatCount\": \"string\"\n        }\n      ],\n      \"supportIncidentFee\": \"string\",\n      \"supportPlanFee\": \"string\"\n    },\n    {\n      \"appStoreProducts\": [\n        {\n          \"marketPlace\": \"string\",\n          \"productId\": \"string\"\n        },\n        {\n          \"marketPlace\": \"string\",\n          \"productId\": \"string\"\n        }\n      ],\n      \"currencyPlanPrices\": [\n        {\n          \"currencyCode\": \"string\",\n          \"currencySymbol\": \"string\",\n          \"perSeatPrice\": \"string\",\n          \"supportedCardTypes\": {\n            \"cardTypes\": [\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            ]\n          },\n          \"supportIncidentFee\": \"string\",\n          \"supportPlanFee\": \"string\"\n        },\n        {\n          \"currencyCode\": \"string\",\n          \"currencySymbol\": \"string\",\n          \"perSeatPrice\": \"string\",\n          \"supportedCardTypes\": {\n            \"cardTypes\": [\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            ]\n          },\n          \"supportIncidentFee\": \"string\",\n          \"supportPlanFee\": \"string\"\n        }\n      ],\n      \"enableSupport\": \"string\",\n      \"includedSeats\": \"string\",\n      \"otherDiscountPercent\": \"string\",\n      \"paymentCycle\": \"string\",\n      \"paymentMethod\": \"string\",\n      \"perSeatPrice\": \"string\",\n      \"planClassification\": \"string\",\n      \"planFeatureSets\": [\n        {\n          \"currencyFeatureSetPrices\": [\n            {\n              \"currencyCode\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"currencySymbol\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"envelopeFee\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"fixedFee\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"seatFee\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            },\n            {\n              \"currencyCode\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"currencySymbol\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"envelopeFee\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"fixedFee\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"seatFee\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            }\n          ],\n          \"envelopeFee\": \"string\",\n          \"featureSetId\": \"string\",\n          \"fixedFee\": \"string\",\n          \"is21CFRPart11\": \"string\",\n          \"isActive\": \"string\",\n          \"isEnabled\": \"string\",\n          \"name\": \"string\",\n          \"seatFee\": \"string\"\n        },\n        {\n          \"currencyFeatureSetPrices\": [\n            {\n              \"currencyCode\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"currencySymbol\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"envelopeFee\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"fixedFee\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"seatFee\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            },\n            {\n              \"currencyCode\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"currencySymbol\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"envelopeFee\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"fixedFee\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"seatFee\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            }\n          ],\n          \"envelopeFee\": \"string\",\n          \"featureSetId\": \"string\",\n          \"fixedFee\": \"string\",\n          \"is21CFRPart11\": \"string\",\n          \"isActive\": \"string\",\n          \"isEnabled\": \"string\",\n          \"name\": \"string\",\n          \"seatFee\": \"string\"\n        }\n      ],\n      \"planId\": \"string\",\n      \"planName\": \"string\",\n      \"seatDiscounts\": [\n        {\n          \"beginSeatCount\": \"string\",\n          \"discountPercent\": \"string\",\n          \"endSeatCount\": \"string\"\n        },\n        {\n          \"beginSeatCount\": \"string\",\n          \"discountPercent\": \"string\",\n          \"endSeatCount\": \"string\"\n        }\n      ],\n      \"supportIncidentFee\": \"string\",\n      \"supportPlanFee\": \"string\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "99564c96-8a5e-4e74-8da1-c0505e67840a",
+              "name": "Error encountered.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "accounts",
+                    ":accountId",
+                    "billing_plan"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "include_credit_card_information",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "include_metadata",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "include_successor_plans",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "accountId",
+                      "description": "(Required) The external account number (int) or account id GUID."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "*/*"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "*/*"
+                }
+              ],
+              "body": "{\n  \"errorCode\": \"string\",\n  \"message\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "d94bf147-90d6-46ae-a605-fdbd3f0a6411",
+          "name": "Docusign Updates the account billing plan.",
+          "request": {
+            "name": "Docusign Updates the account billing plan.",
+            "description": {
+              "content": "Updates the billing plan information, billing address, and credit card information for the specified account.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v2",
+                "accounts",
+                ":accountId",
+                "billing_plan"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "preview_billing_plan",
+                  "value": "<string>",
+                  "description": "When set to **true**, updates the account using a preview billing plan."
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "accountId",
+                  "description": "(Required) The external account number (int) or account id GUID."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "*/*"
+              }
+            ],
+            "method": "PUT",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"appStoreReceipt\": {\n    \"productId\": \"<string>\",\n    \"receiptData\": \"<string>\"\n  },\n  \"billingAddress\": {\n    \"address1\": \"<string>\",\n    \"address2\": \"<string>\",\n    \"city\": \"<string>\",\n    \"country\": \"<string>\",\n    \"email\": \"<string>\",\n    \"fax\": \"<string>\",\n    \"firstName\": \"<string>\",\n    \"lastName\": \"<string>\",\n    \"phone\": \"<string>\",\n    \"postalCode\": \"<string>\",\n    \"state\": \"<string>\",\n    \"supportedCountries\": [\n      {\n        \"isoCode\": \"<string>\",\n        \"name\": \"<string>\",\n        \"provinces\": [\n          {\n            \"isoCode\": \"<string>\",\n            \"name\": \"<string>\"\n          },\n          {\n            \"isoCode\": \"<string>\",\n            \"name\": \"<string>\"\n          }\n        ],\n        \"provinceValidated\": \"<string>\"\n      },\n      {\n        \"isoCode\": \"<string>\",\n        \"name\": \"<string>\",\n        \"provinces\": [\n          {\n            \"isoCode\": \"<string>\",\n            \"name\": \"<string>\"\n          },\n          {\n            \"isoCode\": \"<string>\",\n            \"name\": \"<string>\"\n          }\n        ],\n        \"provinceValidated\": \"<string>\"\n      }\n    ]\n  },\n  \"creditCardInformation\": {\n    \"address\": {\n      \"city\": \"<string>\",\n      \"country\": \"<string>\",\n      \"fax\": \"<string>\",\n      \"phone\": \"<string>\",\n      \"state\": \"<string>\",\n      \"street1\": \"<string>\",\n      \"street2\": \"<string>\",\n      \"zip\": \"<string>\",\n      \"zipPlus4\": \"<string>\"\n    },\n    \"cardNumber\": \"<string>\",\n    \"cardType\": \"<string>\",\n    \"expirationMonth\": \"<string>\",\n    \"expirationYear\": \"<string>\",\n    \"nameOnCard\": \"<string>\"\n  },\n  \"downgradeReason\": \"<string>\",\n  \"enableSupport\": \"<string>\",\n  \"includedSeats\": \"<string>\",\n  \"incrementalSeats\": \"<string>\",\n  \"paymentProcessorInformation\": {\n    \"address\": {\n      \"city\": \"<string>\",\n      \"country\": \"<string>\",\n      \"fax\": \"<string>\",\n      \"phone\": \"<string>\",\n      \"state\": \"<string>\",\n      \"street1\": \"<string>\",\n      \"street2\": \"<string>\",\n      \"zip\": \"<string>\",\n      \"zipPlus4\": \"<string>\"\n    },\n    \"billingAgreementId\": \"<string>\",\n    \"email\": \"<string>\"\n  },\n  \"planInformation\": {\n    \"addOns\": [\n      {\n        \"active\": \"<string>\",\n        \"addOnId\": \"<string>\",\n        \"id\": \"<string>\",\n        \"name\": \"<string>\"\n      },\n      {\n        \"active\": \"<string>\",\n        \"addOnId\": \"<string>\",\n        \"id\": \"<string>\",\n        \"name\": \"<string>\"\n      }\n    ],\n    \"currencyCode\": \"<string>\",\n    \"freeTrialDaysOverride\": \"<string>\",\n    \"planFeatureSets\": [\n      {\n        \"currencyFeatureSetPrices\": [\n          {\n            \"currencyCode\": \"<string>\",\n            \"currencySymbol\": \"<string>\",\n            \"envelopeFee\": \"<string>\",\n            \"fixedFee\": \"<string>\",\n            \"seatFee\": \"<string>\"\n          },\n          {\n            \"currencyCode\": \"<string>\",\n            \"currencySymbol\": \"<string>\",\n            \"envelopeFee\": \"<string>\",\n            \"fixedFee\": \"<string>\",\n            \"seatFee\": \"<string>\"\n          }\n        ],\n        \"envelopeFee\": \"<string>\",\n        \"featureSetId\": \"<string>\",\n        \"fixedFee\": \"<string>\",\n        \"is21CFRPart11\": \"<string>\",\n        \"isActive\": \"<string>\",\n        \"isEnabled\": \"<string>\",\n        \"name\": \"<string>\",\n        \"seatFee\": \"<string>\"\n      },\n      {\n        \"currencyFeatureSetPrices\": [\n          {\n            \"currencyCode\": \"<string>\",\n            \"currencySymbol\": \"<string>\",\n            \"envelopeFee\": \"<string>\",\n            \"fixedFee\": \"<string>\",\n            \"seatFee\": \"<string>\"\n          },\n          {\n            \"currencyCode\": \"<string>\",\n            \"currencySymbol\": \"<string>\",\n            \"envelopeFee\": \"<string>\",\n            \"fixedFee\": \"<string>\",\n            \"seatFee\": \"<string>\"\n          }\n        ],\n        \"envelopeFee\": \"<string>\",\n        \"featureSetId\": \"<string>\",\n        \"fixedFee\": \"<string>\",\n        \"is21CFRPart11\": \"<string>\",\n        \"isActive\": \"<string>\",\n        \"isEnabled\": \"<string>\",\n        \"name\": \"<string>\",\n        \"seatFee\": \"<string>\"\n      }\n    ],\n    \"planId\": \"<string>\",\n    \"recipientDomains\": [\n      {\n        \"active\": \"<string>\",\n        \"domainCode\": \"<string>\",\n        \"domainName\": \"<string>\",\n        \"recipientDomainId\": \"<string>\"\n      },\n      {\n        \"active\": \"<string>\",\n        \"domainCode\": \"<string>\",\n        \"domainName\": \"<string>\",\n        \"recipientDomainId\": \"<string>\"\n      }\n    ]\n  },\n  \"referralInformation\": {\n    \"advertisementId\": \"<string>\",\n    \"enableSupport\": \"<string>\",\n    \"externalOrgId\": \"<string>\",\n    \"groupMemberId\": \"<string>\",\n    \"idType\": \"<string>\",\n    \"includedSeats\": \"<string>\",\n    \"industry\": \"<string>\",\n    \"planStartMonth\": \"<string>\",\n    \"promoCode\": \"<string>\",\n    \"publisherId\": \"<string>\",\n    \"referralCode\": \"<string>\",\n    \"referrerName\": \"<string>\",\n    \"saleDiscountAmount\": \"<string>\",\n    \"saleDiscountFixedAmount\": \"<string>\",\n    \"saleDiscountPercent\": \"<string>\",\n    \"saleDiscountPeriods\": \"<string>\",\n    \"saleDiscountSeatPriceOverride\": \"<string>\",\n    \"shopperId\": \"<string>\"\n  },\n  \"renewalStatus\": \"<string>\",\n  \"saleDiscountAmount\": \"<string>\",\n  \"saleDiscountFixedAmount\": \"<string>\",\n  \"saleDiscountPercent\": \"<string>\",\n  \"saleDiscountPeriods\": \"<string>\",\n  \"saleDiscountSeatPriceOverride\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "8b2a3e94-080a-472f-bc21-696303a05318",
+              "name": "Successful response.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "accounts",
+                    ":accountId",
+                    "billing_plan"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "preview_billing_plan",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "accountId",
+                      "description": "(Required) The external account number (int) or account id GUID."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "*/*"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"appStoreReceipt\": {\n    \"productId\": \"<string>\",\n    \"receiptData\": \"<string>\"\n  },\n  \"billingAddress\": {\n    \"address1\": \"<string>\",\n    \"address2\": \"<string>\",\n    \"city\": \"<string>\",\n    \"country\": \"<string>\",\n    \"email\": \"<string>\",\n    \"fax\": \"<string>\",\n    \"firstName\": \"<string>\",\n    \"lastName\": \"<string>\",\n    \"phone\": \"<string>\",\n    \"postalCode\": \"<string>\",\n    \"state\": \"<string>\",\n    \"supportedCountries\": [\n      {\n        \"isoCode\": \"<string>\",\n        \"name\": \"<string>\",\n        \"provinces\": [\n          {\n            \"isoCode\": \"<string>\",\n            \"name\": \"<string>\"\n          },\n          {\n            \"isoCode\": \"<string>\",\n            \"name\": \"<string>\"\n          }\n        ],\n        \"provinceValidated\": \"<string>\"\n      },\n      {\n        \"isoCode\": \"<string>\",\n        \"name\": \"<string>\",\n        \"provinces\": [\n          {\n            \"isoCode\": \"<string>\",\n            \"name\": \"<string>\"\n          },\n          {\n            \"isoCode\": \"<string>\",\n            \"name\": \"<string>\"\n          }\n        ],\n        \"provinceValidated\": \"<string>\"\n      }\n    ]\n  },\n  \"creditCardInformation\": {\n    \"address\": {\n      \"city\": \"<string>\",\n      \"country\": \"<string>\",\n      \"fax\": \"<string>\",\n      \"phone\": \"<string>\",\n      \"state\": \"<string>\",\n      \"street1\": \"<string>\",\n      \"street2\": \"<string>\",\n      \"zip\": \"<string>\",\n      \"zipPlus4\": \"<string>\"\n    },\n    \"cardNumber\": \"<string>\",\n    \"cardType\": \"<string>\",\n    \"expirationMonth\": \"<string>\",\n    \"expirationYear\": \"<string>\",\n    \"nameOnCard\": \"<string>\"\n  },\n  \"downgradeReason\": \"<string>\",\n  \"enableSupport\": \"<string>\",\n  \"includedSeats\": \"<string>\",\n  \"incrementalSeats\": \"<string>\",\n  \"paymentProcessorInformation\": {\n    \"address\": {\n      \"city\": \"<string>\",\n      \"country\": \"<string>\",\n      \"fax\": \"<string>\",\n      \"phone\": \"<string>\",\n      \"state\": \"<string>\",\n      \"street1\": \"<string>\",\n      \"street2\": \"<string>\",\n      \"zip\": \"<string>\",\n      \"zipPlus4\": \"<string>\"\n    },\n    \"billingAgreementId\": \"<string>\",\n    \"email\": \"<string>\"\n  },\n  \"planInformation\": {\n    \"addOns\": [\n      {\n        \"active\": \"<string>\",\n        \"addOnId\": \"<string>\",\n        \"id\": \"<string>\",\n        \"name\": \"<string>\"\n      },\n      {\n        \"active\": \"<string>\",\n        \"addOnId\": \"<string>\",\n        \"id\": \"<string>\",\n        \"name\": \"<string>\"\n      }\n    ],\n    \"currencyCode\": \"<string>\",\n    \"freeTrialDaysOverride\": \"<string>\",\n    \"planFeatureSets\": [\n      {\n        \"currencyFeatureSetPrices\": [\n          {\n            \"currencyCode\": \"<string>\",\n            \"currencySymbol\": \"<string>\",\n            \"envelopeFee\": \"<string>\",\n            \"fixedFee\": \"<string>\",\n            \"seatFee\": \"<string>\"\n          },\n          {\n            \"currencyCode\": \"<string>\",\n            \"currencySymbol\": \"<string>\",\n            \"envelopeFee\": \"<string>\",\n            \"fixedFee\": \"<string>\",\n            \"seatFee\": \"<string>\"\n          }\n        ],\n        \"envelopeFee\": \"<string>\",\n        \"featureSetId\": \"<string>\",\n        \"fixedFee\": \"<string>\",\n        \"is21CFRPart11\": \"<string>\",\n        \"isActive\": \"<string>\",\n        \"isEnabled\": \"<string>\",\n        \"name\": \"<string>\",\n        \"seatFee\": \"<string>\"\n      },\n      {\n        \"currencyFeatureSetPrices\": [\n          {\n            \"currencyCode\": \"<string>\",\n            \"currencySymbol\": \"<string>\",\n            \"envelopeFee\": \"<string>\",\n            \"fixedFee\": \"<string>\",\n            \"seatFee\": \"<string>\"\n          },\n          {\n            \"currencyCode\": \"<string>\",\n            \"currencySymbol\": \"<string>\",\n            \"envelopeFee\": \"<string>\",\n            \"fixedFee\": \"<string>\",\n            \"seatFee\": \"<string>\"\n          }\n        ],\n        \"envelopeFee\": \"<string>\",\n        \"featureSetId\": \"<string>\",\n        \"fixedFee\": \"<string>\",\n        \"is21CFRPart11\": \"<string>\",\n        \"isActive\": \"<string>\",\n        \"isEnabled\": \"<string>\",\n        \"name\": \"<string>\",\n        \"seatFee\": \"<string>\"\n      }\n    ],\n    \"planId\": \"<string>\",\n    \"recipientDomains\": [\n      {\n        \"active\": \"<string>\",\n        \"domainCode\": \"<string>\",\n        \"domainName\": \"<string>\",\n        \"recipientDomainId\": \"<string>\"\n      },\n      {\n        \"active\": \"<string>\",\n        \"domainCode\": \"<string>\",\n        \"domainName\": \"<string>\",\n        \"recipientDomainId\": \"<string>\"\n      }\n    ]\n  },\n  \"referralInformation\": {\n    \"advertisementId\": \"<string>\",\n    \"enableSupport\": \"<string>\",\n    \"externalOrgId\": \"<string>\",\n    \"groupMemberId\": \"<string>\",\n    \"idType\": \"<string>\",\n    \"includedSeats\": \"<string>\",\n    \"industry\": \"<string>\",\n    \"planStartMonth\": \"<string>\",\n    \"promoCode\": \"<string>\",\n    \"publisherId\": \"<string>\",\n    \"referralCode\": \"<string>\",\n    \"referrerName\": \"<string>\",\n    \"saleDiscountAmount\": \"<string>\",\n    \"saleDiscountFixedAmount\": \"<string>\",\n    \"saleDiscountPercent\": \"<string>\",\n    \"saleDiscountPeriods\": \"<string>\",\n    \"saleDiscountSeatPriceOverride\": \"<string>\",\n    \"shopperId\": \"<string>\"\n  },\n  \"renewalStatus\": \"<string>\",\n  \"saleDiscountAmount\": \"<string>\",\n  \"saleDiscountFixedAmount\": \"<string>\",\n  \"saleDiscountPercent\": \"<string>\",\n  \"saleDiscountPeriods\": \"<string>\",\n  \"saleDiscountSeatPriceOverride\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "*/*"
+                }
+              ],
+              "body": "{\n  \"accountPaymentMethod\": \"string\",\n  \"billingPlanPreview\": {\n    \"currencyCode\": \"string\",\n    \"invoice\": {\n      \"amount\": \"string\",\n      \"balance\": \"string\",\n      \"dueDate\": \"string\",\n      \"invoiceId\": \"string\",\n      \"invoiceItems\": [\n        {\n          \"chargeAmount\": \"string\",\n          \"chargeName\": \"string\",\n          \"invoiceItemId\": \"string\",\n          \"quantity\": \"string\",\n          \"unitPrice\": \"string\"\n        },\n        {\n          \"chargeAmount\": \"string\",\n          \"chargeName\": \"string\",\n          \"invoiceItemId\": \"string\",\n          \"quantity\": \"string\",\n          \"unitPrice\": \"string\"\n        }\n      ],\n      \"invoiceNumber\": \"string\",\n      \"invoiceUri\": \"string\",\n      \"nonTaxableAmount\": \"string\",\n      \"pdfAvailable\": \"string\",\n      \"taxableAmount\": \"string\"\n    },\n    \"isProrated\": \"string\",\n    \"subtotalAmount\": \"string\",\n    \"taxAmount\": \"string\",\n    \"totalAmount\": \"string\"\n  },\n  \"currencyCode\": \"string\",\n  \"includedSeats\": \"string\",\n  \"paymentCycle\": \"string\",\n  \"paymentMethod\": \"string\",\n  \"planId\": \"string\",\n  \"planName\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "5f03b7da-6297-4c25-b70e-d87fcaa34fe5",
+              "name": "Error encountered.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "accounts",
+                    ":accountId",
+                    "billing_plan"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "preview_billing_plan",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "accountId",
+                      "description": "(Required) The external account number (int) or account id GUID."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "*/*"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"appStoreReceipt\": {\n    \"productId\": \"<string>\",\n    \"receiptData\": \"<string>\"\n  },\n  \"billingAddress\": {\n    \"address1\": \"<string>\",\n    \"address2\": \"<string>\",\n    \"city\": \"<string>\",\n    \"country\": \"<string>\",\n    \"email\": \"<string>\",\n    \"fax\": \"<string>\",\n    \"firstName\": \"<string>\",\n    \"lastName\": \"<string>\",\n    \"phone\": \"<string>\",\n    \"postalCode\": \"<string>\",\n    \"state\": \"<string>\",\n    \"supportedCountries\": [\n      {\n        \"isoCode\": \"<string>\",\n        \"name\": \"<string>\",\n        \"provinces\": [\n          {\n            \"isoCode\": \"<string>\",\n            \"name\": \"<string>\"\n          },\n          {\n            \"isoCode\": \"<string>\",\n            \"name\": \"<string>\"\n          }\n        ],\n        \"provinceValidated\": \"<string>\"\n      },\n      {\n        \"isoCode\": \"<string>\",\n        \"name\": \"<string>\",\n        \"provinces\": [\n          {\n            \"isoCode\": \"<string>\",\n            \"name\": \"<string>\"\n          },\n          {\n            \"isoCode\": \"<string>\",\n            \"name\": \"<string>\"\n          }\n        ],\n        \"provinceValidated\": \"<string>\"\n      }\n    ]\n  },\n  \"creditCardInformation\": {\n    \"address\": {\n      \"city\": \"<string>\",\n      \"country\": \"<string>\",\n      \"fax\": \"<string>\",\n      \"phone\": \"<string>\",\n      \"state\": \"<string>\",\n      \"street1\": \"<string>\",\n      \"street2\": \"<string>\",\n      \"zip\": \"<string>\",\n      \"zipPlus4\": \"<string>\"\n    },\n    \"cardNumber\": \"<string>\",\n    \"cardType\": \"<string>\",\n    \"expirationMonth\": \"<string>\",\n    \"expirationYear\": \"<string>\",\n    \"nameOnCard\": \"<string>\"\n  },\n  \"downgradeReason\": \"<string>\",\n  \"enableSupport\": \"<string>\",\n  \"includedSeats\": \"<string>\",\n  \"incrementalSeats\": \"<string>\",\n  \"paymentProcessorInformation\": {\n    \"address\": {\n      \"city\": \"<string>\",\n      \"country\": \"<string>\",\n      \"fax\": \"<string>\",\n      \"phone\": \"<string>\",\n      \"state\": \"<string>\",\n      \"street1\": \"<string>\",\n      \"street2\": \"<string>\",\n      \"zip\": \"<string>\",\n      \"zipPlus4\": \"<string>\"\n    },\n    \"billingAgreementId\": \"<string>\",\n    \"email\": \"<string>\"\n  },\n  \"planInformation\": {\n    \"addOns\": [\n      {\n        \"active\": \"<string>\",\n        \"addOnId\": \"<string>\",\n        \"id\": \"<string>\",\n        \"name\": \"<string>\"\n      },\n      {\n        \"active\": \"<string>\",\n        \"addOnId\": \"<string>\",\n        \"id\": \"<string>\",\n        \"name\": \"<string>\"\n      }\n    ],\n    \"currencyCode\": \"<string>\",\n    \"freeTrialDaysOverride\": \"<string>\",\n    \"planFeatureSets\": [\n      {\n        \"currencyFeatureSetPrices\": [\n          {\n            \"currencyCode\": \"<string>\",\n            \"currencySymbol\": \"<string>\",\n            \"envelopeFee\": \"<string>\",\n            \"fixedFee\": \"<string>\",\n            \"seatFee\": \"<string>\"\n          },\n          {\n            \"currencyCode\": \"<string>\",\n            \"currencySymbol\": \"<string>\",\n            \"envelopeFee\": \"<string>\",\n            \"fixedFee\": \"<string>\",\n            \"seatFee\": \"<string>\"\n          }\n        ],\n        \"envelopeFee\": \"<string>\",\n        \"featureSetId\": \"<string>\",\n        \"fixedFee\": \"<string>\",\n        \"is21CFRPart11\": \"<string>\",\n        \"isActive\": \"<string>\",\n        \"isEnabled\": \"<string>\",\n        \"name\": \"<string>\",\n        \"seatFee\": \"<string>\"\n      },\n      {\n        \"currencyFeatureSetPrices\": [\n          {\n            \"currencyCode\": \"<string>\",\n            \"currencySymbol\": \"<string>\",\n            \"envelopeFee\": \"<string>\",\n            \"fixedFee\": \"<string>\",\n            \"seatFee\": \"<string>\"\n          },\n          {\n            \"currencyCode\": \"<string>\",\n            \"currencySymbol\": \"<string>\",\n            \"envelopeFee\": \"<string>\",\n            \"fixedFee\": \"<string>\",\n            \"seatFee\": \"<string>\"\n          }\n        ],\n        \"envelopeFee\": \"<string>\",\n        \"featureSetId\": \"<string>\",\n        \"fixedFee\": \"<string>\",\n        \"is21CFRPart11\": \"<string>\",\n        \"isActive\": \"<string>\",\n        \"isEnabled\": \"<string>\",\n        \"name\": \"<string>\",\n        \"seatFee\": \"<string>\"\n      }\n    ],\n    \"planId\": \"<string>\",\n    \"recipientDomains\": [\n      {\n        \"active\": \"<string>\",\n        \"domainCode\": \"<string>\",\n        \"domainName\": \"<string>\",\n        \"recipientDomainId\": \"<string>\"\n      },\n      {\n        \"active\": \"<string>\",\n        \"domainCode\": \"<string>\",\n        \"domainName\": \"<string>\",\n        \"recipientDomainId\": \"<string>\"\n      }\n    ]\n  },\n  \"referralInformation\": {\n    \"advertisementId\": \"<string>\",\n    \"enableSupport\": \"<string>\",\n    \"externalOrgId\": \"<string>\",\n    \"groupMemberId\": \"<string>\",\n    \"idType\": \"<string>\",\n    \"includedSeats\": \"<string>\",\n    \"industry\": \"<string>\",\n    \"planStartMonth\": \"<string>\",\n    \"promoCode\": \"<string>\",\n    \"publisherId\": \"<string>\",\n    \"referralCode\": \"<string>\",\n    \"referrerName\": \"<string>\",\n    \"saleDiscountAmount\": \"<string>\",\n    \"saleDiscountFixedAmount\": \"<string>\",\n    \"saleDiscountPercent\": \"<string>\",\n    \"saleDiscountPeriods\": \"<string>\",\n    \"saleDiscountSeatPriceOverride\": \"<string>\",\n    \"shopperId\": \"<string>\"\n  },\n  \"renewalStatus\": \"<string>\",\n  \"saleDiscountAmount\": \"<string>\",\n  \"saleDiscountFixedAmount\": \"<string>\",\n  \"saleDiscountPercent\": \"<string>\",\n  \"saleDiscountPeriods\": \"<string>\",\n  \"saleDiscountSeatPriceOverride\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "*/*"
+                }
+              ],
+              "body": "{\n  \"errorCode\": \"string\",\n  \"message\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "5f4800ff-9564-48b3-b48a-c2e33de27199",
+          "name": "Docusign Get metadata for a given credit card.",
+          "request": {
+            "name": "Docusign Get metadata for a given credit card.",
+            "description": {},
+            "url": {
+              "path": [
+                "v2",
+                "accounts",
+                ":accountId",
+                "billing_plan",
+                "credit_card"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "accountId",
+                  "description": "(Required) The external account number (int) or account id GUID."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "*/*"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "4ae64627-8421-418a-b76c-0d229f316291",
+              "name": "Successful response.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "accounts",
+                    ":accountId",
+                    "billing_plan",
+                    "credit_card"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "accountId",
+                      "description": "(Required) The external account number (int) or account id GUID."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "*/*"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "*/*"
+                }
+              ],
+              "body": "{\n  \"address\": {\n    \"city\": \"<string>\",\n    \"country\": \"<string>\",\n    \"fax\": \"<string>\",\n    \"phone\": \"<string>\",\n    \"state\": \"<string>\",\n    \"street1\": \"<string>\",\n    \"street2\": \"<string>\",\n    \"zip\": \"<string>\",\n    \"zipPlus4\": \"<string>\"\n  },\n  \"cardNumber\": \"<string>\",\n  \"cardType\": \"<string>\",\n  \"expirationMonth\": \"<string>\",\n  \"expirationYear\": \"<string>\",\n  \"nameOnCard\": \"<string>\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "6313d595-00f6-49ce-a221-73555c90f7a8",
+              "name": "Error encountered.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "accounts",
+                    ":accountId",
+                    "billing_plan",
+                    "credit_card"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "accountId",
+                      "description": "(Required) The external account number (int) or account id GUID."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "*/*"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "*/*"
+                }
+              ],
+              "body": "{\n  \"errorCode\": \"string\",\n  \"message\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "80110e6e-b738-4427-be09-6c297cfb0537",
+          "name": "Docusign Reserverd: Purchase additional envelopes.",
+          "request": {
+            "name": "Docusign Reserverd: Purchase additional envelopes.",
+            "description": {
+              "content": "Reserved: At this time, this endpoint is limited to DocuSign internal use only. Completes the purchase of envelopes for your account. The actual purchase is done as part of an internal workflow interaction with an envelope vendor.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v2",
+                "accounts",
+                ":accountId",
+                "billing_plan",
+                "purchased_envelopes"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "accountId",
+                  "description": "(Required) The external account number (int) or account id GUID."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "*/*"
+              }
+            ],
+            "method": "PUT",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"amount\": \"<string>\",\n  \"appName\": \"<string>\",\n  \"currencyCode\": \"<string>\",\n  \"platform\": \"<string>\",\n  \"productId\": \"<string>\",\n  \"quantity\": \"<string>\",\n  \"receiptData\": \"<string>\",\n  \"storeName\": \"<string>\",\n  \"transactionId\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "0b0edf5a-6e19-4cff-a576-c0582f61ffcc",
+              "name": "Successful response.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "accounts",
+                    ":accountId",
+                    "billing_plan",
+                    "purchased_envelopes"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "accountId",
+                      "description": "(Required) The external account number (int) or account id GUID."
+                    }
+                  ]
+                },
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"amount\": \"<string>\",\n  \"appName\": \"<string>\",\n  \"currencyCode\": \"<string>\",\n  \"platform\": \"<string>\",\n  \"productId\": \"<string>\",\n  \"quantity\": \"<string>\",\n  \"receiptData\": \"<string>\",\n  \"storeName\": \"<string>\",\n  \"transactionId\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "c9b073a5-94bd-4485-b5ca-e17107618155",
+              "name": "Error encountered.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "accounts",
+                    ":accountId",
+                    "billing_plan",
+                    "purchased_envelopes"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "accountId",
+                      "description": "(Required) The external account number (int) or account id GUID."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "*/*"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"amount\": \"<string>\",\n  \"appName\": \"<string>\",\n  \"currencyCode\": \"<string>\",\n  \"platform\": \"<string>\",\n  \"productId\": \"<string>\",\n  \"quantity\": \"<string>\",\n  \"receiptData\": \"<string>\",\n  \"storeName\": \"<string>\",\n  \"transactionId\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "*/*"
+                }
+              ],
+              "body": "{\n  \"errorCode\": \"string\",\n  \"message\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "ea4c1b29-47c8-444b-8fa7-7884e92a882d",
+          "name": "Docusign Gets the list of available billing plans.",
+          "request": {
+            "name": "Docusign Gets the list of available billing plans.",
+            "description": {
+              "content": "Retrieves a list of the billing plans associated with a distributor.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v2",
+                "billing_plans"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "*/*"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "a37ad978-5612-4734-9a9e-874a04816d30",
+              "name": "Successful response.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "billing_plans"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "*/*"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "*/*"
+                }
+              ],
+              "body": "{\n  \"billingPlans\": [\n    {\n      \"appStoreProducts\": [\n        {\n          \"marketPlace\": \"string\",\n          \"productId\": \"string\"\n        },\n        {\n          \"marketPlace\": \"string\",\n          \"productId\": \"string\"\n        }\n      ],\n      \"currencyPlanPrices\": [\n        {\n          \"currencyCode\": \"string\",\n          \"currencySymbol\": \"string\",\n          \"perSeatPrice\": \"string\",\n          \"supportedCardTypes\": {\n            \"cardTypes\": [\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            ]\n          },\n          \"supportIncidentFee\": \"string\",\n          \"supportPlanFee\": \"string\"\n        },\n        {\n          \"currencyCode\": \"string\",\n          \"currencySymbol\": \"string\",\n          \"perSeatPrice\": \"string\",\n          \"supportedCardTypes\": {\n            \"cardTypes\": [\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            ]\n          },\n          \"supportIncidentFee\": \"string\",\n          \"supportPlanFee\": \"string\"\n        }\n      ],\n      \"enableSupport\": \"string\",\n      \"includedSeats\": \"string\",\n      \"otherDiscountPercent\": \"string\",\n      \"paymentCycle\": \"string\",\n      \"paymentMethod\": \"string\",\n      \"perSeatPrice\": \"string\",\n      \"planClassification\": \"string\",\n      \"planFeatureSets\": [\n        {\n          \"currencyFeatureSetPrices\": [\n            {\n              \"currencyCode\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"currencySymbol\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"envelopeFee\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"fixedFee\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"seatFee\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            },\n            {\n              \"currencyCode\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"currencySymbol\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"envelopeFee\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"fixedFee\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"seatFee\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            }\n          ],\n          \"envelopeFee\": \"<string>\",\n          \"featureSetId\": \"<string>\",\n          \"fixedFee\": \"<string>\",\n          \"is21CFRPart11\": \"<string>\",\n          \"isActive\": \"<string>\",\n          \"isEnabled\": \"<string>\",\n          \"name\": \"<string>\",\n          \"seatFee\": \"<string>\"\n        },\n        {\n          \"currencyFeatureSetPrices\": [\n            {\n              \"currencyCode\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"currencySymbol\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"envelopeFee\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"fixedFee\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"seatFee\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            },\n            {\n              \"currencyCode\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"currencySymbol\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"envelopeFee\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"fixedFee\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"seatFee\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            }\n          ],\n          \"envelopeFee\": \"<string>\",\n          \"featureSetId\": \"<string>\",\n          \"fixedFee\": \"<string>\",\n          \"is21CFRPart11\": \"<string>\",\n          \"isActive\": \"<string>\",\n          \"isEnabled\": \"<string>\",\n          \"name\": \"<string>\",\n          \"seatFee\": \"<string>\"\n        }\n      ],\n      \"planId\": \"string\",\n      \"planName\": \"string\",\n      \"seatDiscounts\": [\n        {\n          \"beginSeatCount\": \"string\",\n          \"discountPercent\": \"string\",\n          \"endSeatCount\": \"string\"\n        },\n        {\n          \"beginSeatCount\": \"string\",\n          \"discountPercent\": \"string\",\n          \"endSeatCount\": \"string\"\n        }\n      ],\n      \"supportIncidentFee\": \"string\",\n      \"supportPlanFee\": \"string\"\n    },\n    {\n      \"appStoreProducts\": [\n        {\n          \"marketPlace\": \"string\",\n          \"productId\": \"string\"\n        },\n        {\n          \"marketPlace\": \"string\",\n          \"productId\": \"string\"\n        }\n      ],\n      \"currencyPlanPrices\": [\n        {\n          \"currencyCode\": \"string\",\n          \"currencySymbol\": \"string\",\n          \"perSeatPrice\": \"string\",\n          \"supportedCardTypes\": {\n            \"cardTypes\": [\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            ]\n          },\n          \"supportIncidentFee\": \"string\",\n          \"supportPlanFee\": \"string\"\n        },\n        {\n          \"currencyCode\": \"string\",\n          \"currencySymbol\": \"string\",\n          \"perSeatPrice\": \"string\",\n          \"supportedCardTypes\": {\n            \"cardTypes\": [\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            ]\n          },\n          \"supportIncidentFee\": \"string\",\n          \"supportPlanFee\": \"string\"\n        }\n      ],\n      \"enableSupport\": \"string\",\n      \"includedSeats\": \"string\",\n      \"otherDiscountPercent\": \"string\",\n      \"paymentCycle\": \"string\",\n      \"paymentMethod\": \"string\",\n      \"perSeatPrice\": \"string\",\n      \"planClassification\": \"string\",\n      \"planFeatureSets\": [\n        {\n          \"currencyFeatureSetPrices\": [\n            {\n              \"currencyCode\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"currencySymbol\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"envelopeFee\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"fixedFee\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"seatFee\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            },\n            {\n              \"currencyCode\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"currencySymbol\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"envelopeFee\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"fixedFee\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"seatFee\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            }\n          ],\n          \"envelopeFee\": \"<string>\",\n          \"featureSetId\": \"<string>\",\n          \"fixedFee\": \"<string>\",\n          \"is21CFRPart11\": \"<string>\",\n          \"isActive\": \"<string>\",\n          \"isEnabled\": \"<string>\",\n          \"name\": \"<string>\",\n          \"seatFee\": \"<string>\"\n        },\n        {\n          \"currencyFeatureSetPrices\": [\n            {\n              \"currencyCode\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"currencySymbol\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"envelopeFee\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"fixedFee\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"seatFee\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            },\n            {\n              \"currencyCode\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"currencySymbol\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"envelopeFee\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"fixedFee\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"seatFee\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            }\n          ],\n          \"envelopeFee\": \"<string>\",\n          \"featureSetId\": \"<string>\",\n          \"fixedFee\": \"<string>\",\n          \"is21CFRPart11\": \"<string>\",\n          \"isActive\": \"<string>\",\n          \"isEnabled\": \"<string>\",\n          \"name\": \"<string>\",\n          \"seatFee\": \"<string>\"\n        }\n      ],\n      \"planId\": \"string\",\n      \"planName\": \"string\",\n      \"seatDiscounts\": [\n        {\n          \"beginSeatCount\": \"string\",\n          \"discountPercent\": \"string\",\n          \"endSeatCount\": \"string\"\n        },\n        {\n          \"beginSeatCount\": \"string\",\n          \"discountPercent\": \"string\",\n          \"endSeatCount\": \"string\"\n        }\n      ],\n      \"supportIncidentFee\": \"string\",\n      \"supportPlanFee\": \"string\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "09ccd938-4b96-445c-8ac6-9d077fc524be",
+              "name": "Error encountered.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "billing_plans"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "*/*"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "*/*"
+                }
+              ],
+              "body": "{\n  \"errorCode\": \"string\",\n  \"message\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "61a58533-dc3e-4f39-a607-d2efbc591b17",
+          "name": "Docusign Get the billing plan details.",
+          "request": {
+            "name": "Docusign Get the billing plan details.",
+            "description": {
+              "content": "Retrieves the billing plan details for the specified billing plan ID.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v2",
+                "billing_plans",
+                ":billingPlanId"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "billingPlanId",
+                  "description": "(Required) The ID of the billing plan being accessed."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "*/*"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "dba90023-52b2-4ff5-a0aa-7967dd2445c3",
+              "name": "Successful response.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "billing_plans",
+                    ":billingPlanId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "billingPlanId",
+                      "description": "(Required) The ID of the billing plan being accessed."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "*/*"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "*/*"
+                }
+              ],
+              "body": "{\n  \"billingPlan\": {\n    \"appStoreProducts\": [\n      {\n        \"marketPlace\": \"string\",\n        \"productId\": \"string\"\n      },\n      {\n        \"marketPlace\": \"string\",\n        \"productId\": \"string\"\n      }\n    ],\n    \"currencyPlanPrices\": [\n      {\n        \"currencyCode\": \"string\",\n        \"currencySymbol\": \"string\",\n        \"perSeatPrice\": \"string\",\n        \"supportedCardTypes\": {\n          \"cardTypes\": [\n            \"string\",\n            \"string\"\n          ]\n        },\n        \"supportIncidentFee\": \"string\",\n        \"supportPlanFee\": \"string\"\n      },\n      {\n        \"currencyCode\": \"string\",\n        \"currencySymbol\": \"string\",\n        \"perSeatPrice\": \"string\",\n        \"supportedCardTypes\": {\n          \"cardTypes\": [\n            \"string\",\n            \"string\"\n          ]\n        },\n        \"supportIncidentFee\": \"string\",\n        \"supportPlanFee\": \"string\"\n      }\n    ],\n    \"enableSupport\": \"string\",\n    \"includedSeats\": \"string\",\n    \"otherDiscountPercent\": \"string\",\n    \"paymentCycle\": \"string\",\n    \"paymentMethod\": \"string\",\n    \"perSeatPrice\": \"string\",\n    \"planClassification\": \"string\",\n    \"planFeatureSets\": [\n      {\n        \"currencyFeatureSetPrices\": [\n          {\n            \"currencyCode\": \"<string>\",\n            \"currencySymbol\": \"<string>\",\n            \"envelopeFee\": \"<string>\",\n            \"fixedFee\": \"<string>\",\n            \"seatFee\": \"<string>\"\n          },\n          {\n            \"currencyCode\": \"<string>\",\n            \"currencySymbol\": \"<string>\",\n            \"envelopeFee\": \"<string>\",\n            \"fixedFee\": \"<string>\",\n            \"seatFee\": \"<string>\"\n          }\n        ],\n        \"envelopeFee\": \"<string>\",\n        \"featureSetId\": \"<string>\",\n        \"fixedFee\": \"<string>\",\n        \"is21CFRPart11\": \"<string>\",\n        \"isActive\": \"<string>\",\n        \"isEnabled\": \"<string>\",\n        \"name\": \"<string>\",\n        \"seatFee\": \"<string>\"\n      },\n      {\n        \"currencyFeatureSetPrices\": [\n          {\n            \"currencyCode\": \"<string>\",\n            \"currencySymbol\": \"<string>\",\n            \"envelopeFee\": \"<string>\",\n            \"fixedFee\": \"<string>\",\n            \"seatFee\": \"<string>\"\n          },\n          {\n            \"currencyCode\": \"<string>\",\n            \"currencySymbol\": \"<string>\",\n            \"envelopeFee\": \"<string>\",\n            \"fixedFee\": \"<string>\",\n            \"seatFee\": \"<string>\"\n          }\n        ],\n        \"envelopeFee\": \"<string>\",\n        \"featureSetId\": \"<string>\",\n        \"fixedFee\": \"<string>\",\n        \"is21CFRPart11\": \"<string>\",\n        \"isActive\": \"<string>\",\n        \"isEnabled\": \"<string>\",\n        \"name\": \"<string>\",\n        \"seatFee\": \"<string>\"\n      }\n    ],\n    \"planId\": \"string\",\n    \"planName\": \"string\",\n    \"seatDiscounts\": [\n      {\n        \"beginSeatCount\": \"string\",\n        \"discountPercent\": \"string\",\n        \"endSeatCount\": \"string\"\n      },\n      {\n        \"beginSeatCount\": \"string\",\n        \"discountPercent\": \"string\",\n        \"endSeatCount\": \"string\"\n      }\n    ],\n    \"supportIncidentFee\": \"string\",\n    \"supportPlanFee\": \"string\"\n  },\n  \"successorPlans\": [\n    {\n      \"appStoreProducts\": [\n        {\n          \"marketPlace\": \"string\",\n          \"productId\": \"string\"\n        },\n        {\n          \"marketPlace\": \"string\",\n          \"productId\": \"string\"\n        }\n      ],\n      \"currencyPlanPrices\": [\n        {\n          \"currencyCode\": \"string\",\n          \"currencySymbol\": \"string\",\n          \"perSeatPrice\": \"string\",\n          \"supportedCardTypes\": {\n            \"cardTypes\": [\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            ]\n          },\n          \"supportIncidentFee\": \"string\",\n          \"supportPlanFee\": \"string\"\n        },\n        {\n          \"currencyCode\": \"string\",\n          \"currencySymbol\": \"string\",\n          \"perSeatPrice\": \"string\",\n          \"supportedCardTypes\": {\n            \"cardTypes\": [\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            ]\n          },\n          \"supportIncidentFee\": \"string\",\n          \"supportPlanFee\": \"string\"\n        }\n      ],\n      \"enableSupport\": \"string\",\n      \"includedSeats\": \"string\",\n      \"otherDiscountPercent\": \"string\",\n      \"paymentCycle\": \"string\",\n      \"paymentMethod\": \"string\",\n      \"perSeatPrice\": \"string\",\n      \"planClassification\": \"string\",\n      \"planFeatureSets\": [\n        {\n          \"currencyFeatureSetPrices\": [\n            {\n              \"currencyCode\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"currencySymbol\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"envelopeFee\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"fixedFee\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"seatFee\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            },\n            {\n              \"currencyCode\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"currencySymbol\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"envelopeFee\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"fixedFee\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"seatFee\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            }\n          ],\n          \"envelopeFee\": \"<string>\",\n          \"featureSetId\": \"<string>\",\n          \"fixedFee\": \"<string>\",\n          \"is21CFRPart11\": \"<string>\",\n          \"isActive\": \"<string>\",\n          \"isEnabled\": \"<string>\",\n          \"name\": \"<string>\",\n          \"seatFee\": \"<string>\"\n        },\n        {\n          \"currencyFeatureSetPrices\": [\n            {\n              \"currencyCode\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"currencySymbol\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"envelopeFee\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"fixedFee\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"seatFee\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            },\n            {\n              \"currencyCode\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"currencySymbol\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"envelopeFee\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"fixedFee\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"seatFee\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            }\n          ],\n          \"envelopeFee\": \"<string>\",\n          \"featureSetId\": \"<string>\",\n          \"fixedFee\": \"<string>\",\n          \"is21CFRPart11\": \"<string>\",\n          \"isActive\": \"<string>\",\n          \"isEnabled\": \"<string>\",\n          \"name\": \"<string>\",\n          \"seatFee\": \"<string>\"\n        }\n      ],\n      \"planId\": \"string\",\n      \"planName\": \"string\",\n      \"seatDiscounts\": [\n        {\n          \"beginSeatCount\": \"string\",\n          \"discountPercent\": \"string\",\n          \"endSeatCount\": \"string\"\n        },\n        {\n          \"beginSeatCount\": \"string\",\n          \"discountPercent\": \"string\",\n          \"endSeatCount\": \"string\"\n        }\n      ],\n      \"supportIncidentFee\": \"string\",\n      \"supportPlanFee\": \"string\"\n    },\n    {\n      \"appStoreProducts\": [\n        {\n          \"marketPlace\": \"string\",\n          \"productId\": \"string\"\n        },\n        {\n          \"marketPlace\": \"string\",\n          \"productId\": \"string\"\n        }\n      ],\n      \"currencyPlanPrices\": [\n        {\n          \"currencyCode\": \"string\",\n          \"currencySymbol\": \"string\",\n          \"perSeatPrice\": \"string\",\n          \"supportedCardTypes\": {\n            \"cardTypes\": [\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            ]\n          },\n          \"supportIncidentFee\": \"string\",\n          \"supportPlanFee\": \"string\"\n        },\n        {\n          \"currencyCode\": \"string\",\n          \"currencySymbol\": \"string\",\n          \"perSeatPrice\": \"string\",\n          \"supportedCardTypes\": {\n            \"cardTypes\": [\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            ]\n          },\n          \"supportIncidentFee\": \"string\",\n          \"supportPlanFee\": \"string\"\n        }\n      ],\n      \"enableSupport\": \"string\",\n      \"includedSeats\": \"string\",\n      \"otherDiscountPercent\": \"string\",\n      \"paymentCycle\": \"string\",\n      \"paymentMethod\": \"string\",\n      \"perSeatPrice\": \"string\",\n      \"planClassification\": \"string\",\n      \"planFeatureSets\": [\n        {\n          \"currencyFeatureSetPrices\": [\n            {\n              \"currencyCode\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"currencySymbol\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"envelopeFee\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"fixedFee\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"seatFee\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            },\n            {\n              \"currencyCode\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"currencySymbol\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"envelopeFee\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"fixedFee\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"seatFee\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            }\n          ],\n          \"envelopeFee\": \"<string>\",\n          \"featureSetId\": \"<string>\",\n          \"fixedFee\": \"<string>\",\n          \"is21CFRPart11\": \"<string>\",\n          \"isActive\": \"<string>\",\n          \"isEnabled\": \"<string>\",\n          \"name\": \"<string>\",\n          \"seatFee\": \"<string>\"\n        },\n        {\n          \"currencyFeatureSetPrices\": [\n            {\n              \"currencyCode\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"currencySymbol\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"envelopeFee\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"fixedFee\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"seatFee\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            },\n            {\n              \"currencyCode\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"currencySymbol\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"envelopeFee\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"fixedFee\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"seatFee\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            }\n          ],\n          \"envelopeFee\": \"<string>\",\n          \"featureSetId\": \"<string>\",\n          \"fixedFee\": \"<string>\",\n          \"is21CFRPart11\": \"<string>\",\n          \"isActive\": \"<string>\",\n          \"isEnabled\": \"<string>\",\n          \"name\": \"<string>\",\n          \"seatFee\": \"<string>\"\n        }\n      ],\n      \"planId\": \"string\",\n      \"planName\": \"string\",\n      \"seatDiscounts\": [\n        {\n          \"beginSeatCount\": \"string\",\n          \"discountPercent\": \"string\",\n          \"endSeatCount\": \"string\"\n        },\n        {\n          \"beginSeatCount\": \"string\",\n          \"discountPercent\": \"string\",\n          \"endSeatCount\": \"string\"\n        }\n      ],\n      \"supportIncidentFee\": \"string\",\n      \"supportPlanFee\": \"string\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "b13e8eb0-8b36-4eae-9c04-e5a4744ed8fc",
+              "name": "Error encountered.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "billing_plans",
+                    ":billingPlanId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "billingPlanId",
+                      "description": "(Required) The ID of the billing plan being accessed."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "*/*"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "*/*"
+                }
+              ],
+              "body": "{\n  \"errorCode\": \"string\",\n  \"message\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://api.docusign.net/Management",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "5430428c-7d95-49ae-8a44-67dea7716e8d",
+    "name": "DocuSign Admin AccountBrands BillingPlans API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "An API for an organization administrator to manage organizations, accounts and users\n\nContact Support:\n Name: DocuSign Developer Center\n Email: devcenter@docusign.com",
+      "type": "text/plain"
+    }
+  }
+}
