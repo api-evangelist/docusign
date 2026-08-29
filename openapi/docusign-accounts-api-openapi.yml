@@ -1,15 +1,12 @@
-openapi: 3.0.1
+openapi: 3.2.0
 info:
-  title: DocuSign Admin AccountBrands Accounts API
-  description: An API for an organization administrator to manage organizations, accounts and users
-  termsOfService: https://www.docusign.com/company/terms-and-conditions/developers
-  contact:
-    name: DocuSign Developer Center
-    url: https://developers.docusign.com
-    email: devcenter@docusign.com
-  version: v2.1
+  title: Docusign Accounts API
+  version: v2
+  termsOfService: https://www.docusign.com/company/terms-and-conditions/web
+  description: 'Operations tagged Accounts across 2 of this provider''s published API definitions: docusign-openapi-original.yml, docusign-rooms-openapi-original.yml. Each path carries the servers of the definition it was published in.'
 servers:
-- url: https://api.docusign.net/Management
+- url: https://www.docusign.net/restapi
+- url: https://rooms.docusign.com/restapi
 tags:
 - name: Accounts
   description: The Accounts resource provides methods that allow you to create, delete, and manage your accounts.
@@ -56,6 +53,8 @@ paths:
       x-ds-service: Accounts
       x-ds-in-sdk: true
       x-codegen-request-body-name: newAccountDefinition
+    servers:
+    - url: https://www.docusign.net/restapi
   /v2/accounts/{accountId}:
     get:
       tags:
@@ -126,6 +125,8 @@ paths:
       x-ds-method: delete
       x-ds-service: Accounts
       x-ds-in-sdk: true
+    servers:
+    - url: https://www.docusign.net/restapi
   /v2/accounts/{accountId}/billing_charges:
     get:
       tags:
@@ -172,6 +173,8 @@ paths:
       x-ds-method: getBillingCharges
       x-ds-service: Accounts
       x-ds-in-sdk: true
+    servers:
+    - url: https://www.docusign.net/restapi
   /v2/accounts/{accountId}/captive_recipients/{recipientPart}:
     delete:
       tags:
@@ -220,6 +223,8 @@ paths:
       x-ds-service: Accounts
       x-ds-in-sdk: true
       x-codegen-request-body-name: captiveRecipientInformation
+    servers:
+    - url: https://www.docusign.net/restapi
   /v2/accounts/{accountId}/recipient_names:
     get:
       tags:
@@ -257,6 +262,8 @@ paths:
       x-ds-method: listRecipientNamesByEmail
       x-ds-service: Accounts
       x-ds-in-sdk: true
+    servers:
+    - url: https://www.docusign.net/restapi
   /v2/accounts/{accountId}/settings:
     get:
       tags:
@@ -327,6 +334,8 @@ paths:
       x-ds-service: Accounts
       x-ds-in-sdk: true
       x-codegen-request-body-name: accountSettingsInformation
+    servers:
+    - url: https://www.docusign.net/restapi
   /v2/accounts/{accountId}/shared_access:
     get:
       tags:
@@ -490,6 +499,8 @@ paths:
       x-ds-service: Accounts
       x-ds-in-sdk: true
       x-codegen-request-body-name: accountSharedAccess
+    servers:
+    - url: https://www.docusign.net/restapi
   /v2/accounts/{accountId}/supported_languages:
     get:
       tags:
@@ -522,6 +533,8 @@ paths:
       x-ds-method: listSupportedLanguages
       x-ds-service: Accounts
       x-ds-in-sdk: true
+    servers:
+    - url: https://www.docusign.net/restapi
   /v2/accounts/{accountId}/unsupported_file_types:
     get:
       tags:
@@ -554,6 +567,8 @@ paths:
       x-ds-method: listUnsupportedFileTypes
       x-ds-service: Accounts
       x-ds-in-sdk: true
+    servers:
+    - url: https://www.docusign.net/restapi
   /v2/accounts/provisioning:
     get:
       tags:
@@ -579,6 +594,8 @@ paths:
       x-ds-method: getProvisioning
       x-ds-service: Accounts
       x-ds-in-sdk: true
+    servers:
+    - url: https://www.docusign.net/restapi
   /v2/organization_exports/{organizationId}/account_settings/{resultId}:
     get:
       tags:
@@ -611,352 +628,10 @@ paths:
       x-ds-method: getAccountSettingsExport
       x-ds-service: Uncategorized
       x-ds-in-sdk: true
+    servers:
+    - url: https://www.docusign.net/restapi
 components:
   schemas:
-    accountSettingsInformation:
-      type: object
-      properties:
-        accountSettings:
-          type: array
-          description: 'The list of
-
-            [account settings][accountsettings]
-
-            that determine
-
-            the features available for the account.
-
-            Note that some features are determined
-
-            by the plan used to create the account and cannot be overridden.
-
-
-            [accountsettings]: https://developers.docusign.com/esign-rest-api/reference/Accounts/Accounts/create/#account-settings
-
-            '
-          items:
-            $ref: '#/components/schemas/nameValue'
-      description: Contains account settings information.
-      x-ds-definition-name: accountSettingsInformation
-      x-ms-summary: Contains account settings information.
-    memberSharedItems:
-      type: object
-      properties:
-        envelopes:
-          type: array
-          description: List of information about shared envelopes.
-          items:
-            $ref: '#/components/schemas/sharedItem'
-        errorDetails:
-          $ref: '#/components/schemas/errorDetails'
-        templates:
-          type: array
-          description: List of information about shared templates.
-          items:
-            $ref: '#/components/schemas/templateSharedItem'
-        user:
-          $ref: '#/components/schemas/userInfo'
-      description: Information about shared items.
-      x-ds-definition-name: memberSharedItems
-      x-ms-summary: Information about shared items.
-    userInfo:
-      type: object
-      properties:
-        activationAccessCode:
-          type: string
-          description: ''
-        email:
-          type: string
-          description: ''
-        errorDetails:
-          $ref: '#/components/schemas/errorDetails'
-        loginStatus:
-          type: string
-          description: ''
-        sendActivationEmail:
-          type: string
-          description: ''
-        uri:
-          type: string
-          description: ''
-        userId:
-          type: string
-          description: 'The user ID of the user being accessed. Generally this is the user ID of the authenticated user, but if the authenticated user is an Admin on the account, this may be another user the Admin user is accessing. **Note**: For the [GET /v2/accounts/{accountId}/envelopes](https://developers.docusign.com/esign-rest-api/reference/Envelopes/Envelopes/listStatusChanges/#envelopesInformation) method, the `user_id` query parameter is not implemented and should not be used.'
-        userName:
-          type: string
-          description: ''
-        userStatus:
-          type: string
-          description: 'Status of the user''s account. One of:
-
-
-            * ActivationRequired
-
-            * ActivationSent
-
-            * Active
-
-            * Closed
-
-            * Disabled
-
-            '
-        userType:
-          type: string
-          description: ''
-      description: ''
-      x-ds-definition-name: userInfo
-      x-ms-summary: ''
-    addressInformation_v2:
-      type: object
-      properties:
-        address1:
-          type: string
-          description: 'First Line of the address.
-
-            Maximum length: 100 characters.'
-        address2:
-          type: string
-          description: 'Second Line of the address.
-
-            Maximum length: 100 characters.'
-        city:
-          type: string
-          description: ''
-        country:
-          type: string
-          description: Specifies the country associated with the address.
-        fax:
-          type: string
-          description: ''
-        phone:
-          type: string
-          description: ''
-        postalCode:
-          type: string
-          description: ''
-        stateOrProvince:
-          type: string
-          description: The state or province associated with the address.
-      description: ''
-      x-ds-definition-name: addressInformation_v2
-      x-ms-summary: ''
-    settingsMetadata:
-      type: object
-      properties:
-        is21CFRPart11:
-          type: string
-          description: When set to **true**, indicates that this module is enabled on the account.
-        options:
-          type: array
-          description: ''
-          items:
-            type: string
-        rights:
-          type: string
-          description: ''
-        uiHint:
-          type: string
-          description: ''
-        uiOrder:
-          type: string
-          description: ''
-        uiType:
-          type: string
-          description: ''
-      description: ''
-      x-ds-definition-name: settingsMetadata
-      x-ms-summary: ''
-    recipientNamesResponse:
-      type: object
-      properties:
-        multipleUsers:
-          type: string
-          description: Indicates whether email address is used by more than one user.
-        recipientNames:
-          type: array
-          description: ''
-          items:
-            type: string
-        reservedRecipientEmail:
-          type: string
-          description: ''
-      description: ''
-      x-ds-definition-name: recipientNamesResponse
-      x-ms-summary: ''
-    newAccountDefinition:
-      type: object
-      properties:
-        accountName:
-          type: string
-          description: The account name for the new account.
-        accountSettings:
-          type: array
-          description: 'The list of
-
-            [account settings][accountsettings]
-
-            that determine
-
-            the features available for the account.
-
-            Note that some features are determined
-
-            by the plan used to create the account and cannot be overridden.
-
-
-            [accountsettings]: https://developers.docusign.com/esign-rest-api/reference/Accounts/Accounts/create/#account-settings
-
-            '
-          items:
-            $ref: '#/components/schemas/nameValue'
-        addressInformation:
-          $ref: '#/components/schemas/accountAddress'
-        creditCardInformation:
-          $ref: '#/components/schemas/creditCardInformation'
-        distributorCode:
-          type: string
-          description: The code that identifies the billing plan groups and plans for the new account.
-        distributorPassword:
-          type: string
-          description: The password for the distributorCode.
-        envelopePartitionId:
-          type: string
-          description: ''
-        initialUser:
-          $ref: '#/components/schemas/userInformation'
-        PaymentProcessorInformation:
-          $ref: '#/components/schemas/paymentProcessorInformation'
-        planInformation:
-          $ref: '#/components/schemas/planInformation'
-        referralInformation:
-          $ref: '#/components/schemas/referralInformation'
-        socialAccountInformation:
-          $ref: '#/components/schemas/socialAccountInformation'
-      description: ''
-      x-ds-definition-name: newAccountDefinition
-      x-ms-summary: ''
-    fileTypeList:
-      type: object
-      properties:
-        fileTypes:
-          type: array
-          description: A collection of file types.
-          items:
-            $ref: '#/components/schemas/fileType'
-      description: ''
-      x-ds-definition-name: fileTypeList
-      x-ms-summary: ''
-    billingCharge:
-      type: object
-      properties:
-        allowedQuantity:
-          type: string
-          description: 'Reserved: TBD'
-        blocked:
-          type: string
-          description: 'Reserved: TBD'
-        chargeName:
-          type: string
-          description: 'Provides information on what services the charge item is for.
-
-
-            The following table provides a description of the different chargeName values available at this time.
-
-
-            | chargeName | Description |
-
-            | --- | --- |
-
-            | id_check | ID Check Charge |
-
-            | in_person_signing | In Person Signing charge |
-
-            | envelopes Included | Sent Envelopes for the account |
-
-            | age_verify | Age verification check |
-
-            | ofac | OFAC Check |
-
-            | id_confirm | ID confirmation check |
-
-            | student_authentication | STAN PIN authentication check |
-
-            | wet_sign_fax | Pages for returning signed documents by fax |
-
-            | attachment_fax | Pages for returning attachments by fax |
-
-            | phone_authentication | Phone authentication charge |
-
-            | powerforms | PowerForm envelopes sent |
-
-            | signer_payments | Payment processing charge |
-
-            | outbound_fax | Send by fax charge |
-
-            | bulk_recipient_envelopes | Bulk Recipient Envelopes sent |
-
-            | sms_authentications | SMS authentication charge |
-
-            | saml_authentications | SAML authentication charge |
-
-            | express_signer_certificate | DocuSign Express Certificate charge |
-
-            | personal_signer_certificate | Personal Signer Certificate charge |
-
-            | safe_certificate | SAFE BioPharma Signer Certificate charge |
-
-            | seats | Included active seats charge |
-
-            | open_trust_certificate | OpenTrust Signer Certificate charge |'
-        chargeType:
-          type: string
-          description: 'Reserved: TBD'
-        chargeUnitOfMeasure:
-          type: string
-          description: 'Reserved: TBD'
-        discounts:
-          type: array
-          description: ''
-          items:
-            $ref: '#/components/schemas/billingDiscount'
-        firstEffectiveDate:
-          type: string
-          description: ''
-        includedQuantity:
-          type: string
-          description: ''
-        incrementalQuantity:
-          type: string
-          description: 'Reserved: TBD'
-        lastEffectiveDate:
-          type: string
-          description: ''
-        prices:
-          type: array
-          description: ''
-          items:
-            $ref: '#/components/schemas/billingPrice'
-        unitPrice:
-          type: string
-          description: 'Reserved: TBD'
-        usedQuantity:
-          type: string
-          description: ''
-      description: Contains information about a billing charge.
-      x-ds-definition-name: billingCharge
-      x-ms-summary: Contains information about a billing charge.
-    supportedLanguages:
-      type: object
-      properties:
-        languages:
-          type: array
-          description: ''
-          items:
-            $ref: '#/components/schemas/nameValue'
-      description: ''
-      x-ds-definition-name: supportedLanguages
-      x-ms-summary: ''
     captiveRecipientInformation:
       type: object
       properties:
@@ -968,29 +643,6 @@ components:
       description: ''
       x-ds-definition-name: captiveRecipientInformation
       x-ms-summary: ''
-    billingPlanPreview:
-      type: object
-      properties:
-        currencyCode:
-          type: string
-          description: Specifies the ISO currency code for the account.
-        invoice:
-          $ref: '#/components/schemas/billingInvoice'
-        isProrated:
-          type: string
-          description: ''
-        subtotalAmount:
-          type: string
-          description: ''
-        taxAmount:
-          type: string
-          description: ''
-        totalAmount:
-          type: string
-          description: ''
-      description: Contains information about a preview billing plan.
-      x-ds-definition-name: billingPlanPreview
-      x-ms-summary: Contains information about a preview billing plan.
     fileType:
       type: object
       properties:
@@ -1003,16 +655,14 @@ components:
       description: ''
       x-ds-definition-name: fileType
       x-ms-summary: ''
-    templateSharedItem:
+    sharedItem:
       type: object
       properties:
         errorDetails:
           $ref: '#/components/schemas/errorDetails'
-        owner:
-          $ref: '#/components/schemas/userInfo'
         shared:
           type: string
-          description: 'How the template is shared. One of:
+          description: 'How the item is shared. One of:
 
 
             - `not_shared`
@@ -1021,106 +671,265 @@ components:
 
             - `shared_from`
 
-            - `shared_to_and_from`
-
-            '
-        sharedGroups:
-          type: array
-          description: List of groups that share the template.
-          items:
-            $ref: '#/components/schemas/memberGroupSharedItem'
-        sharedUsers:
-          type: array
-          description: List of users that share the template.
-          items:
-            $ref: '#/components/schemas/userSharedItem'
-        templateId:
-          type: string
-          description: 'The unique identifier of the template. If this is not provided, DocuSign will generate a value. '
-        templateName:
-          type: string
-          description: The name of the shared template.
-      description: Information about shared templates.
-      x-ds-definition-name: templateSharedItem
-      x-ms-summary: Information about shared templates.
-    nameValue:
+            - `shared_to_and_from`'
+        user:
+          $ref: '#/components/schemas/userInfo'
+      description: Information about the shared item.
+      x-ds-definition-name: sharedItem
+      x-ms-summary: Information about the shared item.
+    featureSet:
       type: object
       properties:
-        errorDetails:
-          $ref: '#/components/schemas/errorDetails'
+        currencyFeatureSetPrices:
+          type: array
+          description: A complex type that contains alternate currency values that are configured for this plan feature set.
+          items:
+            $ref: '#/components/schemas/currencyFeatureSetPrice'
+        envelopeFee:
+          type: string
+          description: ''
+        featureSetId:
+          type: string
+          description: A unique ID for the feature set.
+        fixedFee:
+          type: string
+          description: ''
+        is21CFRPart11:
+          type: string
+          description: When set to **true**, indicates that this module is enabled on the account.
+        isActive:
+          type: string
+          description: ''
+        isEnabled:
+          type: string
+          description: Specifies whether the feature set is actively enabled as part of the plan.
         name:
           type: string
-          description: The name or key of a name/value pair.
-        originalValue:
+          description: ''
+        seatFee:
           type: string
-          description: 'The initial value of the tab when it was sent to the recipient. '
-        value:
-          type: string
-          description: The value field of a name/value pair.
+          description: An incremental seat cost for seat-based plans. Only valid when isEnabled for the feature set is set to true.
       description: ''
-      x-ds-definition-name: nameValue
+      x-ds-definition-name: featureSet
       x-ms-summary: ''
-    provisioningInformation:
+    billingDiscount:
       type: object
       properties:
-        defaultConnectionId:
+        beginQuantity:
+          type: string
+          description: 'Reserved: TBD'
+        discount:
           type: string
           description: ''
-        defaultPlanId:
+        endQuantity:
           type: string
           description: ''
+      description: ''
+      x-ds-definition-name: billingDiscount
+      x-ms-summary: ''
+    addressInformation:
+      type: object
+      properties:
+        city:
+          type: string
+          description: The city associated with the address.
+        country:
+          type: string
+          description: Specifies the country associated with the address.
+        fax:
+          type: string
+          description: A Fax number associated with the address if one is available.
+        phone:
+          type: string
+          description: A phone number associated with the address.
+        state:
+          type: string
+          description: The state or province associated with the address.
+        street1:
+          type: string
+          description: The first line of the address.
+        street2:
+          type: string
+          description: The second line of the address (optional).
+        zip:
+          type: string
+          description: The zip or postal code associated with the address.
+        zipPlus4:
+          type: string
+          description: ''
+      description: Contains address information.
+      x-ds-definition-name: addressInformation
+      x-ms-summary: Contains address information.
+    userAccountManagementGranularInformation:
+      type: object
+      properties:
+        canManageAccountSecuritySettings:
+          type: string
+          description: ''
+        canManageAccountSecuritySettingsMetadata:
+          $ref: '#/components/schemas/settingsMetadata'
+        canManageAccountSettings:
+          type: string
+          description: ''
+        canManageAccountSettingsMetadata:
+          $ref: '#/components/schemas/settingsMetadata'
+        canManageAdmins:
+          type: string
+          description: '**True**
+
+            if the user can manage
+
+            admins.'
+        canManageAdminsMetadata:
+          $ref: '#/components/schemas/settingsMetadata'
+        canManageEnvelopeTransfer:
+          type: string
+          description: ''
+        canManageEnvelopeTransferMetadata:
+          $ref: '#/components/schemas/settingsMetadata'
+        canManageGroups:
+          type: string
+          description: '**True**
+
+            if the user can manage
+
+            groups.'
+        canManageGroupsMetadata:
+          $ref: '#/components/schemas/settingsMetadata'
+        canManageReporting:
+          type: string
+          description: ''
+        canManageReportingMetadata:
+          $ref: '#/components/schemas/settingsMetadata'
+        canManageSharing:
+          type: string
+          description: ''
+        canManageSharingMetadata:
+          $ref: '#/components/schemas/settingsMetadata'
+        canManageSigningGroups:
+          type: string
+          description: ''
+        canManageSigningGroupsMetadata:
+          $ref: '#/components/schemas/settingsMetadata'
+        canManageUsers:
+          type: string
+          description: '**True**
+
+            if the user can manage
+
+            users.'
+        canManageUsersMetadata:
+          $ref: '#/components/schemas/settingsMetadata'
+        canViewUsers:
+          type: string
+          description: ''
+        canViewUsersMetadata:
+          $ref: '#/components/schemas/settingsMetadata'
+      description: Describes which account management capabilities a user has.
+      x-ds-definition-name: userAccountManagementGranularInformation
+      x-ms-summary: Describes which account management capabilities a user has.
+    accountInformation:
+      type: object
+      properties:
+        accountIdGuid:
+          type: string
+          description: The GUID associated with the account ID.
+        accountName:
+          type: string
+          description: The name of the account that the workspace user belongs to.
+        allowTransactionRooms:
+          type: string
+          description: When set to **true**, the transaction rooms feature exposed through the Workspaces API is enabled.
+        billingPeriodDaysRemaining:
+          type: string
+          description: 'Reserved: TBD'
+        billingPeriodEndDate:
+          type: string
+          description: 'Reserved: TBD'
+        billingPeriodEnvelopesAllowed:
+          type: string
+          description: 'Reserved: TBD'
+        billingPeriodEnvelopesSent:
+          type: string
+          description: 'Reserved: TBD'
+        billingPeriodStartDate:
+          type: string
+          description: 'Reserved: TBD'
+        billingProfile:
+          type: string
+          description: 'Reserved: TBD'
+        canCancelRenewal:
+          type: string
+          description: 'Reserved: TBD'
+        canUpgrade:
+          type: string
+          description: When set to **true**, specifies that you can upgrade the account through the API.
+        connectPermission:
+          type: string
+          description: ''
+        createdDate:
+          type: string
+          description: ''
+        currencyCode:
+          type: string
+          description: Specifies the ISO currency code of the purchase. This is based on the ISO 4217 currency code information.
+        currentPlanId:
+          type: string
+          description: Identifies the plan that was used create this account.
         distributorCode:
           type: string
           description: The code that identifies the billing plan groups and plans for the new account.
-        distributorPassword:
-          type: string
-          description: The password for the distributorCode.
-        passwordRuleText:
+        docuSignLandingUrl:
           type: string
           description: ''
-        planPromotionText:
+        envelopeSendingBlocked:
           type: string
           description: ''
-        purchaseOrderOrPromAllowed:
+        envelopeUnitPrice:
+          type: string
+          description: ''
+        externalAccountId:
+          type: string
+          description: ''
+        forgottenPasswordQuestionsCount:
+          type: string
+          description: ' A complex element that contains up to four Question/Answer pairs for forgotten password information for a user.'
+        isDowngrade:
+          type: string
+          description: ''
+        paymentMethod:
+          type: string
+          description: ''
+        planClassification:
+          type: string
+          description: Identifies the type of plan. Examples include Business, Corporate, Enterprise, Free.
+        planEndDate:
+          type: string
+          description: The date that the current plan will end.
+        planName:
+          type: string
+          description: ''
+        planStartDate:
+          type: string
+          description: The date that the Account started using the current plan.
+        seatsAllowed:
+          type: string
+          description: ''
+        seatsInUse:
+          type: string
+          description: ''
+        status21CFRPart11:
+          type: string
+          description: ''
+        suspensionDate:
+          type: string
+          description: ''
+        suspensionStatus:
           type: string
           description: ''
       description: ''
-      x-ds-definition-name: provisioningInformation
+      x-ds-definition-name: accountInformation
       x-ms-summary: ''
-    accountSharedAccess:
-      type: object
-      properties:
-        accountId:
-          type: string
-          description: The account ID associated with the envelope.
-        endPosition:
-          type: string
-          description: 'The last position in the result set. '
-        errorDetails:
-          $ref: '#/components/schemas/errorDetails'
-        nextUri:
-          type: string
-          description: 'The URI for the next chunk of records based on the search request. It is `null` if this is the last set of results for the search. '
-        previousUri:
-          type: string
-          description: 'The URI for the prior chunk of records based on the search request. It is `null` if this is the first set of results for the search. '
-        resultSetSize:
-          type: string
-          description: 'The number of results returned in this response. '
-        sharedAccess:
-          type: array
-          description: A list of shared access information of envelope and templates for the users specified in the request.
-          items:
-            $ref: '#/components/schemas/memberSharedItems'
-        startPosition:
-          type: string
-          description: Starting position of the current result set.
-        totalSetSize:
-          type: string
-          description: The total number of items in the search's result set. It will always be greater than or equal to the value of the `resultSetSize` field.
-      description: Contains shared access information.
-      x-ds-definition-name: accountSharedAccess
-      x-ms-summary: Contains shared access information.
     userInformation:
       type: object
       properties:
@@ -1258,66 +1067,183 @@ components:
       description: ''
       x-ds-definition-name: userInformation
       x-ms-summary: ''
-    creditCardInformation:
+    paymentProcessorInformation:
       type: object
       properties:
         address:
           $ref: '#/components/schemas/addressInformation'
-        cardNumber:
+        billingAgreementId:
           type: string
-          description: The number on the credit card.
-        cardType:
+          description: ''
+        email:
           type: string
-          description: 'The credit card type. Valid values are: visa, mastercard, or amex.'
-        expirationMonth:
-          type: string
-          description: The month that the credit card expires (1-12).
-        expirationYear:
-          type: string
-          description: The year 4 digit year in which the credit card expires.
-        nameOnCard:
-          type: string
-          description: The exact name printed on the credit card.
+          description: ''
       description: ''
-      x-ds-definition-name: creditCardInformation
+      x-ds-definition-name: paymentProcessorInformation
       x-ms-summary: ''
-    billingInvoiceItem:
+    newAccountDefinition:
       type: object
       properties:
-        chargeAmount:
+        accountName:
+          type: string
+          description: The account name for the new account.
+        accountSettings:
+          type: array
+          description: 'The list of
+
+            [account settings][accountsettings]
+
+            that determine
+
+            the features available for the account.
+
+            Note that some features are determined
+
+            by the plan used to create the account and cannot be overridden.
+
+
+            [accountsettings]: https://developers.docusign.com/esign-rest-api/reference/Accounts/Accounts/create/#account-settings
+
+            '
+          items:
+            $ref: '#/components/schemas/nameValue'
+        addressInformation:
+          $ref: '#/components/schemas/accountAddress'
+        creditCardInformation:
+          $ref: '#/components/schemas/creditCardInformation'
+        distributorCode:
+          type: string
+          description: The code that identifies the billing plan groups and plans for the new account.
+        distributorPassword:
+          type: string
+          description: The password for the distributorCode.
+        envelopePartitionId:
+          type: string
+          description: ''
+        initialUser:
+          $ref: '#/components/schemas/userInformation'
+        PaymentProcessorInformation:
+          $ref: '#/components/schemas/paymentProcessorInformation'
+        planInformation:
+          $ref: '#/components/schemas/planInformation'
+        referralInformation:
+          $ref: '#/components/schemas/referralInformation'
+        socialAccountInformation:
+          $ref: '#/components/schemas/socialAccountInformation'
+      description: ''
+      x-ds-definition-name: newAccountDefinition
+      x-ms-summary: ''
+    billingChargeResponse:
+      type: object
+      properties:
+        billingChargeItems:
+          type: array
+          description: 'Reserved: TBD'
+          items:
+            $ref: '#/components/schemas/billingCharge'
+      description: Defines a billing charge response object.
+      x-ds-definition-name: billingChargeResponse
+      x-ms-summary: Defines a billing charge response object.
+    billingCharge:
+      type: object
+      properties:
+        allowedQuantity:
+          type: string
+          description: 'Reserved: TBD'
+        blocked:
           type: string
           description: 'Reserved: TBD'
         chargeName:
           type: string
-          description: 'Reserved: TBD'
-        invoiceItemId:
+          description: 'Provides information on what services the charge item is for.
+
+
+            The following table provides a description of the different chargeName values available at this time.
+
+
+            | chargeName | Description |
+
+            | --- | --- |
+
+            | id_check | ID Check Charge |
+
+            | in_person_signing | In Person Signing charge |
+
+            | envelopes Included | Sent Envelopes for the account |
+
+            | age_verify | Age verification check |
+
+            | ofac | OFAC Check |
+
+            | id_confirm | ID confirmation check |
+
+            | student_authentication | STAN PIN authentication check |
+
+            | wet_sign_fax | Pages for returning signed documents by fax |
+
+            | attachment_fax | Pages for returning attachments by fax |
+
+            | phone_authentication | Phone authentication charge |
+
+            | powerforms | PowerForm envelopes sent |
+
+            | signer_payments | Payment processing charge |
+
+            | outbound_fax | Send by fax charge |
+
+            | bulk_recipient_envelopes | Bulk Recipient Envelopes sent |
+
+            | sms_authentications | SMS authentication charge |
+
+            | saml_authentications | SAML authentication charge |
+
+            | express_signer_certificate | DocuSign Express Certificate charge |
+
+            | personal_signer_certificate | Personal Signer Certificate charge |
+
+            | safe_certificate | SAFE BioPharma Signer Certificate charge |
+
+            | seats | Included active seats charge |
+
+            | open_trust_certificate | OpenTrust Signer Certificate charge |'
+        chargeType:
           type: string
           description: 'Reserved: TBD'
-        quantity:
-          type: string
-          description: The quantity of envelopes to add to the account.
-        unitPrice:
+        chargeUnitOfMeasure:
           type: string
           description: 'Reserved: TBD'
-      description: Contains information about an item on a billing invoice.
-      x-ds-definition-name: billingInvoiceItem
-      x-ms-summary: Contains information about an item on a billing invoice.
-    billingPrice:
-      type: object
-      properties:
-        beginQuantity:
-          type: string
-          description: 'Reserved: TBD'
-        endQuantity:
+        discounts:
+          type: array
+          description: ''
+          items:
+            $ref: '#/components/schemas/billingDiscount'
+        firstEffectiveDate:
           type: string
           description: ''
+        includedQuantity:
+          type: string
+          description: ''
+        incrementalQuantity:
+          type: string
+          description: 'Reserved: TBD'
+        lastEffectiveDate:
+          type: string
+          description: ''
+        prices:
+          type: array
+          description: ''
+          items:
+            $ref: '#/components/schemas/billingPrice'
         unitPrice:
           type: string
           description: 'Reserved: TBD'
-      description: ''
-      x-ds-definition-name: billingPrice
-      x-ms-summary: ''
-    country:
+        usedQuantity:
+          type: string
+          description: ''
+      description: Contains information about a billing charge.
+      x-ds-definition-name: billingCharge
+      x-ms-summary: Contains information about a billing charge.
+    province:
       type: object
       properties:
         isoCode:
@@ -1326,107 +1252,256 @@ components:
         name:
           type: string
           description: ''
-        provinces:
-          type: array
-          description: ''
-          items:
-            $ref: '#/components/schemas/province'
-        provinceValidated:
-          type: string
-          description: ''
       description: ''
-      x-ds-definition-name: country
+      x-ds-definition-name: province
       x-ms-summary: ''
-    errorDetails:
+    billingPlanPreview:
       type: object
       properties:
-        errorCode:
+        currencyCode:
           type: string
-          description: An error code associated with the error.
-        message:
+          description: Specifies the ISO currency code for the account.
+        invoice:
+          $ref: '#/components/schemas/billingInvoice'
+        isProrated:
           type: string
-          description: A short error message.
-      description: This object describes errors that occur. It is only valid for responses, and ignored in requests.
-      x-ds-definition-name: errorDetails
-      x-ms-summary: This object describes errors that occur. It is only valid for responses, and ignored in requests.
-    captiveRecipient:
+          description: ''
+        subtotalAmount:
+          type: string
+          description: ''
+        taxAmount:
+          type: string
+          description: ''
+        totalAmount:
+          type: string
+          description: ''
+      description: Contains information about a preview billing plan.
+      x-ds-definition-name: billingPlanPreview
+      x-ms-summary: Contains information about a preview billing plan.
+    accountAddress:
       type: object
       properties:
-        clientUserId:
+        address1:
           type: string
-          description: "Specifies whether the recipient is embedded or remote. \n\nIf the `clientUserId` property is not null then the recipient is embedded. Use this field to associate the signer with their userId in your app. Authenticating the user is the responsibility of your app when you use embedded signing.\n\nNote: if the `clientUserId` property is set and either `SignerMustHaveAccount` or `SignerMustLoginToSign` property of the account settings is set to  **true**, an error is generated on sending. \n\nMaximum length: 100 characters. "
+          description: 'First Line of the address.
+
+            Maximum length: 100 characters.'
+        address2:
+          type: string
+          description: 'Second Line of the address.
+
+            Maximum length: 100 characters.'
+        city:
+          type: string
+          description: The city value of the address.
+        country:
+          type: string
+          description: Specifies the country associated with the address.
         email:
           type: string
-          description: Specifies the email address associated with the captive recipient.
+          description: ''
+        fax:
+          type: string
+          description: ''
+        firstName:
+          type: string
+          description: "The user's first name. \nMaximum Length: 50 characters."
+        lastName:
+          type: string
+          description: The recipient's last name.
+        phone:
+          type: string
+          description: ''
+        postalCode:
+          type: string
+          description: ''
+        state:
+          type: string
+          description: The state or province associated with the address.
+        supportedCountries:
+          type: array
+          description: Contains an array of countries supported by the billing plan.
+          items:
+            $ref: '#/components/schemas/country'
+      description: Contains information about an account address.
+      x-ds-definition-name: accountAddress
+      x-ms-summary: Contains information about an account address.
+    fileTypeList:
+      type: object
+      properties:
+        fileTypes:
+          type: array
+          description: A collection of file types.
+          items:
+            $ref: '#/components/schemas/fileType'
+      description: ''
+      x-ds-definition-name: fileTypeList
+      x-ms-summary: ''
+    userSharedItem:
+      type: object
+      properties:
         errorDetails:
           $ref: '#/components/schemas/errorDetails'
-        userName:
+        shared:
           type: string
-          description: Specifies the user name associated with the captive recipient.
-      description: ''
-      x-ds-definition-name: captiveRecipient
-      x-ms-summary: ''
-    featureSet:
+          description: 'How the item is shared. One of:
+
+
+            - `not_shared`
+
+            - `shared_to`
+
+            - `shared_from`
+
+            - `shared_to_and_from`
+
+            '
+        user:
+          $ref: '#/components/schemas/userInfo'
+      description: Information about a shared item.
+      x-ds-definition-name: userSharedItem
+      x-ms-summary: Information about a shared item.
+    nameValue:
       type: object
       properties:
-        currencyFeatureSetPrices:
-          type: array
-          description: A complex type that contains alternate currency values that are configured for this plan feature set.
-          items:
-            $ref: '#/components/schemas/currencyFeatureSetPrice'
-        envelopeFee:
-          type: string
-          description: ''
-        featureSetId:
-          type: string
-          description: A unique ID for the feature set.
-        fixedFee:
-          type: string
-          description: ''
-        is21CFRPart11:
-          type: string
-          description: When set to **true**, indicates that this module is enabled on the account.
-        isActive:
-          type: string
-          description: ''
-        isEnabled:
-          type: string
-          description: Specifies whether the feature set is actively enabled as part of the plan.
+        errorDetails:
+          $ref: '#/components/schemas/errorDetails'
         name:
           type: string
-          description: ''
-        seatFee:
+          description: The name or key of a name/value pair.
+        originalValue:
           type: string
-          description: An incremental seat cost for seat-based plans. Only valid when isEnabled for the feature set is set to true.
+          description: 'The initial value of the tab when it was sent to the recipient. '
+        value:
+          type: string
+          description: The value field of a name/value pair.
       description: ''
-      x-ds-definition-name: featureSet
+      x-ds-definition-name: nameValue
       x-ms-summary: ''
-    newAccountSummary:
+    userInfo:
       type: object
       properties:
-        accountId:
+        activationAccessCode:
           type: string
-          description: The account ID associated with the envelope.
-        accountIdGuid:
+          description: ''
+        email:
           type: string
-          description: The GUID associated with the account ID.
-        accountName:
+          description: ''
+        errorDetails:
+          $ref: '#/components/schemas/errorDetails'
+        loginStatus:
           type: string
-          description: The account name for the new account.
-        apiPassword:
+          description: ''
+        sendActivationEmail:
           type: string
-          description: Contains a token that can be used for authentication in API calls instead of using the user name and password.
-        baseUrl:
+          description: ''
+        uri:
           type: string
-          description: The URL that should be used for successive calls to this account. It includes the protocal (https), the DocuSign server where the account is located, and the account number. Use this Url to make API calls against this account. Many of the API calls provide Uri's that are relative to this baseUrl.
-        billingPlanPreview:
-          $ref: '#/components/schemas/billingPlanPreview'
+          description: ''
         userId:
           type: string
-          description: Specifies the user ID of the new user.
+          description: 'The user ID of the user being accessed. Generally this is the user ID of the authenticated user, but if the authenticated user is an Admin on the account, this may be another user the Admin user is accessing. **Note**: For the [GET /v2/accounts/{accountId}/envelopes](https://developers.docusign.com/esign-rest-api/reference/Envelopes/Envelopes/listStatusChanges/#envelopesInformation) method, the `user_id` query parameter is not implemented and should not be used.'
+        userName:
+          type: string
+          description: ''
+        userStatus:
+          type: string
+          description: 'Status of the user''s account. One of:
+
+
+            * ActivationRequired
+
+            * ActivationSent
+
+            * Active
+
+            * Closed
+
+            * Disabled
+
+            '
+        userType:
+          type: string
+          description: ''
       description: ''
-      x-ds-definition-name: newAccountSummary
+      x-ds-definition-name: userInfo
       x-ms-summary: ''
+    forgottenPasswordInformation:
+      type: object
+      properties:
+        forgottenPasswordAnswer1:
+          type: string
+          description: The answer to the first forgotten password challenge question.
+        forgottenPasswordAnswer2:
+          type: string
+          description: The answer to the second forgotten password challenge question.
+        forgottenPasswordAnswer3:
+          type: string
+          description: The answer to the third forgotten password challenge question.
+        forgottenPasswordAnswer4:
+          type: string
+          description: The answer to the fourth forgotten password challenge question.
+        forgottenPasswordQuestion1:
+          type: string
+          description: The first challenge question presented to a user who has forgotten their password.
+        forgottenPasswordQuestion2:
+          type: string
+          description: The second challenge question presented to a user who has forgotten their password.
+        forgottenPasswordQuestion3:
+          type: string
+          description: The third challenge question presented to a user who has forgotten their password.
+        forgottenPasswordQuestion4:
+          type: string
+          description: The fourth challenge question presented to a user who has forgotten their password.
+      description: A complex element that has up to four Question/Answer pairs for forgotten password information.
+      x-ds-definition-name: forgottenPasswordInformation
+      x-ms-summary: A complex element that has up to four Question/Answer pairs for forgotten password information.
+    socialAccountInformation:
+      type: object
+      properties:
+        email:
+          type: string
+          description: ''
+        errorDetails:
+          $ref: '#/components/schemas/errorDetails'
+        provider:
+          type: string
+          description: The social account provider (Facebook, Yahoo, etc.)
+        socialId:
+          type: string
+          description: The ID provided by the Socal Account.
+        userName:
+          type: string
+          description: ''
+      description: ''
+      x-ds-definition-name: socialAccountInformation
+      x-ms-summary: ''
+    accountSettingsInformation:
+      type: object
+      properties:
+        accountSettings:
+          type: array
+          description: 'The list of
+
+            [account settings][accountsettings]
+
+            that determine
+
+            the features available for the account.
+
+            Note that some features are determined
+
+            by the plan used to create the account and cannot be overridden.
+
+
+            [accountsettings]: https://developers.docusign.com/esign-rest-api/reference/Accounts/Accounts/create/#account-settings
+
+            '
+          items:
+            $ref: '#/components/schemas/nameValue'
+      description: Contains account settings information.
+      x-ds-definition-name: accountSettingsInformation
+      x-ms-summary: Contains account settings information.
     referralInformation:
       type: object
       properties:
@@ -1487,39 +1562,46 @@ components:
       description: "A complex type that contains the following information for entering referral and discount information. The following items are included in the referral information (all string content): enableSupport, includedSeats, saleDiscountPercent, saleDiscountAmount, saleDiscountFixedAmount, saleDiscountPeriods, saleDiscountSeatPriceOverride, planStartMonth, referralCode, referrerName, advertisementId, publisherId, shopperId, promoCode, groupMemberId, idType, and industry \n\n###### Note: saleDiscountPercent, saleDiscountAmount, saleDiscountFixedAmount, saleDiscountPeriods, and saleDiscountSeatPriceOverride are reserved for DoucSign use only."
       x-ds-definition-name: referralInformation
       x-ms-summary: "A complex type that contains the following information for entering referral and discount information. The following items are included in the referral information (all string content): enableSupport, includedSeats, saleDiscountPercent, saleDiscountAmount, saleDiscountFixedAmount, saleDiscountPeriods, saleDiscountSeatPriceOverride, planStartMonth, referralCode, referrerName, advertisementId, publisherId, shopperId, promoCode, groupMemberId, idType, and industry \n\n###### Note: saleDiscountPercent, saleDiscountAmount, saleDiscountFixedAmount, saleDiscountPeriods, and saleDiscountSeatPriceOverride are reserved for DoucSign use only."
-    addressInformation:
+    memberGroupSharedItem:
       type: object
       properties:
-        city:
+        errorDetails:
+          $ref: '#/components/schemas/errorDetails'
+        group:
+          $ref: '#/components/schemas/group'
+        shared:
           type: string
-          description: The city associated with the address.
-        country:
-          type: string
-          description: Specifies the country associated with the address.
-        fax:
-          type: string
-          description: A Fax number associated with the address if one is available.
-        phone:
-          type: string
-          description: A phone number associated with the address.
-        state:
-          type: string
-          description: The state or province associated with the address.
-        street1:
-          type: string
-          description: The first line of the address.
-        street2:
-          type: string
-          description: The second line of the address (optional).
-        zip:
-          type: string
-          description: The zip or postal code associated with the address.
-        zipPlus4:
-          type: string
-          description: ''
-      description: Contains address information.
-      x-ds-definition-name: addressInformation
-      x-ms-summary: Contains address information.
+          description: 'How the item is shared. One of:
+
+
+
+            - `not_shared`: The item is not shared.
+
+
+            - `shared_to`: The item is shared.'
+      description: Information about items shared among groups.
+      x-ds-definition-name: memberGroupSharedItem
+      x-ms-summary: Information about items shared among groups.
+    memberSharedItems:
+      type: object
+      properties:
+        envelopes:
+          type: array
+          description: List of information about shared envelopes.
+          items:
+            $ref: '#/components/schemas/sharedItem'
+        errorDetails:
+          $ref: '#/components/schemas/errorDetails'
+        templates:
+          type: array
+          description: List of information about shared templates.
+          items:
+            $ref: '#/components/schemas/templateSharedItem'
+        user:
+          $ref: '#/components/schemas/userInfo'
+      description: Information about shared items.
+      x-ds-definition-name: memberSharedItems
+      x-ms-summary: Information about shared items.
     planInformation:
       type: object
       properties:
@@ -1550,182 +1632,108 @@ components:
       description: An object used to identify the features and attributes of the account being created.
       x-ds-definition-name: planInformation
       x-ms-summary: An object used to identify the features and attributes of the account being created.
-    group:
+    supportedLanguages:
       type: object
       properties:
-        errorDetails:
-          $ref: '#/components/schemas/errorDetails'
-        groupId:
-          type: string
-          description: The DocuSign group ID for the group.
-        groupName:
-          type: string
-          description: The name of the group.
-        groupType:
-          type: string
-          description: The group type.
-        permissionProfileId:
-          type: string
-          description: The ID of the permission profile associated with the group.
-        users:
+        languages:
           type: array
-          description: List of users in the group.
+          description: ''
           items:
-            $ref: '#/components/schemas/userInfo'
-      description: Information about groups.
-      x-ds-definition-name: group
-      x-ms-summary: Information about groups.
-    accountInformation:
-      type: object
-      properties:
-        accountIdGuid:
-          type: string
-          description: The GUID associated with the account ID.
-        accountName:
-          type: string
-          description: The name of the account that the workspace user belongs to.
-        allowTransactionRooms:
-          type: string
-          description: When set to **true**, the transaction rooms feature exposed through the Workspaces API is enabled.
-        billingPeriodDaysRemaining:
-          type: string
-          description: 'Reserved: TBD'
-        billingPeriodEndDate:
-          type: string
-          description: 'Reserved: TBD'
-        billingPeriodEnvelopesAllowed:
-          type: string
-          description: 'Reserved: TBD'
-        billingPeriodEnvelopesSent:
-          type: string
-          description: 'Reserved: TBD'
-        billingPeriodStartDate:
-          type: string
-          description: 'Reserved: TBD'
-        billingProfile:
-          type: string
-          description: 'Reserved: TBD'
-        canCancelRenewal:
-          type: string
-          description: 'Reserved: TBD'
-        canUpgrade:
-          type: string
-          description: When set to **true**, specifies that you can upgrade the account through the API.
-        connectPermission:
-          type: string
-          description: ''
-        createdDate:
-          type: string
-          description: ''
-        currencyCode:
-          type: string
-          description: Specifies the ISO currency code of the purchase. This is based on the ISO 4217 currency code information.
-        currentPlanId:
-          type: string
-          description: Identifies the plan that was used create this account.
-        distributorCode:
-          type: string
-          description: The code that identifies the billing plan groups and plans for the new account.
-        docuSignLandingUrl:
-          type: string
-          description: ''
-        envelopeSendingBlocked:
-          type: string
-          description: ''
-        envelopeUnitPrice:
-          type: string
-          description: ''
-        externalAccountId:
-          type: string
-          description: ''
-        forgottenPasswordQuestionsCount:
-          type: string
-          description: ' A complex element that contains up to four Question/Answer pairs for forgotten password information for a user.'
-        isDowngrade:
-          type: string
-          description: ''
-        paymentMethod:
-          type: string
-          description: ''
-        planClassification:
-          type: string
-          description: Identifies the type of plan. Examples include Business, Corporate, Enterprise, Free.
-        planEndDate:
-          type: string
-          description: The date that the current plan will end.
-        planName:
-          type: string
-          description: ''
-        planStartDate:
-          type: string
-          description: The date that the Account started using the current plan.
-        seatsAllowed:
-          type: string
-          description: ''
-        seatsInUse:
-          type: string
-          description: ''
-        status21CFRPart11:
-          type: string
-          description: ''
-        suspensionDate:
-          type: string
-          description: ''
-        suspensionStatus:
-          type: string
-          description: ''
+            $ref: '#/components/schemas/nameValue'
       description: ''
-      x-ds-definition-name: accountInformation
+      x-ds-definition-name: supportedLanguages
       x-ms-summary: ''
-    forgottenPasswordInformation:
+    accountSharedAccess:
       type: object
       properties:
-        forgottenPasswordAnswer1:
+        accountId:
           type: string
-          description: The answer to the first forgotten password challenge question.
-        forgottenPasswordAnswer2:
+          description: The account ID associated with the envelope.
+        endPosition:
           type: string
-          description: The answer to the second forgotten password challenge question.
-        forgottenPasswordAnswer3:
-          type: string
-          description: The answer to the third forgotten password challenge question.
-        forgottenPasswordAnswer4:
-          type: string
-          description: The answer to the fourth forgotten password challenge question.
-        forgottenPasswordQuestion1:
-          type: string
-          description: The first challenge question presented to a user who has forgotten their password.
-        forgottenPasswordQuestion2:
-          type: string
-          description: The second challenge question presented to a user who has forgotten their password.
-        forgottenPasswordQuestion3:
-          type: string
-          description: The third challenge question presented to a user who has forgotten their password.
-        forgottenPasswordQuestion4:
-          type: string
-          description: The fourth challenge question presented to a user who has forgotten their password.
-      description: A complex element that has up to four Question/Answer pairs for forgotten password information.
-      x-ds-definition-name: forgottenPasswordInformation
-      x-ms-summary: A complex element that has up to four Question/Answer pairs for forgotten password information.
-    socialAccountInformation:
-      type: object
-      properties:
-        email:
-          type: string
-          description: ''
+          description: 'The last position in the result set. '
         errorDetails:
           $ref: '#/components/schemas/errorDetails'
-        provider:
+        nextUri:
           type: string
-          description: The social account provider (Facebook, Yahoo, etc.)
-        socialId:
+          description: 'The URI for the next chunk of records based on the search request. It is `null` if this is the last set of results for the search. '
+        previousUri:
           type: string
-          description: The ID provided by the Socal Account.
-        userName:
+          description: 'The URI for the prior chunk of records based on the search request. It is `null` if this is the first set of results for the search. '
+        resultSetSize:
+          type: string
+          description: 'The number of results returned in this response. '
+        sharedAccess:
+          type: array
+          description: A list of shared access information of envelope and templates for the users specified in the request.
+          items:
+            $ref: '#/components/schemas/memberSharedItems'
+        startPosition:
+          type: string
+          description: Starting position of the current result set.
+        totalSetSize:
+          type: string
+          description: The total number of items in the search's result set. It will always be greater than or equal to the value of the `resultSetSize` field.
+      description: Contains shared access information.
+      x-ds-definition-name: accountSharedAccess
+      x-ms-summary: Contains shared access information.
+    errorDetails:
+      type: object
+      properties:
+        errorCode:
+          type: string
+          description: An error code associated with the error.
+        message:
+          type: string
+          description: A short error message.
+      description: This object describes errors that occur. It is only valid for responses, and ignored in requests.
+      x-ds-definition-name: errorDetails
+      x-ms-summary: This object describes errors that occur. It is only valid for responses, and ignored in requests.
+    settingsMetadata:
+      type: object
+      properties:
+        is21CFRPart11:
+          type: string
+          description: When set to **true**, indicates that this module is enabled on the account.
+        options:
+          type: array
+          description: ''
+          items:
+            type: string
+        rights:
+          type: string
+          description: ''
+        uiHint:
+          type: string
+          description: ''
+        uiOrder:
+          type: string
+          description: ''
+        uiType:
           type: string
           description: ''
       description: ''
-      x-ds-definition-name: socialAccountInformation
+      x-ds-definition-name: settingsMetadata
+      x-ms-summary: ''
+    country:
+      type: object
+      properties:
+        isoCode:
+          type: string
+          description: ''
+        name:
+          type: string
+          description: ''
+        provinces:
+          type: array
+          description: ''
+          items:
+            $ref: '#/components/schemas/province'
+        provinceValidated:
+          type: string
+          description: ''
+      description: ''
+      x-ds-definition-name: country
       x-ms-summary: ''
     billingInvoice:
       type: object
@@ -1765,35 +1773,39 @@ components:
       description: ''
       x-ds-definition-name: billingInvoice
       x-ms-summary: ''
-    recipientDomain:
+    addressInformation_v2:
       type: object
       properties:
-        active:
+        address1:
+          type: string
+          description: 'First Line of the address.
+
+            Maximum length: 100 characters.'
+        address2:
+          type: string
+          description: 'Second Line of the address.
+
+            Maximum length: 100 characters.'
+        city:
           type: string
           description: ''
-        domainCode:
+        country:
+          type: string
+          description: Specifies the country associated with the address.
+        fax:
           type: string
           description: ''
-        domainName:
+        phone:
           type: string
           description: ''
-        recipientDomainId:
+        postalCode:
           type: string
           description: ''
+        stateOrProvince:
+          type: string
+          description: The state or province associated with the address.
       description: ''
-      x-ds-definition-name: recipientDomain
-      x-ms-summary: ''
-    province:
-      type: object
-      properties:
-        isoCode:
-          type: string
-          description: ''
-        name:
-          type: string
-          description: ''
-      description: ''
-      x-ds-definition-name: province
+      x-ds-definition-name: addressInformation_v2
       x-ms-summary: ''
     addOn:
       type: object
@@ -1813,105 +1825,47 @@ components:
       description: Contains information about add ons.
       x-ds-definition-name: addOn
       x-ms-summary: Contains information about add ons.
-    userAccountManagementGranularInformation:
+    newAccountSummary:
       type: object
       properties:
-        canManageAccountSecuritySettings:
+        accountId:
           type: string
-          description: ''
-        canManageAccountSecuritySettingsMetadata:
-          $ref: '#/components/schemas/settingsMetadata'
-        canManageAccountSettings:
+          description: The account ID associated with the envelope.
+        accountIdGuid:
           type: string
-          description: ''
-        canManageAccountSettingsMetadata:
-          $ref: '#/components/schemas/settingsMetadata'
-        canManageAdmins:
+          description: The GUID associated with the account ID.
+        accountName:
           type: string
-          description: '**True**
-
-            if the user can manage
-
-            admins.'
-        canManageAdminsMetadata:
-          $ref: '#/components/schemas/settingsMetadata'
-        canManageEnvelopeTransfer:
+          description: The account name for the new account.
+        apiPassword:
           type: string
-          description: ''
-        canManageEnvelopeTransferMetadata:
-          $ref: '#/components/schemas/settingsMetadata'
-        canManageGroups:
+          description: Contains a token that can be used for authentication in API calls instead of using the user name and password.
+        baseUrl:
           type: string
-          description: '**True**
-
-            if the user can manage
-
-            groups.'
-        canManageGroupsMetadata:
-          $ref: '#/components/schemas/settingsMetadata'
-        canManageReporting:
+          description: The URL that should be used for successive calls to this account. It includes the protocal (https), the DocuSign server where the account is located, and the account number. Use this Url to make API calls against this account. Many of the API calls provide Uri's that are relative to this baseUrl.
+        billingPlanPreview:
+          $ref: '#/components/schemas/billingPlanPreview'
+        userId:
           type: string
-          description: ''
-        canManageReportingMetadata:
-          $ref: '#/components/schemas/settingsMetadata'
-        canManageSharing:
-          type: string
-          description: ''
-        canManageSharingMetadata:
-          $ref: '#/components/schemas/settingsMetadata'
-        canManageSigningGroups:
-          type: string
-          description: ''
-        canManageSigningGroupsMetadata:
-          $ref: '#/components/schemas/settingsMetadata'
-        canManageUsers:
-          type: string
-          description: '**True**
-
-            if the user can manage
-
-            users.'
-        canManageUsersMetadata:
-          $ref: '#/components/schemas/settingsMetadata'
-        canViewUsers:
-          type: string
-          description: ''
-        canViewUsersMetadata:
-          $ref: '#/components/schemas/settingsMetadata'
-      description: Describes which account management capabilities a user has.
-      x-ds-definition-name: userAccountManagementGranularInformation
-      x-ms-summary: Describes which account management capabilities a user has.
-    billingChargeResponse:
+          description: Specifies the user ID of the new user.
+      description: ''
+      x-ds-definition-name: newAccountSummary
+      x-ms-summary: ''
+    billingPrice:
       type: object
       properties:
-        billingChargeItems:
-          type: array
+        beginQuantity:
+          type: string
           description: 'Reserved: TBD'
-          items:
-            $ref: '#/components/schemas/billingCharge'
-      description: Defines a billing charge response object.
-      x-ds-definition-name: billingChargeResponse
-      x-ms-summary: Defines a billing charge response object.
-    memberGroupSharedItem:
-      type: object
-      properties:
-        errorDetails:
-          $ref: '#/components/schemas/errorDetails'
-        group:
-          $ref: '#/components/schemas/group'
-        shared:
+        endQuantity:
           type: string
-          description: 'How the item is shared. One of:
-
-
-
-            - `not_shared`: The item is not shared.
-
-
-            - `shared_to`: The item is shared.'
-      description: Information about items shared among groups.
-      x-ds-definition-name: memberGroupSharedItem
-      x-ms-summary: Information about items shared among groups.
+          description: ''
+        unitPrice:
+          type: string
+          description: 'Reserved: TBD'
+      description: ''
+      x-ds-definition-name: billingPrice
+      x-ms-summary: ''
     currencyFeatureSetPrice:
       type: object
       properties:
@@ -1933,14 +1887,101 @@ components:
       description: ''
       x-ds-definition-name: currencyFeatureSetPrice
       x-ms-summary: ''
-    userSharedItem:
+    creditCardInformation:
+      type: object
+      properties:
+        address:
+          $ref: '#/components/schemas/addressInformation'
+        cardNumber:
+          type: string
+          description: The number on the credit card.
+        cardType:
+          type: string
+          description: 'The credit card type. Valid values are: visa, mastercard, or amex.'
+        expirationMonth:
+          type: string
+          description: The month that the credit card expires (1-12).
+        expirationYear:
+          type: string
+          description: The year 4 digit year in which the credit card expires.
+        nameOnCard:
+          type: string
+          description: The exact name printed on the credit card.
+      description: ''
+      x-ds-definition-name: creditCardInformation
+      x-ms-summary: ''
+    captiveRecipient:
+      type: object
+      properties:
+        clientUserId:
+          type: string
+          description: "Specifies whether the recipient is embedded or remote. \n\nIf the `clientUserId` property is not null then the recipient is embedded. Use this field to associate the signer with their userId in your app. Authenticating the user is the responsibility of your app when you use embedded signing.\n\nNote: if the `clientUserId` property is set and either `SignerMustHaveAccount` or `SignerMustLoginToSign` property of the account settings is set to  **true**, an error is generated on sending. \n\nMaximum length: 100 characters. "
+        email:
+          type: string
+          description: Specifies the email address associated with the captive recipient.
+        errorDetails:
+          $ref: '#/components/schemas/errorDetails'
+        userName:
+          type: string
+          description: Specifies the user name associated with the captive recipient.
+      description: ''
+      x-ds-definition-name: captiveRecipient
+      x-ms-summary: ''
+    provisioningInformation:
+      type: object
+      properties:
+        defaultConnectionId:
+          type: string
+          description: ''
+        defaultPlanId:
+          type: string
+          description: ''
+        distributorCode:
+          type: string
+          description: The code that identifies the billing plan groups and plans for the new account.
+        distributorPassword:
+          type: string
+          description: The password for the distributorCode.
+        passwordRuleText:
+          type: string
+          description: ''
+        planPromotionText:
+          type: string
+          description: ''
+        purchaseOrderOrPromAllowed:
+          type: string
+          description: ''
+      description: ''
+      x-ds-definition-name: provisioningInformation
+      x-ms-summary: ''
+    recipientDomain:
+      type: object
+      properties:
+        active:
+          type: string
+          description: ''
+        domainCode:
+          type: string
+          description: ''
+        domainName:
+          type: string
+          description: ''
+        recipientDomainId:
+          type: string
+          description: ''
+      description: ''
+      x-ds-definition-name: recipientDomain
+      x-ms-summary: ''
+    templateSharedItem:
       type: object
       properties:
         errorDetails:
           $ref: '#/components/schemas/errorDetails'
+        owner:
+          $ref: '#/components/schemas/userInfo'
         shared:
           type: string
-          description: 'How the item is shared. One of:
+          description: 'How the template is shared. One of:
 
 
             - `not_shared`
@@ -1952,128 +1993,149 @@ components:
             - `shared_to_and_from`
 
             '
-        user:
-          $ref: '#/components/schemas/userInfo'
-      description: Information about a shared item.
-      x-ds-definition-name: userSharedItem
-      x-ms-summary: Information about a shared item.
-    accountAddress:
-      type: object
-      properties:
-        address1:
-          type: string
-          description: 'First Line of the address.
-
-            Maximum length: 100 characters.'
-        address2:
-          type: string
-          description: 'Second Line of the address.
-
-            Maximum length: 100 characters.'
-        city:
-          type: string
-          description: The city value of the address.
-        country:
-          type: string
-          description: Specifies the country associated with the address.
-        email:
-          type: string
-          description: ''
-        fax:
-          type: string
-          description: ''
-        firstName:
-          type: string
-          description: "The user's first name. \nMaximum Length: 50 characters."
-        lastName:
-          type: string
-          description: The recipient's last name.
-        phone:
-          type: string
-          description: ''
-        postalCode:
-          type: string
-          description: ''
-        state:
-          type: string
-          description: The state or province associated with the address.
-        supportedCountries:
+        sharedGroups:
           type: array
-          description: Contains an array of countries supported by the billing plan.
+          description: List of groups that share the template.
           items:
-            $ref: '#/components/schemas/country'
-      description: Contains information about an account address.
-      x-ds-definition-name: accountAddress
-      x-ms-summary: Contains information about an account address.
-    billingDiscount:
+            $ref: '#/components/schemas/memberGroupSharedItem'
+        sharedUsers:
+          type: array
+          description: List of users that share the template.
+          items:
+            $ref: '#/components/schemas/userSharedItem'
+        templateId:
+          type: string
+          description: 'The unique identifier of the template. If this is not provided, DocuSign will generate a value. '
+        templateName:
+          type: string
+          description: The name of the shared template.
+      description: Information about shared templates.
+      x-ds-definition-name: templateSharedItem
+      x-ms-summary: Information about shared templates.
+    billingInvoiceItem:
       type: object
       properties:
-        beginQuantity:
+        chargeAmount:
           type: string
           description: 'Reserved: TBD'
-        discount:
+        chargeName:
           type: string
+          description: 'Reserved: TBD'
+        invoiceItemId:
+          type: string
+          description: 'Reserved: TBD'
+        quantity:
+          type: string
+          description: The quantity of envelopes to add to the account.
+        unitPrice:
+          type: string
+          description: 'Reserved: TBD'
+      description: Contains information about an item on a billing invoice.
+      x-ds-definition-name: billingInvoiceItem
+      x-ms-summary: Contains information about an item on a billing invoice.
+    recipientNamesResponse:
+      type: object
+      properties:
+        multipleUsers:
+          type: string
+          description: Indicates whether email address is used by more than one user.
+        recipientNames:
+          type: array
           description: ''
-        endQuantity:
+          items:
+            type: string
+        reservedRecipientEmail:
           type: string
           description: ''
       description: ''
-      x-ds-definition-name: billingDiscount
+      x-ds-definition-name: recipientNamesResponse
       x-ms-summary: ''
-    sharedItem:
+    group:
       type: object
       properties:
         errorDetails:
           $ref: '#/components/schemas/errorDetails'
-        shared:
+        groupId:
           type: string
-          description: 'How the item is shared. One of:
-
-
-            - `not_shared`
-
-            - `shared_to`
-
-            - `shared_from`
-
-            - `shared_to_and_from`'
-        user:
-          $ref: '#/components/schemas/userInfo'
-      description: Information about the shared item.
-      x-ds-definition-name: sharedItem
-      x-ms-summary: Information about the shared item.
-    paymentProcessorInformation:
+          description: The DocuSign group ID for the group.
+        groupName:
+          type: string
+          description: The name of the group.
+        groupType:
+          type: string
+          description: The group type.
+        permissionProfileId:
+          type: string
+          description: The ID of the permission profile associated with the group.
+        users:
+          type: array
+          description: List of users in the group.
+          items:
+            $ref: '#/components/schemas/userInfo'
+      description: Information about groups.
+      x-ds-definition-name: group
+      x-ms-summary: Information about groups.
+    AccountSummary:
       type: object
       properties:
-        address:
-          $ref: '#/components/schemas/addressInformation'
-        billingAgreementId:
+        companyId:
+          type: integer
+          description: The ID of the company.
+          format: int32
+          readOnly: true
+        name:
+          type: string
+          description: The name of the company.
+          readOnly: true
+        companyVersion:
+          type: string
+          description: 'The version of Rooms that the company uses. This property is read-only. Possible values are:
+
+
+            - `v6`: Rooms Version 6.'
+          enum:
+          - v5
+          - v6
+        docuSignAccountGuid:
+          type: string
+          description: The globally-unique identifier (GUID) for the DocuSign Rooms account.
+          readOnly: true
+        defaultFieldSetId:
+          type: string
+          description: The ID of the company's default field set. A field set is a set of data fields and the information about those data fields that the system uses to configure rooms. It corresponds to the **Admin > Company > Room Details** area in the console.
+          format: uuid
+          readOnly: true
+        requireOfficeLibraryAssignments:
+          type: boolean
+          description: ''
+          readOnly: true
+      description: Contains details about a company account.
+      x-ds-definition-name: AccountSummary
+      x-ms-summary: Contains details about a company account.
+    ApiError:
+      type: object
+      properties:
+        errorCode:
+          type: string
+          description: The code associated with the error condition.
+        message:
+          type: string
+          description: A brief message describing the error condition.
+        referenceId:
           type: string
           description: ''
-        email:
-          type: string
-          description: ''
-      description: ''
-      x-ds-definition-name: paymentProcessorInformation
-      x-ms-summary: ''
+      description: This object describes errors that occur. It is valid only for responses and ignored in requests.
+      x-ds-definition-name: ApiError
+      x-ms-summary: This object describes errors that occur. It is valid only for responses and ignored in requests.
   securitySchemes:
-    accessCode:
-      type: oauth2
-      description: OAuth2 Access code Grant
-      flows:
-        authorizationCode:
-          authorizationUrl: https://account.docusign.com/oauth/auth
-          tokenUrl: https://account.docusign.com/oauth/auth
-          scopes:
-            organization_read: ''
-            permission_read: ''
-            group_read: ''
-            user_read: ''
-            account_read: ''
-            account_write: ''
-            user_write: ''
-            identity_provider_read: ''
-            domain_read: ''
+    Bearer:
+      type: apiKey
+      description: 'JWT Authorization header using the Bearer scheme. Example: "Authorization: Bearer {token}"'
+      name: Authorization
+      in: header
+x-refined-from:
+- docusign-openapi-original.yml
+- docusign-rooms-openapi-original.yml
 x-ds-categories:
 - name: UserManagement
   summary: Methods to manage users in an account.

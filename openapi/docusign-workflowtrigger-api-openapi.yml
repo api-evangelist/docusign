@@ -1,15 +1,15 @@
-openapi: 3.0.1
+openapi: 3.2.0
 info:
-  title: DocuSign Admin AccountBrands WorkflowTrigger API
-  description: An API for an organization administrator to manage organizations, accounts and users
-  termsOfService: https://www.docusign.com/company/terms-and-conditions/developers
+  title: Docusign Maestro Workflow Trigger API
+  description: Maestro authors and executes experiences that allow non-coders the ability to define Simple Business Process without having to write code and to deploy them seamlessly without having to have development expertise
+  termsOfService: https://www.docusign.com/company/terms-and-conditions/web
   contact:
-    name: DocuSign Developer Center
-    url: https://developers.docusign.com
+    name: Docusign Developer Center
+    url: https://developers.docusign.com/
     email: devcenter@docusign.com
-  version: v2.1
+  version: 1.0.0
 servers:
-- url: https://api.docusign.net/Management
+- url: https://apps.docusign.com/api/maestro
 tags:
 - name: WorkflowTrigger
   description: Method to trigger a workflow.
@@ -183,37 +183,31 @@ components:
       x-ds-definition-name: ErrorCodes
       x-ms-summary: Internal Error Codes
   securitySchemes:
-    accessCode:
+    DSAuth:
       type: oauth2
-      description: OAuth2 Access code Grant
+      description: Docusign AuthN/AuthZ
       flows:
         authorizationCode:
-          authorizationUrl: https://account.docusign.com/oauth/auth
-          tokenUrl: https://account.docusign.com/oauth/auth
+          authorizationUrl: https://account-tk1.tk.docusign.dev/oauth/auth
+          tokenUrl: https://account-tk1.tk.docusign.dev/oauth/token
           scopes:
-            organization_read: ''
-            permission_read: ''
-            group_read: ''
-            user_read: ''
-            account_read: ''
-            account_write: ''
-            user_write: ''
-            identity_provider_read: ''
-            domain_read: ''
+            aow_manage: Manage workflows scope
+            signature: Using signature scope
+    DSBearerAuth:
+      type: apiKey
+      name: Authorization
+      in: header
+externalDocs:
+  description: Maestro API Documentation
+  url: https://developers.docusign.com/docs/maestro-api/
 x-ds-categories:
-- name: UserManagement
-  summary: Methods to manage users in an account.
-  description: Methods to manage users in an account.
-- name: BulkOperations
-  summary: Methods to import and export users and accounts.
-  description: Methods to import and export users and accounts.
-- name: IdentityProviders
-  summary: Methods to get a list of identity providers.
-  description: Methods to get a list of identity providers.
-- name: ReservedDomains
-  summary: Methods to get a list of reserved domains.
-  description: Methods to get a list of reserved domains.
-- name: Organization
-  summary: Methods for working with organizations.
-  description: Methods for working with organizations.
+- name: WorkflowTrigger
+  summary: Method to trigger a workflow.
+  description: Method to trigger a workflow.
+- name: WorkflowInstanceManagement
+  summary: Methods to get information about workflow instances.
+  description: Methods to get information about workflow instances.
+- name: WorkflowManagement
+  summary: Methods to create, retrieve, update, and delete workflow definitions.
+  description: Methods to create, retrieve, update, and delete workflow definitions.
 x-original-swagger-version: '2.0'

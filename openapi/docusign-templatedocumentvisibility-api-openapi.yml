@@ -1,15 +1,15 @@
-openapi: 3.0.1
+openapi: 3.2.0
 info:
-  title: DocuSign Admin AccountBrands TemplateDocumentVisibility API
-  description: An API for an organization administrator to manage organizations, accounts and users
-  termsOfService: https://www.docusign.com/company/terms-and-conditions/developers
+  title: DocuSign REST Template Document Visibility API
+  description: The DocuSign REST API provides you with a powerful, convenient, and simple Web services API for interacting with DocuSign.
+  termsOfService: https://www.docusign.com/company/terms-and-conditions/web
   contact:
     name: DocuSign Developer Center
-    url: https://developers.docusign.com
+    url: https://developers.docusign.com/
     email: devcenter@docusign.com
-  version: v2.1
+  version: v2
 servers:
-- url: https://api.docusign.net/Management
+- url: https://www.docusign.net/restapi
 tags:
 - name: TemplateDocumentVisibility
   description: 'The Template Document Visibility resource provides methods that allow views into envelope templates. '
@@ -169,17 +169,6 @@ components:
       description: ''
       x-ds-definition-name: templateDocumentVisibilityList
       x-ms-summary: ''
-    documentVisibilityList:
-      type: object
-      properties:
-        documentVisibility:
-          type: array
-          description: A list of `documentVisibility` objects. Each object in the list specifies whether a document in the envelope is visible to this recipient. For the envelope to use this functionality, Document Visibility must be enabled for the account and the `enforceSignerVisibility` property must be set to **true**.
-          items:
-            $ref: '#/components/schemas/documentVisibility'
-      description: ''
-      x-ds-definition-name: documentVisibilityList
-      x-ms-summary: ''
     documentVisibility:
       type: object
       properties:
@@ -200,6 +189,17 @@ components:
       description: ''
       x-ds-definition-name: documentVisibility
       x-ms-summary: ''
+    documentVisibilityList:
+      type: object
+      properties:
+        documentVisibility:
+          type: array
+          description: A list of `documentVisibility` objects. Each object in the list specifies whether a document in the envelope is visible to this recipient. For the envelope to use this functionality, Document Visibility must be enabled for the account and the `enforceSignerVisibility` property must be set to **true**.
+          items:
+            $ref: '#/components/schemas/documentVisibility'
+      description: ''
+      x-ds-definition-name: documentVisibilityList
+      x-ms-summary: ''
     errorDetails:
       type: object
       properties:
@@ -212,38 +212,134 @@ components:
       description: This object describes errors that occur. It is only valid for responses, and ignored in requests.
       x-ds-definition-name: errorDetails
       x-ms-summary: This object describes errors that occur. It is only valid for responses, and ignored in requests.
-  securitySchemes:
-    accessCode:
-      type: oauth2
-      description: OAuth2 Access code Grant
-      flows:
-        authorizationCode:
-          authorizationUrl: https://account.docusign.com/oauth/auth
-          tokenUrl: https://account.docusign.com/oauth/auth
-          scopes:
-            organization_read: ''
-            permission_read: ''
-            group_read: ''
-            user_read: ''
-            account_read: ''
-            account_write: ''
-            user_write: ''
-            identity_provider_read: ''
-            domain_read: ''
+externalDocs:
+  description: See the DocuSign REST API Guide for more information.
+  url: https://docs.docusign.com/esign
+x-ds-allow-editing: false
 x-ds-categories:
-- name: UserManagement
-  summary: Methods to manage users in an account.
-  description: Methods to manage users in an account.
-- name: BulkOperations
-  summary: Methods to import and export users and accounts.
-  description: Methods to import and export users and accounts.
-- name: IdentityProviders
-  summary: Methods to get a list of identity providers.
-  description: Methods to get a list of identity providers.
-- name: ReservedDomains
-  summary: Methods to get a list of reserved domains.
-  description: Methods to get a list of reserved domains.
-- name: Organization
-  summary: Methods for working with organizations.
-  description: Methods for working with organizations.
+- name: Authentication
+  summary: Logging in and authentication
+  description: 'Use the Authentication category to manage various account login tasks including:
+
+
+    * Getting login information for a user.
+
+    * Managing linked social accounts.
+
+    * Getting and revoking OAuth tokens.'
+- name: Envelopes
+  summary: Creating and sending envelopes
+  description: 'The DocuSign API Envelope category includes the resources and methods for sending and managing envelopes and envelope data.
+
+
+    Envelopes are the key objects within the DocuSign eSignature system. As a result, they are complex data structures with few required fields. See the [API Recipes](https://www.docusign.com/developer-center/recipes) for use case examples and their solutions.
+
+
+    To create and send envelopes, see the [Envelopes resource](Envelopes).
+
+
+    '
+- name: Connect
+  summary: Connect configuration and logging
+  description: "The Connect category enables your application to be called via HTTPS when an event of interest occurs.\n\nUse the Connect service to \"end the polling madness.\" With Connect, there is no need for your application to poll DocuSign every 15 minutes to learn the latest about your envelopes.\n\nInstead, you register your interest in one or more types of envelope or recipient events. Then, when an interesting event occurs, the DocuSign platform will contact your application with the event's details and data. You can register interest in envelopes sent by particular users in your account, or for envelopes sent by any user.\n\n## Incoming Connect Calls\nTo use the Connect service, your application needs to provide an https url that can be called from the public internet. If your application runs on a server behind your organization's firewall, then you will need to create a \"pinhole\" in the firewall to allow the incoming Connect calls from DocuSign to reach your application. Other techniques for receiving the incoming calls including proxy servers and DMZ networking can also be used. \n\n## Per-envelope Connect Configuration\nInstead of registering a general Connect configuration and listener, an individual envelope can have its own Connect configuration. See the `eventNotification` field for envelopes.\n\n## Categories\nUse the Connect category for:\n\n* Programmatically creating Connect configurations. Connect configurations can be created manually by using the DocuSign web service, or programmatically via the API. Configurations created via the API can be seen and updated from the web service.\n* Retrieving and managing the event log for your Connect configurations. \n* Requesting that an event be re-published to the listener."
+- name: Templates
+  summary: Template creation and management
+  description: 'Use the Templates category to manage your account''s templates.
+
+
+    You can:
+
+
+    * Create, list, get, update, and delete templates.
+
+    * Manage templates'' notification and group sharing settings.
+
+    * Fetch and rotate pages from a document used by a template.
+
+
+    Templates can be created programmatically or can be created via the DocuSign web interface and then used by your application.'
+- name: SigningGroups
+  summary: Send a signing request to a group of potential signers
+  description: 'Use the SigningGroup category to manage signing groups that allow you anyone in the group to sign a document.
+
+
+    The category allows you create the signing group and manage the users in the group.'
+- name: Folders
+  summary: Folders for completed envelopes
+  description: "Use the Folders category to manage envelopes in your folders. \n\nYou can list the folder contents and move envelopes between folders."
+- name: CustomTabs
+  summary: Custom tabs
+  description: "Custom Tabs enable accounts to have one or more pre-configured (custom) tabs. Custom tabs save time when users are tagging documents since the users don't have to manually set the tabs' parameters.\n\nThis category enables custom tabs to be managed programmatically, including creation, deletion, etc. \n"
+- name: CloudStorage
+  summary: Cloud storage providers and user management
+  description: 'Use the Cloud Storage category to list the user''s cloud storage document contents.
+
+
+    It is also used to manage the user''s authentication/accounts with cloud storage service providers.'
+- name: Users
+  summary: User management
+  description: 'Use the Users category to manage the users in your accounts.
+
+
+    You can:
+
+
+    * Set custom user settings.
+
+    * Manage a users profile.
+
+    * Add delete users.
+
+    * Add and delete the intials and signature images for a user.'
+- name: UserGroups
+  summary: Group users for common permissions and branding
+  description: 'Use the User Groups category to manage your permissions groups.
+
+
+    You can:
+
+
+    * Create and delete groups.
+
+    * Add users to, and delete users from, your groups.
+
+    * Manage the brand information associated with a group.'
+- name: Accounts
+  summary: Account management
+  description: "Use the Account category for various account management tasks including:\n\n* Programmatically creating and deleting accounts.\n* Getting information about an account and its capabilities.\n* Branding the account with custom colors, message text, and more.\n* Account charges.\n\nThe Account category also includes end points for \n* Listing the recipient names associated with an email address that was used by the account. For example, a single email address is often shared by mulitple members of a family.\n\n\n"
+- name: Billing
+  summary: Invoices
+  description: 'Use the Billing category to manage the following billing related tasks:
+
+
+    * Retrieve and update billing plan information.
+
+    * Retrieve invoices.
+
+    * Retrieve and update payment information.'
+- name: Diagnostics
+  summary: Diagnostics and request logging
+  description: 'The Diagnostics category provides miscellaneous end points.
+
+
+    They include:
+
+    * Requesting and managing the API call-logging feature. (Perfect for debugging your app!)
+
+    * Getting information on the API''s resources and versions.'
+- name: PowerForms
+  summary: PowerForm creation and management
+  description: The PowerForms category enables PowerForms to be created and managed.
+- name: Workspaces
+  summary: Workspace creation and management
+  description: 'Workspaces creation and management.
+
+
+    '
+- name: Payments
+  summary: Manage Payments
+  description: This category includes resources for managing payment gateways. Payment information is added to envelopes via methods in the Envelopes category.
+- name: Signature
+  summary: ''
+  description: ''
 x-original-swagger-version: '2.0'

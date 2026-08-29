@@ -1,15 +1,24 @@
-openapi: 3.0.1
+openapi: 3.2.0
 info:
-  title: DocuSign Admin AccountBrands EnvelopeViews API
-  description: An API for an organization administrator to manage organizations, accounts and users
-  termsOfService: https://www.docusign.com/company/terms-and-conditions/developers
+  title: Docusign Envelope Views API
   contact:
     name: DocuSign Developer Center
-    url: https://developers.docusign.com
+    url: https://developers.docusign.com/
     email: devcenter@docusign.com
-  version: v2.1
+  x-refined-note:
+  - x-logo differs across the merged source definitions and was not carried
+  version: '1.0'
+  description: 'Operations tagged EnvelopeViews across 2 of this provider''s published API definitions: docusign-esignature-openapi.yml, docusign-openapi-original.yml. Each path carries the servers of the definition it was published in.'
 servers:
-- url: https://api.docusign.net/Management
+- url: https://demo.docusign.net/restapi/v2.1
+  description: DocuSign Demo (Sandbox) Environment
+- url: https://www.docusign.net/restapi/v2.1
+  description: DocuSign Production - NA1
+- url: https://eu.docusign.net/restapi/v2.1
+  description: DocuSign Production - EU
+- url: https://au.docusign.net/restapi/v2.1
+  description: DocuSign Production - AU
+- url: https://www.docusign.net/restapi
 tags:
 - name: EnvelopeViews
   description: Generate URL tokens for embedded signing, sending, and recipient views to integrate DocuSign experiences directly into your application.
@@ -48,6 +57,19 @@ paths:
       x-microcks-operation:
         delay: 0
         dispatcher: FALLBACK
+      security:
+      - OAuth2:
+        - signature
+        - impersonation
+    servers:
+    - url: https://demo.docusign.net/restapi/v2.1
+      description: DocuSign Demo (Sandbox) Environment
+    - url: https://www.docusign.net/restapi/v2.1
+      description: DocuSign Production - NA1
+    - url: https://eu.docusign.net/restapi/v2.1
+      description: DocuSign Production - EU
+    - url: https://au.docusign.net/restapi/v2.1
+      description: DocuSign Production - AU
   /accounts/{accountId}/envelopes/{envelopeId}/views/sender:
     post:
       operationId: EnvelopeViews_CreateSenderView
@@ -84,6 +106,19 @@ paths:
       x-microcks-operation:
         delay: 0
         dispatcher: FALLBACK
+      security:
+      - OAuth2:
+        - signature
+        - impersonation
+    servers:
+    - url: https://demo.docusign.net/restapi/v2.1
+      description: DocuSign Demo (Sandbox) Environment
+    - url: https://www.docusign.net/restapi/v2.1
+      description: DocuSign Production - NA1
+    - url: https://eu.docusign.net/restapi/v2.1
+      description: DocuSign Production - EU
+    - url: https://au.docusign.net/restapi/v2.1
+      description: DocuSign Production - AU
   /v2/accounts/{accountId}/envelopes/{envelopeId}/views/correct:
     post:
       tags:
@@ -177,6 +212,8 @@ paths:
       x-ds-service: Uncategorized
       x-ds-in-sdk: true
       x-codegen-request-body-name: correctViewRequest
+    servers:
+    - url: https://www.docusign.net/restapi
   /v2/accounts/{accountId}/envelopes/{envelopeId}/views/edit:
     post:
       tags:
@@ -255,6 +292,8 @@ paths:
         style: custom
         title: Getting an Edit View URL and Setting a Return URL
       x-codegen-request-body-name: returnUrlRequest
+    servers:
+    - url: https://www.docusign.net/restapi
   /v2/accounts/{accountId}/envelopes/{envelopeId}/views/recipient:
     post:
       tags:
@@ -303,6 +342,8 @@ paths:
       x-ds-service: Envelopes
       x-ds-in-sdk: true
       x-codegen-request-body-name: recipientViewRequest
+    servers:
+    - url: https://www.docusign.net/restapi
   /v2/accounts/{accountId}/envelopes/{envelopeId}/views/sender:
     post:
       tags:
@@ -351,6 +392,8 @@ paths:
       x-ds-service: Envelopes
       x-ds-in-sdk: true
       x-codegen-request-body-name: returnUrlRequest
+    servers:
+    - url: https://www.docusign.net/restapi
   /v2/accounts/{accountId}/envelopes/{envelopeId}/views/shared:
     post:
       tags:
@@ -397,6 +440,8 @@ paths:
       x-ds-service: Uncategorized
       x-ds-in-sdk: true
       x-codegen-request-body-name: recipientViewRequest
+    servers:
+    - url: https://www.docusign.net/restapi
   /v2/accounts/{accountId}/views/console:
     post:
       tags:
@@ -467,27 +512,29 @@ paths:
         style: custom
         title: Getting a Console View URL and Setting a Return URL
       x-codegen-request-body-name: consoleViewRequest
+    servers:
+    - url: https://www.docusign.net/restapi
 components:
+  responses:
+    BadRequest:
+      description: Bad request. The request body or parameters are invalid.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorDetails'
+    NotFound:
+      description: The requested resource was not found.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorDetails'
+    Unauthorized:
+      description: Unauthorized. Authentication credentials are missing or invalid.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorDetails'
   schemas:
-    ViewUrl:
-      type: object
-      description: Contains a URL for an embedded view.
-      properties:
-        url:
-          type: string
-          description: The URL for the embedded view. This URL is time-limited and should be used immediately.
-          example: https://www.example.com
-    EnvelopeViews:
-      type: object
-      properties:
-        url:
-          type: string
-          description: The view URL to be navigated to.
-      description: Embedding Envelope views
-      x-ds-definition-name: viewUrl
-      x-ds-category: Envelopes
-      x-ds-order: '1'
-      x-ms-summary: Embedding Envelope views
     ErrorDetails:
       type: object
       description: Contains error information returned by the API.
@@ -500,6 +547,107 @@ components:
           type: string
           description: A human-readable error message.
           example: example_value
+    ViewUrl:
+      type: object
+      description: Contains a URL for an embedded view.
+      properties:
+        url:
+          type: string
+          description: The URL for the embedded view. This URL is time-limited and should be used immediately.
+          example: https://www.example.com
+    RecipientViewRequest:
+      type: object
+      description: Request body for generating an embedded recipient signing URL.
+      required:
+      - authenticationMethod
+      - email
+      - userName
+      - returnUrl
+      properties:
+        authenticationMethod:
+          type: string
+          description: The authentication method used to verify the recipient. Must match the authentication method used when the recipient was added.
+          enum:
+          - None
+          - Phone
+          - KBA
+          - IDCheck
+          - Password
+          - HTTPBasicAuth
+          - PaperDocuments
+          - HeaderAuthentication
+          - SAML
+          - SSO
+          example: None
+        email:
+          type: string
+          format: email
+          description: The email address of the recipient.
+          example: user@example.com
+        userName:
+          type: string
+          description: The full name of the recipient.
+          example: example_value
+        clientUserId:
+          type: string
+          description: The client user ID of the embedded signer.
+          example: '500123'
+        recipientId:
+          type: string
+          description: The recipient ID.
+          example: '500123'
+        returnUrl:
+          type: string
+          description: The URL to redirect the signer to after the signing session ends. DocuSign appends event query parameters.
+          example: https://www.example.com
+        pingUrl:
+          type: string
+          description: A URL that DocuSign pings during the signing session to confirm the parent frame is active.
+          example: https://www.example.com
+        pingFrequency:
+          type: string
+          description: Frequency in seconds for ping requests.
+          example: example_value
+        frameAncestors:
+          type: array
+          description: URLs allowed to iframe the signing session (CSP frame-ancestors).
+          items:
+            type: string
+          example: []
+        messageOrigins:
+          type: array
+          description: Origins allowed to receive postMessage events.
+          items:
+            type: string
+          example: []
+        securityDomain:
+          type: string
+          description: The security domain for the signing session.
+          example: example_value
+    errorDetails:
+      type: object
+      properties:
+        errorCode:
+          type: string
+          description: An error code associated with the error.
+        message:
+          type: string
+          description: A short error message.
+      description: This object describes errors that occur. It is only valid for responses, and ignored in requests.
+      x-ds-definition-name: errorDetails
+      x-ms-summary: This object describes errors that occur. It is only valid for responses, and ignored in requests.
+    consoleViewRequest:
+      type: object
+      properties:
+        envelopeId:
+          type: string
+          description: The envelope ID of the envelope status that failed to post.
+        returnUrl:
+          type: string
+          description: The URL to be redirected to after the console view session has ended.
+      description: ''
+      x-ds-definition-name: consoleViewRequest
+      x-ms-summary: ''
     recipientViewRequest:
       type: object
       properties:
@@ -574,87 +722,6 @@ components:
       description: ''
       x-ds-definition-name: recipientViewRequest
       x-ms-summary: ''
-    consoleViewRequest:
-      type: object
-      properties:
-        envelopeId:
-          type: string
-          description: The envelope ID of the envelope status that failed to post.
-        returnUrl:
-          type: string
-          description: The URL to be redirected to after the console view session has ended.
-      description: ''
-      x-ds-definition-name: consoleViewRequest
-      x-ms-summary: ''
-    RecipientViewRequest:
-      type: object
-      description: Request body for generating an embedded recipient signing URL.
-      required:
-      - authenticationMethod
-      - email
-      - userName
-      - returnUrl
-      properties:
-        authenticationMethod:
-          type: string
-          description: The authentication method used to verify the recipient. Must match the authentication method used when the recipient was added.
-          enum:
-          - None
-          - Phone
-          - KBA
-          - IDCheck
-          - Password
-          - HTTPBasicAuth
-          - PaperDocuments
-          - HeaderAuthentication
-          - SAML
-          - SSO
-          example: None
-        email:
-          type: string
-          format: email
-          description: The email address of the recipient.
-          example: user@example.com
-        userName:
-          type: string
-          description: The full name of the recipient.
-          example: example_value
-        clientUserId:
-          type: string
-          description: The client user ID of the embedded signer.
-          example: '500123'
-        recipientId:
-          type: string
-          description: The recipient ID.
-          example: '500123'
-        returnUrl:
-          type: string
-          description: The URL to redirect the signer to after the signing session ends. DocuSign appends event query parameters.
-          example: https://www.example.com
-        pingUrl:
-          type: string
-          description: A URL that DocuSign pings during the signing session to confirm the parent frame is active.
-          example: https://www.example.com
-        pingFrequency:
-          type: string
-          description: Frequency in seconds for ping requests.
-          example: example_value
-        frameAncestors:
-          type: array
-          description: URLs allowed to iframe the signing session (CSP frame-ancestors).
-          items:
-            type: string
-          example: []
-        messageOrigins:
-          type: array
-          description: Origins allowed to receive postMessage events.
-          items:
-            type: string
-          example: []
-        securityDomain:
-          type: string
-          description: The security domain for the signing session.
-          example: example_value
     correctViewRequest:
       type: object
       properties:
@@ -670,27 +737,17 @@ components:
       description: ''
       x-ds-definition-name: correctViewRequest
       x-ms-summary: ''
-    errorDetails:
+    EnvelopeViews:
       type: object
       properties:
-        errorCode:
+        url:
           type: string
-          description: An error code associated with the error.
-        message:
-          type: string
-          description: A short error message.
-      description: This object describes errors that occur. It is only valid for responses, and ignored in requests.
-      x-ds-definition-name: errorDetails
-      x-ms-summary: This object describes errors that occur. It is only valid for responses, and ignored in requests.
-    returnUrlRequest:
-      type: object
-      properties:
-        returnUrl:
-          type: string
-          description: "Your app's return url that the user will be redirected to after sending the envelope or completing the sending/tagging view. Query parameters `envelopeId` and `event` will be added to the URL. The event parameter values: \n\n* `Send` (the user sent the envelope)\n* `Save` (the user saved the envelope, it is still a draft)\n* `Cancel` (the user canceled the sending transaction)\n* `Error` (there was an error during the send operation)\n* `SessionEnd` (the sending session ended before the user completed a different action)"
-      description: 'The request body for the EnvelopeViews: createSender method.'
-      x-ds-definition-name: returnUrlRequest
-      x-ms-summary: 'The request body for the EnvelopeViews: createSender method.'
+          description: The view URL to be navigated to.
+      description: Embedding Envelope views
+      x-ds-definition-name: viewUrl
+      x-ds-category: Envelopes
+      x-ds-order: '1'
+      x-ms-summary: Embedding Envelope views
     viewUrl:
       type: object
       properties:
@@ -700,7 +757,23 @@ components:
       description: ''
       x-ds-definition-name: viewUrl
       x-ms-summary: ''
+    returnUrlRequest:
+      type: object
+      properties:
+        returnUrl:
+          type: string
+          description: "Your app's return url that the user will be redirected to after sending the envelope or completing the sending/tagging view. Query parameters `envelopeId` and `event` will be added to the URL. The event parameter values: \n\n* `Send` (the user sent the envelope)\n* `Save` (the user saved the envelope, it is still a draft)\n* `Cancel` (the user canceled the sending transaction)\n* `Error` (there was an error during the send operation)\n* `SessionEnd` (the sending session ended before the user completed a different action)"
+      description: 'The request body for the EnvelopeViews: createSender method.'
+      x-ds-definition-name: returnUrlRequest
+      x-ms-summary: 'The request body for the EnvelopeViews: createSender method.'
   parameters:
+    accountId:
+      name: accountId
+      in: path
+      required: true
+      description: The external account number (short) or account ID GUID of the DocuSign account.
+      schema:
+        type: string
     envelopeId:
       name: envelopeId
       in: path
@@ -709,50 +782,25 @@ components:
       schema:
         type: string
         format: uuid
-    accountId:
-      name: accountId
-      in: path
-      required: true
-      description: The external account number (short) or account ID GUID of the DocuSign account.
-      schema:
-        type: string
-  responses:
-    Unauthorized:
-      description: Unauthorized. Authentication credentials are missing or invalid.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorDetails'
-    BadRequest:
-      description: Bad request. The request body or parameters are invalid.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorDetails'
-    NotFound:
-      description: The requested resource was not found.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorDetails'
   securitySchemes:
-    accessCode:
+    OAuth2:
       type: oauth2
-      description: OAuth2 Access code Grant
+      description: DocuSign uses OAuth 2.0. Supports Authorization Code Grant for user-present applications and JWT Grant for service integrations.
       flows:
         authorizationCode:
-          authorizationUrl: https://account.docusign.com/oauth/auth
-          tokenUrl: https://account.docusign.com/oauth/auth
+          authorizationUrl: https://account-d.docusign.com/oauth/auth
+          tokenUrl: https://account-d.docusign.com/oauth/token
           scopes:
-            organization_read: ''
-            permission_read: ''
-            group_read: ''
-            user_read: ''
-            account_read: ''
-            account_write: ''
-            user_write: ''
-            identity_provider_read: ''
-            domain_read: ''
+            signature: Access to signing and envelope operations
+            impersonation: Impersonate users via JWT Grant
+            extended: Extended API access
+        implicit:
+          authorizationUrl: https://account-d.docusign.com/oauth/auth
+          scopes:
+            signature: Access to signing and envelope operations
+x-refined-from:
+- docusign-esignature-openapi.yml
+- docusign-openapi-original.yml
 x-ds-categories:
 - name: UserManagement
   summary: Methods to manage users in an account.

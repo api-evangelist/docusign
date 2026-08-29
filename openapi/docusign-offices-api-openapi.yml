@@ -1,15 +1,17 @@
-openapi: 3.0.1
+openapi: 3.2.0
 info:
-  title: DocuSign Admin AccountBrands Offices API
-  description: An API for an organization administrator to manage organizations, accounts and users
-  termsOfService: https://www.docusign.com/company/terms-and-conditions/developers
+  title: DocuSign Rooms API - v2 Offices API
+  description: An API for an integrator to access the features of DocuSign Rooms
+  termsOfService: https://www.docusign.com/company/terms-and-conditions/web
   contact:
     name: DocuSign Developer Center
     url: https://developers.docusign.com
     email: devcenter@docusign.com
-  version: v2.1
+  version: v2
 servers:
-- url: https://api.docusign.net/Management
+- url: https://rooms.docusign.com/restapi
+security:
+- Bearer: []
 tags:
 - name: Offices
   description: The `Offices` resource enables you to create and manage offices for your company. You can also retrieve the number and type of objects that reference an office.
@@ -454,184 +456,6 @@ paths:
       x-ds-in-sdk: true
 components:
   schemas:
-    OfficeReferenceCountList:
-      type: object
-      properties:
-        referencesCounts:
-          type: array
-          description: A list of each type of object and the number of objects of that type referencing the office.
-          items:
-            $ref: '#/components/schemas/OfficeReferenceCount'
-      description: Contains a list of each type of object and the number of objects of that type referencing the office.
-      x-ds-definition-name: OfficeReferenceCountList
-      x-ms-summary: Contains a list of each type of object and the number of objects of that type referencing the office.
-    OfficeReferenceCount:
-      type: object
-      properties:
-        referenceType:
-          type: string
-          description: The type of object referencing the office.
-        referencedCount:
-          type: integer
-          description: The number of objects of this type referencing the office.
-          format: int32
-          readOnly: true
-      description: A complex element containing the number and type of each object referencing the office.
-      x-ds-definition-name: OfficeReferenceCount
-      x-ms-summary: A complex element containing the number and type of each object referencing the office.
-    Office:
-      required:
-      - name
-      type: object
-      properties:
-        officeId:
-          type: integer
-          description: The ID of the office. This is the ID that the system generated when you created the office.
-          format: int32
-        name:
-          type: string
-          description: The name of the office.
-        regionId:
-          type: integer
-          description: The ID of the region. This is the ID that the system generated when you created the region.
-          format: int32
-        address1:
-          type: string
-          description: First line of the office street address.
-        address2:
-          type: string
-          description: Second line of the office street address.
-        city:
-          type: string
-          description: City name or metropolitan area of the office address.
-        stateId:
-          type: string
-          description: 'A concatenation of the two-letter country code with the state/province/region of the office address.
-
-
-            Example: `US-OH` (for Ohio)'
-        postalCode:
-          type: string
-          description: Postal code or ZIP code of the office address.
-        countryId:
-          type: string
-          description: The two-letter country code of the office address (for example, "UK" for United Kingdom).
-        timeZoneId:
-          type: string
-          description: 'The ID of the time zone for the office address.
-
-
-            Example: `eastern` (for the Eastern US Time Zone)'
-        phone:
-          type: string
-          description: Phone number of the office.
-        createdDate:
-          type: string
-          description: 'The UTC date and time when the item was created. This is a read-only value that the service assigns.
-
-
-            Example: `2019-07-17T17:45:42.783Z`
-
-
-            '
-          format: date-time
-      description: Contains information about an office.
-      x-ds-definition-name: Office
-      x-ms-summary: Contains information about an office.
-    OfficeForCreate:
-      required:
-      - name
-      type: object
-      properties:
-        name:
-          type: string
-          description: The name of the office.
-        regionId:
-          type: integer
-          description: The ID of the region. This is the ID that the system generated when you created the region.
-          format: int32
-        address1:
-          type: string
-          description: First line of the office street address.
-        address2:
-          type: string
-          description: Second line of the office street address.
-        city:
-          type: string
-          description: City name or metropolitan area of the office address.
-        stateId:
-          type: string
-          description: 'A concatenation of the two-letter country code with the state/province/region of the office address.
-
-
-            Example: `US-OH` (for Ohio)'
-        postalCode:
-          type: string
-          description: Postal code or ZIP code of the office address.
-        countryId:
-          type: string
-          description: The two-letter country code of the office address (for example, "UK" for United Kingdom).
-        timeZoneId:
-          type: string
-          description: 'The ID of the time zone for the office address.
-
-
-            Example: `eastern` (for the Eastern US Time Zone)'
-        phone:
-          type: string
-          description: Phone number of the office.
-      description: Contains details about the office that you want to create.
-      x-ds-definition-name: OfficeForCreate
-      x-ms-summary: Contains details about the office that you want to create.
-    OfficeSummaryList:
-      type: object
-      properties:
-        officeSummaries:
-          type: array
-          description: A list of `OfficeSummary` objects containing summary information about an office.
-          items:
-            $ref: '#/components/schemas/OfficeSummary'
-        resultSetSize:
-          type: integer
-          description: The number of results returned in this response.
-          format: int32
-        startPosition:
-          type: integer
-          description: The index position within the total result set from which returned values start.
-          format: int32
-        endPosition:
-          type: integer
-          description: The index position within the total result set at which returned values end.
-          format: int32
-          readOnly: true
-        nextUri:
-          type: string
-          description: The URI for the next chunk of records based on the search request. This property is `null` for the last set of search results.
-        priorUri:
-          type: string
-          description: The URI for the previous chunk of records based on the search request. This property is `null` for the first set of search results.
-        totalRowCount:
-          type: integer
-          description: ''
-          format: int32
-      description: Object that contains a summary of information about a requested group of offices in the Rooms account.
-      x-ds-definition-name: OfficeSummaryList
-      x-ms-summary: Object that contains a summary of information about a requested group of offices in the Rooms account.
-    ApiError:
-      type: object
-      properties:
-        errorCode:
-          type: string
-          description: The code associated with the error condition.
-        message:
-          type: string
-          description: A brief message describing the error condition.
-        referenceId:
-          type: string
-          description: ''
-      description: This object describes errors that occur. It is valid only for responses and ignored in requests.
-      x-ds-definition-name: ApiError
-      x-ms-summary: This object describes errors that occur. It is valid only for responses and ignored in requests.
     OfficeSummary:
       type: object
       properties:
@@ -695,38 +519,308 @@ components:
       description: A complex element containing summary information on an office; the elements of this object are identical to those of the `Offices` object.
       x-ds-definition-name: OfficeSummary
       x-ms-summary: A complex element containing summary information on an office; the elements of this object are identical to those of the `Offices` object.
+    OfficeReferenceCountList:
+      type: object
+      properties:
+        referencesCounts:
+          type: array
+          description: A list of each type of object and the number of objects of that type referencing the office.
+          items:
+            $ref: '#/components/schemas/OfficeReferenceCount'
+      description: Contains a list of each type of object and the number of objects of that type referencing the office.
+      x-ds-definition-name: OfficeReferenceCountList
+      x-ms-summary: Contains a list of each type of object and the number of objects of that type referencing the office.
+    OfficeForCreate:
+      required:
+      - name
+      type: object
+      properties:
+        name:
+          type: string
+          description: The name of the office.
+        regionId:
+          type: integer
+          description: The ID of the region. This is the ID that the system generated when you created the region.
+          format: int32
+        address1:
+          type: string
+          description: First line of the office street address.
+        address2:
+          type: string
+          description: Second line of the office street address.
+        city:
+          type: string
+          description: City name or metropolitan area of the office address.
+        stateId:
+          type: string
+          description: 'A concatenation of the two-letter country code with the state/province/region of the office address.
+
+
+            Example: `US-OH` (for Ohio)'
+        postalCode:
+          type: string
+          description: Postal code or ZIP code of the office address.
+        countryId:
+          type: string
+          description: The two-letter country code of the office address (for example, "UK" for United Kingdom).
+        timeZoneId:
+          type: string
+          description: 'The ID of the time zone for the office address.
+
+
+            Example: `eastern` (for the Eastern US Time Zone)'
+        phone:
+          type: string
+          description: Phone number of the office.
+      description: Contains details about the office that you want to create.
+      x-ds-definition-name: OfficeForCreate
+      x-ms-summary: Contains details about the office that you want to create.
+    OfficeReferenceCount:
+      type: object
+      properties:
+        referenceType:
+          type: string
+          description: The type of object referencing the office.
+        referencedCount:
+          type: integer
+          description: The number of objects of this type referencing the office.
+          format: int32
+          readOnly: true
+      description: A complex element containing the number and type of each object referencing the office.
+      x-ds-definition-name: OfficeReferenceCount
+      x-ms-summary: A complex element containing the number and type of each object referencing the office.
+    OfficeSummaryList:
+      type: object
+      properties:
+        officeSummaries:
+          type: array
+          description: A list of `OfficeSummary` objects containing summary information about an office.
+          items:
+            $ref: '#/components/schemas/OfficeSummary'
+        resultSetSize:
+          type: integer
+          description: The number of results returned in this response.
+          format: int32
+        startPosition:
+          type: integer
+          description: The index position within the total result set from which returned values start.
+          format: int32
+        endPosition:
+          type: integer
+          description: The index position within the total result set at which returned values end.
+          format: int32
+          readOnly: true
+        nextUri:
+          type: string
+          description: The URI for the next chunk of records based on the search request. This property is `null` for the last set of search results.
+        priorUri:
+          type: string
+          description: The URI for the previous chunk of records based on the search request. This property is `null` for the first set of search results.
+        totalRowCount:
+          type: integer
+          description: ''
+          format: int32
+      description: Object that contains a summary of information about a requested group of offices in the Rooms account.
+      x-ds-definition-name: OfficeSummaryList
+      x-ms-summary: Object that contains a summary of information about a requested group of offices in the Rooms account.
+    ApiError:
+      type: object
+      properties:
+        errorCode:
+          type: string
+          description: The code associated with the error condition.
+        message:
+          type: string
+          description: A brief message describing the error condition.
+        referenceId:
+          type: string
+          description: ''
+      description: This object describes errors that occur. It is valid only for responses and ignored in requests.
+      x-ds-definition-name: ApiError
+      x-ms-summary: This object describes errors that occur. It is valid only for responses and ignored in requests.
+    Office:
+      required:
+      - name
+      type: object
+      properties:
+        officeId:
+          type: integer
+          description: The ID of the office. This is the ID that the system generated when you created the office.
+          format: int32
+        name:
+          type: string
+          description: The name of the office.
+        regionId:
+          type: integer
+          description: The ID of the region. This is the ID that the system generated when you created the region.
+          format: int32
+        address1:
+          type: string
+          description: First line of the office street address.
+        address2:
+          type: string
+          description: Second line of the office street address.
+        city:
+          type: string
+          description: City name or metropolitan area of the office address.
+        stateId:
+          type: string
+          description: 'A concatenation of the two-letter country code with the state/province/region of the office address.
+
+
+            Example: `US-OH` (for Ohio)'
+        postalCode:
+          type: string
+          description: Postal code or ZIP code of the office address.
+        countryId:
+          type: string
+          description: The two-letter country code of the office address (for example, "UK" for United Kingdom).
+        timeZoneId:
+          type: string
+          description: 'The ID of the time zone for the office address.
+
+
+            Example: `eastern` (for the Eastern US Time Zone)'
+        phone:
+          type: string
+          description: Phone number of the office.
+        createdDate:
+          type: string
+          description: 'The UTC date and time when the item was created. This is a read-only value that the service assigns.
+
+
+            Example: `2019-07-17T17:45:42.783Z`
+
+
+            '
+          format: date-time
+      description: Contains information about an office.
+      x-ds-definition-name: Office
+      x-ms-summary: Contains information about an office.
   securitySchemes:
-    accessCode:
-      type: oauth2
-      description: OAuth2 Access code Grant
-      flows:
-        authorizationCode:
-          authorizationUrl: https://account.docusign.com/oauth/auth
-          tokenUrl: https://account.docusign.com/oauth/auth
-          scopes:
-            organization_read: ''
-            permission_read: ''
-            group_read: ''
-            user_read: ''
-            account_read: ''
-            account_write: ''
-            user_write: ''
-            identity_provider_read: ''
-            domain_read: ''
+    Bearer:
+      type: apiKey
+      description: 'JWT Authorization header using the Bearer scheme. Example: "Authorization: Bearer {token}"'
+      name: Authorization
+      in: header
+externalDocs:
+  description: Rooms API Reference
+  url: https://developers.docusign.com/docs/rooms-api/reference/
 x-ds-categories:
-- name: UserManagement
-  summary: Methods to manage users in an account.
-  description: Methods to manage users in an account.
-- name: BulkOperations
-  summary: Methods to import and export users and accounts.
-  description: Methods to import and export users and accounts.
-- name: IdentityProviders
-  summary: Methods to get a list of identity providers.
-  description: Methods to get a list of identity providers.
-- name: ReservedDomains
-  summary: Methods to get a list of reserved domains.
-  description: Methods to get a list of reserved domains.
-- name: Organization
-  summary: Methods for working with organizations.
-  description: Methods for working with organizations.
+- name: Accounts
+  summary: Information about accounts.
+  description: Information about accounts.
+- name: Documents
+  summary: Information about documents.
+  description: Information about documents.
+- name: ESignPermissionProfiles
+  summary: A permission profile is a standard set of user permissions that you can apply to individual users or the users in a group. This functionality makes it easier to manage permissions for a large number of users.
+  description: 'When you create or invite a new member in Rooms, the system creates an eSignature account for the member at the same time. This section shows you how to retrieve a list of eSignature permission profiles that the current user can assign to a new member.
+
+
+    You can use the API only to retrieve and assign eSignature permission profiles. You create and modify permission profiles in the DocuSign console.'
+- name: Fields
+  summary: This section shows you how to retrieve a specific field set. This is a set of fields that can appear on a room's **Details** tab.
+  description: Information about field sets.
+- name: Forms
+  summary: 'The Forms feature of DocuSign Rooms for Real Estate enables provides access to standard industry association forms that you can add to rooms.
+
+
+    **Note:** Forms is not a default feature and is currently only available in Rooms for Real Estate. To request access to Forms, contact your DocuSign Account Manager.
+
+
+    '
+  description: "## Form groups\n\nWith the appropriate permissions, form administrators at your company can create form groups, or curated set of forms gathered from the association **form libraries** to which DocuSign provides access. Form groups enable agents to know which forms to add to rooms based on the type of transaction they are working on. When creating groups, administrators can make certain forms required, ensuring compliance. If you don't create groups, agents will have to choose forms they need from a list of association forms.\n\n## Permissions\n\nTo manage forms, you must have the `canManageFormGroups` permission, which enables you to access the **Forms** tab in **Admin.** For all other roles, assign permissions based on how these users will be working with forms. If no form permissions are enabled for these roles, users cannot add forms to rooms.\n\nForm administrators must have the `canManageFormGroups` permission assigned to their user role. This gives them access to the **Forms** tab in **Admin.** However, you should also consider the user's access level. For example, if the user has access to specific offices, they can only administer form groups for those offices. \n"
+- name: GlobalResources
+  summary: The Global Resources category organizes resource that are used throughout the Rooms API. You typically use these resources when you create or update a room, region, office, or user.
+  description: 'This section shows you how to retrieve the following Global Resources:
+
+
+    - Activity Types
+
+    - Closing Statuses
+
+    - Contact Sides
+
+    - Countries
+
+    - Currencies
+
+    - Financing Types
+
+    - Origins of Leads
+
+    - Property Types
+
+    - Room Contact Types
+
+    - Seller Decision Types
+
+    - Special Circumstances Types
+
+    - States
+
+    - Task Date Types
+
+    - Task Responsibility Types
+
+    - Time Zones
+
+    - Transaction Sides'
+- name: Offices
+  summary: You can use the API to manage offices in your Rooms account.
+  description: This section shows you how to create and manage offices.
+- name: Regions
+  summary: You can use the API to manage regions associated with your Rooms account.
+  description: This section shows you how to create and manage regions for a Rooms account.
+- name: Roles
+  summary: 'The Roles resource enables you to easily manage user permissions. '
+  description: 'Each role is associated with specific permissions. Each new member is assigned a role when you create them, automatically granting them the permissions associated with that role.
+
+
+    Roles use the following permission types to control the actions that users can perform:
+
+
+    - Room
+
+    - Room Details
+
+    - Documents
+
+    - Envelopes
+
+    - Member Management
+
+    - Company Settings
+
+
+    Rooms enables you to configure custom roles containing permissions that make sense for your company. Because each new member is assigned a role, you must set up these roles before you can invite members to join your account.
+
+
+    Permissions for roles are tied to the `roleId` property and not yet exposed. You can learn more about these permission types and configure them in the web application.
+
+
+    ### Internal and External Roles
+
+
+    In Rooms, a role can be either internal or external. You assign internal roles to people inside your company. You assign external roles to people outside your company when you invite them to a room.
+
+
+    Each member inside your company has a default company role. However, they can also be assigned additional roles with different permissions on a per-room basis. Regardless of the member''s default company role, what they can do in a room is entirely controlled by their role in that particular room.
+
+    '
+- name: Rooms
+  summary: This section shows you how to create and mange rooms. In Rooms for Real Estate, a room is a collaborative digital space corresponding to a specific property. In Rooms for Mortgages, a room corresponds to a specific loan.
+  description: 'A room can hold documents, envelopes, a list of tasks comprising a workflow, and other related information. You can invite others to this space and assign them permissions on a per-room basis. The documentation in this section shows you how to perform these and other tasks.
+
+    '
+- name: RoomTemplates
+  summary: 'Room templates enable your company to standardize the new rooms that users create. '
+  description: This section shows you how to retrieve room templates. You can perform additional room template tasks in the console.
+- name: TaskLists
+  summary: The TaskLists resource helps you keep track of the documents and activities you must complete before you can close a room.
+  description: Your administrator may also have created custom task list templates that can be added to rooms. If your administrator created room templates, those room templates may include task lists for you to use.
+- name: Users
+  summary: The Users resource provides methods that enable you to add, update, delete, and manage users.
+  description: A user is a person who is either added to a room (as a participant), or who is a member of a company. This section shows you how to manage users, including how to update and delete National Association of REALTORS® member numbers.
 x-original-swagger-version: '2.0'

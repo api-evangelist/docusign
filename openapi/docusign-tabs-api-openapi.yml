@@ -1,15 +1,32 @@
-openapi: 3.0.1
+openapi: 3.2.0
 info:
-  title: DocuSign Admin AccountBrands Tabs API
-  description: An API for an organization administrator to manage organizations, accounts and users
+  title: DocuSign eSignature REST Tabs API
+  description: The DocuSign eSignature REST API provides a powerful, convenient, and simple web services API for interacting with DocuSign. It enables developers to integrate electronic signing capabilities directly into applications and websites, allowing businesses to send, sign, and manage documents securely and efficiently with support for sequential and parallel signing workflows, document management, templates, and real-time status tracking.
+  version: 2.1.0
   termsOfService: https://www.docusign.com/company/terms-and-conditions/developers
   contact:
     name: DocuSign Developer Center
-    url: https://developers.docusign.com
+    url: https://developers.docusign.com/
     email: devcenter@docusign.com
-  version: v2.1
+  license:
+    name: DocuSign Developer Terms
+    url: https://www.docusign.com/company/terms-and-conditions/developers
+  x-logo:
+    url: https://www.docusign.com/sites/default/files/docusign_logo.png
+    altText: DocuSign
 servers:
-- url: https://api.docusign.net/Management
+- url: https://demo.docusign.net/restapi/v2.1
+  description: DocuSign Demo (Sandbox) Environment
+- url: https://www.docusign.net/restapi/v2.1
+  description: DocuSign Production - NA1
+- url: https://eu.docusign.net/restapi/v2.1
+  description: DocuSign Production - EU
+- url: https://au.docusign.net/restapi/v2.1
+  description: DocuSign Production - AU
+security:
+- OAuth2:
+  - signature
+  - impersonation
 tags:
 - name: Tabs
   description: Manage tabs (fields) placed on documents for recipients to interact with during the signing process, including signature, date, text, and checkbox tabs.
@@ -81,7 +98,61 @@ paths:
         delay: 0
         dispatcher: FALLBACK
 components:
+  parameters:
+    accountId:
+      name: accountId
+      in: path
+      required: true
+      description: The external account number (short) or account ID GUID of the DocuSign account.
+      schema:
+        type: string
+    envelopeId:
+      name: envelopeId
+      in: path
+      required: true
+      description: The envelope ID (GUID) of the envelope.
+      schema:
+        type: string
+        format: uuid
+    recipientId:
+      name: recipientId
+      in: path
+      required: true
+      description: A unique identifier for a recipient. This value is assigned by DocuSign and is unique per envelope.
+      schema:
+        type: string
   schemas:
+    EmailTab:
+      type: object
+      description: A tab for email address input.
+      properties:
+        tabId:
+          type: string
+          example: '500123'
+        tabLabel:
+          type: string
+          example: example_value
+        documentId:
+          type: string
+          example: '500123'
+        pageNumber:
+          type: string
+          example: example_value
+        recipientId:
+          type: string
+          example: '500123'
+        xPosition:
+          type: string
+          example: example_value
+        yPosition:
+          type: string
+          example: example_value
+        anchorString:
+          type: string
+          example: example_value
+        value:
+          type: string
+          example: example_value
     ListTab:
       type: object
       description: A dropdown list tab for selecting from predefined options.
@@ -128,6 +199,44 @@ components:
         required:
           type: string
           example: example_value
+    Checkbox:
+      type: object
+      description: A checkbox tab for boolean selection.
+      properties:
+        tabId:
+          type: string
+          example: '500123'
+        tabLabel:
+          type: string
+          example: example_value
+        documentId:
+          type: string
+          example: '500123'
+        pageNumber:
+          type: string
+          example: example_value
+        recipientId:
+          type: string
+          example: '500123'
+        xPosition:
+          type: string
+          example: example_value
+        yPosition:
+          type: string
+          example: example_value
+        anchorString:
+          type: string
+          example: example_value
+        selected:
+          type: string
+          description: When true, the checkbox is selected.
+          example: example_value
+        required:
+          type: string
+          example: example_value
+        locked:
+          type: string
+          example: example_value
     Decline:
       type: object
       description: A decline button tab for document rejection.
@@ -159,9 +268,116 @@ components:
         declineReason:
           type: string
           example: example_value
-    DateSigned:
+    FormulaTab:
       type: object
-      description: A tab that displays the date the recipient signed.
+      description: A calculated field tab using formulas.
+      properties:
+        tabId:
+          type: string
+          example: '500123'
+        tabLabel:
+          type: string
+          example: example_value
+        documentId:
+          type: string
+          example: '500123'
+        pageNumber:
+          type: string
+          example: example_value
+        recipientId:
+          type: string
+          example: '500123'
+        xPosition:
+          type: string
+          example: example_value
+        yPosition:
+          type: string
+          example: example_value
+        formula:
+          type: string
+          description: The formula expression.
+          example: example_value
+        roundDecimalPlaces:
+          type: string
+          example: example_value
+        value:
+          type: string
+          example: example_value
+    SignHere:
+      type: object
+      description: A signature tab placed on a document.
+      properties:
+        tabId:
+          type: string
+          description: Unique identifier for the tab.
+          example: '500123'
+        tabLabel:
+          type: string
+          description: Label used to identify the tab.
+          example: example_value
+        documentId:
+          type: string
+          description: The document ID where this tab is placed.
+          example: '500123'
+        pageNumber:
+          type: string
+          description: The page number where this tab is placed.
+          example: example_value
+        recipientId:
+          type: string
+          description: The recipient this tab is assigned to.
+          example: '500123'
+        xPosition:
+          type: string
+          description: The X position of the tab on the page.
+          example: example_value
+        yPosition:
+          type: string
+          description: The Y position of the tab on the page.
+          example: example_value
+        anchorString:
+          type: string
+          description: Anchor text string used to automatically position the tab.
+          example: example_value
+        anchorXOffset:
+          type: string
+          description: X offset from the anchor string position.
+          example: example_value
+        anchorYOffset:
+          type: string
+          description: Y offset from the anchor string position.
+          example: example_value
+        anchorUnits:
+          type: string
+          description: Units for anchor offsets (pixels, inches, mms, cms).
+          example: example_value
+        scaleValue:
+          type: string
+          description: Scale value for the signature.
+          example: example_value
+        optional:
+          type: string
+          description: When true, the tab is optional for the recipient.
+          example: example_value
+        stampType:
+          type: string
+          description: The type of stamp for the signature.
+          example: example_value
+    ErrorDetails:
+      type: object
+      description: Contains error information returned by the API.
+      properties:
+        errorCode:
+          type: string
+          description: The error code.
+          example: example_value
+        message:
+          type: string
+          description: A human-readable error message.
+          example: example_value
+    InitialHere:
+      type: object
+      description: An initial tab placed on a document.
       properties:
         tabId:
           type: string
@@ -187,38 +403,10 @@ components:
         anchorString:
           type: string
           example: example_value
-        value:
+        optional:
           type: string
           example: example_value
-    EmailTab:
-      type: object
-      description: A tab for email address input.
-      properties:
-        tabId:
-          type: string
-          example: '500123'
-        tabLabel:
-          type: string
-          example: example_value
-        documentId:
-          type: string
-          example: '500123'
-        pageNumber:
-          type: string
-          example: example_value
-        recipientId:
-          type: string
-          example: '500123'
-        xPosition:
-          type: string
-          example: example_value
-        yPosition:
-          type: string
-          example: example_value
-        anchorString:
-          type: string
-          example: example_value
-        value:
+        scaleValue:
           type: string
           example: example_value
     NumberTab:
@@ -249,6 +437,41 @@ components:
         value:
           type: string
           example: example_value
+        required:
+          type: string
+          example: example_value
+    RadioGroup:
+      type: object
+      description: A group of radio buttons for single-choice selection.
+      properties:
+        groupName:
+          type: string
+          description: The name of the radio group.
+          example: example_value
+        documentId:
+          type: string
+          example: '500123'
+        recipientId:
+          type: string
+          example: '500123'
+        radios:
+          type: array
+          items:
+            type: object
+            properties:
+              value:
+                type: string
+              selected:
+                type: string
+              pageNumber:
+                type: string
+              xPosition:
+                type: string
+              yPosition:
+                type: string
+              anchorString:
+                type: string
+          example: []
         required:
           type: string
           example: example_value
@@ -331,69 +554,9 @@ components:
           type: string
           description: When true, the value is concealed on the document.
           example: example_value
-    SignHere:
+    Approve:
       type: object
-      description: A signature tab placed on a document.
-      properties:
-        tabId:
-          type: string
-          description: Unique identifier for the tab.
-          example: '500123'
-        tabLabel:
-          type: string
-          description: Label used to identify the tab.
-          example: example_value
-        documentId:
-          type: string
-          description: The document ID where this tab is placed.
-          example: '500123'
-        pageNumber:
-          type: string
-          description: The page number where this tab is placed.
-          example: example_value
-        recipientId:
-          type: string
-          description: The recipient this tab is assigned to.
-          example: '500123'
-        xPosition:
-          type: string
-          description: The X position of the tab on the page.
-          example: example_value
-        yPosition:
-          type: string
-          description: The Y position of the tab on the page.
-          example: example_value
-        anchorString:
-          type: string
-          description: Anchor text string used to automatically position the tab.
-          example: example_value
-        anchorXOffset:
-          type: string
-          description: X offset from the anchor string position.
-          example: example_value
-        anchorYOffset:
-          type: string
-          description: Y offset from the anchor string position.
-          example: example_value
-        anchorUnits:
-          type: string
-          description: Units for anchor offsets (pixels, inches, mms, cms).
-          example: example_value
-        scaleValue:
-          type: string
-          description: Scale value for the signature.
-          example: example_value
-        optional:
-          type: string
-          description: When true, the tab is optional for the recipient.
-          example: example_value
-        stampType:
-          type: string
-          description: The type of stamp for the signature.
-          example: example_value
-    NoteTab:
-      type: object
-      description: A read-only note tab for displaying text.
+      description: An approve button tab for document approval.
       properties:
         tabId:
           type: string
@@ -416,58 +579,8 @@ components:
         yPosition:
           type: string
           example: example_value
-        value:
+        buttonText:
           type: string
-          example: example_value
-    Checkbox:
-      type: object
-      description: A checkbox tab for boolean selection.
-      properties:
-        tabId:
-          type: string
-          example: '500123'
-        tabLabel:
-          type: string
-          example: example_value
-        documentId:
-          type: string
-          example: '500123'
-        pageNumber:
-          type: string
-          example: example_value
-        recipientId:
-          type: string
-          example: '500123'
-        xPosition:
-          type: string
-          example: example_value
-        yPosition:
-          type: string
-          example: example_value
-        anchorString:
-          type: string
-          example: example_value
-        selected:
-          type: string
-          description: When true, the checkbox is selected.
-          example: example_value
-        required:
-          type: string
-          example: example_value
-        locked:
-          type: string
-          example: example_value
-    ErrorDetails:
-      type: object
-      description: Contains error information returned by the API.
-      properties:
-        errorCode:
-          type: string
-          description: The error code.
-          example: example_value
-        message:
-          type: string
-          description: A human-readable error message.
           example: example_value
     EnvelopeRecipientTabs:
       type: object
@@ -563,9 +676,9 @@ components:
           items:
             $ref: '#/components/schemas/Decline'
           example: []
-    InitialHere:
+    DateTab:
       type: object
-      description: An initial tab placed on a document.
+      description: A tab for date selection.
       properties:
         tabId:
           type: string
@@ -586,113 +699,12 @@ components:
           type: string
           example: example_value
         yPosition:
-          type: string
-          example: example_value
-        anchorString:
-          type: string
-          example: example_value
-        optional:
-          type: string
-          example: example_value
-        scaleValue:
-          type: string
-          example: example_value
-    RadioGroup:
-      type: object
-      description: A group of radio buttons for single-choice selection.
-      properties:
-        groupName:
-          type: string
-          description: The name of the radio group.
-          example: example_value
-        documentId:
-          type: string
-          example: '500123'
-        recipientId:
-          type: string
-          example: '500123'
-        radios:
-          type: array
-          items:
-            type: object
-            properties:
-              value:
-                type: string
-              selected:
-                type: string
-              pageNumber:
-                type: string
-              xPosition:
-                type: string
-              yPosition:
-                type: string
-              anchorString:
-                type: string
-          example: []
-        required:
-          type: string
-          example: example_value
-    Approve:
-      type: object
-      description: An approve button tab for document approval.
-      properties:
-        tabId:
-          type: string
-          example: '500123'
-        tabLabel:
-          type: string
-          example: example_value
-        documentId:
-          type: string
-          example: '500123'
-        pageNumber:
-          type: string
-          example: example_value
-        recipientId:
-          type: string
-          example: '500123'
-        xPosition:
-          type: string
-          example: example_value
-        yPosition:
-          type: string
-          example: example_value
-        buttonText:
-          type: string
-          example: example_value
-    FormulaTab:
-      type: object
-      description: A calculated field tab using formulas.
-      properties:
-        tabId:
-          type: string
-          example: '500123'
-        tabLabel:
-          type: string
-          example: example_value
-        documentId:
-          type: string
-          example: '500123'
-        pageNumber:
-          type: string
-          example: example_value
-        recipientId:
-          type: string
-          example: '500123'
-        xPosition:
-          type: string
-          example: example_value
-        yPosition:
-          type: string
-          example: example_value
-        formula:
-          type: string
-          description: The formula expression.
-          example: example_value
-        roundDecimalPlaces:
           type: string
           example: example_value
         value:
+          type: string
+          example: example_value
+        required:
           type: string
           example: example_value
     FullName:
@@ -726,9 +738,9 @@ components:
         value:
           type: string
           example: example_value
-    DateTab:
+    NoteTab:
       type: object
-      description: A tab for date selection.
+      description: A read-only note tab for displaying text.
       properties:
         tabId:
           type: string
@@ -754,39 +766,38 @@ components:
         value:
           type: string
           example: example_value
-        required:
+    DateSigned:
+      type: object
+      description: A tab that displays the date the recipient signed.
+      properties:
+        tabId:
+          type: string
+          example: '500123'
+        tabLabel:
           type: string
           example: example_value
-  parameters:
-    envelopeId:
-      name: envelopeId
-      in: path
-      required: true
-      description: The envelope ID (GUID) of the envelope.
-      schema:
-        type: string
-        format: uuid
-    accountId:
-      name: accountId
-      in: path
-      required: true
-      description: The external account number (short) or account ID GUID of the DocuSign account.
-      schema:
-        type: string
-    recipientId:
-      name: recipientId
-      in: path
-      required: true
-      description: A unique identifier for a recipient. This value is assigned by DocuSign and is unique per envelope.
-      schema:
-        type: string
+        documentId:
+          type: string
+          example: '500123'
+        pageNumber:
+          type: string
+          example: example_value
+        recipientId:
+          type: string
+          example: '500123'
+        xPosition:
+          type: string
+          example: example_value
+        yPosition:
+          type: string
+          example: example_value
+        anchorString:
+          type: string
+          example: example_value
+        value:
+          type: string
+          example: example_value
   responses:
-    Unauthorized:
-      description: Unauthorized. Authentication credentials are missing or invalid.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorDetails'
     NotFound:
       description: The requested resource was not found.
       content:
@@ -799,38 +810,28 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/ErrorDetails'
+    Unauthorized:
+      description: Unauthorized. Authentication credentials are missing or invalid.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorDetails'
   securitySchemes:
-    accessCode:
+    OAuth2:
       type: oauth2
-      description: OAuth2 Access code Grant
+      description: DocuSign uses OAuth 2.0. Supports Authorization Code Grant for user-present applications and JWT Grant for service integrations.
       flows:
         authorizationCode:
-          authorizationUrl: https://account.docusign.com/oauth/auth
-          tokenUrl: https://account.docusign.com/oauth/auth
+          authorizationUrl: https://account-d.docusign.com/oauth/auth
+          tokenUrl: https://account-d.docusign.com/oauth/token
           scopes:
-            organization_read: ''
-            permission_read: ''
-            group_read: ''
-            user_read: ''
-            account_read: ''
-            account_write: ''
-            user_write: ''
-            identity_provider_read: ''
-            domain_read: ''
-x-ds-categories:
-- name: UserManagement
-  summary: Methods to manage users in an account.
-  description: Methods to manage users in an account.
-- name: BulkOperations
-  summary: Methods to import and export users and accounts.
-  description: Methods to import and export users and accounts.
-- name: IdentityProviders
-  summary: Methods to get a list of identity providers.
-  description: Methods to get a list of identity providers.
-- name: ReservedDomains
-  summary: Methods to get a list of reserved domains.
-  description: Methods to get a list of reserved domains.
-- name: Organization
-  summary: Methods for working with organizations.
-  description: Methods for working with organizations.
-x-original-swagger-version: '2.0'
+            signature: Access to signing and envelope operations
+            impersonation: Impersonate users via JWT Grant
+            extended: Extended API access
+        implicit:
+          authorizationUrl: https://account-d.docusign.com/oauth/auth
+          scopes:
+            signature: Access to signing and envelope operations
+externalDocs:
+  description: DocuSign eSignature REST API Reference
+  url: https://developers.docusign.com/docs/esign-rest-api/reference/

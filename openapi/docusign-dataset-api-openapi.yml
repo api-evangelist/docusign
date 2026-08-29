@@ -1,15 +1,17 @@
-openapi: 3.0.1
+openapi: 3.2.0
 info:
-  title: DocuSign Admin AccountBrands DataSet API
-  description: An API for an organization administrator to manage organizations, accounts and users
-  termsOfService: https://www.docusign.com/company/terms-and-conditions/developers
+  title: Docusign Monitor Data Set API
+  description: An API for an integrator to access the features of DocuSign Monitor
+  termsOfService: https://www.docusign.com/company/terms-and-conditions/web
   contact:
     name: DocuSign Developer Center
     url: https://developers.docusign.com
     email: devcenter@docusign.com
-  version: v2.1
+  version: v2.0
 servers:
-- url: https://api.docusign.net/Management
+- url: https://lens.docusign.net/
+security:
+- Bearer: []
 tags:
 - name: DataSet
   description: The DataSet resource provides methods that allow you to fetch organization event data. The `dataSet` path parameter must be set to `monitor`.
@@ -91,37 +93,23 @@ components:
       x-ds-definition-name: CursoredResult
       x-ms-summary: ''
   securitySchemes:
-    accessCode:
-      type: oauth2
-      description: OAuth2 Access code Grant
-      flows:
-        authorizationCode:
-          authorizationUrl: https://account.docusign.com/oauth/auth
-          tokenUrl: https://account.docusign.com/oauth/auth
-          scopes:
-            organization_read: ''
-            permission_read: ''
-            group_read: ''
-            user_read: ''
-            account_read: ''
-            account_write: ''
-            user_write: ''
-            identity_provider_read: ''
-            domain_read: ''
+    Bearer:
+      type: apiKey
+      description: 'JWT Authorization header using the Bearer scheme. Example: "Authorization: Bearer {token}"'
+      name: Authorization
+      in: header
+externalDocs:
+  description: ''
+  url: ''
 x-ds-categories:
-- name: UserManagement
-  summary: Methods to manage users in an account.
-  description: Methods to manage users in an account.
-- name: BulkOperations
-  summary: Methods to import and export users and accounts.
-  description: Methods to import and export users and accounts.
-- name: IdentityProviders
-  summary: Methods to get a list of identity providers.
-  description: Methods to get a list of identity providers.
-- name: ReservedDomains
-  summary: Methods to get a list of reserved domains.
-  description: Methods to get a list of reserved domains.
-- name: Organization
-  summary: Methods for working with organizations.
-  description: Methods for working with organizations.
+- name: Monitor
+  summary: The DocuSign Monitor API receives a data feed containing security events for your DocuSign account. This data goes directly to whichever application or website you choose to integrate with DocuSign's eSignature REST API.
+  description: 'Each time an event occurs, DocuSign Monitor returns JSON Data Types from a download endpoint. The endpoints include the Monitor UI, SIEMs such as Splunk, and other Customer API endpoints.
+
+
+    **Note:** Your accounts must exist inside an organization to access this data.
+
+    '
+x-ds-devdocs:
+  stamp: ca00a16 2022-10-04 12:15:28-0400
 x-original-swagger-version: '2.0'

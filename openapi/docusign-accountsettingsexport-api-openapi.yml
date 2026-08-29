@@ -1,6 +1,6 @@
-openapi: 3.0.1
+openapi: 3.2.0
 info:
-  title: DocuSign Admin AccountBrands AccountSettingsExport API
+  title: DocuSign Admin Account Settings Export API
   description: An API for an organization administrator to manage organizations, accounts and users
   termsOfService: https://www.docusign.com/company/terms-and-conditions/developers
   contact:
@@ -164,6 +164,15 @@ paths:
       x-ds-in-sdk: true
 components:
   schemas:
+    OrgExportSelectedDomain:
+      type: object
+      properties:
+        domain:
+          type: string
+          description: ''
+      description: ''
+      x-ds-definition-name: OrgExportSelectedDomain
+      x-ms-summary: ''
     OrganizationExportTaskResponse:
       type: object
       properties:
@@ -191,6 +200,64 @@ components:
           $ref: '#/components/schemas/OETR_ErrorDetails'
       description: ''
       x-ds-definition-name: OrganizationExportTaskResponse
+      x-ms-summary: ''
+    OrganizationAccountsRequest:
+      type: object
+      properties:
+        accounts:
+          type: array
+          description: ''
+          items:
+            $ref: '#/components/schemas/OrganizationAccountRequest'
+      description: ''
+      x-ds-definition-name: OrganizationAccountsRequest
+      x-ms-summary: ''
+    OrganizationAccountRequest:
+      required:
+      - account_id
+      type: object
+      properties:
+        account_id:
+          type: string
+          description: Select users that are members of the specified account. At least one of `email`, `account_id` or `organization_reserved_domain_id` must be specified.
+          format: uuid
+          example: 00000000-0000-0000-0000-000000000000
+      description: ''
+      x-ds-definition-name: OrganizationAccountRequest
+      x-ms-summary: ''
+    OrgExportSelectedAccount:
+      type: object
+      properties:
+        account_id:
+          type: string
+          description: Select users that are members of the specified account. At least one of `email`, `account_id` or `organization_reserved_domain_id` must be specified.
+          format: uuid
+          example: 00000000-0000-0000-0000-000000000000
+      description: ''
+      x-ds-definition-name: OrgExportSelectedAccount
+      x-ms-summary: ''
+    OETR_ErrorDetails:
+      type: object
+      properties:
+        error:
+          type: string
+          description: The error number.
+        error_description:
+          type: string
+          description: A longer description of the error.
+      description: ''
+      x-ds-definition-name: OETR_ErrorDetails
+      x-ms-summary: ''
+    OrganizationExportsResponse:
+      type: object
+      properties:
+        exports:
+          type: array
+          description: ''
+          items:
+            $ref: '#/components/schemas/OrganizationExportResponse'
+      description: ''
+      x-ds-definition-name: OrganizationExportsResponse
       x-ms-summary: ''
     OrganizationExportResponse:
       type: object
@@ -260,17 +327,6 @@ components:
       description: ''
       x-ds-definition-name: OrganizationExportResponse
       x-ms-summary: ''
-    OrganizationAccountsRequest:
-      type: object
-      properties:
-        accounts:
-          type: array
-          description: ''
-          items:
-            $ref: '#/components/schemas/OrganizationAccountRequest'
-      description: ''
-      x-ds-definition-name: OrganizationAccountsRequest
-      x-ms-summary: ''
     OrganizationExportRequestorResponse:
       type: object
       properties:
@@ -288,62 +344,6 @@ components:
           description: The email address.
       description: ''
       x-ds-definition-name: OrganizationExportRequestorResponse
-      x-ms-summary: ''
-    OrganizationAccountRequest:
-      required:
-      - account_id
-      type: object
-      properties:
-        account_id:
-          type: string
-          description: Select users that are members of the specified account. At least one of `email`, `account_id` or `organization_reserved_domain_id` must be specified.
-          format: uuid
-          example: 00000000-0000-0000-0000-000000000000
-      description: ''
-      x-ds-definition-name: OrganizationAccountRequest
-      x-ms-summary: ''
-    OrgExportSelectedAccount:
-      type: object
-      properties:
-        account_id:
-          type: string
-          description: Select users that are members of the specified account. At least one of `email`, `account_id` or `organization_reserved_domain_id` must be specified.
-          format: uuid
-          example: 00000000-0000-0000-0000-000000000000
-      description: ''
-      x-ds-definition-name: OrgExportSelectedAccount
-      x-ms-summary: ''
-    OrganizationExportsResponse:
-      type: object
-      properties:
-        exports:
-          type: array
-          description: ''
-          items:
-            $ref: '#/components/schemas/OrganizationExportResponse'
-      description: ''
-      x-ds-definition-name: OrganizationExportsResponse
-      x-ms-summary: ''
-    OrgExportSelectedDomain:
-      type: object
-      properties:
-        domain:
-          type: string
-          description: ''
-      description: ''
-      x-ds-definition-name: OrgExportSelectedDomain
-      x-ms-summary: ''
-    OETR_ErrorDetails:
-      type: object
-      properties:
-        error:
-          type: string
-          description: The error number.
-        error_description:
-          type: string
-          description: A longer description of the error.
-      description: ''
-      x-ds-definition-name: OETR_ErrorDetails
       x-ms-summary: ''
   securitySchemes:
     accessCode:

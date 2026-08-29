@@ -1,15 +1,15 @@
-openapi: 3.0.1
+openapi: 3.2.0
 info:
-  title: DocuSign Admin AccountBrands WorkflowInstanceManagement API
-  description: An API for an organization administrator to manage organizations, accounts and users
-  termsOfService: https://www.docusign.com/company/terms-and-conditions/developers
+  title: Docusign Maestro Workflow Instance Management API
+  description: Maestro authors and executes experiences that allow non-coders the ability to define Simple Business Process without having to write code and to deploy them seamlessly without having to have development expertise
+  termsOfService: https://www.docusign.com/company/terms-and-conditions/web
   contact:
-    name: DocuSign Developer Center
-    url: https://developers.docusign.com
+    name: Docusign Developer Center
+    url: https://developers.docusign.com/
     email: devcenter@docusign.com
-  version: v2.1
+  version: 1.0.0
 servers:
-- url: https://api.docusign.net/Management
+- url: https://apps.docusign.com/api/maestro
 tags:
 - name: WorkflowInstanceManagement
   description: Methods to get information about workflow instances.
@@ -278,54 +278,53 @@ paths:
       x-ds-in-sdk: true
 components:
   schemas:
-    WorkflowCreatorId:
+    WorkflowInstanceId:
       type: string
-      description: The Docusign Admin user ID who has the ability to create workflow definitions.
+      description: 'Workflow instance ID.
+
+        A string in UUID format: 4a6d6a08-xxxx-xxxx-xxxx-bae4fecc99c8'
       format: uuid
       example: 00000000-0000-0000-0000-000000000000
-      x-ds-definition-name: WorkflowCreatorId
-      x-ms-summary: The Docusign Admin user ID who has the ability to create workflow definitions.
-    WorkflowDateTime:
-      type: string
-      description: A date-time string.
-      format: date-time
-      x-ds-definition-name: WorkflowDateTime
-      x-ms-summary: A date-time string.
-    WorkflowInstanceState:
-      type: string
-      description: Current workflow instance state (`completed`, `failed`, `In-progress`)
-      enum:
-      - Created
-      - In Progress
-      - Completed
-      - Failed
-      - Canceled
-      x-ds-definition-name: WorkflowInstanceState
-      x-ms-summary: Current workflow instance state (`completed`, `failed`, `In-progress`)
-    ErrorCodes:
-      type: string
-      description: Internal Error Codes
-      enum:
-      - ERR_10001
-      - ERR_10002
-      - ERR_10003
-      - ERR_10004
-      - ERR_10005
-      - ERR_10006
-      - ERR_10007
-      - ERR_10008
-      - ERR_10009
-      - ERR_10101
-      - ERR_10201
-      - ERR_10202
-      - ERR_10301
-      - ERR_10302
-      - ERR_10401
-      - ERR_10801
-      - ERR_10802
-      - ERR_10999
-      x-ds-definition-name: ErrorCodes
-      x-ms-summary: Internal Error Codes
+      x-ds-definition-name: WorkflowInstanceId
+      x-ms-summary: 'Workflow instance ID.
+
+        A string in UUID format: 4a6d6a08-xxxx-xxxx-xxxx-bae4fecc99c8'
+    ErrorResponse:
+      type: object
+      properties:
+        errorCode:
+          $ref: '#/components/schemas/ErrorCodes'
+        message:
+          type: string
+          description: Human-readable description of the error.
+      description: Returns error with a status message
+      x-ds-definition-name: ErrorResponse
+      x-ms-summary: Returns error with a status message
+    GetConfigurationInstancesResponse:
+      type: object
+      properties:
+        configInstances:
+          type: array
+          description: ''
+          items:
+            type: object
+            properties:
+              savedValues:
+                type: object
+                additionalProperties: true
+              stepId:
+                type: string
+                format: uuid
+        count:
+          type: number
+          description: Total number of definitions returned
+        workflowDefinitionId:
+          type: string
+          description: Workflow definition ID.
+          format: uuid
+      description: ''
+      x-ds-definition-name: GetConfigurationInstancesResponse
+      x-ms-summary: ''
     TemplateId:
       type: string
       description: Workflow definition ID.
@@ -371,43 +370,18 @@ components:
       description: Details of a workflow instance triggered for a workflow definition.
       x-ds-definition-name: WorkflowInstance
       x-ms-summary: Details of a workflow instance triggered for a workflow definition.
-    ProgressInstance:
-      type: object
-      properties:
-        completedSteps:
-          type: number
-          description: The number of completed steps for this workflow instance
-        currentCompletedStepName:
-          type: string
-          description: The last completed step name
-        totalSteps:
-          type: number
-          description: The total number of steps for this workflow instance
-      description: The progress information for a workflow instance
-      x-ds-definition-name: ProgressInstance
-      x-ms-summary: The progress information for a workflow instance
-    WorkflowInstanceId:
+    WorkflowDateTime:
       type: string
-      description: 'Workflow instance ID.
-
-        A string in UUID format: 4a6d6a08-xxxx-xxxx-xxxx-bae4fecc99c8'
+      description: A date-time string.
+      format: date-time
+      x-ds-definition-name: WorkflowDateTime
+      x-ms-summary: A date-time string.
+    AowUUIDString:
+      type: string
+      description: 'A string in UUID format: 4a6d6a08-xxxx-xxxx-xxxx-bae4fecc99c8'
       format: uuid
-      example: 00000000-0000-0000-0000-000000000000
-      x-ds-definition-name: WorkflowInstanceId
-      x-ms-summary: 'Workflow instance ID.
-
-        A string in UUID format: 4a6d6a08-xxxx-xxxx-xxxx-bae4fecc99c8'
-    ErrorResponse:
-      type: object
-      properties:
-        errorCode:
-          $ref: '#/components/schemas/ErrorCodes'
-        message:
-          type: string
-          description: Human-readable description of the error.
-      description: Returns error with a status message
-      x-ds-definition-name: ErrorResponse
-      x-ms-summary: Returns error with a status message
+      x-ds-definition-name: AowUUIDString
+      x-ms-summary: 'A string in UUID format: 4a6d6a08-xxxx-xxxx-xxxx-bae4fecc99c8'
     AccountId:
       type: string
       description: Account Id
@@ -415,37 +389,6 @@ components:
       example: 00000000-0000-0000-0000-000000000000
       x-ds-definition-name: AccountId
       x-ms-summary: Account Id
-    GetConfigurationInstancesResponse:
-      type: object
-      properties:
-        configInstances:
-          type: array
-          description: ''
-          items:
-            type: object
-            properties:
-              savedValues:
-                type: object
-                additionalProperties: true
-              stepId:
-                type: string
-                format: uuid
-        count:
-          type: number
-          description: Total number of definitions returned
-        workflowDefinitionId:
-          type: string
-          description: Workflow definition ID.
-          format: uuid
-      description: ''
-      x-ds-definition-name: GetConfigurationInstancesResponse
-      x-ms-summary: ''
-    AowUUIDString:
-      type: string
-      description: 'A string in UUID format: 4a6d6a08-xxxx-xxxx-xxxx-bae4fecc99c8'
-      format: uuid
-      x-ds-definition-name: AowUUIDString
-      x-ms-summary: 'A string in UUID format: 4a6d6a08-xxxx-xxxx-xxxx-bae4fecc99c8'
     StartedByInstance:
       type: object
       properties:
@@ -479,38 +422,89 @@ components:
       description: Cancel workflow instance response.
       x-ds-definition-name: CancelResponse
       x-ms-summary: Cancel workflow instance response.
+    ProgressInstance:
+      type: object
+      properties:
+        completedSteps:
+          type: number
+          description: The number of completed steps for this workflow instance
+        currentCompletedStepName:
+          type: string
+          description: The last completed step name
+        totalSteps:
+          type: number
+          description: The total number of steps for this workflow instance
+      description: The progress information for a workflow instance
+      x-ds-definition-name: ProgressInstance
+      x-ms-summary: The progress information for a workflow instance
+    WorkflowCreatorId:
+      type: string
+      description: The Docusign Admin user ID who has the ability to create workflow definitions.
+      format: uuid
+      example: 00000000-0000-0000-0000-000000000000
+      x-ds-definition-name: WorkflowCreatorId
+      x-ms-summary: The Docusign Admin user ID who has the ability to create workflow definitions.
+    WorkflowInstanceState:
+      type: string
+      description: Current workflow instance state (`completed`, `failed`, `In-progress`)
+      enum:
+      - Created
+      - In Progress
+      - Completed
+      - Failed
+      - Canceled
+      x-ds-definition-name: WorkflowInstanceState
+      x-ms-summary: Current workflow instance state (`completed`, `failed`, `In-progress`)
+    ErrorCodes:
+      type: string
+      description: Internal Error Codes
+      enum:
+      - ERR_10001
+      - ERR_10002
+      - ERR_10003
+      - ERR_10004
+      - ERR_10005
+      - ERR_10006
+      - ERR_10007
+      - ERR_10008
+      - ERR_10009
+      - ERR_10101
+      - ERR_10201
+      - ERR_10202
+      - ERR_10301
+      - ERR_10302
+      - ERR_10401
+      - ERR_10801
+      - ERR_10802
+      - ERR_10999
+      x-ds-definition-name: ErrorCodes
+      x-ms-summary: Internal Error Codes
   securitySchemes:
-    accessCode:
+    DSAuth:
       type: oauth2
-      description: OAuth2 Access code Grant
+      description: Docusign AuthN/AuthZ
       flows:
         authorizationCode:
-          authorizationUrl: https://account.docusign.com/oauth/auth
-          tokenUrl: https://account.docusign.com/oauth/auth
+          authorizationUrl: https://account-tk1.tk.docusign.dev/oauth/auth
+          tokenUrl: https://account-tk1.tk.docusign.dev/oauth/token
           scopes:
-            organization_read: ''
-            permission_read: ''
-            group_read: ''
-            user_read: ''
-            account_read: ''
-            account_write: ''
-            user_write: ''
-            identity_provider_read: ''
-            domain_read: ''
+            aow_manage: Manage workflows scope
+            signature: Using signature scope
+    DSBearerAuth:
+      type: apiKey
+      name: Authorization
+      in: header
+externalDocs:
+  description: Maestro API Documentation
+  url: https://developers.docusign.com/docs/maestro-api/
 x-ds-categories:
-- name: UserManagement
-  summary: Methods to manage users in an account.
-  description: Methods to manage users in an account.
-- name: BulkOperations
-  summary: Methods to import and export users and accounts.
-  description: Methods to import and export users and accounts.
-- name: IdentityProviders
-  summary: Methods to get a list of identity providers.
-  description: Methods to get a list of identity providers.
-- name: ReservedDomains
-  summary: Methods to get a list of reserved domains.
-  description: Methods to get a list of reserved domains.
-- name: Organization
-  summary: Methods for working with organizations.
-  description: Methods for working with organizations.
+- name: WorkflowTrigger
+  summary: Method to trigger a workflow.
+  description: Method to trigger a workflow.
+- name: WorkflowInstanceManagement
+  summary: Methods to get information about workflow instances.
+  description: Methods to get information about workflow instances.
+- name: WorkflowManagement
+  summary: Methods to create, retrieve, update, and delete workflow definitions.
+  description: Methods to create, retrieve, update, and delete workflow definitions.
 x-original-swagger-version: '2.0'
