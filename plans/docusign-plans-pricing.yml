@@ -1,169 +1,64 @@
-specification: API Commons Plans
-specificationVersion: '0.1'
-schema: https://raw.githubusercontent.com/api-evangelist/interface-research/main/schema/api-commons.yml#/$defs/Plans
-provider: DocuSign
-providerId: docusign
-created: '2026-05-04'
-# Provenance stamped 2026-08-11: this artifact was written by the API Evangelist
-# bulk sweep dated 2026-05-04, not harvested from the provider. See roadmap#35.
-method: generated
-modified: '2026-05-04'
-reconciled: true
-tags:
-  - E-Signature
-  - Agreements
-  - Workflow
-description: DocuSign eSignature plans with envelope-allowance pricing model.
+# Pricing transcribed from the provider's own page — see provenance. Numbers are quoted, not derived.
+generated: '2026-09-20'
+method: searched
+source: https://ecom.docusign.com/plans-and-pricing/esignature
 sources:
-  - https://www.docusign.com/products/electronic-signature
+- https://ecom.docusign.com/plans-and-pricing/esignature
+provenance:
+  tool: planning/api-economics/harvest_pricing.py
+  run: 20260920T124425
+  grounding: every price_text was found verbatim in the fetched page text
+audience: business-product
+pricing_basis: tiered-subscription
+published: true
+note: eSignature plan page; annual commitments noted ($132/$360/$540). APIs included in all plans but
+  not priced separately.
+plan_count: 6
+currency: USD
 plans:
-  - id: docusign-personal
-    name: Personal
-    type: paid
-    description: $10/month annual ($15 monthly). Single user; 5 envelopes/mo.
-    entries:
-      - label: Monthly (annual)
-        name: monthly
-        type: subscription
-        metric: month
-        limit: -1
-        timeFrame: month
-        geo: global
-        unit: 1
-        price: '10.00'
-        userMultiplied: false
-      - label: Monthly (monthly billing)
-        name: monthly_mb
-        type: subscription
-        metric: month
-        limit: -1
-        timeFrame: month
-        geo: global
-        unit: 1
-        price: '15.00'
-        userMultiplied: false
-      - label: Envelopes included
-        name: envelopes
-        type: quota
-        metric: envelope
-        limit: 5
-        timeFrame: month
-        geo: global
-        unit: 1
-        price: '0.00'
-        userMultiplied: false
-    elements:
-      - name: Single user
-      - name: Reusable templates
-      - name: Mobile app
-      - name: Standard fields
-  - id: docusign-standard
-    name: Standard
-    type: paid
-    description: $25/user/mo annual. Up to 100 envelopes/user/year.
-    entries:
-      - label: Per user (annual)
-        name: seat
-        type: subscription
-        metric: user
-        limit: -1
-        timeFrame: month
-        geo: global
-        unit: 1
-        price: '25.00'
-        userMultiplied: true
-      - label: Per user (monthly)
-        name: seat
-        type: subscription
-        metric: user
-        limit: -1
-        timeFrame: month
-        geo: global
-        unit: 1
-        price: '45.00'
-        userMultiplied: true
-      - label: Envelopes included
-        name: envelopes
-        type: quota
-        metric: envelope
-        limit: 100
-        timeFrame: year
-        geo: global
-        unit: 1
-        price: '0.00'
-        userMultiplied: false
-      - label: Overage
-        name: envelope_overage
-        type: metered
-        metric: envelope
-        limit: -1
-        timeFrame: year
-        geo: global
-        unit: 1
-        price: 3.00-8.00
-        userMultiplied: false
-    elements:
-      - name: Multi-user
-      - name: Shared templates
-      - name: Branded signing
-      - name: Reminders/expirations
-  - id: docusign-business-pro
-    name: Business Pro
-    type: paid
-    description: $40/user/mo annual. Bulk send, payments, advanced fields.
-    entries:
-      - label: Per user (annual)
-        name: seat
-        type: subscription
-        metric: user
-        limit: -1
-        timeFrame: month
-        geo: global
-        unit: 1
-        price: '40.00'
-        userMultiplied: true
-      - label: Per user (monthly)
-        name: seat
-        type: subscription
-        metric: user
-        limit: -1
-        timeFrame: month
-        geo: global
-        unit: 1
-        price: '65.00'
-        userMultiplied: true
-      - label: Envelopes included
-        name: envelopes
-        type: quota
-        metric: envelope
-        limit: 100
-        timeFrame: year
-        geo: global
-        unit: 1
-        price: '0.00'
-        userMultiplied: false
-    elements:
-      - name: Bulk send
-      - name: Payment collection
-      - name: Advanced fields
-      - name: Signer attachments
-  - id: docusign-enterprise
-    name: Enterprise / Advanced Solutions
-    type: enterprise
-    description: Custom pricing via sales.
-    entries:
-      - label: Per user (custom)
-        name: seat
-        type: subscription
-        metric: user
-        limit: -1
-        timeFrame: month
-        geo: global
-        unit: 1
-        price: custom
-        userMultiplied: true
-    elements:
-      - name: Advanced ID Verification
-      - name: Conditional routing
-      - name: API access
-      - name: Salesforce/Workday integrations
+- name: Personal
+  price_text: $ 11 /month
+  price: 11
+  currency: USD
+  period: month
+  unit: account
+  included_quota: Send 5 envelopes per month
+- name: Standard
+  price_text: $ 30 /user/month
+  price: 30
+  currency: USD
+  period: month
+  unit: user
+  included_quota: Send a total of 100 envelopes per user per year
+  overage: each Envelope used in excess is considered an “additional” Envelope that will be billed in
+    a “Pay-As-You-Go” manner, where Docusign will charge a set, per-envelope rate
+- name: Business Pro
+  price_text: $ 45 /user/month
+  price: 45
+  currency: USD
+  period: month
+  unit: user
+  included_quota: Send a total of 100 envelopes per user per year
+  overage: each Envelope used in excess is considered an “additional” Envelope that will be billed in
+    a “Pay-As-You-Go” manner, where Docusign will charge a set, per-envelope rate
+- name: Enhanced plans
+  price_text: Contact Sales
+  period: none
+  included_quota: Custom limit
+- name: Send with SMS (add-on)
+  price_text: Starting at $0.36/delivery
+  price: 0.36
+  currency: USD
+  period: per-use
+  unit: delivery
+- name: Verify recipient identity (add-on)
+  price_text: Starting at $2.40/ID verification attempt
+  price: 2.4
+  currency: USD
+  period: per-use
+  unit: ID verification attempt
+rate_limit_statements:
+- Send 5 envelopes per month
+- Send a total of 100 envelopes per user per year
+- options for monthly plans that include an allowance of up to 10 Envelopes per user per month
+- Up to 50 users
