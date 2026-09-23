@@ -1,6 +1,6 @@
 openapi: 3.2.0
 info:
-  title: DocuSign REST Group Users API
+  title: DocuSign REST Cloud Storage API
   description: The DocuSign REST API provides you with a powerful, convenient, and simple Web services API for interacting with DocuSign.
   termsOfService: https://www.docusign.com/company/terms-and-conditions/web
   contact:
@@ -11,16 +11,16 @@ info:
 servers:
 - url: https://www.docusign.net/restapi
 tags:
-- name: GroupUsers
-  description: The GroupUsers resource provides methods that allow you to manage the users in a group.
+- name: Cloud Storage
+  description: The CloudStorage resource provides methods that allow you to list files stored on your cloud storage provider.
 paths:
-  /v2/accounts/{accountId}/groups/{groupId}/users:
+  /v2/accounts/{accountId}/users/{userId}/cloud_storage/{serviceId}/folders:
     get:
       tags:
-      - GroupUsers
-      summary: Docusign Gets a list of users in a group.
-      description: Retrieves a list of users in a group.
-      operationId: Groups_GetGroupUsers
+      - Cloud Storage
+      summary: Docusign Retrieves a list of all the items in a specified folder from the…
+      description: Retrieves a list of all the items in a specified folder from the specified cloud storage provider.
+      operationId: CloudStorageFolder_GetCloudStorageFolderAll
       parameters:
       - name: accountId
         in: path
@@ -28,20 +28,45 @@ paths:
         required: true
         schema:
           type: string
-      - name: groupId
+      - name: serviceId
         in: path
-        description: The ID of the group being accessed.
+        description: "The ID of the service to access. \n\nValid values are the service name (\"Box\") or the numerical serviceId (\"4136\")."
         required: true
+        schema:
+          type: string
+      - name: userId
+        in: path
+        description: 'The user ID of the user being accessed. Generally this is the user ID of the authenticated user, but if the authenticated user is an Admin on the account, this may be another user the Admin user is accessing. **Note**: For the [GET /v2/accounts/{accountId}/envelopes](https://developers.docusign.com/esign-rest-api/reference/Envelopes/Envelopes/listStatusChanges/#envelopesInformation) method, the `user_id` query parameter is not implemented and should not be used.'
+        required: true
+        schema:
+          type: string
+      - name: cloud_storage_folder_path
+        in: query
+        description: 'A comma separated list of folder IDs included in the request. '
         schema:
           type: string
       - name: count
         in: query
-        description: 'Number of records to return. The number must be greater than 1 and less than or equal to 100. '
+        description: "An optional value that sets how many items are included in the response. \n\nThe default setting for this is 25. "
+        schema:
+          type: string
+      - name: order
+        in: query
+        description: "An optional value that sets the direction order used to sort the item list. \n\nValid values are: \n\n* asc = ascending sort order\n* desc = descending sort order "
+        schema:
+          type: string
+      - name: order_by
+        in: query
+        description: "An optional value that sets the file attribute used to sort the item list. \n\nValid values are: \n\n* modified\n* name  "
+        schema:
+          type: string
+      - name: search_text
+        in: query
         schema:
           type: string
       - name: start_position
         in: query
-        description: Starting value for the list.
+        description: 'Indicates the starting point of the first item included in the response set. It uses a 0-based index. The default setting for this is 0.  '
         schema:
           type: string
       responses:
@@ -50,7 +75,7 @@ paths:
           content:
             '*/*':
               schema:
-                $ref: '#/components/schemas/usersResponse'
+                $ref: '#/components/schemas/externalFolder'
         '400':
           description: Error encountered.
           content:
@@ -58,185 +83,154 @@ paths:
               schema:
                 $ref: '#/components/schemas/errorDetails'
       deprecated: false
-      x-ds-methodname: listGroupUsers
+      x-ds-methodname: listFolders
+      x-ds-method: listFolders
+      x-ds-service: CloudStorage
+      x-ds-in-sdk: true
+  /v2/accounts/{accountId}/users/{userId}/cloud_storage/{serviceId}/folders/{folderId}:
+    get:
+      tags:
+      - Cloud Storage
+      summary: Docusign Gets a list of all the items from the specified cloud storage provider
+      description: Retrieves a list of all the items in all the folders associated with the user from the specified cloud storage provider. You can limit the scope of the returned items by providing a comma separated list of folder IDs in the request.
+      operationId: CloudStorageFolder_GetCloudStorageFolder
+      parameters:
+      - name: accountId
+        in: path
+        description: The external account number (int) or account id GUID.
+        required: true
+        schema:
+          type: string
+      - name: folderId
+        in: path
+        description: The ID of the folder being accessed.
+        required: true
+        schema:
+          type: string
+      - name: serviceId
+        in: path
+        description: "The ID of the service to access. \n\nValid values are the service name (\"Box\") or the numerical serviceId (\"4136\")."
+        required: true
+        schema:
+          type: string
+      - name: userId
+        in: path
+        description: 'The user ID of the user being accessed. Generally this is the user ID of the authenticated user, but if the authenticated user is an Admin on the account, this may be another user the Admin user is accessing. **Note**: For the [GET /v2/accounts/{accountId}/envelopes](https://developers.docusign.com/esign-rest-api/reference/Envelopes/Envelopes/listStatusChanges/#envelopesInformation) method, the `user_id` query parameter is not implemented and should not be used.'
+        required: true
+        schema:
+          type: string
+      - name: cloud_storage_folder_path
+        in: query
+        schema:
+          type: string
+      - name: count
+        in: query
+        description: "An optional value that sets how many items are included in the response. \n\nThe default setting for this is 25. "
+        schema:
+          type: string
+      - name: order
+        in: query
+        description: "An optional value that sets the direction order used to sort the item list. \n\nValid values are: \n\n* asc = ascending sort order\n* desc = descending sort order "
+        schema:
+          type: string
+      - name: order_by
+        in: query
+        description: "An optional value that sets the file attribute used to sort the item list. \n\nValid values are: \n\n* modified\n* name  "
+        schema:
+          type: string
+      - name: search_text
+        in: query
+        schema:
+          type: string
+      - name: start_position
+        in: query
+        description: 'Indicates the starting point of the first item included in the response set. It uses a 0-based index. The default setting for this is 0.  '
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Successful response.
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/externalFolder'
+        '400':
+          description: Error encountered.
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/errorDetails'
+      deprecated: false
+      x-ds-methodname: list
       x-ds-method: list
-      x-ds-service: Groups
+      x-ds-service: CloudStorage
       x-ds-in-sdk: true
-    put:
-      tags:
-      - GroupUsers
-      summary: Docusign Adds one or more users to an existing group.
-      description: Adds one or more users to an existing group.
-      operationId: Groups_PutGroupUsers
-      parameters:
-      - name: accountId
-        in: path
-        description: The external account number (int) or account id GUID.
-        required: true
-        schema:
-          type: string
-      - name: groupId
-        in: path
-        description: The ID of the group being accessed.
-        required: true
-        schema:
-          type: string
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/userInfoList'
-          application/xml:
-            schema:
-              $ref: '#/components/schemas/userInfoList'
-        required: false
-      responses:
-        '200':
-          description: Successful response.
-          content:
-            '*/*':
-              schema:
-                $ref: '#/components/schemas/usersResponse'
-        '400':
-          description: Error encountered.
-          content:
-            '*/*':
-              schema:
-                $ref: '#/components/schemas/errorDetails'
-      deprecated: false
-      x-ds-methodname: updateGroupUsers
-      x-ds-method: update
-      x-ds-service: Groups
-      x-ds-in-sdk: true
-      x-codegen-request-body-name: userInfoList
-    delete:
-      tags:
-      - GroupUsers
-      summary: Docusign Deletes one or more users from a gro
-      description: 'Deletes one or more users from a group.
-
-        '
-      operationId: Groups_DeleteGroupUsers
-      parameters:
-      - name: accountId
-        in: path
-        description: The external account number (int) or account id GUID.
-        required: true
-        schema:
-          type: string
-      - name: groupId
-        in: path
-        description: The ID of the group being accessed.
-        required: true
-        schema:
-          type: string
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/userInfoList'
-          application/xml:
-            schema:
-              $ref: '#/components/schemas/userInfoList'
-        required: false
-      responses:
-        '200':
-          description: Successful response.
-          content:
-            '*/*':
-              schema:
-                $ref: '#/components/schemas/usersResponse'
-        '400':
-          description: Error encountered.
-          content:
-            '*/*':
-              schema:
-                $ref: '#/components/schemas/errorDetails'
-      deprecated: false
-      x-ds-methodname: deleteGroupUsers
-      x-ds-method: delete
-      x-ds-service: Groups
-      x-ds-in-sdk: true
-      x-codegen-request-body-name: userInfoList
 components:
   schemas:
-    errorDetails:
+    externalDocServiceErrorDetails:
       type: object
       properties:
+        authenticationUrl:
+          type: string
+          description: 'Reserved: TBD'
         errorCode:
           type: string
-          description: An error code associated with the error.
+          description: ''
         message:
           type: string
-          description: A short error message.
-      description: This object describes errors that occur. It is only valid for responses, and ignored in requests.
-      x-ds-definition-name: errorDetails
-      x-ms-summary: This object describes errors that occur. It is only valid for responses, and ignored in requests.
-    userInfo:
+          description: ''
+      description: ''
+      x-ds-definition-name: externalDocServiceErrorDetails
+      x-ms-summary: ''
+    externalFile:
       type: object
       properties:
-        activationAccessCode:
+        date:
           type: string
           description: ''
-        email:
+        id:
           type: string
           description: ''
-        errorDetails:
-          $ref: '#/components/schemas/errorDetails'
-        loginStatus:
+        img:
           type: string
           description: ''
-        sendActivationEmail:
+        name:
           type: string
           description: ''
+        size:
+          type: string
+          description: 'Reserved: TBD'
+        supported:
+          type: string
+          description: ''
+        type:
+          type: string
+          description: 'Type of the user. Valid values: type_owner, type_participant.'
         uri:
           type: string
           description: ''
-        userId:
-          type: string
-          description: 'The user ID of the user being accessed. Generally this is the user ID of the authenticated user, but if the authenticated user is an Admin on the account, this may be another user the Admin user is accessing. **Note**: For the [GET /v2/accounts/{accountId}/envelopes](https://developers.docusign.com/esign-rest-api/reference/Envelopes/Envelopes/listStatusChanges/#envelopesInformation) method, the `user_id` query parameter is not implemented and should not be used.'
-        userName:
-          type: string
-          description: ''
-        userStatus:
-          type: string
-          description: 'Status of the user''s account. One of:
-
-
-            * ActivationRequired
-
-            * ActivationSent
-
-            * Active
-
-            * Closed
-
-            * Disabled
-
-            '
-        userType:
-          type: string
-          description: ''
       description: ''
-      x-ds-definition-name: userInfo
+      x-ds-definition-name: externalFile
       x-ms-summary: ''
-    userInfoList:
-      type: object
-      properties:
-        users:
-          type: array
-          description: ''
-          items:
-            $ref: '#/components/schemas/userInfo'
-      description: ''
-      x-ds-definition-name: userInfoList
-      x-ms-summary: ''
-    usersResponse:
+    externalFolder:
       type: object
       properties:
         endPosition:
           type: string
           description: 'The last position in the result set. '
+        errorDetails:
+          $ref: '#/components/schemas/externalDocServiceErrorDetails'
+        id:
+          type: string
+          description: ''
+        items:
+          type: array
+          description: ''
+          items:
+            $ref: '#/components/schemas/externalFile'
+        name:
+          type: string
+          description: ''
         nextUri:
           type: string
           description: 'The URI for the next chunk of records based on the search request. It is `null` if this is the last set of results for the search. '
@@ -252,14 +246,21 @@ components:
         totalSetSize:
           type: string
           description: The total number of items in the search's result set. It will always be greater than or equal to the value of the `resultSetSize` field.
-        users:
-          type: array
-          description: ''
-          items:
-            $ref: '#/components/schemas/userInfo'
       description: ''
-      x-ds-definition-name: usersResponse
+      x-ds-definition-name: externalFolder
       x-ms-summary: ''
+    errorDetails:
+      type: object
+      properties:
+        errorCode:
+          type: string
+          description: An error code associated with the error.
+        message:
+          type: string
+          description: A short error message.
+      description: This object describes errors that occur. It is only valid for responses, and ignored in requests.
+      x-ds-definition-name: errorDetails
+      x-ms-summary: This object describes errors that occur. It is only valid for responses, and ignored in requests.
 externalDocs:
   description: See the DocuSign REST API Guide for more information.
   url: https://docs.docusign.com/esign

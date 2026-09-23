@@ -18,8 +18,23 @@ paths:
     post:
       tags:
       - WorkflowTrigger
-      summary: Docusign Triggers a new instance of the workflow.
-      description: "Creates a new workflow instance, triggering the workflow.\n\n<ds-inlinemessage>\n  The Maestro API is currently only available\n  as part of a beta program.\n  See <a href=\"/docs/maestro-api/get-access/\">Get access to Maestro API</a>\n  for details.\n</ds-inlinemessage>\n\n### Related topics\n\n- [How to trigger a Maestro workflow](/docs/maestro-api/how-to/trigger-workflow/)"
+      summary: Docusign Triggers a new instance of the workflow
+      description: 'Creates a new workflow instance, triggering the workflow.
+
+
+        The Maestro API is currently only available
+
+        as part of a beta program.
+
+        See Get access to Maestro API
+
+        for details.
+
+
+        ### Related topics
+
+
+        - How to trigger a Maestro workflow'
       operationId: triggerWorkflowViaPost
       parameters:
       - name: accountId
@@ -103,49 +118,6 @@ paths:
       x-codegen-request-body-name: body
 components:
   schemas:
-    TriggerPayload:
-      type: object
-      properties:
-        instanceName:
-          type: string
-          description: The friendly name of the particular workflow instance
-        metadata:
-          type: object
-          properties: {}
-          description: ''
-        participants:
-          type: object
-          properties: {}
-          description: ''
-        payload:
-          type: object
-          properties: {}
-          description: ''
-      description: JSON payload that will be passed to the triggered workflow
-      x-ds-definition-name: TriggerPayload
-      x-ms-summary: JSON payload that will be passed to the triggered workflow
-    WorkflowInstanceId:
-      type: string
-      description: 'Workflow instance ID.
-
-        A string in UUID format: 4a6d6a08-xxxx-xxxx-xxxx-bae4fecc99c8'
-      format: uuid
-      example: 00000000-0000-0000-0000-000000000000
-      x-ds-definition-name: WorkflowInstanceId
-      x-ms-summary: 'Workflow instance ID.
-
-        A string in UUID format: 4a6d6a08-xxxx-xxxx-xxxx-bae4fecc99c8'
-    ErrorResponse:
-      type: object
-      properties:
-        errorCode:
-          $ref: '#/components/schemas/ErrorCodes'
-        message:
-          type: string
-          description: Human-readable description of the error.
-      description: Returns error with a status message
-      x-ds-definition-name: ErrorResponse
-      x-ms-summary: Returns error with a status message
     TriggerWorkflowViaPostResponse:
       type: object
       properties:
@@ -182,6 +154,49 @@ components:
       - ERR_10999
       x-ds-definition-name: ErrorCodes
       x-ms-summary: Internal Error Codes
+    WorkflowInstanceId:
+      type: string
+      description: 'Workflow instance ID.
+
+        A string in UUID format: 4a6d6a08-xxxx-xxxx-xxxx-bae4fecc99c8'
+      format: uuid
+      example: 00000000-0000-0000-0000-000000000000
+      x-ds-definition-name: WorkflowInstanceId
+      x-ms-summary: 'Workflow instance ID.
+
+        A string in UUID format: 4a6d6a08-xxxx-xxxx-xxxx-bae4fecc99c8'
+    TriggerPayload:
+      type: object
+      properties:
+        instanceName:
+          type: string
+          description: The friendly name of the particular workflow instance
+        metadata:
+          type: object
+          properties: {}
+          description: ''
+        participants:
+          type: object
+          properties: {}
+          description: ''
+        payload:
+          type: object
+          properties: {}
+          description: ''
+      description: JSON payload that will be passed to the triggered workflow
+      x-ds-definition-name: TriggerPayload
+      x-ms-summary: JSON payload that will be passed to the triggered workflow
+    ErrorResponse:
+      type: object
+      properties:
+        errorCode:
+          $ref: '#/components/schemas/ErrorCodes'
+        message:
+          type: string
+          description: Human-readable description of the error.
+      description: Returns error with a status message
+      x-ds-definition-name: ErrorResponse
+      x-ms-summary: Returns error with a status message
   securitySchemes:
     DSAuth:
       type: oauth2

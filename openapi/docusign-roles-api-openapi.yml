@@ -14,45 +14,20 @@ security:
 - Bearer: []
 tags:
 - name: Roles
-  description: 'Each role is associated with specific permissions. Each new member is assigned a role when you create them, automatically granting them the permissions associated with that role.
-
-
-    Roles use the following permission types to control the actions that users can perform:
-
-
-    - Room
-
-    - Room Details
-
-    - Documents
-
-    - Envelopes
-
-    - Member Management
-
-    - Company Settings
-
-
-    Rooms enables you to configure custom roles containing permissions that make sense for your company. Because each new member is assigned a role, you must set up these roles before you can invite members to join your account.
-
-
-    Permissions for roles are tied to the `roleId` property and not yet exposed. You can learn more about these permission types and configure them in the console.
-
-
-    ### Internal and External Roles
-
-
-    In Rooms, a role can be either internal or external. You assign internal roles to people inside your company. You assign external roles to people outside your company when you invite them to a room.
-
-
-    Each member inside your company has a default company role. However, they can also be assigned additional roles with different permissions on a per-room basis. Regardless of the member''s default company role, what they can do in a room is entirely controlled by their role in that particular room.'
+  description: Each role is associated with specific permissions.
 paths:
   /v2/accounts/{accountId}/roles:
     get:
       tags:
       - Roles
-      summary: Docusign Gets roles.
-      description: "Returns a list of roles associated with a company account.\n\n## Permissions \n\nAny user with a valid access token can call this method."
+      summary: Docusign Gets roles
+      description: 'Returns a list of roles associated with a company account.
+
+
+        ## Permissions
+
+
+        Any user with a valid access token can call this method.'
       operationId: Roles_GetRoles
       parameters:
       - name: onlyAssignable
@@ -159,7 +134,7 @@ paths:
     post:
       tags:
       - Roles
-      summary: Docusign Creates a role.
+      summary: Docusign Creates a role
       description: 'Creates a new company role.
 
 
@@ -263,7 +238,7 @@ paths:
     get:
       tags:
       - Roles
-      summary: Docusign Gets a role.
+      summary: Docusign Gets a role
       description: Returns details about a role, including the associated permissions.
       operationId: Roles_GetRole
       parameters:
@@ -348,7 +323,7 @@ paths:
     put:
       tags:
       - Roles
-      summary: Docusign Updates a role.
+      summary: Docusign Updates a role
       description: 'Modifies the specified company role.
 
 
@@ -458,8 +433,14 @@ paths:
     delete:
       tags:
       - Roles
-      summary: Docusign Deletes a role.
-      description: "Deletes a role from a company account.\n\n## Permissions \n\nTo use this method, you must have the `canManageAccount` permission set to **true.**"
+      summary: Docusign Deletes a role
+      description: 'Deletes a role from a company account.
+
+
+        ## Permissions
+
+
+        To use this method, you must have the `canManageAccount` permission set to **true.**'
       operationId: Roles_DeleteRole
       parameters:
       - name: roleId
@@ -521,152 +502,6 @@ paths:
       x-ds-in-sdk: true
 components:
   schemas:
-    RoleSummary:
-      type: object
-      properties:
-        roleId:
-          type: integer
-          description: The ID of the company role assigned to the user.
-          format: int32
-        legacyRoleId:
-          type: string
-          description: This field is deprecated in Rooms Version 6.
-        name:
-          type: string
-          description: The name of the role.
-        isDefaultForAdmin:
-          type: boolean
-          description: When **true,** the role is the default for account administrators.
-        isExternal:
-          type: boolean
-          description: When **true,** the role is an external role. You assign external roles to people from outside your company when you invite them into a room.
-        createdDate:
-          type: string
-          description: 'The UTC date and time when the item was created. This is a read-only value that the service assigns.
-
-
-            Example: `2019-07-17T17:45:42.783Z`
-
-
-            '
-          format: date-time
-      description: Contains details about a role.
-      x-ds-definition-name: RoleSummary
-      x-ms-summary: Contains details about a role.
-    RoleForUpdate:
-      type: object
-      properties:
-        name:
-          type: string
-          description: The name of the role.
-        isExternal:
-          type: boolean
-          description: When **true,** the role is an external role. You assign external roles to people from outside your company when you invite them into a room.
-        permissions:
-          $ref: '#/components/schemas/Permissions'
-      description: This request object contains the details to use for the update.
-      x-ds-definition-name: RoleForUpdate
-      x-ms-summary: This request object contains the details to use for the update.
-    ApiError:
-      type: object
-      properties:
-        errorCode:
-          type: string
-          description: The code associated with the error condition.
-        message:
-          type: string
-          description: A brief message describing the error condition.
-        referenceId:
-          type: string
-          description: ''
-      description: This object describes errors that occur. It is valid only for responses and ignored in requests.
-      x-ds-definition-name: ApiError
-      x-ms-summary: This object describes errors that occur. It is valid only for responses and ignored in requests.
-    RoleSummaryList:
-      type: object
-      properties:
-        roles:
-          type: array
-          description: An array of `role` objects.
-          items:
-            $ref: '#/components/schemas/RoleSummary'
-        resultSetSize:
-          type: integer
-          description: The number of results returned in this response.
-          format: int32
-        startPosition:
-          type: integer
-          description: The starting zero-based index position of the results set. When this property is used as a query parameter, the default value is `0`.
-          format: int32
-        endPosition:
-          type: integer
-          description: The last zero-based index position in the result set.
-          format: int32
-          readOnly: true
-        nextUri:
-          type: string
-          description: The URI for the next chunk of records based on the search request. This property is `null` for the last set of search results.
-        priorUri:
-          type: string
-          description: The URI for the previous chunk of records based on the search request. This property is `null` for the first set of search results.
-        totalRowCount:
-          type: integer
-          description: ''
-          format: int32
-      description: This complex type contains details about the roles that are associated with an account.
-      x-ds-definition-name: RoleSummaryList
-      x-ms-summary: This complex type contains details about the roles that are associated with an account.
-    Role:
-      type: object
-      properties:
-        roleId:
-          type: integer
-          description: The ID of the company role assigned to the user.
-          format: int32
-        legacyRoleId:
-          type: string
-          description: This field is deprecated in Rooms Version 6.
-        name:
-          type: string
-          description: The name of the role.
-        isDefaultForAdmin:
-          type: boolean
-          description: When **true,** the role is the default for account administrators.
-        isExternal:
-          type: boolean
-          description: When **true,** the role is an external role. You assign external roles to people from outside your company when you invite them into a room.
-        createdDate:
-          type: string
-          description: 'The UTC date and time when the item was created. This is a read-only value that the service assigns.
-
-
-            Example: `2019-07-17T17:45:42.783Z`
-
-
-            '
-          format: date-time
-        isAssigned:
-          type: boolean
-          description: When **true,** indicates that this role is currently assigned to a user.
-        permissions:
-          $ref: '#/components/schemas/Permissions'
-      description: Contains details about a company role.
-      x-ds-definition-name: Role
-      x-ms-summary: Contains details about a company role.
-    RoleForCreate:
-      type: object
-      properties:
-        name:
-          type: string
-          description: The name of the role.
-        isExternal:
-          type: boolean
-          description: When **true,** the role is an external role. You assign external roles to people from outside your company when you invite them into a room.
-        permissions:
-          $ref: '#/components/schemas/Permissions'
-      description: Contains details about the role that you want to create.
-      x-ds-definition-name: RoleForCreate
-      x-ms-summary: Contains details about the role that you want to create.
     Permissions:
       type: object
       properties:
@@ -874,6 +709,152 @@ components:
       description: Contains details about permissions.
       x-ds-definition-name: Permissions
       x-ms-summary: Contains details about permissions.
+    ApiError:
+      type: object
+      properties:
+        errorCode:
+          type: string
+          description: The code associated with the error condition.
+        message:
+          type: string
+          description: A brief message describing the error condition.
+        referenceId:
+          type: string
+          description: ''
+      description: This object describes errors that occur. It is valid only for responses and ignored in requests.
+      x-ds-definition-name: ApiError
+      x-ms-summary: This object describes errors that occur. It is valid only for responses and ignored in requests.
+    RoleForCreate:
+      type: object
+      properties:
+        name:
+          type: string
+          description: The name of the role.
+        isExternal:
+          type: boolean
+          description: When **true,** the role is an external role. You assign external roles to people from outside your company when you invite them into a room.
+        permissions:
+          $ref: '#/components/schemas/Permissions'
+      description: Contains details about the role that you want to create.
+      x-ds-definition-name: RoleForCreate
+      x-ms-summary: Contains details about the role that you want to create.
+    RoleForUpdate:
+      type: object
+      properties:
+        name:
+          type: string
+          description: The name of the role.
+        isExternal:
+          type: boolean
+          description: When **true,** the role is an external role. You assign external roles to people from outside your company when you invite them into a room.
+        permissions:
+          $ref: '#/components/schemas/Permissions'
+      description: This request object contains the details to use for the update.
+      x-ds-definition-name: RoleForUpdate
+      x-ms-summary: This request object contains the details to use for the update.
+    RoleSummaryList:
+      type: object
+      properties:
+        roles:
+          type: array
+          description: An array of `role` objects.
+          items:
+            $ref: '#/components/schemas/RoleSummary'
+        resultSetSize:
+          type: integer
+          description: The number of results returned in this response.
+          format: int32
+        startPosition:
+          type: integer
+          description: The starting zero-based index position of the results set. When this property is used as a query parameter, the default value is `0`.
+          format: int32
+        endPosition:
+          type: integer
+          description: The last zero-based index position in the result set.
+          format: int32
+          readOnly: true
+        nextUri:
+          type: string
+          description: The URI for the next chunk of records based on the search request. This property is `null` for the last set of search results.
+        priorUri:
+          type: string
+          description: The URI for the previous chunk of records based on the search request. This property is `null` for the first set of search results.
+        totalRowCount:
+          type: integer
+          description: ''
+          format: int32
+      description: This complex type contains details about the roles that are associated with an account.
+      x-ds-definition-name: RoleSummaryList
+      x-ms-summary: This complex type contains details about the roles that are associated with an account.
+    RoleSummary:
+      type: object
+      properties:
+        roleId:
+          type: integer
+          description: The ID of the company role assigned to the user.
+          format: int32
+        legacyRoleId:
+          type: string
+          description: This field is deprecated in Rooms Version 6.
+        name:
+          type: string
+          description: The name of the role.
+        isDefaultForAdmin:
+          type: boolean
+          description: When **true,** the role is the default for account administrators.
+        isExternal:
+          type: boolean
+          description: When **true,** the role is an external role. You assign external roles to people from outside your company when you invite them into a room.
+        createdDate:
+          type: string
+          description: 'The UTC date and time when the item was created. This is a read-only value that the service assigns.
+
+
+            Example: `2019-07-17T17:45:42.783Z`
+
+
+            '
+          format: date-time
+      description: Contains details about a role.
+      x-ds-definition-name: RoleSummary
+      x-ms-summary: Contains details about a role.
+    Role:
+      type: object
+      properties:
+        roleId:
+          type: integer
+          description: The ID of the company role assigned to the user.
+          format: int32
+        legacyRoleId:
+          type: string
+          description: This field is deprecated in Rooms Version 6.
+        name:
+          type: string
+          description: The name of the role.
+        isDefaultForAdmin:
+          type: boolean
+          description: When **true,** the role is the default for account administrators.
+        isExternal:
+          type: boolean
+          description: When **true,** the role is an external role. You assign external roles to people from outside your company when you invite them into a room.
+        createdDate:
+          type: string
+          description: 'The UTC date and time when the item was created. This is a read-only value that the service assigns.
+
+
+            Example: `2019-07-17T17:45:42.783Z`
+
+
+            '
+          format: date-time
+        isAssigned:
+          type: boolean
+          description: When **true,** indicates that this role is currently assigned to a user.
+        permissions:
+          $ref: '#/components/schemas/Permissions'
+      description: Contains details about a company role.
+      x-ds-definition-name: Role
+      x-ms-summary: Contains details about a company role.
   securitySchemes:
     Bearer:
       type: apiKey

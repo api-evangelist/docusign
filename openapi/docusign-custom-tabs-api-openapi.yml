@@ -11,20 +11,14 @@ info:
 servers:
 - url: https://www.docusign.net/restapi
 tags:
-- name: CustomTabs
-  description: 'The CustomTabs resource provides methods that allow you create and manage custom tabs based on the existing DocuSign tabs.
-
-
-    You can create a tab with pre-defined properties, such as a text tab with a certain font type and validation pattern. Users can access the custom tabs when sending documents through the DocuSign web application.
-
-
-    Custom tabs can be created based on the  approve, checkbox, company, date, date signed, decline, email, email address, envelope ID, first name, formula, full name, initial here, last name, list, note, number, radio, sign here, signer attachment, SSN, text, title, and zip tabs.'
+- name: Custom Tabs
+  description: The CustomTabs resource provides methods that allow you create and manage custom tabs based on the existing DocuSign tabs.
 paths:
   /v2/accounts/{accountId}/tab_definitions:
     get:
       tags:
-      - CustomTabs
-      summary: Docusign Gets a list of all account tabs.
+      - Custom Tabs
+      summary: Docusign Gets a list of all account tabs
       description: Retrieves a list of all tabs associated with the account.
       operationId: Tabs_GetTabDefinitions
       parameters:
@@ -59,8 +53,8 @@ paths:
       x-ds-in-sdk: true
     post:
       tags:
-      - CustomTabs
-      summary: Docusign Creates a custom tab.
+      - Custom Tabs
+      summary: Docusign Creates a custom tab
       description: 'Creates a tab with pre-defined properties, such as a text tab with a certain font type and validation pattern. Users can access the custom tabs when sending documents through the DocuSign web application.
 
 
@@ -104,8 +98,8 @@ paths:
   /v2/accounts/{accountId}/tab_definitions/{customTabId}:
     get:
       tags:
-      - CustomTabs
-      summary: Docusign Gets custom tab information.
+      - Custom Tabs
+      summary: Docusign Gets custom tab information
       description: Retrieves information about the requested custom tab on the specified account.
       operationId: Tab_GetCustomTab
       parameters:
@@ -140,8 +134,8 @@ paths:
       x-ds-in-sdk: true
     put:
       tags:
-      - CustomTabs
-      summary: Docusign Updates custom tab information.
+      - Custom Tabs
+      summary: Docusign Updates custom tab information
       description: Updates the information in a custom tab for the specified account.
       operationId: Tab_PutCustomTab
       parameters:
@@ -186,8 +180,8 @@ paths:
       x-codegen-request-body-name: tabMetadata
     delete:
       tags:
-      - CustomTabs
-      summary: Docusign Deletes custom tab information.
+      - Custom Tabs
+      summary: Docusign Deletes custom tab information
       description: Deletes the custom from the specified account.
       operationId: Tab_DeleteCustomTab
       parameters:
@@ -219,18 +213,6 @@ paths:
       x-ds-in-sdk: true
 components:
   schemas:
-    errorDetails:
-      type: object
-      properties:
-        errorCode:
-          type: string
-          description: An error code associated with the error.
-        message:
-          type: string
-          description: A short error message.
-      description: This object describes errors that occur. It is only valid for responses, and ignored in requests.
-      x-ds-definition-name: errorDetails
-      x-ms-summary: This object describes errors that occur. It is only valid for responses, and ignored in requests.
     mergeField:
       type: object
       properties:
@@ -252,17 +234,6 @@ components:
       description: Contains information for transfering values between Salesforce data fields and DocuSign Tabs.
       x-ds-definition-name: mergeField
       x-ms-summary: Contains information for transfering values between Salesforce data fields and DocuSign Tabs.
-    tabMetadataList:
-      type: object
-      properties:
-        tabs:
-          type: array
-          description: ''
-          items:
-            $ref: '#/components/schemas/tabMetadata'
-      description: ''
-      x-ds-definition-name: tabMetadataList
-      x-ms-summary: ''
     tabMetadata:
       type: object
       properties:
@@ -540,6 +511,29 @@ components:
           description: Width of the tab in pixels.
       description: ''
       x-ds-definition-name: tabMetadata
+      x-ms-summary: ''
+    errorDetails:
+      type: object
+      properties:
+        errorCode:
+          type: string
+          description: An error code associated with the error.
+        message:
+          type: string
+          description: A short error message.
+      description: This object describes errors that occur. It is only valid for responses, and ignored in requests.
+      x-ds-definition-name: errorDetails
+      x-ms-summary: This object describes errors that occur. It is only valid for responses, and ignored in requests.
+    tabMetadataList:
+      type: object
+      properties:
+        tabs:
+          type: array
+          description: ''
+          items:
+            $ref: '#/components/schemas/tabMetadata'
+      description: ''
+      x-ds-definition-name: tabMetadataList
       x-ms-summary: ''
     propertyMetadata:
       type: object

@@ -15,20 +15,20 @@ tags:
   description: 'The RequestLogs resource provide methods that allow you to retrieve and delete the API request log files.
 
 
-    The log files contain the API requests associated with your integration. They can aid you in troubleshooting specific issues within an integration, or if DocuSign Support requests an API trace log. '
+    The log files contain the API requests associated with your integration. They can aid you in troubleshooting specific issues within an integration, or if DocuSign Support requests an API trace log.'
 paths:
   /v2/diagnostics/request_logs:
     get:
       tags:
       - RequestLogs
-      summary: Docusign Gets the API request logging log files.
+      summary: Docusign Gets the API request logging log files
       description: 'Retrieves a list of log entries as a JSON or xml object or as a zip file containing the entries.
 
 
         If the Accept header is set to application/zip, the response is a zip file containing individual text files, each representing an API request.
 
 
-        If the Accept header is set to `application/json` or `application/xml`, the response returns list of log entries in either JSON or XML. An example JSON response body is shown below. '
+        If the Accept header is set to `application/json` or `application/xml`, the response returns list of log entries in either JSON or XML. An example JSON response body is shown below.'
       operationId: APIRequestLog_GetRequestLogs
       parameters:
       - name: encoding
@@ -56,7 +56,7 @@ paths:
     delete:
       tags:
       - RequestLogs
-      summary: Docusign Deletes the request log files.
+      summary: Docusign Deletes the request log files
       description: Deletes the request log files.
       operationId: APIRequestLog_DeleteRequestLogs
       responses:
@@ -78,7 +78,7 @@ paths:
     get:
       tags:
       - RequestLogs
-      summary: Docusign Gets a request logging log file.
+      summary: Docusign Gets a request logging log file
       description: 'Retrieves information for a single log entry.
 
 
@@ -120,7 +120,7 @@ paths:
     get:
       tags:
       - RequestLogs
-      summary: Docusign Gets the API request logging settings.
+      summary: Docusign Gets the API request logging settings
       description: 'Retrieves the current API request logging setting for the user and remaining log entries.
 
 
@@ -149,7 +149,7 @@ paths:
     put:
       tags:
       - RequestLogs
-      summary: Docusign Enables or disables API request logging for troubleshooting.
+      summary: Docusign Enables or disables API request logging for troubleshooting
       description: 'Enables or disables API request logging for troubleshooting.
 
 
@@ -162,9 +162,7 @@ paths:
         Private information, such as passwords and integrator key information, which is normally located in the call header is omitted from the request/response log.
 
 
-        ###### Note: API request logging only captures requests from the authenticated user. Any call that does not authenticate the user and resolve a userId isn''t logged. Meaning that login_information, NewAccounts, or other distributor-credential calls are not logged.
-
-        '
+        ###### Note: API request logging only captures requests from the authenticated user. Any call that does not authenticate the user and resolve a userId isn''t logged. Meaning that login_information, NewAccounts, or other distributor-credential calls are not logged.'
       operationId: APIRequestLog_PutRequestLogSettings
       requestBody:
         content:
@@ -196,32 +194,6 @@ paths:
       x-codegen-request-body-name: diagnosticsSettingsInformation
 components:
   schemas:
-    apiRequestLogsResult:
-      type: object
-      properties:
-        apiRequestLogs:
-          type: array
-          description: 'Reserved: TBD'
-          items:
-            $ref: '#/components/schemas/apiRequestLog'
-      description: Contains information about mutiple API request logs.
-      x-ds-definition-name: apiRequestLogsResult
-      x-ms-summary: Contains information about mutiple API request logs.
-    diagnosticsSettingsInformation:
-      type: object
-      properties:
-        apiRequestLogging:
-          type: string
-          description: ' When set to **true**, enables API request logging for the user. '
-        apiRequestLogMaxEntries:
-          type: string
-          description: Specifies the maximum number of API requests to log.
-        apiRequestLogRemainingEntries:
-          type: string
-          description: Indicates the remaining number of API requests that can be logged.
-      description: ''
-      x-ds-definition-name: diagnosticsSettingsInformation
-      x-ms-summary: ''
     apiRequestLog:
       type: object
       properties:
@@ -242,6 +214,32 @@ components:
       description: Contains API request log information.
       x-ds-definition-name: apiRequestLog
       x-ms-summary: Contains API request log information.
+    diagnosticsSettingsInformation:
+      type: object
+      properties:
+        apiRequestLogging:
+          type: string
+          description: ' When set to **true**, enables API request logging for the user. '
+        apiRequestLogMaxEntries:
+          type: string
+          description: Specifies the maximum number of API requests to log.
+        apiRequestLogRemainingEntries:
+          type: string
+          description: Indicates the remaining number of API requests that can be logged.
+      description: ''
+      x-ds-definition-name: diagnosticsSettingsInformation
+      x-ms-summary: ''
+    apiRequestLogsResult:
+      type: object
+      properties:
+        apiRequestLogs:
+          type: array
+          description: 'Reserved: TBD'
+          items:
+            $ref: '#/components/schemas/apiRequestLog'
+      description: Contains information about mutiple API request logs.
+      x-ds-definition-name: apiRequestLogsResult
+      x-ms-summary: Contains information about mutiple API request logs.
     errorDetails:
       type: object
       properties:

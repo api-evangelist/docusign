@@ -12,16 +12,13 @@ servers:
 - url: https://www.docusign.net/restapi
 tags:
 - name: Groups
-  description: 'The Groups resource provides methods that allow you to manage groups for the account.
-
-
-    Groups can be used to help manage users by associating users with a group. A group can be associated with a Permission Profile, which sets the user permissions for users in that group without having to set the `userSettings` property for each user. You are not required to set Permission Profiles for a group, but this makes it easier to manage user permissions for a large number of users. Groups can also be used with template sharing to limit user access to templates.'
+  description: The Groups resource provides methods that allow you to manage groups for the account.
 paths:
   /v2/accounts/{accountId}/groups:
     get:
       tags:
       - Groups
-      summary: Docusign Gets information about groups associated with the account.
+      summary: Docusign Gets information about groups associated with the account
       description: Retrieves information about groups associated with the account.
       operationId: Groups_GetGroups
       parameters:
@@ -70,7 +67,7 @@ paths:
     put:
       tags:
       - Groups
-      summary: Docusign Updates the group information for a group.
+      summary: Docusign Updates the group information for a group
       description: Updates the group name and modifies, or sets, the permission profile for the group.
       operationId: Groups_PutGroups
       parameters:
@@ -111,7 +108,7 @@ paths:
     post:
       tags:
       - Groups
-      summary: Docusign Creates one or more groups for the account.
+      summary: Docusign Creates one or more groups for the account
       description: 'Creates one or more groups for the account.
 
 
@@ -155,7 +152,7 @@ paths:
     delete:
       tags:
       - Groups
-      summary: Docusign Deletes an existing user group.
+      summary: Docusign Deletes an existing user group
       description: Deletes an existing user group.
       operationId: Groups_DeleteGroups
       parameters:
@@ -195,35 +192,31 @@ paths:
       x-codegen-request-body-name: groupInformation
 components:
   schemas:
-    groupInformation:
+    group:
       type: object
       properties:
-        endPosition:
+        errorDetails:
+          $ref: '#/components/schemas/errorDetails'
+        groupId:
           type: string
-          description: 'The last position in the result set. '
-        groups:
+          description: The DocuSign group ID for the group.
+        groupName:
+          type: string
+          description: The name of the group.
+        groupType:
+          type: string
+          description: The group type.
+        permissionProfileId:
+          type: string
+          description: The ID of the permission profile associated with the group.
+        users:
           type: array
-          description: A collection group objects containing information about the groups returned.
+          description: List of users in the group.
           items:
-            $ref: '#/components/schemas/group'
-        nextUri:
-          type: string
-          description: 'The URI for the next chunk of records based on the search request. It is `null` if this is the last set of results for the search. '
-        previousUri:
-          type: string
-          description: 'The URI for the prior chunk of records based on the search request. It is `null` if this is the first set of results for the search. '
-        resultSetSize:
-          type: string
-          description: 'The number of results returned in this response. '
-        startPosition:
-          type: string
-          description: Starting position of the current result set.
-        totalSetSize:
-          type: string
-          description: The total number of items in the search's result set. It will always be greater than or equal to the value of the `resultSetSize` field.
-      description: ''
-      x-ds-definition-name: groupInformation
-      x-ms-summary: ''
+            $ref: '#/components/schemas/userInfo'
+      description: Information about groups.
+      x-ds-definition-name: group
+      x-ms-summary: Information about groups.
     userInfo:
       type: object
       properties:
@@ -272,31 +265,35 @@ components:
       description: ''
       x-ds-definition-name: userInfo
       x-ms-summary: ''
-    group:
+    groupInformation:
       type: object
       properties:
-        errorDetails:
-          $ref: '#/components/schemas/errorDetails'
-        groupId:
+        endPosition:
           type: string
-          description: The DocuSign group ID for the group.
-        groupName:
-          type: string
-          description: The name of the group.
-        groupType:
-          type: string
-          description: The group type.
-        permissionProfileId:
-          type: string
-          description: The ID of the permission profile associated with the group.
-        users:
+          description: 'The last position in the result set. '
+        groups:
           type: array
-          description: List of users in the group.
+          description: A collection group objects containing information about the groups returned.
           items:
-            $ref: '#/components/schemas/userInfo'
-      description: Information about groups.
-      x-ds-definition-name: group
-      x-ms-summary: Information about groups.
+            $ref: '#/components/schemas/group'
+        nextUri:
+          type: string
+          description: 'The URI for the next chunk of records based on the search request. It is `null` if this is the last set of results for the search. '
+        previousUri:
+          type: string
+          description: 'The URI for the prior chunk of records based on the search request. It is `null` if this is the first set of results for the search. '
+        resultSetSize:
+          type: string
+          description: 'The number of results returned in this response. '
+        startPosition:
+          type: string
+          description: Starting position of the current result set.
+        totalSetSize:
+          type: string
+          description: The total number of items in the search's result set. It will always be greater than or equal to the value of the `resultSetSize` field.
+      description: ''
+      x-ds-definition-name: groupInformation
+      x-ms-summary: ''
     errorDetails:
       type: object
       properties:

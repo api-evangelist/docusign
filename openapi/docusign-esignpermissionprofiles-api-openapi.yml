@@ -14,13 +14,13 @@ security:
 - Bearer: []
 tags:
 - name: ESignPermissionProfiles
-  description: This resource provides a method that returns a list of the  eSignature permission profiles that the current user can assign to a new member.
+  description: This resource provides a method that returns a list of the eSignature permission profiles that the current user can assign to a new member.
 paths:
   /v2/accounts/{accountId}/esign_permission_profiles:
     get:
       tags:
       - ESignPermissionProfiles
-      summary: Docusign Gets eSignature Permission Profiles.
+      summary: Docusign Gets eSignature Permission Profiles
       description: When you create or invite a new member in Rooms, the system creates an eSignature account for the member at the same time. This method returns a list of the eSignature permission profiles that the current user may be able to assign to a new member. The current user may not assign a permission higher than their own permission.
       operationId: ESignPermissionProfiles_GetESignPermissionProfiles
       parameters:
@@ -91,6 +91,21 @@ paths:
       x-ds-in-sdk: true
 components:
   schemas:
+    ApiError:
+      type: object
+      properties:
+        errorCode:
+          type: string
+          description: The code associated with the error condition.
+        message:
+          type: string
+          description: A brief message describing the error condition.
+        referenceId:
+          type: string
+          description: ''
+      description: This object describes errors that occur. It is valid only for responses and ignored in requests.
+      x-ds-definition-name: ApiError
+      x-ms-summary: This object describes errors that occur. It is valid only for responses and ignored in requests.
     ESignPermissionProfile:
       type: object
       properties:
@@ -105,6 +120,18 @@ components:
       description: 'When an administrator or authorized member invites a new user to become an account member, the system also creates an eSignature account for the invitee at the same time. This object contains information about the eSignature permission profile, which controls member access to the eSignature account. '
       x-ds-definition-name: ESignPermissionProfile
       x-ms-summary: 'When an administrator or authorized member invites a new user to become an account member, the system also creates an eSignature account for the invitee at the same time. This object contains information about the eSignature permission profile, which controls member access to the eSignature account. '
+    ESignPermissionProfileList:
+      type: object
+      properties:
+        permissionProfiles:
+          type: array
+          description: An array of eSignature `permissionProfile` objects.
+          readOnly: true
+          items:
+            $ref: '#/components/schemas/ESignPermissionProfile'
+      description: This object contains a list of eSignature permission profiles.
+      x-ds-definition-name: ESignPermissionProfileList
+      x-ms-summary: This object contains a list of eSignature permission profiles.
     ESignAccountRoleSettings:
       type: object
       properties:
@@ -127,33 +154,6 @@ components:
       description: This object contains details about the permissions associated with a eSignature permission profile.
       x-ds-definition-name: ESignAccountRoleSettings
       x-ms-summary: This object contains details about the permissions associated with a eSignature permission profile.
-    ApiError:
-      type: object
-      properties:
-        errorCode:
-          type: string
-          description: The code associated with the error condition.
-        message:
-          type: string
-          description: A brief message describing the error condition.
-        referenceId:
-          type: string
-          description: ''
-      description: This object describes errors that occur. It is valid only for responses and ignored in requests.
-      x-ds-definition-name: ApiError
-      x-ms-summary: This object describes errors that occur. It is valid only for responses and ignored in requests.
-    ESignPermissionProfileList:
-      type: object
-      properties:
-        permissionProfiles:
-          type: array
-          description: An array of eSignature `permissionProfile` objects.
-          readOnly: true
-          items:
-            $ref: '#/components/schemas/ESignPermissionProfile'
-      description: This object contains a list of eSignature permission profiles.
-      x-ds-definition-name: ESignPermissionProfileList
-      x-ms-summary: This object contains a list of eSignature permission profiles.
   securitySchemes:
     Bearer:
       type: apiKey

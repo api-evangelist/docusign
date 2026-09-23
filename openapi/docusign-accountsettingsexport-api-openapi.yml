@@ -18,13 +18,11 @@ paths:
     get:
       tags:
       - AccountSettingsExport
-      summary: Docusign Returns a list of pending and completed account settings export request.
+      summary: Docusign Returns a list of pending and completed account settings export request
       description: 'Returns a list of pending and completed account settings export request.
 
 
-        - Required scopes: `account_read`
-
-        '
+        - Required scopes: `account_read`'
       operationId: OrganizationExport_OrganizationExport_GetAccountCompare
       parameters:
       - name: organizationId
@@ -51,8 +49,29 @@ paths:
     post:
       tags:
       - AccountSettingsExport
-      summary: Docusign Creates a  new account settings export request.
-      description: "Creates a  new account settings export request.\n\nSpecify the accounts whose settings you are requesting as JSON in the body of method, like this:\n\n``` json\n{\n  \"accounts\":\t[\n  \t{ \"account_id\": \"9ca037f4-xxxx-xxxx-xxxx-212e57d4f22e\"},\n  \t{ \"account_id\": \"624e3e00-xxxx-xxxx-xxxx-43918c520dab\"}\n\n  ]\n}\n```\n"
+      summary: Docusign Creates a new account settings export request
+      description: 'Creates a new account settings export request.
+
+
+        Specify the accounts whose settings you are requesting as JSON in the body of method, like this:
+
+
+        ``` json
+
+        {
+
+        "accounts": [
+
+        { "account_id": "9ca037f4-xxxx-xxxx-xxxx-212e57d4f22e"},
+
+        { "account_id": "624e3e00-xxxx-xxxx-xxxx-43918c520dab"}
+
+
+        ]
+
+        }
+
+        ```'
       operationId: OrganizationExport_OrganizationExport_AccountCompare
       parameters:
       - name: organizationId
@@ -87,8 +106,93 @@ paths:
     get:
       tags:
       - AccountSettingsExport
-      summary: Docusign Returns the results for a single account settings export request.
-      description: "Returns the results for a single account settings export request.\n\n- Required scopes: `account_read`\n\nGiven an export id, this method returns the results of an account settings export request.\nTo get a list of all the export requests, use `getAccountSettingsExports`.\n\nYou can find the actual list of settings at  `results[n].url` in the response. The settings export is formatted like this:\n\n``` json\n{\n  \"accounts\": [\n    {\n      \"account_id\": \"9ca037f4-xxxx-xxxx-xxxx-212e57d4f22e\",\n      \"name\": \"The Happy Company\",\n      . . .\n    },\n    {\n      \"account_id\": \"624e3e00-xxxx-xxxx-xxxx-43918c520dab\",\n      \"name\": \"LoanCo\",\n      . . .\n    }\n  ],\n  \"settings\": [\n    . . .\n    {\n      \"category\": \"Signing\",\n      \"name\": \"SignerCanSignOnMobile\",\n      \"account_values\": [\n        {\n          \"account_id\": \"9ca037f4-xxxx-xxxx-xxxx-212e57d4f22e\",\n          \"value\": \"true\",\n          \"rights\": \"editable\"\n        },\n        {\n          \"account_id\": \"624e3e00-xxxx-xxxx-xxxx-43918c520dab\",\n          \"value\": \"true\",\n          \"rights\": \"editable\"\n        }\n      ]\n    },\n    . . .\n  ]\n}\n\n```\n"
+      summary: Docusign Returns the results for a single account settings export request
+      description: 'Returns the results for a single account settings export request.
+
+
+        - Required scopes: `account_read`
+
+
+        Given an export id, this method returns the results of an account settings export request.
+
+        To get a list of all the export requests, use `getAccountSettingsExports`.
+
+
+        You can find the actual list of settings at `results[n].url` in the response. The settings export is formatted like this:
+
+
+        ``` json
+
+        {
+
+        "accounts": [
+
+        {
+
+        "account_id": "9ca037f4-xxxx-xxxx-xxxx-212e57d4f22e",
+
+        "name": "The Happy Company",
+
+        . . .
+
+        },
+
+        {
+
+        "account_id": "624e3e00-xxxx-xxxx-xxxx-43918c520dab",
+
+        "name": "LoanCo",
+
+        . . .
+
+        }
+
+        ],
+
+        "settings": [
+
+        . . .
+
+        {
+
+        "category": "Signing",
+
+        "name": "SignerCanSignOnMobile",
+
+        "account_values": [
+
+        {
+
+        "account_id": "9ca037f4-xxxx-xxxx-xxxx-212e57d4f22e",
+
+        "value": "true",
+
+        "rights": "editable"
+
+        },
+
+        {
+
+        "account_id": "624e3e00-xxxx-xxxx-xxxx-43918c520dab",
+
+        "value": "true",
+
+        "rights": "editable"
+
+        }
+
+        ]
+
+        },
+
+        . . .
+
+        ]
+
+        }
+
+
+        ```'
       operationId: OrganizationExport_OrganizationExport_GetAccountSettingsExportByExportId
       parameters:
       - name: organizationId
@@ -122,16 +226,13 @@ paths:
     delete:
       tags:
       - AccountSettingsExport
-      summary: Docusign Deletes a single account settings export request.
+      summary: Docusign Deletes a single account settings export request
       description: 'Deletes a single account settings export request.
 
         Any data associated with the request is also deleted.
 
 
-        - Required scopes: `account_read`
-
-
-        '
+        - Required scopes: `account_read`'
       operationId: OrganizationExport_OrganizationExport_DeleteByAccountSettingsExportId
       parameters:
       - name: organizationId
@@ -164,14 +265,16 @@ paths:
       x-ds-in-sdk: true
 components:
   schemas:
-    OrgExportSelectedDomain:
+    OrgExportSelectedAccount:
       type: object
       properties:
-        domain:
+        account_id:
           type: string
-          description: ''
+          description: Select users that are members of the specified account. At least one of `email`, `account_id` or `organization_reserved_domain_id` must be specified.
+          format: uuid
+          example: 00000000-0000-0000-0000-000000000000
       description: ''
-      x-ds-definition-name: OrgExportSelectedDomain
+      x-ds-definition-name: OrgExportSelectedAccount
       x-ms-summary: ''
     OrganizationExportTaskResponse:
       type: object
@@ -201,63 +304,14 @@ components:
       description: ''
       x-ds-definition-name: OrganizationExportTaskResponse
       x-ms-summary: ''
-    OrganizationAccountsRequest:
+    OrgExportSelectedDomain:
       type: object
       properties:
-        accounts:
-          type: array
+        domain:
+          type: string
           description: ''
-          items:
-            $ref: '#/components/schemas/OrganizationAccountRequest'
       description: ''
-      x-ds-definition-name: OrganizationAccountsRequest
-      x-ms-summary: ''
-    OrganizationAccountRequest:
-      required:
-      - account_id
-      type: object
-      properties:
-        account_id:
-          type: string
-          description: Select users that are members of the specified account. At least one of `email`, `account_id` or `organization_reserved_domain_id` must be specified.
-          format: uuid
-          example: 00000000-0000-0000-0000-000000000000
-      description: ''
-      x-ds-definition-name: OrganizationAccountRequest
-      x-ms-summary: ''
-    OrgExportSelectedAccount:
-      type: object
-      properties:
-        account_id:
-          type: string
-          description: Select users that are members of the specified account. At least one of `email`, `account_id` or `organization_reserved_domain_id` must be specified.
-          format: uuid
-          example: 00000000-0000-0000-0000-000000000000
-      description: ''
-      x-ds-definition-name: OrgExportSelectedAccount
-      x-ms-summary: ''
-    OETR_ErrorDetails:
-      type: object
-      properties:
-        error:
-          type: string
-          description: The error number.
-        error_description:
-          type: string
-          description: A longer description of the error.
-      description: ''
-      x-ds-definition-name: OETR_ErrorDetails
-      x-ms-summary: ''
-    OrganizationExportsResponse:
-      type: object
-      properties:
-        exports:
-          type: array
-          description: ''
-          items:
-            $ref: '#/components/schemas/OrganizationExportResponse'
-      description: ''
-      x-ds-definition-name: OrganizationExportsResponse
+      x-ds-definition-name: OrgExportSelectedDomain
       x-ms-summary: ''
     OrganizationExportResponse:
       type: object
@@ -327,6 +381,42 @@ components:
       description: ''
       x-ds-definition-name: OrganizationExportResponse
       x-ms-summary: ''
+    OETR_ErrorDetails:
+      type: object
+      properties:
+        error:
+          type: string
+          description: The error number.
+        error_description:
+          type: string
+          description: A longer description of the error.
+      description: ''
+      x-ds-definition-name: OETR_ErrorDetails
+      x-ms-summary: ''
+    OrganizationExportsResponse:
+      type: object
+      properties:
+        exports:
+          type: array
+          description: ''
+          items:
+            $ref: '#/components/schemas/OrganizationExportResponse'
+      description: ''
+      x-ds-definition-name: OrganizationExportsResponse
+      x-ms-summary: ''
+    OrganizationAccountRequest:
+      required:
+      - account_id
+      type: object
+      properties:
+        account_id:
+          type: string
+          description: Select users that are members of the specified account. At least one of `email`, `account_id` or `organization_reserved_domain_id` must be specified.
+          format: uuid
+          example: 00000000-0000-0000-0000-000000000000
+      description: ''
+      x-ds-definition-name: OrganizationAccountRequest
+      x-ms-summary: ''
     OrganizationExportRequestorResponse:
       type: object
       properties:
@@ -344,6 +434,17 @@ components:
           description: The email address.
       description: ''
       x-ds-definition-name: OrganizationExportRequestorResponse
+      x-ms-summary: ''
+    OrganizationAccountsRequest:
+      type: object
+      properties:
+        accounts:
+          type: array
+          description: ''
+          items:
+            $ref: '#/components/schemas/OrganizationAccountRequest'
+      description: ''
+      x-ds-definition-name: OrganizationAccountsRequest
       x-ms-summary: ''
   securitySchemes:
     accessCode:

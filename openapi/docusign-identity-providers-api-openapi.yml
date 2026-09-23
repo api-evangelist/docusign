@@ -11,20 +11,18 @@ info:
 servers:
 - url: https://api.docusign.net/Management
 tags:
-- name: IdentityProviders
+- name: Identity Providers
   description: Methods to get a list of identity providers.
 paths:
   /v2/organizations/{organizationId}/identity_providers:
     get:
       tags:
-      - IdentityProviders
-      summary: Docusign Returns the list of identity providers for an organization.
+      - Identity Providers
+      summary: Docusign Returns the list of identity providers for an organization
       description: 'Returns the list of identity providers for an organization.
 
 
-        - Required scopes: `identity_provider_read`
-
-        '
+        - Required scopes: `identity_provider_read`'
       operationId: Organization_GetIdentityProviders
       parameters:
       - name: organizationId
@@ -50,100 +48,6 @@ paths:
       x-ds-in-sdk: true
 components:
   schemas:
-    IdentityProviderResponse:
-      type: object
-      properties:
-        id:
-          type: string
-          description: The unique ID of the identity provider.
-          format: uuid
-          example: 00000000-0000-0000-0000-000000000000
-        friendly_name:
-          type: string
-          description: The human-readable name of the identity provider.
-        auto_provision_users:
-          type: boolean
-          description: 'If **true**, users who use this identity provider are automatically provisioned. '
-        type:
-          type: string
-          description: 'The type of the identity provider. One of:
-
-
-            - `none`
-
-            - `saml_20`
-
-            - `saml_11`
-
-            - `saml_10`
-
-            - `ws_federation`
-
-            - `open_id_connect`'
-        saml_20:
-          $ref: '#/components/schemas/Saml2IdentityProviderResponse'
-        links:
-          type: array
-          description: A list of useful URLs.
-          items:
-            $ref: '#/components/schemas/LinkResponse'
-      description: Information about a single identity provider.
-      x-ds-definition-name: IdentityProviderResponse
-      x-ms-summary: Information about a single identity provider.
-    CertificateResponse:
-      type: object
-      properties:
-        id:
-          type: string
-          description: The unique ID of the certificate.
-          format: uuid
-          example: 00000000-0000-0000-0000-000000000000
-        issuer:
-          type: string
-          description: The certificate issuer.
-        thumbprint:
-          type: string
-          description: The thumbprint of the certificate.
-        expiration_date:
-          type: string
-          description: The date when the certificate expires.
-          format: date-time
-        is_valid:
-          type: boolean
-          description: If **true**, the certificate is valid.
-          readOnly: true
-        links:
-          type: array
-          description: A list of useful links.
-          items:
-            $ref: '#/components/schemas/LinkResponse'
-      description: Information about a single certificate.
-      x-ds-definition-name: CertificateResponse
-      x-ms-summary: Information about a single certificate.
-    Saml2IdentityProviderResponse:
-      type: object
-      properties:
-        issuer:
-          type: string
-          description: The name of the certificate issuer.
-        settings:
-          type: array
-          description: A list of settings.
-          items:
-            $ref: '#/components/schemas/SettingResponse'
-        certificates:
-          type: array
-          description: A list of certificates responses.
-          items:
-            $ref: '#/components/schemas/CertificateResponse'
-        attribute_mappings:
-          type: array
-          description: A list of attribute mappings.
-          items:
-            $ref: '#/components/schemas/RequiredAttributeMappingResponse'
-      description: Information about a SAML 2.0 identity provider.
-      x-ds-definition-name: Saml2IdentityProviderResponse
-      x-ms-summary: Information about a SAML 2.0 identity provider.
     SettingResponse:
       type: object
       properties:
@@ -187,6 +91,76 @@ components:
       description: A link to a useful URL.
       x-ds-definition-name: LinkResponse
       x-ms-summary: A link to a useful URL.
+    CertificateResponse:
+      type: object
+      properties:
+        id:
+          type: string
+          description: The unique ID of the certificate.
+          format: uuid
+          example: 00000000-0000-0000-0000-000000000000
+        issuer:
+          type: string
+          description: The certificate issuer.
+        thumbprint:
+          type: string
+          description: The thumbprint of the certificate.
+        expiration_date:
+          type: string
+          description: The date when the certificate expires.
+          format: date-time
+        is_valid:
+          type: boolean
+          description: If **true**, the certificate is valid.
+          readOnly: true
+        links:
+          type: array
+          description: A list of useful links.
+          items:
+            $ref: '#/components/schemas/LinkResponse'
+      description: Information about a single certificate.
+      x-ds-definition-name: CertificateResponse
+      x-ms-summary: Information about a single certificate.
+    IdentityProviderResponse:
+      type: object
+      properties:
+        id:
+          type: string
+          description: The unique ID of the identity provider.
+          format: uuid
+          example: 00000000-0000-0000-0000-000000000000
+        friendly_name:
+          type: string
+          description: The human-readable name of the identity provider.
+        auto_provision_users:
+          type: boolean
+          description: 'If **true**, users who use this identity provider are automatically provisioned. '
+        type:
+          type: string
+          description: 'The type of the identity provider. One of:
+
+
+            - `none`
+
+            - `saml_20`
+
+            - `saml_11`
+
+            - `saml_10`
+
+            - `ws_federation`
+
+            - `open_id_connect`'
+        saml_20:
+          $ref: '#/components/schemas/Saml2IdentityProviderResponse'
+        links:
+          type: array
+          description: A list of useful URLs.
+          items:
+            $ref: '#/components/schemas/LinkResponse'
+      description: Information about a single identity provider.
+      x-ds-definition-name: IdentityProviderResponse
+      x-ms-summary: Information about a single identity provider.
     IdentityProvidersResponse:
       type: object
       properties:
@@ -198,6 +172,30 @@ components:
       description: ''
       x-ds-definition-name: IdentityProvidersResponse
       x-ms-summary: ''
+    Saml2IdentityProviderResponse:
+      type: object
+      properties:
+        issuer:
+          type: string
+          description: The name of the certificate issuer.
+        settings:
+          type: array
+          description: A list of settings.
+          items:
+            $ref: '#/components/schemas/SettingResponse'
+        certificates:
+          type: array
+          description: A list of certificates responses.
+          items:
+            $ref: '#/components/schemas/CertificateResponse'
+        attribute_mappings:
+          type: array
+          description: A list of attribute mappings.
+          items:
+            $ref: '#/components/schemas/RequiredAttributeMappingResponse'
+      description: Information about a SAML 2.0 identity provider.
+      x-ds-definition-name: Saml2IdentityProviderResponse
+      x-ms-summary: Information about a SAML 2.0 identity provider.
     RequiredAttributeMappingResponse:
       type: object
       properties:

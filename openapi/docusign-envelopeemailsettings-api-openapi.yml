@@ -12,19 +12,13 @@ servers:
 - url: https://www.docusign.net/restapi
 tags:
 - name: EnvelopeEmailSettings
-  description: 'The EnvelopeEmailSettings provide methods that allow you to manage the email override settings for an envelope.
-
-
-    Email override settings change the reply to email address, name, or the BCC for email archive information, for the envelope. Note that changing email settings will only affect email communications that occur after the addition was made.
-
-
-    The BCC Email address feature is designed to provide a copy of all email communications for external archiving purposes. DocuSign recommends that envelopes sent using the BCC for Email Archive feature, including the BCC Email Override option, include additional signer authentication options. To send a copy of the envelope to a recipient who does not need to sign, use a Carbon Copies or Certified Deliveries Recipient Type.'
+  description: The EnvelopeEmailSettings provide methods that allow you to manage the email override settings for an envelope.
 paths:
   /v2/accounts/{accountId}/envelopes/{envelopeId}/email_settings:
     get:
       tags:
       - EnvelopeEmailSettings
-      summary: Docusign Gets the email setting overrides for an envelope.
+      summary: Docusign Gets the email setting overrides for an envelope
       description: Retrieves the email override settings for the specified envelope.
       operationId: EmailSettings_GetEmailSettings
       parameters:
@@ -61,7 +55,7 @@ paths:
     put:
       tags:
       - EnvelopeEmailSettings
-      summary: Docusign Updates the email setting overrides for an envelope.
+      summary: Docusign Updates the email setting overrides for an envelope
       description: 'Updates the existing email override settings for the specified envelope. Note that modifying email settings will only affect email communications that occur after the modification was made.
 
 
@@ -111,7 +105,7 @@ paths:
     post:
       tags:
       - EnvelopeEmailSettings
-      summary: Docusign Adds email setting overrides to an envelope.
+      summary: Docusign Adds email setting overrides to an envelope
       description: 'Adds email override settings, changing the email address to reply to an email address, name, or the BCC for email archive information, for the envelope. Note that adding email settings will only affect email communications that occur after the addition was made.
 
 
@@ -161,7 +155,7 @@ paths:
     delete:
       tags:
       - EnvelopeEmailSettings
-      summary: Docusign Deletes the email setting overrides for an envelope.
+      summary: Docusign Deletes the email setting overrides for an envelope
       description: Deletes all existing email override settings for the envelope. If you want to delete an individual email override setting, use the PUT and set the value to an empty string. Note that deleting email settings will only affect email communications that occur after the deletion and the normal account email settings are used for future email communications.
       operationId: EmailSettings_DeleteEmailSettings
       parameters:
@@ -197,21 +191,6 @@ paths:
       x-ds-in-sdk: true
 components:
   schemas:
-    bccEmailAddress:
-      type: object
-      properties:
-        bccEmailAddressId:
-          type: string
-          description: "Only users with canManageAccount setting can use this option. An array of up to 5 email addresses the envelope is sent to as a BCC email. \n \nExample: If your account has BCC for Email Archive set up for the email address 'archive@mycompany.com' and you send an envelope using the BCC Email Override to send a BCC email to 'salesarchive@mycompany.com', then a copy of the envelope is only sent to the 'salesarchive@mycompany.com' email address."
-        email:
-          type: string
-          description: 'Specifies the BCC email address. DocuSign verifies that the email format is correct, but does not verify that the email is active.Using this overrides the BCC for Email Archive information setting for this envelope.
-
-
-            Maximum of length: 100 characters. '
-      description: Contains information about the BCC email address.
-      x-ds-definition-name: bccEmailAddress
-      x-ms-summary: Contains information about the BCC email address.
     emailSettings:
       type: object
       properties:
@@ -232,6 +211,21 @@ components:
       description: ''
       x-ds-definition-name: emailSettings
       x-ms-summary: ''
+    bccEmailAddress:
+      type: object
+      properties:
+        bccEmailAddressId:
+          type: string
+          description: "Only users with canManageAccount setting can use this option. An array of up to 5 email addresses the envelope is sent to as a BCC email. \n \nExample: If your account has BCC for Email Archive set up for the email address 'archive@mycompany.com' and you send an envelope using the BCC Email Override to send a BCC email to 'salesarchive@mycompany.com', then a copy of the envelope is only sent to the 'salesarchive@mycompany.com' email address."
+        email:
+          type: string
+          description: 'Specifies the BCC email address. DocuSign verifies that the email format is correct, but does not verify that the email is active.Using this overrides the BCC for Email Archive information setting for this envelope.
+
+
+            Maximum of length: 100 characters. '
+      description: Contains information about the BCC email address.
+      x-ds-definition-name: bccEmailAddress
+      x-ms-summary: Contains information about the BCC email address.
     errorDetails:
       type: object
       properties:

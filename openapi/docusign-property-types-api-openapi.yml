@@ -1,6 +1,6 @@
 openapi: 3.2.0
 info:
-  title: DocuSign Rooms API - v2 Form Libraries API
+  title: DocuSign Rooms API - v2 Property Types API
   description: An API for an integrator to access the features of DocuSign Rooms
   termsOfService: https://www.docusign.com/company/terms-and-conditions/web
   contact:
@@ -13,62 +13,41 @@ servers:
 security:
 - Bearer: []
 tags:
-- name: FormLibraries
-  description: ''
+- name: Property Types
+  description: In the console, these are the values that can appear on a room's **Details** tab in the **Property type** field.
 paths:
-  /v2/accounts/{accountId}/form_libraries:
+  /v2/property_types:
     get:
       tags:
-      - FormLibraries
-      summary: Docusign Gets form libraries.
-      description: 'Returns a list of form libraries to which the current user has access.
+      - Property Types
+      summary: Docusign Gets property types
+      description: 'Returns a list of property types.
 
 
         ## Permissions
 
 
-        All users can use this method, but the results will differ based on whether the company has asked DocuSign to enable **RequireOfficeLibraryAssignments** functionality. If this functionality is enabled for the account, then the list is filtered based on the offices that the user is in and the libraries that are assigned to those offices. When **RequireOfficeLibraryAssignments**  is not enabled, the API returns all results.'
-      operationId: FormLibraries_GetFormLibraries
-      parameters:
-      - name: count
-        in: query
-        description: The number of results to return. This value must be a number between `1` and `100` (default).
-        schema:
-          type: integer
-          format: int32
-          default: 100
-      - name: startPosition
-        in: query
-        description: The starting zero-based index position of the results set. The default value is `0`.
-        schema:
-          type: integer
-          format: int32
-          default: 0
-      - name: accountId
-        in: path
-        description: The globally unique identifier (GUID) for the account.
-        required: true
-        schema:
-          type: string
+        Anyone with a valid access token can call this method.'
+      operationId: PropertyTypes_GetPropertyTypes
       responses:
         '200':
-          description: Successfully retrieved Form Libraries.
+          description: Request was successful.
           content:
             text/plain:
               schema:
-                $ref: '#/components/schemas/FormLibrarySummaryList'
+                $ref: '#/components/schemas/GlobalPropertyTypes'
             application/json:
               schema:
-                $ref: '#/components/schemas/FormLibrarySummaryList'
+                $ref: '#/components/schemas/GlobalPropertyTypes'
             text/json:
               schema:
-                $ref: '#/components/schemas/FormLibrarySummaryList'
+                $ref: '#/components/schemas/GlobalPropertyTypes'
             application/xml:
               schema:
-                $ref: '#/components/schemas/FormLibrarySummaryList'
+                $ref: '#/components/schemas/GlobalPropertyTypes'
             text/xml:
               schema:
-                $ref: '#/components/schemas/FormLibrarySummaryList'
+                $ref: '#/components/schemas/GlobalPropertyTypes'
         '400':
           description: Bad request. See ErrorCode and Message for details
           content:
@@ -105,211 +84,23 @@ paths:
             text/xml:
               schema:
                 $ref: '#/components/schemas/ApiError'
-      x-ds-methodname: GetFormLibraries
-      x-ds-method: GetFormLibraries
-      x-ds-service: FormLibraries
-      x-ds-in-sdk: true
-  /v2/accounts/{accountId}/form_libraries/{formLibraryId}/forms:
-    get:
-      tags:
-      - FormLibraries
-      summary: Docusign Gets the forms in a form library.
-      description: Returns a list of forms  to which the current user has access in the specified form library.
-      operationId: FormLibraries_GetFormLibraryForms
-      parameters:
-      - name: formLibraryId
-        in: path
-        description: 'The ID of the form library.
-
-
-          Example: `402c6e2f-xxxx-xxxx-xxxx-ff3f249f6da9`
-
-          '
-        required: true
-        schema:
-          type: string
-          format: uuid
-      - name: count
-        in: query
-        description: The number of results to return. This value must be a number between `1` and `100` (default).
-        schema:
-          type: integer
-          format: int32
-          default: 100
-      - name: startPosition
-        in: query
-        description: (Optional) The starting zero-based index position of the results set. The default value is `0`.
-        schema:
-          type: integer
-          format: int32
-          default: 0
-      - name: accountId
-        in: path
-        description: The globally unique identifier (GUID) for the account.
-        required: true
-        schema:
-          type: string
-      responses:
-        '200':
-          description: Successfully retrieved library forms.
-          content:
-            text/plain:
-              schema:
-                $ref: '#/components/schemas/FormSummaryList'
-            application/json:
-              schema:
-                $ref: '#/components/schemas/FormSummaryList'
-            text/json:
-              schema:
-                $ref: '#/components/schemas/FormSummaryList'
-            application/xml:
-              schema:
-                $ref: '#/components/schemas/FormSummaryList'
-            text/xml:
-              schema:
-                $ref: '#/components/schemas/FormSummaryList'
-        '400':
-          description: Bad request. See ErrorCode and Message for details
-          content:
-            text/plain:
-              schema:
-                $ref: '#/components/schemas/ApiError'
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ApiError'
-            text/json:
-              schema:
-                $ref: '#/components/schemas/ApiError'
-            application/xml:
-              schema:
-                $ref: '#/components/schemas/ApiError'
-            text/xml:
-              schema:
-                $ref: '#/components/schemas/ApiError'
-        '401':
-          description: Not authorized to make this request.
-          content:
-            text/plain:
-              schema:
-                $ref: '#/components/schemas/ApiError'
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ApiError'
-            text/json:
-              schema:
-                $ref: '#/components/schemas/ApiError'
-            application/xml:
-              schema:
-                $ref: '#/components/schemas/ApiError'
-            text/xml:
-              schema:
-                $ref: '#/components/schemas/ApiError'
-      x-ds-methodname: GetFormLibraryForms
-      x-ds-method: GetFormLibraryForms
-      x-ds-service: FormLibraries
+      x-ds-methodname: GetPropertyTypes
+      x-ds-method: GetPropertyTypes
+      x-ds-service: PropertyTypes
       x-ds-in-sdk: true
 components:
   schemas:
-    FormLibrarySummaryList:
+    GlobalPropertyTypes:
       type: object
       properties:
-        formsLibrarySummaries:
+        propertyTypes:
           type: array
-          description: A list of form libraries.
+          description: A list of property types.
           items:
-            $ref: '#/components/schemas/FormLibrarySummary'
-        resultSetSize:
-          type: integer
-          description: The number of results returned in this response.
-          format: int32
-        startPosition:
-          type: integer
-          description: The starting zero-based index position of the results set. When this property is used as a query parameter, the default value is `0`.
-          format: int32
-        endPosition:
-          type: integer
-          description: The last zero-based index position in the result set.
-          format: int32
-          readOnly: true
-        nextUri:
-          type: string
-          description: The URI for the next chunk of records based on the search request. This property is `null` for the last set of search results.
-        priorUri:
-          type: string
-          description: The URI for the previous chunk of records based on the search request. This property is `null` for the first set of search results.
-        totalRowCount:
-          type: integer
-          description: ''
-          format: int32
-      description: Contains a list of forms libraries.
-      x-ds-definition-name: FormLibrarySummaryList
-      x-ms-summary: Contains a list of forms libraries.
-    FormSummary:
-      type: object
-      properties:
-        libraryFormId:
-          type: string
-          description: 'The ID of the form.
-
-
-            Example: `301f560d-xxxx-xxxx-xxxx-063a47cc12c2`
-
-            '
-          format: uuid
-          readOnly: true
-        name:
-          type: string
-          description: "The name of the form. \n\nExample: `Short Sale Supplement to Marketing Agreement`"
-          readOnly: true
-        lastUpdatedDate:
-          type: string
-          description: 'The date and time when the form was last updated.
-
-
-            Example: `2017-08-11T19:58:36.18`'
-          format: date-time
-          readOnly: true
-        viewingUserHasAccess:
-          type: boolean
-          description: ''
-          readOnly: true
-      description: Contains details about a form in a form library.
-      x-ds-definition-name: FormSummary
-      x-ms-summary: Contains details about a form in a form library.
-    FormSummaryList:
-      type: object
-      properties:
-        forms:
-          type: array
-          description: A list of forms.
-          items:
-            $ref: '#/components/schemas/FormSummary'
-        resultSetSize:
-          type: integer
-          description: The number of results returned in this response.
-          format: int32
-        startPosition:
-          type: integer
-          description: The starting zero-based index position of the results set. When this property is used as a query parameter, the default value is `0`.
-          format: int32
-        endPosition:
-          type: integer
-          description: The last zero-based index position in the result set.
-          format: int32
-          readOnly: true
-        nextUri:
-          type: string
-          description: The URI for the next chunk of records based on the search request. This property is `null` for the last set of search results.
-        priorUri:
-          type: string
-          description: The URI for the previous chunk of records based on the search request. This property is `null` for the first set of search results.
-        totalRowCount:
-          type: integer
-          description: ''
-          format: int32
-      description: Contains a list of forms in a form library.
-      x-ds-definition-name: FormSummaryList
-      x-ms-summary: Contains a list of forms in a form library.
+            $ref: '#/components/schemas/PropertyType'
+      description: Contains a list of property types.
+      x-ds-definition-name: GlobalPropertyTypes
+      x-ms-summary: Contains a list of property types.
     ApiError:
       type: object
       properties:
@@ -325,34 +116,42 @@ components:
       description: This object describes errors that occur. It is valid only for responses and ignored in requests.
       x-ds-definition-name: ApiError
       x-ms-summary: This object describes errors that occur. It is valid only for responses and ignored in requests.
-    FormLibrarySummary:
+    PropertyType:
       type: object
       properties:
-        formsLibraryId:
+        propertyTypeId:
           type: string
-          description: 'The ID of the form library.
+          description: 'The ID of the property type.
 
 
-            Example: `402c6e2f-xxxx-xxxx-xxxx-ff3f249f6da9`
-
-            '
-          format: uuid
-          readOnly: true
+            Example: `resd` (for `Residential Detached`)'
         name:
           type: string
-          description: 'The name of the form library.
+          description: 'The name of the property type. Possible values are:
 
 
-            Example: `MOR - Mainstreet Organization of Realtors`'
-          readOnly: true
-        formCount:
-          type: integer
-          description: "The number of forms in the form library. \n\nExample: `50`"
-          format: int32
-          readOnly: true
-      description: Contains details about a specific form library.
-      x-ds-definition-name: FormLibrarySummary
-      x-ms-summary: Contains details about a specific form library.
+            - `Residential Detached`
+
+            - `Residential Attached`
+
+            - `New Construction`
+
+            - `Residential Developed Lots`
+
+            - `Land/Farm`
+
+            - `Rental`
+
+            - `Commercial`
+
+            - `Condominium`
+
+            - `Mobile Home`
+
+            '
+      description: Contains information about a property type.
+      x-ds-definition-name: PropertyType
+      x-ms-summary: Contains information about a property type.
   securitySchemes:
     Bearer:
       type: apiKey

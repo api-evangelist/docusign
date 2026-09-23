@@ -24,11 +24,11 @@ paths:
     get:
       tags:
       - TemplateLocks
-      summary: Docusign Gets template lock information.
+      summary: Docusign Gets template lock information
       description: 'Retrieves general information about the template lock.
 
 
-        If the call is made by the user who has the lock and the request has the same integrator key as original, then the `X-DocuSign-Edit` header  field and additional lock information is included in the response. This allows users to recover a lost editing session token and the `X-DocuSign-Edit` header.'
+        If the call is made by the user who has the lock and the request has the same integrator key as original, then the `X-DocuSign-Edit` header field and additional lock information is included in the response. This allows users to recover a lost editing session token and the `X-DocuSign-Edit` header.'
       operationId: Lock_GetTemplateLock
       parameters:
       - name: accountId
@@ -64,7 +64,7 @@ paths:
     put:
       tags:
       - TemplateLocks
-      summary: Docusign Updates a template lock.
+      summary: Docusign Updates a template lock
       description: Updates the lock duration time or update the `lockedByApp` property information for the specified template. The user and integrator key must match the user specified by the `lockByUser` property and integrator key information and the `X-DocuSign-Edit` header must be included or an error will be generated.
       operationId: Lock_PutTemplateLock
       parameters:
@@ -111,7 +111,7 @@ paths:
     post:
       tags:
       - TemplateLocks
-      summary: Docusign Lock a template.
+      summary: Docusign Lock a template
       description: 'Locks the specified template, and sets the time until the lock expires, to prevent other users or recipients from accessing and changing the template.
 
 
@@ -161,7 +161,7 @@ paths:
     delete:
       tags:
       - TemplateLocks
-      summary: Docusign Deletes a template lock.
+      summary: Docusign Deletes a template lock
       description: Deletes the lock from the specified template. The `X-DocuSign-Edit` header must be included in the request.
       operationId: Lock_DeleteTemplateLock
       parameters:
@@ -255,6 +255,27 @@ components:
       description: ''
       x-ds-definition-name: userInfo
       x-ms-summary: ''
+    lockRequest:
+      type: object
+      properties:
+        lockDurationInSeconds:
+          type: string
+          description: The number of seconds to lock the envelope for editing.  Must be greater than 0 seconds.
+        lockedByApp:
+          type: string
+          description: A friendly name of the application used to lock the envelope.  Will be used in error messages to the user when lock conflicts occur.
+        lockType:
+          type: string
+          description: The type of envelope lock.  Currently "edit" is the only supported type.
+        templatePassword:
+          type: string
+          description: ''
+        useScratchPad:
+          type: string
+          description: "Reserved for future use.\n\nIndicates whether a scratchpad is used for editing information.\n "
+      description: ''
+      x-ds-definition-name: lockRequest
+      x-ms-summary: ''
     lockInformation:
       type: object
       properties:
@@ -282,27 +303,6 @@ components:
           description: "Reserved for future use.\n\nIndicates whether a scratchpad is used for editing information.\n "
       description: ''
       x-ds-definition-name: lockInformation
-      x-ms-summary: ''
-    lockRequest:
-      type: object
-      properties:
-        lockDurationInSeconds:
-          type: string
-          description: The number of seconds to lock the envelope for editing.  Must be greater than 0 seconds.
-        lockedByApp:
-          type: string
-          description: A friendly name of the application used to lock the envelope.  Will be used in error messages to the user when lock conflicts occur.
-        lockType:
-          type: string
-          description: The type of envelope lock.  Currently "edit" is the only supported type.
-        templatePassword:
-          type: string
-          description: ''
-        useScratchPad:
-          type: string
-          description: "Reserved for future use.\n\nIndicates whether a scratchpad is used for editing information.\n "
-      description: ''
-      x-ds-definition-name: lockRequest
       x-ms-summary: ''
     errorDetails:
       type: object

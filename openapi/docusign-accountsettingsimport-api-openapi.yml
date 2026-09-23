@@ -18,7 +18,7 @@ paths:
     get:
       tags:
       - AccountSettingsImport
-      summary: Docusign Returns the details and metadata for Bulk Account Settings Import requests in the organization.
+      summary: Docusign Returns the details and metadata for Bulk Account Settings Import…
       description: 'Returns the details and metadata for Bulk Account Settings Import requests in the organization.
 
 
@@ -51,9 +51,8 @@ paths:
     post:
       tags:
       - AccountSettingsImport
-      summary: Docusign Creates a new account settings import request.
+      summary: Docusign Creates a new account settings import request
       description: 'Creates a new account settings import request.
-
 
 
         - Required scopes: `account_write`'
@@ -97,21 +96,16 @@ paths:
     get:
       tags:
       - AccountSettingsImport
-      summary: Docusign Returns the details/metadata for a Bulk Account Settings Import request.
+      summary: Docusign Returns the details/metadata for a Bulk Account Settings Import request
       description: 'Returns the details/metadata for a Bulk Account Settings Import request.
 
 
         Required - scopes: `account_read`
 
 
-
-
         Given an import ID, this method returns the results of an account settings import request.
 
-        To get a list of all the import requests, use `getAccountSettingsImports`.
-
-
-        '
+        To get a list of all the import requests, use `getAccountSettingsImports`.'
       operationId: OrganizationImport_OrganizationImportAccountSettings_GetById
       parameters:
       - name: organizationId
@@ -145,7 +139,7 @@ paths:
     delete:
       tags:
       - AccountSettingsImport
-      summary: Docusign Deletes a Bulk Account Settings Import request.
+      summary: Docusign Deletes a Bulk Account Settings Import request
       description: 'Deletes a single account settings import request.
 
         Any data associated with the request is also deleted.
@@ -184,6 +178,57 @@ paths:
       x-ds-in-sdk: true
 components:
   schemas:
+    OrganizationAccountSettingsImportRequestorResponse:
+      type: object
+      properties:
+        id:
+          type: string
+          description: ''
+        type:
+          type: string
+          description: ''
+        name:
+          type: string
+          description: ''
+        email:
+          type: string
+          description: The email address.
+      description: ''
+      x-ds-definition-name: OrganizationAccountSettingsImportRequestorResponse
+      x-ms-summary: ''
+    OrganizationAccountSettingsImportResultResponse:
+      type: object
+      properties:
+        id:
+          type: string
+          description: ''
+          format: uuid
+          example: 00000000-0000-0000-0000-000000000000
+        site_id:
+          type: integer
+          description: ''
+          format: int32
+        url:
+          type: string
+          description: ''
+        number_processed_accounts:
+          type: integer
+          description: ''
+          format: int64
+        error_details:
+          $ref: '#/components/schemas/OASIRR_ErrorDetails'
+        processing_issues_by_account:
+          type: array
+          description: ''
+          items:
+            $ref: '#/components/schemas/OASIRR_OrganizationAccountSettingsErrorDataResponse'
+        number_unprocessed_accounts:
+          type: integer
+          description: ''
+          format: int64
+      description: ''
+      x-ds-definition-name: OrganizationAccountSettingsImportResultResponse
+      x-ms-summary: ''
     OrganizationAccountSettingsImportResponse:
       type: object
       properties:
@@ -258,57 +303,6 @@ components:
           description: A longer description of the error.
       description: ''
       x-ds-definition-name: OASIRR_ErrorDetails
-      x-ms-summary: ''
-    OrganizationAccountSettingsImportRequestorResponse:
-      type: object
-      properties:
-        id:
-          type: string
-          description: ''
-        type:
-          type: string
-          description: ''
-        name:
-          type: string
-          description: ''
-        email:
-          type: string
-          description: The email address.
-      description: ''
-      x-ds-definition-name: OrganizationAccountSettingsImportRequestorResponse
-      x-ms-summary: ''
-    OrganizationAccountSettingsImportResultResponse:
-      type: object
-      properties:
-        id:
-          type: string
-          description: ''
-          format: uuid
-          example: 00000000-0000-0000-0000-000000000000
-        site_id:
-          type: integer
-          description: ''
-          format: int32
-        url:
-          type: string
-          description: ''
-        number_processed_accounts:
-          type: integer
-          description: ''
-          format: int64
-        error_details:
-          $ref: '#/components/schemas/OASIRR_ErrorDetails'
-        processing_issues_by_account:
-          type: array
-          description: ''
-          items:
-            $ref: '#/components/schemas/OASIRR_OrganizationAccountSettingsErrorDataResponse'
-        number_unprocessed_accounts:
-          type: integer
-          description: ''
-          format: int64
-      description: ''
-      x-ds-definition-name: OrganizationAccountSettingsImportResultResponse
       x-ms-summary: ''
     OASIRR_OrganizationAccountSettingsErrorDataResponse:
       type: object

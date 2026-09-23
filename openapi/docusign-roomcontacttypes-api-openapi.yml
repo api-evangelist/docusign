@@ -20,7 +20,7 @@ paths:
     get:
       tags:
       - RoomContactTypes
-      summary: Docusign Gets room contact types.
+      summary: Docusign Gets room contact types
       description: 'Returns a list of room contact types, such as Buyer, Seller, and Listing Agent.
 
 
@@ -90,6 +90,32 @@ paths:
       x-ds-in-sdk: true
 components:
   schemas:
+    GlobalRoomContactTypes:
+      type: object
+      properties:
+        roomContactTypes:
+          type: array
+          description: A list of room contact types.
+          items:
+            $ref: '#/components/schemas/RoomContactType'
+      description: Contains a list of room contact types.
+      x-ds-definition-name: GlobalRoomContactTypes
+      x-ms-summary: Contains a list of room contact types.
+    ApiError:
+      type: object
+      properties:
+        errorCode:
+          type: string
+          description: The code associated with the error condition.
+        message:
+          type: string
+          description: A brief message describing the error condition.
+        referenceId:
+          type: string
+          description: ''
+      description: This object describes errors that occur. It is valid only for responses and ignored in requests.
+      x-ds-definition-name: ApiError
+      x-ms-summary: This object describes errors that occur. It is valid only for responses and ignored in requests.
     RoomContactType:
       type: object
       properties:
@@ -134,32 +160,6 @@ components:
       description: Contains information about a room contact type.
       x-ds-definition-name: RoomContactType
       x-ms-summary: Contains information about a room contact type.
-    ApiError:
-      type: object
-      properties:
-        errorCode:
-          type: string
-          description: The code associated with the error condition.
-        message:
-          type: string
-          description: A brief message describing the error condition.
-        referenceId:
-          type: string
-          description: ''
-      description: This object describes errors that occur. It is valid only for responses and ignored in requests.
-      x-ds-definition-name: ApiError
-      x-ms-summary: This object describes errors that occur. It is valid only for responses and ignored in requests.
-    GlobalRoomContactTypes:
-      type: object
-      properties:
-        roomContactTypes:
-          type: array
-          description: A list of room contact types.
-          items:
-            $ref: '#/components/schemas/RoomContactType'
-      description: Contains a list of room contact types.
-      x-ds-definition-name: GlobalRoomContactTypes
-      x-ms-summary: Contains a list of room contact types.
   securitySchemes:
     Bearer:
       type: apiKey

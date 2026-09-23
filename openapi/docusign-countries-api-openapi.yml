@@ -20,7 +20,7 @@ paths:
     get:
       tags:
       - Countries
-      summary: Docusign Gets countries.
+      summary: Docusign Gets countries
       description: 'Returns a list of countries that the API supports. This is a list of countries in which you can create an office.
 
 
@@ -93,6 +93,29 @@ paths:
       x-ds-in-sdk: true
 components:
   schemas:
+    Country:
+      type: object
+      properties:
+        countryId:
+          type: string
+          description: "The two-letter code for the country. \n\nExample: `NZ`"
+        name:
+          type: string
+          description: "The name of the country. \n\nExample: `New Zealand`"
+      description: Contains details about a supported country.
+      x-ds-definition-name: Country
+      x-ms-summary: Contains details about a supported country.
+    GlobalCountries:
+      type: object
+      properties:
+        countries:
+          type: array
+          description: An array of country objects.
+          items:
+            $ref: '#/components/schemas/Country'
+      description: Contains a list of supported countries.
+      x-ds-definition-name: GlobalCountries
+      x-ms-summary: Contains a list of supported countries.
     ApiError:
       type: object
       properties:
@@ -108,29 +131,6 @@ components:
       description: This object describes errors that occur. It is valid only for responses and ignored in requests.
       x-ds-definition-name: ApiError
       x-ms-summary: This object describes errors that occur. It is valid only for responses and ignored in requests.
-    GlobalCountries:
-      type: object
-      properties:
-        countries:
-          type: array
-          description: An array of country objects.
-          items:
-            $ref: '#/components/schemas/Country'
-      description: Contains a list of supported countries.
-      x-ds-definition-name: GlobalCountries
-      x-ms-summary: Contains a list of supported countries.
-    Country:
-      type: object
-      properties:
-        countryId:
-          type: string
-          description: "The two-letter code for the country. \n\nExample: `NZ`"
-        name:
-          type: string
-          description: "The name of the country. \n\nExample: `New Zealand`"
-      description: Contains details about a supported country.
-      x-ds-definition-name: Country
-      x-ms-summary: Contains details about a supported country.
   securitySchemes:
     Bearer:
       type: apiKey

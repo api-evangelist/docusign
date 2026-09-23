@@ -1,6 +1,6 @@
 openapi: 3.2.0
 info:
-  title: DocuSign Rooms API - v2 Room Templates API
+  title: DocuSign Rooms API - v2 Form Libraries API
   description: An API for an integrator to access the features of DocuSign Rooms
   termsOfService: https://www.docusign.com/company/terms-and-conditions/web
   contact:
@@ -13,53 +13,33 @@ servers:
 security:
 - Bearer: []
 tags:
-- name: RoomTemplates
-  description: You can use a room template to set the transaction side and task lists for rooms. For example, a broker can create a room template for agents to use. You can enable the room template for all regions and offices, or just for specific ones. You create room templates and the task templates that room templates use in the console.
+- name: Form Libraries
+  description: ''
 paths:
-  /v2/accounts/{accountId}/room_templates:
+  /v2/accounts/{accountId}/form_libraries:
     get:
       tags:
-      - RoomTemplates
-      summary: Docusign Gets room templates.
-      description: 'This method returns a list of room templates that the user can use to create a new room. The response includes company and region-level templates.
+      - Form Libraries
+      summary: Docusign Gets form libraries
+      description: 'Returns a list of form libraries to which the current user has access.
 
 
-        '
-      operationId: RoomTemplates_GetRoomTemplates
+        ## Permissions
+
+
+        All users can use this method, but the results will differ based on whether the company has asked DocuSign to enable **RequireOfficeLibraryAssignments** functionality. If this functionality is enabled for the account, then the list is filtered based on the offices that the user is in and the libraries that are assigned to those offices. When **RequireOfficeLibraryAssignments** is not enabled, the API returns all results.'
+      operationId: FormLibraries_GetFormLibraries
       parameters:
-      - name: officeId
-        in: query
-        description: 'The ID of the office for which the user wants to create a room. When you pass in a value for this parameter, only room templates that are valid for that office appear in the results. For users who are not Admins, the default is the ID of the user''s default office.
-
-          However, you can specify a value if the user belongs to multiple offices.
-
-
-          If the user is an Admin, set the `forAdmin` search parameter to **true** instead and omit the `officeId` parameter. '
-        schema:
-          type: integer
-          format: int32
-      - name: onlyAssignable
-        in: query
-        description: When **true,** returns only the roles that the current user can assign to someone else. The default value is **false.**
-        schema:
-          type: boolean
-          default: false
-      - name: onlyEnabled
-        in: query
-        description: When true, only returns room templates that are not disabled.
-        schema:
-          type: boolean
-          default: true
       - name: count
         in: query
-        description: The number of results. When this property is used as a request parameter specifying the number of results to return, the value must be a number between `1` and `100` (default).
+        description: The number of results to return. This value must be a number between `1` and `100` (default).
         schema:
           type: integer
           format: int32
           default: 100
       - name: startPosition
         in: query
-        description: The index position within the total result set from which to start returning values. The default value is `0`.
+        description: The starting zero-based index position of the results set. The default value is `0`.
         schema:
           type: integer
           format: int32
@@ -72,23 +52,23 @@ paths:
           type: string
       responses:
         '200':
-          description: Successfully retrieved room templates for the caller
+          description: Successfully retrieved Form Libraries.
           content:
             text/plain:
               schema:
-                $ref: '#/components/schemas/RoomTemplatesSummaryList'
+                $ref: '#/components/schemas/FormLibrarySummaryList'
             application/json:
               schema:
-                $ref: '#/components/schemas/RoomTemplatesSummaryList'
+                $ref: '#/components/schemas/FormLibrarySummaryList'
             text/json:
               schema:
-                $ref: '#/components/schemas/RoomTemplatesSummaryList'
+                $ref: '#/components/schemas/FormLibrarySummaryList'
             application/xml:
               schema:
-                $ref: '#/components/schemas/RoomTemplatesSummaryList'
+                $ref: '#/components/schemas/FormLibrarySummaryList'
             text/xml:
               schema:
-                $ref: '#/components/schemas/RoomTemplatesSummaryList'
+                $ref: '#/components/schemas/FormLibrarySummaryList'
         '400':
           description: Bad request. See ErrorCode and Message for details
           content:
@@ -125,55 +105,119 @@ paths:
             text/xml:
               schema:
                 $ref: '#/components/schemas/ApiError'
-      x-ds-methodname: GetRoomTemplates
-      x-ds-method: GetRoomTemplates
-      x-ds-service: RoomTemplates
+      x-ds-methodname: GetFormLibraries
+      x-ds-method: GetFormLibraries
+      x-ds-service: FormLibraries
+      x-ds-in-sdk: true
+  /v2/accounts/{accountId}/form_libraries/{formLibraryId}/forms:
+    get:
+      tags:
+      - Form Libraries
+      summary: Docusign Gets the forms in a form library
+      description: Returns a list of forms to which the current user has access in the specified form library.
+      operationId: FormLibraries_GetFormLibraryForms
+      parameters:
+      - name: formLibraryId
+        in: path
+        description: 'The ID of the form library.
+
+
+          Example: `402c6e2f-xxxx-xxxx-xxxx-ff3f249f6da9`
+
+          '
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: count
+        in: query
+        description: The number of results to return. This value must be a number between `1` and `100` (default).
+        schema:
+          type: integer
+          format: int32
+          default: 100
+      - name: startPosition
+        in: query
+        description: (Optional) The starting zero-based index position of the results set. The default value is `0`.
+        schema:
+          type: integer
+          format: int32
+          default: 0
+      - name: accountId
+        in: path
+        description: The globally unique identifier (GUID) for the account.
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Successfully retrieved library forms.
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/FormSummaryList'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FormSummaryList'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/FormSummaryList'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/FormSummaryList'
+            text/xml:
+              schema:
+                $ref: '#/components/schemas/FormSummaryList'
+        '400':
+          description: Bad request. See ErrorCode and Message for details
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            text/xml:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '401':
+          description: Not authorized to make this request.
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+            text/xml:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+      x-ds-methodname: GetFormLibraryForms
+      x-ds-method: GetFormLibraryForms
+      x-ds-service: FormLibraries
       x-ds-in-sdk: true
 components:
   schemas:
-    ApiError:
+    FormSummaryList:
       type: object
       properties:
-        errorCode:
-          type: string
-          description: The code associated with the error condition.
-        message:
-          type: string
-          description: A brief message describing the error condition.
-        referenceId:
-          type: string
-          description: ''
-      description: This object describes errors that occur. It is valid only for responses and ignored in requests.
-      x-ds-definition-name: ApiError
-      x-ms-summary: This object describes errors that occur. It is valid only for responses and ignored in requests.
-    RoomTemplate:
-      type: object
-      properties:
-        roomTemplateId:
-          type: integer
-          description: The ID of the room template.
-          format: int32
-          readOnly: true
-        name:
-          type: string
-          description: The name of the office.
-          readOnly: true
-        taskTemplateCount:
-          type: integer
-          description: The total number of task templates that the room template uses.
-          format: int32
-          readOnly: true
-      description: Contains details about a room template.
-      x-ds-definition-name: RoomTemplate
-      x-ms-summary: Contains details about a room template.
-    RoomTemplatesSummaryList:
-      type: object
-      properties:
-        roomTemplates:
+        forms:
           type: array
-          description: An array of `roomTemplate` objects.
+          description: A list of forms.
           items:
-            $ref: '#/components/schemas/RoomTemplate'
+            $ref: '#/components/schemas/FormSummary'
         resultSetSize:
           type: integer
           description: The number of results returned in this response.
@@ -197,9 +241,118 @@ components:
           type: integer
           description: ''
           format: int32
-      description: This complex type contains information about room templates.
-      x-ds-definition-name: RoomTemplatesSummaryList
-      x-ms-summary: This complex type contains information about room templates.
+      description: Contains a list of forms in a form library.
+      x-ds-definition-name: FormSummaryList
+      x-ms-summary: Contains a list of forms in a form library.
+    ApiError:
+      type: object
+      properties:
+        errorCode:
+          type: string
+          description: The code associated with the error condition.
+        message:
+          type: string
+          description: A brief message describing the error condition.
+        referenceId:
+          type: string
+          description: ''
+      description: This object describes errors that occur. It is valid only for responses and ignored in requests.
+      x-ds-definition-name: ApiError
+      x-ms-summary: This object describes errors that occur. It is valid only for responses and ignored in requests.
+    FormSummary:
+      type: object
+      properties:
+        libraryFormId:
+          type: string
+          description: 'The ID of the form.
+
+
+            Example: `301f560d-xxxx-xxxx-xxxx-063a47cc12c2`
+
+            '
+          format: uuid
+          readOnly: true
+        name:
+          type: string
+          description: "The name of the form. \n\nExample: `Short Sale Supplement to Marketing Agreement`"
+          readOnly: true
+        lastUpdatedDate:
+          type: string
+          description: 'The date and time when the form was last updated.
+
+
+            Example: `2017-08-11T19:58:36.18`'
+          format: date-time
+          readOnly: true
+        viewingUserHasAccess:
+          type: boolean
+          description: ''
+          readOnly: true
+      description: Contains details about a form in a form library.
+      x-ds-definition-name: FormSummary
+      x-ms-summary: Contains details about a form in a form library.
+    FormLibrarySummaryList:
+      type: object
+      properties:
+        formsLibrarySummaries:
+          type: array
+          description: A list of form libraries.
+          items:
+            $ref: '#/components/schemas/FormLibrarySummary'
+        resultSetSize:
+          type: integer
+          description: The number of results returned in this response.
+          format: int32
+        startPosition:
+          type: integer
+          description: The starting zero-based index position of the results set. When this property is used as a query parameter, the default value is `0`.
+          format: int32
+        endPosition:
+          type: integer
+          description: The last zero-based index position in the result set.
+          format: int32
+          readOnly: true
+        nextUri:
+          type: string
+          description: The URI for the next chunk of records based on the search request. This property is `null` for the last set of search results.
+        priorUri:
+          type: string
+          description: The URI for the previous chunk of records based on the search request. This property is `null` for the first set of search results.
+        totalRowCount:
+          type: integer
+          description: ''
+          format: int32
+      description: Contains a list of forms libraries.
+      x-ds-definition-name: FormLibrarySummaryList
+      x-ms-summary: Contains a list of forms libraries.
+    FormLibrarySummary:
+      type: object
+      properties:
+        formsLibraryId:
+          type: string
+          description: 'The ID of the form library.
+
+
+            Example: `402c6e2f-xxxx-xxxx-xxxx-ff3f249f6da9`
+
+            '
+          format: uuid
+          readOnly: true
+        name:
+          type: string
+          description: 'The name of the form library.
+
+
+            Example: `MOR - Mainstreet Organization of Realtors`'
+          readOnly: true
+        formCount:
+          type: integer
+          description: "The number of forms in the form library. \n\nExample: `50`"
+          format: int32
+          readOnly: true
+      description: Contains details about a specific form library.
+      x-ds-definition-name: FormLibrarySummary
+      x-ms-summary: Contains details about a specific form library.
   securitySchemes:
     Bearer:
       type: apiKey

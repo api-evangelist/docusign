@@ -123,11 +123,11 @@ paths:
     post:
       tags:
       - EnvelopeViews
-      summary: Docusign Returns a URL to the envelope correction UI.
+      summary: Docusign Returns a URL to the envelope correction UI
       description: 'Returns a URL that allows you to embed the envelope correction view of the DocuSign UI in your applications.
 
 
-        Important: iFrames should not be used for embedded operations on mobile devices due to screen space issues. For iOS devices DocuSign recommends using a WebView. '
+        Important: iFrames should not be used for embedded operations on mobile devices due to screen space issues. For iOS devices DocuSign recommends using a WebView.'
       operationId: Views_PostEnvelopeCorrectView
       parameters:
       - name: accountId
@@ -212,14 +212,22 @@ paths:
       x-ds-service: Uncategorized
       x-ds-in-sdk: true
       x-codegen-request-body-name: correctViewRequest
+      summary: Views delete envelope correct view
+      x-summary-source: derived
     servers:
     - url: https://www.docusign.net/restapi
   /v2/accounts/{accountId}/envelopes/{envelopeId}/views/edit:
     post:
       tags:
       - EnvelopeViews
-      summary: Docusign Returns a URL to the edit view UI.
-      description: "Returns a URL that allows you to embed the edit view of the DocuSign UI in your applications. This is a one-time use login token that allows the user to be placed into the DocuSign editing view. \n\nUpon sending completion, the user is returned to the return URL provided by the API application.\n\nImportant: iFrames should not be used for embedded operations on mobile devices due to screen space issues. For iOS devices DocuSign recommends using a WebView. "
+      summary: Docusign Returns a URL to the edit view UI
+      description: 'Returns a URL that allows you to embed the edit view of the DocuSign UI in your applications. This is a one-time use login token that allows the user to be placed into the DocuSign editing view.
+
+
+        Upon sending completion, the user is returned to the return URL provided by the API application.
+
+
+        Important: iFrames should not be used for embedded operations on mobile devices due to screen space issues. For iOS devices DocuSign recommends using a WebView.'
       operationId: Views_PostEnvelopeEditView
       parameters:
       - name: accountId
@@ -298,8 +306,38 @@ paths:
     post:
       tags:
       - EnvelopeViews
-      summary: Docusign Returns a URL to the recipient view UI.
-      description: "Returns a URL that enables you to embed the recipient view of the DocuSign UI in your applications. If the recipient is a signer, then the view will provide the signing ceremony.\n\n###### Note: Please redirect the client to the URL. iFrames should not be used, especially if the recipient is using a mobile or tablet. \n\nThis method is only used with envelopes in the `sent` status.\n\nYour application is responsible for authenticating the identity of the recipient or signer when you use this method. Use the parameters `assertionId`, `authenticationInstant`, `authenticationMethod`, `clientUserId`, and `securityDomain` to record information on how the recipient was authenticated. At a minimum, `authenticationMethod` and `clientUserId` are required. The information that you provide is included in the envelope's certificate of completion.\n\n## The event status parameter\nAfter the signer completes or ends the signing ceremony, DocuSign will redirect the user's browser back to your app via the `returnUrl` that you supply. DocuSIgn appends an `event` query parameter to the URL with the outcome of the signing ceremony. Your app should use the event parameter to determine the next step for the envelope. Don't fetch the envelope's status via Envelopes: get or a similar method; that could break the DocuSign rule against polling.\n\n## The URL is time-limited\nThe URL returned by this method is valid for one use. It must be used/displayed within a couple of minutes after being generated. Once the recipient is redirected to the recipient view, they must interact with the DocuSign system periodically or their session will time out.\n\nBecause the URL is time-limited, it should not be stored or sent via email. Immediately redirect the user's browser to the URL after you receive it.\n\nIf you want to invite someone to an embedded signing session via email, the email invitation's URL must be to your application. When invoked, your app should request a recipientView URL from DocuSign and then redirect the signer to that URL.\n\n## Maintaining State\nAfter the recipient completes the recipient view (or signing ceremony), they are redirected to your application. Your application can recover state information about the transaction by storing information in a cookie, or by including query parameters in the `returnUrl` field. Eg, `https://myapp.eg.com/docusign_return?myState=12345` When the user is redirected to your app, the `event` query parameter will be appended. In this example, prevent spoofing by not using a guessable value as the state value."
+      summary: Docusign Returns a URL to the recipient view UI
+      description: 'Returns a URL that enables you to embed the recipient view of the DocuSign UI in your applications. If the recipient is a signer, then the view will provide the signing ceremony.
+
+
+        ###### Note: Please redirect the client to the URL. iFrames should not be used, especially if the recipient is using a mobile or tablet.
+
+
+        This method is only used with envelopes in the `sent` status.
+
+
+        Your application is responsible for authenticating the identity of the recipient or signer when you use this method. Use the parameters `assertionId`, `authenticationInstant`, `authenticationMethod`, `clientUserId`, and `securityDomain` to record information on how the recipient was authenticated. At a minimum, `authenticationMethod` and `clientUserId` are required. The information that you provide is included in the envelope''s certificate of completion.
+
+
+        ## The event status parameter
+
+        After the signer completes or ends the signing ceremony, DocuSign will redirect the user''s browser back to your app via the `returnUrl` that you supply. DocuSIgn appends an `event` query parameter to the URL with the outcome of the signing ceremony. Your app should use the event parameter to determine the next step for the envelope. Don''t fetch the envelope''s status via Envelopes: get or a similar method; that could break the DocuSign rule against polling.
+
+
+        ## The URL is time-limited
+
+        The URL returned by this method is valid for one use. It must be used/displayed within a couple of minutes after being generated. Once the recipient is redirected to the recipient view, they must interact with the DocuSign system periodically or their session will time out.
+
+
+        Because the URL is time-limited, it should not be stored or sent via email. Immediately redirect the user''s browser to the URL after you receive it.
+
+
+        If you want to invite someone to an embedded signing session via email, the email invitation''s URL must be to your application. When invoked, your app should request a recipientView URL from DocuSign and then redirect the signer to that URL.
+
+
+        ## Maintaining State
+
+        After the recipient completes the recipient view (or signing ceremony), they are redirected to your application. Your application can recover state information about the transaction by storing information in a cookie, or by including query parameters in the `returnUrl` field. Eg, `https://myapp.eg.com/docusign_return?myState=12345` When the user is redirected to your app, the `event` query parameter will be appended. In this example, prevent spoofing by not using a guessable value as the state value.'
       operationId: Views_PostEnvelopeRecipientView
       parameters:
       - name: accountId
@@ -348,8 +386,46 @@ paths:
     post:
       tags:
       - EnvelopeViews
-      summary: Docusign Returns a URL to the sender view UI.
-      description: "Returns a URL that enables you to embed the sender view of the DocuSign UI in your applications.\n\nThe returned URL can only be redirected to immediately after it is generated. It can only be used once.\nTherefore, request the URL immediately before you redirect your user to it.\n\nFor the best user experience, don't use an iFrame. For iOS devices DocuSign recommends using a WebView.\n\nMultiple solutions are available for maintaining your\nclient state. See the **Maintaining State** section of the [Embedded Signing introduction.](https://developers.docusign.com/esign-rest-api/guides/embedded-signing)\n\nAfter the user has completed the sending view, the browser is redirected to the `returnUrl` supplied.\n\nBy default, if the envelope already contains one or more documents, DocuSign will initially show the document tagging view when you redirect to the URL. \n\nTo start with the envelope's recipients and documents view instead, examine the URL in the method's response. \nThen change the query parameter from `send=1` to `send=0` to start with the recipients/documents view.\n\n<blockquote>\n<p><b>Information Security notice:</b> This method provides full access to the sender's user account.\nWhen you use this view, the sender has full access to the user account. If the sender user account has administrative privileges, then this method also provides administrator access.</p>\n\n<p>If your use case needs to enable a sender to update a draft envelope before it is sent, then either:</p>\n\n<ul>\n<li>Configure each sender to have their own individual user account to use this API method.</li>\n<li>Enhance your API integration so that this method is not needed. Your integration can create the tabs, recipients and other envelope settings as needed.</li>\n</ul>\n</blockquote>\n"
+      summary: Docusign Returns a URL to the sender view UI
+      description: 'Returns a URL that enables you to embed the sender view of the DocuSign UI in your applications.
+
+
+        The returned URL can only be redirected to immediately after it is generated. It can only be used once.
+
+        Therefore, request the URL immediately before you redirect your user to it.
+
+
+        For the best user experience, don''t use an iFrame. For iOS devices DocuSign recommends using a WebView.
+
+
+        Multiple solutions are available for maintaining your
+
+        client state. See the **Maintaining State** section of the Embedded Signing introduction.
+
+
+        After the user has completed the sending view, the browser is redirected to the `returnUrl` supplied.
+
+
+        By default, if the envelope already contains one or more documents, DocuSign will initially show the document tagging view when you redirect to the URL.
+
+
+        To start with the envelope''s recipients and documents view instead, examine the URL in the method''s response.
+
+        Then change the query parameter from `send=1` to `send=0` to start with the recipients/documents view.
+
+
+        Information Security notice: This method provides full access to the sender''s user account.
+
+        When you use this view, the sender has full access to the user account. If the sender user account has administrative privileges, then this method also provides administrator access.
+
+
+        If your use case needs to enable a sender to update a draft envelope before it is sent, then either:
+
+
+        Configure each sender to have their own individual user account to use this API method.
+
+
+        Enhance your API integration so that this method is not needed. Your integration can create the tabs, recipients and other envelope settings as needed.'
       operationId: Views_PostEnvelopeSenderView
       parameters:
       - name: accountId
@@ -440,13 +516,15 @@ paths:
       x-ds-service: Uncategorized
       x-ds-in-sdk: true
       x-codegen-request-body-name: recipientViewRequest
+      summary: Views post envelope recipient shared view
+      x-summary-source: derived
     servers:
     - url: https://www.docusign.net/restapi
   /v2/accounts/{accountId}/views/console:
     post:
       tags:
       - EnvelopeViews
-      summary: Docusign Returns a URL to the authentication view UI.
+      summary: Docusign Returns a URL to the authentication view UI
       description: Returns a URL that allows you to embed the authentication view of the DocuSign UI in your applications.
       operationId: Views_PostAccountConsoleView
       parameters:
@@ -535,26 +613,6 @@ components:
           schema:
             $ref: '#/components/schemas/ErrorDetails'
   schemas:
-    ErrorDetails:
-      type: object
-      description: Contains error information returned by the API.
-      properties:
-        errorCode:
-          type: string
-          description: The error code.
-          example: example_value
-        message:
-          type: string
-          description: A human-readable error message.
-          example: example_value
-    ViewUrl:
-      type: object
-      description: Contains a URL for an embedded view.
-      properties:
-        url:
-          type: string
-          description: The URL for the embedded view. This URL is time-limited and should be used immediately.
-          example: https://www.example.com
     RecipientViewRequest:
       type: object
       description: Request body for generating an embedded recipient signing URL.
@@ -624,30 +682,26 @@ components:
           type: string
           description: The security domain for the signing session.
           example: example_value
-    errorDetails:
+    ErrorDetails:
       type: object
+      description: Contains error information returned by the API.
       properties:
         errorCode:
           type: string
-          description: An error code associated with the error.
+          description: The error code.
+          example: example_value
         message:
           type: string
-          description: A short error message.
-      description: This object describes errors that occur. It is only valid for responses, and ignored in requests.
-      x-ds-definition-name: errorDetails
-      x-ms-summary: This object describes errors that occur. It is only valid for responses, and ignored in requests.
-    consoleViewRequest:
+          description: A human-readable error message.
+          example: example_value
+    ViewUrl:
       type: object
+      description: Contains a URL for an embedded view.
       properties:
-        envelopeId:
+        url:
           type: string
-          description: The envelope ID of the envelope status that failed to post.
-        returnUrl:
-          type: string
-          description: The URL to be redirected to after the console view session has ended.
-      description: ''
-      x-ds-definition-name: consoleViewRequest
-      x-ms-summary: ''
+          description: The URL for the embedded view. This URL is time-limited and should be used immediately.
+          example: https://www.example.com
     recipientViewRequest:
       type: object
       properties:
@@ -722,6 +776,15 @@ components:
       description: ''
       x-ds-definition-name: recipientViewRequest
       x-ms-summary: ''
+    returnUrlRequest:
+      type: object
+      properties:
+        returnUrl:
+          type: string
+          description: "Your app's return url that the user will be redirected to after sending the envelope or completing the sending/tagging view. Query parameters `envelopeId` and `event` will be added to the URL. The event parameter values: \n\n* `Send` (the user sent the envelope)\n* `Save` (the user saved the envelope, it is still a draft)\n* `Cancel` (the user canceled the sending transaction)\n* `Error` (there was an error during the send operation)\n* `SessionEnd` (the sending session ended before the user completed a different action)"
+      description: 'The request body for the EnvelopeViews: createSender method.'
+      x-ds-definition-name: returnUrlRequest
+      x-ms-summary: 'The request body for the EnvelopeViews: createSender method.'
     correctViewRequest:
       type: object
       properties:
@@ -757,15 +820,30 @@ components:
       description: ''
       x-ds-definition-name: viewUrl
       x-ms-summary: ''
-    returnUrlRequest:
+    consoleViewRequest:
       type: object
       properties:
+        envelopeId:
+          type: string
+          description: The envelope ID of the envelope status that failed to post.
         returnUrl:
           type: string
-          description: "Your app's return url that the user will be redirected to after sending the envelope or completing the sending/tagging view. Query parameters `envelopeId` and `event` will be added to the URL. The event parameter values: \n\n* `Send` (the user sent the envelope)\n* `Save` (the user saved the envelope, it is still a draft)\n* `Cancel` (the user canceled the sending transaction)\n* `Error` (there was an error during the send operation)\n* `SessionEnd` (the sending session ended before the user completed a different action)"
-      description: 'The request body for the EnvelopeViews: createSender method.'
-      x-ds-definition-name: returnUrlRequest
-      x-ms-summary: 'The request body for the EnvelopeViews: createSender method.'
+          description: The URL to be redirected to after the console view session has ended.
+      description: ''
+      x-ds-definition-name: consoleViewRequest
+      x-ms-summary: ''
+    errorDetails:
+      type: object
+      properties:
+        errorCode:
+          type: string
+          description: An error code associated with the error.
+        message:
+          type: string
+          description: A short error message.
+      description: This object describes errors that occur. It is only valid for responses, and ignored in requests.
+      x-ds-definition-name: errorDetails
+      x-ms-summary: This object describes errors that occur. It is only valid for responses, and ignored in requests.
   parameters:
     accountId:
       name: accountId

@@ -12,9 +12,7 @@ servers:
 - url: https://www.docusign.net/restapi
 tags:
 - name: Workspaces
-  description: 'The Workspaces resource provides methods that allow you to manage workspaces.
-
-    '
+  description: The Workspaces resource provides methods that allow you to manage workspaces.
 paths:
   /v2/accounts/{accountId}/workspaces:
     get:
@@ -94,7 +92,7 @@ paths:
       tags:
       - Workspaces
       summary: Docusign Get Workspace
-      description: 'Retrives properties about a workspace given a unique workspaceId. '
+      description: Retrives properties about a workspace given a unique workspaceId.
       operationId: Workspace_GetWorkspace
       parameters:
       - name: accountId
@@ -213,66 +211,6 @@ paths:
       x-ds-in-sdk: true
 components:
   schemas:
-    workspaceList:
-      type: object
-      properties:
-        endPosition:
-          type: string
-          description: 'The last position in the result set. '
-        resultSetSize:
-          type: string
-          description: 'The number of results returned in this response. '
-        startPosition:
-          type: string
-          description: Starting position of the current result set.
-        totalSetSize:
-          type: string
-          description: The total number of items in the search's result set. It will always be greater than or equal to the value of the `resultSetSize` field.
-        workspaces:
-          type: array
-          description: A list of workspaces.
-          items:
-            $ref: '#/components/schemas/workspace'
-      description: Provides properties that describe the workspaces avaialble.
-      x-ds-definition-name: workspaceList
-      x-ms-summary: Provides properties that describe the workspaces avaialble.
-    workspace:
-      type: object
-      properties:
-        billableAccountId:
-          type: string
-          description: ''
-        created:
-          type: string
-          description: The UTC DateTime when the workspace user authorization was created.
-        createdByInformation:
-          $ref: '#/components/schemas/workspaceUser'
-        lastModified:
-          type: string
-          description: Utc date and time the comment was last updated (can only be done by creator.)
-        lastModifiedByInformation:
-          $ref: '#/components/schemas/workspaceUser'
-        status:
-          type: string
-          description: Item status. <!-- TODO -->
-        workspaceBaseUrl:
-          type: string
-          description: The relative URL that may be used to access the workspace.
-        workspaceDescription:
-          type: string
-          description: Text describing the purpose of the workspace.
-        workspaceId:
-          type: string
-          description: Specifies the workspace ID GUID.
-        workspaceName:
-          type: string
-          description: The name of the workspace.
-        workspaceUri:
-          type: string
-          description: The relative URI that may be used to access the workspace.
-      description: ''
-      x-ds-definition-name: workspace
-      x-ms-summary: ''
     workspaceUser:
       type: object
       properties:
@@ -326,6 +264,66 @@ components:
       description: 'A workspaceUser representing the user. This property is only returned in response to user specific GET call. '
       x-ds-definition-name: workspaceUser
       x-ms-summary: 'A workspaceUser representing the user. This property is only returned in response to user specific GET call. '
+    workspace:
+      type: object
+      properties:
+        billableAccountId:
+          type: string
+          description: ''
+        created:
+          type: string
+          description: The UTC DateTime when the workspace user authorization was created.
+        createdByInformation:
+          $ref: '#/components/schemas/workspaceUser'
+        lastModified:
+          type: string
+          description: Utc date and time the comment was last updated (can only be done by creator.)
+        lastModifiedByInformation:
+          $ref: '#/components/schemas/workspaceUser'
+        status:
+          type: string
+          description: Item status. <!-- TODO -->
+        workspaceBaseUrl:
+          type: string
+          description: The relative URL that may be used to access the workspace.
+        workspaceDescription:
+          type: string
+          description: Text describing the purpose of the workspace.
+        workspaceId:
+          type: string
+          description: Specifies the workspace ID GUID.
+        workspaceName:
+          type: string
+          description: The name of the workspace.
+        workspaceUri:
+          type: string
+          description: The relative URI that may be used to access the workspace.
+      description: ''
+      x-ds-definition-name: workspace
+      x-ms-summary: ''
+    workspaceList:
+      type: object
+      properties:
+        endPosition:
+          type: string
+          description: 'The last position in the result set. '
+        resultSetSize:
+          type: string
+          description: 'The number of results returned in this response. '
+        startPosition:
+          type: string
+          description: Starting position of the current result set.
+        totalSetSize:
+          type: string
+          description: The total number of items in the search's result set. It will always be greater than or equal to the value of the `resultSetSize` field.
+        workspaces:
+          type: array
+          description: A list of workspaces.
+          items:
+            $ref: '#/components/schemas/workspace'
+      description: Provides properties that describe the workspaces avaialble.
+      x-ds-definition-name: workspaceList
+      x-ms-summary: Provides properties that describe the workspaces avaialble.
     errorDetails:
       type: object
       properties:

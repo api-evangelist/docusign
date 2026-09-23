@@ -1,6 +1,6 @@
 openapi: 3.2.0
 info:
-  title: DocuSign Rooms API - v2 Property Types API
+  title: DocuSign Rooms API - v2 Task Statuses API
   description: An API for an integrator to access the features of DocuSign Rooms
   termsOfService: https://www.docusign.com/company/terms-and-conditions/web
   contact:
@@ -13,41 +13,35 @@ servers:
 security:
 - Bearer: []
 tags:
-- name: PropertyTypes
-  description: In the console, these are the values that can appear on a room's **Details** tab in the **Property type** field.
+- name: Task Statuses
+  description: ''
 paths:
-  /v2/property_types:
+  /v2/task_statuses:
     get:
       tags:
-      - PropertyTypes
-      summary: Docusign Gets property types.
-      description: 'Returns a list of property types.
-
-
-        ## Permissions
-
-
-        Anyone with a valid access token can call this method.'
-      operationId: PropertyTypes_GetPropertyTypes
+      - Task Statuses
+      summary: Docusign Retrieves the list of valid task statuses
+      description: Returns a list of valid task statuses.
+      operationId: TaskStatuses_GetTaskStatuses
       responses:
         '200':
           description: Request was successful.
           content:
             text/plain:
               schema:
-                $ref: '#/components/schemas/GlobalPropertyTypes'
+                $ref: '#/components/schemas/GlobalTaskStatuses'
             application/json:
               schema:
-                $ref: '#/components/schemas/GlobalPropertyTypes'
+                $ref: '#/components/schemas/GlobalTaskStatuses'
             text/json:
               schema:
-                $ref: '#/components/schemas/GlobalPropertyTypes'
+                $ref: '#/components/schemas/GlobalTaskStatuses'
             application/xml:
               schema:
-                $ref: '#/components/schemas/GlobalPropertyTypes'
+                $ref: '#/components/schemas/GlobalTaskStatuses'
             text/xml:
               schema:
-                $ref: '#/components/schemas/GlobalPropertyTypes'
+                $ref: '#/components/schemas/GlobalTaskStatuses'
         '400':
           description: Bad request. See ErrorCode and Message for details
           content:
@@ -84,12 +78,23 @@ paths:
             text/xml:
               schema:
                 $ref: '#/components/schemas/ApiError'
-      x-ds-methodname: GetPropertyTypes
-      x-ds-method: GetPropertyTypes
-      x-ds-service: PropertyTypes
+      x-ds-methodname: GetTaskStatuses
+      x-ds-method: GetTaskStatuses
+      x-ds-service: TaskStatuses
       x-ds-in-sdk: true
 components:
   schemas:
+    GlobalTaskStatuses:
+      type: object
+      properties:
+        taskStatuses:
+          type: array
+          description: ''
+          items:
+            $ref: '#/components/schemas/TaskStatus'
+      description: ''
+      x-ds-definition-name: GlobalTaskStatuses
+      x-ms-summary: ''
     ApiError:
       type: object
       properties:
@@ -105,53 +110,18 @@ components:
       description: This object describes errors that occur. It is valid only for responses and ignored in requests.
       x-ds-definition-name: ApiError
       x-ms-summary: This object describes errors that occur. It is valid only for responses and ignored in requests.
-    PropertyType:
+    TaskStatus:
       type: object
       properties:
-        propertyTypeId:
+        taskStatusId:
           type: string
-          description: 'The ID of the property type.
-
-
-            Example: `resd` (for `Residential Detached`)'
+          description: ''
         name:
           type: string
-          description: 'The name of the property type. Possible values are:
-
-
-            - `Residential Detached`
-
-            - `Residential Attached`
-
-            - `New Construction`
-
-            - `Residential Developed Lots`
-
-            - `Land/Farm`
-
-            - `Rental`
-
-            - `Commercial`
-
-            - `Condominium`
-
-            - `Mobile Home`
-
-            '
-      description: Contains information about a property type.
-      x-ds-definition-name: PropertyType
-      x-ms-summary: Contains information about a property type.
-    GlobalPropertyTypes:
-      type: object
-      properties:
-        propertyTypes:
-          type: array
-          description: A list of property types.
-          items:
-            $ref: '#/components/schemas/PropertyType'
-      description: Contains a list of property types.
-      x-ds-definition-name: GlobalPropertyTypes
-      x-ms-summary: Contains a list of property types.
+          description: The name of the office.
+      description: ''
+      x-ds-definition-name: TaskStatus
+      x-ms-summary: ''
   securitySchemes:
     Bearer:
       type: apiKey

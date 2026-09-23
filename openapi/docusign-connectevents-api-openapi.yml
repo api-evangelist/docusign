@@ -18,7 +18,7 @@ paths:
     put:
       tags:
       - ConnectEvents
-      summary: Docusign Republishes Connect information for the specified envelope.
+      summary: Docusign Republishes Connect information for the specified envelope
       description: Republishes Connect information for the specified envelope.
       operationId: ConnectPublish_PutConnectRetryByEnvelope
       parameters:
@@ -56,8 +56,8 @@ paths:
     put:
       tags:
       - ConnectEvents
-      summary: Docusign Republishes Connect information for multiple envelopes.
-      description: Republishes Connect information for the  specified set of envelopes. The primary use is to republish Connect post failures by including envelope IDs for the envelopes that failed to post in the request. The list of envelope IDs that failed to post correctly can be retrieved by calling to [ML:GetConnectLog] retrieve the failure log.
+      summary: Docusign Republishes Connect information for multiple envelopes
+      description: Republishes Connect information for the specified set of envelopes. The primary use is to republish Connect post failures by including envelope IDs for the envelopes that failed to post in the request. The list of envelope IDs that failed to post correctly can be retrieved by calling to [ML:GetConnectLog] retrieve the failure log.
       operationId: ConnectPublish_PutConnectRetry
       parameters:
       - name: accountId
@@ -98,7 +98,7 @@ paths:
     get:
       tags:
       - ConnectEvents
-      summary: Docusign Gets the Connect failure log information.
+      summary: Docusign Gets the Connect failure log information
       description: Retrieves the Connect Failure Log information. It can be used to determine which envelopes failed to post, so a republish request can be created.
       operationId: ConnectFailures_GetConnectLogs
       parameters:
@@ -140,7 +140,7 @@ paths:
     delete:
       tags:
       - ConnectEvents
-      summary: Docusign Deletes a Connect failure log entry.
+      summary: Docusign Deletes a Connect failure log entry
       description: Deletes the Connect failure log information for the specified entry.
       operationId: ConnectFailures_DeleteConnectFailureLog
       parameters:
@@ -175,11 +175,11 @@ paths:
     get:
       tags:
       - ConnectEvents
-      summary: Docusign Gets the Connect log.
+      summary: Docusign Gets the Connect log
       description: 'Retrieves a list of connect log entries for your account.
 
 
-        ###### Note: The `enableLog` setting in the Connect configuration must be set to true to enable logging. If logging is not enabled, then no log entries are recorded. '
+        ###### Note: The `enableLog` setting in the Connect configuration must be set to true to enable logging. If logging is not enabled, then no log entries are recorded.'
       operationId: ConnectLog_GetConnectLogs
       parameters:
       - name: accountId
@@ -219,7 +219,7 @@ paths:
     delete:
       tags:
       - ConnectEvents
-      summary: Docusign Gets a list of Connect log entries.
+      summary: Docusign Gets a list of Connect log entries
       description: 'Retrieves a list of connect log entries for your account.
 
 
@@ -251,11 +251,11 @@ paths:
     get:
       tags:
       - ConnectEvents
-      summary: Docusign Get the specified Connect log entry.
+      summary: Docusign Get the specified Connect log entry
       description: 'Retrieves the specified Connect log entry for your account.
 
 
-        ###### Note: The `enableLog` setting in the Connect configuration must be set to true to enable logging. If logging is not enabled, then no log entries are recorded. '
+        ###### Note: The `enableLog` setting in the Connect configuration must be set to true to enable logging. If logging is not enabled, then no log entries are recorded.'
       operationId: ConnectLog_GetConnectLog
       parameters:
       - name: accountId
@@ -296,10 +296,8 @@ paths:
     delete:
       tags:
       - ConnectEvents
-      summary: Docusign Deletes a specified Connect log entry.
-      description: 'Deletes a specified entry from the Connect Log.
-
-        '
+      summary: Docusign Deletes a specified Connect log entry
+      description: Deletes a specified entry from the Connect Log.
       operationId: ConnectLog_DeleteConnectLog
       parameters:
       - name: accountId
@@ -331,65 +329,6 @@ paths:
       x-ds-in-sdk: true
 components:
   schemas:
-    connectFailureFilter:
-      type: object
-      properties:
-        envelopeIds:
-          type: array
-          description: ''
-          items:
-            type: string
-        synchronous:
-          type: string
-          description: ''
-      description: ''
-      x-ds-definition-name: connectFailureFilter
-      x-ms-summary: ''
-    connectFailureResults:
-      type: object
-      properties:
-        retryQueue:
-          type: array
-          description: ''
-          items:
-            $ref: '#/components/schemas/connectFailureResult'
-      description: ''
-      x-ds-definition-name: connectFailureResults
-      x-ms-summary: ''
-    errorDetails:
-      type: object
-      properties:
-        errorCode:
-          type: string
-          description: An error code associated with the error.
-        message:
-          type: string
-          description: A short error message.
-      description: This object describes errors that occur. It is only valid for responses, and ignored in requests.
-      x-ds-definition-name: errorDetails
-      x-ms-summary: This object describes errors that occur. It is only valid for responses, and ignored in requests.
-    connectLogs:
-      type: object
-      properties:
-        failures:
-          type: array
-          description: An array of containing failure information from the Connect failure log.
-          items:
-            $ref: '#/components/schemas/connectLog'
-        logs:
-          type: array
-          description: 'A complex type containing Connect log information. It is divided into two sections, one for regular logs and one for Connect failures. '
-          items:
-            $ref: '#/components/schemas/connectLog'
-        totalRecords:
-          type: string
-          description: Record count.
-        type:
-          type: string
-          description: 'Type of the user. Valid values: type_owner, type_participant.'
-      description: ''
-      x-ds-definition-name: connectLogs
-      x-ms-summary: ''
     connectFailureResult:
       type: object
       properties:
@@ -412,6 +351,62 @@ components:
           description: Connection status message.
       description: ''
       x-ds-definition-name: connectFailureResult
+      x-ms-summary: ''
+    connectFailureFilter:
+      type: object
+      properties:
+        envelopeIds:
+          type: array
+          description: ''
+          items:
+            type: string
+        synchronous:
+          type: string
+          description: ''
+      description: ''
+      x-ds-definition-name: connectFailureFilter
+      x-ms-summary: ''
+    connectLogs:
+      type: object
+      properties:
+        failures:
+          type: array
+          description: An array of containing failure information from the Connect failure log.
+          items:
+            $ref: '#/components/schemas/connectLog'
+        logs:
+          type: array
+          description: 'A complex type containing Connect log information. It is divided into two sections, one for regular logs and one for Connect failures. '
+          items:
+            $ref: '#/components/schemas/connectLog'
+        totalRecords:
+          type: string
+          description: Record count.
+        type:
+          type: string
+          description: 'Type of the user. Valid values: type_owner, type_participant.'
+      description: ''
+      x-ds-definition-name: connectLogs
+      x-ms-summary: ''
+    connectDebugLog:
+      type: object
+      properties:
+        connectConfig:
+          type: string
+          description: ''
+        errorDetails:
+          $ref: '#/components/schemas/errorDetails'
+        eventDateTime:
+          type: string
+          description: ''
+        eventDescription:
+          type: string
+          description: ''
+        payload:
+          type: string
+          description: ''
+      description: ''
+      x-ds-definition-name: connectDebugLog
       x-ms-summary: ''
     connectLog:
       type: object
@@ -478,25 +473,28 @@ components:
       description: ''
       x-ds-definition-name: connectLog
       x-ms-summary: ''
-    connectDebugLog:
+    errorDetails:
       type: object
       properties:
-        connectConfig:
+        errorCode:
           type: string
-          description: ''
-        errorDetails:
-          $ref: '#/components/schemas/errorDetails'
-        eventDateTime:
+          description: An error code associated with the error.
+        message:
           type: string
+          description: A short error message.
+      description: This object describes errors that occur. It is only valid for responses, and ignored in requests.
+      x-ds-definition-name: errorDetails
+      x-ms-summary: This object describes errors that occur. It is only valid for responses, and ignored in requests.
+    connectFailureResults:
+      type: object
+      properties:
+        retryQueue:
+          type: array
           description: ''
-        eventDescription:
-          type: string
-          description: ''
-        payload:
-          type: string
-          description: ''
+          items:
+            $ref: '#/components/schemas/connectFailureResult'
       description: ''
-      x-ds-definition-name: connectDebugLog
+      x-ds-definition-name: connectFailureResults
       x-ms-summary: ''
 externalDocs:
   description: See the DocuSign REST API Guide for more information.

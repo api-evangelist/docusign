@@ -12,15 +12,13 @@ servers:
 - url: https://www.docusign.net/restapi
 tags:
 - name: PowerFormData
-  description: 'The PowerFormData resource provides a method to access power form data.
-
-    '
+  description: The PowerFormData resource provides a method to access power form data.
 paths:
   /v2/accounts/{accountId}/powerforms/{powerFormId}/form_data:
     get:
       tags:
       - PowerFormData
-      summary: Docusign Returns the form data associated with the usage of a PowerForm.
+      summary: Docusign Returns the form data associated with the usage of a PowerForm
       operationId: PowerForms_GetPowerFormFormData
       parameters:
       - name: accountId
@@ -68,6 +66,17 @@ paths:
       x-ds-in-sdk: true
 components:
   schemas:
+    powerFormsFormDataResponse:
+      type: object
+      properties:
+        envelopes:
+          type: array
+          description: ''
+          items:
+            $ref: '#/components/schemas/powerFormFormDataEnvelope'
+      description: ''
+      x-ds-definition-name: powerFormsFormDataResponse
+      x-ms-summary: ''
     errorDetails:
       type: object
       properties:
@@ -80,48 +89,6 @@ components:
       description: This object describes errors that occur. It is only valid for responses, and ignored in requests.
       x-ds-definition-name: errorDetails
       x-ms-summary: This object describes errors that occur. It is only valid for responses, and ignored in requests.
-    nameValue:
-      type: object
-      properties:
-        errorDetails:
-          $ref: '#/components/schemas/errorDetails'
-        name:
-          type: string
-          description: The name or key of a name/value pair.
-        originalValue:
-          type: string
-          description: 'The initial value of the tab when it was sent to the recipient. '
-        value:
-          type: string
-          description: The value field of a name/value pair.
-      description: ''
-      x-ds-definition-name: nameValue
-      x-ms-summary: ''
-    powerFormFormDataEnvelope:
-      type: object
-      properties:
-        envelopeId:
-          type: string
-          description: 'The envelope''s GUID. Eg 93be49ab-afa0-4adf-933c-f752070d71ec '
-        recipients:
-          type: array
-          description: ''
-          items:
-            $ref: '#/components/schemas/powerFormFormDataRecipient'
-      description: ''
-      x-ds-definition-name: powerFormFormDataEnvelope
-      x-ms-summary: ''
-    powerFormsFormDataResponse:
-      type: object
-      properties:
-        envelopes:
-          type: array
-          description: ''
-          items:
-            $ref: '#/components/schemas/powerFormFormDataEnvelope'
-      description: ''
-      x-ds-definition-name: powerFormsFormDataResponse
-      x-ms-summary: ''
     powerFormFormDataRecipient:
       type: object
       properties:
@@ -141,6 +108,37 @@ components:
           description: Unique for the recipient. It is used by the tab element to indicate which recipient is to sign the Document.
       description: ''
       x-ds-definition-name: powerFormFormDataRecipient
+      x-ms-summary: ''
+    powerFormFormDataEnvelope:
+      type: object
+      properties:
+        envelopeId:
+          type: string
+          description: 'The envelope''s GUID. Eg 93be49ab-afa0-4adf-933c-f752070d71ec '
+        recipients:
+          type: array
+          description: ''
+          items:
+            $ref: '#/components/schemas/powerFormFormDataRecipient'
+      description: ''
+      x-ds-definition-name: powerFormFormDataEnvelope
+      x-ms-summary: ''
+    nameValue:
+      type: object
+      properties:
+        errorDetails:
+          $ref: '#/components/schemas/errorDetails'
+        name:
+          type: string
+          description: The name or key of a name/value pair.
+        originalValue:
+          type: string
+          description: 'The initial value of the tab when it was sent to the recipient. '
+        value:
+          type: string
+          description: The value field of a name/value pair.
+      description: ''
+      x-ds-definition-name: nameValue
       x-ms-summary: ''
 externalDocs:
   description: See the DocuSign REST API Guide for more information.

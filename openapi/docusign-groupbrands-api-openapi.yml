@@ -12,13 +12,13 @@ servers:
 - url: https://www.docusign.net/restapi
 tags:
 - name: GroupBrands
-  description: 'The GroupBrands resource provides methods that allow you to manage '
+  description: The GroupBrands resource provides methods that allow you to manage
 paths:
   /v2/accounts/{accountId}/groups/{groupId}/brands:
     get:
       tags:
       - GroupBrands
-      summary: Docusign Gets group brand ID Information.
+      summary: Docusign Gets group brand ID Information
       description: Retrieves information about the brands associated with the requested group.
       operationId: Brands_GetGroupBrands
       parameters:
@@ -55,7 +55,7 @@ paths:
     put:
       tags:
       - GroupBrands
-      summary: Docusign Adds group brand ID information to a group.
+      summary: Docusign Adds group brand ID information to a group
       description: Adds group brand ID information to a group.
       operationId: Brands_PutGroupBrands
       parameters:
@@ -102,7 +102,7 @@ paths:
     delete:
       tags:
       - GroupBrands
-      summary: Docusign Deletes brand information from the requested group.
+      summary: Docusign Deletes brand information from the requested group
       description: Deletes brand information from the requested group.
       operationId: Brands_DeleteGroupBrands
       parameters:
@@ -148,69 +148,6 @@ paths:
       x-codegen-request-body-name: brandsRequest
 components:
   schemas:
-    brandLogos:
-      type: object
-      properties:
-        email:
-          type: string
-          description: ''
-        primary:
-          type: string
-          description: ''
-        secondary:
-          type: string
-          description: ''
-      description: ''
-      x-ds-definition-name: brandLogos
-      x-ms-summary: ''
-    brandLink:
-      type: object
-      properties:
-        linkText:
-          type: string
-          description: ''
-        linkType:
-          type: string
-          description: ''
-        showLink:
-          type: string
-          description: ''
-        urlOrMailTo:
-          type: string
-          description: ''
-      description: ''
-      x-ds-definition-name: brandLink
-      x-ms-summary: ''
-    errorDetails:
-      type: object
-      properties:
-        errorCode:
-          type: string
-          description: An error code associated with the error.
-        message:
-          type: string
-          description: A short error message.
-      description: This object describes errors that occur. It is only valid for responses, and ignored in requests.
-      x-ds-definition-name: errorDetails
-      x-ms-summary: This object describes errors that occur. It is only valid for responses, and ignored in requests.
-    brandResourceUrls:
-      type: object
-      properties:
-        email:
-          type: string
-          description: ''
-        sending:
-          type: string
-          description: ''
-        signing:
-          type: string
-          description: ''
-        signingCaptive:
-          type: string
-          description: ''
-      description: ''
-      x-ds-definition-name: brandResourceUrls
-      x-ms-summary: ''
     brand:
       type: object
       properties:
@@ -261,41 +198,25 @@ components:
       description: ''
       x-ds-definition-name: brand
       x-ms-summary: ''
-    GroupBrands:
+    brandRequest:
       type: object
       properties:
-        recipientBrandIdDefault:
+        brandId:
           type: string
-          description: The brand seen by envelope recipients when a brand is not explicitly set.
-        senderBrandIdDefault:
-          type: string
-          description: The brand seen by envelope senders when a brand is not explicitly set.
-        brandOptions:
+          description: The ID of the brand used in API calls
+      description: ''
+      x-ds-definition-name: brandRequest
+      x-ms-summary: ''
+    brandsRequest:
+      type: object
+      properties:
+        brands:
           type: array
           description: The list of brands.
           items:
-            $ref: '#/components/schemas/brand'
-      description: Brand management for groups
-      x-ds-definition-name: brandsResponse
-      x-ds-category: UserGroups
-      x-ds-order: '30'
-      x-ms-summary: Brand management for groups
-    nameValue:
-      type: object
-      properties:
-        errorDetails:
-          $ref: '#/components/schemas/errorDetails'
-        name:
-          type: string
-          description: The name or key of a name/value pair.
-        originalValue:
-          type: string
-          description: 'The initial value of the tab when it was sent to the recipient. '
-        value:
-          type: string
-          description: The value field of a name/value pair.
+            $ref: '#/components/schemas/brandRequest'
       description: ''
-      x-ds-definition-name: nameValue
+      x-ds-definition-name: brandsRequest
       x-ms-summary: ''
     brandEmailContent:
       type: object
@@ -315,25 +236,104 @@ components:
       description: ''
       x-ds-definition-name: brandEmailContent
       x-ms-summary: ''
-    brandsRequest:
+    GroupBrands:
       type: object
       properties:
-        brands:
+        recipientBrandIdDefault:
+          type: string
+          description: The brand seen by envelope recipients when a brand is not explicitly set.
+        senderBrandIdDefault:
+          type: string
+          description: The brand seen by envelope senders when a brand is not explicitly set.
+        brandOptions:
           type: array
           description: The list of brands.
           items:
-            $ref: '#/components/schemas/brandRequest'
-      description: ''
-      x-ds-definition-name: brandsRequest
-      x-ms-summary: ''
-    brandRequest:
+            $ref: '#/components/schemas/brand'
+      description: Brand management for groups
+      x-ds-definition-name: brandsResponse
+      x-ds-category: UserGroups
+      x-ds-order: '30'
+      x-ms-summary: Brand management for groups
+    brandLink:
       type: object
       properties:
-        brandId:
+        linkText:
           type: string
-          description: The ID of the brand used in API calls
+          description: ''
+        linkType:
+          type: string
+          description: ''
+        showLink:
+          type: string
+          description: ''
+        urlOrMailTo:
+          type: string
+          description: ''
       description: ''
-      x-ds-definition-name: brandRequest
+      x-ds-definition-name: brandLink
+      x-ms-summary: ''
+    errorDetails:
+      type: object
+      properties:
+        errorCode:
+          type: string
+          description: An error code associated with the error.
+        message:
+          type: string
+          description: A short error message.
+      description: This object describes errors that occur. It is only valid for responses, and ignored in requests.
+      x-ds-definition-name: errorDetails
+      x-ms-summary: This object describes errors that occur. It is only valid for responses, and ignored in requests.
+    brandLogos:
+      type: object
+      properties:
+        email:
+          type: string
+          description: ''
+        primary:
+          type: string
+          description: ''
+        secondary:
+          type: string
+          description: ''
+      description: ''
+      x-ds-definition-name: brandLogos
+      x-ms-summary: ''
+    nameValue:
+      type: object
+      properties:
+        errorDetails:
+          $ref: '#/components/schemas/errorDetails'
+        name:
+          type: string
+          description: The name or key of a name/value pair.
+        originalValue:
+          type: string
+          description: 'The initial value of the tab when it was sent to the recipient. '
+        value:
+          type: string
+          description: The value field of a name/value pair.
+      description: ''
+      x-ds-definition-name: nameValue
+      x-ms-summary: ''
+    brandResourceUrls:
+      type: object
+      properties:
+        email:
+          type: string
+          description: ''
+        sending:
+          type: string
+          description: ''
+        signing:
+          type: string
+          description: ''
+        signingCaptive:
+          type: string
+          description: ''
+      description: ''
+      x-ds-definition-name: brandResourceUrls
       x-ms-summary: ''
 externalDocs:
   description: See the DocuSign REST API Guide for more information.

@@ -13,15 +13,21 @@ servers:
 security:
 - Bearer: []
 tags:
-- name: FormGroups
-  description: With the appropriate permissions, form administrators at your company can create form groups, or curated set of forms gathered from the association **form libraries** to which DocuSign provides access. Form groups enable agents to know which forms to add to rooms based on the type of transaction they are working on. When creating groups, administrators can make certain forms required, ensuring compliance. If you don't create groups, agents will have to choose forms they need from a list of association forms.
+- name: Form Groups
+  description: With the appropriate permissions, form administrators at your company can create form groups, or curated set of forms gathered from the association **form libraries** to which DocuSign provides access.
 paths:
   /v2/accounts/{accountId}/form_groups:
     get:
       tags:
-      - FormGroups
-      summary: Docusign Gets form groups.
-      description: "Returns the company form groups to which the current user has access.\n\n## Permissions \n\nYou must have a role for which the `canManageFormGroups` permission is set to **true.**"
+      - Form Groups
+      summary: Docusign Gets form groups
+      description: 'Returns the company form groups to which the current user has access.
+
+
+        ## Permissions
+
+
+        You must have a role for which the `canManageFormGroups` permission is set to **true.**'
       operationId: FormGroups_GetFormGroups
       parameters:
       - name: count
@@ -105,8 +111,8 @@ paths:
       x-ds-in-sdk: true
     post:
       tags:
-      - FormGroups
-      summary: Docusign Creates a form group.
+      - Form Groups
+      summary: Docusign Creates a form group
       description: 'Creates a new form group with the name given in the `name` property of the request body.
 
 
@@ -209,8 +215,8 @@ paths:
   /v2/accounts/{accountId}/form_groups/{formGroupId}:
     get:
       tags:
-      - FormGroups
-      summary: Docusign Gets a form group.
+      - Form Groups
+      summary: Docusign Gets a form group
       description: 'Get the specified form group.
 
 
@@ -299,8 +305,8 @@ paths:
       x-ds-in-sdk: true
     put:
       tags:
-      - FormGroups
-      summary: Docusign Renames a form group.
+      - Form Groups
+      summary: Docusign Renames a form group
       description: 'Renames the specified form group with the name given in the `name` property of the request.
 
 
@@ -414,8 +420,8 @@ paths:
       x-codegen-request-body-name: body
     delete:
       tags:
-      - FormGroups
-      summary: Docusign Deletes a form group.
+      - Form Groups
+      summary: Docusign Deletes a form group
       description: 'Deletes the specified form group.
 
 
@@ -490,8 +496,8 @@ paths:
   /v2/accounts/{accountId}/form_groups/{formGroupId}/forms:
     get:
       tags:
-      - FormGroups
-      summary: Docusign Gets the user's form group forms.
+      - Form Groups
+      summary: Docusign Gets the user's form group forms
       description: Get forms of the specified form group.
       operationId: FormGroupForms_GetFormGroupForms
       parameters:
@@ -591,8 +597,8 @@ paths:
   /v2/accounts/{accountId}/form_groups/{formGroupId}/unassign_form/{formId}:
     post:
       tags:
-      - FormGroups
-      summary: Docusign Removes a form from a form group.
+      - Form Groups
+      summary: Docusign Removes a form from a form group
       description: 'Removes the form `formId` from the form group `formGroupId`.
 
 
@@ -674,17 +680,15 @@ paths:
   /v2/accounts/{accountId}/form_groups/{formGroupId}/assign_form:
     post:
       tags:
-      - FormGroups
-      summary: Docusign Assigns a form to a form group.
+      - Form Groups
+      summary: Docusign Assigns a form to a form group
       description: 'Assigns the form specified in the `formId` property of the request to the form group `formGroupId`. Set the `isRequired` property in the request body to **true** if this is a required form.
 
 
         ## Permissions
 
 
-        You must have a role for which the `canManageFormGroups` permission is set to **true.**
-
-        '
+        You must have a role for which the `canManageFormGroups` permission is set to **true.**'
       operationId: FormGroups_AssignFormGroupForm
       parameters:
       - name: formGroupId
@@ -792,8 +796,8 @@ paths:
   /v2/accounts/{accountId}/form_groups/{formGroupId}/grant_office_access/{officeId}:
     post:
       tags:
-      - FormGroups
-      summary: Docusign Grants an office access to a form group.
+      - Form Groups
+      summary: Docusign Grants an office access to a form group
       description: 'Grants the office `officeId` access to the form group `formGroupId`.
 
 
@@ -875,8 +879,8 @@ paths:
   /v2/accounts/{accountId}/form_groups/{formGroupId}/revoke_office_access/{officeId}:
     post:
       tags:
-      - FormGroups
-      summary: Docusign Revoke an office's access to a form group.
+      - Form Groups
+      summary: Docusign Revoke an office's access to a form group
       description: 'Revoke access to the form group `formGroupId` from the office `officeId`.
 
 
@@ -968,6 +972,209 @@ components:
       description: ''
       x-ds-definition-name: FormGroupForUpdate
       x-ms-summary: ''
+    FormGroupForCreate:
+      required:
+      - name
+      type: object
+      properties:
+        name:
+          type: string
+          description: The name of the group.
+      description: 'Request object for FormGroup: CreateFormGroup.'
+      x-ds-definition-name: FormGroupForCreate
+      x-ms-summary: 'Request object for FormGroup: CreateFormGroup.'
+    ApiError:
+      type: object
+      properties:
+        errorCode:
+          type: string
+          description: The code associated with the error condition.
+        message:
+          type: string
+          description: A brief message describing the error condition.
+        referenceId:
+          type: string
+          description: ''
+      description: This object describes errors that occur. It is valid only for responses and ignored in requests.
+      x-ds-definition-name: ApiError
+      x-ms-summary: This object describes errors that occur. It is valid only for responses and ignored in requests.
+    FormGroupSummaryList:
+      type: object
+      properties:
+        formGroups:
+          type: array
+          description: A list of form groups.
+          items:
+            $ref: '#/components/schemas/FormGroupSummary'
+        resultSetSize:
+          type: integer
+          description: The number of results returned in this response.
+          format: int32
+        startPosition:
+          type: integer
+          description: The starting zero-based index position of the results set. When this property is used as a query parameter, the default value is `0`.
+          format: int32
+        endPosition:
+          type: integer
+          description: The last zero-based index position in the result set.
+          format: int32
+          readOnly: true
+        nextUri:
+          type: string
+          description: The URI for the next chunk of records based on the search request. This property is `null` for the last set of search results.
+        priorUri:
+          type: string
+          description: The URI for the previous chunk of records based on the search request. This property is `null` for the first set of search results.
+        totalRowCount:
+          type: integer
+          description: ''
+          format: int32
+      description: Contains a list of form groups.
+      x-ds-definition-name: FormGroupSummaryList
+      x-ms-summary: Contains a list of form groups.
+    FormGroupFormToAssign:
+      required:
+      - formId
+      type: object
+      properties:
+        formId:
+          type: string
+          description: 'The ID of the form.
+
+
+            Example: `5be324eb-xxxx-xxxx-xxxx-208065181be9`
+
+            '
+          format: uuid
+        isRequired:
+          type: boolean
+          description: '**True** if the form is required.'
+      description: ''
+      x-ds-definition-name: FormGroupFormToAssign
+      x-ms-summary: ''
+    FormGroupSummary:
+      type: object
+      properties:
+        formGroupId:
+          type: string
+          description: 'The ID of the form group.
+
+
+            Example: `7b879c89-xxxx-xxxx-xxxx-819d6a85e0a1`
+
+            '
+          readOnly: true
+        name:
+          type: string
+          description: "The name of the form group. \n\nExample: `Apartment Rental`"
+          readOnly: true
+        formCount:
+          type: integer
+          description: 'The number of forms in the form group.
+
+
+            Example: `10`'
+          format: int32
+          readOnly: true
+      description: Contains details about a form group.
+      x-ds-definition-name: FormGroupSummary
+      x-ms-summary: Contains details about a form group.
+    FormGroupForm:
+      type: object
+      properties:
+        formId:
+          type: string
+          description: 'The ID of the form.
+
+
+            Example: `5be324eb-xxxx-xxxx-xxxx-208065181be9`
+
+            '
+          format: uuid
+        name:
+          type: string
+          description: The name of the office.
+        isRequired:
+          type: boolean
+          description: '**True** if the form is required.'
+        lastUpdatedDate:
+          type: string
+          description: 'The UTC date and time when the item was last updated. This is a read-only value that the service assigns.
+
+
+            Example: 2019-07-17T17:45:42.783Z'
+          format: date-time
+      description: ''
+      x-ds-definition-name: FormGroupForm
+      x-ms-summary: ''
+    FormGroupFormList:
+      type: object
+      properties:
+        forms:
+          type: array
+          description: A list of forms.
+          items:
+            $ref: '#/components/schemas/FormGroupForm'
+        resultSetSize:
+          type: integer
+          description: The number of results returned in this response.
+          format: int32
+        startPosition:
+          type: integer
+          description: The starting zero-based index position of the results set. When this property is used as a query parameter, the default value is `0`.
+          format: int32
+        endPosition:
+          type: integer
+          description: The last zero-based index position in the result set.
+          format: int32
+          readOnly: true
+        nextUri:
+          type: string
+          description: The URI for the next chunk of records based on the search request. This property is `null` for the last set of search results.
+        priorUri:
+          type: string
+          description: The URI for the previous chunk of records based on the search request. This property is `null` for the first set of search results.
+        totalRowCount:
+          type: integer
+          description: ''
+          format: int32
+      description: ''
+      x-ds-definition-name: FormGroupFormList
+      x-ms-summary: ''
+    FormGroup:
+      type: object
+      properties:
+        formGroupId:
+          type: string
+          description: 'The ID of the form group.
+
+
+            Example: `7b879c89-xxxx-xxxx-xxxx-819d6a85e0a1`
+
+            '
+          format: uuid
+          readOnly: true
+        name:
+          type: string
+          description: The name of the office.
+          readOnly: true
+        officeIds:
+          uniqueItems: true
+          type: array
+          description: An array of office IDs.
+          readOnly: true
+          items:
+            type: integer
+            format: int32
+        forms:
+          type: array
+          description: A list of forms.
+          readOnly: true
+          items:
+            $ref: '#/components/schemas/GroupForm'
+      description: Result from getting a form group.
+      x-ds-definition-name: FormGroup
+      x-ms-summary: Result from getting a form group.
     GroupForm:
       type: object
       properties:
@@ -1004,209 +1211,6 @@ components:
       description: Description of a single form in a group.
       x-ds-definition-name: GroupForm
       x-ms-summary: Description of a single form in a group.
-    FormGroupFormToAssign:
-      required:
-      - formId
-      type: object
-      properties:
-        formId:
-          type: string
-          description: 'The ID of the form.
-
-
-            Example: `5be324eb-xxxx-xxxx-xxxx-208065181be9`
-
-            '
-          format: uuid
-        isRequired:
-          type: boolean
-          description: '**True** if the form is required.'
-      description: ''
-      x-ds-definition-name: FormGroupFormToAssign
-      x-ms-summary: ''
-    FormGroupForm:
-      type: object
-      properties:
-        formId:
-          type: string
-          description: 'The ID of the form.
-
-
-            Example: `5be324eb-xxxx-xxxx-xxxx-208065181be9`
-
-            '
-          format: uuid
-        name:
-          type: string
-          description: The name of the office.
-        isRequired:
-          type: boolean
-          description: '**True** if the form is required.'
-        lastUpdatedDate:
-          type: string
-          description: 'The UTC date and time when the item was last updated. This is a read-only value that the service assigns.
-
-
-            Example: 2019-07-17T17:45:42.783Z'
-          format: date-time
-      description: ''
-      x-ds-definition-name: FormGroupForm
-      x-ms-summary: ''
-    FormGroupSummary:
-      type: object
-      properties:
-        formGroupId:
-          type: string
-          description: 'The ID of the form group.
-
-
-            Example: `7b879c89-xxxx-xxxx-xxxx-819d6a85e0a1`
-
-            '
-          readOnly: true
-        name:
-          type: string
-          description: "The name of the form group. \n\nExample: `Apartment Rental`"
-          readOnly: true
-        formCount:
-          type: integer
-          description: 'The number of forms in the form group.
-
-
-            Example: `10`'
-          format: int32
-          readOnly: true
-      description: Contains details about a form group.
-      x-ds-definition-name: FormGroupSummary
-      x-ms-summary: Contains details about a form group.
-    FormGroup:
-      type: object
-      properties:
-        formGroupId:
-          type: string
-          description: 'The ID of the form group.
-
-
-            Example: `7b879c89-xxxx-xxxx-xxxx-819d6a85e0a1`
-
-            '
-          format: uuid
-          readOnly: true
-        name:
-          type: string
-          description: The name of the office.
-          readOnly: true
-        officeIds:
-          uniqueItems: true
-          type: array
-          description: An array of office IDs.
-          readOnly: true
-          items:
-            type: integer
-            format: int32
-        forms:
-          type: array
-          description: A list of forms.
-          readOnly: true
-          items:
-            $ref: '#/components/schemas/GroupForm'
-      description: Result from getting a form group.
-      x-ds-definition-name: FormGroup
-      x-ms-summary: Result from getting a form group.
-    ApiError:
-      type: object
-      properties:
-        errorCode:
-          type: string
-          description: The code associated with the error condition.
-        message:
-          type: string
-          description: A brief message describing the error condition.
-        referenceId:
-          type: string
-          description: ''
-      description: This object describes errors that occur. It is valid only for responses and ignored in requests.
-      x-ds-definition-name: ApiError
-      x-ms-summary: This object describes errors that occur. It is valid only for responses and ignored in requests.
-    FormGroupForCreate:
-      required:
-      - name
-      type: object
-      properties:
-        name:
-          type: string
-          description: The name of the group.
-      description: 'Request object for FormGroup: CreateFormGroup.'
-      x-ds-definition-name: FormGroupForCreate
-      x-ms-summary: 'Request object for FormGroup: CreateFormGroup.'
-    FormGroupSummaryList:
-      type: object
-      properties:
-        formGroups:
-          type: array
-          description: A list of form groups.
-          items:
-            $ref: '#/components/schemas/FormGroupSummary'
-        resultSetSize:
-          type: integer
-          description: The number of results returned in this response.
-          format: int32
-        startPosition:
-          type: integer
-          description: The starting zero-based index position of the results set. When this property is used as a query parameter, the default value is `0`.
-          format: int32
-        endPosition:
-          type: integer
-          description: The last zero-based index position in the result set.
-          format: int32
-          readOnly: true
-        nextUri:
-          type: string
-          description: The URI for the next chunk of records based on the search request. This property is `null` for the last set of search results.
-        priorUri:
-          type: string
-          description: The URI for the previous chunk of records based on the search request. This property is `null` for the first set of search results.
-        totalRowCount:
-          type: integer
-          description: ''
-          format: int32
-      description: Contains a list of form groups.
-      x-ds-definition-name: FormGroupSummaryList
-      x-ms-summary: Contains a list of form groups.
-    FormGroupFormList:
-      type: object
-      properties:
-        forms:
-          type: array
-          description: A list of forms.
-          items:
-            $ref: '#/components/schemas/FormGroupForm'
-        resultSetSize:
-          type: integer
-          description: The number of results returned in this response.
-          format: int32
-        startPosition:
-          type: integer
-          description: The starting zero-based index position of the results set. When this property is used as a query parameter, the default value is `0`.
-          format: int32
-        endPosition:
-          type: integer
-          description: The last zero-based index position in the result set.
-          format: int32
-          readOnly: true
-        nextUri:
-          type: string
-          description: The URI for the next chunk of records based on the search request. This property is `null` for the last set of search results.
-        priorUri:
-          type: string
-          description: The URI for the previous chunk of records based on the search request. This property is `null` for the first set of search results.
-        totalRowCount:
-          type: integer
-          description: ''
-          format: int32
-      description: ''
-      x-ds-definition-name: FormGroupFormList
-      x-ms-summary: ''
   securitySchemes:
     Bearer:
       type: apiKey

@@ -1,6 +1,6 @@
 openapi: 3.2.0
 info:
-  title: DocuSign REST Identity Verifications API
+  title: DocuSign REST Group Users API
   description: The DocuSign REST API provides you with a powerful, convenient, and simple Web services API for interacting with DocuSign.
   termsOfService: https://www.docusign.com/company/terms-and-conditions/web
   contact:
@@ -11,19 +11,37 @@ info:
 servers:
 - url: https://www.docusign.net/restapi
 tags:
-- name: IdentityVerifications
-  description: ''
+- name: Group Users
+  description: The GroupUsers resource provides methods that allow you to manage the users in a group.
 paths:
-  /v2/accounts/{accountId}/identity_verification:
+  /v2/accounts/{accountId}/groups/{groupId}/users:
     get:
       tags:
-      - IdentityVerifications
-      operationId: AccountIdentityVerification_GetAccountIdentityVerification
+      - Group Users
+      summary: Docusign Gets a list of users in a group
+      description: Retrieves a list of users in a group.
+      operationId: Groups_GetGroupUsers
       parameters:
       - name: accountId
         in: path
         description: The external account number (int) or account id GUID.
         required: true
+        schema:
+          type: string
+      - name: groupId
+        in: path
+        description: The ID of the group being accessed.
+        required: true
+        schema:
+          type: string
+      - name: count
+        in: query
+        description: 'Number of records to return. The number must be greater than 1 and less than or equal to 100. '
+        schema:
+          type: string
+      - name: start_position
+        in: query
+        description: Starting value for the list.
         schema:
           type: string
       responses:
@@ -32,7 +50,7 @@ paths:
           content:
             '*/*':
               schema:
-                $ref: '#/components/schemas/accountIdentityVerificationResponse'
+                $ref: '#/components/schemas/usersResponse'
         '400':
           description: Error encountered.
           content:
@@ -40,51 +58,193 @@ paths:
               schema:
                 $ref: '#/components/schemas/errorDetails'
       deprecated: false
-      x-ds-methodname: getAccountIdentityVerification
+      x-ds-methodname: listGroupUsers
       x-ds-method: list
-      x-ds-service: Uncategorized
+      x-ds-service: Groups
       x-ds-in-sdk: true
+    put:
+      tags:
+      - Group Users
+      summary: Docusign Adds one or more users to an existing group
+      description: Adds one or more users to an existing group.
+      operationId: Groups_PutGroupUsers
+      parameters:
+      - name: accountId
+        in: path
+        description: The external account number (int) or account id GUID.
+        required: true
+        schema:
+          type: string
+      - name: groupId
+        in: path
+        description: The ID of the group being accessed.
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/userInfoList'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/userInfoList'
+        required: false
+      responses:
+        '200':
+          description: Successful response.
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/usersResponse'
+        '400':
+          description: Error encountered.
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/errorDetails'
+      deprecated: false
+      x-ds-methodname: updateGroupUsers
+      x-ds-method: update
+      x-ds-service: Groups
+      x-ds-in-sdk: true
+      x-codegen-request-body-name: userInfoList
+    delete:
+      tags:
+      - Group Users
+      summary: Docusign Deletes one or more users from a gro
+      description: Deletes one or more users from a group.
+      operationId: Groups_DeleteGroupUsers
+      parameters:
+      - name: accountId
+        in: path
+        description: The external account number (int) or account id GUID.
+        required: true
+        schema:
+          type: string
+      - name: groupId
+        in: path
+        description: The ID of the group being accessed.
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/userInfoList'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/userInfoList'
+        required: false
+      responses:
+        '200':
+          description: Successful response.
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/usersResponse'
+        '400':
+          description: Error encountered.
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/errorDetails'
+      deprecated: false
+      x-ds-methodname: deleteGroupUsers
+      x-ds-method: delete
+      x-ds-service: Groups
+      x-ds-in-sdk: true
+      x-codegen-request-body-name: userInfoList
 components:
   schemas:
-    accountIdentityVerificationResponse:
+    userInfo:
       type: object
       properties:
-        identityVerification:
-          type: array
-          description: Specifies the ID Verification workflow applied on an envelope by workflow ID. <br/>See the [list](https://developers.docusign.com/esign-rest-api/reference/Accounts/IdentityVerifications/list) method in the [IdentityVerifications](https://developers.docusign.com/esign-rest-api/reference/Accounts/IdentityVerifications) resource for more information on how to retrieve workflow IDs available for an account. <br/>This can be used in addition to other [recipient authentication](https://support.docusign.com/en/guides/ndse-user-guide-recipient-authentication) methods. <br/>Note that ID Verification and ID Check are two distinct methods. ID Verification checks recipients' identity by verifying their ID while ID Check relies on data available on public records (such as current and former address).
-          items:
-            $ref: '#/components/schemas/accountIdentityVerificationWorkflow'
+        activationAccessCode:
+          type: string
+          description: ''
+        email:
+          type: string
+          description: ''
+        errorDetails:
+          $ref: '#/components/schemas/errorDetails'
+        loginStatus:
+          type: string
+          description: ''
+        sendActivationEmail:
+          type: string
+          description: ''
+        uri:
+          type: string
+          description: ''
+        userId:
+          type: string
+          description: 'The user ID of the user being accessed. Generally this is the user ID of the authenticated user, but if the authenticated user is an Admin on the account, this may be another user the Admin user is accessing. **Note**: For the [GET /v2/accounts/{accountId}/envelopes](https://developers.docusign.com/esign-rest-api/reference/Envelopes/Envelopes/listStatusChanges/#envelopesInformation) method, the `user_id` query parameter is not implemented and should not be used.'
+        userName:
+          type: string
+          description: ''
+        userStatus:
+          type: string
+          description: 'Status of the user''s account. One of:
+
+
+            * ActivationRequired
+
+            * ActivationSent
+
+            * Active
+
+            * Closed
+
+            * Disabled
+
+            '
+        userType:
+          type: string
+          description: ''
       description: ''
-      x-ds-definition-name: accountIdentityVerificationResponse
+      x-ds-definition-name: userInfo
       x-ms-summary: ''
-    accountIdentityVerificationWorkflow:
+    usersResponse:
       type: object
       properties:
-        defaultName:
+        endPosition:
           type: string
-          description: ''
-        steps:
+          description: 'The last position in the result set. '
+        nextUri:
+          type: string
+          description: 'The URI for the next chunk of records based on the search request. It is `null` if this is the last set of results for the search. '
+        previousUri:
+          type: string
+          description: 'The URI for the prior chunk of records based on the search request. It is `null` if this is the first set of results for the search. '
+        resultSetSize:
+          type: string
+          description: 'The number of results returned in this response. '
+        startPosition:
+          type: string
+          description: Starting position of the current result set.
+        totalSetSize:
+          type: string
+          description: The total number of items in the search's result set. It will always be greater than or equal to the value of the `resultSetSize` field.
+        users:
           type: array
           description: ''
           items:
-            $ref: '#/components/schemas/accountIdentityVerificationStep'
-        workflowId:
-          type: string
-          description: ''
+            $ref: '#/components/schemas/userInfo'
       description: ''
-      x-ds-definition-name: accountIdentityVerificationWorkflow
+      x-ds-definition-name: usersResponse
       x-ms-summary: ''
-    accountIdentityVerificationStep:
+    userInfoList:
       type: object
       properties:
-        name:
-          type: string
+        users:
+          type: array
           description: ''
-        type:
-          type: string
-          description: 'Type of the user. Valid values: type_owner, type_participant.'
+          items:
+            $ref: '#/components/schemas/userInfo'
       description: ''
-      x-ds-definition-name: accountIdentityVerificationStep
+      x-ds-definition-name: userInfoList
       x-ms-summary: ''
     errorDetails:
       type: object

@@ -12,13 +12,13 @@ servers:
 - url: https://www.docusign.net/restapi
 tags:
 - name: SigningGroups
-  description: "The SigningGroups resource provides methods that allow you manage signing groups.\n\nSigning Groups allow you to create a group of people to which an envelope is sent. Any member of that group can open an envelope and sign the documents in the envelope with their own signature, even though a signature field was not directly assigned to them. When the Signing Group option is used, group members that open and sign the envelope are tracked in the envelope history and certificate.\n\nWhen one group member opens the envelope, it is temporarily locked and if other members try to open the envelope they will see a message saying the envelope is currently opened. If the group member exits the envelope without finishing the lock expires, allowing other group members to open and complete the envelope.\n\nWhen the envelope is complete, all members of the group will receive a completed notification and can access the completed envelope. \nThe envelope history and Certificate of Completion will show that the envelope was sent to a signing group and record which members viewed and signed the envelope.\n\nAn account can have a maximum of 50 signing groups. Each signing group can have a maximum of 50 group members.\n\nThe Signing Groups feature is only supported in certain DocuSign Enterprise and System Automated Premium plans. Your account might not support this option. To access this functionality, contact your Account Manager or DocuSign Support (support@docusign.com) for assistance."
+  description: The SigningGroups resource provides methods that allow you manage signing groups.
 paths:
   /v2/accounts/{accountId}/signing_groups:
     get:
       tags:
       - SigningGroups
-      summary: Docusign Gets a list of the Signing Groups in an account.
+      summary: Docusign Gets a list of the Signing Groups in an account
       description: Retrieves a list of all signing groups in the specified account.
       operationId: SigningGroups_GetSigningGroups
       parameters:
@@ -58,8 +58,8 @@ paths:
     put:
       tags:
       - SigningGroups
-      summary: Docusign Updates signing group names.
-      description: 'Updates the name of one or more existing signing groups. '
+      summary: Docusign Updates signing group names
+      description: Updates the name of one or more existing signing groups.
       operationId: SigningGroups_PutSigningGroups
       parameters:
       - name: accountId
@@ -99,8 +99,17 @@ paths:
     post:
       tags:
       - SigningGroups
-      summary: Docusign Creates a signing group.
-      description: "Creates one or more signing groups. \n\nMultiple signing groups can be created in one call. Only users with account administrator privileges can create signing groups. \n\nAn account can have a maximum of 50 signing groups. Each signing group can have a maximum of 50 group members.\n \nSigning groups can be used by any account user."
+      summary: Docusign Creates a signing group
+      description: 'Creates one or more signing groups.
+
+
+        Multiple signing groups can be created in one call. Only users with account administrator privileges can create signing groups.
+
+
+        An account can have a maximum of 50 signing groups. Each signing group can have a maximum of 50 group members.
+
+
+        Signing groups can be used by any account user.'
       operationId: SigningGroups_PostSigningGroups
       parameters:
       - name: accountId
@@ -140,7 +149,7 @@ paths:
     delete:
       tags:
       - SigningGroups
-      summary: Docusign Deletes one or more signing groups.
+      summary: Docusign Deletes one or more signing groups
       description: Deletes one or more signing groups in the specified account.
       operationId: SigningGroups_DeleteSigningGroups
       parameters:
@@ -182,8 +191,8 @@ paths:
     get:
       tags:
       - SigningGroups
-      summary: Docusign Gets information about a signing group.
-      description: 'Retrieves information, including group member information, for the specified signing group. '
+      summary: Docusign Gets information about a signing group
+      description: Retrieves information, including group member information, for the specified signing group.
       operationId: SigningGroups_GetSigningGroup
       parameters:
       - name: accountId
@@ -222,8 +231,8 @@ paths:
     put:
       tags:
       - SigningGroups
-      summary: Docusign Updates a signing group.
-      description: 'Updates signing group name and member information. You can also add new members to the signing group. A signing group can have a maximum of 50 members. '
+      summary: Docusign Updates a signing group
+      description: Updates signing group name and member information. You can also add new members to the signing group. A signing group can have a maximum of 50 members.
       operationId: SigningGroups_PutSigningGroup
       parameters:
       - name: accountId
@@ -271,6 +280,31 @@ paths:
       x-codegen-request-body-name: signingGroup
 components:
   schemas:
+    signingGroupInformation:
+      type: object
+      properties:
+        groups:
+          type: array
+          description: A collection group objects containing information about the groups returned.
+          items:
+            $ref: '#/components/schemas/signingGroup'
+      description: ''
+      x-ds-definition-name: signingGroupInformation
+      x-ms-summary: ''
+    signingGroupUser:
+      type: object
+      properties:
+        email:
+          type: string
+          description: ''
+        errorDetails:
+          $ref: '#/components/schemas/errorDetails'
+        userName:
+          type: string
+          description: "The name of the group member. \n\nMaximum Length: 100 characters. "
+      description: ''
+      x-ds-definition-name: signingGroupUser
+      x-ms-summary: ''
     signingGroup:
       type: object
       properties:
@@ -310,31 +344,6 @@ components:
             $ref: '#/components/schemas/signingGroupUser'
       description: ''
       x-ds-definition-name: signingGroup
-      x-ms-summary: ''
-    signingGroupInformation:
-      type: object
-      properties:
-        groups:
-          type: array
-          description: A collection group objects containing information about the groups returned.
-          items:
-            $ref: '#/components/schemas/signingGroup'
-      description: ''
-      x-ds-definition-name: signingGroupInformation
-      x-ms-summary: ''
-    signingGroupUser:
-      type: object
-      properties:
-        email:
-          type: string
-          description: ''
-        errorDetails:
-          $ref: '#/components/schemas/errorDetails'
-        userName:
-          type: string
-          description: "The name of the group member. \n\nMaximum Length: 100 characters. "
-      description: ''
-      x-ds-definition-name: signingGroupUser
       x-ms-summary: ''
     errorDetails:
       type: object

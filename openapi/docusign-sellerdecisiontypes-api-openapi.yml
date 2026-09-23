@@ -20,7 +20,7 @@ paths:
     get:
       tags:
       - SellerDecisionTypes
-      summary: Docusign Gets seller decision types.
+      summary: Docusign Gets seller decision types
       description: 'Returns a list of possible seller decision types regarding offers, such as `Countered` or `Rejected`.
 
 
@@ -90,6 +90,32 @@ paths:
       x-ds-in-sdk: true
 components:
   schemas:
+    ApiError:
+      type: object
+      properties:
+        errorCode:
+          type: string
+          description: The code associated with the error condition.
+        message:
+          type: string
+          description: A brief message describing the error condition.
+        referenceId:
+          type: string
+          description: ''
+      description: This object describes errors that occur. It is valid only for responses and ignored in requests.
+      x-ds-definition-name: ApiError
+      x-ms-summary: This object describes errors that occur. It is valid only for responses and ignored in requests.
+    GlobalSellerDecisionTypes:
+      type: object
+      properties:
+        sellerDecisionTypes:
+          type: array
+          description: A list of seller decision types.
+          items:
+            $ref: '#/components/schemas/SellerDecisionType'
+      description: Contains a list of seller decision types.
+      x-ds-definition-name: GlobalSellerDecisionTypes
+      x-ms-summary: Contains a list of seller decision types.
     SellerDecisionType:
       type: object
       properties:
@@ -116,32 +142,6 @@ components:
       description: Contains information about a seller decision type.
       x-ds-definition-name: SellerDecisionType
       x-ms-summary: Contains information about a seller decision type.
-    GlobalSellerDecisionTypes:
-      type: object
-      properties:
-        sellerDecisionTypes:
-          type: array
-          description: A list of seller decision types.
-          items:
-            $ref: '#/components/schemas/SellerDecisionType'
-      description: Contains a list of seller decision types.
-      x-ds-definition-name: GlobalSellerDecisionTypes
-      x-ms-summary: Contains a list of seller decision types.
-    ApiError:
-      type: object
-      properties:
-        errorCode:
-          type: string
-          description: The code associated with the error condition.
-        message:
-          type: string
-          description: A brief message describing the error condition.
-        referenceId:
-          type: string
-          description: ''
-      description: This object describes errors that occur. It is valid only for responses and ignored in requests.
-      x-ds-definition-name: ApiError
-      x-ms-summary: This object describes errors that occur. It is valid only for responses and ignored in requests.
   securitySchemes:
     Bearer:
       type: apiKey

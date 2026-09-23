@@ -12,14 +12,135 @@ servers:
 - url: https://api.docusign.net/Management
 tags:
 - name: UserImport
-  description: "Methods to import users.\n\nTo ensure your CSV is properly formatted, use the\n[Sample Bulk Add CSV file](https://admin.docusign.com/static-resources/organization-user-import.csv)\n as a template.\n\nYou can add up to 2,000 users to an account and include up to 50 accounts per import. The maximum number of users per import is 8,000."
+  description: 'Methods to import users.
+
+
+    To ensure your CSV is properly formatted, use the
+
+    Sample Bulk Add CSV file
+
+    as a template.
+
+
+    You can add up to 2,000 users to an account and include up to 50 accounts per import. The maximum number of users per import is 8,000.'
 paths:
   /v2/organizations/{organizationId}/imports/bulk_users/add:
     post:
       tags:
       - UserImport
-      summary: Docusign Creates a request to import new users into an account.
-      description: "Creates a request to import *new* users.\n\n- Required scopes: `user_write`\n\n\n\nYour CSV import file is made up of a header row with the column headers and a row of user or account data for each user you want to add to an account. Only new users can be imported. Any changes to existing users will be ignored. To make changes to existing users, use `updateBulkUserImports`.\n\nTo ensure your CSV is properly formatted, use the\n[Sample Bulk Add CSV file](https://admin.docusign.com/static-resources/organization-user-import.csv)\n as a template. The following table describes the columns.\n\n\n\n| Column              | Required | Description                                                                                                                                                                                                                                                                                                                                                                                                         |\n| :------------------ | :------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |\n| AccountID           | yes      | The API account ID for the account to which you want you add the user. You can find this id in the Admin area for the account under **API and Keys**.                                                                                                                                                                                                                                                            |\n| AccountName         |          | The name of the user's account in your organization. The account name must match the account ID provided.                                                                                                                                                                                                                                                                                                           |\n| FirstName           | yes      | The user's first name.                                                                                                                                                                                                                                                                                                                                                                                              |\n| LastName            | yes      | The user's last name.                                                                                                                                                                                                                                                                                                                                                                                               |\n| UserEmail           | yes      | The user's complete email address.                                                                                                                                                                                                                                                                                                                                                                                  |\n| PermissionSet       | yes      | The user's permission set. The PermissionSet value must match an existing permission set for the account. This value is not case sensitive.                                                                                                                                                                                                                                                                         |\n| UserTitle           |          | The user's job title.                                                                                                                                                                                                                                                                                                                                                                                               |\n| CompanyName         |          | The user's company name.                                                                                                                                                                                                                                                                                                                                                                                            |\n| Group               |          | The user's assigned groups. The Group values must match existing Group names for the account. Additional Group columns can be added to the file to add users to more than one group. You do not need to add users to the Everyone group, since all new users are automatically added to that group.                                                                                                                 |\n| AddressLine1        |          | The user's address, first line.                                                                                                                                                                                                                                                                                                                                                                                     |\n| AddressLine2        |          | The user's address, second line.                                                                                                                                                                                                                                                                                                                                                                                    |\n| City                |          | The user's city name.                                                                                                                                                                                                                                                                                                                                                                                               |\n| StateRegionProvince |          | The user's regional location.                                                                                                                                                                                                                                                                                                                                                                                       |\n| PostalCode          |          | The user's postal code.                                                                                                                                                                                                                                                                                                                                                                                             |\n| Phone               |          | The user's phone number.                                                                                                                                                                                                                                                                                                                                                                                            |\n| Language            |          | The user's display language for their DocuSign account. Must be one of: <ul><li>Chinese Simplified: <code>zh_CN</code></li><li>Chinese Traditional: <code>zh_TW</code></li><li>Dutch: <code>nl</code></li><li>English: <code>en</code></li><li>French: <code>fr</code></li><li>German: <code>de</code></li><li>Italian: <code>it</code></li><li>Japanese: <code>ja</code></li><li>Korean: <code>ko</code></li><li>Portuguese: <code>pt</code></li><li>Portuguese Brazil: <code>pt_BR</code></li><li>Russian: <code>ru</code></li><li>Spanish: <code>es</code></li></ul>                                                                                                                                                                                                                                                                                                                                                            |\n| LoginPolicy         |          | The user's login policy. Valid values include the following: <ul> <li>Column left blank = The user is created with no policy assigned.</li> <li>FedAuthRequired = The user must log in with an Identity Provider.</li> <li>FedAuthBypass = The user may log in with an Identity Provider or their DocuSign username and password.</li> </ul> For more information on login policies, see [Setting User Login Policy](https://support.docusign.com/en/guides/org-admin-guide-user-login-policy). |\n| AutoActivate        |          | For domain users, new users can be activated automatically for domain accounts using SSO by setting the value to **true**. The user is activated automatically once the import is complete. Memberships activated in this way do not receive an activation email.                                                                                                                                                   |\n\n\nYou can add up to 2,000 users to an account and include up to 50 accounts per import. The maximum number of users per import is 8,000."
+      summary: Docusign Creates a request to import new users into an account
+      description: 'Creates a request to import *new* users.
+
+
+        - Required scopes: `user_write`
+
+
+        Your CSV import file is made up of a header row with the column headers and a row of user or account data for each user you want to add to an account. Only new users can be imported. Any changes to existing users will be ignored. To make changes to existing users, use `updateBulkUserImports`.
+
+
+        To ensure your CSV is properly formatted, use the
+
+        Sample Bulk Add CSV file
+
+        as a template. The following table describes the columns.
+
+
+        | Column | Required | Description |
+
+        | :------------------ | :------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+
+        | AccountID | yes | The API account ID for the account to which you want you add the user. You can find this id in the Admin area for the account under **API and Keys**. |
+
+        | AccountName | | The name of the user''s account in your organization. The account name must match the account ID provided. |
+
+        | FirstName | yes | The user''s first name. |
+
+        | LastName | yes | The user''s last name. |
+
+        | UserEmail | yes | The user''s complete email address. |
+
+        | PermissionSet | yes | The user''s permission set. The PermissionSet value must match an existing permission set for the account. This value is not case sensitive. |
+
+        | UserTitle | | The user''s job title. |
+
+        | CompanyName | | The user''s company name. |
+
+        | Group | | The user''s assigned groups. The Group values must match existing Group names for the account. Additional Group columns can be added to the file to add users to more than one group. You do not need to add users to the Everyone group, since all new users are automatically added to that group. |
+
+        | AddressLine1 | | The user''s address, first line. |
+
+        | AddressLine2 | | The user''s address, second line. |
+
+        | City | | The user''s city name. |
+
+        | StateRegionProvince | | The user''s regional location. |
+
+        | PostalCode | | The user''s postal code. |
+
+        | Phone | | The user''s phone number. |
+
+        | Language | | The user''s display language for their DocuSign account. Must be one of:
+
+
+        Chinese Simplified: zh_CN
+
+
+        Chinese Traditional: zh_TW
+
+
+        Dutch: nl
+
+
+        English: en
+
+
+        French: fr
+
+
+        German: de
+
+
+        Italian: it
+
+
+        Japanese: ja
+
+
+        Korean: ko
+
+
+        Portuguese: pt
+
+
+        Portuguese Brazil: pt_BR
+
+
+        Russian: ru
+
+
+        Spanish: es
+
+
+        |
+
+        | LoginPolicy | | The user''s login policy. Valid values include the following:
+
+
+        Column left blank = The user is created with no policy assigned.
+
+
+        FedAuthRequired = The user must log in with an Identity Provider.
+
+
+        FedAuthBypass = The user may log in with an Identity Provider or their DocuSign username and password.
+
+
+        For more information on login policies, see Setting User Login Policy. |
+
+        | AutoActivate | | For domain users, new users can be activated automatically for domain accounts using SSO by setting the value to **true**. The user is activated automatically once the import is complete. Memberships activated in this way do not receive an activation email. |
+
+
+        You can add up to 2,000 users to an account and include up to 50 accounts per import. The maximum number of users per import is 8,000.'
       operationId: OrganizationImport_OrganizationImportUsers_Insert
       parameters:
       - name: organizationId
@@ -60,8 +181,8 @@ paths:
     post:
       tags:
       - UserImport
-      summary: Docusign Bulk updates information for existing users.
-      description: "Bulk updates information for existing users.\n\n- Required scopes: `user_write`\n\n\n\nYour CSV import file is made up of a header row with the column headers and a row of user or account data for each user you want to add to an account. Only new users can be imported. Any changes to existing users will be ignored. To make changes to existing users, use `updateBulkUserImports`.\n\n**Update limit**: You can update up to 2,000 users on an account and include up to 50 accounts per import. The maximum number of updated users per import is 8,000.\n\nThis method requires the following HTTP headers:\n\n| Header | Value |\n| :--- |  :--- |\n| Content-Type | `text/csv` |\n| Content-Disposition |  `filename=filename.csv` |\n\n\n\nTo ensure your CSV is properly formatted, use the\n[Sample Bulk Update CSV file](https://admin.docusign.com/static-resources/organization-user-update-import.csv)\n as a template. The following table describes the columns.\n\nNote that the columns for bulk adding users and bulk update users are slightly different.\nThe update CSV file requires an `APIUserName` column, and does not have an `AutoActivate` column.\n\n\n\n| Column              | Required | Description                                                                                                                                                                                                                                                                                                                                                                                                         |\n| :------------------ | :------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |\n| AccountID           | yes      | The 32-character API account ID of the user's account in your organization. You can find this value in the API and Keys section of the Admin area of the account.                                                                                                                                                                                                                                                             |\n| AccountName         |          | The name of the user's account in your organization. The account name must match the account ID provided.                                                                                                                                                                                                                                                                                                           |\n| FirstName           | yes      | The user's first name.                                                                                                                                                                                                                                                                                                                                                                                              |\n| LastName            | yes      | The user's last name.                                                                                                                                                                                                                                                                                                                                                                                               |\n| UserEmail           | yes      | The user's complete email address.                                                                                                                                                                                                                                                                                                                                                                                  |\n| PermissionSet       | yes      | The user's permission set. The PermissionSet value must match an existing permission set for the account. This value is not case sensitive.                                                                                                                                                                                                                                                                         |\n| UserTitle           |          | The user's job title.                                                                                                                                                                                                                                                                                                                                                                                               |\n| CompanyName         |          | The user's company name.                                                                                                                                                                                                                                                                                                                                                                                            |\n| Group               |          | The user's assigned groups. The Group values must match existing Group names for the account. Additional Group columns can be added to the file to add users to more than one group. You do not need to add users to the Everyone group, since all new users are automatically added to that group.                                                                                                                 |\n| AddressLine1        |          | The user's address, first line.                                                                                                                                                                                                                                                                                                                                                                                     |\n| AddressLine2        |          | The user's address, second line.                                                                                                                                                                                                                                                                                                                                                                                    |\n| City                |          | The user's city name.                                                                                                                                                                                                                                                                                                                                                                                               |\n| StateRegionProvince |          | The user's regional location.                                                                                                                                                                                                                                                                                                                                                                                       |\n| PostalCode          |          | The user's postal code.                                                                                                                                                                                                                                                                                                                                                                                             |\n| Phone               |          | The user's phone number.                                                                                                                                                                                                                                                                                                                                                                                            |\n| Language            |          | The user's display language for their DocuSign account. Must be one of: <ul><li>Chinese Simplified: <code>zh_CN</code></li><li>Chinese Traditional: <code>zh_TW</code></li><li>Dutch: <code>nl</code></li><li>English: <code>en</code></li><li>French: <code>fr</code></li><li>German: <code>de</code></li><li>Italian: <code>it</code></li><li>Japanese: <code>ja</code></li><li>Korean: <code>ko</code></li><li>Portuguese: <code>pt</code></li><li>Portuguese Brazil: <code>pt_BR</code></li><li>Russian: <code>ru</code></li><li>Spanish: <code>es</code></li></ul>                                                                                                                                                                                                                                                                                                                                                            |\n| LoginPolicy         |          | The user's login policy. Valid values include the following: <ul> <li>Column left blank = The user is created with no policy assigned.</li> <li>FedAuthRequired = The user must log in with an Identity Provider.</li> <li>FedAuthBypass = The user may log in with an Identity Provider or their DocuSign username and password.</li> </ul> For more information on login policies, see [Setting User Login Policy](https://support.docusign.com/en/guides/org-admin-guide-user-login-policy). |\n| AutoActivate        |          | For domain users, new users can be activated automatically for domain accounts using SSO by setting the value to **true**. The user is activated automatically once the import is complete. Memberships activated in this way do not receive an activation email.                                                                                                                                                   |\n\n\n\n## Updating user email addresses\n\nChanging a user's email address should be done carefully. The user's email address is used to log in to DocuSign and receive documents to sign from others.\nOnce changed, existing documents that were sent or received:\n\n- Will still appear in the user's documents list.\n- Notifications about these documents will be sent to the new email address. If someone sends a new document to the old email address:\n- DocuSign will send a notification to the old address.\n- It will not appear in the documents list of the account.\n\nThis change of email address will be applied to all of the user's account memberships."
+      summary: Docusign Bulk updates information for existing users
+      description: Bulk updates information for existing users.
       operationId: OrganizationImport_OrganizationImportUsers_Update
       parameters:
       - name: organizationId
@@ -102,8 +223,41 @@ paths:
     post:
       tags:
       - UserImport
-      summary: Docusign Creates a request to close the accounts of existing users.
-      description: "Creates a request to close the accounts of existing users.\n\n- Required scopes: `user_write`\n\nGiven a CSV list of users, close their accounts.\n\n\nYour CSV import file is made up of a header row with the column headers and a row of user or account data for each user whose account you want to close.\n\nTo ensure your CSV is properly formatted, use the\n[Sample Bulk Update CSV file](https://admin.docusign.com/static-resources/organization-user-update-import.csv)\n as a template. The following table describes the columns.\n\n\n\n\n| Column              | Required | Description                                                                                                                                                                                                                                                                                                                                                                                                         |\n| :------------------ | :------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |\n| AccountID           | yes      | The 32-character API account ID of the user's account in your organization. You can find this value in the API and Keys section of the Admin area of the account.                                                                                                                                                                                                                                                             |\n| AccountName         |          | The name of the user's account in your organization. The account name must match the account ID provided.                                                                                                                                                                                                                                                                                                           |\n| FirstName           | yes      | The user's first name.                                                                                                                                                                                                                                                                                                                                                                                              |\n| LastName            | yes      | The user's last name.                                                                                                                                                                                                                                                                                                                                                                                               |\n| UserEmail           | yes      | The user's complete email address.                                                                                                                                                                                                                                                                                                                                                                                  |\n| PermissionSet       | yes      | The user's permission set. The PermissionSet value must match an existing permission set for the account. This value is not case sensitive.                                                                                                                                                                                                                                                                         |\n"
+      summary: Docusign Creates a request to close the accounts of existing users
+      description: 'Creates a request to close the accounts of existing users.
+
+
+        - Required scopes: `user_write`
+
+
+        Given a CSV list of users, close their accounts.
+
+
+        Your CSV import file is made up of a header row with the column headers and a row of user or account data for each user whose account you want to close.
+
+
+        To ensure your CSV is properly formatted, use the
+
+        Sample Bulk Update CSV file
+
+        as a template. The following table describes the columns.
+
+
+        | Column | Required | Description |
+
+        | :------------------ | :------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+
+        | AccountID | yes | The 32-character API account ID of the user''s account in your organization. You can find this value in the API and Keys section of the Admin area of the account. |
+
+        | AccountName | | The name of the user''s account in your organization. The account name must match the account ID provided. |
+
+        | FirstName | yes | The user''s first name. |
+
+        | LastName | yes | The user''s last name. |
+
+        | UserEmail | yes | The user''s complete email address. |
+
+        | PermissionSet | yes | The user''s permission set. The PermissionSet value must match an existing permission set for the account. This value is not case sensitive. |'
       operationId: OrganizationImport_OrganizationImportUsers_Close
       parameters:
       - name: organizationId
@@ -131,7 +285,7 @@ paths:
     post:
       tags:
       - UserImport
-      summary: Docusign Closes external memberships.
+      summary: Docusign Closes external memberships
       description: 'Closes external memberships.
 
 
@@ -143,9 +297,7 @@ paths:
 
         - Users who have an email address at a verified domain
 
-        - But do not belong to the organization
-
-        '
+        - But do not belong to the organization'
       operationId: OrganizationImport_OrganizationImportUsers_CloseExternal
       parameters:
       - name: organizationId
@@ -173,13 +325,11 @@ paths:
     get:
       tags:
       - UserImport
-      summary: Docusign Gets a list of all of the user import requests.
+      summary: Docusign Gets a list of all of the user import requests
       description: 'Gets a list of all of the user import requests.
 
 
-        - Required scopes: `user_read`
-
-        '
+        - Required scopes: `user_read`'
       operationId: OrganizationImport_OrganizationImportUsers_Get
       parameters:
       - name: organizationId
@@ -207,7 +357,7 @@ paths:
     get:
       tags:
       - UserImport
-      summary: Docusign Returns the details of a single user import request.
+      summary: Docusign Returns the details of a single user import request
       description: 'Returns the details of a single user import request.
 
 
@@ -253,12 +403,11 @@ paths:
     delete:
       tags:
       - UserImport
-      summary: Docusign Deletes a specific user import request.
+      summary: Docusign Deletes a specific user import request
       description: 'Deletes a specific import request and its results.
 
 
         - Required scopes: `user_write`
-
 
 
         To delete a user, see `closeBulkUserImportRequest`.'
@@ -296,9 +445,7 @@ paths:
     get:
       tags:
       - UserImport
-      summary: 'Docusign Given the ID of a user import request,
-
-        return the CSV file that was imported.'
+      summary: Docusign Given the ID of a user import request, return the CSV file that was…
       description: 'Returns the contents of the CSV file
 
         associated with a user import request.
@@ -311,9 +458,7 @@ paths:
 
         `ProcessingResults`,
 
-        that describes the results of importing that row.
-
-        '
+        that describes the results of importing that row.'
       operationId: OrganizationImport_OrganizationImportUsers_GetCSVResults
       parameters:
       - name: organizationId
@@ -346,24 +491,6 @@ paths:
       x-ds-in-sdk: true
 components:
   schemas:
-    OrganizationImportResponseRequestor:
-      type: object
-      properties:
-        name:
-          type: string
-          description: ''
-        id:
-          type: string
-          description: ''
-        type:
-          type: string
-          description: ''
-        email:
-          type: string
-          description: The email address.
-      description: ''
-      x-ds-definition-name: OrganizationImportResponseRequestor
-      x-ms-summary: ''
     OrganizationImportsResponse:
       type: object
       properties:
@@ -374,19 +501,6 @@ components:
             $ref: '#/components/schemas/OrganizationImportResponse'
       description: ''
       x-ds-definition-name: OrganizationImportsResponse
-      x-ms-summary: ''
-    OrganizationImportResponseErrorRollup:
-      type: object
-      properties:
-        error_type:
-          type: string
-          description: ''
-        count:
-          type: integer
-          description: ''
-          format: int32
-      description: ''
-      x-ds-definition-name: OrganizationImportResponseErrorRollup
       x-ms-summary: ''
     OrganizationImportResponse:
       type: object
@@ -489,6 +603,24 @@ components:
       description: ''
       x-ds-definition-name: OrganizationImportResponse
       x-ms-summary: ''
+    OrganizationImportResponseRequestor:
+      type: object
+      properties:
+        name:
+          type: string
+          description: ''
+        id:
+          type: string
+          description: ''
+        type:
+          type: string
+          description: ''
+        email:
+          type: string
+          description: The email address.
+      description: ''
+      x-ds-definition-name: OrganizationImportResponseRequestor
+      x-ms-summary: ''
     OrganizationImportResponseWarningRollup:
       type: object
       properties:
@@ -501,6 +633,19 @@ components:
           format: int32
       description: ''
       x-ds-definition-name: OrganizationImportResponseWarningRollup
+      x-ms-summary: ''
+    OrganizationImportResponseErrorRollup:
+      type: object
+      properties:
+        error_type:
+          type: string
+          description: ''
+        count:
+          type: integer
+          description: ''
+          format: int32
+      description: ''
+      x-ds-definition-name: OrganizationImportResponseErrorRollup
       x-ms-summary: ''
   securitySchemes:
     accessCode:

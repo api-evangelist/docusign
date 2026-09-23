@@ -20,7 +20,7 @@ paths:
     get:
       tags:
       - ContactSides
-      summary: Docusign Gets contact sides.
+      summary: Docusign Gets contact sides
       description: 'Return a list of valid values for transaction contact sides.
 
 
@@ -93,6 +93,32 @@ paths:
       x-ds-in-sdk: true
 components:
   schemas:
+    GlobalContactSides:
+      type: object
+      properties:
+        contactSides:
+          type: array
+          description: A list of contact sides.
+          items:
+            $ref: '#/components/schemas/ContactSide'
+      description: Contains a list of contact sides.
+      x-ds-definition-name: GlobalContactSides
+      x-ms-summary: Contains a list of contact sides.
+    ApiError:
+      type: object
+      properties:
+        errorCode:
+          type: string
+          description: The code associated with the error condition.
+        message:
+          type: string
+          description: A brief message describing the error condition.
+        referenceId:
+          type: string
+          description: ''
+      description: This object describes errors that occur. It is valid only for responses and ignored in requests.
+      x-ds-definition-name: ApiError
+      x-ms-summary: This object describes errors that occur. It is valid only for responses and ignored in requests.
     ContactSide:
       type: object
       properties:
@@ -111,32 +137,6 @@ components:
       description: Details about a contact side.
       x-ds-definition-name: ContactSide
       x-ms-summary: Details about a contact side.
-    ApiError:
-      type: object
-      properties:
-        errorCode:
-          type: string
-          description: The code associated with the error condition.
-        message:
-          type: string
-          description: A brief message describing the error condition.
-        referenceId:
-          type: string
-          description: ''
-      description: This object describes errors that occur. It is valid only for responses and ignored in requests.
-      x-ds-definition-name: ApiError
-      x-ms-summary: This object describes errors that occur. It is valid only for responses and ignored in requests.
-    GlobalContactSides:
-      type: object
-      properties:
-        contactSides:
-          type: array
-          description: A list of contact sides.
-          items:
-            $ref: '#/components/schemas/ContactSide'
-      description: Contains a list of contact sides.
-      x-ds-definition-name: GlobalContactSides
-      x-ms-summary: Contains a list of contact sides.
   securitySchemes:
     Bearer:
       type: apiKey

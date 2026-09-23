@@ -12,13 +12,13 @@ servers:
 - url: https://www.docusign.net/restapi
 tags:
 - name: EnvelopeDocumentFields
-  description: "The EnvelopeDocumentFields resource provides methods that allow you to manage custom fields on a document.\n\nYou can create custom versions of standard fields that combine of field properties, such as font type or size, or a validation setting. \n\nNote: Some advanced features and options are supported only in certain DocuSign plans. Your account plan might not support some options discussed in this help topic. For more information about which options are available for your account, check your account plan or contact your Account Manager."
+  description: The EnvelopeDocumentFields resource provides methods that allow you to manage custom fields on a document.
 paths:
   /v2/accounts/{accountId}/envelopes/{envelopeId}/documents/{documentId}/fields:
     get:
       tags:
       - EnvelopeDocumentFields
-      summary: Docusign Gets the custom document fields from an  existing envelope document.
+      summary: Docusign Gets the custom document fields from an existing envelope document
       description: Retrieves the custom document field information from an existing envelope document.
       operationId: DocumentFields_GetDocumentFields
       parameters:
@@ -61,7 +61,7 @@ paths:
     put:
       tags:
       - EnvelopeDocumentFields
-      summary: Docusign Updates existing custom document fields in an existing envelope document.
+      summary: Docusign Updates existing custom document fields in an existing envelope…
       description: Updates existing custom document fields in an existing envelope document.
       operationId: DocumentFields_PutDocumentFields
       parameters:
@@ -114,7 +114,7 @@ paths:
     post:
       tags:
       - EnvelopeDocumentFields
-      summary: Docusign Creates custom document fields in an existing envelope document.
+      summary: Docusign Creates custom document fields in an existing envelope document
       description: Creates custom document fields in an existing envelope document.
       operationId: DocumentFields_PostDocumentFields
       parameters:
@@ -167,7 +167,7 @@ paths:
     delete:
       tags:
       - EnvelopeDocumentFields
-      summary: Docusign Deletes custom document fields from an existing envelope document.
+      summary: Docusign Deletes custom document fields from an existing envelope document
       description: Deletes custom document fields from an existing envelope document.
       operationId: DocumentFields_DeleteDocumentFields
       parameters:
@@ -219,6 +219,19 @@ paths:
       x-codegen-request-body-name: EnvelopeDocumentFields
 components:
   schemas:
+    EnvelopeDocumentFields:
+      type: object
+      properties:
+        documentFields:
+          type: array
+          description: "The array of name/value custom data strings to be added to a document. Custom document field information is returned in the status, but otherwise is not used by DocuSign. The array contains the elements: \n\n* name - A string that can be a maximum of 50 characters. \n* value - A string that can be a maximum of 200 characters.\n\n*IMPORTANT*: If you are using xml, the name/value pair is contained in a nameValue element. \n"
+          items:
+            $ref: '#/components/schemas/nameValue'
+      description: Envelope document fields
+      x-ds-definition-name: documentFieldsInformation
+      x-ds-category: Envelopes
+      x-ds-order: '60'
+      x-ms-summary: Envelope document fields
     nameValue:
       type: object
       properties:
@@ -236,19 +249,6 @@ components:
       description: ''
       x-ds-definition-name: nameValue
       x-ms-summary: ''
-    EnvelopeDocumentFields:
-      type: object
-      properties:
-        documentFields:
-          type: array
-          description: "The array of name/value custom data strings to be added to a document. Custom document field information is returned in the status, but otherwise is not used by DocuSign. The array contains the elements: \n\n* name - A string that can be a maximum of 50 characters. \n* value - A string that can be a maximum of 200 characters.\n\n*IMPORTANT*: If you are using xml, the name/value pair is contained in a nameValue element. \n"
-          items:
-            $ref: '#/components/schemas/nameValue'
-      description: Envelope document fields
-      x-ds-definition-name: documentFieldsInformation
-      x-ds-category: Envelopes
-      x-ds-order: '60'
-      x-ms-summary: Envelope document fields
     errorDetails:
       type: object
       properties:

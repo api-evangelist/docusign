@@ -18,7 +18,7 @@ paths:
     get:
       tags:
       - Organization
-      summary: Docusign Returns a list of organizations that the authenticated user belongs to.
+      summary: Docusign Returns a list of organizations that the authenticated user belongs to
       description: 'Returns a list of organizations that the authenticated user belongs to.
 
 
@@ -79,159 +79,6 @@ components:
       description: Information about an account.
       x-ds-definition-name: OrganizationAccountResponse
       x-ms-summary: Information about an account.
-    IdentityProviderResponse:
-      type: object
-      properties:
-        id:
-          type: string
-          description: The unique ID of the identity provider.
-          format: uuid
-          example: 00000000-0000-0000-0000-000000000000
-        friendly_name:
-          type: string
-          description: The human-readable name of the identity provider.
-        auto_provision_users:
-          type: boolean
-          description: 'If **true**, users who use this identity provider are automatically provisioned. '
-        type:
-          type: string
-          description: 'The type of the identity provider. One of:
-
-
-            - `none`
-
-            - `saml_20`
-
-            - `saml_11`
-
-            - `saml_10`
-
-            - `ws_federation`
-
-            - `open_id_connect`'
-        saml_20:
-          $ref: '#/components/schemas/Saml2IdentityProviderResponse'
-        links:
-          type: array
-          description: A list of useful URLs.
-          items:
-            $ref: '#/components/schemas/LinkResponse'
-      description: Information about a single identity provider.
-      x-ds-definition-name: IdentityProviderResponse
-      x-ms-summary: Information about a single identity provider.
-    CertificateResponse:
-      type: object
-      properties:
-        id:
-          type: string
-          description: The unique ID of the certificate.
-          format: uuid
-          example: 00000000-0000-0000-0000-000000000000
-        issuer:
-          type: string
-          description: The certificate issuer.
-        thumbprint:
-          type: string
-          description: The thumbprint of the certificate.
-        expiration_date:
-          type: string
-          description: The date when the certificate expires.
-          format: date-time
-        is_valid:
-          type: boolean
-          description: If **true**, the certificate is valid.
-          readOnly: true
-        links:
-          type: array
-          description: A list of useful links.
-          items:
-            $ref: '#/components/schemas/LinkResponse'
-      description: Information about a single certificate.
-      x-ds-definition-name: CertificateResponse
-      x-ms-summary: Information about a single certificate.
-    Saml2IdentityProviderResponse:
-      type: object
-      properties:
-        issuer:
-          type: string
-          description: The name of the certificate issuer.
-        settings:
-          type: array
-          description: A list of settings.
-          items:
-            $ref: '#/components/schemas/SettingResponse'
-        certificates:
-          type: array
-          description: A list of certificates responses.
-          items:
-            $ref: '#/components/schemas/CertificateResponse'
-        attribute_mappings:
-          type: array
-          description: A list of attribute mappings.
-          items:
-            $ref: '#/components/schemas/RequiredAttributeMappingResponse'
-      description: Information about a SAML 2.0 identity provider.
-      x-ds-definition-name: Saml2IdentityProviderResponse
-      x-ms-summary: Information about a SAML 2.0 identity provider.
-    DomainResponse:
-      type: object
-      properties:
-        id:
-          type: string
-          description: The ID of the reserved domain.
-          format: uuid
-          example: 00000000-0000-0000-0000-000000000000
-        status:
-          type: string
-          description: 'The status of the request. One of:
-
-
-            - `unknown`
-
-            - `pending`
-
-            - `active`
-
-            - `deactivated`
-
-            - `rejected`'
-        host_name:
-          type: string
-          description: The host name of the reserved domain.
-        txt_token:
-          type: string
-          description: A token  in form of text of the reserved domain.
-        identity_provider_id:
-          type: string
-          description: The identity provider ID of the reserved domain.
-          format: uuid
-          example: 00000000-0000-0000-0000-000000000000
-        settings:
-          type: array
-          description: 'A list of settings for the reserved domain.
-
-            '
-          items:
-            $ref: '#/components/schemas/SettingResponse'
-        links:
-          type: array
-          description: A list of useful links.
-          items:
-            $ref: '#/components/schemas/LinkResponse'
-      description: Information about a reserved domain.
-      x-ds-definition-name: DomainResponse
-      x-ms-summary: Information about a reserved domain.
-    OrganizationsResponse:
-      type: object
-      properties:
-        organizations:
-          type: array
-          description: A list of organizations of which the  authenticated user is a member.
-          items:
-            $ref: '#/components/schemas/OrganizationResponse'
-      description: Organization list.
-      x-ds-definition-name: OrganizationsResponse
-      x-ms-summary: Organization list.
     SettingResponse:
       type: object
       properties:
@@ -286,17 +133,6 @@ components:
       description: An ID object.
       x-ds-definition-name: OrganizationSimpleIdObject
       x-ms-summary: An ID object.
-    IdentityProvidersResponse:
-      type: object
-      properties:
-        identity_providers:
-          type: array
-          description: ''
-          items:
-            $ref: '#/components/schemas/IdentityProviderResponse'
-      description: ''
-      x-ds-definition-name: IdentityProvidersResponse
-      x-ms-summary: ''
     OrganizationResponse:
       type: object
       properties:
@@ -366,6 +202,111 @@ components:
       description: Information about an individual organization.
       x-ds-definition-name: OrganizationResponse
       x-ms-summary: Information about an individual organization.
+    CertificateResponse:
+      type: object
+      properties:
+        id:
+          type: string
+          description: The unique ID of the certificate.
+          format: uuid
+          example: 00000000-0000-0000-0000-000000000000
+        issuer:
+          type: string
+          description: The certificate issuer.
+        thumbprint:
+          type: string
+          description: The thumbprint of the certificate.
+        expiration_date:
+          type: string
+          description: The date when the certificate expires.
+          format: date-time
+        is_valid:
+          type: boolean
+          description: If **true**, the certificate is valid.
+          readOnly: true
+        links:
+          type: array
+          description: A list of useful links.
+          items:
+            $ref: '#/components/schemas/LinkResponse'
+      description: Information about a single certificate.
+      x-ds-definition-name: CertificateResponse
+      x-ms-summary: Information about a single certificate.
+    IdentityProviderResponse:
+      type: object
+      properties:
+        id:
+          type: string
+          description: The unique ID of the identity provider.
+          format: uuid
+          example: 00000000-0000-0000-0000-000000000000
+        friendly_name:
+          type: string
+          description: The human-readable name of the identity provider.
+        auto_provision_users:
+          type: boolean
+          description: 'If **true**, users who use this identity provider are automatically provisioned. '
+        type:
+          type: string
+          description: 'The type of the identity provider. One of:
+
+
+            - `none`
+
+            - `saml_20`
+
+            - `saml_11`
+
+            - `saml_10`
+
+            - `ws_federation`
+
+            - `open_id_connect`'
+        saml_20:
+          $ref: '#/components/schemas/Saml2IdentityProviderResponse'
+        links:
+          type: array
+          description: A list of useful URLs.
+          items:
+            $ref: '#/components/schemas/LinkResponse'
+      description: Information about a single identity provider.
+      x-ds-definition-name: IdentityProviderResponse
+      x-ms-summary: Information about a single identity provider.
+    IdentityProvidersResponse:
+      type: object
+      properties:
+        identity_providers:
+          type: array
+          description: ''
+          items:
+            $ref: '#/components/schemas/IdentityProviderResponse'
+      description: ''
+      x-ds-definition-name: IdentityProvidersResponse
+      x-ms-summary: ''
+    Saml2IdentityProviderResponse:
+      type: object
+      properties:
+        issuer:
+          type: string
+          description: The name of the certificate issuer.
+        settings:
+          type: array
+          description: A list of settings.
+          items:
+            $ref: '#/components/schemas/SettingResponse'
+        certificates:
+          type: array
+          description: A list of certificates responses.
+          items:
+            $ref: '#/components/schemas/CertificateResponse'
+        attribute_mappings:
+          type: array
+          description: A list of attribute mappings.
+          items:
+            $ref: '#/components/schemas/RequiredAttributeMappingResponse'
+      description: Information about a SAML 2.0 identity provider.
+      x-ds-definition-name: Saml2IdentityProviderResponse
+      x-ms-summary: Information about a SAML 2.0 identity provider.
     RequiredAttributeMappingResponse:
       type: object
       properties:
@@ -385,6 +326,65 @@ components:
       description: A single attribute mapping response.
       x-ds-definition-name: RequiredAttributeMappingResponse
       x-ms-summary: A single attribute mapping response.
+    DomainResponse:
+      type: object
+      properties:
+        id:
+          type: string
+          description: The ID of the reserved domain.
+          format: uuid
+          example: 00000000-0000-0000-0000-000000000000
+        status:
+          type: string
+          description: 'The status of the request. One of:
+
+
+            - `unknown`
+
+            - `pending`
+
+            - `active`
+
+            - `deactivated`
+
+            - `rejected`'
+        host_name:
+          type: string
+          description: The host name of the reserved domain.
+        txt_token:
+          type: string
+          description: A token  in form of text of the reserved domain.
+        identity_provider_id:
+          type: string
+          description: The identity provider ID of the reserved domain.
+          format: uuid
+          example: 00000000-0000-0000-0000-000000000000
+        settings:
+          type: array
+          description: 'A list of settings for the reserved domain.
+
+            '
+          items:
+            $ref: '#/components/schemas/SettingResponse'
+        links:
+          type: array
+          description: A list of useful links.
+          items:
+            $ref: '#/components/schemas/LinkResponse'
+      description: Information about a reserved domain.
+      x-ds-definition-name: DomainResponse
+      x-ms-summary: Information about a reserved domain.
+    OrganizationsResponse:
+      type: object
+      properties:
+        organizations:
+          type: array
+          description: A list of organizations of which the  authenticated user is a member.
+          items:
+            $ref: '#/components/schemas/OrganizationResponse'
+      description: Organization list.
+      x-ds-definition-name: OrganizationsResponse
+      x-ms-summary: Organization list.
   securitySchemes:
     accessCode:
       type: oauth2

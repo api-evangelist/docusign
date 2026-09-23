@@ -12,48 +12,19 @@ servers:
 - url: https://www.docusign.net/restapi
 tags:
 - name: Authentication
-  description: '**Note:**  This information is provided for legacy reference only. Please see our supported forms of authentication referenced below and use our [REST API Authentication Guides](https://developers.docusign.com/esign-rest-api/guides/authentication) for more information.
-
-
-    The Authentication resource provides access to methods that allow you to authenticate user credentials and change a user''s password.
-
-
-    The methods in this resource are suitable
-
-    only for [service integrations](https://developers.docusign.com/esign-rest-api/guides/common-terms)
-
-    that use [Legacy Header Authentication](https://developers.docusign.com/esign-rest-api/guides/authentication/legacy).
-
-    For authentication methods for
-
-    [user applications](https://developers.docusign.com/esign-rest-api/guides/common-terms)
-
-    and to learn more about
-
-    DocuSign authentication
-
-    see [Authentication Overview](https://developers.docusign.com/esign-rest-api/guides/authentication).
-
-
-    When accessing the API resources
-
-    and Legacy Header Authentication,
-
-    the GET [Authentication:login method](https://developers.docusign.com/esign-rest-api/reference/Authentication/Authentication/login) allows you to determine whether a user is authenticated and provides the information you will need to make subsequent API requests.
-
-    '
+  description: '**Note:** This information is provided for legacy reference only.'
 paths:
   /v2/login_information:
     get:
       tags:
       - Authentication
-      summary: Docusign Gets login information for a specified user.
+      summary: Docusign Gets login information for a specified user
       description: 'Retrieves account information for the authenticated user. Since the API is sessionless, this method does not actually log you in.
 
         Instead, the method returns information about the account or accounts that the authenticated user has access to.
 
 
-        ###### Important: This method must only be used for the [Legacy Header Authentication](https://developers.docusign.com/esign-rest-api/guides/authentication/legacy) flow. Use the [`AccountServer: userInfo` method](https://developers.docusign.com/esign-rest-api/guides/authentication/user-info-endpoints) for the OAuth2 Authentication Code and [Implicit Grant flows](https://developers.docusign.com/esign-rest-api/guides/authentication/oauth2-implicit).
+        ###### Important: This method must only be used for the Legacy Header Authentication flow. Use the `AccountServer: userInfo` method for the OAuth2 Authentication Code and Implicit Grant flows.
 
 
         Each account has a `baseUrl` property, returned in the response.
@@ -77,12 +48,10 @@ paths:
         If this method returns successfully, then you also know that the user has successfully authenticated with the DocuSign Signature platform.
 
 
-        For more information on Authentication Login, please see our [REST API Authentication Guides](https://developers.docusign.com/esign-rest-api/guides/authentication).
+        For more information on Authentication Login, please see our REST API Authentication Guides.
 
 
-        ###### Note: Certain reference items maybe out of date and the latest information is available in the new Authentication Guides.
-
-        '
+        ###### Note: Certain reference items maybe out of date and the latest information is available in the new Authentication Guides.'
       operationId: LoginInformation_GetLoginInformation
       parameters:
       - name: api_password
@@ -162,7 +131,7 @@ paths:
     put:
       tags:
       - Authentication
-      summary: Docusign Updates the password for a specified user.
+      summary: Docusign Updates the password for a specified user
       description: Updates the password for a specified user.
       operationId: LoginInformation_PutLoginInformation
       parameters:
@@ -201,15 +170,14 @@ paths:
     post:
       tags:
       - Authentication
-      summary: Docusign **Deprecated** Revokes an authorization token.
+      summary: Docusign **Deprecated** Revokes an authorization token
       description: '**Deprecated**
 
 
-        **Note:**  This information is provided for legacy reference only. Please see our supported forms of authentication referenced below and use our [REST API Authentication Guides](https://developers.docusign.com/esign-rest-api/guides/authentication) for more information.<p>
+        **Note:** This information is provided for legacy reference only. Please see our supported forms of authentication referenced below and use our REST API Authentication Guides for more information.
 
-        Revokes an OAuth2 authorization server token. After the revocation is complete, a caller must re-authenticate to restore access.
 
-        '
+        Revokes an OAuth2 authorization server token. After the revocation is complete, a caller must re-authenticate to restore access.'
       operationId: OAuth2_PostRevoke
       responses:
         '201':
@@ -230,15 +198,14 @@ paths:
     post:
       tags:
       - Authentication
-      summary: Docusign **Deprecated** Creates an authorization token.
+      summary: Docusign **Deprecated** Creates an authorization token
       description: '**Deprecated**
 
 
-        **Note:**  This information is provided for legacy reference only. Please see our supported forms of authentication referenced below and use our [REST API Authentication Guides](https://developers.docusign.com/esign-rest-api/guides/authentication) for more information.<p>
+        **Note:** This information is provided for legacy reference only. Please see our supported forms of authentication referenced below and use our REST API Authentication Guides for more information.
 
-        Creates an OAuth2 authorization server token endpoint. For more information about OAuth 2.0 please see [OAuth2.0](https://oauth.net/2/).
 
-        '
+        Creates an OAuth2 authorization server token endpoint. For more information about OAuth 2.0 please see OAuth2.0.'
       operationId: OAuth2_PostToken
       responses:
         '201':
@@ -260,75 +227,6 @@ paths:
       x-ds-in-sdk: true
 components:
   schemas:
-    errorDetails:
-      type: object
-      properties:
-        errorCode:
-          type: string
-          description: An error code associated with the error.
-        message:
-          type: string
-          description: A short error message.
-      description: This object describes errors that occur. It is only valid for responses, and ignored in requests.
-      x-ds-definition-name: errorDetails
-      x-ms-summary: This object describes errors that occur. It is only valid for responses, and ignored in requests.
-    oauthAccess:
-      type: object
-      properties:
-        access_token:
-          type: string
-          description: Access token information.
-        data:
-          type: array
-          description: ''
-          items:
-            $ref: '#/components/schemas/nameValue'
-        expires_in:
-          type: string
-          description: ''
-        refresh_token:
-          type: string
-          description: ''
-        scope:
-          type: string
-          description: Must be set to "api".
-        token_type:
-          type: string
-          description: ''
-      description: ''
-      x-ds-definition-name: oauthAccess
-      x-ms-summary: ''
-    loginInformation:
-      type: object
-      properties:
-        apiPassword:
-          type: string
-          description: Contains a token that can be used for authentication in API calls instead of using the user name and password.
-        loginAccounts:
-          type: array
-          description: The list of accounts that authenticating user is a member of.
-          items:
-            $ref: '#/components/schemas/loginAccount'
-      description: ''
-      x-ds-definition-name: loginInformation
-      x-ms-summary: ''
-    nameValue:
-      type: object
-      properties:
-        errorDetails:
-          $ref: '#/components/schemas/errorDetails'
-        name:
-          type: string
-          description: The name or key of a name/value pair.
-        originalValue:
-          type: string
-          description: 'The initial value of the tab when it was sent to the recipient. '
-        value:
-          type: string
-          description: The value field of a name/value pair.
-      description: ''
-      x-ds-definition-name: nameValue
-      x-ms-summary: ''
     forgottenPasswordInformation:
       type: object
       properties:
@@ -401,6 +299,75 @@ components:
           description: The name of this user as defined by the account.
       description: ''
       x-ds-definition-name: loginAccount
+      x-ms-summary: ''
+    oauthAccess:
+      type: object
+      properties:
+        access_token:
+          type: string
+          description: Access token information.
+        data:
+          type: array
+          description: ''
+          items:
+            $ref: '#/components/schemas/nameValue'
+        expires_in:
+          type: string
+          description: ''
+        refresh_token:
+          type: string
+          description: ''
+        scope:
+          type: string
+          description: Must be set to "api".
+        token_type:
+          type: string
+          description: ''
+      description: ''
+      x-ds-definition-name: oauthAccess
+      x-ms-summary: ''
+    errorDetails:
+      type: object
+      properties:
+        errorCode:
+          type: string
+          description: An error code associated with the error.
+        message:
+          type: string
+          description: A short error message.
+      description: This object describes errors that occur. It is only valid for responses, and ignored in requests.
+      x-ds-definition-name: errorDetails
+      x-ms-summary: This object describes errors that occur. It is only valid for responses, and ignored in requests.
+    loginInformation:
+      type: object
+      properties:
+        apiPassword:
+          type: string
+          description: Contains a token that can be used for authentication in API calls instead of using the user name and password.
+        loginAccounts:
+          type: array
+          description: The list of accounts that authenticating user is a member of.
+          items:
+            $ref: '#/components/schemas/loginAccount'
+      description: ''
+      x-ds-definition-name: loginInformation
+      x-ms-summary: ''
+    nameValue:
+      type: object
+      properties:
+        errorDetails:
+          $ref: '#/components/schemas/errorDetails'
+        name:
+          type: string
+          description: The name or key of a name/value pair.
+        originalValue:
+          type: string
+          description: 'The initial value of the tab when it was sent to the recipient. '
+        value:
+          type: string
+          description: The value field of a name/value pair.
+      description: ''
+      x-ds-definition-name: nameValue
       x-ms-summary: ''
     userPasswordInformation:
       type: object

@@ -12,13 +12,13 @@ servers:
 - url: https://www.docusign.net/restapi
 tags:
 - name: EnvelopeCustomFields
-  description: "The EnvelopeCustomFields resource provides methods that allow you manage custom fields in an envelope. \n\nCustom fields can be used in the envelopes for your account to record information about the envelope, help search for envelopes and track information. The envelope custom fields are shown in the Envelope Settings section when a user is creating an envelope in the DocuSign member console. The envelope custom fields are not seen by the envelope recipients.\n\nThere are two types of envelope custom fields, text and list. A text custom field lets the sender enter the value for the field. With a list custom field, the sender selects the value of the field from a pre-made list."
+  description: The EnvelopeCustomFields resource provides methods that allow you manage custom fields in an envelope.
 paths:
   /v2/accounts/{accountId}/envelopes/{envelopeId}/custom_fields:
     get:
       tags:
       - EnvelopeCustomFields
-      summary: Docusign Gets the custom field information for the specified envelope.
+      summary: Docusign Gets the custom field information for the specified envelope
       description: 'Retrieves the custom field information for the specified envelope. You can use these fields in the envelopes for your account to record information about the envelope, help search for envelopes, and track information. The envelope custom fields are shown in the Envelope Settings section when a user is creating an envelope in the DocuSign member console. The envelope custom fields are not seen by the envelope recipients.
 
 
@@ -58,13 +58,11 @@ paths:
     put:
       tags:
       - EnvelopeCustomFields
-      summary: Docusign Updates envelope custom fields in an envelope.
+      summary: Docusign Updates envelope custom fields in an envelope
       description: 'Updates the envelope custom fields in draft and in-process envelopes.
 
 
-        Each custom field used in an envelope must have a unique name.
-
-        '
+        Each custom field used in an envelope must have a unique name.'
       operationId: CustomFields_PutCustomFields
       parameters:
       - name: accountId
@@ -110,7 +108,7 @@ paths:
     post:
       tags:
       - EnvelopeCustomFields
-      summary: Docusign Updates envelope custom fields for an envelope.
+      summary: Docusign Updates envelope custom fields for an envelope
       description: 'Updates the envelope custom fields for draft and in-process envelopes.
 
 
@@ -160,7 +158,7 @@ paths:
     delete:
       tags:
       - EnvelopeCustomFields
-      summary: Docusign Deletes envelope custom fields for draft and in-process envelopes.
+      summary: Docusign Deletes envelope custom fields for draft and in-process envelopes
       description: Deletes envelope custom fields for draft and in-process envelopes.
       operationId: CustomFields_DeleteCustomFields
       parameters:
@@ -206,36 +204,6 @@ paths:
       x-codegen-request-body-name: EnvelopeCustomFields
 components:
   schemas:
-    EnvelopeCustomFields:
-      type: object
-      properties:
-        listCustomFields:
-          type: array
-          description: An array of list custom fields.
-          items:
-            $ref: '#/components/schemas/listCustomField'
-        textCustomFields:
-          type: array
-          description: An array of text custom fields.
-          items:
-            $ref: '#/components/schemas/textCustomField'
-      description: Envelope custom fields
-      x-ds-definition-name: customFields
-      x-ds-category: Envelopes
-      x-ds-order: '70'
-      x-ms-summary: Envelope custom fields
-    errorDetails:
-      type: object
-      properties:
-        errorCode:
-          type: string
-          description: An error code associated with the error.
-        message:
-          type: string
-          description: A short error message.
-      description: This object describes errors that occur. It is only valid for responses, and ignored in requests.
-      x-ds-definition-name: errorDetails
-      x-ms-summary: This object describes errors that occur. It is only valid for responses, and ignored in requests.
     textCustomField:
       type: object
       properties:
@@ -296,6 +264,36 @@ components:
       description: ''
       x-ds-definition-name: listCustomField
       x-ms-summary: ''
+    EnvelopeCustomFields:
+      type: object
+      properties:
+        listCustomFields:
+          type: array
+          description: An array of list custom fields.
+          items:
+            $ref: '#/components/schemas/listCustomField'
+        textCustomFields:
+          type: array
+          description: An array of text custom fields.
+          items:
+            $ref: '#/components/schemas/textCustomField'
+      description: Envelope custom fields
+      x-ds-definition-name: customFields
+      x-ds-category: Envelopes
+      x-ds-order: '70'
+      x-ms-summary: Envelope custom fields
+    errorDetails:
+      type: object
+      properties:
+        errorCode:
+          type: string
+          description: An error code associated with the error.
+        message:
+          type: string
+          description: A short error message.
+      description: This object describes errors that occur. It is only valid for responses, and ignored in requests.
+      x-ds-definition-name: errorDetails
+      x-ms-summary: This object describes errors that occur. It is only valid for responses, and ignored in requests.
     customFieldsEnvelope:
       type: object
       properties:

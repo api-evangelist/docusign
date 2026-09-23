@@ -21,8 +21,11 @@ paths:
     get:
       tags:
       - Payments
-      summary: Docusign Gets payment information for one or more payments.
-      description: "Retrieves a list containing information about one or more payments. If the from date or to date queries are not used, the response returns payment information for the last 365 days. \n\nPrivileges required: account administrator "
+      summary: Docusign Gets payment information for one or more payments
+      description: 'Retrieves a list containing information about one or more payments. If the from date or to date queries are not used, the response returns payment information for the last 365 days.
+
+
+        Privileges required: account administrator'
       operationId: BillingPayments_GetPaymentList
       parameters:
       - name: accountId
@@ -62,8 +65,17 @@ paths:
     post:
       tags:
       - Payments
-      summary: Docusign Posts a payment to a past due invoice.
-      description: "Posts a payment to a past due invoice. \n\n###### Note: This can only be used if the `paymentAllowed` value for a past due invoice is true. This can be determined calling [ML:GetBillingInvoicesPastDue].\n\nThe response returns information for a single payment, if a payment ID was used in the endpoint, or a list of payments. If the from date or to date queries or payment ID are not used, the response returns payment information for the last 365 days. If the request was for a single payment ID, the `nextUri` and `previousUri` properties are not returned.\n\nPrivileges required: account administrator"
+      summary: Docusign Posts a payment to a past due invoice
+      description: 'Posts a payment to a past due invoice.
+
+
+        ###### Note: This can only be used if the `paymentAllowed` value for a past due invoice is true. This can be determined calling [ML:GetBillingInvoicesPastDue].
+
+
+        The response returns information for a single payment, if a payment ID was used in the endpoint, or a list of payments. If the from date or to date queries or payment ID are not used, the response returns payment information for the last 365 days. If the request was for a single payment ID, the `nextUri` and `previousUri` properties are not returned.
+
+
+        Privileges required: account administrator'
       operationId: BillingPayments_PostPayment
       parameters:
       - name: accountId
@@ -104,8 +116,11 @@ paths:
     get:
       tags:
       - Payments
-      summary: Docusign Gets billing payment information for a specific payment.
-      description: "Retrieves the information for a specified payment. \n\nPrivileges required: account administrator "
+      summary: Docusign Gets billing payment information for a specific payment
+      description: 'Retrieves the information for a specified payment.
+
+
+        Privileges required: account administrator'
       operationId: BillingPayments_GetPayment
       parameters:
       - name: accountId
@@ -139,18 +154,6 @@ paths:
       x-ds-in-sdk: true
 components:
   schemas:
-    errorDetails:
-      type: object
-      properties:
-        errorCode:
-          type: string
-          description: An error code associated with the error.
-        message:
-          type: string
-          description: A short error message.
-      description: This object describes errors that occur. It is only valid for responses, and ignored in requests.
-      x-ds-definition-name: errorDetails
-      x-ms-summary: This object describes errors that occur. It is only valid for responses, and ignored in requests.
     billingPaymentItem:
       type: object
       properties:
@@ -173,15 +176,6 @@ components:
           description: "When set to **true**, a PDF version of the invoice is available. \n\nTo get the PDF, make the call again and change \"Accept:\" in the header to \"Accept: application/pdf\"."
       description: ''
       x-ds-definition-name: billingPaymentItem
-      x-ms-summary: ''
-    billingPaymentRequest:
-      type: object
-      properties:
-        paymentAmount:
-          type: string
-          description: The payment amount for the past due invoices. This value must match the pastDueBalance value retrieved using Get Past Due Invoices.
-      description: ''
-      x-ds-definition-name: billingPaymentRequest
       x-ms-summary: ''
     billingPayment:
       type: object
@@ -226,6 +220,27 @@ components:
       description: Defines an billing payment response object.
       x-ds-definition-name: billingPaymentResponse
       x-ms-summary: Defines an billing payment response object.
+    errorDetails:
+      type: object
+      properties:
+        errorCode:
+          type: string
+          description: An error code associated with the error.
+        message:
+          type: string
+          description: A short error message.
+      description: This object describes errors that occur. It is only valid for responses, and ignored in requests.
+      x-ds-definition-name: errorDetails
+      x-ms-summary: This object describes errors that occur. It is only valid for responses, and ignored in requests.
+    billingPaymentRequest:
+      type: object
+      properties:
+        paymentAmount:
+          type: string
+          description: The payment amount for the past due invoices. This value must match the pastDueBalance value retrieved using Get Past Due Invoices.
+      description: ''
+      x-ds-definition-name: billingPaymentRequest
+      x-ms-summary: ''
 externalDocs:
   description: See the DocuSign REST API Guide for more information.
   url: https://docs.docusign.com/esign
