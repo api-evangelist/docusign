@@ -204,6 +204,66 @@ paths:
       x-ds-in-sdk: true
 components:
   schemas:
+    OrganizationExportRequestorResponse:
+      type: object
+      properties:
+        name:
+          type: string
+          description: ''
+        id:
+          type: string
+          description: ''
+        type:
+          type: string
+          description: ''
+        email:
+          type: string
+          description: The email address.
+      description: ''
+      x-ds-definition-name: OrganizationExportRequestorResponse
+      x-ms-summary: ''
+    OrganizationExportAccount:
+      type: object
+      properties:
+        account_id:
+          type: string
+          description: Select users that are members of the specified account. At least one of `email`, `account_id` or `organization_reserved_domain_id` must be specified.
+          format: uuid
+          example: 00000000-0000-0000-0000-000000000000
+      description: ''
+      x-ds-definition-name: OrganizationExportAccount
+      x-ms-summary: ''
+    OETR_ErrorDetails:
+      type: object
+      properties:
+        error:
+          type: string
+          description: The error number.
+        error_description:
+          type: string
+          description: A longer description of the error.
+      description: ''
+      x-ds-definition-name: OETR_ErrorDetails
+      x-ms-summary: ''
+    OrganizationExportRequest:
+      type: object
+      properties:
+        type:
+          type: string
+          description: "The type of export requested. One of:\n\n- `organization_domain_users_export`: All users of the reserved domains.\n- `organization_external_memberships_export`: Users whose email address domain is *not* linked to the organization. \n- `organization_memberships_export`: Every user in every account in the organization. Users in multiple accounts will appear more than once.\n- `organization_account_settings_export`: This value only applies to requests to export account settings."
+        accounts:
+          type: array
+          description: ''
+          items:
+            $ref: '#/components/schemas/OrganizationExportAccount'
+        domains:
+          type: array
+          description: ''
+          items:
+            $ref: '#/components/schemas/OrganizationExportDomain'
+      description: Enables you to specify the kind of export request.
+      x-ds-definition-name: OrganizationExportRequest
+      x-ms-summary: Enables you to specify the kind of export request.
     OrgExportSelectedAccount:
       type: object
       properties:
@@ -214,6 +274,15 @@ components:
           example: 00000000-0000-0000-0000-000000000000
       description: ''
       x-ds-definition-name: OrgExportSelectedAccount
+      x-ms-summary: ''
+    OrgExportSelectedDomain:
+      type: object
+      properties:
+        domain:
+          type: string
+          description: ''
+      description: ''
+      x-ds-definition-name: OrgExportSelectedDomain
       x-ms-summary: ''
     OrganizationExportTaskResponse:
       type: object
@@ -243,25 +312,25 @@ components:
       description: ''
       x-ds-definition-name: OrganizationExportTaskResponse
       x-ms-summary: ''
-    OrgExportSelectedDomain:
+    OrganizationExportsResponse:
+      type: object
+      properties:
+        exports:
+          type: array
+          description: ''
+          items:
+            $ref: '#/components/schemas/OrganizationExportResponse'
+      description: ''
+      x-ds-definition-name: OrganizationExportsResponse
+      x-ms-summary: ''
+    OrganizationExportDomain:
       type: object
       properties:
         domain:
           type: string
           description: ''
       description: ''
-      x-ds-definition-name: OrgExportSelectedDomain
-      x-ms-summary: ''
-    OrganizationExportAccount:
-      type: object
-      properties:
-        account_id:
-          type: string
-          description: Select users that are members of the specified account. At least one of `email`, `account_id` or `organization_reserved_domain_id` must be specified.
-          format: uuid
-          example: 00000000-0000-0000-0000-000000000000
-      description: ''
-      x-ds-definition-name: OrganizationExportAccount
+      x-ds-definition-name: OrganizationExportDomain
       x-ms-summary: ''
     OrganizationExportResponse:
       type: object
@@ -330,75 +399,6 @@ components:
           description: ''
       description: ''
       x-ds-definition-name: OrganizationExportResponse
-      x-ms-summary: ''
-    OETR_ErrorDetails:
-      type: object
-      properties:
-        error:
-          type: string
-          description: The error number.
-        error_description:
-          type: string
-          description: A longer description of the error.
-      description: ''
-      x-ds-definition-name: OETR_ErrorDetails
-      x-ms-summary: ''
-    OrganizationExportsResponse:
-      type: object
-      properties:
-        exports:
-          type: array
-          description: ''
-          items:
-            $ref: '#/components/schemas/OrganizationExportResponse'
-      description: ''
-      x-ds-definition-name: OrganizationExportsResponse
-      x-ms-summary: ''
-    OrganizationExportRequest:
-      type: object
-      properties:
-        type:
-          type: string
-          description: "The type of export requested. One of:\n\n- `organization_domain_users_export`: All users of the reserved domains.\n- `organization_external_memberships_export`: Users whose email address domain is *not* linked to the organization. \n- `organization_memberships_export`: Every user in every account in the organization. Users in multiple accounts will appear more than once.\n- `organization_account_settings_export`: This value only applies to requests to export account settings."
-        accounts:
-          type: array
-          description: ''
-          items:
-            $ref: '#/components/schemas/OrganizationExportAccount'
-        domains:
-          type: array
-          description: ''
-          items:
-            $ref: '#/components/schemas/OrganizationExportDomain'
-      description: Enables you to specify the kind of export request.
-      x-ds-definition-name: OrganizationExportRequest
-      x-ms-summary: Enables you to specify the kind of export request.
-    OrganizationExportDomain:
-      type: object
-      properties:
-        domain:
-          type: string
-          description: ''
-      description: ''
-      x-ds-definition-name: OrganizationExportDomain
-      x-ms-summary: ''
-    OrganizationExportRequestorResponse:
-      type: object
-      properties:
-        name:
-          type: string
-          description: ''
-        id:
-          type: string
-          description: ''
-        type:
-          type: string
-          description: ''
-        email:
-          type: string
-          description: The email address.
-      description: ''
-      x-ds-definition-name: OrganizationExportRequestorResponse
       x-ms-summary: ''
   securitySchemes:
     accessCode:

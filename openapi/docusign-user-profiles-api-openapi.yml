@@ -104,84 +104,113 @@ paths:
       x-codegen-request-body-name: userProfile
 components:
   schemas:
-    userInfo:
+    authenticationMethod:
       type: object
       properties:
-        activationAccessCode:
+        authenticationType:
           type: string
-          description: ''
-        email:
+          description: 'Indicates the type of authentication. Valid values are: PhoneAuth, STAN, ISCheck, OFAC, AccessCode, AgeVerify, or SSOAuth. '
+        lastProvider:
           type: string
-          description: ''
+          description: 'The last provider that authenticated the user. '
+        lastTimestamp:
+          type: string
+          description: ' The data and time the user last used the authentication method. '
+        totalCount:
+          type: integer
+          description: 'The number of times the authentication method was used. '
+          format: int32
+      description: Contains information about the method used for authentication.
+      x-ds-definition-name: authenticationMethod
+      x-ms-summary: Contains information about the method used for authentication.
+    errorDetails:
+      type: object
+      properties:
+        errorCode:
+          type: string
+          description: An error code associated with the error.
+        message:
+          type: string
+          description: A short error message.
+      description: This object describes errors that occur. It is only valid for responses, and ignored in requests.
+      x-ds-definition-name: errorDetails
+      x-ms-summary: This object describes errors that occur. It is only valid for responses, and ignored in requests.
+    nameValue:
+      type: object
+      properties:
         errorDetails:
           $ref: '#/components/schemas/errorDetails'
-        loginStatus:
+        name:
           type: string
-          description: ''
-        sendActivationEmail:
+          description: The name or key of a name/value pair.
+        originalValue:
           type: string
-          description: ''
-        uri:
+          description: 'The initial value of the tab when it was sent to the recipient. '
+        value:
           type: string
-          description: ''
-        userId:
-          type: string
-          description: 'The user ID of the user being accessed. Generally this is the user ID of the authenticated user, but if the authenticated user is an Admin on the account, this may be another user the Admin user is accessing. **Note**: For the [GET /v2/accounts/{accountId}/envelopes](https://developers.docusign.com/esign-rest-api/reference/Envelopes/Envelopes/listStatusChanges/#envelopesInformation) method, the `user_id` query parameter is not implemented and should not be used.'
-        userName:
-          type: string
-          description: ''
-        userStatus:
-          type: string
-          description: 'Status of the user''s account. One of:
-
-
-            * ActivationRequired
-
-            * ActivationSent
-
-            * Active
-
-            * Closed
-
-            * Disabled
-
-            '
-        userType:
-          type: string
-          description: ''
+          description: The value field of a name/value pair.
       description: ''
-      x-ds-definition-name: userInfo
+      x-ds-definition-name: nameValue
       x-ms-summary: ''
-    forgottenPasswordInformation:
+    addressInformation_v2:
       type: object
       properties:
-        forgottenPasswordAnswer1:
+        address1:
           type: string
-          description: The answer to the first forgotten password challenge question.
-        forgottenPasswordAnswer2:
+          description: 'First Line of the address.
+
+            Maximum length: 100 characters.'
+        address2:
           type: string
-          description: The answer to the second forgotten password challenge question.
-        forgottenPasswordAnswer3:
+          description: 'Second Line of the address.
+
+            Maximum length: 100 characters.'
+        city:
           type: string
-          description: The answer to the third forgotten password challenge question.
-        forgottenPasswordAnswer4:
+          description: ''
+        country:
           type: string
-          description: The answer to the fourth forgotten password challenge question.
-        forgottenPasswordQuestion1:
+          description: Specifies the country associated with the address.
+        fax:
           type: string
-          description: The first challenge question presented to a user who has forgotten their password.
-        forgottenPasswordQuestion2:
+          description: ''
+        phone:
           type: string
-          description: The second challenge question presented to a user who has forgotten their password.
-        forgottenPasswordQuestion3:
+          description: ''
+        postalCode:
           type: string
-          description: The third challenge question presented to a user who has forgotten their password.
-        forgottenPasswordQuestion4:
+          description: ''
+        stateOrProvince:
           type: string
-          description: The fourth challenge question presented to a user who has forgotten their password.
-      description: A complex element that has up to four Question/Answer pairs for forgotten password information.
-      x-ds-definition-name: forgottenPasswordInformation
-      x-ms-summary: A complex element that has up to four Question/Answer pairs for forgotten password information.
+          description: The state or province associated with the address.
+      description: ''
+      x-ds-definition-name: addressInformation_v2
+      x-ms-summary: ''
+    group:
+      type: object
+      properties:
+        errorDetails:
+          $ref: '#/components/schemas/errorDetails'
+        groupId:
+          type: string
+          description: The DocuSign group ID for the group.
+        groupName:
+          type: string
+          description: The name of the group.
+        groupType:
+          type: string
+          description: The group type.
+        permissionProfileId:
+          type: string
+          description: The ID of the permission profile associated with the group.
+        users:
+          type: array
+          description: List of users in the group.
+          items:
+            $ref: '#/components/schemas/userInfo'
+      description: Information about groups.
+      x-ds-definition-name: group
+      x-ms-summary: Information about groups.
     userInformation:
       type: object
       properties:
@@ -319,101 +348,6 @@ components:
       description: ''
       x-ds-definition-name: userInformation
       x-ms-summary: ''
-    addressInformation_v2:
-      type: object
-      properties:
-        address1:
-          type: string
-          description: 'First Line of the address.
-
-            Maximum length: 100 characters.'
-        address2:
-          type: string
-          description: 'Second Line of the address.
-
-            Maximum length: 100 characters.'
-        city:
-          type: string
-          description: ''
-        country:
-          type: string
-          description: Specifies the country associated with the address.
-        fax:
-          type: string
-          description: ''
-        phone:
-          type: string
-          description: ''
-        postalCode:
-          type: string
-          description: ''
-        stateOrProvince:
-          type: string
-          description: The state or province associated with the address.
-      description: ''
-      x-ds-definition-name: addressInformation_v2
-      x-ms-summary: ''
-    usageHistory:
-      type: object
-      properties:
-        lastSentDateTime:
-          type: string
-          description: 'The date and time the user last sent an envelope. '
-        lastSignedDateTime:
-          type: string
-          description: The date and time the user last signed an envelope.
-        sentCount:
-          type: integer
-          description: 'The number of envelopes the user has sent. '
-          format: int32
-        signedCount:
-          type: integer
-          description: 'The number of envelopes the user has signed. '
-          format: int32
-      description: "A complex element consisting of: \n\n* lastSentDateTime - the date and time the user last sent an envelope. \n* lastSignedDateTime - the date and time the user last signed an envelope.\n* sentCount - the number of envelopes the user has sent.\n* signedCount - the number of envelopes the user has signed."
-      x-ds-definition-name: usageHistory
-      x-ms-summary: "A complex element consisting of: \n\n* lastSentDateTime - the date and time the user last sent an envelope. \n* lastSignedDateTime - the date and time the user last signed an envelope.\n* sentCount - the number of envelopes the user has sent.\n* signedCount - the number of envelopes the user has signed."
-    userProfile:
-      type: object
-      properties:
-        address:
-          $ref: '#/components/schemas/addressInformation_v2'
-        authenticationMethods:
-          type: array
-          description: "These properties cannot be modified in the PUT. \n\nIndicates the authentication methods used by the user."
-          items:
-            $ref: '#/components/schemas/authenticationMethod'
-        companyName:
-          type: string
-          description: The name of the user's Company.
-        displayOrganizationInfo:
-          type: string
-          description: ' When set to **true**, the user''s company and title information are shown on the ID card. '
-        displayPersonalInfo:
-          type: string
-          description: When set to **true**, the user's Address and Phone number are shown on the ID card.
-        displayProfile:
-          type: string
-          description: When set to **true**, the user's ID card can be viewed from signed documents and envelope history.
-        displayUsageHistory:
-          type: string
-          description: When set to **true**, the user's usage information is shown on the ID card.
-        profileImageUri:
-          type: string
-          description: ''
-        title:
-          type: string
-          description: The title of the user.
-        usageHistory:
-          $ref: '#/components/schemas/usageHistory'
-        userDetails:
-          $ref: '#/components/schemas/userInformation'
-        userProfileLastModifiedDate:
-          type: string
-          description: The date-time when the user's profile was last modified.
-      description: ''
-      x-ds-definition-name: userProfile
-      x-ms-summary: ''
     settingsMetadata:
       type: object
       properties:
@@ -440,78 +374,53 @@ components:
       description: ''
       x-ds-definition-name: settingsMetadata
       x-ms-summary: ''
-    authenticationMethod:
+    userInfo:
       type: object
       properties:
-        authenticationType:
+        activationAccessCode:
           type: string
-          description: 'Indicates the type of authentication. Valid values are: PhoneAuth, STAN, ISCheck, OFAC, AccessCode, AgeVerify, or SSOAuth. '
-        lastProvider:
+          description: ''
+        email:
           type: string
-          description: 'The last provider that authenticated the user. '
-        lastTimestamp:
-          type: string
-          description: ' The data and time the user last used the authentication method. '
-        totalCount:
-          type: integer
-          description: 'The number of times the authentication method was used. '
-          format: int32
-      description: Contains information about the method used for authentication.
-      x-ds-definition-name: authenticationMethod
-      x-ms-summary: Contains information about the method used for authentication.
-    errorDetails:
-      type: object
-      properties:
-        errorCode:
-          type: string
-          description: An error code associated with the error.
-        message:
-          type: string
-          description: A short error message.
-      description: This object describes errors that occur. It is only valid for responses, and ignored in requests.
-      x-ds-definition-name: errorDetails
-      x-ms-summary: This object describes errors that occur. It is only valid for responses, and ignored in requests.
-    group:
-      type: object
-      properties:
+          description: ''
         errorDetails:
           $ref: '#/components/schemas/errorDetails'
-        groupId:
+        loginStatus:
           type: string
-          description: The DocuSign group ID for the group.
-        groupName:
+          description: ''
+        sendActivationEmail:
           type: string
-          description: The name of the group.
-        groupType:
+          description: ''
+        uri:
           type: string
-          description: The group type.
-        permissionProfileId:
+          description: ''
+        userId:
           type: string
-          description: The ID of the permission profile associated with the group.
-        users:
-          type: array
-          description: List of users in the group.
-          items:
-            $ref: '#/components/schemas/userInfo'
-      description: Information about groups.
-      x-ds-definition-name: group
-      x-ms-summary: Information about groups.
-    nameValue:
-      type: object
-      properties:
-        errorDetails:
-          $ref: '#/components/schemas/errorDetails'
-        name:
+          description: 'The user ID of the user being accessed. Generally this is the user ID of the authenticated user, but if the authenticated user is an Admin on the account, this may be another user the Admin user is accessing. **Note**: For the [GET /v2/accounts/{accountId}/envelopes](https://developers.docusign.com/esign-rest-api/reference/Envelopes/Envelopes/listStatusChanges/#envelopesInformation) method, the `user_id` query parameter is not implemented and should not be used.'
+        userName:
           type: string
-          description: The name or key of a name/value pair.
-        originalValue:
+          description: ''
+        userStatus:
           type: string
-          description: 'The initial value of the tab when it was sent to the recipient. '
-        value:
+          description: 'Status of the user''s account. One of:
+
+
+            * ActivationRequired
+
+            * ActivationSent
+
+            * Active
+
+            * Closed
+
+            * Disabled
+
+            '
+        userType:
           type: string
-          description: The value field of a name/value pair.
+          description: ''
       description: ''
-      x-ds-definition-name: nameValue
+      x-ds-definition-name: userInfo
       x-ms-summary: ''
     userAccountManagementGranularInformation:
       type: object
@@ -581,6 +490,97 @@ components:
       description: Describes which account management capabilities a user has.
       x-ds-definition-name: userAccountManagementGranularInformation
       x-ms-summary: Describes which account management capabilities a user has.
+    forgottenPasswordInformation:
+      type: object
+      properties:
+        forgottenPasswordAnswer1:
+          type: string
+          description: The answer to the first forgotten password challenge question.
+        forgottenPasswordAnswer2:
+          type: string
+          description: The answer to the second forgotten password challenge question.
+        forgottenPasswordAnswer3:
+          type: string
+          description: The answer to the third forgotten password challenge question.
+        forgottenPasswordAnswer4:
+          type: string
+          description: The answer to the fourth forgotten password challenge question.
+        forgottenPasswordQuestion1:
+          type: string
+          description: The first challenge question presented to a user who has forgotten their password.
+        forgottenPasswordQuestion2:
+          type: string
+          description: The second challenge question presented to a user who has forgotten their password.
+        forgottenPasswordQuestion3:
+          type: string
+          description: The third challenge question presented to a user who has forgotten their password.
+        forgottenPasswordQuestion4:
+          type: string
+          description: The fourth challenge question presented to a user who has forgotten their password.
+      description: A complex element that has up to four Question/Answer pairs for forgotten password information.
+      x-ds-definition-name: forgottenPasswordInformation
+      x-ms-summary: A complex element that has up to four Question/Answer pairs for forgotten password information.
+    userProfile:
+      type: object
+      properties:
+        address:
+          $ref: '#/components/schemas/addressInformation_v2'
+        authenticationMethods:
+          type: array
+          description: "These properties cannot be modified in the PUT. \n\nIndicates the authentication methods used by the user."
+          items:
+            $ref: '#/components/schemas/authenticationMethod'
+        companyName:
+          type: string
+          description: The name of the user's Company.
+        displayOrganizationInfo:
+          type: string
+          description: ' When set to **true**, the user''s company and title information are shown on the ID card. '
+        displayPersonalInfo:
+          type: string
+          description: When set to **true**, the user's Address and Phone number are shown on the ID card.
+        displayProfile:
+          type: string
+          description: When set to **true**, the user's ID card can be viewed from signed documents and envelope history.
+        displayUsageHistory:
+          type: string
+          description: When set to **true**, the user's usage information is shown on the ID card.
+        profileImageUri:
+          type: string
+          description: ''
+        title:
+          type: string
+          description: The title of the user.
+        usageHistory:
+          $ref: '#/components/schemas/usageHistory'
+        userDetails:
+          $ref: '#/components/schemas/userInformation'
+        userProfileLastModifiedDate:
+          type: string
+          description: The date-time when the user's profile was last modified.
+      description: ''
+      x-ds-definition-name: userProfile
+      x-ms-summary: ''
+    usageHistory:
+      type: object
+      properties:
+        lastSentDateTime:
+          type: string
+          description: 'The date and time the user last sent an envelope. '
+        lastSignedDateTime:
+          type: string
+          description: The date and time the user last signed an envelope.
+        sentCount:
+          type: integer
+          description: 'The number of envelopes the user has sent. '
+          format: int32
+        signedCount:
+          type: integer
+          description: 'The number of envelopes the user has signed. '
+          format: int32
+      description: "A complex element consisting of: \n\n* lastSentDateTime - the date and time the user last sent an envelope. \n* lastSignedDateTime - the date and time the user last signed an envelope.\n* sentCount - the number of envelopes the user has sent.\n* signedCount - the number of envelopes the user has signed."
+      x-ds-definition-name: usageHistory
+      x-ms-summary: "A complex element consisting of: \n\n* lastSentDateTime - the date and time the user last sent an envelope. \n* lastSignedDateTime - the date and time the user last signed an envelope.\n* sentCount - the number of envelopes the user has sent.\n* signedCount - the number of envelopes the user has signed."
 externalDocs:
   description: See the DocuSign REST API Guide for more information.
   url: https://docs.docusign.com/esign

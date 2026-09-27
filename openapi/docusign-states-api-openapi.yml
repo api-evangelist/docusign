@@ -93,17 +93,21 @@ paths:
       x-ds-in-sdk: true
 components:
   schemas:
-    GlobalStates:
+    ApiError:
       type: object
       properties:
-        states:
-          type: array
-          description: A list of states.
-          items:
-            $ref: '#/components/schemas/State'
-      description: Contains a list of supported states.
-      x-ds-definition-name: GlobalStates
-      x-ms-summary: Contains a list of supported states.
+        errorCode:
+          type: string
+          description: The code associated with the error condition.
+        message:
+          type: string
+          description: A brief message describing the error condition.
+        referenceId:
+          type: string
+          description: ''
+      description: This object describes errors that occur. It is valid only for responses and ignored in requests.
+      x-ds-definition-name: ApiError
+      x-ms-summary: This object describes errors that occur. It is valid only for responses and ignored in requests.
     State:
       type: object
       properties:
@@ -304,21 +308,17 @@ components:
       description: Contains information about a state.
       x-ds-definition-name: State
       x-ms-summary: Contains information about a state.
-    ApiError:
+    GlobalStates:
       type: object
       properties:
-        errorCode:
-          type: string
-          description: The code associated with the error condition.
-        message:
-          type: string
-          description: A brief message describing the error condition.
-        referenceId:
-          type: string
-          description: ''
-      description: This object describes errors that occur. It is valid only for responses and ignored in requests.
-      x-ds-definition-name: ApiError
-      x-ms-summary: This object describes errors that occur. It is valid only for responses and ignored in requests.
+        states:
+          type: array
+          description: A list of states.
+          items:
+            $ref: '#/components/schemas/State'
+      description: Contains a list of supported states.
+      x-ds-definition-name: GlobalStates
+      x-ms-summary: Contains a list of supported states.
   securitySchemes:
     Bearer:
       type: apiKey

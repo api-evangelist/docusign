@@ -198,32 +198,18 @@ paths:
       x-codegen-request-body-name: templateCustomFields
 components:
   schemas:
-    textCustomField:
+    errorDetails:
       type: object
       properties:
-        configurationType:
+        errorCode:
           type: string
-          description: If merge field's are being used, specifies the type of the merge field. The only  supported value is **salesforce**.
-        errorDetails:
-          $ref: '#/components/schemas/errorDetails'
-        fieldId:
+          description: An error code associated with the error.
+        message:
           type: string
-          description: An ID used to specify a custom field.
-        name:
-          type: string
-          description: The name of the custom field.
-        required:
-          type: string
-          description: When set to **true**, the signer is required to fill out this tab
-        show:
-          type: string
-          description: 'A boolean indicating if the value should be displayed.  If this value is set to **true**, the custom field is displayed at the top of the certificate of completion. If this value is left blank/ or set to **false**, then it does not appear in the certificate of completion. '
-        value:
-          type: string
-          description: The value of the custom field.
-      description: ''
-      x-ds-definition-name: textCustomField
-      x-ms-summary: ''
+          description: A short error message.
+      description: This object describes errors that occur. It is only valid for responses, and ignored in requests.
+      x-ds-definition-name: errorDetails
+      x-ms-summary: This object describes errors that occur. It is only valid for responses, and ignored in requests.
     listCustomField:
       type: object
       properties:
@@ -258,34 +244,6 @@ components:
       description: ''
       x-ds-definition-name: listCustomField
       x-ms-summary: ''
-    errorDetails:
-      type: object
-      properties:
-        errorCode:
-          type: string
-          description: An error code associated with the error.
-        message:
-          type: string
-          description: A short error message.
-      description: This object describes errors that occur. It is only valid for responses, and ignored in requests.
-      x-ds-definition-name: errorDetails
-      x-ms-summary: This object describes errors that occur. It is only valid for responses, and ignored in requests.
-    templateCustomFields:
-      type: object
-      properties:
-        listCustomFields:
-          type: array
-          description: An array of list custom fields.
-          items:
-            $ref: '#/components/schemas/listCustomField'
-        textCustomFields:
-          type: array
-          description: An array of text custom fields.
-          items:
-            $ref: '#/components/schemas/textCustomField'
-      description: ''
-      x-ds-definition-name: templateCustomFields
-      x-ms-summary: ''
     customFields:
       type: object
       properties:
@@ -301,6 +259,48 @@ components:
             $ref: '#/components/schemas/textCustomField'
       description: ''
       x-ds-definition-name: customFields
+      x-ms-summary: ''
+    textCustomField:
+      type: object
+      properties:
+        configurationType:
+          type: string
+          description: If merge field's are being used, specifies the type of the merge field. The only  supported value is **salesforce**.
+        errorDetails:
+          $ref: '#/components/schemas/errorDetails'
+        fieldId:
+          type: string
+          description: An ID used to specify a custom field.
+        name:
+          type: string
+          description: The name of the custom field.
+        required:
+          type: string
+          description: When set to **true**, the signer is required to fill out this tab
+        show:
+          type: string
+          description: 'A boolean indicating if the value should be displayed.  If this value is set to **true**, the custom field is displayed at the top of the certificate of completion. If this value is left blank/ or set to **false**, then it does not appear in the certificate of completion. '
+        value:
+          type: string
+          description: The value of the custom field.
+      description: ''
+      x-ds-definition-name: textCustomField
+      x-ms-summary: ''
+    templateCustomFields:
+      type: object
+      properties:
+        listCustomFields:
+          type: array
+          description: An array of list custom fields.
+          items:
+            $ref: '#/components/schemas/listCustomField'
+        textCustomFields:
+          type: array
+          description: An array of text custom fields.
+          items:
+            $ref: '#/components/schemas/textCustomField'
+      description: ''
+      x-ds-definition-name: templateCustomFields
       x-ms-summary: ''
 externalDocs:
   description: See the DocuSign REST API Guide for more information.

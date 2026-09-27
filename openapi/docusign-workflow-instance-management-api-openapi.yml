@@ -345,42 +345,27 @@ paths:
       x-ds-in-sdk: true
 components:
   schemas:
-    WorkflowInstanceState:
-      type: string
-      description: Current workflow instance state (`completed`, `failed`, `In-progress`)
-      enum:
-      - Created
-      - In Progress
-      - Completed
-      - Failed
-      - Canceled
-      x-ds-definition-name: WorkflowInstanceState
-      x-ms-summary: Current workflow instance state (`completed`, `failed`, `In-progress`)
-    GetConfigurationInstancesResponse:
+    CancelResponse:
+      required:
+      - message
       type: object
       properties:
-        configInstances:
-          type: array
-          description: ''
-          items:
-            type: object
-            properties:
-              savedValues:
-                type: object
-                additionalProperties: true
-              stepId:
-                type: string
-                format: uuid
-        count:
-          type: number
-          description: Total number of definitions returned
-        workflowDefinitionId:
+        code:
           type: string
-          description: Workflow definition ID.
-          format: uuid
-      description: ''
-      x-ds-definition-name: GetConfigurationInstancesResponse
-      x-ms-summary: ''
+          description: Error code message
+        message:
+          type: string
+          description: Human-readable description of the error.
+      description: Cancel workflow instance response.
+      x-ds-definition-name: CancelResponse
+      x-ms-summary: Cancel workflow instance response.
+    AccountId:
+      type: string
+      description: Account Id
+      format: uuid
+      example: 00000000-0000-0000-0000-000000000000
+      x-ds-definition-name: AccountId
+      x-ms-summary: Account Id
     ErrorCodes:
       type: string
       description: Internal Error Codes
@@ -405,31 +390,42 @@ components:
       - ERR_10999
       x-ds-definition-name: ErrorCodes
       x-ms-summary: Internal Error Codes
-    CancelResponse:
-      required:
-      - message
+    StartedByInstance:
       type: object
       properties:
-        code:
+        startedById:
+          $ref: '#/components/schemas/AowUUIDString'
+        startedByName:
           type: string
-          description: Error code message
-        message:
+          description: The user name of the person who starts a workflow Instance
+        startedByType:
           type: string
-          description: Human-readable description of the error.
-      description: Cancel workflow instance response.
-      x-ds-definition-name: CancelResponse
-      x-ms-summary: Cancel workflow instance response.
-    WorkflowInstanceId:
+          description: ''
+          enum:
+          - Anonymous
+          - Preparer
+          - Participant
+          - OnBehalfOf
+      description: The started by information for a workflow instance
+      x-ds-definition-name: StartedByInstance
+      x-ms-summary: The started by information for a workflow instance
+    WorkflowInstanceState:
       type: string
-      description: 'Workflow instance ID.
-
-        A string in UUID format: 4a6d6a08-xxxx-xxxx-xxxx-bae4fecc99c8'
-      format: uuid
-      example: 00000000-0000-0000-0000-000000000000
-      x-ds-definition-name: WorkflowInstanceId
-      x-ms-summary: 'Workflow instance ID.
-
-        A string in UUID format: 4a6d6a08-xxxx-xxxx-xxxx-bae4fecc99c8'
+      description: Current workflow instance state (`completed`, `failed`, `In-progress`)
+      enum:
+      - Created
+      - In Progress
+      - Completed
+      - Failed
+      - Canceled
+      x-ds-definition-name: WorkflowInstanceState
+      x-ms-summary: Current workflow instance state (`completed`, `failed`, `In-progress`)
+    WorkflowDateTime:
+      type: string
+      description: A date-time string.
+      format: date-time
+      x-ds-definition-name: WorkflowDateTime
+      x-ms-summary: A date-time string.
     TemplateId:
       type: string
       description: Workflow definition ID.
@@ -481,6 +477,17 @@ components:
       format: uuid
       x-ds-definition-name: AowUUIDString
       x-ms-summary: 'A string in UUID format: 4a6d6a08-xxxx-xxxx-xxxx-bae4fecc99c8'
+    WorkflowInstanceId:
+      type: string
+      description: 'Workflow instance ID.
+
+        A string in UUID format: 4a6d6a08-xxxx-xxxx-xxxx-bae4fecc99c8'
+      format: uuid
+      example: 00000000-0000-0000-0000-000000000000
+      x-ds-definition-name: WorkflowInstanceId
+      x-ms-summary: 'Workflow instance ID.
+
+        A string in UUID format: 4a6d6a08-xxxx-xxxx-xxxx-bae4fecc99c8'
     ProgressInstance:
       type: object
       properties:
@@ -496,25 +503,6 @@ components:
       description: The progress information for a workflow instance
       x-ds-definition-name: ProgressInstance
       x-ms-summary: The progress information for a workflow instance
-    StartedByInstance:
-      type: object
-      properties:
-        startedById:
-          $ref: '#/components/schemas/AowUUIDString'
-        startedByName:
-          type: string
-          description: The user name of the person who starts a workflow Instance
-        startedByType:
-          type: string
-          description: ''
-          enum:
-          - Anonymous
-          - Preparer
-          - Participant
-          - OnBehalfOf
-      description: The started by information for a workflow instance
-      x-ds-definition-name: StartedByInstance
-      x-ms-summary: The started by information for a workflow instance
     WorkflowCreatorId:
       type: string
       description: The Docusign Admin user ID who has the ability to create workflow definitions.
@@ -522,13 +510,6 @@ components:
       example: 00000000-0000-0000-0000-000000000000
       x-ds-definition-name: WorkflowCreatorId
       x-ms-summary: The Docusign Admin user ID who has the ability to create workflow definitions.
-    AccountId:
-      type: string
-      description: Account Id
-      format: uuid
-      example: 00000000-0000-0000-0000-000000000000
-      x-ds-definition-name: AccountId
-      x-ms-summary: Account Id
     ErrorResponse:
       type: object
       properties:
@@ -540,12 +521,31 @@ components:
       description: Returns error with a status message
       x-ds-definition-name: ErrorResponse
       x-ms-summary: Returns error with a status message
-    WorkflowDateTime:
-      type: string
-      description: A date-time string.
-      format: date-time
-      x-ds-definition-name: WorkflowDateTime
-      x-ms-summary: A date-time string.
+    GetConfigurationInstancesResponse:
+      type: object
+      properties:
+        configInstances:
+          type: array
+          description: ''
+          items:
+            type: object
+            properties:
+              savedValues:
+                type: object
+                additionalProperties: true
+              stepId:
+                type: string
+                format: uuid
+        count:
+          type: number
+          description: Total number of definitions returned
+        workflowDefinitionId:
+          type: string
+          description: Workflow definition ID.
+          format: uuid
+      description: ''
+      x-ds-definition-name: GetConfigurationInstancesResponse
+      x-ms-summary: ''
   securitySchemes:
     DSAuth:
       type: oauth2

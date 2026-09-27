@@ -154,6 +154,15 @@ paths:
       x-ds-in-sdk: true
 components:
   schemas:
+    billingPaymentRequest:
+      type: object
+      properties:
+        paymentAmount:
+          type: string
+          description: The payment amount for the past due invoices. This value must match the pastDueBalance value retrieved using Get Past Due Invoices.
+      description: ''
+      x-ds-definition-name: billingPaymentRequest
+      x-ms-summary: ''
     billingPaymentItem:
       type: object
       properties:
@@ -177,6 +186,18 @@ components:
       description: ''
       x-ds-definition-name: billingPaymentItem
       x-ms-summary: ''
+    errorDetails:
+      type: object
+      properties:
+        errorCode:
+          type: string
+          description: An error code associated with the error.
+        message:
+          type: string
+          description: A short error message.
+      description: This object describes errors that occur. It is only valid for responses, and ignored in requests.
+      x-ds-definition-name: errorDetails
+      x-ms-summary: This object describes errors that occur. It is only valid for responses, and ignored in requests.
     billingPayment:
       type: object
       properties:
@@ -192,6 +213,17 @@ components:
       description: Contains information on a billing plan.
       x-ds-definition-name: billingPayment
       x-ms-summary: Contains information on a billing plan.
+    billingPaymentResponse:
+      type: object
+      properties:
+        billingPayments:
+          type: array
+          description: 'Reserved: TBD'
+          items:
+            $ref: '#/components/schemas/billingPayment'
+      description: Defines an billing payment response object.
+      x-ds-definition-name: billingPaymentResponse
+      x-ms-summary: Defines an billing payment response object.
     billingPaymentsResponse:
       type: object
       properties:
@@ -209,38 +241,6 @@ components:
       description: Defines a billing payments response object.
       x-ds-definition-name: billingPaymentsResponse
       x-ms-summary: Defines a billing payments response object.
-    billingPaymentResponse:
-      type: object
-      properties:
-        billingPayments:
-          type: array
-          description: 'Reserved: TBD'
-          items:
-            $ref: '#/components/schemas/billingPayment'
-      description: Defines an billing payment response object.
-      x-ds-definition-name: billingPaymentResponse
-      x-ms-summary: Defines an billing payment response object.
-    errorDetails:
-      type: object
-      properties:
-        errorCode:
-          type: string
-          description: An error code associated with the error.
-        message:
-          type: string
-          description: A short error message.
-      description: This object describes errors that occur. It is only valid for responses, and ignored in requests.
-      x-ds-definition-name: errorDetails
-      x-ms-summary: This object describes errors that occur. It is only valid for responses, and ignored in requests.
-    billingPaymentRequest:
-      type: object
-      properties:
-        paymentAmount:
-          type: string
-          description: The payment amount for the past due invoices. This value must match the pastDueBalance value retrieved using Get Past Due Invoices.
-      description: ''
-      x-ds-definition-name: billingPaymentRequest
-      x-ms-summary: ''
 externalDocs:
   description: See the DocuSign REST API Guide for more information.
   url: https://docs.docusign.com/esign

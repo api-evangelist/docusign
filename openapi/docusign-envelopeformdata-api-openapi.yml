@@ -53,59 +53,6 @@ paths:
       x-ds-in-sdk: true
 components:
   schemas:
-    envelopeFormData:
-      type: object
-      properties:
-        emailSubject:
-          type: string
-          description: 'Specifies the subject of the email that is sent to all recipients.
-
-
-            See [ML:Template Email Subject Merge Fields] for information about adding merge field information to the email subject.'
-        envelopeId:
-          type: string
-          description: 'The envelope''s GUID. Eg 93be49ab-afa0-4adf-933c-f752070d71ec '
-        formData:
-          type: array
-          description: ''
-          items:
-            $ref: '#/components/schemas/nameValue'
-        prefillFormData:
-          type: array
-          description: ''
-          items:
-            $ref: '#/components/schemas/nameValue'
-        recipientFormData:
-          type: array
-          description: ''
-          items:
-            $ref: '#/components/schemas/recipientFormData'
-        sentDateTime:
-          type: string
-          description: The UTC DateTime when the envelope was sent. Read only.
-        status:
-          type: string
-          description: Item status. <!-- TODO -->
-      description: ''
-      x-ds-definition-name: envelopeFormData
-      x-ms-summary: ''
-    nameValue:
-      type: object
-      properties:
-        errorDetails:
-          $ref: '#/components/schemas/errorDetails'
-        name:
-          type: string
-          description: The name or key of a name/value pair.
-        originalValue:
-          type: string
-          description: 'The initial value of the tab when it was sent to the recipient. '
-        value:
-          type: string
-          description: The value field of a name/value pair.
-      description: ''
-      x-ds-definition-name: nameValue
-      x-ms-summary: ''
     recipientFormData:
       type: object
       properties:
@@ -150,6 +97,59 @@ components:
       description: This object describes errors that occur. It is only valid for responses, and ignored in requests.
       x-ds-definition-name: errorDetails
       x-ms-summary: This object describes errors that occur. It is only valid for responses, and ignored in requests.
+    nameValue:
+      type: object
+      properties:
+        errorDetails:
+          $ref: '#/components/schemas/errorDetails'
+        name:
+          type: string
+          description: The name or key of a name/value pair.
+        originalValue:
+          type: string
+          description: 'The initial value of the tab when it was sent to the recipient. '
+        value:
+          type: string
+          description: The value field of a name/value pair.
+      description: ''
+      x-ds-definition-name: nameValue
+      x-ms-summary: ''
+    envelopeFormData:
+      type: object
+      properties:
+        emailSubject:
+          type: string
+          description: 'Specifies the subject of the email that is sent to all recipients.
+
+
+            See [ML:Template Email Subject Merge Fields] for information about adding merge field information to the email subject.'
+        envelopeId:
+          type: string
+          description: 'The envelope''s GUID. Eg 93be49ab-afa0-4adf-933c-f752070d71ec '
+        formData:
+          type: array
+          description: ''
+          items:
+            $ref: '#/components/schemas/nameValue'
+        prefillFormData:
+          type: array
+          description: ''
+          items:
+            $ref: '#/components/schemas/nameValue'
+        recipientFormData:
+          type: array
+          description: ''
+          items:
+            $ref: '#/components/schemas/recipientFormData'
+        sentDateTime:
+          type: string
+          description: The UTC DateTime when the envelope was sent. Read only.
+        status:
+          type: string
+          description: Item status. <!-- TODO -->
+      description: ''
+      x-ds-definition-name: envelopeFormData
+      x-ms-summary: ''
 externalDocs:
   description: See the DocuSign REST API Guide for more information.
   url: https://docs.docusign.com/esign

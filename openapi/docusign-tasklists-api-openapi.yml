@@ -293,27 +293,6 @@ paths:
       x-ds-in-sdk: true
 components:
   schemas:
-    TaskListForCreate:
-      type: object
-      properties:
-        taskListTemplateId:
-          type: integer
-          description: (Required) The ID of the task list template.
-          format: int32
-      description: Contains information about the task list template to use to create the new task list.
-      x-ds-definition-name: TaskListForCreate
-      x-ms-summary: Contains information about the task list template to use to create the new task list.
-    TaskListSummaryList:
-      type: object
-      properties:
-        taskListSummaries:
-          type: array
-          description: A list of task list summaries.
-          items:
-            $ref: '#/components/schemas/TaskListSummary'
-      description: Contains a list of task list summaries.
-      x-ds-definition-name: TaskListSummaryList
-      x-ms-summary: Contains a list of task list summaries.
     ApiError:
       type: object
       properties:
@@ -329,6 +308,73 @@ components:
       description: This object describes errors that occur. It is valid only for responses and ignored in requests.
       x-ds-definition-name: ApiError
       x-ms-summary: This object describes errors that occur. It is valid only for responses and ignored in requests.
+    TaskListForCreate:
+      type: object
+      properties:
+        taskListTemplateId:
+          type: integer
+          description: (Required) The ID of the task list template.
+          format: int32
+      description: Contains information about the task list template to use to create the new task list.
+      x-ds-definition-name: TaskListForCreate
+      x-ms-summary: Contains information about the task list template to use to create the new task list.
+    TaskListSummary:
+      type: object
+      properties:
+        taskListId:
+          type: integer
+          description: The ID of the task list.
+          format: int32
+          readOnly: true
+        name:
+          type: string
+          description: The name of the task list.
+          readOnly: true
+        taskListTemplateId:
+          type: integer
+          description: The ID of the task list template.
+          format: int32
+          readOnly: true
+        submittedForReviewDate:
+          type: string
+          description: The UTC DateTime when the task list was submitted for review.
+          format: date-time
+          readOnly: true
+        approvalDate:
+          type: string
+          description: The UTC DateTime when the task list was approved.
+          format: date-time
+          readOnly: true
+        rejectedDate:
+          type: string
+          description: The date on which the reviewer rejected the task list.
+          format: date-time
+          readOnly: true
+        createdDate:
+          type: string
+          description: 'The UTC date and time when the task list was created. This is a read-only value that the service assigns.
+
+
+            Example: 2019-07-17T17:45:42.783Z'
+          format: date-time
+          readOnly: true
+        approvedByUserId:
+          type: integer
+          description: The ID of the user who approved the task list.
+          format: int32
+          readOnly: true
+        rejectedByUserId:
+          type: integer
+          description: The ID of the user who rejected the task list.
+          format: int32
+          readOnly: true
+        comment:
+          type: string
+          description: Contains a user comment about the task list.
+          readOnly: true
+      description: Contains information about a task list.
+      x-ds-definition-name: TaskListSummary
+      x-ms-summary: Contains information about a task list.
     TaskSummary:
       type: object
       properties:
@@ -394,63 +440,6 @@ components:
       description: Contains information about a task list.
       x-ds-definition-name: TaskSummary
       x-ms-summary: Contains information about a task list.
-    TaskListSummary:
-      type: object
-      properties:
-        taskListId:
-          type: integer
-          description: The ID of the task list.
-          format: int32
-          readOnly: true
-        name:
-          type: string
-          description: The name of the task list.
-          readOnly: true
-        taskListTemplateId:
-          type: integer
-          description: The ID of the task list template.
-          format: int32
-          readOnly: true
-        submittedForReviewDate:
-          type: string
-          description: The UTC DateTime when the task list was submitted for review.
-          format: date-time
-          readOnly: true
-        approvalDate:
-          type: string
-          description: The UTC DateTime when the task list was approved.
-          format: date-time
-          readOnly: true
-        rejectedDate:
-          type: string
-          description: The date on which the reviewer rejected the task list.
-          format: date-time
-          readOnly: true
-        createdDate:
-          type: string
-          description: 'The UTC date and time when the task list was created. This is a read-only value that the service assigns.
-
-
-            Example: 2019-07-17T17:45:42.783Z'
-          format: date-time
-          readOnly: true
-        approvedByUserId:
-          type: integer
-          description: The ID of the user who approved the task list.
-          format: int32
-          readOnly: true
-        rejectedByUserId:
-          type: integer
-          description: The ID of the user who rejected the task list.
-          format: int32
-          readOnly: true
-        comment:
-          type: string
-          description: Contains a user comment about the task list.
-          readOnly: true
-      description: Contains information about a task list.
-      x-ds-definition-name: TaskListSummary
-      x-ms-summary: Contains information about a task list.
     TaskList:
       type: object
       properties:
@@ -503,6 +492,17 @@ components:
       description: This response object contains details about the new task list.
       x-ds-definition-name: TaskList
       x-ms-summary: This response object contains details about the new task list.
+    TaskListSummaryList:
+      type: object
+      properties:
+        taskListSummaries:
+          type: array
+          description: A list of task list summaries.
+          items:
+            $ref: '#/components/schemas/TaskListSummary'
+      description: Contains a list of task list summaries.
+      x-ds-definition-name: TaskListSummaryList
+      x-ms-summary: Contains a list of task list summaries.
   securitySchemes:
     Bearer:
       type: apiKey

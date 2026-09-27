@@ -329,85 +329,18 @@ paths:
       x-ds-in-sdk: true
 components:
   schemas:
-    connectFailureResult:
+    errorDetails:
       type: object
       properties:
-        configId:
+        errorCode:
           type: string
-          description: Reserved for DocuSign.
-        configUrl:
+          description: An error code associated with the error.
+        message:
           type: string
-          description: 'Reserved for DocuSign.
-
-            '
-        envelopeId:
-          type: string
-          description: The envelope ID of the envelope status that failed to post.
-        status:
-          type: string
-          description: Connection status.
-        statusMessage:
-          type: string
-          description: Connection status message.
-      description: ''
-      x-ds-definition-name: connectFailureResult
-      x-ms-summary: ''
-    connectFailureFilter:
-      type: object
-      properties:
-        envelopeIds:
-          type: array
-          description: ''
-          items:
-            type: string
-        synchronous:
-          type: string
-          description: ''
-      description: ''
-      x-ds-definition-name: connectFailureFilter
-      x-ms-summary: ''
-    connectLogs:
-      type: object
-      properties:
-        failures:
-          type: array
-          description: An array of containing failure information from the Connect failure log.
-          items:
-            $ref: '#/components/schemas/connectLog'
-        logs:
-          type: array
-          description: 'A complex type containing Connect log information. It is divided into two sections, one for regular logs and one for Connect failures. '
-          items:
-            $ref: '#/components/schemas/connectLog'
-        totalRecords:
-          type: string
-          description: Record count.
-        type:
-          type: string
-          description: 'Type of the user. Valid values: type_owner, type_participant.'
-      description: ''
-      x-ds-definition-name: connectLogs
-      x-ms-summary: ''
-    connectDebugLog:
-      type: object
-      properties:
-        connectConfig:
-          type: string
-          description: ''
-        errorDetails:
-          $ref: '#/components/schemas/errorDetails'
-        eventDateTime:
-          type: string
-          description: ''
-        eventDescription:
-          type: string
-          description: ''
-        payload:
-          type: string
-          description: ''
-      description: ''
-      x-ds-definition-name: connectDebugLog
-      x-ms-summary: ''
+          description: A short error message.
+      description: This object describes errors that occur. It is only valid for responses, and ignored in requests.
+      x-ds-definition-name: errorDetails
+      x-ms-summary: This object describes errors that occur. It is only valid for responses, and ignored in requests.
     connectLog:
       type: object
       properties:
@@ -473,18 +406,85 @@ components:
       description: ''
       x-ds-definition-name: connectLog
       x-ms-summary: ''
-    errorDetails:
+    connectFailureFilter:
       type: object
       properties:
-        errorCode:
+        envelopeIds:
+          type: array
+          description: ''
+          items:
+            type: string
+        synchronous:
           type: string
-          description: An error code associated with the error.
-        message:
+          description: ''
+      description: ''
+      x-ds-definition-name: connectFailureFilter
+      x-ms-summary: ''
+    connectDebugLog:
+      type: object
+      properties:
+        connectConfig:
           type: string
-          description: A short error message.
-      description: This object describes errors that occur. It is only valid for responses, and ignored in requests.
-      x-ds-definition-name: errorDetails
-      x-ms-summary: This object describes errors that occur. It is only valid for responses, and ignored in requests.
+          description: ''
+        errorDetails:
+          $ref: '#/components/schemas/errorDetails'
+        eventDateTime:
+          type: string
+          description: ''
+        eventDescription:
+          type: string
+          description: ''
+        payload:
+          type: string
+          description: ''
+      description: ''
+      x-ds-definition-name: connectDebugLog
+      x-ms-summary: ''
+    connectLogs:
+      type: object
+      properties:
+        failures:
+          type: array
+          description: An array of containing failure information from the Connect failure log.
+          items:
+            $ref: '#/components/schemas/connectLog'
+        logs:
+          type: array
+          description: 'A complex type containing Connect log information. It is divided into two sections, one for regular logs and one for Connect failures. '
+          items:
+            $ref: '#/components/schemas/connectLog'
+        totalRecords:
+          type: string
+          description: Record count.
+        type:
+          type: string
+          description: 'Type of the user. Valid values: type_owner, type_participant.'
+      description: ''
+      x-ds-definition-name: connectLogs
+      x-ms-summary: ''
+    connectFailureResult:
+      type: object
+      properties:
+        configId:
+          type: string
+          description: Reserved for DocuSign.
+        configUrl:
+          type: string
+          description: 'Reserved for DocuSign.
+
+            '
+        envelopeId:
+          type: string
+          description: The envelope ID of the envelope status that failed to post.
+        status:
+          type: string
+          description: Connection status.
+        statusMessage:
+          type: string
+          description: Connection status message.
+      description: ''
+      x-ds-definition-name: connectFailureResult
+      x-ms-summary: ''
     connectFailureResults:
       type: object
       properties:

@@ -178,6 +178,39 @@ paths:
       x-ds-in-sdk: true
 components:
   schemas:
+    OASIRR_OrganizationAccountSettingsErrorDataResponse:
+      type: object
+      properties:
+        account_id:
+          type: string
+          description: Select users that are members of the specified account. At least one of `email`, `account_id` or `organization_reserved_domain_id` must be specified.
+        account_name:
+          type: string
+          description: ''
+        error:
+          type: string
+          description: The error number.
+        error_key:
+          type: string
+          description: ''
+        setting_key:
+          type: string
+          description: ''
+      description: ''
+      x-ds-definition-name: OASIRR_OrganizationAccountSettingsErrorDataResponse
+      x-ms-summary: ''
+    OASIRR_ErrorDetails:
+      type: object
+      properties:
+        error:
+          type: string
+          description: The error number.
+        error_description:
+          type: string
+          description: A longer description of the error.
+      description: ''
+      x-ds-definition-name: OASIRR_ErrorDetails
+      x-ms-summary: ''
     OrganizationAccountSettingsImportRequestorResponse:
       type: object
       properties:
@@ -195,39 +228,6 @@ components:
           description: The email address.
       description: ''
       x-ds-definition-name: OrganizationAccountSettingsImportRequestorResponse
-      x-ms-summary: ''
-    OrganizationAccountSettingsImportResultResponse:
-      type: object
-      properties:
-        id:
-          type: string
-          description: ''
-          format: uuid
-          example: 00000000-0000-0000-0000-000000000000
-        site_id:
-          type: integer
-          description: ''
-          format: int32
-        url:
-          type: string
-          description: ''
-        number_processed_accounts:
-          type: integer
-          description: ''
-          format: int64
-        error_details:
-          $ref: '#/components/schemas/OASIRR_ErrorDetails'
-        processing_issues_by_account:
-          type: array
-          description: ''
-          items:
-            $ref: '#/components/schemas/OASIRR_OrganizationAccountSettingsErrorDataResponse'
-        number_unprocessed_accounts:
-          type: integer
-          description: ''
-          format: int64
-      description: ''
-      x-ds-definition-name: OrganizationAccountSettingsImportResultResponse
       x-ms-summary: ''
     OrganizationAccountSettingsImportResponse:
       type: object
@@ -292,38 +292,38 @@ components:
       description: ''
       x-ds-definition-name: OrganizationAccountSettingsImportResponse
       x-ms-summary: ''
-    OASIRR_ErrorDetails:
+    OrganizationAccountSettingsImportResultResponse:
       type: object
       properties:
-        error:
+        id:
           type: string
-          description: The error number.
-        error_description:
+          description: ''
+          format: uuid
+          example: 00000000-0000-0000-0000-000000000000
+        site_id:
+          type: integer
+          description: ''
+          format: int32
+        url:
           type: string
-          description: A longer description of the error.
+          description: ''
+        number_processed_accounts:
+          type: integer
+          description: ''
+          format: int64
+        error_details:
+          $ref: '#/components/schemas/OASIRR_ErrorDetails'
+        processing_issues_by_account:
+          type: array
+          description: ''
+          items:
+            $ref: '#/components/schemas/OASIRR_OrganizationAccountSettingsErrorDataResponse'
+        number_unprocessed_accounts:
+          type: integer
+          description: ''
+          format: int64
       description: ''
-      x-ds-definition-name: OASIRR_ErrorDetails
-      x-ms-summary: ''
-    OASIRR_OrganizationAccountSettingsErrorDataResponse:
-      type: object
-      properties:
-        account_id:
-          type: string
-          description: Select users that are members of the specified account. At least one of `email`, `account_id` or `organization_reserved_domain_id` must be specified.
-        account_name:
-          type: string
-          description: ''
-        error:
-          type: string
-          description: The error number.
-        error_key:
-          type: string
-          description: ''
-        setting_key:
-          type: string
-          description: ''
-      description: ''
-      x-ds-definition-name: OASIRR_OrganizationAccountSettingsErrorDataResponse
+      x-ds-definition-name: OrganizationAccountSettingsImportResultResponse
       x-ms-summary: ''
   securitySchemes:
     accessCode:
