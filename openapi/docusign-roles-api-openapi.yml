@@ -516,6 +516,40 @@ components:
       description: This request object contains the details to use for the update.
       x-ds-definition-name: RoleForUpdate
       x-ms-summary: This request object contains the details to use for the update.
+    RoleSummaryList:
+      type: object
+      properties:
+        roles:
+          type: array
+          description: An array of `role` objects.
+          items:
+            $ref: '#/components/schemas/RoleSummary'
+        resultSetSize:
+          type: integer
+          description: The number of results returned in this response.
+          format: int32
+        startPosition:
+          type: integer
+          description: The starting zero-based index position of the results set. When this property is used as a query parameter, the default value is `0`.
+          format: int32
+        endPosition:
+          type: integer
+          description: The last zero-based index position in the result set.
+          format: int32
+          readOnly: true
+        nextUri:
+          type: string
+          description: The URI for the next chunk of records based on the search request. This property is `null` for the last set of search results.
+        priorUri:
+          type: string
+          description: The URI for the previous chunk of records based on the search request. This property is `null` for the first set of search results.
+        totalRowCount:
+          type: integer
+          description: ''
+          format: int32
+      description: This complex type contains details about the roles that are associated with an account.
+      x-ds-definition-name: RoleSummaryList
+      x-ms-summary: This complex type contains details about the roles that are associated with an account.
     ApiError:
       type: object
       properties:
@@ -563,43 +597,6 @@ components:
       description: Contains details about a role.
       x-ds-definition-name: RoleSummary
       x-ms-summary: Contains details about a role.
-    Role:
-      type: object
-      properties:
-        roleId:
-          type: integer
-          description: The ID of the company role assigned to the user.
-          format: int32
-        legacyRoleId:
-          type: string
-          description: This field is deprecated in Rooms Version 6.
-        name:
-          type: string
-          description: The name of the role.
-        isDefaultForAdmin:
-          type: boolean
-          description: When **true,** the role is the default for account administrators.
-        isExternal:
-          type: boolean
-          description: When **true,** the role is an external role. You assign external roles to people from outside your company when you invite them into a room.
-        createdDate:
-          type: string
-          description: 'The UTC date and time when the item was created. This is a read-only value that the service assigns.
-
-
-            Example: `2019-07-17T17:45:42.783Z`
-
-
-            '
-          format: date-time
-        isAssigned:
-          type: boolean
-          description: When **true,** indicates that this role is currently assigned to a user.
-        permissions:
-          $ref: '#/components/schemas/Permissions'
-      description: Contains details about a company role.
-      x-ds-definition-name: Role
-      x-ms-summary: Contains details about a company role.
     Permissions:
       type: object
       properties:
@@ -807,40 +804,6 @@ components:
       description: Contains details about permissions.
       x-ds-definition-name: Permissions
       x-ms-summary: Contains details about permissions.
-    RoleSummaryList:
-      type: object
-      properties:
-        roles:
-          type: array
-          description: An array of `role` objects.
-          items:
-            $ref: '#/components/schemas/RoleSummary'
-        resultSetSize:
-          type: integer
-          description: The number of results returned in this response.
-          format: int32
-        startPosition:
-          type: integer
-          description: The starting zero-based index position of the results set. When this property is used as a query parameter, the default value is `0`.
-          format: int32
-        endPosition:
-          type: integer
-          description: The last zero-based index position in the result set.
-          format: int32
-          readOnly: true
-        nextUri:
-          type: string
-          description: The URI for the next chunk of records based on the search request. This property is `null` for the last set of search results.
-        priorUri:
-          type: string
-          description: The URI for the previous chunk of records based on the search request. This property is `null` for the first set of search results.
-        totalRowCount:
-          type: integer
-          description: ''
-          format: int32
-      description: This complex type contains details about the roles that are associated with an account.
-      x-ds-definition-name: RoleSummaryList
-      x-ms-summary: This complex type contains details about the roles that are associated with an account.
     RoleForCreate:
       type: object
       properties:
@@ -855,6 +818,43 @@ components:
       description: Contains details about the role that you want to create.
       x-ds-definition-name: RoleForCreate
       x-ms-summary: Contains details about the role that you want to create.
+    Role:
+      type: object
+      properties:
+        roleId:
+          type: integer
+          description: The ID of the company role assigned to the user.
+          format: int32
+        legacyRoleId:
+          type: string
+          description: This field is deprecated in Rooms Version 6.
+        name:
+          type: string
+          description: The name of the role.
+        isDefaultForAdmin:
+          type: boolean
+          description: When **true,** the role is the default for account administrators.
+        isExternal:
+          type: boolean
+          description: When **true,** the role is an external role. You assign external roles to people from outside your company when you invite them into a room.
+        createdDate:
+          type: string
+          description: 'The UTC date and time when the item was created. This is a read-only value that the service assigns.
+
+
+            Example: `2019-07-17T17:45:42.783Z`
+
+
+            '
+          format: date-time
+        isAssigned:
+          type: boolean
+          description: When **true,** indicates that this role is currently assigned to a user.
+        permissions:
+          $ref: '#/components/schemas/Permissions'
+      description: Contains details about a company role.
+      x-ds-definition-name: Role
+      x-ms-summary: Contains details about a company role.
   securitySchemes:
     Bearer:
       type: apiKey

@@ -230,6 +230,122 @@ paths:
       x-ds-in-sdk: true
 components:
   schemas:
+    userAccountManagementGranularInformation:
+      type: object
+      properties:
+        canManageAccountSecuritySettings:
+          type: string
+          description: ''
+        canManageAccountSecuritySettingsMetadata:
+          $ref: '#/components/schemas/settingsMetadata'
+        canManageAccountSettings:
+          type: string
+          description: ''
+        canManageAccountSettingsMetadata:
+          $ref: '#/components/schemas/settingsMetadata'
+        canManageAdmins:
+          type: string
+          description: '**True**
+
+            if the user can manage
+
+            admins.'
+        canManageAdminsMetadata:
+          $ref: '#/components/schemas/settingsMetadata'
+        canManageEnvelopeTransfer:
+          type: string
+          description: ''
+        canManageEnvelopeTransferMetadata:
+          $ref: '#/components/schemas/settingsMetadata'
+        canManageGroups:
+          type: string
+          description: '**True**
+
+            if the user can manage
+
+            groups.'
+        canManageGroupsMetadata:
+          $ref: '#/components/schemas/settingsMetadata'
+        canManageReporting:
+          type: string
+          description: ''
+        canManageReportingMetadata:
+          $ref: '#/components/schemas/settingsMetadata'
+        canManageSharing:
+          type: string
+          description: ''
+        canManageSharingMetadata:
+          $ref: '#/components/schemas/settingsMetadata'
+        canManageSigningGroups:
+          type: string
+          description: ''
+        canManageSigningGroupsMetadata:
+          $ref: '#/components/schemas/settingsMetadata'
+        canManageUsers:
+          type: string
+          description: '**True**
+
+            if the user can manage
+
+            users.'
+        canManageUsersMetadata:
+          $ref: '#/components/schemas/settingsMetadata'
+        canViewUsers:
+          type: string
+          description: ''
+        canViewUsersMetadata:
+          $ref: '#/components/schemas/settingsMetadata'
+      description: Describes which account management capabilities a user has.
+      x-ds-definition-name: userAccountManagementGranularInformation
+      x-ms-summary: Describes which account management capabilities a user has.
+    userInfo:
+      type: object
+      properties:
+        activationAccessCode:
+          type: string
+          description: ''
+        email:
+          type: string
+          description: ''
+        errorDetails:
+          $ref: '#/components/schemas/errorDetails'
+        loginStatus:
+          type: string
+          description: ''
+        sendActivationEmail:
+          type: string
+          description: ''
+        uri:
+          type: string
+          description: ''
+        userId:
+          type: string
+          description: 'The user ID of the user being accessed. Generally this is the user ID of the authenticated user, but if the authenticated user is an Admin on the account, this may be another user the Admin user is accessing. **Note**: For the [GET /v2/accounts/{accountId}/envelopes](https://developers.docusign.com/esign-rest-api/reference/Envelopes/Envelopes/listStatusChanges/#envelopesInformation) method, the `user_id` query parameter is not implemented and should not be used.'
+        userName:
+          type: string
+          description: ''
+        userStatus:
+          type: string
+          description: 'Status of the user''s account. One of:
+
+
+            * ActivationRequired
+
+            * ActivationSent
+
+            * Active
+
+            * Closed
+
+            * Disabled
+
+            '
+        userType:
+          type: string
+          description: ''
+      description: ''
+      x-ds-definition-name: userInfo
+      x-ms-summary: ''
     accountRoleSettings:
       type: object
       properties:
@@ -422,18 +538,6 @@ components:
       description: ''
       x-ds-definition-name: permissionProfileInformation
       x-ms-summary: ''
-    errorDetails:
-      type: object
-      properties:
-        errorCode:
-          type: string
-          description: An error code associated with the error.
-        message:
-          type: string
-          description: A short error message.
-      description: This object describes errors that occur. It is only valid for responses, and ignored in requests.
-      x-ds-definition-name: errorDetails
-      x-ms-summary: This object describes errors that occur. It is only valid for responses, and ignored in requests.
     nameValue:
       type: object
       properties:
@@ -451,85 +555,52 @@ components:
       description: ''
       x-ds-definition-name: nameValue
       x-ms-summary: ''
-    permissionProfile:
+    addressInformation_v2:
       type: object
       properties:
-        modifiedByUsername:
+        address1:
+          type: string
+          description: 'First Line of the address.
+
+            Maximum length: 100 characters.'
+        address2:
+          type: string
+          description: 'Second Line of the address.
+
+            Maximum length: 100 characters.'
+        city:
           type: string
           description: ''
-        modifiedDateTime:
+        country:
+          type: string
+          description: Specifies the country associated with the address.
+        fax:
           type: string
           description: ''
-        permissionProfileId:
+        phone:
           type: string
           description: ''
-        permissionProfileName:
+        postalCode:
           type: string
           description: ''
-        settings:
-          $ref: '#/components/schemas/accountRoleSettings'
-        userCount:
+        stateOrProvince:
           type: string
-          description: ''
-        users:
-          type: array
-          description: ''
-          items:
-            $ref: '#/components/schemas/userInformation'
+          description: The state or province associated with the address.
       description: ''
-      x-ds-definition-name: permissionProfile
+      x-ds-definition-name: addressInformation_v2
       x-ms-summary: ''
-    group:
+    errorDetails:
       type: object
       properties:
-        errorDetails:
-          $ref: '#/components/schemas/errorDetails'
-        groupId:
+        errorCode:
           type: string
-          description: The DocuSign group ID for the group.
-        groupName:
+          description: An error code associated with the error.
+        message:
           type: string
-          description: The name of the group.
-        groupType:
-          type: string
-          description: The group type.
-        permissionProfileId:
-          type: string
-          description: The ID of the permission profile associated with the group.
-        users:
-          type: array
-          description: List of users in the group.
-          items:
-            $ref: '#/components/schemas/userInfo'
-      description: Information about groups.
-      x-ds-definition-name: group
-      x-ms-summary: Information about groups.
-    settingsMetadata:
-      type: object
-      properties:
-        is21CFRPart11:
-          type: string
-          description: When set to **true**, indicates that this module is enabled on the account.
-        options:
-          type: array
-          description: ''
-          items:
-            type: string
-        rights:
-          type: string
-          description: ''
-        uiHint:
-          type: string
-          description: ''
-        uiOrder:
-          type: string
-          description: ''
-        uiType:
-          type: string
-          description: ''
-      description: ''
-      x-ds-definition-name: settingsMetadata
-      x-ms-summary: ''
+          description: A short error message.
+      description: This object describes errors that occur. It is only valid for responses, and ignored in requests.
+      x-ds-definition-name: errorDetails
+      x-ms-summary: This object describes errors that occur. It is only valid for responses, and ignored in requests.
     userInformation:
       type: object
       properties:
@@ -667,156 +738,6 @@ components:
       description: ''
       x-ds-definition-name: userInformation
       x-ms-summary: ''
-    addressInformation_v2:
-      type: object
-      properties:
-        address1:
-          type: string
-          description: 'First Line of the address.
-
-            Maximum length: 100 characters.'
-        address2:
-          type: string
-          description: 'Second Line of the address.
-
-            Maximum length: 100 characters.'
-        city:
-          type: string
-          description: ''
-        country:
-          type: string
-          description: Specifies the country associated with the address.
-        fax:
-          type: string
-          description: ''
-        phone:
-          type: string
-          description: ''
-        postalCode:
-          type: string
-          description: ''
-        stateOrProvince:
-          type: string
-          description: The state or province associated with the address.
-      description: ''
-      x-ds-definition-name: addressInformation_v2
-      x-ms-summary: ''
-    userInfo:
-      type: object
-      properties:
-        activationAccessCode:
-          type: string
-          description: ''
-        email:
-          type: string
-          description: ''
-        errorDetails:
-          $ref: '#/components/schemas/errorDetails'
-        loginStatus:
-          type: string
-          description: ''
-        sendActivationEmail:
-          type: string
-          description: ''
-        uri:
-          type: string
-          description: ''
-        userId:
-          type: string
-          description: 'The user ID of the user being accessed. Generally this is the user ID of the authenticated user, but if the authenticated user is an Admin on the account, this may be another user the Admin user is accessing. **Note**: For the [GET /v2/accounts/{accountId}/envelopes](https://developers.docusign.com/esign-rest-api/reference/Envelopes/Envelopes/listStatusChanges/#envelopesInformation) method, the `user_id` query parameter is not implemented and should not be used.'
-        userName:
-          type: string
-          description: ''
-        userStatus:
-          type: string
-          description: 'Status of the user''s account. One of:
-
-
-            * ActivationRequired
-
-            * ActivationSent
-
-            * Active
-
-            * Closed
-
-            * Disabled
-
-            '
-        userType:
-          type: string
-          description: ''
-      description: ''
-      x-ds-definition-name: userInfo
-      x-ms-summary: ''
-    userAccountManagementGranularInformation:
-      type: object
-      properties:
-        canManageAccountSecuritySettings:
-          type: string
-          description: ''
-        canManageAccountSecuritySettingsMetadata:
-          $ref: '#/components/schemas/settingsMetadata'
-        canManageAccountSettings:
-          type: string
-          description: ''
-        canManageAccountSettingsMetadata:
-          $ref: '#/components/schemas/settingsMetadata'
-        canManageAdmins:
-          type: string
-          description: '**True**
-
-            if the user can manage
-
-            admins.'
-        canManageAdminsMetadata:
-          $ref: '#/components/schemas/settingsMetadata'
-        canManageEnvelopeTransfer:
-          type: string
-          description: ''
-        canManageEnvelopeTransferMetadata:
-          $ref: '#/components/schemas/settingsMetadata'
-        canManageGroups:
-          type: string
-          description: '**True**
-
-            if the user can manage
-
-            groups.'
-        canManageGroupsMetadata:
-          $ref: '#/components/schemas/settingsMetadata'
-        canManageReporting:
-          type: string
-          description: ''
-        canManageReportingMetadata:
-          $ref: '#/components/schemas/settingsMetadata'
-        canManageSharing:
-          type: string
-          description: ''
-        canManageSharingMetadata:
-          $ref: '#/components/schemas/settingsMetadata'
-        canManageSigningGroups:
-          type: string
-          description: ''
-        canManageSigningGroupsMetadata:
-          $ref: '#/components/schemas/settingsMetadata'
-        canManageUsers:
-          type: string
-          description: '**True**
-
-            if the user can manage
-
-            users.'
-        canManageUsersMetadata:
-          $ref: '#/components/schemas/settingsMetadata'
-        canViewUsers:
-          type: string
-          description: ''
-        canViewUsersMetadata:
-          $ref: '#/components/schemas/settingsMetadata'
-      description: Describes which account management capabilities a user has.
-      x-ds-definition-name: userAccountManagementGranularInformation
-      x-ms-summary: Describes which account management capabilities a user has.
     forgottenPasswordInformation:
       type: object
       properties:
@@ -847,6 +768,85 @@ components:
       description: A complex element that has up to four Question/Answer pairs for forgotten password information.
       x-ds-definition-name: forgottenPasswordInformation
       x-ms-summary: A complex element that has up to four Question/Answer pairs for forgotten password information.
+    group:
+      type: object
+      properties:
+        errorDetails:
+          $ref: '#/components/schemas/errorDetails'
+        groupId:
+          type: string
+          description: The DocuSign group ID for the group.
+        groupName:
+          type: string
+          description: The name of the group.
+        groupType:
+          type: string
+          description: The group type.
+        permissionProfileId:
+          type: string
+          description: The ID of the permission profile associated with the group.
+        users:
+          type: array
+          description: List of users in the group.
+          items:
+            $ref: '#/components/schemas/userInfo'
+      description: Information about groups.
+      x-ds-definition-name: group
+      x-ms-summary: Information about groups.
+    settingsMetadata:
+      type: object
+      properties:
+        is21CFRPart11:
+          type: string
+          description: When set to **true**, indicates that this module is enabled on the account.
+        options:
+          type: array
+          description: ''
+          items:
+            type: string
+        rights:
+          type: string
+          description: ''
+        uiHint:
+          type: string
+          description: ''
+        uiOrder:
+          type: string
+          description: ''
+        uiType:
+          type: string
+          description: ''
+      description: ''
+      x-ds-definition-name: settingsMetadata
+      x-ms-summary: ''
+    permissionProfile:
+      type: object
+      properties:
+        modifiedByUsername:
+          type: string
+          description: ''
+        modifiedDateTime:
+          type: string
+          description: ''
+        permissionProfileId:
+          type: string
+          description: ''
+        permissionProfileName:
+          type: string
+          description: ''
+        settings:
+          $ref: '#/components/schemas/accountRoleSettings'
+        userCount:
+          type: string
+          description: ''
+        users:
+          type: array
+          description: ''
+          items:
+            $ref: '#/components/schemas/userInformation'
+      description: ''
+      x-ds-definition-name: permissionProfile
+      x-ms-summary: ''
 externalDocs:
   description: See the DocuSign REST API Guide for more information.
   url: https://docs.docusign.com/esign

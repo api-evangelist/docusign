@@ -308,16 +308,6 @@ components:
       description: This object describes errors that occur. It is valid only for responses and ignored in requests.
       x-ds-definition-name: ApiError
       x-ms-summary: This object describes errors that occur. It is valid only for responses and ignored in requests.
-    TaskListForCreate:
-      type: object
-      properties:
-        taskListTemplateId:
-          type: integer
-          description: (Required) The ID of the task list template.
-          format: int32
-      description: Contains information about the task list template to use to create the new task list.
-      x-ds-definition-name: TaskListForCreate
-      x-ms-summary: Contains information about the task list template to use to create the new task list.
     TaskListSummary:
       type: object
       properties:
@@ -440,6 +430,27 @@ components:
       description: Contains information about a task list.
       x-ds-definition-name: TaskSummary
       x-ms-summary: Contains information about a task list.
+    TaskListSummaryList:
+      type: object
+      properties:
+        taskListSummaries:
+          type: array
+          description: A list of task list summaries.
+          items:
+            $ref: '#/components/schemas/TaskListSummary'
+      description: Contains a list of task list summaries.
+      x-ds-definition-name: TaskListSummaryList
+      x-ms-summary: Contains a list of task list summaries.
+    TaskListForCreate:
+      type: object
+      properties:
+        taskListTemplateId:
+          type: integer
+          description: (Required) The ID of the task list template.
+          format: int32
+      description: Contains information about the task list template to use to create the new task list.
+      x-ds-definition-name: TaskListForCreate
+      x-ms-summary: Contains information about the task list template to use to create the new task list.
     TaskList:
       type: object
       properties:
@@ -492,17 +503,6 @@ components:
       description: This response object contains details about the new task list.
       x-ds-definition-name: TaskList
       x-ms-summary: This response object contains details about the new task list.
-    TaskListSummaryList:
-      type: object
-      properties:
-        taskListSummaries:
-          type: array
-          description: A list of task list summaries.
-          items:
-            $ref: '#/components/schemas/TaskListSummary'
-      description: Contains a list of task list summaries.
-      x-ds-definition-name: TaskListSummaryList
-      x-ms-summary: Contains a list of task list summaries.
   securitySchemes:
     Bearer:
       type: apiKey

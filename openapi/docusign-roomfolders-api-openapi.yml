@@ -112,21 +112,22 @@ paths:
       x-ds-in-sdk: true
 components:
   schemas:
-    ApiError:
+    RoomFolder:
       type: object
       properties:
-        errorCode:
+        roomFolderId:
+          type: integer
+          description: The ID of the folder.
+          format: int32
+        name:
           type: string
-          description: The code associated with the error condition.
-        message:
-          type: string
-          description: A brief message describing the error condition.
-        referenceId:
-          type: string
-          description: ''
-      description: This object describes errors that occur. It is valid only for responses and ignored in requests.
-      x-ds-definition-name: ApiError
-      x-ms-summary: This object describes errors that occur. It is valid only for responses and ignored in requests.
+          description: The name of the folder.
+        isDefault:
+          type: boolean
+          description: When **true,** this is the default folder.
+      description: Information about a room folder.
+      x-ds-definition-name: RoomFolder
+      x-ms-summary: Information about a room folder.
     RoomFolderList:
       type: object
       properties:
@@ -161,22 +162,21 @@ components:
       description: A list of room folder results.
       x-ds-definition-name: RoomFolderList
       x-ms-summary: A list of room folder results.
-    RoomFolder:
+    ApiError:
       type: object
       properties:
-        roomFolderId:
-          type: integer
-          description: The ID of the folder.
-          format: int32
-        name:
+        errorCode:
           type: string
-          description: The name of the folder.
-        isDefault:
-          type: boolean
-          description: When **true,** this is the default folder.
-      description: Information about a room folder.
-      x-ds-definition-name: RoomFolder
-      x-ms-summary: Information about a room folder.
+          description: The code associated with the error condition.
+        message:
+          type: string
+          description: A brief message describing the error condition.
+        referenceId:
+          type: string
+          description: ''
+      description: This object describes errors that occur. It is valid only for responses and ignored in requests.
+      x-ds-definition-name: ApiError
+      x-ms-summary: This object describes errors that occur. It is valid only for responses and ignored in requests.
   securitySchemes:
     Bearer:
       type: apiKey

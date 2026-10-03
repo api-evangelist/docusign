@@ -241,16 +241,39 @@ paths:
       x-codegen-request-body-name: attachment
 components:
   schemas:
-    envelopeAttachmentsRequest:
+    envelopeAttachment:
+      type: object
+      properties:
+        accessControl:
+          type: string
+          description: ''
+        attachmentId:
+          type: string
+          description: ''
+        attachmentType:
+          type: string
+          description: ''
+        errorDetails:
+          $ref: '#/components/schemas/errorDetails'
+        label:
+          type: string
+          description: ''
+        name:
+          type: string
+          description: ''
+      description: ''
+      x-ds-definition-name: envelopeAttachment
+      x-ms-summary: ''
+    envelopeAttachmentsResult:
       type: object
       properties:
         attachments:
           type: array
           description: ''
           items:
-            $ref: '#/components/schemas/attachment'
+            $ref: '#/components/schemas/envelopeAttachment'
       description: ''
-      x-ds-definition-name: envelopeAttachmentsRequest
+      x-ds-definition-name: envelopeAttachmentsResult
       x-ms-summary: ''
     attachment:
       type: object
@@ -279,29 +302,6 @@ components:
       description: Contains information about an attachment.
       x-ds-definition-name: attachment
       x-ms-summary: Contains information about an attachment.
-    envelopeAttachment:
-      type: object
-      properties:
-        accessControl:
-          type: string
-          description: ''
-        attachmentId:
-          type: string
-          description: ''
-        attachmentType:
-          type: string
-          description: ''
-        errorDetails:
-          $ref: '#/components/schemas/errorDetails'
-        label:
-          type: string
-          description: ''
-        name:
-          type: string
-          description: ''
-      description: ''
-      x-ds-definition-name: envelopeAttachment
-      x-ms-summary: ''
     errorDetails:
       type: object
       properties:
@@ -314,16 +314,16 @@ components:
       description: This object describes errors that occur. It is only valid for responses, and ignored in requests.
       x-ds-definition-name: errorDetails
       x-ms-summary: This object describes errors that occur. It is only valid for responses, and ignored in requests.
-    envelopeAttachmentsResult:
+    envelopeAttachmentsRequest:
       type: object
       properties:
         attachments:
           type: array
           description: ''
           items:
-            $ref: '#/components/schemas/envelopeAttachment'
+            $ref: '#/components/schemas/attachment'
       description: ''
-      x-ds-definition-name: envelopeAttachmentsResult
+      x-ds-definition-name: envelopeAttachmentsRequest
       x-ms-summary: ''
 externalDocs:
   description: See the DocuSign REST API Guide for more information.

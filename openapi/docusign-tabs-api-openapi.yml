@@ -98,35 +98,26 @@ paths:
         delay: 0
         dispatcher: FALLBACK
 components:
+  responses:
+    Unauthorized:
+      description: Unauthorized. Authentication credentials are missing or invalid.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorDetails'
+    NotFound:
+      description: The requested resource was not found.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorDetails'
+    BadRequest:
+      description: Bad request. The request body or parameters are invalid.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorDetails'
   schemas:
-    NoteTab:
-      type: object
-      description: A read-only note tab for displaying text.
-      properties:
-        tabId:
-          type: string
-          example: '500123'
-        tabLabel:
-          type: string
-          example: example_value
-        documentId:
-          type: string
-          example: '500123'
-        pageNumber:
-          type: string
-          example: example_value
-        recipientId:
-          type: string
-          example: '500123'
-        xPosition:
-          type: string
-          example: example_value
-        yPosition:
-          type: string
-          example: example_value
-        value:
-          type: string
-          example: example_value
     FormulaTab:
       type: object
       description: A calculated field tab using formulas.
@@ -162,80 +153,9 @@ components:
         value:
           type: string
           example: example_value
-    NumberTab:
+    EmailTab:
       type: object
-      description: A tab for numeric input.
-      properties:
-        tabId:
-          type: string
-          example: '500123'
-        tabLabel:
-          type: string
-          example: example_value
-        documentId:
-          type: string
-          example: '500123'
-        pageNumber:
-          type: string
-          example: example_value
-        recipientId:
-          type: string
-          example: '500123'
-        xPosition:
-          type: string
-          example: example_value
-        yPosition:
-          type: string
-          example: example_value
-        value:
-          type: string
-          example: example_value
-        required:
-          type: string
-          example: example_value
-    Approve:
-      type: object
-      description: An approve button tab for document approval.
-      properties:
-        tabId:
-          type: string
-          example: '500123'
-        tabLabel:
-          type: string
-          example: example_value
-        documentId:
-          type: string
-          example: '500123'
-        pageNumber:
-          type: string
-          example: example_value
-        recipientId:
-          type: string
-          example: '500123'
-        xPosition:
-          type: string
-          example: example_value
-        yPosition:
-          type: string
-          example: example_value
-        buttonText:
-          type: string
-          example: example_value
-    ErrorDetails:
-      type: object
-      description: Contains error information returned by the API.
-      properties:
-        errorCode:
-          type: string
-          description: The error code.
-          example: example_value
-        message:
-          type: string
-          description: A human-readable error message.
-          example: example_value
-    ListTab:
-      type: object
-      description: A dropdown list tab for selecting from predefined options.
+      description: A tab for email address input.
       properties:
         tabId:
           type: string
@@ -262,21 +182,6 @@ components:
           type: string
           example: example_value
         value:
-          type: string
-          example: example_value
-        listItems:
-          type: array
-          items:
-            type: object
-            properties:
-              text:
-                type: string
-              value:
-                type: string
-              selected:
-                type: string
-          example: []
-        required:
           type: string
           example: example_value
     EnvelopeRecipientTabs:
@@ -373,40 +278,9 @@ components:
           items:
             $ref: '#/components/schemas/Decline'
           example: []
-    DateTab:
+    DateSigned:
       type: object
-      description: A tab for date selection.
-      properties:
-        tabId:
-          type: string
-          example: '500123'
-        tabLabel:
-          type: string
-          example: example_value
-        documentId:
-          type: string
-          example: '500123'
-        pageNumber:
-          type: string
-          example: example_value
-        recipientId:
-          type: string
-          example: '500123'
-        xPosition:
-          type: string
-          example: example_value
-        yPosition:
-          type: string
-          example: example_value
-        value:
-          type: string
-          example: example_value
-        required:
-          type: string
-          example: example_value
-    EmailTab:
-      type: object
-      description: A tab for email address input.
+      description: A tab that displays the date the recipient signed.
       properties:
         tabId:
           type: string
@@ -430,6 +304,62 @@ components:
           type: string
           example: example_value
         anchorString:
+          type: string
+          example: example_value
+        value:
+          type: string
+          example: example_value
+    Approve:
+      type: object
+      description: An approve button tab for document approval.
+      properties:
+        tabId:
+          type: string
+          example: '500123'
+        tabLabel:
+          type: string
+          example: example_value
+        documentId:
+          type: string
+          example: '500123'
+        pageNumber:
+          type: string
+          example: example_value
+        recipientId:
+          type: string
+          example: '500123'
+        xPosition:
+          type: string
+          example: example_value
+        yPosition:
+          type: string
+          example: example_value
+        buttonText:
+          type: string
+          example: example_value
+    NoteTab:
+      type: object
+      description: A read-only note tab for displaying text.
+      properties:
+        tabId:
+          type: string
+          example: '500123'
+        tabLabel:
+          type: string
+          example: example_value
+        documentId:
+          type: string
+          example: '500123'
+        pageNumber:
+          type: string
+          example: example_value
+        recipientId:
+          type: string
+          example: '500123'
+        xPosition:
+          type: string
+          example: example_value
+        yPosition:
           type: string
           example: example_value
         value:
@@ -495,9 +425,121 @@ components:
           type: string
           description: The type of stamp for the signature.
           example: example_value
-    DateSigned:
+    DateTab:
       type: object
-      description: A tab that displays the date the recipient signed.
+      description: A tab for date selection.
+      properties:
+        tabId:
+          type: string
+          example: '500123'
+        tabLabel:
+          type: string
+          example: example_value
+        documentId:
+          type: string
+          example: '500123'
+        pageNumber:
+          type: string
+          example: example_value
+        recipientId:
+          type: string
+          example: '500123'
+        xPosition:
+          type: string
+          example: example_value
+        yPosition:
+          type: string
+          example: example_value
+        value:
+          type: string
+          example: example_value
+        required:
+          type: string
+          example: example_value
+    RadioGroup:
+      type: object
+      description: A group of radio buttons for single-choice selection.
+      properties:
+        groupName:
+          type: string
+          description: The name of the radio group.
+          example: example_value
+        documentId:
+          type: string
+          example: '500123'
+        recipientId:
+          type: string
+          example: '500123'
+        radios:
+          type: array
+          items:
+            type: object
+            properties:
+              value:
+                type: string
+              selected:
+                type: string
+              pageNumber:
+                type: string
+              xPosition:
+                type: string
+              yPosition:
+                type: string
+              anchorString:
+                type: string
+          example: []
+        required:
+          type: string
+          example: example_value
+    InitialHere:
+      type: object
+      description: An initial tab placed on a document.
+      properties:
+        tabId:
+          type: string
+          example: '500123'
+        tabLabel:
+          type: string
+          example: example_value
+        documentId:
+          type: string
+          example: '500123'
+        pageNumber:
+          type: string
+          example: example_value
+        recipientId:
+          type: string
+          example: '500123'
+        xPosition:
+          type: string
+          example: example_value
+        yPosition:
+          type: string
+          example: example_value
+        anchorString:
+          type: string
+          example: example_value
+        optional:
+          type: string
+          example: example_value
+        scaleValue:
+          type: string
+          example: example_value
+    ErrorDetails:
+      type: object
+      description: Contains error information returned by the API.
+      properties:
+        errorCode:
+          type: string
+          description: The error code.
+          example: example_value
+        message:
+          type: string
+          description: A human-readable error message.
+          example: example_value
+    ListTab:
+      type: object
+      description: A dropdown list tab for selecting from predefined options.
       properties:
         tabId:
           type: string
@@ -526,9 +568,24 @@ components:
         value:
           type: string
           example: example_value
-    FullName:
+        listItems:
+          type: array
+          items:
+            type: object
+            properties:
+              text:
+                type: string
+              value:
+                type: string
+              selected:
+                type: string
+          example: []
+        required:
+          type: string
+          example: example_value
+    Checkbox:
       type: object
-      description: A tab auto-filled with the recipient full name.
+      description: A checkbox tab for boolean selection.
       properties:
         tabId:
           type: string
@@ -554,7 +611,14 @@ components:
         anchorString:
           type: string
           example: example_value
-        value:
+        selected:
+          type: string
+          description: When true, the checkbox is selected.
+          example: example_value
+        required:
+          type: string
+          example: example_value
+        locked:
           type: string
           example: example_value
     Text:
@@ -636,6 +700,37 @@ components:
           type: string
           description: When true, the value is concealed on the document.
           example: example_value
+    FullName:
+      type: object
+      description: A tab auto-filled with the recipient full name.
+      properties:
+        tabId:
+          type: string
+          example: '500123'
+        tabLabel:
+          type: string
+          example: example_value
+        documentId:
+          type: string
+          example: '500123'
+        pageNumber:
+          type: string
+          example: example_value
+        recipientId:
+          type: string
+          example: '500123'
+        xPosition:
+          type: string
+          example: example_value
+        yPosition:
+          type: string
+          example: example_value
+        anchorString:
+          type: string
+          example: example_value
+        value:
+          type: string
+          example: example_value
     Decline:
       type: object
       description: A decline button tab for document rejection.
@@ -667,9 +762,9 @@ components:
         declineReason:
           type: string
           example: example_value
-    Checkbox:
+    NumberTab:
       type: object
-      description: A checkbox tab for boolean selection.
+      description: A tab for numeric input.
       properties:
         tabId:
           type: string
@@ -692,107 +787,12 @@ components:
         yPosition:
           type: string
           example: example_value
-        anchorString:
+        value:
           type: string
-          example: example_value
-        selected:
-          type: string
-          description: When true, the checkbox is selected.
           example: example_value
         required:
           type: string
           example: example_value
-        locked:
-          type: string
-          example: example_value
-    RadioGroup:
-      type: object
-      description: A group of radio buttons for single-choice selection.
-      properties:
-        groupName:
-          type: string
-          description: The name of the radio group.
-          example: example_value
-        documentId:
-          type: string
-          example: '500123'
-        recipientId:
-          type: string
-          example: '500123'
-        radios:
-          type: array
-          items:
-            type: object
-            properties:
-              value:
-                type: string
-              selected:
-                type: string
-              pageNumber:
-                type: string
-              xPosition:
-                type: string
-              yPosition:
-                type: string
-              anchorString:
-                type: string
-          example: []
-        required:
-          type: string
-          example: example_value
-    InitialHere:
-      type: object
-      description: An initial tab placed on a document.
-      properties:
-        tabId:
-          type: string
-          example: '500123'
-        tabLabel:
-          type: string
-          example: example_value
-        documentId:
-          type: string
-          example: '500123'
-        pageNumber:
-          type: string
-          example: example_value
-        recipientId:
-          type: string
-          example: '500123'
-        xPosition:
-          type: string
-          example: example_value
-        yPosition:
-          type: string
-          example: example_value
-        anchorString:
-          type: string
-          example: example_value
-        optional:
-          type: string
-          example: example_value
-        scaleValue:
-          type: string
-          example: example_value
-  responses:
-    BadRequest:
-      description: Bad request. The request body or parameters are invalid.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorDetails'
-    NotFound:
-      description: The requested resource was not found.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorDetails'
-    Unauthorized:
-      description: Unauthorized. Authentication credentials are missing or invalid.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorDetails'
   parameters:
     envelopeId:
       name: envelopeId

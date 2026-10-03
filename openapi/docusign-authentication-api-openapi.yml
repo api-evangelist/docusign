@@ -227,6 +227,108 @@ paths:
       x-ds-in-sdk: true
 components:
   schemas:
+    oauthAccess:
+      type: object
+      properties:
+        access_token:
+          type: string
+          description: Access token information.
+        data:
+          type: array
+          description: ''
+          items:
+            $ref: '#/components/schemas/nameValue'
+        expires_in:
+          type: string
+          description: ''
+        refresh_token:
+          type: string
+          description: ''
+        scope:
+          type: string
+          description: Must be set to "api".
+        token_type:
+          type: string
+          description: ''
+      description: ''
+      x-ds-definition-name: oauthAccess
+      x-ms-summary: ''
+    nameValue:
+      type: object
+      properties:
+        errorDetails:
+          $ref: '#/components/schemas/errorDetails'
+        name:
+          type: string
+          description: The name or key of a name/value pair.
+        originalValue:
+          type: string
+          description: 'The initial value of the tab when it was sent to the recipient. '
+        value:
+          type: string
+          description: The value field of a name/value pair.
+      description: ''
+      x-ds-definition-name: nameValue
+      x-ms-summary: ''
+    errorDetails:
+      type: object
+      properties:
+        errorCode:
+          type: string
+          description: An error code associated with the error.
+        message:
+          type: string
+          description: A short error message.
+      description: This object describes errors that occur. It is only valid for responses, and ignored in requests.
+      x-ds-definition-name: errorDetails
+      x-ms-summary: This object describes errors that occur. It is only valid for responses, and ignored in requests.
+    forgottenPasswordInformation:
+      type: object
+      properties:
+        forgottenPasswordAnswer1:
+          type: string
+          description: The answer to the first forgotten password challenge question.
+        forgottenPasswordAnswer2:
+          type: string
+          description: The answer to the second forgotten password challenge question.
+        forgottenPasswordAnswer3:
+          type: string
+          description: The answer to the third forgotten password challenge question.
+        forgottenPasswordAnswer4:
+          type: string
+          description: The answer to the fourth forgotten password challenge question.
+        forgottenPasswordQuestion1:
+          type: string
+          description: The first challenge question presented to a user who has forgotten their password.
+        forgottenPasswordQuestion2:
+          type: string
+          description: The second challenge question presented to a user who has forgotten their password.
+        forgottenPasswordQuestion3:
+          type: string
+          description: The third challenge question presented to a user who has forgotten their password.
+        forgottenPasswordQuestion4:
+          type: string
+          description: The fourth challenge question presented to a user who has forgotten their password.
+      description: A complex element that has up to four Question/Answer pairs for forgotten password information.
+      x-ds-definition-name: forgottenPasswordInformation
+      x-ms-summary: A complex element that has up to four Question/Answer pairs for forgotten password information.
+    userPasswordInformation:
+      type: object
+      properties:
+        currentPassword:
+          type: string
+          description: The user's current password to be changed.
+        email:
+          type: string
+          description: The user's email address for the associated account.
+        forgottenPasswordInfo:
+          $ref: '#/components/schemas/forgottenPasswordInformation'
+        newPassword:
+          type: string
+          description: The user's new password.
+      description: ''
+      x-ds-definition-name: userPasswordInformation
+      x-ms-summary: ''
     loginAccount:
       type: object
       properties:
@@ -270,78 +372,6 @@ components:
       description: ''
       x-ds-definition-name: loginAccount
       x-ms-summary: ''
-    errorDetails:
-      type: object
-      properties:
-        errorCode:
-          type: string
-          description: An error code associated with the error.
-        message:
-          type: string
-          description: A short error message.
-      description: This object describes errors that occur. It is only valid for responses, and ignored in requests.
-      x-ds-definition-name: errorDetails
-      x-ms-summary: This object describes errors that occur. It is only valid for responses, and ignored in requests.
-    userPasswordInformation:
-      type: object
-      properties:
-        currentPassword:
-          type: string
-          description: The user's current password to be changed.
-        email:
-          type: string
-          description: The user's email address for the associated account.
-        forgottenPasswordInfo:
-          $ref: '#/components/schemas/forgottenPasswordInformation'
-        newPassword:
-          type: string
-          description: The user's new password.
-      description: ''
-      x-ds-definition-name: userPasswordInformation
-      x-ms-summary: ''
-    nameValue:
-      type: object
-      properties:
-        errorDetails:
-          $ref: '#/components/schemas/errorDetails'
-        name:
-          type: string
-          description: The name or key of a name/value pair.
-        originalValue:
-          type: string
-          description: 'The initial value of the tab when it was sent to the recipient. '
-        value:
-          type: string
-          description: The value field of a name/value pair.
-      description: ''
-      x-ds-definition-name: nameValue
-      x-ms-summary: ''
-    oauthAccess:
-      type: object
-      properties:
-        access_token:
-          type: string
-          description: Access token information.
-        data:
-          type: array
-          description: ''
-          items:
-            $ref: '#/components/schemas/nameValue'
-        expires_in:
-          type: string
-          description: ''
-        refresh_token:
-          type: string
-          description: ''
-        scope:
-          type: string
-          description: Must be set to "api".
-        token_type:
-          type: string
-          description: ''
-      description: ''
-      x-ds-definition-name: oauthAccess
-      x-ms-summary: ''
     loginInformation:
       type: object
       properties:
@@ -356,36 +386,6 @@ components:
       description: ''
       x-ds-definition-name: loginInformation
       x-ms-summary: ''
-    forgottenPasswordInformation:
-      type: object
-      properties:
-        forgottenPasswordAnswer1:
-          type: string
-          description: The answer to the first forgotten password challenge question.
-        forgottenPasswordAnswer2:
-          type: string
-          description: The answer to the second forgotten password challenge question.
-        forgottenPasswordAnswer3:
-          type: string
-          description: The answer to the third forgotten password challenge question.
-        forgottenPasswordAnswer4:
-          type: string
-          description: The answer to the fourth forgotten password challenge question.
-        forgottenPasswordQuestion1:
-          type: string
-          description: The first challenge question presented to a user who has forgotten their password.
-        forgottenPasswordQuestion2:
-          type: string
-          description: The second challenge question presented to a user who has forgotten their password.
-        forgottenPasswordQuestion3:
-          type: string
-          description: The third challenge question presented to a user who has forgotten their password.
-        forgottenPasswordQuestion4:
-          type: string
-          description: The fourth challenge question presented to a user who has forgotten their password.
-      description: A complex element that has up to four Question/Answer pairs for forgotten password information.
-      x-ds-definition-name: forgottenPasswordInformation
-      x-ms-summary: A complex element that has up to four Question/Answer pairs for forgotten password information.
 externalDocs:
   description: See the DocuSign REST API Guide for more information.
   url: https://docs.docusign.com/esign

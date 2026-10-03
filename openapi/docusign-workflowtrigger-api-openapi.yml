@@ -118,18 +118,38 @@ paths:
       x-codegen-request-body-name: body
 components:
   schemas:
-    TriggerWorkflowViaPostResponse:
+    TriggerPayload:
       type: object
       properties:
-        instanceId:
-          $ref: '#/components/schemas/WorkflowInstanceId'
-        workflowInstanceUrl:
+        instanceName:
           type: string
-          description: Instance-specific URL that can be used redirect to a workflow instance
-          format: uri
-      description: Trigger workflow via POST response details
-      x-ds-definition-name: TriggerWorkflowViaPostResponse
-      x-ms-summary: Trigger workflow via POST response details
+          description: The friendly name of the particular workflow instance
+        metadata:
+          type: object
+          properties: {}
+          description: ''
+        participants:
+          type: object
+          properties: {}
+          description: ''
+        payload:
+          type: object
+          properties: {}
+          description: ''
+      description: JSON payload that will be passed to the triggered workflow
+      x-ds-definition-name: TriggerPayload
+      x-ms-summary: JSON payload that will be passed to the triggered workflow
+    WorkflowInstanceId:
+      type: string
+      description: 'Workflow instance ID.
+
+        A string in UUID format: 4a6d6a08-xxxx-xxxx-xxxx-bae4fecc99c8'
+      format: uuid
+      example: 00000000-0000-0000-0000-000000000000
+      x-ds-definition-name: WorkflowInstanceId
+      x-ms-summary: 'Workflow instance ID.
+
+        A string in UUID format: 4a6d6a08-xxxx-xxxx-xxxx-bae4fecc99c8'
     ErrorCodes:
       type: string
       description: Internal Error Codes
@@ -154,17 +174,18 @@ components:
       - ERR_10999
       x-ds-definition-name: ErrorCodes
       x-ms-summary: Internal Error Codes
-    WorkflowInstanceId:
-      type: string
-      description: 'Workflow instance ID.
-
-        A string in UUID format: 4a6d6a08-xxxx-xxxx-xxxx-bae4fecc99c8'
-      format: uuid
-      example: 00000000-0000-0000-0000-000000000000
-      x-ds-definition-name: WorkflowInstanceId
-      x-ms-summary: 'Workflow instance ID.
-
-        A string in UUID format: 4a6d6a08-xxxx-xxxx-xxxx-bae4fecc99c8'
+    TriggerWorkflowViaPostResponse:
+      type: object
+      properties:
+        instanceId:
+          $ref: '#/components/schemas/WorkflowInstanceId'
+        workflowInstanceUrl:
+          type: string
+          description: Instance-specific URL that can be used redirect to a workflow instance
+          format: uri
+      description: Trigger workflow via POST response details
+      x-ds-definition-name: TriggerWorkflowViaPostResponse
+      x-ms-summary: Trigger workflow via POST response details
     ErrorResponse:
       type: object
       properties:
@@ -176,27 +197,6 @@ components:
       description: Returns error with a status message
       x-ds-definition-name: ErrorResponse
       x-ms-summary: Returns error with a status message
-    TriggerPayload:
-      type: object
-      properties:
-        instanceName:
-          type: string
-          description: The friendly name of the particular workflow instance
-        metadata:
-          type: object
-          properties: {}
-          description: ''
-        participants:
-          type: object
-          properties: {}
-          description: ''
-        payload:
-          type: object
-          properties: {}
-          description: ''
-      description: JSON payload that will be passed to the triggered workflow
-      x-ds-definition-name: TriggerPayload
-      x-ms-summary: JSON payload that will be passed to the triggered workflow
   securitySchemes:
     DSAuth:
       type: oauth2

@@ -191,18 +191,21 @@ paths:
       x-ds-in-sdk: true
 components:
   schemas:
-    errorDetails:
+    bccEmailAddress:
       type: object
       properties:
-        errorCode:
+        bccEmailAddressId:
           type: string
-          description: An error code associated with the error.
-        message:
+          description: "Only users with canManageAccount setting can use this option. An array of up to 5 email addresses the envelope is sent to as a BCC email. \n \nExample: If your account has BCC for Email Archive set up for the email address 'archive@mycompany.com' and you send an envelope using the BCC Email Override to send a BCC email to 'salesarchive@mycompany.com', then a copy of the envelope is only sent to the 'salesarchive@mycompany.com' email address."
+        email:
           type: string
-          description: A short error message.
-      description: This object describes errors that occur. It is only valid for responses, and ignored in requests.
-      x-ds-definition-name: errorDetails
-      x-ms-summary: This object describes errors that occur. It is only valid for responses, and ignored in requests.
+          description: 'Specifies the BCC email address. DocuSign verifies that the email format is correct, but does not verify that the email is active.Using this overrides the BCC for Email Archive information setting for this envelope.
+
+
+            Maximum of length: 100 characters. '
+      description: Contains information about the BCC email address.
+      x-ds-definition-name: bccEmailAddress
+      x-ms-summary: Contains information about the BCC email address.
     emailSettings:
       type: object
       properties:
@@ -223,21 +226,18 @@ components:
       description: ''
       x-ds-definition-name: emailSettings
       x-ms-summary: ''
-    bccEmailAddress:
+    errorDetails:
       type: object
       properties:
-        bccEmailAddressId:
+        errorCode:
           type: string
-          description: "Only users with canManageAccount setting can use this option. An array of up to 5 email addresses the envelope is sent to as a BCC email. \n \nExample: If your account has BCC for Email Archive set up for the email address 'archive@mycompany.com' and you send an envelope using the BCC Email Override to send a BCC email to 'salesarchive@mycompany.com', then a copy of the envelope is only sent to the 'salesarchive@mycompany.com' email address."
-        email:
+          description: An error code associated with the error.
+        message:
           type: string
-          description: 'Specifies the BCC email address. DocuSign verifies that the email format is correct, but does not verify that the email is active.Using this overrides the BCC for Email Archive information setting for this envelope.
-
-
-            Maximum of length: 100 characters. '
-      description: Contains information about the BCC email address.
-      x-ds-definition-name: bccEmailAddress
-      x-ms-summary: Contains information about the BCC email address.
+          description: A short error message.
+      description: This object describes errors that occur. It is only valid for responses, and ignored in requests.
+      x-ds-definition-name: errorDetails
+      x-ms-summary: This object describes errors that occur. It is only valid for responses, and ignored in requests.
 externalDocs:
   description: See the DocuSign REST API Guide for more information.
   url: https://docs.docusign.com/esign

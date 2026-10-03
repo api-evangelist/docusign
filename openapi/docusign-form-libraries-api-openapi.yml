@@ -210,21 +210,38 @@ paths:
       x-ds-in-sdk: true
 components:
   schemas:
-    ApiError:
+    FormSummary:
       type: object
       properties:
-        errorCode:
+        libraryFormId:
           type: string
-          description: The code associated with the error condition.
-        message:
+          description: 'The ID of the form.
+
+
+            Example: `301f560d-xxxx-xxxx-xxxx-063a47cc12c2`
+
+            '
+          format: uuid
+          readOnly: true
+        name:
           type: string
-          description: A brief message describing the error condition.
-        referenceId:
+          description: "The name of the form. \n\nExample: `Short Sale Supplement to Marketing Agreement`"
+          readOnly: true
+        lastUpdatedDate:
           type: string
+          description: 'The date and time when the form was last updated.
+
+
+            Example: `2017-08-11T19:58:36.18`'
+          format: date-time
+          readOnly: true
+        viewingUserHasAccess:
+          type: boolean
           description: ''
-      description: This object describes errors that occur. It is valid only for responses and ignored in requests.
-      x-ds-definition-name: ApiError
-      x-ms-summary: This object describes errors that occur. It is valid only for responses and ignored in requests.
+          readOnly: true
+      description: Contains details about a form in a form library.
+      x-ds-definition-name: FormSummary
+      x-ms-summary: Contains details about a form in a form library.
     FormLibrarySummaryList:
       type: object
       properties:
@@ -259,38 +276,6 @@ components:
       description: Contains a list of forms libraries.
       x-ds-definition-name: FormLibrarySummaryList
       x-ms-summary: Contains a list of forms libraries.
-    FormSummary:
-      type: object
-      properties:
-        libraryFormId:
-          type: string
-          description: 'The ID of the form.
-
-
-            Example: `301f560d-xxxx-xxxx-xxxx-063a47cc12c2`
-
-            '
-          format: uuid
-          readOnly: true
-        name:
-          type: string
-          description: "The name of the form. \n\nExample: `Short Sale Supplement to Marketing Agreement`"
-          readOnly: true
-        lastUpdatedDate:
-          type: string
-          description: 'The date and time when the form was last updated.
-
-
-            Example: `2017-08-11T19:58:36.18`'
-          format: date-time
-          readOnly: true
-        viewingUserHasAccess:
-          type: boolean
-          description: ''
-          readOnly: true
-      description: Contains details about a form in a form library.
-      x-ds-definition-name: FormSummary
-      x-ms-summary: Contains details about a form in a form library.
     FormSummaryList:
       type: object
       properties:
@@ -325,6 +310,21 @@ components:
       description: Contains a list of forms in a form library.
       x-ds-definition-name: FormSummaryList
       x-ms-summary: Contains a list of forms in a form library.
+    ApiError:
+      type: object
+      properties:
+        errorCode:
+          type: string
+          description: The code associated with the error condition.
+        message:
+          type: string
+          description: A brief message describing the error condition.
+        referenceId:
+          type: string
+          description: ''
+      description: This object describes errors that occur. It is valid only for responses and ignored in requests.
+      x-ds-definition-name: ApiError
+      x-ms-summary: This object describes errors that occur. It is valid only for responses and ignored in requests.
     FormLibrarySummary:
       type: object
       properties:

@@ -154,6 +154,61 @@ paths:
       x-ds-in-sdk: true
 components:
   schemas:
+    errorDetails:
+      type: object
+      properties:
+        errorCode:
+          type: string
+          description: An error code associated with the error.
+        message:
+          type: string
+          description: A short error message.
+      description: This object describes errors that occur. It is only valid for responses, and ignored in requests.
+      x-ds-definition-name: errorDetails
+      x-ms-summary: This object describes errors that occur. It is only valid for responses, and ignored in requests.
+    billingPaymentsResponse:
+      type: object
+      properties:
+        billingPayments:
+          type: array
+          description: 'Reserved: TBD'
+          items:
+            $ref: '#/components/schemas/billingPaymentItem'
+        nextUri:
+          type: string
+          description: 'The URI for the next chunk of records based on the search request. It is `null` if this is the last set of results for the search. '
+        previousUri:
+          type: string
+          description: 'The URI for the prior chunk of records based on the search request. It is `null` if this is the first set of results for the search. '
+      description: Defines a billing payments response object.
+      x-ds-definition-name: billingPaymentsResponse
+      x-ms-summary: Defines a billing payments response object.
+    billingPaymentResponse:
+      type: object
+      properties:
+        billingPayments:
+          type: array
+          description: 'Reserved: TBD'
+          items:
+            $ref: '#/components/schemas/billingPayment'
+      description: Defines an billing payment response object.
+      x-ds-definition-name: billingPaymentResponse
+      x-ms-summary: Defines an billing payment response object.
+    billingPayment:
+      type: object
+      properties:
+        amount:
+          type: string
+          description: 'Reserved: TBD'
+        invoiceId:
+          type: string
+          description: 'Reserved: TBD'
+        paymentId:
+          type: string
+          description: ''
+      description: Contains information on a billing plan.
+      x-ds-definition-name: billingPayment
+      x-ms-summary: Contains information on a billing plan.
     billingPaymentRequest:
       type: object
       properties:
@@ -186,61 +241,6 @@ components:
       description: ''
       x-ds-definition-name: billingPaymentItem
       x-ms-summary: ''
-    errorDetails:
-      type: object
-      properties:
-        errorCode:
-          type: string
-          description: An error code associated with the error.
-        message:
-          type: string
-          description: A short error message.
-      description: This object describes errors that occur. It is only valid for responses, and ignored in requests.
-      x-ds-definition-name: errorDetails
-      x-ms-summary: This object describes errors that occur. It is only valid for responses, and ignored in requests.
-    billingPayment:
-      type: object
-      properties:
-        amount:
-          type: string
-          description: 'Reserved: TBD'
-        invoiceId:
-          type: string
-          description: 'Reserved: TBD'
-        paymentId:
-          type: string
-          description: ''
-      description: Contains information on a billing plan.
-      x-ds-definition-name: billingPayment
-      x-ms-summary: Contains information on a billing plan.
-    billingPaymentResponse:
-      type: object
-      properties:
-        billingPayments:
-          type: array
-          description: 'Reserved: TBD'
-          items:
-            $ref: '#/components/schemas/billingPayment'
-      description: Defines an billing payment response object.
-      x-ds-definition-name: billingPaymentResponse
-      x-ms-summary: Defines an billing payment response object.
-    billingPaymentsResponse:
-      type: object
-      properties:
-        billingPayments:
-          type: array
-          description: 'Reserved: TBD'
-          items:
-            $ref: '#/components/schemas/billingPaymentItem'
-        nextUri:
-          type: string
-          description: 'The URI for the next chunk of records based on the search request. It is `null` if this is the last set of results for the search. '
-        previousUri:
-          type: string
-          description: 'The URI for the prior chunk of records based on the search request. It is `null` if this is the first set of results for the search. '
-      description: Defines a billing payments response object.
-      x-ds-definition-name: billingPaymentsResponse
-      x-ms-summary: Defines a billing payments response object.
 externalDocs:
   description: See the DocuSign REST API Guide for more information.
   url: https://docs.docusign.com/esign

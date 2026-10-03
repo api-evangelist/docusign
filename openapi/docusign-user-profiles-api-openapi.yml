@@ -104,6 +104,74 @@ paths:
       x-codegen-request-body-name: userProfile
 components:
   schemas:
+    userAccountManagementGranularInformation:
+      type: object
+      properties:
+        canManageAccountSecuritySettings:
+          type: string
+          description: ''
+        canManageAccountSecuritySettingsMetadata:
+          $ref: '#/components/schemas/settingsMetadata'
+        canManageAccountSettings:
+          type: string
+          description: ''
+        canManageAccountSettingsMetadata:
+          $ref: '#/components/schemas/settingsMetadata'
+        canManageAdmins:
+          type: string
+          description: '**True**
+
+            if the user can manage
+
+            admins.'
+        canManageAdminsMetadata:
+          $ref: '#/components/schemas/settingsMetadata'
+        canManageEnvelopeTransfer:
+          type: string
+          description: ''
+        canManageEnvelopeTransferMetadata:
+          $ref: '#/components/schemas/settingsMetadata'
+        canManageGroups:
+          type: string
+          description: '**True**
+
+            if the user can manage
+
+            groups.'
+        canManageGroupsMetadata:
+          $ref: '#/components/schemas/settingsMetadata'
+        canManageReporting:
+          type: string
+          description: ''
+        canManageReportingMetadata:
+          $ref: '#/components/schemas/settingsMetadata'
+        canManageSharing:
+          type: string
+          description: ''
+        canManageSharingMetadata:
+          $ref: '#/components/schemas/settingsMetadata'
+        canManageSigningGroups:
+          type: string
+          description: ''
+        canManageSigningGroupsMetadata:
+          $ref: '#/components/schemas/settingsMetadata'
+        canManageUsers:
+          type: string
+          description: '**True**
+
+            if the user can manage
+
+            users.'
+        canManageUsersMetadata:
+          $ref: '#/components/schemas/settingsMetadata'
+        canViewUsers:
+          type: string
+          description: ''
+        canViewUsersMetadata:
+          $ref: '#/components/schemas/settingsMetadata'
+      description: Describes which account management capabilities a user has.
+      x-ds-definition-name: userAccountManagementGranularInformation
+      x-ms-summary: Describes which account management capabilities a user has.
     authenticationMethod:
       type: object
       properties:
@@ -123,18 +191,54 @@ components:
       description: Contains information about the method used for authentication.
       x-ds-definition-name: authenticationMethod
       x-ms-summary: Contains information about the method used for authentication.
-    errorDetails:
+    userInfo:
       type: object
       properties:
-        errorCode:
+        activationAccessCode:
           type: string
-          description: An error code associated with the error.
-        message:
+          description: ''
+        email:
           type: string
-          description: A short error message.
-      description: This object describes errors that occur. It is only valid for responses, and ignored in requests.
-      x-ds-definition-name: errorDetails
-      x-ms-summary: This object describes errors that occur. It is only valid for responses, and ignored in requests.
+          description: ''
+        errorDetails:
+          $ref: '#/components/schemas/errorDetails'
+        loginStatus:
+          type: string
+          description: ''
+        sendActivationEmail:
+          type: string
+          description: ''
+        uri:
+          type: string
+          description: ''
+        userId:
+          type: string
+          description: 'The user ID of the user being accessed. Generally this is the user ID of the authenticated user, but if the authenticated user is an Admin on the account, this may be another user the Admin user is accessing. **Note**: For the [GET /v2/accounts/{accountId}/envelopes](https://developers.docusign.com/esign-rest-api/reference/Envelopes/Envelopes/listStatusChanges/#envelopesInformation) method, the `user_id` query parameter is not implemented and should not be used.'
+        userName:
+          type: string
+          description: ''
+        userStatus:
+          type: string
+          description: 'Status of the user''s account. One of:
+
+
+            * ActivationRequired
+
+            * ActivationSent
+
+            * Active
+
+            * Closed
+
+            * Disabled
+
+            '
+        userType:
+          type: string
+          description: ''
+      description: ''
+      x-ds-definition-name: userInfo
+      x-ms-summary: ''
     nameValue:
       type: object
       properties:
@@ -186,31 +290,18 @@ components:
       description: ''
       x-ds-definition-name: addressInformation_v2
       x-ms-summary: ''
-    group:
+    errorDetails:
       type: object
       properties:
-        errorDetails:
-          $ref: '#/components/schemas/errorDetails'
-        groupId:
+        errorCode:
           type: string
-          description: The DocuSign group ID for the group.
-        groupName:
+          description: An error code associated with the error.
+        message:
           type: string
-          description: The name of the group.
-        groupType:
-          type: string
-          description: The group type.
-        permissionProfileId:
-          type: string
-          description: The ID of the permission profile associated with the group.
-        users:
-          type: array
-          description: List of users in the group.
-          items:
-            $ref: '#/components/schemas/userInfo'
-      description: Information about groups.
-      x-ds-definition-name: group
-      x-ms-summary: Information about groups.
+          description: A short error message.
+      description: This object describes errors that occur. It is only valid for responses, and ignored in requests.
+      x-ds-definition-name: errorDetails
+      x-ms-summary: This object describes errors that occur. It is only valid for responses, and ignored in requests.
     userInformation:
       type: object
       properties:
@@ -348,148 +439,26 @@ components:
       description: ''
       x-ds-definition-name: userInformation
       x-ms-summary: ''
-    settingsMetadata:
+    usageHistory:
       type: object
       properties:
-        is21CFRPart11:
+        lastSentDateTime:
           type: string
-          description: When set to **true**, indicates that this module is enabled on the account.
-        options:
-          type: array
-          description: ''
-          items:
-            type: string
-        rights:
+          description: 'The date and time the user last sent an envelope. '
+        lastSignedDateTime:
           type: string
-          description: ''
-        uiHint:
-          type: string
-          description: ''
-        uiOrder:
-          type: string
-          description: ''
-        uiType:
-          type: string
-          description: ''
-      description: ''
-      x-ds-definition-name: settingsMetadata
-      x-ms-summary: ''
-    userInfo:
-      type: object
-      properties:
-        activationAccessCode:
-          type: string
-          description: ''
-        email:
-          type: string
-          description: ''
-        errorDetails:
-          $ref: '#/components/schemas/errorDetails'
-        loginStatus:
-          type: string
-          description: ''
-        sendActivationEmail:
-          type: string
-          description: ''
-        uri:
-          type: string
-          description: ''
-        userId:
-          type: string
-          description: 'The user ID of the user being accessed. Generally this is the user ID of the authenticated user, but if the authenticated user is an Admin on the account, this may be another user the Admin user is accessing. **Note**: For the [GET /v2/accounts/{accountId}/envelopes](https://developers.docusign.com/esign-rest-api/reference/Envelopes/Envelopes/listStatusChanges/#envelopesInformation) method, the `user_id` query parameter is not implemented and should not be used.'
-        userName:
-          type: string
-          description: ''
-        userStatus:
-          type: string
-          description: 'Status of the user''s account. One of:
-
-
-            * ActivationRequired
-
-            * ActivationSent
-
-            * Active
-
-            * Closed
-
-            * Disabled
-
-            '
-        userType:
-          type: string
-          description: ''
-      description: ''
-      x-ds-definition-name: userInfo
-      x-ms-summary: ''
-    userAccountManagementGranularInformation:
-      type: object
-      properties:
-        canManageAccountSecuritySettings:
-          type: string
-          description: ''
-        canManageAccountSecuritySettingsMetadata:
-          $ref: '#/components/schemas/settingsMetadata'
-        canManageAccountSettings:
-          type: string
-          description: ''
-        canManageAccountSettingsMetadata:
-          $ref: '#/components/schemas/settingsMetadata'
-        canManageAdmins:
-          type: string
-          description: '**True**
-
-            if the user can manage
-
-            admins.'
-        canManageAdminsMetadata:
-          $ref: '#/components/schemas/settingsMetadata'
-        canManageEnvelopeTransfer:
-          type: string
-          description: ''
-        canManageEnvelopeTransferMetadata:
-          $ref: '#/components/schemas/settingsMetadata'
-        canManageGroups:
-          type: string
-          description: '**True**
-
-            if the user can manage
-
-            groups.'
-        canManageGroupsMetadata:
-          $ref: '#/components/schemas/settingsMetadata'
-        canManageReporting:
-          type: string
-          description: ''
-        canManageReportingMetadata:
-          $ref: '#/components/schemas/settingsMetadata'
-        canManageSharing:
-          type: string
-          description: ''
-        canManageSharingMetadata:
-          $ref: '#/components/schemas/settingsMetadata'
-        canManageSigningGroups:
-          type: string
-          description: ''
-        canManageSigningGroupsMetadata:
-          $ref: '#/components/schemas/settingsMetadata'
-        canManageUsers:
-          type: string
-          description: '**True**
-
-            if the user can manage
-
-            users.'
-        canManageUsersMetadata:
-          $ref: '#/components/schemas/settingsMetadata'
-        canViewUsers:
-          type: string
-          description: ''
-        canViewUsersMetadata:
-          $ref: '#/components/schemas/settingsMetadata'
-      description: Describes which account management capabilities a user has.
-      x-ds-definition-name: userAccountManagementGranularInformation
-      x-ms-summary: Describes which account management capabilities a user has.
+          description: The date and time the user last signed an envelope.
+        sentCount:
+          type: integer
+          description: 'The number of envelopes the user has sent. '
+          format: int32
+        signedCount:
+          type: integer
+          description: 'The number of envelopes the user has signed. '
+          format: int32
+      description: "A complex element consisting of: \n\n* lastSentDateTime - the date and time the user last sent an envelope. \n* lastSignedDateTime - the date and time the user last signed an envelope.\n* sentCount - the number of envelopes the user has sent.\n* signedCount - the number of envelopes the user has signed."
+      x-ds-definition-name: usageHistory
+      x-ms-summary: "A complex element consisting of: \n\n* lastSentDateTime - the date and time the user last sent an envelope. \n* lastSignedDateTime - the date and time the user last signed an envelope.\n* sentCount - the number of envelopes the user has sent.\n* signedCount - the number of envelopes the user has signed."
     forgottenPasswordInformation:
       type: object
       properties:
@@ -520,6 +489,57 @@ components:
       description: A complex element that has up to four Question/Answer pairs for forgotten password information.
       x-ds-definition-name: forgottenPasswordInformation
       x-ms-summary: A complex element that has up to four Question/Answer pairs for forgotten password information.
+    group:
+      type: object
+      properties:
+        errorDetails:
+          $ref: '#/components/schemas/errorDetails'
+        groupId:
+          type: string
+          description: The DocuSign group ID for the group.
+        groupName:
+          type: string
+          description: The name of the group.
+        groupType:
+          type: string
+          description: The group type.
+        permissionProfileId:
+          type: string
+          description: The ID of the permission profile associated with the group.
+        users:
+          type: array
+          description: List of users in the group.
+          items:
+            $ref: '#/components/schemas/userInfo'
+      description: Information about groups.
+      x-ds-definition-name: group
+      x-ms-summary: Information about groups.
+    settingsMetadata:
+      type: object
+      properties:
+        is21CFRPart11:
+          type: string
+          description: When set to **true**, indicates that this module is enabled on the account.
+        options:
+          type: array
+          description: ''
+          items:
+            type: string
+        rights:
+          type: string
+          description: ''
+        uiHint:
+          type: string
+          description: ''
+        uiOrder:
+          type: string
+          description: ''
+        uiType:
+          type: string
+          description: ''
+      description: ''
+      x-ds-definition-name: settingsMetadata
+      x-ms-summary: ''
     userProfile:
       type: object
       properties:
@@ -561,26 +581,6 @@ components:
       description: ''
       x-ds-definition-name: userProfile
       x-ms-summary: ''
-    usageHistory:
-      type: object
-      properties:
-        lastSentDateTime:
-          type: string
-          description: 'The date and time the user last sent an envelope. '
-        lastSignedDateTime:
-          type: string
-          description: The date and time the user last signed an envelope.
-        sentCount:
-          type: integer
-          description: 'The number of envelopes the user has sent. '
-          format: int32
-        signedCount:
-          type: integer
-          description: 'The number of envelopes the user has signed. '
-          format: int32
-      description: "A complex element consisting of: \n\n* lastSentDateTime - the date and time the user last sent an envelope. \n* lastSignedDateTime - the date and time the user last signed an envelope.\n* sentCount - the number of envelopes the user has sent.\n* signedCount - the number of envelopes the user has signed."
-      x-ds-definition-name: usageHistory
-      x-ms-summary: "A complex element consisting of: \n\n* lastSentDateTime - the date and time the user last sent an envelope. \n* lastSignedDateTime - the date and time the user last signed an envelope.\n* sentCount - the number of envelopes the user has sent.\n* signedCount - the number of envelopes the user has signed."
 externalDocs:
   description: See the DocuSign REST API Guide for more information.
   url: https://docs.docusign.com/esign

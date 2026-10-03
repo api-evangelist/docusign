@@ -146,49 +146,6 @@ components:
       description: Contains information about a parent field on which this field depends.
       x-ds-definition-name: DependsOn
       x-ms-summary: Contains information about a parent field on which this field depends.
-    ApiError:
-      type: object
-      properties:
-        errorCode:
-          type: string
-          description: The code associated with the error condition.
-        message:
-          type: string
-          description: A brief message describing the error condition.
-        referenceId:
-          type: string
-          description: ''
-      description: This object describes errors that occur. It is valid only for responses and ignored in requests.
-      x-ds-definition-name: ApiError
-      x-ms-summary: This object describes errors that occur. It is valid only for responses and ignored in requests.
-    SelectListFieldOption:
-      type: object
-      properties:
-        id:
-          type: object
-          description: 'The ID of the list option.
-
-
-            Example: `AU`'
-          readOnly: true
-        title:
-          type: string
-          description: 'The title or name of the list option.
-
-
-            Example: `Australia`'
-          readOnly: true
-        order:
-          type: integer
-          description: 'The order of the list option in the list.
-
-
-            Example: `3`'
-          format: int32
-          readOnly: true
-      description: Contains details about an option in a list.
-      x-ds-definition-name: SelectListFieldOption
-      x-ms-summary: Contains details about an option in a list.
     Field:
       type: object
       properties:
@@ -266,32 +223,6 @@ components:
       description: Contains information about whether the field is required when a room is created or submitted for review.
       x-ds-definition-name: CustomData
       x-ms-summary: Contains information about whether the field is required when a room is created or submitted for review.
-    FieldSet:
-      type: object
-      properties:
-        fieldSetId:
-          type: string
-          description: 'The ID of the field set.
-
-
-            Example: `4aef602b-xxxx-xxxx-xxxx-08d76696f678`
-
-            '
-          format: uuid
-          readOnly: true
-        title:
-          type: string
-          description: The title or name of the field set.
-          readOnly: true
-        fields:
-          type: array
-          description: An array of fields.
-          readOnly: true
-          items:
-            $ref: '#/components/schemas/Field'
-      description: Contains details about a field set.
-      x-ds-definition-name: FieldSet
-      x-ms-summary: Contains details about a field set.
     FieldConfiguration:
       type: object
       properties:
@@ -343,6 +274,75 @@ components:
       description: Contains details about how a field is configured.
       x-ds-definition-name: FieldConfiguration
       x-ms-summary: Contains details about how a field is configured.
+    ApiError:
+      type: object
+      properties:
+        errorCode:
+          type: string
+          description: The code associated with the error condition.
+        message:
+          type: string
+          description: A brief message describing the error condition.
+        referenceId:
+          type: string
+          description: ''
+      description: This object describes errors that occur. It is valid only for responses and ignored in requests.
+      x-ds-definition-name: ApiError
+      x-ms-summary: This object describes errors that occur. It is valid only for responses and ignored in requests.
+    FieldSet:
+      type: object
+      properties:
+        fieldSetId:
+          type: string
+          description: 'The ID of the field set.
+
+
+            Example: `4aef602b-xxxx-xxxx-xxxx-08d76696f678`
+
+            '
+          format: uuid
+          readOnly: true
+        title:
+          type: string
+          description: The title or name of the field set.
+          readOnly: true
+        fields:
+          type: array
+          description: An array of fields.
+          readOnly: true
+          items:
+            $ref: '#/components/schemas/Field'
+      description: Contains details about a field set.
+      x-ds-definition-name: FieldSet
+      x-ms-summary: Contains details about a field set.
+    SelectListFieldOption:
+      type: object
+      properties:
+        id:
+          type: object
+          description: 'The ID of the list option.
+
+
+            Example: `AU`'
+          readOnly: true
+        title:
+          type: string
+          description: 'The title or name of the list option.
+
+
+            Example: `Australia`'
+          readOnly: true
+        order:
+          type: integer
+          description: 'The order of the list option in the list.
+
+
+            Example: `3`'
+          format: int32
+          readOnly: true
+      description: Contains details about an option in a list.
+      x-ds-definition-name: SelectListFieldOption
+      x-ms-summary: Contains details about an option in a list.
   securitySchemes:
     Bearer:
       type: apiKey

@@ -594,14 +594,14 @@ paths:
     - url: https://www.docusign.net/restapi
 components:
   responses:
-    NotFound:
-      description: The requested resource was not found.
+    Unauthorized:
+      description: Unauthorized. Authentication credentials are missing or invalid.
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/ErrorDetails'
-    Unauthorized:
-      description: Unauthorized. Authentication credentials are missing or invalid.
+    NotFound:
+      description: The requested resource was not found.
       content:
         application/json:
           schema:
@@ -612,15 +612,23 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/ErrorDetails'
+  parameters:
+    accountId:
+      name: accountId
+      in: path
+      required: true
+      description: The external account number (short) or account ID GUID of the DocuSign account.
+      schema:
+        type: string
+    envelopeId:
+      name: envelopeId
+      in: path
+      required: true
+      description: The envelope ID (GUID) of the envelope.
+      schema:
+        type: string
+        format: uuid
   schemas:
-    ViewUrl:
-      type: object
-      description: Contains a URL for an embedded view.
-      properties:
-        url:
-          type: string
-          description: The URL for the embedded view. This URL is time-limited and should be used immediately.
-          example: https://www.example.com
     RecipientViewRequest:
       type: object
       description: Request body for generating an embedded recipient signing URL.
@@ -690,6 +698,14 @@ components:
           type: string
           description: The security domain for the signing session.
           example: example_value
+    ViewUrl:
+      type: object
+      description: Contains a URL for an embedded view.
+      properties:
+        url:
+          type: string
+          description: The URL for the embedded view. This URL is time-limited and should be used immediately.
+          example: https://www.example.com
     ErrorDetails:
       type: object
       description: Contains error information returned by the API.
@@ -702,15 +718,6 @@ components:
           type: string
           description: A human-readable error message.
           example: example_value
-    returnUrlRequest:
-      type: object
-      properties:
-        returnUrl:
-          type: string
-          description: "Your app's return url that the user will be redirected to after sending the envelope or completing the sending/tagging view. Query parameters `envelopeId` and `event` will be added to the URL. The event parameter values: \n\n* `Send` (the user sent the envelope)\n* `Save` (the user saved the envelope, it is still a draft)\n* `Cancel` (the user canceled the sending transaction)\n* `Error` (there was an error during the send operation)\n* `SessionEnd` (the sending session ended before the user completed a different action)"
-      description: 'The request body for the EnvelopeViews: createSender method.'
-      x-ds-definition-name: returnUrlRequest
-      x-ms-summary: 'The request body for the EnvelopeViews: createSender method.'
     viewUrl:
       type: object
       properties:
@@ -720,18 +727,6 @@ components:
       description: ''
       x-ds-definition-name: viewUrl
       x-ms-summary: ''
-    errorDetails:
-      type: object
-      properties:
-        errorCode:
-          type: string
-          description: An error code associated with the error.
-        message:
-          type: string
-          description: A short error message.
-      description: This object describes errors that occur. It is only valid for responses, and ignored in requests.
-      x-ds-definition-name: errorDetails
-      x-ms-summary: This object describes errors that occur. It is only valid for responses, and ignored in requests.
     correctViewRequest:
       type: object
       properties:
@@ -770,6 +765,27 @@ components:
       description: ''
       x-ds-definition-name: consoleViewRequest
       x-ms-summary: ''
+    errorDetails:
+      type: object
+      properties:
+        errorCode:
+          type: string
+          description: An error code associated with the error.
+        message:
+          type: string
+          description: A short error message.
+      description: This object describes errors that occur. It is only valid for responses, and ignored in requests.
+      x-ds-definition-name: errorDetails
+      x-ms-summary: This object describes errors that occur. It is only valid for responses, and ignored in requests.
+    returnUrlRequest:
+      type: object
+      properties:
+        returnUrl:
+          type: string
+          description: "Your app's return url that the user will be redirected to after sending the envelope or completing the sending/tagging view. Query parameters `envelopeId` and `event` will be added to the URL. The event parameter values: \n\n* `Send` (the user sent the envelope)\n* `Save` (the user saved the envelope, it is still a draft)\n* `Cancel` (the user canceled the sending transaction)\n* `Error` (there was an error during the send operation)\n* `SessionEnd` (the sending session ended before the user completed a different action)"
+      description: 'The request body for the EnvelopeViews: createSender method.'
+      x-ds-definition-name: returnUrlRequest
+      x-ms-summary: 'The request body for the EnvelopeViews: createSender method.'
     recipientViewRequest:
       type: object
       properties:
@@ -844,22 +860,6 @@ components:
       description: ''
       x-ds-definition-name: recipientViewRequest
       x-ms-summary: ''
-  parameters:
-    accountId:
-      name: accountId
-      in: path
-      required: true
-      description: The external account number (short) or account ID GUID of the DocuSign account.
-      schema:
-        type: string
-    envelopeId:
-      name: envelopeId
-      in: path
-      required: true
-      description: The envelope ID (GUID) of the envelope.
-      schema:
-        type: string
-        format: uuid
   securitySchemes:
     OAuth2:
       type: oauth2
