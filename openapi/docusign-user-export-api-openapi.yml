@@ -204,6 +204,24 @@ paths:
       x-ds-in-sdk: true
 components:
   schemas:
+    OrganizationExportDomain:
+      type: object
+      properties:
+        domain:
+          type: string
+          description: ''
+      description: ''
+      x-ds-definition-name: OrganizationExportDomain
+      x-ms-summary: ''
+    OrgExportSelectedDomain:
+      type: object
+      properties:
+        domain:
+          type: string
+          description: ''
+      description: ''
+      x-ds-definition-name: OrgExportSelectedDomain
+      x-ms-summary: ''
     OrganizationExportAccount:
       type: object
       properties:
@@ -215,34 +233,36 @@ components:
       description: ''
       x-ds-definition-name: OrganizationExportAccount
       x-ms-summary: ''
-    OrganizationExportTaskResponse:
+    OrgExportSelectedAccount:
       type: object
       properties:
-        id:
+        account_id:
           type: string
-          description: ''
+          description: Select users that are members of the specified account. At least one of `email`, `account_id` or `organization_reserved_domain_id` must be specified.
           format: uuid
           example: 00000000-0000-0000-0000-000000000000
-        site_id:
-          type: integer
-          description: ''
-          format: int32
-        url:
-          type: string
-          description: ''
-        number_rows:
-          type: integer
-          description: ''
-          format: int64
-        size_bytes:
-          type: integer
-          description: ''
-          format: int64
-        error_details:
-          $ref: '#/components/schemas/OETR_ErrorDetails'
       description: ''
-      x-ds-definition-name: OrganizationExportTaskResponse
+      x-ds-definition-name: OrgExportSelectedAccount
       x-ms-summary: ''
+    OrganizationExportRequest:
+      type: object
+      properties:
+        type:
+          type: string
+          description: "The type of export requested. One of:\n\n- `organization_domain_users_export`: All users of the reserved domains.\n- `organization_external_memberships_export`: Users whose email address domain is *not* linked to the organization. \n- `organization_memberships_export`: Every user in every account in the organization. Users in multiple accounts will appear more than once.\n- `organization_account_settings_export`: This value only applies to requests to export account settings."
+        accounts:
+          type: array
+          description: ''
+          items:
+            $ref: '#/components/schemas/OrganizationExportAccount'
+        domains:
+          type: array
+          description: ''
+          items:
+            $ref: '#/components/schemas/OrganizationExportDomain'
+      description: Enables you to specify the kind of export request.
+      x-ds-definition-name: OrganizationExportRequest
+      x-ms-summary: Enables you to specify the kind of export request.
     OrganizationExportsResponse:
       type: object
       properties:
@@ -253,18 +273,6 @@ components:
             $ref: '#/components/schemas/OrganizationExportResponse'
       description: ''
       x-ds-definition-name: OrganizationExportsResponse
-      x-ms-summary: ''
-    OETR_ErrorDetails:
-      type: object
-      properties:
-        error:
-          type: string
-          description: The error number.
-        error_description:
-          type: string
-          description: A longer description of the error.
-      description: ''
-      x-ds-definition-name: OETR_ErrorDetails
       x-ms-summary: ''
     OrganizationExportResponse:
       type: object
@@ -334,53 +342,45 @@ components:
       description: ''
       x-ds-definition-name: OrganizationExportResponse
       x-ms-summary: ''
-    OrganizationExportDomain:
+    OrganizationExportTaskResponse:
       type: object
       properties:
-        domain:
+        id:
           type: string
           description: ''
-      description: ''
-      x-ds-definition-name: OrganizationExportDomain
-      x-ms-summary: ''
-    OrganizationExportRequest:
-      type: object
-      properties:
-        type:
-          type: string
-          description: "The type of export requested. One of:\n\n- `organization_domain_users_export`: All users of the reserved domains.\n- `organization_external_memberships_export`: Users whose email address domain is *not* linked to the organization. \n- `organization_memberships_export`: Every user in every account in the organization. Users in multiple accounts will appear more than once.\n- `organization_account_settings_export`: This value only applies to requests to export account settings."
-        accounts:
-          type: array
-          description: ''
-          items:
-            $ref: '#/components/schemas/OrganizationExportAccount'
-        domains:
-          type: array
-          description: ''
-          items:
-            $ref: '#/components/schemas/OrganizationExportDomain'
-      description: Enables you to specify the kind of export request.
-      x-ds-definition-name: OrganizationExportRequest
-      x-ms-summary: Enables you to specify the kind of export request.
-    OrgExportSelectedDomain:
-      type: object
-      properties:
-        domain:
-          type: string
-          description: ''
-      description: ''
-      x-ds-definition-name: OrgExportSelectedDomain
-      x-ms-summary: ''
-    OrgExportSelectedAccount:
-      type: object
-      properties:
-        account_id:
-          type: string
-          description: Select users that are members of the specified account. At least one of `email`, `account_id` or `organization_reserved_domain_id` must be specified.
           format: uuid
           example: 00000000-0000-0000-0000-000000000000
+        site_id:
+          type: integer
+          description: ''
+          format: int32
+        url:
+          type: string
+          description: ''
+        number_rows:
+          type: integer
+          description: ''
+          format: int64
+        size_bytes:
+          type: integer
+          description: ''
+          format: int64
+        error_details:
+          $ref: '#/components/schemas/OETR_ErrorDetails'
       description: ''
-      x-ds-definition-name: OrgExportSelectedAccount
+      x-ds-definition-name: OrganizationExportTaskResponse
+      x-ms-summary: ''
+    OETR_ErrorDetails:
+      type: object
+      properties:
+        error:
+          type: string
+          description: The error number.
+        error_description:
+          type: string
+          description: A longer description of the error.
+      description: ''
+      x-ds-definition-name: OETR_ErrorDetails
       x-ms-summary: ''
     OrganizationExportRequestorResponse:
       type: object

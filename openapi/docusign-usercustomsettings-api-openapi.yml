@@ -220,17 +220,18 @@ paths:
       x-codegen-request-body-name: customSettingsInformation
 components:
   schemas:
-    customSettingsInformation:
+    errorDetails:
       type: object
       properties:
-        customSettings:
-          type: array
-          description: The name/value pair information for the user custom setting.
-          items:
-            $ref: '#/components/schemas/nameValue'
-      description: ''
-      x-ds-definition-name: customSettingsInformation
-      x-ms-summary: ''
+        errorCode:
+          type: string
+          description: An error code associated with the error.
+        message:
+          type: string
+          description: A short error message.
+      description: This object describes errors that occur. It is only valid for responses, and ignored in requests.
+      x-ds-definition-name: errorDetails
+      x-ms-summary: This object describes errors that occur. It is only valid for responses, and ignored in requests.
     nameValue:
       type: object
       properties:
@@ -248,18 +249,17 @@ components:
       description: ''
       x-ds-definition-name: nameValue
       x-ms-summary: ''
-    errorDetails:
+    customSettingsInformation:
       type: object
       properties:
-        errorCode:
-          type: string
-          description: An error code associated with the error.
-        message:
-          type: string
-          description: A short error message.
-      description: This object describes errors that occur. It is only valid for responses, and ignored in requests.
-      x-ds-definition-name: errorDetails
-      x-ms-summary: This object describes errors that occur. It is only valid for responses, and ignored in requests.
+        customSettings:
+          type: array
+          description: The name/value pair information for the user custom setting.
+          items:
+            $ref: '#/components/schemas/nameValue'
+      description: ''
+      x-ds-definition-name: customSettingsInformation
+      x-ms-summary: ''
 externalDocs:
   description: See the DocuSign REST API Guide for more information.
   url: https://docs.docusign.com/esign

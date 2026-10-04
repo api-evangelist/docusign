@@ -370,162 +370,43 @@ paths:
       x-ds-in-sdk: true
 components:
   schemas:
-    workspaceUser:
+    workspaceUserAuthorization:
       type: object
       properties:
-        accountId:
+        canDelete:
           type: string
-          description: The account ID associated with the envelope.
-        accountName:
+          description: ''
+        canMove:
           type: string
-          description: The name of the account that the workspace user belongs to.
-        activeSince:
+          description: ''
+        canTransact:
+          type: string
+          description: ''
+        canView:
           type: string
           description: ''
         created:
           type: string
-          description: The UTC DateTime when the workspace user was created.
+          description: The UTC DateTime when the workspace user authorization was created.
         createdById:
           type: string
           description: ''
-        email:
-          type: string
-          description: ''
         errorDetails:
           $ref: '#/components/schemas/errorDetails'
-        lastModified:
-          type: string
-          description: Utc date and time the comment was last updated (can only be done by creator.)
-        lastModifiedById:
+        modified:
           type: string
           description: ''
-        status:
-          type: string
-          description: "Filters the results by user status.\nYou can specify a comma-separated\nlist of the following statuses:\n\n* ActivationRequired \n* ActivationSent \n* Active\n* Closed \n* Disabled"
-        type:
-          type: string
-          description: 'Type of the user. Valid values: type_owner, type_participant.'
-        userId:
-          type: string
-          description: 'The user ID of the user being accessed. Generally this is the user ID of the authenticated user, but if the authenticated user is an Admin on the account, this may be another user the Admin user is accessing. **Note**: For the [GET /v2/accounts/{accountId}/envelopes](https://developers.docusign.com/esign-rest-api/reference/Envelopes/Envelopes/listStatusChanges/#envelopesInformation) method, the `user_id` query parameter is not implemented and should not be used.'
-        userName:
+        modifiedById:
           type: string
           description: ''
-        workspaceId:
-          type: string
-          description: Specifies the workspace ID GUID.
-        workspaceUserBaseUrl:
-          type: string
-          description: The relative URI that may be used to access a workspace user.
         workspaceUserId:
           type: string
           description: ''
-      description: 'A workspaceUser representing the user. This property is only returned in response to user specific GET call. '
-      x-ds-definition-name: workspaceUser
-      x-ms-summary: 'A workspaceUser representing the user. This property is only returned in response to user specific GET call. '
-    workspaceFolderContents:
-      type: object
-      properties:
-        endPosition:
-          type: string
-          description: 'The last position in the result set. '
-        folder:
-          $ref: '#/components/schemas/workspaceItem'
-        items:
-          type: array
-          description: ''
-          items:
-            $ref: '#/components/schemas/workspaceItem'
-        parentFolders:
-          type: array
-          description: ''
-          items:
-            $ref: '#/components/schemas/workspaceItem'
-        resultSetSize:
-          type: string
-          description: 'The number of results returned in this response. '
-        startPosition:
-          type: string
-          description: Starting position of the current result set.
-        totalSetSize:
-          type: string
-          description: The total number of items in the search's result set. It will always be greater than or equal to the value of the `resultSetSize` field.
-        workspaceId:
-          type: string
-          description: The id of the workspace, always populated.
-      description: Provides properties that describe the contents of a workspace folder.
-      x-ds-definition-name: workspaceFolderContents
-      x-ms-summary: Provides properties that describe the contents of a workspace folder.
-    pageImages:
-      type: object
-      properties:
-        endPosition:
-          type: string
-          description: 'The last position in the result set. '
-        nextUri:
-          type: string
-          description: 'The URI for the next chunk of records based on the search request. It is `null` if this is the last set of results for the search. '
-        pages:
-          type: array
-          description: ''
-          items:
-            $ref: '#/components/schemas/page'
-        previousUri:
-          type: string
-          description: 'The URI for the prior chunk of records based on the search request. It is `null` if this is the first set of results for the search. '
-        resultSetSize:
-          type: string
-          description: 'The number of results returned in this response. '
-        startPosition:
-          type: string
-          description: Starting position of the current result set.
-        totalSetSize:
-          type: string
-          description: The total number of items in the search's result set. It will always be greater than or equal to the value of the `resultSetSize` field.
-      description: ''
-      x-ds-definition-name: pageImages
-      x-ms-summary: ''
-    errorDetails:
-      type: object
-      properties:
-        errorCode:
-          type: string
-          description: An error code associated with the error.
-        message:
-          type: string
-          description: A short error message.
-      description: This object describes errors that occur. It is only valid for responses, and ignored in requests.
-      x-ds-definition-name: errorDetails
-      x-ms-summary: This object describes errors that occur. It is only valid for responses, and ignored in requests.
-    page:
-      type: object
-      properties:
-        dpi:
-          type: string
-          description: The number of dots per inch used for the page image.
-        errorDetails:
-          $ref: '#/components/schemas/errorDetails'
-        height:
-          type: string
-          description: Height of the tab in pixels.
-        imageBytes:
-          type: string
-          description: ''
-        mimeType:
-          type: string
-          description: ''
-        pageId:
-          type: string
-          description: ''
-        sequence:
-          type: string
-          description: ''
-        width:
-          type: string
-          description: Width of the tab in pixels.
-      description: Description of a page of a document.
-      x-ds-definition-name: page
-      x-ms-summary: Description of a page of a document.
+        workspaceUserInformation:
+          $ref: '#/components/schemas/workspaceUser'
+      description: Provides properties that describe user authorization to a workspace.
+      x-ds-definition-name: workspaceUserAuthorization
+      x-ms-summary: Provides properties that describe user authorization to a workspace.
     workspaceItem:
       type: object
       properties:
@@ -586,43 +467,88 @@ components:
       description: ''
       x-ds-definition-name: workspaceItem
       x-ms-summary: ''
-    workspaceUserAuthorization:
+    workspaceUser:
       type: object
       properties:
-        canDelete:
+        accountId:
           type: string
-          description: ''
-        canMove:
+          description: The account ID associated with the envelope.
+        accountName:
           type: string
-          description: ''
-        canTransact:
-          type: string
-          description: ''
-        canView:
+          description: The name of the account that the workspace user belongs to.
+        activeSince:
           type: string
           description: ''
         created:
           type: string
-          description: The UTC DateTime when the workspace user authorization was created.
+          description: The UTC DateTime when the workspace user was created.
         createdById:
+          type: string
+          description: ''
+        email:
           type: string
           description: ''
         errorDetails:
           $ref: '#/components/schemas/errorDetails'
-        modified:
+        lastModified:
+          type: string
+          description: Utc date and time the comment was last updated (can only be done by creator.)
+        lastModifiedById:
           type: string
           description: ''
-        modifiedById:
+        status:
+          type: string
+          description: "Filters the results by user status.\nYou can specify a comma-separated\nlist of the following statuses:\n\n* ActivationRequired \n* ActivationSent \n* Active\n* Closed \n* Disabled"
+        type:
+          type: string
+          description: 'Type of the user. Valid values: type_owner, type_participant.'
+        userId:
+          type: string
+          description: 'The user ID of the user being accessed. Generally this is the user ID of the authenticated user, but if the authenticated user is an Admin on the account, this may be another user the Admin user is accessing. **Note**: For the [GET /v2/accounts/{accountId}/envelopes](https://developers.docusign.com/esign-rest-api/reference/Envelopes/Envelopes/listStatusChanges/#envelopesInformation) method, the `user_id` query parameter is not implemented and should not be used.'
+        userName:
           type: string
           description: ''
+        workspaceId:
+          type: string
+          description: Specifies the workspace ID GUID.
+        workspaceUserBaseUrl:
+          type: string
+          description: The relative URI that may be used to access a workspace user.
         workspaceUserId:
           type: string
           description: ''
-        workspaceUserInformation:
-          $ref: '#/components/schemas/workspaceUser'
-      description: Provides properties that describe user authorization to a workspace.
-      x-ds-definition-name: workspaceUserAuthorization
-      x-ms-summary: Provides properties that describe user authorization to a workspace.
+      description: 'A workspaceUser representing the user. This property is only returned in response to user specific GET call. '
+      x-ds-definition-name: workspaceUser
+      x-ms-summary: 'A workspaceUser representing the user. This property is only returned in response to user specific GET call. '
+    pageImages:
+      type: object
+      properties:
+        endPosition:
+          type: string
+          description: 'The last position in the result set. '
+        nextUri:
+          type: string
+          description: 'The URI for the next chunk of records based on the search request. It is `null` if this is the last set of results for the search. '
+        pages:
+          type: array
+          description: ''
+          items:
+            $ref: '#/components/schemas/page'
+        previousUri:
+          type: string
+          description: 'The URI for the prior chunk of records based on the search request. It is `null` if this is the first set of results for the search. '
+        resultSetSize:
+          type: string
+          description: 'The number of results returned in this response. '
+        startPosition:
+          type: string
+          description: Starting position of the current result set.
+        totalSetSize:
+          type: string
+          description: The total number of items in the search's result set. It will always be greater than or equal to the value of the `resultSetSize` field.
+      description: ''
+      x-ds-definition-name: pageImages
+      x-ms-summary: ''
     workspaceItemList:
       type: object
       properties:
@@ -634,6 +560,80 @@ components:
       description: Provides properties that describe the items contained in a workspace.
       x-ds-definition-name: workspaceItemList
       x-ms-summary: Provides properties that describe the items contained in a workspace.
+    page:
+      type: object
+      properties:
+        dpi:
+          type: string
+          description: The number of dots per inch used for the page image.
+        errorDetails:
+          $ref: '#/components/schemas/errorDetails'
+        height:
+          type: string
+          description: Height of the tab in pixels.
+        imageBytes:
+          type: string
+          description: ''
+        mimeType:
+          type: string
+          description: ''
+        pageId:
+          type: string
+          description: ''
+        sequence:
+          type: string
+          description: ''
+        width:
+          type: string
+          description: Width of the tab in pixels.
+      description: Description of a page of a document.
+      x-ds-definition-name: page
+      x-ms-summary: Description of a page of a document.
+    errorDetails:
+      type: object
+      properties:
+        errorCode:
+          type: string
+          description: An error code associated with the error.
+        message:
+          type: string
+          description: A short error message.
+      description: This object describes errors that occur. It is only valid for responses, and ignored in requests.
+      x-ds-definition-name: errorDetails
+      x-ms-summary: This object describes errors that occur. It is only valid for responses, and ignored in requests.
+    workspaceFolderContents:
+      type: object
+      properties:
+        endPosition:
+          type: string
+          description: 'The last position in the result set. '
+        folder:
+          $ref: '#/components/schemas/workspaceItem'
+        items:
+          type: array
+          description: ''
+          items:
+            $ref: '#/components/schemas/workspaceItem'
+        parentFolders:
+          type: array
+          description: ''
+          items:
+            $ref: '#/components/schemas/workspaceItem'
+        resultSetSize:
+          type: string
+          description: 'The number of results returned in this response. '
+        startPosition:
+          type: string
+          description: Starting position of the current result set.
+        totalSetSize:
+          type: string
+          description: The total number of items in the search's result set. It will always be greater than or equal to the value of the `resultSetSize` field.
+        workspaceId:
+          type: string
+          description: The id of the workspace, always populated.
+      description: Provides properties that describe the contents of a workspace folder.
+      x-ds-definition-name: workspaceFolderContents
+      x-ms-summary: Provides properties that describe the contents of a workspace folder.
 externalDocs:
   description: See the DocuSign REST API Guide for more information.
   url: https://docs.docusign.com/esign

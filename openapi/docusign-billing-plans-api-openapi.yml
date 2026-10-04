@@ -248,6 +248,162 @@ paths:
       x-ds-in-sdk: true
 components:
   schemas:
+    planInformation:
+      type: object
+      properties:
+        addOns:
+          type: array
+          description: 'Reserved:'
+          items:
+            $ref: '#/components/schemas/addOn'
+        currencyCode:
+          type: string
+          description: Specifies the ISO currency code for the account.
+        freeTrialDaysOverride:
+          type: string
+          description: Reserved for DocuSign use only.
+        planFeatureSets:
+          type: array
+          description: A complex type that sets the feature sets for the account.
+          items:
+            $ref: '#/components/schemas/featureSet'
+        planId:
+          type: string
+          description: The DocuSign Plan ID for the account.
+        recipientDomains:
+          type: array
+          description: ''
+          items:
+            $ref: '#/components/schemas/recipientDomain'
+      description: An object used to identify the features and attributes of the account being created.
+      x-ds-definition-name: planInformation
+      x-ms-summary: An object used to identify the features and attributes of the account being created.
+    billingPlanResponse:
+      type: object
+      properties:
+        billingPlan:
+          $ref: '#/components/schemas/billingPlan'
+        successorPlans:
+          type: array
+          description: ''
+          items:
+            $ref: '#/components/schemas/billingPlan'
+      description: Defines a billing plan response object.
+      x-ds-definition-name: billingPlanResponse
+      x-ms-summary: Defines a billing plan response object.
+    seatDiscount:
+      type: object
+      properties:
+        beginSeatCount:
+          type: string
+          description: 'Reserved: TBD'
+        discountPercent:
+          type: string
+          description: ''
+        endSeatCount:
+          type: string
+          description: 'Reserved: TBD'
+      description: ''
+      x-ds-definition-name: seatDiscount
+      x-ms-summary: ''
+    addOn:
+      type: object
+      properties:
+        active:
+          type: string
+          description: 'Reserved:'
+        addOnId:
+          type: string
+          description: 'Reserved:'
+        id:
+          type: string
+          description: ''
+        name:
+          type: string
+          description: 'Reserved:'
+      description: Contains information about add ons.
+      x-ds-definition-name: addOn
+      x-ms-summary: Contains information about add ons.
+    billingPlan:
+      type: object
+      properties:
+        appStoreProducts:
+          type: array
+          description: 'Reserved: TBD'
+          items:
+            $ref: '#/components/schemas/appStoreProduct'
+        currencyPlanPrices:
+          type: array
+          description: Contains the currencyCode and currencySymbol for the alternate currency values for envelopeFee, fixedFee, and seatFee that are configured for this plan feature set.
+          items:
+            $ref: '#/components/schemas/currencyPlanPrice'
+        enableSupport:
+          type: string
+          description: When set to **true**, then customer support is provided as part of the account plan.
+        includedSeats:
+          type: string
+          description: The number of seats (users) included.
+        otherDiscountPercent:
+          type: string
+          description: ''
+        paymentCycle:
+          type: string
+          description: ' The payment cycle associated with the plan. The possible values are: Monthly or Annually. '
+        paymentMethod:
+          type: string
+          description: ''
+        perSeatPrice:
+          type: string
+          description: The per seat price for the plan.
+        planClassification:
+          type: string
+          description: Identifies the type of plan. Examples include Business, Corporate, Enterprise, Free.
+        planFeatureSets:
+          type: array
+          description: A complex type that sets the feature sets for the account.
+          items:
+            $ref: '#/components/schemas/featureSet'
+        planId:
+          type: string
+          description: The DocuSign Plan ID for the account.
+        planName:
+          type: string
+          description: The name of the Billing Plan.
+        seatDiscounts:
+          type: array
+          description: ''
+          items:
+            $ref: '#/components/schemas/seatDiscount'
+        supportIncidentFee:
+          type: string
+          description: The support incident fee charged for each support incident.
+        supportPlanFee:
+          type: string
+          description: The support plan fee charged for this plan.
+      description: Contains information about a billing plan.
+      x-ds-definition-name: billingPlan
+      x-ms-summary: Contains information about a billing plan.
+    currencyFeatureSetPrice:
+      type: object
+      properties:
+        currencyCode:
+          type: string
+          description: 'Specifies the alternate ISO currency code for the account. '
+        currencySymbol:
+          type: string
+          description: Specifies the alternate currency symbol for the account.
+        envelopeFee:
+          type: string
+          description: An incremental envelope cost for plans with envelope overages (when `isEnabled` is set to **true**.)
+        fixedFee:
+          type: string
+          description: Specifies a one-time fee associated with the plan (when `isEnabled` is set to **true**.)
+        seatFee:
+          type: string
+          description: Specifies an incremental seat cost for seat-based plans (when `isEnabled` is set to **true**.)
+      description: ''
+      x-ds-definition-name: currencyFeatureSetPrice
+      x-ms-summary: ''
     referralInformation:
       type: object
       properties:
@@ -308,314 +464,30 @@ components:
       description: "A complex type that contains the following information for entering referral and discount information. The following items are included in the referral information (all string content): enableSupport, includedSeats, saleDiscountPercent, saleDiscountAmount, saleDiscountFixedAmount, saleDiscountPeriods, saleDiscountSeatPriceOverride, planStartMonth, referralCode, referrerName, advertisementId, publisherId, shopperId, promoCode, groupMemberId, idType, and industry \n\n###### Note: saleDiscountPercent, saleDiscountAmount, saleDiscountFixedAmount, saleDiscountPeriods, and saleDiscountSeatPriceOverride are reserved for DoucSign use only."
       x-ds-definition-name: referralInformation
       x-ms-summary: "A complex type that contains the following information for entering referral and discount information. The following items are included in the referral information (all string content): enableSupport, includedSeats, saleDiscountPercent, saleDiscountAmount, saleDiscountFixedAmount, saleDiscountPeriods, saleDiscountSeatPriceOverride, planStartMonth, referralCode, referrerName, advertisementId, publisherId, shopperId, promoCode, groupMemberId, idType, and industry \n\n###### Note: saleDiscountPercent, saleDiscountAmount, saleDiscountFixedAmount, saleDiscountPeriods, and saleDiscountSeatPriceOverride are reserved for DoucSign use only."
-    appStoreProduct:
+    billingPlanPreview:
       type: object
       properties:
-        marketPlace:
-          type: string
-          description: ''
-        productId:
-          type: string
-          description: The Product ID from the AppStore.
-      description: Contains information about an APP store product.
-      x-ds-definition-name: appStoreProduct
-      x-ms-summary: Contains information about an APP store product.
-    accountBillingPlanResponse:
-      type: object
-      properties:
-        billingAddress:
-          $ref: '#/components/schemas/accountAddress'
-        billingAddressIsCreditCardAddress:
-          type: string
-          description: When set to **true**, the credit card address information is the same as that returned as the billing address. If false, then the billing address is considered a billing contact address, and the credit card address can be different.
-        billingPlan:
-          $ref: '#/components/schemas/accountBillingPlan'
-        creditCardInformation:
-          $ref: '#/components/schemas/creditCardInformation'
-        paymentProcessorInformation:
-          $ref: '#/components/schemas/paymentProcessorInformation'
-        referralInformation:
-          $ref: '#/components/schemas/referralInformation'
-        successorPlans:
-          type: array
-          description: ''
-          items:
-            $ref: '#/components/schemas/billingPlan'
-      description: ''
-      x-ds-definition-name: accountBillingPlanResponse
-      x-ms-summary: ''
-    currencyFeatureSetPrice:
-      type: object
-      properties:
-        currencyCode:
-          type: string
-          description: 'Specifies the alternate ISO currency code for the account. '
-        currencySymbol:
-          type: string
-          description: Specifies the alternate currency symbol for the account.
-        envelopeFee:
-          type: string
-          description: An incremental envelope cost for plans with envelope overages (when `isEnabled` is set to **true**.)
-        fixedFee:
-          type: string
-          description: Specifies a one-time fee associated with the plan (when `isEnabled` is set to **true**.)
-        seatFee:
-          type: string
-          description: Specifies an incremental seat cost for seat-based plans (when `isEnabled` is set to **true**.)
-      description: ''
-      x-ds-definition-name: currencyFeatureSetPrice
-      x-ms-summary: ''
-    billingPlan:
-      type: object
-      properties:
-        appStoreProducts:
-          type: array
-          description: 'Reserved: TBD'
-          items:
-            $ref: '#/components/schemas/appStoreProduct'
-        currencyPlanPrices:
-          type: array
-          description: Contains the currencyCode and currencySymbol for the alternate currency values for envelopeFee, fixedFee, and seatFee that are configured for this plan feature set.
-          items:
-            $ref: '#/components/schemas/currencyPlanPrice'
-        enableSupport:
-          type: string
-          description: When set to **true**, then customer support is provided as part of the account plan.
-        includedSeats:
-          type: string
-          description: The number of seats (users) included.
-        otherDiscountPercent:
-          type: string
-          description: ''
-        paymentCycle:
-          type: string
-          description: ' The payment cycle associated with the plan. The possible values are: Monthly or Annually. '
-        paymentMethod:
-          type: string
-          description: ''
-        perSeatPrice:
-          type: string
-          description: The per seat price for the plan.
-        planClassification:
-          type: string
-          description: Identifies the type of plan. Examples include Business, Corporate, Enterprise, Free.
-        planFeatureSets:
-          type: array
-          description: A complex type that sets the feature sets for the account.
-          items:
-            $ref: '#/components/schemas/featureSet'
-        planId:
-          type: string
-          description: The DocuSign Plan ID for the account.
-        planName:
-          type: string
-          description: The name of the Billing Plan.
-        seatDiscounts:
-          type: array
-          description: ''
-          items:
-            $ref: '#/components/schemas/seatDiscount'
-        supportIncidentFee:
-          type: string
-          description: The support incident fee charged for each support incident.
-        supportPlanFee:
-          type: string
-          description: The support plan fee charged for this plan.
-      description: Contains information about a billing plan.
-      x-ds-definition-name: billingPlan
-      x-ms-summary: Contains information about a billing plan.
-    billingInvoice:
-      type: object
-      properties:
-        amount:
-          type: string
-          description: The total amount of the purchase.
-        balance:
-          type: string
-          description: 'Reserved: TBD'
-        dueDate:
-          type: string
-          description: 'Reserved: TBD'
-        invoiceId:
-          type: string
-          description: ''
-        invoiceItems:
-          type: array
-          description: 'Reserved: TBD'
-          items:
-            $ref: '#/components/schemas/billingInvoiceItem'
-        invoiceNumber:
-          type: string
-          description: 'Reserved: TBD'
-        invoiceUri:
-          type: string
-          description: Contains a URI for an endpoint that you can use to retrieve invoice information.
-        nonTaxableAmount:
-          type: string
-          description: ''
-        pdfAvailable:
-          type: string
-          description: ''
-        taxableAmount:
-          type: string
-          description: ''
-      description: ''
-      x-ds-definition-name: billingInvoice
-      x-ms-summary: ''
-    billingPlanUpdateResponse:
-      type: object
-      properties:
-        accountPaymentMethod:
-          type: string
-          description: ''
-        billingPlanPreview:
-          $ref: '#/components/schemas/billingPlanPreview'
         currencyCode:
           type: string
           description: Specifies the ISO currency code for the account.
-        includedSeats:
-          type: string
-          description: The number of seats (users) included.
-        paymentCycle:
-          type: string
-          description: ''
-        paymentMethod:
+        invoice:
+          $ref: '#/components/schemas/billingInvoice'
+        isProrated:
           type: string
           description: ''
-        planId:
-          type: string
-          description: The DocuSign Plan ID for the account.
-        planName:
+        subtotalAmount:
           type: string
           description: ''
-      description: Defines a billing plan update response object.
-      x-ds-definition-name: billingPlanUpdateResponse
-      x-ms-summary: Defines a billing plan update response object.
-    billingInvoiceItem:
-      type: object
-      properties:
-        chargeAmount:
-          type: string
-          description: 'Reserved: TBD'
-        chargeName:
-          type: string
-          description: 'Reserved: TBD'
-        invoiceItemId:
-          type: string
-          description: 'Reserved: TBD'
-        quantity:
-          type: string
-          description: The quantity of envelopes to add to the account.
-        unitPrice:
-          type: string
-          description: 'Reserved: TBD'
-      description: Contains information about an item on a billing invoice.
-      x-ds-definition-name: billingInvoiceItem
-      x-ms-summary: Contains information about an item on a billing invoice.
-    creditCardTypes:
-      type: object
-      properties:
-        cardTypes:
-          type: array
-          description: An array containing supported credit card types.
-          items:
-            type: string
-      description: ''
-      x-ds-definition-name: creditCardTypes
-      x-ms-summary: ''
-    appStoreReceipt:
-      type: object
-      properties:
-        productId:
-          type: string
-          description: The Product ID from the AppStore.
-        receiptData:
-          type: string
-          description: 'Reserved: TBD'
-      description: Contains information about an APP store receipt.
-      x-ds-definition-name: appStoreReceipt
-      x-ms-summary: Contains information about an APP store receipt.
-    errorDetails:
-      type: object
-      properties:
-        errorCode:
-          type: string
-          description: An error code associated with the error.
-        message:
-          type: string
-          description: A short error message.
-      description: This object describes errors that occur. It is only valid for responses, and ignored in requests.
-      x-ds-definition-name: errorDetails
-      x-ms-summary: This object describes errors that occur. It is only valid for responses, and ignored in requests.
-    addressInformation:
-      type: object
-      properties:
-        city:
-          type: string
-          description: The city associated with the address.
-        country:
-          type: string
-          description: Specifies the country associated with the address.
-        fax:
-          type: string
-          description: A Fax number associated with the address if one is available.
-        phone:
-          type: string
-          description: A phone number associated with the address.
-        state:
-          type: string
-          description: The state or province associated with the address.
-        street1:
-          type: string
-          description: The first line of the address.
-        street2:
-          type: string
-          description: The second line of the address (optional).
-        zip:
-          type: string
-          description: The zip or postal code associated with the address.
-        zipPlus4:
+        taxAmount:
           type: string
           description: ''
-      description: Contains address information.
-      x-ds-definition-name: addressInformation
-      x-ms-summary: Contains address information.
-    featureSet:
-      type: object
-      properties:
-        currencyFeatureSetPrices:
-          type: array
-          description: A complex type that contains alternate currency values that are configured for this plan feature set.
-          items:
-            $ref: '#/components/schemas/currencyFeatureSetPrice'
-        envelopeFee:
+        totalAmount:
           type: string
           description: ''
-        featureSetId:
-          type: string
-          description: A unique ID for the feature set.
-        fixedFee:
-          type: string
-          description: ''
-        is21CFRPart11:
-          type: string
-          description: When set to **true**, indicates that this module is enabled on the account.
-        isActive:
-          type: string
-          description: ''
-        isEnabled:
-          type: string
-          description: Specifies whether the feature set is actively enabled as part of the plan.
-        name:
-          type: string
-          description: ''
-        seatFee:
-          type: string
-          description: An incremental seat cost for seat-based plans. Only valid when isEnabled for the feature set is set to true.
-      description: ''
-      x-ds-definition-name: featureSet
-      x-ms-summary: ''
-    province:
+      description: Contains information about a preview billing plan.
+      x-ds-definition-name: billingPlanPreview
+      x-ms-summary: Contains information about a preview billing plan.
+    country:
       type: object
       properties:
         isoCode:
@@ -624,8 +496,48 @@ components:
         name:
           type: string
           description: ''
+        provinces:
+          type: array
+          description: ''
+          items:
+            $ref: '#/components/schemas/province'
+        provinceValidated:
+          type: string
+          description: ''
       description: ''
-      x-ds-definition-name: province
+      x-ds-definition-name: country
+      x-ms-summary: ''
+    paymentProcessorInformation:
+      type: object
+      properties:
+        address:
+          $ref: '#/components/schemas/addressInformation'
+        billingAgreementId:
+          type: string
+          description: ''
+        email:
+          type: string
+          description: ''
+      description: ''
+      x-ds-definition-name: paymentProcessorInformation
+      x-ms-summary: ''
+    recipientDomain:
+      type: object
+      properties:
+        active:
+          type: string
+          description: ''
+        domainCode:
+          type: string
+          description: ''
+        domainName:
+          type: string
+          description: ''
+        recipientDomainId:
+          type: string
+          description: ''
+      description: ''
+      x-ds-definition-name: recipientDomain
       x-ms-summary: ''
     accountBillingPlan:
       type: object
@@ -734,29 +646,187 @@ components:
       description: Contains information about an account billing plan.
       x-ds-definition-name: accountBillingPlan
       x-ms-summary: Contains information about an account billing plan.
-    billingPlanPreview:
+    billingPlanUpdateResponse:
+      type: object
+      properties:
+        accountPaymentMethod:
+          type: string
+          description: ''
+        billingPlanPreview:
+          $ref: '#/components/schemas/billingPlanPreview'
+        currencyCode:
+          type: string
+          description: Specifies the ISO currency code for the account.
+        includedSeats:
+          type: string
+          description: The number of seats (users) included.
+        paymentCycle:
+          type: string
+          description: ''
+        paymentMethod:
+          type: string
+          description: ''
+        planId:
+          type: string
+          description: The DocuSign Plan ID for the account.
+        planName:
+          type: string
+          description: ''
+      description: Defines a billing plan update response object.
+      x-ds-definition-name: billingPlanUpdateResponse
+      x-ms-summary: Defines a billing plan update response object.
+    purchasedEnvelopesInformation:
+      type: object
+      properties:
+        amount:
+          type: string
+          description: The total amount of the purchase.
+        appName:
+          type: string
+          description: The AppName of the client application.
+        currencyCode:
+          type: string
+          description: Specifies the ISO currency code of the purchase. This is based on the ISO 4217 currency code information.
+        platform:
+          type: string
+          description: The Platform of the client application
+        productId:
+          type: string
+          description: The Product ID from the AppStore.
+        quantity:
+          type: string
+          description: The quantity of envelopes to add to the account.
+        receiptData:
+          type: string
+          description: The encrypted Base64 encoded receipt data.
+        storeName:
+          type: string
+          description: The name of the AppStore.
+        transactionId:
+          type: string
+          description: Specifies the Transaction ID from the AppStore.
+      description: ''
+      x-ds-definition-name: purchasedEnvelopesInformation
+      x-ms-summary: ''
+    billingInvoice:
+      type: object
+      properties:
+        amount:
+          type: string
+          description: The total amount of the purchase.
+        balance:
+          type: string
+          description: 'Reserved: TBD'
+        dueDate:
+          type: string
+          description: 'Reserved: TBD'
+        invoiceId:
+          type: string
+          description: ''
+        invoiceItems:
+          type: array
+          description: 'Reserved: TBD'
+          items:
+            $ref: '#/components/schemas/billingInvoiceItem'
+        invoiceNumber:
+          type: string
+          description: 'Reserved: TBD'
+        invoiceUri:
+          type: string
+          description: Contains a URI for an endpoint that you can use to retrieve invoice information.
+        nonTaxableAmount:
+          type: string
+          description: ''
+        pdfAvailable:
+          type: string
+          description: ''
+        taxableAmount:
+          type: string
+          description: ''
+      description: ''
+      x-ds-definition-name: billingInvoice
+      x-ms-summary: ''
+    billingPlansResponse:
+      type: object
+      properties:
+        billingPlans:
+          type: array
+          description: 'Reserved: TBD'
+          items:
+            $ref: '#/components/schemas/billingPlan'
+      description: Defines a billing plans response object.
+      x-ds-definition-name: billingPlansResponse
+      x-ms-summary: Defines a billing plans response object.
+    creditCardInformation:
+      type: object
+      properties:
+        address:
+          $ref: '#/components/schemas/addressInformation'
+        cardNumber:
+          type: string
+          description: The number on the credit card.
+        cardType:
+          type: string
+          description: 'The credit card type. Valid values are: visa, mastercard, or amex.'
+        expirationMonth:
+          type: string
+          description: The month that the credit card expires (1-12).
+        expirationYear:
+          type: string
+          description: The year 4 digit year in which the credit card expires.
+        nameOnCard:
+          type: string
+          description: The exact name printed on the credit card.
+      description: ''
+      x-ds-definition-name: creditCardInformation
+      x-ms-summary: ''
+    appStoreReceipt:
+      type: object
+      properties:
+        productId:
+          type: string
+          description: The Product ID from the AppStore.
+        receiptData:
+          type: string
+          description: 'Reserved: TBD'
+      description: Contains information about an APP store receipt.
+      x-ds-definition-name: appStoreReceipt
+      x-ms-summary: Contains information about an APP store receipt.
+    currencyPlanPrice:
       type: object
       properties:
         currencyCode:
           type: string
           description: Specifies the ISO currency code for the account.
-        invoice:
-          $ref: '#/components/schemas/billingInvoice'
-        isProrated:
+        currencySymbol:
+          type: string
+          description: Specifies the currency symbol for the account.
+        perSeatPrice:
           type: string
           description: ''
-        subtotalAmount:
+        supportedCardTypes:
+          $ref: '#/components/schemas/creditCardTypes'
+        supportIncidentFee:
+          type: string
+          description: The support incident fee charged for each support incident.
+        supportPlanFee:
+          type: string
+          description: The support plan fee charged for this plan.
+      description: ''
+      x-ds-definition-name: currencyPlanPrice
+      x-ms-summary: ''
+    province:
+      type: object
+      properties:
+        isoCode:
           type: string
           description: ''
-        taxAmount:
+        name:
           type: string
           description: ''
-        totalAmount:
-          type: string
-          description: ''
-      description: Contains information about a preview billing plan.
-      x-ds-definition-name: billingPlanPreview
-      x-ms-summary: Contains information about a preview billing plan.
+      description: ''
+      x-ds-definition-name: province
+      x-ms-summary: ''
     billingPlanInformation:
       type: object
       properties:
@@ -805,20 +875,41 @@ components:
       description: ''
       x-ds-definition-name: billingPlanInformation
       x-ms-summary: ''
-    seatDiscount:
+    appStoreProduct:
       type: object
       properties:
-        beginSeatCount:
-          type: string
-          description: 'Reserved: TBD'
-        discountPercent:
+        marketPlace:
           type: string
           description: ''
-        endSeatCount:
+        productId:
           type: string
-          description: 'Reserved: TBD'
+          description: The Product ID from the AppStore.
+      description: Contains information about an APP store product.
+      x-ds-definition-name: appStoreProduct
+      x-ms-summary: Contains information about an APP store product.
+    accountBillingPlanResponse:
+      type: object
+      properties:
+        billingAddress:
+          $ref: '#/components/schemas/accountAddress'
+        billingAddressIsCreditCardAddress:
+          type: string
+          description: When set to **true**, the credit card address information is the same as that returned as the billing address. If false, then the billing address is considered a billing contact address, and the credit card address can be different.
+        billingPlan:
+          $ref: '#/components/schemas/accountBillingPlan'
+        creditCardInformation:
+          $ref: '#/components/schemas/creditCardInformation'
+        paymentProcessorInformation:
+          $ref: '#/components/schemas/paymentProcessorInformation'
+        referralInformation:
+          $ref: '#/components/schemas/referralInformation'
+        successorPlans:
+          type: array
+          description: ''
+          items:
+            $ref: '#/components/schemas/billingPlan'
       description: ''
-      x-ds-definition-name: seatDiscount
+      x-ds-definition-name: accountBillingPlanResponse
       x-ms-summary: ''
     accountAddress:
       type: object
@@ -868,209 +959,118 @@ components:
       description: Contains information about an account address.
       x-ds-definition-name: accountAddress
       x-ms-summary: Contains information about an account address.
-    paymentProcessorInformation:
+    featureSet:
       type: object
       properties:
-        address:
-          $ref: '#/components/schemas/addressInformation'
-        billingAgreementId:
+        currencyFeatureSetPrices:
+          type: array
+          description: A complex type that contains alternate currency values that are configured for this plan feature set.
+          items:
+            $ref: '#/components/schemas/currencyFeatureSetPrice'
+        envelopeFee:
           type: string
           description: ''
-        email:
+        featureSetId:
+          type: string
+          description: A unique ID for the feature set.
+        fixedFee:
           type: string
           description: ''
+        is21CFRPart11:
+          type: string
+          description: When set to **true**, indicates that this module is enabled on the account.
+        isActive:
+          type: string
+          description: ''
+        isEnabled:
+          type: string
+          description: Specifies whether the feature set is actively enabled as part of the plan.
+        name:
+          type: string
+          description: ''
+        seatFee:
+          type: string
+          description: An incremental seat cost for seat-based plans. Only valid when isEnabled for the feature set is set to true.
       description: ''
-      x-ds-definition-name: paymentProcessorInformation
+      x-ds-definition-name: featureSet
       x-ms-summary: ''
-    purchasedEnvelopesInformation:
+    addressInformation:
       type: object
       properties:
-        amount:
+        city:
           type: string
-          description: The total amount of the purchase.
-        appName:
+          description: The city associated with the address.
+        country:
           type: string
-          description: The AppName of the client application.
-        currencyCode:
+          description: Specifies the country associated with the address.
+        fax:
           type: string
-          description: Specifies the ISO currency code of the purchase. This is based on the ISO 4217 currency code information.
-        platform:
+          description: A Fax number associated with the address if one is available.
+        phone:
           type: string
-          description: The Platform of the client application
-        productId:
+          description: A phone number associated with the address.
+        state:
           type: string
-          description: The Product ID from the AppStore.
+          description: The state or province associated with the address.
+        street1:
+          type: string
+          description: The first line of the address.
+        street2:
+          type: string
+          description: The second line of the address (optional).
+        zip:
+          type: string
+          description: The zip or postal code associated with the address.
+        zipPlus4:
+          type: string
+          description: ''
+      description: Contains address information.
+      x-ds-definition-name: addressInformation
+      x-ms-summary: Contains address information.
+    errorDetails:
+      type: object
+      properties:
+        errorCode:
+          type: string
+          description: An error code associated with the error.
+        message:
+          type: string
+          description: A short error message.
+      description: This object describes errors that occur. It is only valid for responses, and ignored in requests.
+      x-ds-definition-name: errorDetails
+      x-ms-summary: This object describes errors that occur. It is only valid for responses, and ignored in requests.
+    creditCardTypes:
+      type: object
+      properties:
+        cardTypes:
+          type: array
+          description: An array containing supported credit card types.
+          items:
+            type: string
+      description: ''
+      x-ds-definition-name: creditCardTypes
+      x-ms-summary: ''
+    billingInvoiceItem:
+      type: object
+      properties:
+        chargeAmount:
+          type: string
+          description: 'Reserved: TBD'
+        chargeName:
+          type: string
+          description: 'Reserved: TBD'
+        invoiceItemId:
+          type: string
+          description: 'Reserved: TBD'
         quantity:
           type: string
           description: The quantity of envelopes to add to the account.
-        receiptData:
+        unitPrice:
           type: string
-          description: The encrypted Base64 encoded receipt data.
-        storeName:
-          type: string
-          description: The name of the AppStore.
-        transactionId:
-          type: string
-          description: Specifies the Transaction ID from the AppStore.
-      description: ''
-      x-ds-definition-name: purchasedEnvelopesInformation
-      x-ms-summary: ''
-    planInformation:
-      type: object
-      properties:
-        addOns:
-          type: array
-          description: 'Reserved:'
-          items:
-            $ref: '#/components/schemas/addOn'
-        currencyCode:
-          type: string
-          description: Specifies the ISO currency code for the account.
-        freeTrialDaysOverride:
-          type: string
-          description: Reserved for DocuSign use only.
-        planFeatureSets:
-          type: array
-          description: A complex type that sets the feature sets for the account.
-          items:
-            $ref: '#/components/schemas/featureSet'
-        planId:
-          type: string
-          description: The DocuSign Plan ID for the account.
-        recipientDomains:
-          type: array
-          description: ''
-          items:
-            $ref: '#/components/schemas/recipientDomain'
-      description: An object used to identify the features and attributes of the account being created.
-      x-ds-definition-name: planInformation
-      x-ms-summary: An object used to identify the features and attributes of the account being created.
-    country:
-      type: object
-      properties:
-        isoCode:
-          type: string
-          description: ''
-        name:
-          type: string
-          description: ''
-        provinces:
-          type: array
-          description: ''
-          items:
-            $ref: '#/components/schemas/province'
-        provinceValidated:
-          type: string
-          description: ''
-      description: ''
-      x-ds-definition-name: country
-      x-ms-summary: ''
-    addOn:
-      type: object
-      properties:
-        active:
-          type: string
-          description: 'Reserved:'
-        addOnId:
-          type: string
-          description: 'Reserved:'
-        id:
-          type: string
-          description: ''
-        name:
-          type: string
-          description: 'Reserved:'
-      description: Contains information about add ons.
-      x-ds-definition-name: addOn
-      x-ms-summary: Contains information about add ons.
-    currencyPlanPrice:
-      type: object
-      properties:
-        currencyCode:
-          type: string
-          description: Specifies the ISO currency code for the account.
-        currencySymbol:
-          type: string
-          description: Specifies the currency symbol for the account.
-        perSeatPrice:
-          type: string
-          description: ''
-        supportedCardTypes:
-          $ref: '#/components/schemas/creditCardTypes'
-        supportIncidentFee:
-          type: string
-          description: The support incident fee charged for each support incident.
-        supportPlanFee:
-          type: string
-          description: The support plan fee charged for this plan.
-      description: ''
-      x-ds-definition-name: currencyPlanPrice
-      x-ms-summary: ''
-    creditCardInformation:
-      type: object
-      properties:
-        address:
-          $ref: '#/components/schemas/addressInformation'
-        cardNumber:
-          type: string
-          description: The number on the credit card.
-        cardType:
-          type: string
-          description: 'The credit card type. Valid values are: visa, mastercard, or amex.'
-        expirationMonth:
-          type: string
-          description: The month that the credit card expires (1-12).
-        expirationYear:
-          type: string
-          description: The year 4 digit year in which the credit card expires.
-        nameOnCard:
-          type: string
-          description: The exact name printed on the credit card.
-      description: ''
-      x-ds-definition-name: creditCardInformation
-      x-ms-summary: ''
-    recipientDomain:
-      type: object
-      properties:
-        active:
-          type: string
-          description: ''
-        domainCode:
-          type: string
-          description: ''
-        domainName:
-          type: string
-          description: ''
-        recipientDomainId:
-          type: string
-          description: ''
-      description: ''
-      x-ds-definition-name: recipientDomain
-      x-ms-summary: ''
-    billingPlansResponse:
-      type: object
-      properties:
-        billingPlans:
-          type: array
           description: 'Reserved: TBD'
-          items:
-            $ref: '#/components/schemas/billingPlan'
-      description: Defines a billing plans response object.
-      x-ds-definition-name: billingPlansResponse
-      x-ms-summary: Defines a billing plans response object.
-    billingPlanResponse:
-      type: object
-      properties:
-        billingPlan:
-          $ref: '#/components/schemas/billingPlan'
-        successorPlans:
-          type: array
-          description: ''
-          items:
-            $ref: '#/components/schemas/billingPlan'
-      description: Defines a billing plan response object.
-      x-ds-definition-name: billingPlanResponse
-      x-ms-summary: Defines a billing plan response object.
+      description: Contains information about an item on a billing invoice.
+      x-ds-definition-name: billingInvoiceItem
+      x-ms-summary: Contains information about an item on a billing invoice.
 externalDocs:
   description: See the DocuSign REST API Guide for more information.
   url: https://docs.docusign.com/esign

@@ -154,6 +154,55 @@ paths:
       x-ds-in-sdk: true
 components:
   schemas:
+    billingPayment:
+      type: object
+      properties:
+        amount:
+          type: string
+          description: 'Reserved: TBD'
+        invoiceId:
+          type: string
+          description: 'Reserved: TBD'
+        paymentId:
+          type: string
+          description: ''
+      description: Contains information on a billing plan.
+      x-ds-definition-name: billingPayment
+      x-ms-summary: Contains information on a billing plan.
+    billingPaymentResponse:
+      type: object
+      properties:
+        billingPayments:
+          type: array
+          description: 'Reserved: TBD'
+          items:
+            $ref: '#/components/schemas/billingPayment'
+      description: Defines an billing payment response object.
+      x-ds-definition-name: billingPaymentResponse
+      x-ms-summary: Defines an billing payment response object.
+    billingPaymentItem:
+      type: object
+      properties:
+        amount:
+          type: string
+          description: The total amount of the purchase.
+        description:
+          type: string
+          description: 'A sender-defined description of the line item.
+
+            '
+        paymentDate:
+          type: string
+          description: ''
+        paymentId:
+          type: string
+          description: ''
+        paymentNumber:
+          type: string
+          description: "When set to **true**, a PDF version of the invoice is available. \n\nTo get the PDF, make the call again and change \"Accept:\" in the header to \"Accept: application/pdf\"."
+      description: ''
+      x-ds-definition-name: billingPaymentItem
+      x-ms-summary: ''
     errorDetails:
       type: object
       properties:
@@ -183,32 +232,6 @@ components:
       description: Defines a billing payments response object.
       x-ds-definition-name: billingPaymentsResponse
       x-ms-summary: Defines a billing payments response object.
-    billingPaymentResponse:
-      type: object
-      properties:
-        billingPayments:
-          type: array
-          description: 'Reserved: TBD'
-          items:
-            $ref: '#/components/schemas/billingPayment'
-      description: Defines an billing payment response object.
-      x-ds-definition-name: billingPaymentResponse
-      x-ms-summary: Defines an billing payment response object.
-    billingPayment:
-      type: object
-      properties:
-        amount:
-          type: string
-          description: 'Reserved: TBD'
-        invoiceId:
-          type: string
-          description: 'Reserved: TBD'
-        paymentId:
-          type: string
-          description: ''
-      description: Contains information on a billing plan.
-      x-ds-definition-name: billingPayment
-      x-ms-summary: Contains information on a billing plan.
     billingPaymentRequest:
       type: object
       properties:
@@ -217,29 +240,6 @@ components:
           description: The payment amount for the past due invoices. This value must match the pastDueBalance value retrieved using Get Past Due Invoices.
       description: ''
       x-ds-definition-name: billingPaymentRequest
-      x-ms-summary: ''
-    billingPaymentItem:
-      type: object
-      properties:
-        amount:
-          type: string
-          description: The total amount of the purchase.
-        description:
-          type: string
-          description: 'A sender-defined description of the line item.
-
-            '
-        paymentDate:
-          type: string
-          description: ''
-        paymentId:
-          type: string
-          description: ''
-        paymentNumber:
-          type: string
-          description: "When set to **true**, a PDF version of the invoice is available. \n\nTo get the PDF, make the call again and change \"Accept:\" in the header to \"Accept: application/pdf\"."
-      description: ''
-      x-ds-definition-name: billingPaymentItem
       x-ms-summary: ''
 externalDocs:
   description: See the DocuSign REST API Guide for more information.

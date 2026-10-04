@@ -582,45 +582,94 @@ components:
       description: ''
       x-ds-definition-name: ProductPermissionProfilesRequest
       x-ms-summary: ''
-    DSGroupAndUsersResponse:
+    DSGroupAddRequest:
+      required:
+      - group_name
+      type: object
+      properties:
+        group_name:
+          type: string
+          description: ''
+        description:
+          type: string
+          description: ''
+      description: ''
+      x-ds-definition-name: DSGroupAddRequest
+      x-ms-summary: ''
+    AddDSGroupAndUsersResponse:
       type: object
       properties:
         group:
           $ref: '#/components/schemas/DSGroupResponse'
         group_users:
-          $ref: '#/components/schemas/DSGroupUsersResponse'
+          $ref: '#/components/schemas/AddDSGroupUsersResponse'
       description: ''
-      x-ds-definition-name: DSGroupAndUsersResponse
+      x-ds-definition-name: AddDSGroupAndUsersResponse
       x-ms-summary: ''
-    AddDSGroupUsersResponse:
+    ProductPermissionProfileRequest:
+      required:
+      - permission_profile_id
+      - product_id
       type: object
       properties:
-        is_success:
-          type: boolean
+        product_id:
+          type: string
           description: ''
-        TotalCount:
-          type: integer
-          description: ''
-          format: int32
-        users:
-          type: array
-          description: A list of users.
-          items:
-            $ref: '#/components/schemas/DSGroupUserResponse'
-      description: ''
-      x-ds-definition-name: AddDSGroupUsersResponse
-      x-ms-summary: ''
-    PermissionProfileResponse2_1:
-      type: object
-      properties:
+          format: uuid
+          example: 00000000-0000-0000-0000-000000000000
         permission_profile_id:
           type: string
           description: ''
-        permission_profile_name:
+      description: ''
+      x-ds-definition-name: ProductPermissionProfileRequest
+      x-ms-summary: ''
+    DSGroupUserResponse:
+      type: object
+      properties:
+        user_id:
           type: string
           description: ''
+          format: uuid
+          example: 00000000-0000-0000-0000-000000000000
+        account_id:
+          type: string
+          description: Select users that are members of the specified account. At least one of `email`, `account_id` or `organization_reserved_domain_id` must be specified.
+          format: uuid
+          example: 00000000-0000-0000-0000-000000000000
+        user_name:
+          type: string
+          description: The full name of the user.
+        first_name:
+          type: string
+          description: The user's first name.
+        last_name:
+          type: string
+          description: The user's last name.
+        middle_name:
+          type: string
+          description: ''
+        status:
+          type: string
+          description: Status.
+        error_details:
+          $ref: '#/components/schemas/ErrorDetails'
       description: ''
-      x-ds-definition-name: PermissionProfileResponse2_1
+      x-ds-definition-name: DSGroupUserResponse
+      x-ms-summary: ''
+    DSGroupUsersAddRequest:
+      required:
+      - user_ids
+      type: object
+      properties:
+        user_ids:
+          type: array
+          description: ''
+          items:
+            type: string
+            format: uuid
+            example: 00000000-0000-0000-0000-000000000000
+      description: ''
+      x-ds-definition-name: DSGroupUsersAddRequest
       x-ms-summary: ''
     AddUserResponse:
       type: object
@@ -669,206 +718,6 @@ components:
             $ref: '#/components/schemas/AddUserResponseAccountProperties'
       description: ''
       x-ds-definition-name: AddUserResponse
-      x-ms-summary: ''
-    ProductPermissionProfilesResponse:
-      type: object
-      properties:
-        product_permission_profiles:
-          type: array
-          description: ''
-          readOnly: true
-          items:
-            $ref: '#/components/schemas/ProductPermissionProfileResponse'
-      description: ''
-      x-ds-definition-name: ProductPermissionProfilesResponse
-      x-ms-summary: ''
-    DSGroupUsersRemoveRequest:
-      required:
-      - user_ids
-      type: object
-      properties:
-        user_ids:
-          type: array
-          description: ''
-          items:
-            type: string
-            format: uuid
-            example: 00000000-0000-0000-0000-000000000000
-      description: ''
-      x-ds-definition-name: DSGroupUsersRemoveRequest
-      x-ms-summary: ''
-    DSGroupUsersResponse:
-      type: object
-      properties:
-        page:
-          type: integer
-          description: The page number.
-          format: int32
-        page_size:
-          type: integer
-          description: The number of items per page.
-          format: int32
-        total_count:
-          type: integer
-          description: ''
-          format: int32
-        users:
-          type: array
-          description: A list of users.
-          items:
-            $ref: '#/components/schemas/DSGroupUserResponse'
-      description: ''
-      x-ds-definition-name: DSGroupUsersResponse
-      x-ms-summary: ''
-    DSGroupRequest:
-      required:
-      - ds_group_id
-      type: object
-      properties:
-        ds_group_id:
-          type: string
-          description: ''
-          format: uuid
-          example: 00000000-0000-0000-0000-000000000000
-      description: ''
-      x-ds-definition-name: DSGroupRequest
-      x-ms-summary: ''
-    ProductPermissionProfileResponse:
-      type: object
-      properties:
-        product_id:
-          type: string
-          description: ''
-          format: uuid
-          example: 00000000-0000-0000-0000-000000000000
-        product_name:
-          type: string
-          description: ''
-        permission_profiles:
-          type: array
-          description: ''
-          items:
-            $ref: '#/components/schemas/PermissionProfileResponse2_1'
-        error_message:
-          type: string
-          description: ''
-      description: ''
-      x-ds-definition-name: ProductPermissionProfileResponse
-      x-ms-summary: ''
-    ErrorDetails:
-      type: object
-      properties:
-        error:
-          type: string
-          description: The code for the error.
-        error_description:
-          type: string
-          description: A description of the error.
-      description: Errors.
-      x-ds-definition-name: ErrorDetails
-      x-ms-summary: Errors.
-    AddDSGroupAndUsersResponse:
-      type: object
-      properties:
-        group:
-          $ref: '#/components/schemas/DSGroupResponse'
-        group_users:
-          $ref: '#/components/schemas/AddDSGroupUsersResponse'
-      description: ''
-      x-ds-definition-name: AddDSGroupAndUsersResponse
-      x-ms-summary: ''
-    AddUserResponseAccountProperties:
-      type: object
-      properties:
-        id:
-          type: string
-          description: ''
-          format: uuid
-          example: 00000000-0000-0000-0000-000000000000
-        site_id:
-          type: integer
-          description: ''
-          format: int32
-        product_permission_profiles:
-          type: array
-          description: ''
-          readOnly: true
-          items:
-            $ref: '#/components/schemas/ProductPermissionProfileResponse'
-        ds_groups:
-          type: array
-          description: ''
-          readOnly: true
-          items:
-            $ref: '#/components/schemas/DSGroupResponse'
-        company_name:
-          type: string
-          description: The user's company name.
-        job_title:
-          type: string
-          description: The user's job title.
-      description: ''
-      x-ds-definition-name: AddUserResponseAccountProperties
-      x-ms-summary: ''
-    ProductPermissionProfileRequest:
-      required:
-      - permission_profile_id
-      - product_id
-      type: object
-      properties:
-        product_id:
-          type: string
-          description: ''
-          format: uuid
-          example: 00000000-0000-0000-0000-000000000000
-        permission_profile_id:
-          type: string
-          description: ''
-      description: ''
-      x-ds-definition-name: ProductPermissionProfileRequest
-      x-ms-summary: ''
-    DSGroupListResponse:
-      type: object
-      properties:
-        page:
-          type: integer
-          description: The page number.
-          format: int32
-        page_size:
-          type: integer
-          description: The number of items per page.
-          format: int32
-        total_count:
-          type: integer
-          description: ''
-          format: int32
-        account_id:
-          type: string
-          description: Select users that are members of the specified account. At least one of `email`, `account_id` or `organization_reserved_domain_id` must be specified.
-          format: uuid
-          example: 00000000-0000-0000-0000-000000000000
-        ds_groups:
-          type: array
-          description: ''
-          readOnly: true
-          items:
-            $ref: '#/components/schemas/DSGroupResponse'
-      description: ''
-      x-ds-definition-name: DSGroupListResponse
-      x-ms-summary: ''
-    RemoveDSGroupUsersResponse:
-      type: object
-      properties:
-        is_success:
-          type: boolean
-          description: ''
-        failed_users:
-          type: array
-          description: ''
-          items:
-            $ref: '#/components/schemas/DSGroupUserResponse'
-      description: ''
-      x-ds-definition-name: RemoveDSGroupUsersResponse
       x-ms-summary: ''
     NewMultiProductUserAddRequest:
       required:
@@ -948,67 +797,185 @@ components:
       description: ''
       x-ds-definition-name: UserProductPermissionProfilesResponse
       x-ms-summary: ''
-    DSGroupUserResponse:
+    RemoveDSGroupUsersResponse:
       type: object
       properties:
-        user_id:
+        is_success:
+          type: boolean
+          description: ''
+        failed_users:
+          type: array
+          description: ''
+          items:
+            $ref: '#/components/schemas/DSGroupUserResponse'
+      description: ''
+      x-ds-definition-name: RemoveDSGroupUsersResponse
+      x-ms-summary: ''
+    DSGroupUsersResponse:
+      type: object
+      properties:
+        page:
+          type: integer
+          description: The page number.
+          format: int32
+        page_size:
+          type: integer
+          description: The number of items per page.
+          format: int32
+        total_count:
+          type: integer
+          description: ''
+          format: int32
+        users:
+          type: array
+          description: A list of users.
+          items:
+            $ref: '#/components/schemas/DSGroupUserResponse'
+      description: ''
+      x-ds-definition-name: DSGroupUsersResponse
+      x-ms-summary: ''
+    DSGroupRequest:
+      required:
+      - ds_group_id
+      type: object
+      properties:
+        ds_group_id:
           type: string
           description: ''
           format: uuid
           example: 00000000-0000-0000-0000-000000000000
+      description: ''
+      x-ds-definition-name: DSGroupRequest
+      x-ms-summary: ''
+    ErrorDetails:
+      type: object
+      properties:
+        error:
+          type: string
+          description: The code for the error.
+        error_description:
+          type: string
+          description: A description of the error.
+      description: Errors.
+      x-ds-definition-name: ErrorDetails
+      x-ms-summary: Errors.
+    PermissionProfileResponse2_1:
+      type: object
+      properties:
+        permission_profile_id:
+          type: string
+          description: ''
+        permission_profile_name:
+          type: string
+          description: ''
+      description: ''
+      x-ds-definition-name: PermissionProfileResponse2_1
+      x-ms-summary: ''
+    DSGroupListResponse:
+      type: object
+      properties:
+        page:
+          type: integer
+          description: The page number.
+          format: int32
+        page_size:
+          type: integer
+          description: The number of items per page.
+          format: int32
+        total_count:
+          type: integer
+          description: ''
+          format: int32
         account_id:
           type: string
           description: Select users that are members of the specified account. At least one of `email`, `account_id` or `organization_reserved_domain_id` must be specified.
           format: uuid
           example: 00000000-0000-0000-0000-000000000000
-        user_name:
-          type: string
-          description: The full name of the user.
-        first_name:
-          type: string
-          description: The user's first name.
-        last_name:
-          type: string
-          description: The user's last name.
-        middle_name:
-          type: string
+        ds_groups:
+          type: array
           description: ''
-        status:
-          type: string
-          description: Status.
-        error_details:
-          $ref: '#/components/schemas/ErrorDetails'
+          readOnly: true
+          items:
+            $ref: '#/components/schemas/DSGroupResponse'
       description: ''
-      x-ds-definition-name: DSGroupUserResponse
+      x-ds-definition-name: DSGroupListResponse
       x-ms-summary: ''
-    DSGroupUsersAddRequest:
-      required:
-      - user_ids
+    ProductPermissionProfilesResponse:
       type: object
       properties:
-        user_ids:
+        product_permission_profiles:
+          type: array
+          description: ''
+          readOnly: true
+          items:
+            $ref: '#/components/schemas/ProductPermissionProfileResponse'
+      description: ''
+      x-ds-definition-name: ProductPermissionProfilesResponse
+      x-ms-summary: ''
+    ProductPermissionProfileResponse:
+      type: object
+      properties:
+        product_id:
+          type: string
+          description: ''
+          format: uuid
+          example: 00000000-0000-0000-0000-000000000000
+        product_name:
+          type: string
+          description: ''
+        permission_profiles:
           type: array
           description: ''
           items:
-            type: string
-            format: uuid
-            example: 00000000-0000-0000-0000-000000000000
+            $ref: '#/components/schemas/PermissionProfileResponse2_1'
+        error_message:
+          type: string
+          description: ''
       description: ''
-      x-ds-definition-name: DSGroupUsersAddRequest
+      x-ds-definition-name: ProductPermissionProfileResponse
       x-ms-summary: ''
-    DSGroupAddRequest:
-      required:
-      - group_name
+    DSGroupAndUsersResponse:
       type: object
       properties:
-        group_name:
-          type: string
-          description: ''
-        description:
-          type: string
-          description: ''
+        group:
+          $ref: '#/components/schemas/DSGroupResponse'
+        group_users:
+          $ref: '#/components/schemas/DSGroupUsersResponse'
       description: ''
-      x-ds-definition-name: DSGroupAddRequest
+      x-ds-definition-name: DSGroupAndUsersResponse
+      x-ms-summary: ''
+    AddUserResponseAccountProperties:
+      type: object
+      properties:
+        id:
+          type: string
+          description: ''
+          format: uuid
+          example: 00000000-0000-0000-0000-000000000000
+        site_id:
+          type: integer
+          description: ''
+          format: int32
+        product_permission_profiles:
+          type: array
+          description: ''
+          readOnly: true
+          items:
+            $ref: '#/components/schemas/ProductPermissionProfileResponse'
+        ds_groups:
+          type: array
+          description: ''
+          readOnly: true
+          items:
+            $ref: '#/components/schemas/DSGroupResponse'
+        company_name:
+          type: string
+          description: The user's company name.
+        job_title:
+          type: string
+          description: The user's job title.
+      description: ''
+      x-ds-definition-name: AddUserResponseAccountProperties
       x-ms-summary: ''
     DSGroupResponse:
       type: object
@@ -1055,6 +1022,39 @@ components:
           description: ''
       description: ''
       x-ds-definition-name: DSGroupResponse
+      x-ms-summary: ''
+    DSGroupUsersRemoveRequest:
+      required:
+      - user_ids
+      type: object
+      properties:
+        user_ids:
+          type: array
+          description: ''
+          items:
+            type: string
+            format: uuid
+            example: 00000000-0000-0000-0000-000000000000
+      description: ''
+      x-ds-definition-name: DSGroupUsersRemoveRequest
+      x-ms-summary: ''
+    AddDSGroupUsersResponse:
+      type: object
+      properties:
+        is_success:
+          type: boolean
+          description: ''
+        TotalCount:
+          type: integer
+          description: ''
+          format: int32
+        users:
+          type: array
+          description: A list of users.
+          items:
+            $ref: '#/components/schemas/DSGroupUserResponse'
+      description: ''
+      x-ds-definition-name: AddDSGroupUsersResponse
       x-ms-summary: ''
   securitySchemes:
     accessCode:

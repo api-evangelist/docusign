@@ -2142,6 +2142,368 @@ paths:
       x-ds-in-sdk: true
 components:
   schemas:
+    RoleSummary:
+      type: object
+      properties:
+        roleId:
+          type: integer
+          description: The ID of the company role assigned to the user.
+          format: int32
+        legacyRoleId:
+          type: string
+          description: This field is deprecated in Rooms Version 6.
+        name:
+          type: string
+          description: The name of the role.
+        isDefaultForAdmin:
+          type: boolean
+          description: When **true,** the role is the default for account administrators.
+        isExternal:
+          type: boolean
+          description: When **true,** the role is an external role. You assign external roles to people from outside your company when you invite them into a room.
+        createdDate:
+          type: string
+          description: 'The UTC date and time when the item was created. This is a read-only value that the service assigns.
+
+
+            Example: `2019-07-17T17:45:42.783Z`
+
+
+            '
+          format: date-time
+      description: Contains details about a role.
+      x-ds-definition-name: RoleSummary
+      x-ms-summary: Contains details about a role.
+    RoomSummaryList:
+      type: object
+      properties:
+        rooms:
+          type: array
+          description: An array of `roomSummary` objects.
+          items:
+            $ref: '#/components/schemas/RoomSummary'
+        resultSetSize:
+          type: integer
+          description: The number of results returned in this response.
+          format: int32
+        startPosition:
+          type: integer
+          description: The starting zero-based index position of the results set. When this property is used as a query parameter, the default value is `0`.
+          format: int32
+        endPosition:
+          type: integer
+          description: The last zero-based index position in the result set.
+          format: int32
+          readOnly: true
+        nextUri:
+          type: string
+          description: The URI for the next chunk of records based on the search request. This property is `null` for the last set of search results.
+        priorUri:
+          type: string
+          description: The URI for the previous chunk of records based on the search request. This property is `null` for the first set of search results.
+        totalRowCount:
+          type: integer
+          description: ''
+          format: int32
+      description: This complex type contains details about rooms.
+      x-ds-definition-name: RoomSummaryList
+      x-ms-summary: This complex type contains details about rooms.
+    FieldDataForCreate:
+      type: object
+      properties:
+        data:
+          type: object
+          additionalProperties:
+            type: object
+          description: "Field data is a collection of name/value pairs where the names correspond to the fields in the room's **Details** tab. The value of a name/value pair can be a field data collection itself. These collections are implemented as JSON objects.\n\nThe fields `address1`, `state`, `postalCode`, and `city` are required. The `state` value must be a `stateId` value returned by the [getStates](/docs/rooms-api/reference/globalresources/states/getstates/) endpoint. For example, use \"US-WA\" instead of \"Washington\".\n\nFor example, the data for fields named \"Tax annual amount\" and \"buyer1\" (along with the required fields) might look like this: \n\n```\n{\n  \"data\": {\n    \"taxAnnualAmount\": 3389.12,\n    \"buyer1\": {\n      \"name\": \"Elle Woods\",\n      \"homePhone\": \"123-456-7890\",\n      \"state\": \"US-CA\",\n      \"email\": \"elle.woods@harvard.edu\"\n    },\n    \"address1\": \"123 Harvard Street\",\n    \"state\": \"US-MA\",\n    \"postalCode\": \"02138\",\n    \"city\": \"Cambridge\"\n  }\n}\n```\n"
+      description: Contains key-value pairs that specify the properties of the room and their values.
+      x-ds-definition-name: FieldDataForCreate
+      x-ms-summary: Contains key-value pairs that specify the properties of the room and their values.
+    SelectListFieldOption:
+      type: object
+      properties:
+        id:
+          type: object
+          description: 'The ID of the list option.
+
+
+            Example: `AU`'
+          readOnly: true
+        title:
+          type: string
+          description: 'The title or name of the list option.
+
+
+            Example: `Australia`'
+          readOnly: true
+        order:
+          type: integer
+          description: 'The order of the list option in the list.
+
+
+            Example: `3`'
+          format: int32
+          readOnly: true
+      description: Contains details about an option in a list.
+      x-ds-definition-name: SelectListFieldOption
+      x-ms-summary: Contains details about an option in a list.
+    FieldSet:
+      type: object
+      properties:
+        fieldSetId:
+          type: string
+          description: 'The ID of the field set.
+
+
+            Example: `4aef602b-xxxx-xxxx-xxxx-08d76696f678`
+
+            '
+          format: uuid
+          readOnly: true
+        title:
+          type: string
+          description: The title or name of the field set.
+          readOnly: true
+        fields:
+          type: array
+          description: An array of fields.
+          readOnly: true
+          items:
+            $ref: '#/components/schemas/Field'
+      description: Contains details about a field set.
+      x-ds-definition-name: FieldSet
+      x-ms-summary: Contains details about a field set.
+    Field:
+      type: object
+      properties:
+        fieldId:
+          type: string
+          description: An ID that uniquely identifies the instance of a `fieldDefinition` within a field set.
+          format: uuid
+          readOnly: true
+        fieldDefinitionId:
+          type: string
+          description: The ID of the DocuSign field definition from which this field derives. When an Admin user configures a field set by using the API, this is the ID that they use to add this field definition to the field set. The original field definition associated with this ID contains more information about the field, such as the default title, default API name, and configurations such as the maximum length or the maximum value allowed.
+          format: uuid
+          readOnly: true
+        title:
+          type: string
+          description: 'The human-readable title or name of the field.
+
+
+            Example: `Company contact name`'
+          readOnly: true
+        apiName:
+          type: string
+          description: "The name that the Rooms API uses for the field. \n\nExample: `companyContactName`\n\n**Note:** When you create a new room, you use the `apiName` values for fields to specify the details that you want to appear on the room's **Details** tab."
+          readOnly: true
+        type:
+          type: string
+          description: 'The type of field. Valid values:
+
+
+            - `Date`
+
+            - `Text`
+
+            - `Checkbox`
+
+            - `Currency`
+
+            - `Numeric`
+
+            - `SelectList`
+
+            - `TextArea`
+
+            - `Percentage`
+
+            - `Integer`
+
+
+            '
+          readOnly: true
+        fields:
+          type: array
+          description: An array of subfields.
+          readOnly: true
+          items:
+            $ref: '#/components/schemas/Field'
+        configuration:
+          $ref: '#/components/schemas/FieldConfiguration'
+        customData:
+          $ref: '#/components/schemas/CustomData'
+      description: Contains details about a field in a field set.
+      x-ds-definition-name: Field
+      x-ms-summary: Contains details about a field in a field set.
+    FieldDataForUpdate:
+      type: object
+      properties:
+        data:
+          type: object
+          additionalProperties:
+            type: object
+          description: "Field data is a collection of name/value pairs where the names correspond to the fields in the room's **Details** tab. The value of a name/value pair can be a field data collection itself. These collections are implemented as JSON objects.\n\nThe fields `address1`, `state`, `postalCode`, and `city` are required. The `state` value must be a `stateId` value returned by the [getStates](/docs/rooms-api/reference/globalresources/states/getstates/) endpoint. For example, use \"US-WA\" instead of \"Washington\".\n\nFor example, the data for fields named \"Tax annual amount\" and \"buyer1\" (along with the required fields) might look like this: \n\n```\n{\n  \"data\": {\n    \"taxAnnualAmount\": 3389.12,\n    \"buyer1\": {\n      \"name\": \"Elle Woods\",\n      \"homePhone\": \"123-456-7890\",\n      \"state\": \"US-CA\",\n      \"email\": \"elle.woods@harvard.edu\"\n    },\n    \"address1\": \"123 Harvard Street\",\n    \"state\": \"US-MA\",\n    \"postalCode\": \"02138\",\n    \"city\": \"Cambridge\"\n  }\n}\n```\n"
+      description: The field data to update. When updating field data, specify only the fields being updated.
+      x-ds-definition-name: FieldDataForUpdate
+      x-ms-summary: The field data to update. When updating field data, specify only the fields being updated.
+    RoomUser:
+      type: object
+      properties:
+        userId:
+          type: integer
+          description: The ID of the user.
+          format: int32
+        email:
+          type: string
+          description: The user's email address.
+        firstName:
+          type: string
+          description: The user's first name.
+        lastName:
+          type: string
+          description: The user's last name.
+        transactionSideId:
+          type: string
+          description: 'The ID of the transaction side. Valid values are:
+
+
+            - `buy`
+
+            - `sell`
+
+            - `listbuy`
+
+            - `refi`'
+        roleId:
+          type: integer
+          description: The ID of the user's role.
+          format: int32
+        isRevoked:
+          type: boolean
+          description: When **true,** indicates that the user's access to the room has been revoked.
+        invitedByUserId:
+          type: integer
+          description: The `userId` of the person who invited the room user to the room.
+          format: int32
+      description: This object contains details about a specific room member.
+      x-ds-definition-name: RoomUser
+      x-ms-summary: This object contains details about a specific room member.
+    RoomInviteResponse:
+      type: object
+      properties:
+        userId:
+          type: integer
+          description: The ID of the user.
+          format: int32
+          readOnly: true
+        roomId:
+          type: integer
+          description: The ID of the room.
+          format: int32
+          readOnly: true
+        email:
+          type: string
+          description: The user's email address.
+          readOnly: true
+        firstName:
+          type: string
+          description: The user's first name.
+          readOnly: true
+        lastName:
+          type: string
+          description: The user's last name.
+          readOnly: true
+        transactionSideId:
+          type: string
+          description: 'The ID of the transaction side. Valid values are:
+
+
+            - `buy`
+
+            - `sell`
+
+            - `listbuy`
+
+            - `refi`'
+          readOnly: true
+        roleId:
+          type: integer
+          description: 'The ID of the company role assigned to the user.
+
+
+            You can assign external roles to users who aren''t a part of your organization.'
+          format: int32
+          readOnly: true
+      description: Information about the sent invitation.
+      x-ds-definition-name: RoomInviteResponse
+      x-ms-summary: Information about the sent invitation.
+    FieldData:
+      type: object
+      properties:
+        data:
+          type: object
+          additionalProperties:
+            type: object
+          description: "Field data is a collection of name/value pairs where the names correspond to the fields in the room's **Details** tab. The value of a name/value pair can be a field data collection itself. These collections are implemented as JSON objects.\n\nThe fields `address1`, `state`, `postalCode`, and `city` are required. The `state` value must be a `stateId` value returned by the [getStates](/docs/rooms-api/reference/globalresources/states/getstates/) endpoint. For example, use \"US-WA\" instead of \"Washington\".\n\nFor example, the data for fields named \"Tax annual amount\" and \"buyer1\" (along with the required fields) might look like this: \n\n```\n{\n  \"data\": {\n    \"taxAnnualAmount\": 3389.12,\n    \"buyer1\": {\n      \"name\": \"Elle Woods\",\n      \"homePhone\": \"123-456-7890\",\n      \"state\": \"US-CA\",\n      \"email\": \"elle.woods@harvard.edu\"\n    },\n    \"address1\": \"123 Harvard Street\",\n    \"state\": \"US-MA\",\n    \"postalCode\": \"02138\",\n    \"city\": \"Cambridge\"\n  }\n}\n```\n"
+      description: 'The field data associated with a room.
+
+        See [Rooms: GetRoomFieldData](/docs/rooms-api/reference/rooms/rooms/getroomfielddata/).'
+      x-ds-definition-name: FieldData
+      x-ms-summary: 'The field data associated with a room.
+
+        See [Rooms: GetRoomFieldData](/docs/rooms-api/reference/rooms/rooms/getroomfielddata/).'
+    Document:
+      required:
+      - base64Contents
+      - name
+      type: object
+      properties:
+        documentId:
+          type: integer
+          description: The ID of the document.
+          format: int32
+        name:
+          type: string
+          description: The file name associated with the document.
+        roomId:
+          type: integer
+          description: The ID of the room associated with the document.
+          format: int32
+        ownerId:
+          type: integer
+          description: The ID of the user who owns the document.
+          format: int32
+        size:
+          type: integer
+          description: The size of the document in bytes.
+          format: int64
+        folderId:
+          type: integer
+          description: The ID of the folder that holds the document.
+          format: int32
+        createdDate:
+          type: string
+          description: 'The date and time when the document was created. This is a read-only value that the service assigns.
+
+
+            Example: `2019-11-11T17:15:14.82`'
+          format: date-time
+        isSigned:
+          type: boolean
+          description: When **true,** indicates that the document is signed.
+        contentType:
+          type: string
+          description: ''
+        base64Contents:
+          type: string
+          description: The base64-encoded contents of the document. This property is only included in the response when you use the `includeContents` query parameter and set it to **true.**
+        isDynamic:
+          type: boolean
+          description: ''
+      description: Contains information about a document.
+      x-ds-definition-name: Document
+      x-ms-summary: Contains information about a document.
     RoomSummary:
       type: object
       properties:
@@ -2207,17 +2569,158 @@ components:
       description: This object contains details about a room.
       x-ds-definition-name: RoomSummary
       x-ms-summary: This object contains details about a room.
-    FieldDataForCreate:
+    CustomData:
       type: object
       properties:
-        data:
-          type: object
-          additionalProperties:
-            type: object
-          description: "Field data is a collection of name/value pairs where the names correspond to the fields in the room's **Details** tab. The value of a name/value pair can be a field data collection itself. These collections are implemented as JSON objects.\n\nThe fields `address1`, `state`, `postalCode`, and `city` are required. The `state` value must be a `stateId` value returned by the [getStates](/docs/rooms-api/reference/globalresources/states/getstates/) endpoint. For example, use \"US-WA\" instead of \"Washington\".\n\nFor example, the data for fields named \"Tax annual amount\" and \"buyer1\" (along with the required fields) might look like this: \n\n```\n{\n  \"data\": {\n    \"taxAnnualAmount\": 3389.12,\n    \"buyer1\": {\n      \"name\": \"Elle Woods\",\n      \"homePhone\": \"123-456-7890\",\n      \"state\": \"US-CA\",\n      \"email\": \"elle.woods@harvard.edu\"\n    },\n    \"address1\": \"123 Harvard Street\",\n    \"state\": \"US-MA\",\n    \"postalCode\": \"02138\",\n    \"city\": \"Cambridge\"\n  }\n}\n```\n"
-      description: Contains key-value pairs that specify the properties of the room and their values.
-      x-ds-definition-name: FieldDataForCreate
-      x-ms-summary: Contains key-value pairs that specify the properties of the room and their values.
+        isRequiredOnCreate:
+          type: boolean
+          description: When **true,** the field is required when a new room is created.
+          readOnly: true
+        isRequiredOnSubmit:
+          type: boolean
+          description: When **true,** the field is required when a room is submitted for review.
+          readOnly: true
+      description: Contains information about whether the field is required when a room is created or submitted for review.
+      x-ds-definition-name: CustomData
+      x-ms-summary: Contains information about whether the field is required when a room is created or submitted for review.
+    RoomUsersResult:
+      type: object
+      properties:
+        users:
+          type: array
+          description: An array of `RoomUser` objects.
+          items:
+            $ref: '#/components/schemas/RoomUserSummary'
+        resultSetSize:
+          type: integer
+          description: The number of results returned in this response.
+          format: int32
+        startPosition:
+          type: integer
+          description: The starting zero-based index position of the results set. When this property is used as a query parameter, the default value is `0`.
+          format: int32
+        endPosition:
+          type: integer
+          description: The last zero-based index position in the result set.
+          format: int32
+          readOnly: true
+        nextUri:
+          type: string
+          description: The URI for the next chunk of records based on the search request. This property is `null` for the last set of search results.
+        priorUri:
+          type: string
+          description: The URI for the previous chunk of records based on the search request. This property is `null` for the first set of search results.
+        totalRowCount:
+          type: integer
+          description: ''
+          format: int32
+      description: This complex type contains details about the users associated with a room.
+      x-ds-definition-name: RoomUsersResult
+      x-ms-summary: This complex type contains details about the users associated with a room.
+    RoomPicture:
+      type: object
+      properties:
+        url:
+          type: string
+          description: The URL for the uploaded picture.
+      description: This response object contains the URL for the uploaded picture.
+      x-ds-definition-name: RoomPicture
+      x-ms-summary: This response object contains the URL for the uploaded picture.
+    RoomUserRemovalDetail:
+      type: object
+      properties:
+        revocationDate:
+          type: string
+          description: 'The date on which the users room access should be revoked
+
+            in ISO 8601 fomat: `1973-12-31T07:54Z`.'
+          format: date-time
+      description: Details for removal.
+      x-ds-definition-name: RoomUserRemovalDetail
+      x-ms-summary: Details for removal.
+    AssignableRoles:
+      type: object
+      properties:
+        currentRoleId:
+          type: integer
+          description: The ID of the invitee's company-level role. This property lets the requester know what room-level role will give the user the same permissions that they have at the company level. A value is returned only when both the requester and the invitee are internal to the company.
+          format: int32
+        roles:
+          type: array
+          description: An array of `role` objects.
+          items:
+            $ref: '#/components/schemas/RoleSummary'
+        resultSetSize:
+          type: integer
+          description: The number of results returned in this response.
+          format: int32
+        startPosition:
+          type: integer
+          description: The starting zero-based index position of the results set. When this property is used as a query parameter, the default value is `0`.
+          format: int32
+        endPosition:
+          type: integer
+          description: The last zero-based index position in the result set.
+          format: int32
+          readOnly: true
+        nextUri:
+          type: string
+          description: The URI for the next chunk of records based on the search request. This property is `null` for the last set of search results.
+        priorUri:
+          type: string
+          description: The URI for the previous chunk of records based on the search request. This property is `null` for the first set of search results.
+        totalRowCount:
+          type: integer
+          description: ''
+          format: int32
+      description: This complex type contains information about assignable roles.
+      x-ds-definition-name: AssignableRoles
+      x-ms-summary: This complex type contains information about assignable roles.
+    ApiError:
+      type: object
+      properties:
+        errorCode:
+          type: string
+          description: The code associated with the error condition.
+        message:
+          type: string
+          description: A brief message describing the error condition.
+        referenceId:
+          type: string
+          description: ''
+      description: This object describes errors that occur. It is valid only for responses and ignored in requests.
+      x-ds-definition-name: ApiError
+      x-ms-summary: This object describes errors that occur. It is valid only for responses and ignored in requests.
+    RoomInvite:
+      required:
+      - email
+      - firstName
+      - lastName
+      - roleId
+      type: object
+      properties:
+        email:
+          type: string
+          description: The user's email address.
+        firstName:
+          type: string
+          description: The user's first name.
+        lastName:
+          type: string
+          description: The user's last name.
+        roleId:
+          type: integer
+          description: 'The ID of the company role assigned to the user.
+
+
+            You can assign external roles to users who aren''t a part of your organization.'
+          format: int32
+        transactionSideId:
+          type: string
+          description: Required for a real estate company; otherwise ignored.
+      description: The information to use for the invitation.
+      x-ds-definition-name: RoomInvite
+      x-ms-summary: The information to use for the invitation.
     FieldConfiguration:
       type: object
       properties:
@@ -2269,6 +2772,272 @@ components:
       description: Contains details about how a field is configured.
       x-ds-definition-name: FieldConfiguration
       x-ms-summary: Contains details about how a field is configured.
+    RoomUserForUpdate:
+      type: object
+      properties:
+        roleId:
+          type: integer
+          description: 'The ID of the company role assigned to the user.
+
+
+            You can assign external roles to users who aren''t a part of your organization.'
+          format: int32
+        transactionSideId:
+          type: string
+          description: 'The ID of the transaction side. Valid values are:
+
+
+            - `buy`
+
+            - `sell`
+
+            - `listbuy`
+
+            - `refi`'
+      description: This request object contains the information that you want to update for the room user.
+      x-ds-definition-name: RoomUserForUpdate
+      x-ms-summary: This request object contains the information that you want to update for the room user.
+    EnvelopeForCreate:
+      type: object
+      properties:
+        envelopeName:
+          type: string
+          description: ''
+        documentIds:
+          type: array
+          description: ''
+          items:
+            type: integer
+            format: int32
+      description: ''
+      x-ds-definition-name: EnvelopeForCreate
+      x-ms-summary: ''
+    FormForAdd:
+      required:
+      - formId
+      type: object
+      properties:
+        formId:
+          type: string
+          description: (Required) The ID of the form.
+          format: uuid
+      description: Contains details about the form that you want to add.
+      x-ds-definition-name: FormForAdd
+      x-ms-summary: Contains details about the form that you want to add.
+    DependsOn:
+      type: object
+      properties:
+        actionType:
+          type: string
+          description: 'The child field action that depends on the parent field.
+
+
+            Example: `visibility`
+
+
+            For example, in the console, you must select a country for a list of states to become visible.'
+          readOnly: true
+        parentApiName:
+          type: string
+          description: 'The name that the Rooms API uses for the parent field.
+
+
+            Example: `country`'
+          readOnly: true
+      description: Contains information about a parent field on which this field depends.
+      x-ds-definition-name: DependsOn
+      x-ms-summary: Contains information about a parent field on which this field depends.
+    RoomDocument:
+      type: object
+      properties:
+        documentId:
+          type: integer
+          description: The ID of the document.
+          format: int32
+        name:
+          type: string
+          description: 'The file name of the document.
+
+
+            Example: `Short Sale Supplement to Marketing Agreement.pdf`'
+        ownerId:
+          type: integer
+          description: The ID of the user who owns the document.
+          format: int32
+        size:
+          type: integer
+          description: The size of the document in bytes.
+          format: int64
+        folderId:
+          type: integer
+          description: The ID of the folder the document is in.
+          format: int32
+        createdDate:
+          type: string
+          description: "The UTC date and time that the document was created or uploaded. \n\nExample: `2019-07-25T22:18:56.95Z`\n"
+          format: date-time
+        isSigned:
+          type: boolean
+          description: When **true,** this property indicates that the document is signed.
+        docuSignFormId:
+          type: string
+          description: The ID of the corresponding DocuSign form.
+        isArchived:
+          type: boolean
+          description: '**True** if the document is archived.'
+        isVirtual:
+          type: boolean
+          description: '**True** if the document is virtual.'
+        isDynamic:
+          type: boolean
+          description: '**True** if the document is from a dynamic content provider like [DocuSign Forms](/docs/rooms-api/rooms101/forms/).'
+        owner:
+          $ref: '#/components/schemas/RoomDocumentOwner'
+      description: An individual document in a room.
+      x-ds-definition-name: RoomDocument
+      x-ms-summary: An individual document in a room.
+    RoomForCreate:
+      required:
+      - name
+      - roleId
+      type: object
+      properties:
+        name:
+          type: string
+          description: (Required) The name of the room.
+        roleId:
+          type: integer
+          description: (Required) The ID of the role that the owner has in the room.
+          format: int32
+        transactionSideId:
+          type: string
+          description: 'The ID of the transaction side. Valid values are:
+
+
+            - `buy`
+
+            - `sell`
+
+            - `listbuy`
+
+            - `refi`
+
+
+            **Note:** This property is required for real estate companies, and otherwise ignored.'
+        ownerId:
+          type: integer
+          description: The ID of the user who owns the room.
+          format: int32
+        templateId:
+          type: integer
+          description: (Optional) The ID of the template to use to create the room.
+          format: int32
+        officeId:
+          type: integer
+          description: '(Optional) The ID of the office associated with the room. Required when creating a room on behalf of someone else or a Manager-owned room. '
+          format: int32
+        fieldData:
+          $ref: '#/components/schemas/FieldDataForCreate'
+        listingSource:
+          type: string
+          description: ''
+          enum:
+          - PublicRecords
+          - MLS
+      description: This request object contains the details about the new room.
+      x-ds-definition-name: RoomForCreate
+      x-ms-summary: This request object contains the details about the new room.
+    RoomDocumentList:
+      type: object
+      properties:
+        resultSetSize:
+          type: integer
+          description: The number of results returned in this response.
+          format: int32
+        startPosition:
+          type: integer
+          description: The starting zero-based index position of the results set. When this property is used as a query parameter, the default value is `0`.
+          format: int32
+        endPosition:
+          type: integer
+          description: The last zero-based index position in the result set.
+          format: int32
+          readOnly: true
+        nextUri:
+          type: string
+          description: The URI for the next chunk of records based on the search request. This property is `null` for the last set of search results.
+        priorUri:
+          type: string
+          description: The URI for the previous chunk of records based on the search request. This property is `null` for the first set of search results.
+        totalRowCount:
+          type: integer
+          description: ''
+          format: int32
+        documents:
+          type: array
+          description: An array of room documents.
+          items:
+            $ref: '#/components/schemas/RoomDocument'
+      description: A list of documents in a room.
+      x-ds-definition-name: RoomDocumentList
+      x-ms-summary: A list of documents in a room.
+    RoomUserSummary:
+      type: object
+      properties:
+        userId:
+          type: integer
+          description: The ID of the user.
+          format: int32
+          readOnly: true
+        email:
+          type: string
+          description: The user's email address.
+          readOnly: true
+        firstName:
+          type: string
+          description: The user's first name.
+          readOnly: true
+        lastName:
+          type: string
+          description: The user's last name.
+          readOnly: true
+        transactionSideId:
+          type: string
+          description: 'The ID of the transaction side. Valid values are:
+
+
+            - `buy`
+
+            - `sell`
+
+            - `listbuy`
+
+            - `refi`'
+          readOnly: true
+        roleId:
+          type: integer
+          description: 'The ID of the company role assigned to the user.
+
+
+            You can assign external roles to users who aren''t a part of your organization.'
+          format: int32
+          readOnly: true
+        titleId:
+          type: integer
+          description: Deprecated in Rooms Version 6.
+          format: int32
+          readOnly: true
+        companyName:
+          type: string
+          description: The company name.
+          readOnly: true
+        roleName:
+          type: string
+          description: ''
+          readOnly: true
+      description: Contains details about a room user.
+      x-ds-definition-name: RoomUserSummary
+      x-ms-summary: Contains details about a room user.
     Room:
       type: object
       properties:
@@ -2335,40 +3104,6 @@ components:
       description: Contains details about a room.
       x-ds-definition-name: Room
       x-ms-summary: Contains details about a room.
-    RoomDocumentList:
-      type: object
-      properties:
-        resultSetSize:
-          type: integer
-          description: The number of results returned in this response.
-          format: int32
-        startPosition:
-          type: integer
-          description: The starting zero-based index position of the results set. When this property is used as a query parameter, the default value is `0`.
-          format: int32
-        endPosition:
-          type: integer
-          description: The last zero-based index position in the result set.
-          format: int32
-          readOnly: true
-        nextUri:
-          type: string
-          description: The URI for the next chunk of records based on the search request. This property is `null` for the last set of search results.
-        priorUri:
-          type: string
-          description: The URI for the previous chunk of records based on the search request. This property is `null` for the first set of search results.
-        totalRowCount:
-          type: integer
-          description: ''
-          format: int32
-        documents:
-          type: array
-          description: An array of room documents.
-          items:
-            $ref: '#/components/schemas/RoomDocument'
-      description: A list of documents in a room.
-      x-ds-definition-name: RoomDocumentList
-      x-ms-summary: A list of documents in a room.
     Envelope:
       type: object
       properties:
@@ -2378,588 +3113,6 @@ components:
       description: ''
       x-ds-definition-name: Envelope
       x-ms-summary: ''
-    FormForAdd:
-      required:
-      - formId
-      type: object
-      properties:
-        formId:
-          type: string
-          description: (Required) The ID of the form.
-          format: uuid
-      description: Contains details about the form that you want to add.
-      x-ds-definition-name: FormForAdd
-      x-ms-summary: Contains details about the form that you want to add.
-    Field:
-      type: object
-      properties:
-        fieldId:
-          type: string
-          description: An ID that uniquely identifies the instance of a `fieldDefinition` within a field set.
-          format: uuid
-          readOnly: true
-        fieldDefinitionId:
-          type: string
-          description: The ID of the DocuSign field definition from which this field derives. When an Admin user configures a field set by using the API, this is the ID that they use to add this field definition to the field set. The original field definition associated with this ID contains more information about the field, such as the default title, default API name, and configurations such as the maximum length or the maximum value allowed.
-          format: uuid
-          readOnly: true
-        title:
-          type: string
-          description: 'The human-readable title or name of the field.
-
-
-            Example: `Company contact name`'
-          readOnly: true
-        apiName:
-          type: string
-          description: "The name that the Rooms API uses for the field. \n\nExample: `companyContactName`\n\n**Note:** When you create a new room, you use the `apiName` values for fields to specify the details that you want to appear on the room's **Details** tab."
-          readOnly: true
-        type:
-          type: string
-          description: 'The type of field. Valid values:
-
-
-            - `Date`
-
-            - `Text`
-
-            - `Checkbox`
-
-            - `Currency`
-
-            - `Numeric`
-
-            - `SelectList`
-
-            - `TextArea`
-
-            - `Percentage`
-
-            - `Integer`
-
-
-            '
-          readOnly: true
-        fields:
-          type: array
-          description: An array of subfields.
-          readOnly: true
-          items:
-            $ref: '#/components/schemas/Field'
-        configuration:
-          $ref: '#/components/schemas/FieldConfiguration'
-        customData:
-          $ref: '#/components/schemas/CustomData'
-      description: Contains details about a field in a field set.
-      x-ds-definition-name: Field
-      x-ms-summary: Contains details about a field in a field set.
-    RoomInvite:
-      required:
-      - email
-      - firstName
-      - lastName
-      - roleId
-      type: object
-      properties:
-        email:
-          type: string
-          description: The user's email address.
-        firstName:
-          type: string
-          description: The user's first name.
-        lastName:
-          type: string
-          description: The user's last name.
-        roleId:
-          type: integer
-          description: 'The ID of the company role assigned to the user.
-
-
-            You can assign external roles to users who aren''t a part of your organization.'
-          format: int32
-        transactionSideId:
-          type: string
-          description: Required for a real estate company; otherwise ignored.
-      description: The information to use for the invitation.
-      x-ds-definition-name: RoomInvite
-      x-ms-summary: The information to use for the invitation.
-    RoomUsersResult:
-      type: object
-      properties:
-        users:
-          type: array
-          description: An array of `RoomUser` objects.
-          items:
-            $ref: '#/components/schemas/RoomUserSummary'
-        resultSetSize:
-          type: integer
-          description: The number of results returned in this response.
-          format: int32
-        startPosition:
-          type: integer
-          description: The starting zero-based index position of the results set. When this property is used as a query parameter, the default value is `0`.
-          format: int32
-        endPosition:
-          type: integer
-          description: The last zero-based index position in the result set.
-          format: int32
-          readOnly: true
-        nextUri:
-          type: string
-          description: The URI for the next chunk of records based on the search request. This property is `null` for the last set of search results.
-        priorUri:
-          type: string
-          description: The URI for the previous chunk of records based on the search request. This property is `null` for the first set of search results.
-        totalRowCount:
-          type: integer
-          description: ''
-          format: int32
-      description: This complex type contains details about the users associated with a room.
-      x-ds-definition-name: RoomUsersResult
-      x-ms-summary: This complex type contains details about the users associated with a room.
-    DependsOn:
-      type: object
-      properties:
-        actionType:
-          type: string
-          description: 'The child field action that depends on the parent field.
-
-
-            Example: `visibility`
-
-
-            For example, in the console, you must select a country for a list of states to become visible.'
-          readOnly: true
-        parentApiName:
-          type: string
-          description: 'The name that the Rooms API uses for the parent field.
-
-
-            Example: `country`'
-          readOnly: true
-      description: Contains information about a parent field on which this field depends.
-      x-ds-definition-name: DependsOn
-      x-ms-summary: Contains information about a parent field on which this field depends.
-    RoomPicture:
-      type: object
-      properties:
-        url:
-          type: string
-          description: The URL for the uploaded picture.
-      description: This response object contains the URL for the uploaded picture.
-      x-ds-definition-name: RoomPicture
-      x-ms-summary: This response object contains the URL for the uploaded picture.
-    CustomData:
-      type: object
-      properties:
-        isRequiredOnCreate:
-          type: boolean
-          description: When **true,** the field is required when a new room is created.
-          readOnly: true
-        isRequiredOnSubmit:
-          type: boolean
-          description: When **true,** the field is required when a room is submitted for review.
-          readOnly: true
-      description: Contains information about whether the field is required when a room is created or submitted for review.
-      x-ds-definition-name: CustomData
-      x-ms-summary: Contains information about whether the field is required when a room is created or submitted for review.
-    ApiError:
-      type: object
-      properties:
-        errorCode:
-          type: string
-          description: The code associated with the error condition.
-        message:
-          type: string
-          description: A brief message describing the error condition.
-        referenceId:
-          type: string
-          description: ''
-      description: This object describes errors that occur. It is valid only for responses and ignored in requests.
-      x-ds-definition-name: ApiError
-      x-ms-summary: This object describes errors that occur. It is valid only for responses and ignored in requests.
-    AssignableRoles:
-      type: object
-      properties:
-        currentRoleId:
-          type: integer
-          description: The ID of the invitee's company-level role. This property lets the requester know what room-level role will give the user the same permissions that they have at the company level. A value is returned only when both the requester and the invitee are internal to the company.
-          format: int32
-        roles:
-          type: array
-          description: An array of `role` objects.
-          items:
-            $ref: '#/components/schemas/RoleSummary'
-        resultSetSize:
-          type: integer
-          description: The number of results returned in this response.
-          format: int32
-        startPosition:
-          type: integer
-          description: The starting zero-based index position of the results set. When this property is used as a query parameter, the default value is `0`.
-          format: int32
-        endPosition:
-          type: integer
-          description: The last zero-based index position in the result set.
-          format: int32
-          readOnly: true
-        nextUri:
-          type: string
-          description: The URI for the next chunk of records based on the search request. This property is `null` for the last set of search results.
-        priorUri:
-          type: string
-          description: The URI for the previous chunk of records based on the search request. This property is `null` for the first set of search results.
-        totalRowCount:
-          type: integer
-          description: ''
-          format: int32
-      description: This complex type contains information about assignable roles.
-      x-ds-definition-name: AssignableRoles
-      x-ms-summary: This complex type contains information about assignable roles.
-    RoomUserSummary:
-      type: object
-      properties:
-        userId:
-          type: integer
-          description: The ID of the user.
-          format: int32
-          readOnly: true
-        email:
-          type: string
-          description: The user's email address.
-          readOnly: true
-        firstName:
-          type: string
-          description: The user's first name.
-          readOnly: true
-        lastName:
-          type: string
-          description: The user's last name.
-          readOnly: true
-        transactionSideId:
-          type: string
-          description: 'The ID of the transaction side. Valid values are:
-
-
-            - `buy`
-
-            - `sell`
-
-            - `listbuy`
-
-            - `refi`'
-          readOnly: true
-        roleId:
-          type: integer
-          description: 'The ID of the company role assigned to the user.
-
-
-            You can assign external roles to users who aren''t a part of your organization.'
-          format: int32
-          readOnly: true
-        titleId:
-          type: integer
-          description: Deprecated in Rooms Version 6.
-          format: int32
-          readOnly: true
-        companyName:
-          type: string
-          description: The company name.
-          readOnly: true
-        roleName:
-          type: string
-          description: ''
-          readOnly: true
-      description: Contains details about a room user.
-      x-ds-definition-name: RoomUserSummary
-      x-ms-summary: Contains details about a room user.
-    RoomForCreate:
-      required:
-      - name
-      - roleId
-      type: object
-      properties:
-        name:
-          type: string
-          description: (Required) The name of the room.
-        roleId:
-          type: integer
-          description: (Required) The ID of the role that the owner has in the room.
-          format: int32
-        transactionSideId:
-          type: string
-          description: 'The ID of the transaction side. Valid values are:
-
-
-            - `buy`
-
-            - `sell`
-
-            - `listbuy`
-
-            - `refi`
-
-
-            **Note:** This property is required for real estate companies, and otherwise ignored.'
-        ownerId:
-          type: integer
-          description: The ID of the user who owns the room.
-          format: int32
-        templateId:
-          type: integer
-          description: (Optional) The ID of the template to use to create the room.
-          format: int32
-        officeId:
-          type: integer
-          description: '(Optional) The ID of the office associated with the room. Required when creating a room on behalf of someone else or a Manager-owned room. '
-          format: int32
-        fieldData:
-          $ref: '#/components/schemas/FieldDataForCreate'
-        listingSource:
-          type: string
-          description: ''
-          enum:
-          - PublicRecords
-          - MLS
-      description: This request object contains the details about the new room.
-      x-ds-definition-name: RoomForCreate
-      x-ms-summary: This request object contains the details about the new room.
-    RoleSummary:
-      type: object
-      properties:
-        roleId:
-          type: integer
-          description: The ID of the company role assigned to the user.
-          format: int32
-        legacyRoleId:
-          type: string
-          description: This field is deprecated in Rooms Version 6.
-        name:
-          type: string
-          description: The name of the role.
-        isDefaultForAdmin:
-          type: boolean
-          description: When **true,** the role is the default for account administrators.
-        isExternal:
-          type: boolean
-          description: When **true,** the role is an external role. You assign external roles to people from outside your company when you invite them into a room.
-        createdDate:
-          type: string
-          description: 'The UTC date and time when the item was created. This is a read-only value that the service assigns.
-
-
-            Example: `2019-07-17T17:45:42.783Z`
-
-
-            '
-          format: date-time
-      description: Contains details about a role.
-      x-ds-definition-name: RoleSummary
-      x-ms-summary: Contains details about a role.
-    FieldSet:
-      type: object
-      properties:
-        fieldSetId:
-          type: string
-          description: 'The ID of the field set.
-
-
-            Example: `4aef602b-xxxx-xxxx-xxxx-08d76696f678`
-
-            '
-          format: uuid
-          readOnly: true
-        title:
-          type: string
-          description: The title or name of the field set.
-          readOnly: true
-        fields:
-          type: array
-          description: An array of fields.
-          readOnly: true
-          items:
-            $ref: '#/components/schemas/Field'
-      description: Contains details about a field set.
-      x-ds-definition-name: FieldSet
-      x-ms-summary: Contains details about a field set.
-    RoomUserForUpdate:
-      type: object
-      properties:
-        roleId:
-          type: integer
-          description: 'The ID of the company role assigned to the user.
-
-
-            You can assign external roles to users who aren''t a part of your organization.'
-          format: int32
-        transactionSideId:
-          type: string
-          description: 'The ID of the transaction side. Valid values are:
-
-
-            - `buy`
-
-            - `sell`
-
-            - `listbuy`
-
-            - `refi`'
-      description: This request object contains the information that you want to update for the room user.
-      x-ds-definition-name: RoomUserForUpdate
-      x-ms-summary: This request object contains the information that you want to update for the room user.
-    FieldDataForUpdate:
-      type: object
-      properties:
-        data:
-          type: object
-          additionalProperties:
-            type: object
-          description: "Field data is a collection of name/value pairs where the names correspond to the fields in the room's **Details** tab. The value of a name/value pair can be a field data collection itself. These collections are implemented as JSON objects.\n\nThe fields `address1`, `state`, `postalCode`, and `city` are required. The `state` value must be a `stateId` value returned by the [getStates](/docs/rooms-api/reference/globalresources/states/getstates/) endpoint. For example, use \"US-WA\" instead of \"Washington\".\n\nFor example, the data for fields named \"Tax annual amount\" and \"buyer1\" (along with the required fields) might look like this: \n\n```\n{\n  \"data\": {\n    \"taxAnnualAmount\": 3389.12,\n    \"buyer1\": {\n      \"name\": \"Elle Woods\",\n      \"homePhone\": \"123-456-7890\",\n      \"state\": \"US-CA\",\n      \"email\": \"elle.woods@harvard.edu\"\n    },\n    \"address1\": \"123 Harvard Street\",\n    \"state\": \"US-MA\",\n    \"postalCode\": \"02138\",\n    \"city\": \"Cambridge\"\n  }\n}\n```\n"
-      description: The field data to update. When updating field data, specify only the fields being updated.
-      x-ds-definition-name: FieldDataForUpdate
-      x-ms-summary: The field data to update. When updating field data, specify only the fields being updated.
-    Document:
-      required:
-      - base64Contents
-      - name
-      type: object
-      properties:
-        documentId:
-          type: integer
-          description: The ID of the document.
-          format: int32
-        name:
-          type: string
-          description: The file name associated with the document.
-        roomId:
-          type: integer
-          description: The ID of the room associated with the document.
-          format: int32
-        ownerId:
-          type: integer
-          description: The ID of the user who owns the document.
-          format: int32
-        size:
-          type: integer
-          description: The size of the document in bytes.
-          format: int64
-        folderId:
-          type: integer
-          description: The ID of the folder that holds the document.
-          format: int32
-        createdDate:
-          type: string
-          description: 'The date and time when the document was created. This is a read-only value that the service assigns.
-
-
-            Example: `2019-11-11T17:15:14.82`'
-          format: date-time
-        isSigned:
-          type: boolean
-          description: When **true,** indicates that the document is signed.
-        contentType:
-          type: string
-          description: ''
-        base64Contents:
-          type: string
-          description: The base64-encoded contents of the document. This property is only included in the response when you use the `includeContents` query parameter and set it to **true.**
-        isDynamic:
-          type: boolean
-          description: ''
-      description: Contains information about a document.
-      x-ds-definition-name: Document
-      x-ms-summary: Contains information about a document.
-    EnvelopeForCreate:
-      type: object
-      properties:
-        envelopeName:
-          type: string
-          description: ''
-        documentIds:
-          type: array
-          description: ''
-          items:
-            type: integer
-            format: int32
-      description: ''
-      x-ds-definition-name: EnvelopeForCreate
-      x-ms-summary: ''
-    RoomDocument:
-      type: object
-      properties:
-        documentId:
-          type: integer
-          description: The ID of the document.
-          format: int32
-        name:
-          type: string
-          description: 'The file name of the document.
-
-
-            Example: `Short Sale Supplement to Marketing Agreement.pdf`'
-        ownerId:
-          type: integer
-          description: The ID of the user who owns the document.
-          format: int32
-        size:
-          type: integer
-          description: The size of the document in bytes.
-          format: int64
-        folderId:
-          type: integer
-          description: The ID of the folder the document is in.
-          format: int32
-        createdDate:
-          type: string
-          description: "The UTC date and time that the document was created or uploaded. \n\nExample: `2019-07-25T22:18:56.95Z`\n"
-          format: date-time
-        isSigned:
-          type: boolean
-          description: When **true,** this property indicates that the document is signed.
-        docuSignFormId:
-          type: string
-          description: The ID of the corresponding DocuSign form.
-        isArchived:
-          type: boolean
-          description: '**True** if the document is archived.'
-        isVirtual:
-          type: boolean
-          description: '**True** if the document is virtual.'
-        isDynamic:
-          type: boolean
-          description: '**True** if the document is from a dynamic content provider like [DocuSign Forms](/docs/rooms-api/rooms101/forms/).'
-        owner:
-          $ref: '#/components/schemas/RoomDocumentOwner'
-      description: An individual document in a room.
-      x-ds-definition-name: RoomDocument
-      x-ms-summary: An individual document in a room.
-    RoomUserRemovalDetail:
-      type: object
-      properties:
-        revocationDate:
-          type: string
-          description: 'The date on which the users room access should be revoked
-
-            in ISO 8601 fomat: `1973-12-31T07:54Z`.'
-          format: date-time
-      description: Details for removal.
-      x-ds-definition-name: RoomUserRemovalDetail
-      x-ms-summary: Details for removal.
-    FieldData:
-      type: object
-      properties:
-        data:
-          type: object
-          additionalProperties:
-            type: object
-          description: "Field data is a collection of name/value pairs where the names correspond to the fields in the room's **Details** tab. The value of a name/value pair can be a field data collection itself. These collections are implemented as JSON objects.\n\nThe fields `address1`, `state`, `postalCode`, and `city` are required. The `state` value must be a `stateId` value returned by the [getStates](/docs/rooms-api/reference/globalresources/states/getstates/) endpoint. For example, use \"US-WA\" instead of \"Washington\".\n\nFor example, the data for fields named \"Tax annual amount\" and \"buyer1\" (along with the required fields) might look like this: \n\n```\n{\n  \"data\": {\n    \"taxAnnualAmount\": 3389.12,\n    \"buyer1\": {\n      \"name\": \"Elle Woods\",\n      \"homePhone\": \"123-456-7890\",\n      \"state\": \"US-CA\",\n      \"email\": \"elle.woods@harvard.edu\"\n    },\n    \"address1\": \"123 Harvard Street\",\n    \"state\": \"US-MA\",\n    \"postalCode\": \"02138\",\n    \"city\": \"Cambridge\"\n  }\n}\n```\n"
-      description: 'The field data associated with a room.
-
-        See [Rooms: GetRoomFieldData](/docs/rooms-api/reference/rooms/rooms/getroomfielddata/).'
-      x-ds-definition-name: FieldData
-      x-ms-summary: 'The field data associated with a room.
-
-        See [Rooms: GetRoomFieldData](/docs/rooms-api/reference/rooms/rooms/getroomfielddata/).'
     RoomDocumentOwner:
       type: object
       properties:
@@ -2982,159 +3135,6 @@ components:
       description: ''
       x-ds-definition-name: RoomDocumentOwner
       x-ms-summary: ''
-    RoomInviteResponse:
-      type: object
-      properties:
-        userId:
-          type: integer
-          description: The ID of the user.
-          format: int32
-          readOnly: true
-        roomId:
-          type: integer
-          description: The ID of the room.
-          format: int32
-          readOnly: true
-        email:
-          type: string
-          description: The user's email address.
-          readOnly: true
-        firstName:
-          type: string
-          description: The user's first name.
-          readOnly: true
-        lastName:
-          type: string
-          description: The user's last name.
-          readOnly: true
-        transactionSideId:
-          type: string
-          description: 'The ID of the transaction side. Valid values are:
-
-
-            - `buy`
-
-            - `sell`
-
-            - `listbuy`
-
-            - `refi`'
-          readOnly: true
-        roleId:
-          type: integer
-          description: 'The ID of the company role assigned to the user.
-
-
-            You can assign external roles to users who aren''t a part of your organization.'
-          format: int32
-          readOnly: true
-      description: Information about the sent invitation.
-      x-ds-definition-name: RoomInviteResponse
-      x-ms-summary: Information about the sent invitation.
-    RoomSummaryList:
-      type: object
-      properties:
-        rooms:
-          type: array
-          description: An array of `roomSummary` objects.
-          items:
-            $ref: '#/components/schemas/RoomSummary'
-        resultSetSize:
-          type: integer
-          description: The number of results returned in this response.
-          format: int32
-        startPosition:
-          type: integer
-          description: The starting zero-based index position of the results set. When this property is used as a query parameter, the default value is `0`.
-          format: int32
-        endPosition:
-          type: integer
-          description: The last zero-based index position in the result set.
-          format: int32
-          readOnly: true
-        nextUri:
-          type: string
-          description: The URI for the next chunk of records based on the search request. This property is `null` for the last set of search results.
-        priorUri:
-          type: string
-          description: The URI for the previous chunk of records based on the search request. This property is `null` for the first set of search results.
-        totalRowCount:
-          type: integer
-          description: ''
-          format: int32
-      description: This complex type contains details about rooms.
-      x-ds-definition-name: RoomSummaryList
-      x-ms-summary: This complex type contains details about rooms.
-    RoomUser:
-      type: object
-      properties:
-        userId:
-          type: integer
-          description: The ID of the user.
-          format: int32
-        email:
-          type: string
-          description: The user's email address.
-        firstName:
-          type: string
-          description: The user's first name.
-        lastName:
-          type: string
-          description: The user's last name.
-        transactionSideId:
-          type: string
-          description: 'The ID of the transaction side. Valid values are:
-
-
-            - `buy`
-
-            - `sell`
-
-            - `listbuy`
-
-            - `refi`'
-        roleId:
-          type: integer
-          description: The ID of the user's role.
-          format: int32
-        isRevoked:
-          type: boolean
-          description: When **true,** indicates that the user's access to the room has been revoked.
-        invitedByUserId:
-          type: integer
-          description: The `userId` of the person who invited the room user to the room.
-          format: int32
-      description: This object contains details about a specific room member.
-      x-ds-definition-name: RoomUser
-      x-ms-summary: This object contains details about a specific room member.
-    SelectListFieldOption:
-      type: object
-      properties:
-        id:
-          type: object
-          description: 'The ID of the list option.
-
-
-            Example: `AU`'
-          readOnly: true
-        title:
-          type: string
-          description: 'The title or name of the list option.
-
-
-            Example: `Australia`'
-          readOnly: true
-        order:
-          type: integer
-          description: 'The order of the list option in the list.
-
-
-            Example: `3`'
-          format: int32
-          readOnly: true
-      description: Contains details about an option in a list.
-      x-ds-definition-name: SelectListFieldOption
-      x-ms-summary: Contains details about an option in a list.
   securitySchemes:
     Bearer:
       type: apiKey

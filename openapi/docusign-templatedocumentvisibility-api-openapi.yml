@@ -158,17 +158,18 @@ paths:
       x-codegen-request-body-name: templateDocumentVisibilityList
 components:
   schemas:
-    documentVisibilityList:
+    errorDetails:
       type: object
       properties:
-        documentVisibility:
-          type: array
-          description: A list of `documentVisibility` objects. Each object in the list specifies whether a document in the envelope is visible to this recipient. For the envelope to use this functionality, Document Visibility must be enabled for the account and the `enforceSignerVisibility` property must be set to **true**.
-          items:
-            $ref: '#/components/schemas/documentVisibility'
-      description: ''
-      x-ds-definition-name: documentVisibilityList
-      x-ms-summary: ''
+        errorCode:
+          type: string
+          description: An error code associated with the error.
+        message:
+          type: string
+          description: A short error message.
+      description: This object describes errors that occur. It is only valid for responses, and ignored in requests.
+      x-ds-definition-name: errorDetails
+      x-ms-summary: This object describes errors that occur. It is only valid for responses, and ignored in requests.
     documentVisibility:
       type: object
       properties:
@@ -200,18 +201,17 @@ components:
       description: ''
       x-ds-definition-name: templateDocumentVisibilityList
       x-ms-summary: ''
-    errorDetails:
+    documentVisibilityList:
       type: object
       properties:
-        errorCode:
-          type: string
-          description: An error code associated with the error.
-        message:
-          type: string
-          description: A short error message.
-      description: This object describes errors that occur. It is only valid for responses, and ignored in requests.
-      x-ds-definition-name: errorDetails
-      x-ms-summary: This object describes errors that occur. It is only valid for responses, and ignored in requests.
+        documentVisibility:
+          type: array
+          description: A list of `documentVisibility` objects. Each object in the list specifies whether a document in the envelope is visible to this recipient. For the envelope to use this functionality, Document Visibility must be enabled for the account and the `enforceSignerVisibility` property must be set to **true**.
+          items:
+            $ref: '#/components/schemas/documentVisibility'
+      description: ''
+      x-ds-definition-name: documentVisibilityList
+      x-ms-summary: ''
 externalDocs:
   description: See the DocuSign REST API Guide for more information.
   url: https://docs.docusign.com/esign

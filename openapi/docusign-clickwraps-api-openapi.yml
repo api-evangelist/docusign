@@ -1331,34 +1331,44 @@ paths:
       x-ds-in-sdk: true
 components:
   schemas:
-    clickwrapVersionsDeleteResponse:
+    document:
       type: object
       properties:
-        clickwrapId:
+        documentBase64:
           type: string
-          description: The ID of the clickwrap.
-        clickwrapName:
+          description: The base64-encoded contents of the document.
+        documentHtml:
           type: string
-          description: The name of the clickwrap.
-        versions:
-          type: array
-          description: An array delete responses.
-          items:
-            $ref: '#/components/schemas/clickwrapVersionDeleteResponse'
-      description: ''
-      x-ds-definition-name: clickwrapVersionsDeleteResponse
-      x-ms-summary: ''
-    serviceVersion:
+          description: The HTML representation of the document.
+        documentName:
+          type: string
+          description: The name of the document.
+        fileExtension:
+          type: string
+          description: The file extension of the document.
+        order:
+          type: integer
+          description: The order of document layout.
+          format: int32
+      description: Information about a document.
+      x-ds-definition-name: document
+      x-ms-summary: Information about a document.
+    userAgreementRequest:
       type: object
       properties:
-        version:
+        clientUserId:
           type: string
-          description: The human-readable semver version string.
-        versionUrl:
+          description: The user ID of the client.
+        hostOrigin:
           type: string
-          description: The URL where this version of the API can be found.
+          description: 'The host origin.
+
+            '
+        metadata:
+          type: string
+          description: A customer-defined string you can use in requests. This string will appear in the corresponding response.
       description: ''
-      x-ds-definition-name: serviceVersion
+      x-ds-definition-name: userAgreementRequest
       x-ms-summary: ''
     clickwrapVersionDeleteResponse:
       type: object
@@ -1425,6 +1435,70 @@ components:
       description: ''
       x-ds-definition-name: clickwrapVersionDeleteResponse
       x-ms-summary: ''
+    clickwrapDeleteResponse:
+      type: object
+      properties:
+        clickwrapId:
+          type: string
+          description: The ID of the clickwrap.
+        clickwrapName:
+          type: string
+          description: The name of the clickwrap.
+        deletionMessage:
+          type: string
+          description: 'A message describing the result of deletion request. One of:
+
+
+            - `alreadyDeleted`: Clickwrap is already deleted.
+
+            - `deletionSuccess`: Successfully deleted the clickwrap.
+
+            - `deletionFailure`: Failed to delete the clickwrap.
+
+            - `cannotDelete`: Active clickwrap version cannot be deleted.'
+        deletionSuccess:
+          type: boolean
+          description: '**True** if the clickwrap was deleted successfully. **False** otherwise.'
+        status:
+          type: string
+          description: 'Clickwrap status. Possible values:
+
+
+            - `active`
+
+            - `inactive`
+
+            - `deleted`'
+      description: ''
+      x-ds-definition-name: clickwrapDeleteResponse
+      x-ms-summary: ''
+    clickwrapAgreementsResponse:
+      type: object
+      properties:
+        beginCreatedOn:
+          type: object
+          properties: {}
+          description: User agreements from this datetime.
+        minimumPagesRemaining:
+          type: integer
+          description: Number of pages remaining in the response.
+          format: int32
+        page:
+          type: integer
+          description: The number of the current page.
+          format: int32
+        pageSize:
+          type: integer
+          description: The number of items per page.
+          format: int32
+        userAgreements:
+          type: array
+          description: An array of user agreements.
+          items:
+            $ref: '#/components/schemas/userAgreementResponse'
+      description: ''
+      x-ds-definition-name: clickwrapAgreementsResponse
+      x-ms-summary: ''
     clickwrapTransferRequest:
       type: object
       properties:
@@ -1436,6 +1510,193 @@ components:
           description: ID of the user to transfer to.
       description: ''
       x-ds-definition-name: clickwrapTransferRequest
+      x-ms-summary: ''
+    clickwrapsDeleteResponse:
+      type: object
+      properties:
+        clickwraps:
+          type: array
+          description: ''
+          items:
+            $ref: '#/components/schemas/clickwrapDeleteResponse'
+      description: ''
+      x-ds-definition-name: clickwrapsDeleteResponse
+      x-ms-summary: ''
+    clickwrapScheduledReacceptance:
+      type: object
+      properties:
+        recurrenceInterval:
+          type: integer
+          description: 'The time between recurrences specified in `recurrenceIntervalType` units.
+
+
+            The minimum and maximum values depend on `recurrenceIntervalType`:
+
+
+            - `days`: 1 - 365
+
+            - `weeks`: 1 - 52
+
+            - `months`: 1 - 12
+
+            - `years`: 1'
+          format: int32
+        recurrenceIntervalType:
+          type: string
+          description: 'The units of the `recurrenceInterval`. Must be one of:
+
+
+            - `days`
+
+            - `weeks`
+
+            - `month`
+
+            - `years`
+
+            '
+        startDateTime:
+          type: object
+          properties: {}
+          description: The date when the recurrence interval starts.
+      description: ''
+      x-ds-definition-name: clickwrapScheduledReacceptance
+      x-ms-summary: ''
+    clickwrapVersionsResponse:
+      type: object
+      properties:
+        clickwraps:
+          type: array
+          description: An array of `clickwrapVersionSummaryResponse` objects.
+          items:
+            $ref: '#/components/schemas/clickwrapVersionSummaryResponse'
+        minimumPagesRemaining:
+          type: integer
+          description: Number of pages remaining in the response.
+          format: int32
+        page:
+          type: integer
+          description: The number of the current page.
+          format: int32
+        pageSize:
+          type: integer
+          description: The number of items per page.
+          format: int32
+      description: ''
+      x-ds-definition-name: clickwrapVersionsResponse
+      x-ms-summary: ''
+    errorDetails:
+      type: object
+      properties:
+        errorCode:
+          type: string
+          description: The error code.
+        message:
+          type: string
+          description: The error message.
+      description: Error details.
+      x-ds-definition-name: errorDetails
+      x-ms-summary: Error details.
+    userAgreementResponse:
+      type: object
+      properties:
+        accountId:
+          type: string
+          description: 'A GUID that identifies your account.
+
+            This value is automatically generated by
+
+            DocuSign for any account you create. Copy the
+
+            value from the **API Account ID** field in
+
+            the **API and Keys** page in
+
+            eSignature Settings.
+
+            '
+        agreedOn:
+          type: object
+          properties: {}
+          description: 'Date that the client last completed the agreement.
+
+
+            This property is null if `agreementUrl` is not null and `status` is not  `agreed`.'
+        agreementId:
+          type: string
+          description: The agreement ID.
+        agreementUrl:
+          type: string
+          description: 'When not null, an agreement is required for user specified by  `clientUserId`.
+
+
+            When missing the user specified by `clientUserId`
+
+            has already agreed and does not require a new acceptance.
+
+
+            Use this URL to render the agreement in a web page.
+
+
+            <!--
+
+            or redirected to when providing redirect_url as a query paramter.
+
+            -->
+
+            '
+        clickwrapId:
+          type: string
+          description: The ID of the clickwrap.
+        clientUserId:
+          type: string
+          description: The user ID of the client.
+        consumerDisclosureHtml:
+          type: string
+          description: The customer-branded HTML with the Electronic Record and Signature Disclosure information
+        createdOn:
+          type: object
+          properties: {}
+          description: The date when the clickwrap was created. May be null.
+        declinedOn:
+          type: object
+          properties: {}
+          description: 'The date when the user declined the most recent required agreement.
+
+
+            This property is valid only when `status` is `declined`. Otherwise it is null.'
+        documents:
+          type: array
+          description: An array of documents.
+          items:
+            $ref: '#/components/schemas/document'
+        metadata:
+          type: string
+          description: A customer-defined string you can use in requests. This string will appear in the corresponding response.
+        settings:
+          $ref: '#/components/schemas/displaySettings'
+        status:
+          type: string
+          description: 'User agreement status. One of:
+
+
+            - `created`
+
+            - `agreed`
+
+            - `declined`'
+        version:
+          type: string
+          description: The human-readable semver version string.
+        versionId:
+          type: string
+          description: The ID of the version.
+        versionNumber:
+          type: integer
+          description: Version of the clickwrap.
+          format: int32
+      description: ''
+      x-ds-definition-name: userAgreementResponse
       x-ms-summary: ''
     clickwrapVersionSummaryResponse:
       type: object
@@ -1614,324 +1875,6 @@ components:
       description: ''
       x-ds-definition-name: serviceInformation
       x-ms-summary: ''
-    errorDetails:
-      type: object
-      properties:
-        errorCode:
-          type: string
-          description: The error code.
-        message:
-          type: string
-          description: The error message.
-      description: Error details.
-      x-ds-definition-name: errorDetails
-      x-ms-summary: Error details.
-    document:
-      type: object
-      properties:
-        documentBase64:
-          type: string
-          description: The base64-encoded contents of the document.
-        documentHtml:
-          type: string
-          description: The HTML representation of the document.
-        documentName:
-          type: string
-          description: The name of the document.
-        fileExtension:
-          type: string
-          description: The file extension of the document.
-        order:
-          type: integer
-          description: The order of document layout.
-          format: int32
-      description: Information about a document.
-      x-ds-definition-name: document
-      x-ms-summary: Information about a document.
-    clickwrapRequest:
-      type: object
-      properties:
-        clickwrapName:
-          type: string
-          description: The name of the clickwrap.
-        displaySettings:
-          $ref: '#/components/schemas/displaySettings'
-        documents:
-          type: array
-          description: An array of documents.
-          items:
-            $ref: '#/components/schemas/document'
-        fieldsToNull:
-          type: string
-          description: 'Specifies whether `scheduledReacceptance` and `scheduledDate` should be cleared. May be one of:
-
-
-            - `"scheduledReacceptance"`
-
-            - `"scheduledDate"`
-
-            - `"scheduledReacceptance,scheduledDate"`
-
-            '
-        isMajorVersion:
-          type: boolean
-          description: When **true**, the next version created is a major version. When **false** the next version created is minor.
-        isShared:
-          type: boolean
-          description: ''
-        name:
-          type: string
-          description: Name of the clickwrap.
-        requireReacceptance:
-          type: boolean
-          description: 'When **true**, requires signers who have previously agreed to this
-
-            clickwrap to sign again. The version number is incremented.'
-        scheduledDate:
-          type: object
-          properties: {}
-          description: The time and date when this clickwrap is activated.
-        scheduledReacceptance:
-          $ref: '#/components/schemas/clickwrapScheduledReacceptance'
-        status:
-          type: object
-          properties: {}
-          description: 'Clickwrap status. Possible values:
-
-
-            - `active`
-
-            - `inactive`
-
-            - `deleted`'
-        transferFromUserId:
-          type: string
-          description: The user ID of current owner of the clickwrap.
-        transferToUserId:
-          type: string
-          description: The user ID of the new owner of the clickwrap.
-      description: Request body for working with clickwrap.
-      x-ds-definition-name: clickwrapRequest
-      x-ms-summary: Request body for working with clickwrap.
-    clickwrapsDeleteResponse:
-      type: object
-      properties:
-        clickwraps:
-          type: array
-          description: ''
-          items:
-            $ref: '#/components/schemas/clickwrapDeleteResponse'
-      description: ''
-      x-ds-definition-name: clickwrapsDeleteResponse
-      x-ms-summary: ''
-    userAgreementResponse:
-      type: object
-      properties:
-        accountId:
-          type: string
-          description: 'A GUID that identifies your account.
-
-            This value is automatically generated by
-
-            DocuSign for any account you create. Copy the
-
-            value from the **API Account ID** field in
-
-            the **API and Keys** page in
-
-            eSignature Settings.
-
-            '
-        agreedOn:
-          type: object
-          properties: {}
-          description: 'Date that the client last completed the agreement.
-
-
-            This property is null if `agreementUrl` is not null and `status` is not  `agreed`.'
-        agreementId:
-          type: string
-          description: The agreement ID.
-        agreementUrl:
-          type: string
-          description: 'When not null, an agreement is required for user specified by  `clientUserId`.
-
-
-            When missing the user specified by `clientUserId`
-
-            has already agreed and does not require a new acceptance.
-
-
-            Use this URL to render the agreement in a web page.
-
-
-            <!--
-
-            or redirected to when providing redirect_url as a query paramter.
-
-            -->
-
-            '
-        clickwrapId:
-          type: string
-          description: The ID of the clickwrap.
-        clientUserId:
-          type: string
-          description: The user ID of the client.
-        consumerDisclosureHtml:
-          type: string
-          description: The customer-branded HTML with the Electronic Record and Signature Disclosure information
-        createdOn:
-          type: object
-          properties: {}
-          description: The date when the clickwrap was created. May be null.
-        declinedOn:
-          type: object
-          properties: {}
-          description: 'The date when the user declined the most recent required agreement.
-
-
-            This property is valid only when `status` is `declined`. Otherwise it is null.'
-        documents:
-          type: array
-          description: An array of documents.
-          items:
-            $ref: '#/components/schemas/document'
-        metadata:
-          type: string
-          description: A customer-defined string you can use in requests. This string will appear in the corresponding response.
-        settings:
-          $ref: '#/components/schemas/displaySettings'
-        status:
-          type: string
-          description: 'User agreement status. One of:
-
-
-            - `created`
-
-            - `agreed`
-
-            - `declined`'
-        version:
-          type: string
-          description: The human-readable semver version string.
-        versionId:
-          type: string
-          description: The ID of the version.
-        versionNumber:
-          type: integer
-          description: Version of the clickwrap.
-          format: int32
-      description: ''
-      x-ds-definition-name: userAgreementResponse
-      x-ms-summary: ''
-    clickwrapVersionsResponse:
-      type: object
-      properties:
-        clickwraps:
-          type: array
-          description: An array of `clickwrapVersionSummaryResponse` objects.
-          items:
-            $ref: '#/components/schemas/clickwrapVersionSummaryResponse'
-        minimumPagesRemaining:
-          type: integer
-          description: Number of pages remaining in the response.
-          format: int32
-        page:
-          type: integer
-          description: The number of the current page.
-          format: int32
-        pageSize:
-          type: integer
-          description: The number of items per page.
-          format: int32
-      description: ''
-      x-ds-definition-name: clickwrapVersionsResponse
-      x-ms-summary: ''
-    clickwrapAgreementsResponse:
-      type: object
-      properties:
-        beginCreatedOn:
-          type: object
-          properties: {}
-          description: User agreements from this datetime.
-        minimumPagesRemaining:
-          type: integer
-          description: Number of pages remaining in the response.
-          format: int32
-        page:
-          type: integer
-          description: The number of the current page.
-          format: int32
-        pageSize:
-          type: integer
-          description: The number of items per page.
-          format: int32
-        userAgreements:
-          type: array
-          description: An array of user agreements.
-          items:
-            $ref: '#/components/schemas/userAgreementResponse'
-      description: ''
-      x-ds-definition-name: clickwrapAgreementsResponse
-      x-ms-summary: ''
-    userAgreementRequest:
-      type: object
-      properties:
-        clientUserId:
-          type: string
-          description: The user ID of the client.
-        hostOrigin:
-          type: string
-          description: 'The host origin.
-
-            '
-        metadata:
-          type: string
-          description: A customer-defined string you can use in requests. This string will appear in the corresponding response.
-      description: ''
-      x-ds-definition-name: userAgreementRequest
-      x-ms-summary: ''
-    clickwrapScheduledReacceptance:
-      type: object
-      properties:
-        recurrenceInterval:
-          type: integer
-          description: 'The time between recurrences specified in `recurrenceIntervalType` units.
-
-
-            The minimum and maximum values depend on `recurrenceIntervalType`:
-
-
-            - `days`: 1 - 365
-
-            - `weeks`: 1 - 52
-
-            - `months`: 1 - 12
-
-            - `years`: 1'
-          format: int32
-        recurrenceIntervalType:
-          type: string
-          description: 'The units of the `recurrenceInterval`. Must be one of:
-
-
-            - `days`
-
-            - `weeks`
-
-            - `month`
-
-            - `years`
-
-            '
-        startDateTime:
-          type: object
-          properties: {}
-          description: The date when the recurrence interval starts.
-      description: ''
-      x-ds-definition-name: clickwrapScheduledReacceptance
-      x-ms-summary: ''
     displaySettings:
       type: object
       properties:
@@ -2009,32 +1952,54 @@ components:
       description: Information about how an agreement is displayed.
       x-ds-definition-name: displaySettings
       x-ms-summary: Information about how an agreement is displayed.
-    clickwrapDeleteResponse:
+    clickwrapRequest:
       type: object
       properties:
-        clickwrapId:
-          type: string
-          description: The ID of the clickwrap.
         clickwrapName:
           type: string
           description: The name of the clickwrap.
-        deletionMessage:
+        displaySettings:
+          $ref: '#/components/schemas/displaySettings'
+        documents:
+          type: array
+          description: An array of documents.
+          items:
+            $ref: '#/components/schemas/document'
+        fieldsToNull:
           type: string
-          description: 'A message describing the result of deletion request. One of:
+          description: 'Specifies whether `scheduledReacceptance` and `scheduledDate` should be cleared. May be one of:
 
 
-            - `alreadyDeleted`: Clickwrap is already deleted.
+            - `"scheduledReacceptance"`
 
-            - `deletionSuccess`: Successfully deleted the clickwrap.
+            - `"scheduledDate"`
 
-            - `deletionFailure`: Failed to delete the clickwrap.
+            - `"scheduledReacceptance,scheduledDate"`
 
-            - `cannotDelete`: Active clickwrap version cannot be deleted.'
-        deletionSuccess:
+            '
+        isMajorVersion:
           type: boolean
-          description: '**True** if the clickwrap was deleted successfully. **False** otherwise.'
-        status:
+          description: When **true**, the next version created is a major version. When **false** the next version created is minor.
+        isShared:
+          type: boolean
+          description: ''
+        name:
           type: string
+          description: Name of the clickwrap.
+        requireReacceptance:
+          type: boolean
+          description: 'When **true**, requires signers who have previously agreed to this
+
+            clickwrap to sign again. The version number is incremented.'
+        scheduledDate:
+          type: object
+          properties: {}
+          description: The time and date when this clickwrap is activated.
+        scheduledReacceptance:
+          $ref: '#/components/schemas/clickwrapScheduledReacceptance'
+        status:
+          type: object
+          properties: {}
           description: 'Clickwrap status. Possible values:
 
 
@@ -2043,8 +2008,43 @@ components:
             - `inactive`
 
             - `deleted`'
+        transferFromUserId:
+          type: string
+          description: The user ID of current owner of the clickwrap.
+        transferToUserId:
+          type: string
+          description: The user ID of the new owner of the clickwrap.
+      description: Request body for working with clickwrap.
+      x-ds-definition-name: clickwrapRequest
+      x-ms-summary: Request body for working with clickwrap.
+    serviceVersion:
+      type: object
+      properties:
+        version:
+          type: string
+          description: The human-readable semver version string.
+        versionUrl:
+          type: string
+          description: The URL where this version of the API can be found.
       description: ''
-      x-ds-definition-name: clickwrapDeleteResponse
+      x-ds-definition-name: serviceVersion
+      x-ms-summary: ''
+    clickwrapVersionsDeleteResponse:
+      type: object
+      properties:
+        clickwrapId:
+          type: string
+          description: The ID of the clickwrap.
+        clickwrapName:
+          type: string
+          description: The name of the clickwrap.
+        versions:
+          type: array
+          description: An array delete responses.
+          items:
+            $ref: '#/components/schemas/clickwrapVersionDeleteResponse'
+      description: ''
+      x-ds-definition-name: clickwrapVersionsDeleteResponse
       x-ms-summary: ''
 x-ds-allow-editing: false
 x-ds-categories:

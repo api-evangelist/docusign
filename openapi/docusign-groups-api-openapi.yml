@@ -192,6 +192,66 @@ paths:
       x-codegen-request-body-name: groupInformation
 components:
   schemas:
+    errorDetails:
+      type: object
+      properties:
+        errorCode:
+          type: string
+          description: An error code associated with the error.
+        message:
+          type: string
+          description: A short error message.
+      description: This object describes errors that occur. It is only valid for responses, and ignored in requests.
+      x-ds-definition-name: errorDetails
+      x-ms-summary: This object describes errors that occur. It is only valid for responses, and ignored in requests.
+    userInfo:
+      type: object
+      properties:
+        activationAccessCode:
+          type: string
+          description: ''
+        email:
+          type: string
+          description: ''
+        errorDetails:
+          $ref: '#/components/schemas/errorDetails'
+        loginStatus:
+          type: string
+          description: ''
+        sendActivationEmail:
+          type: string
+          description: ''
+        uri:
+          type: string
+          description: ''
+        userId:
+          type: string
+          description: 'The user ID of the user being accessed. Generally this is the user ID of the authenticated user, but if the authenticated user is an Admin on the account, this may be another user the Admin user is accessing. **Note**: For the [GET /v2/accounts/{accountId}/envelopes](https://developers.docusign.com/esign-rest-api/reference/Envelopes/Envelopes/listStatusChanges/#envelopesInformation) method, the `user_id` query parameter is not implemented and should not be used.'
+        userName:
+          type: string
+          description: ''
+        userStatus:
+          type: string
+          description: 'Status of the user''s account. One of:
+
+
+            * ActivationRequired
+
+            * ActivationSent
+
+            * Active
+
+            * Closed
+
+            * Disabled
+
+            '
+        userType:
+          type: string
+          description: ''
+      description: ''
+      x-ds-definition-name: userInfo
+      x-ms-summary: ''
     group:
       type: object
       properties:
@@ -246,66 +306,6 @@ components:
       description: ''
       x-ds-definition-name: groupInformation
       x-ms-summary: ''
-    userInfo:
-      type: object
-      properties:
-        activationAccessCode:
-          type: string
-          description: ''
-        email:
-          type: string
-          description: ''
-        errorDetails:
-          $ref: '#/components/schemas/errorDetails'
-        loginStatus:
-          type: string
-          description: ''
-        sendActivationEmail:
-          type: string
-          description: ''
-        uri:
-          type: string
-          description: ''
-        userId:
-          type: string
-          description: 'The user ID of the user being accessed. Generally this is the user ID of the authenticated user, but if the authenticated user is an Admin on the account, this may be another user the Admin user is accessing. **Note**: For the [GET /v2/accounts/{accountId}/envelopes](https://developers.docusign.com/esign-rest-api/reference/Envelopes/Envelopes/listStatusChanges/#envelopesInformation) method, the `user_id` query parameter is not implemented and should not be used.'
-        userName:
-          type: string
-          description: ''
-        userStatus:
-          type: string
-          description: 'Status of the user''s account. One of:
-
-
-            * ActivationRequired
-
-            * ActivationSent
-
-            * Active
-
-            * Closed
-
-            * Disabled
-
-            '
-        userType:
-          type: string
-          description: ''
-      description: ''
-      x-ds-definition-name: userInfo
-      x-ms-summary: ''
-    errorDetails:
-      type: object
-      properties:
-        errorCode:
-          type: string
-          description: An error code associated with the error.
-        message:
-          type: string
-          description: A short error message.
-      description: This object describes errors that occur. It is only valid for responses, and ignored in requests.
-      x-ds-definition-name: errorDetails
-      x-ms-summary: This object describes errors that occur. It is only valid for responses, and ignored in requests.
 externalDocs:
   description: See the DocuSign REST API Guide for more information.
   url: https://docs.docusign.com/esign

@@ -230,6 +230,236 @@ paths:
       x-ds-in-sdk: true
 components:
   schemas:
+    userInfo:
+      type: object
+      properties:
+        activationAccessCode:
+          type: string
+          description: ''
+        email:
+          type: string
+          description: ''
+        errorDetails:
+          $ref: '#/components/schemas/errorDetails'
+        loginStatus:
+          type: string
+          description: ''
+        sendActivationEmail:
+          type: string
+          description: ''
+        uri:
+          type: string
+          description: ''
+        userId:
+          type: string
+          description: 'The user ID of the user being accessed. Generally this is the user ID of the authenticated user, but if the authenticated user is an Admin on the account, this may be another user the Admin user is accessing. **Note**: For the [GET /v2/accounts/{accountId}/envelopes](https://developers.docusign.com/esign-rest-api/reference/Envelopes/Envelopes/listStatusChanges/#envelopesInformation) method, the `user_id` query parameter is not implemented and should not be used.'
+        userName:
+          type: string
+          description: ''
+        userStatus:
+          type: string
+          description: 'Status of the user''s account. One of:
+
+
+            * ActivationRequired
+
+            * ActivationSent
+
+            * Active
+
+            * Closed
+
+            * Disabled
+
+            '
+        userType:
+          type: string
+          description: ''
+      description: ''
+      x-ds-definition-name: userInfo
+      x-ms-summary: ''
+    userInformation:
+      type: object
+      properties:
+        accountManagementGranular:
+          $ref: '#/components/schemas/userAccountManagementGranularInformation'
+        activationAccessCode:
+          type: string
+          description: ''
+        countryCode:
+          type: string
+          description: ''
+        createdDateTime:
+          type: string
+          description: Indicates the date and time the item was created.
+        customSettings:
+          type: array
+          description: The name/value pair information for the user custom setting.
+          items:
+            $ref: '#/components/schemas/nameValue'
+        email:
+          type: string
+          description: ''
+        enableConnectForUser:
+          type: string
+          description: 'Specifies whether the user is enabled for updates from DocuSign Connect. Valid values: true or false.'
+        errorDetails:
+          $ref: '#/components/schemas/errorDetails'
+        firstName:
+          type: string
+          description: "The user's first name. \nMaximum Length: 50 characters."
+        forgottenPasswordInfo:
+          $ref: '#/components/schemas/forgottenPasswordInformation'
+        groupList:
+          type: array
+          description: "A list of the group information for groups to add the user to. Group information can be found by calling [ML:GET group information]. The only required parameter is groupId. \n\nThe parameters are:\n\n* groupId - The DocuSign group ID for the group.\n* groupName - The name of the group\n* permissionProfileId - The ID of the permission profile associated with the group.\n* groupType - The group type.\n"
+          items:
+            $ref: '#/components/schemas/group'
+        homeAddress:
+          $ref: '#/components/schemas/addressInformation_v2'
+        initialsImageUri:
+          type: string
+          description: Contains the URI for an endpoint that you can use to retrieve the initials image.
+        isAdmin:
+          type: string
+          description: Determines if the feature set is actively set as part of the plan.
+        jobTitle:
+          type: string
+          description: ''
+        lastLogin:
+          type: string
+          description: The date-time when the user last logged on to the system.
+        lastName:
+          type: string
+          description: The recipient's last name.
+        loginStatus:
+          type: string
+          description: ''
+        middleName:
+          type: string
+          description: "The user's middle name. \nLimit: 50 characters."
+        password:
+          type: string
+          description: ''
+        passwordExpiration:
+          type: string
+          description: If password expiration is enabled, the date-time when the user's password expires.
+        permissionProfileId:
+          type: string
+          description: ''
+        permissionProfileName:
+          type: string
+          description: ''
+        profileImageUri:
+          type: string
+          description: ''
+        sendActivationEmail:
+          type: string
+          description: ''
+        sendActivationOnInvalidLogin:
+          type: string
+          description: 'When set to **true**, specifies that an additional activation email is sent to the user if they fail a log on before activating their account. '
+        signatureImageUri:
+          type: string
+          description: Contains the URI for an endpoint that you can use to retrieve the signature image.
+        subscribe:
+          type: string
+          description: ''
+        suffixName:
+          type: string
+          description: 'The suffix for the user''s name, such as Jr, IV, PhD, etc.
+
+
+            Limit: 50 characters. '
+        title:
+          type: string
+          description: The title of the user.
+        uri:
+          type: string
+          description: ''
+        userId:
+          type: string
+          description: 'The user ID of the user being accessed. Generally this is the user ID of the authenticated user, but if the authenticated user is an Admin on the account, this may be another user the Admin user is accessing. **Note**: For the [GET /v2/accounts/{accountId}/envelopes](https://developers.docusign.com/esign-rest-api/reference/Envelopes/Envelopes/listStatusChanges/#envelopesInformation) method, the `user_id` query parameter is not implemented and should not be used.'
+        userName:
+          type: string
+          description: ''
+        userProfileLastModifiedDate:
+          type: string
+          description: The date-time when the user's profile was last modified.
+        userSettings:
+          type: array
+          description: ''
+          items:
+            $ref: '#/components/schemas/nameValue'
+        userStatus:
+          type: string
+          description: 'Status of the user''s account. One of:
+
+
+            * ActivationRequired
+
+            * ActivationSent
+
+            * Active
+
+            * Closed
+
+            * Disabled
+
+            '
+        userType:
+          type: string
+          description: ''
+        workAddress:
+          $ref: '#/components/schemas/addressInformation_v2'
+      description: ''
+      x-ds-definition-name: userInformation
+      x-ms-summary: ''
+    nameValue:
+      type: object
+      properties:
+        errorDetails:
+          $ref: '#/components/schemas/errorDetails'
+        name:
+          type: string
+          description: The name or key of a name/value pair.
+        originalValue:
+          type: string
+          description: 'The initial value of the tab when it was sent to the recipient. '
+        value:
+          type: string
+          description: The value field of a name/value pair.
+      description: ''
+      x-ds-definition-name: nameValue
+      x-ms-summary: ''
+    permissionProfile:
+      type: object
+      properties:
+        modifiedByUsername:
+          type: string
+          description: ''
+        modifiedDateTime:
+          type: string
+          description: ''
+        permissionProfileId:
+          type: string
+          description: ''
+        permissionProfileName:
+          type: string
+          description: ''
+        settings:
+          $ref: '#/components/schemas/accountRoleSettings'
+        userCount:
+          type: string
+          description: ''
+        users:
+          type: array
+          description: ''
+          items:
+            $ref: '#/components/schemas/userInformation'
+      description: ''
+      x-ds-definition-name: permissionProfile
+      x-ms-summary: ''
     userAccountManagementGranularInformation:
       type: object
       properties:
@@ -298,54 +528,78 @@ components:
       description: Describes which account management capabilities a user has.
       x-ds-definition-name: userAccountManagementGranularInformation
       x-ms-summary: Describes which account management capabilities a user has.
-    userInfo:
+    settingsMetadata:
       type: object
       properties:
-        activationAccessCode:
+        is21CFRPart11:
+          type: string
+          description: When set to **true**, indicates that this module is enabled on the account.
+        options:
+          type: array
+          description: ''
+          items:
+            type: string
+        rights:
           type: string
           description: ''
-        email:
+        uiHint:
           type: string
           description: ''
-        errorDetails:
-          $ref: '#/components/schemas/errorDetails'
-        loginStatus:
+        uiOrder:
           type: string
           description: ''
-        sendActivationEmail:
-          type: string
-          description: ''
-        uri:
-          type: string
-          description: ''
-        userId:
-          type: string
-          description: 'The user ID of the user being accessed. Generally this is the user ID of the authenticated user, but if the authenticated user is an Admin on the account, this may be another user the Admin user is accessing. **Note**: For the [GET /v2/accounts/{accountId}/envelopes](https://developers.docusign.com/esign-rest-api/reference/Envelopes/Envelopes/listStatusChanges/#envelopesInformation) method, the `user_id` query parameter is not implemented and should not be used.'
-        userName:
-          type: string
-          description: ''
-        userStatus:
-          type: string
-          description: 'Status of the user''s account. One of:
-
-
-            * ActivationRequired
-
-            * ActivationSent
-
-            * Active
-
-            * Closed
-
-            * Disabled
-
-            '
-        userType:
+        uiType:
           type: string
           description: ''
       description: ''
-      x-ds-definition-name: userInfo
+      x-ds-definition-name: settingsMetadata
       x-ms-summary: ''
+    addressInformation_v2:
+      type: object
+      properties:
+        address1:
+          type: string
+          description: 'First Line of the address.
+
+            Maximum length: 100 characters.'
+        address2:
+          type: string
+          description: 'Second Line of the address.
+
+            Maximum length: 100 characters.'
+        city:
+          type: string
+          description: ''
+        country:
+          type: string
+          description: Specifies the country associated with the address.
+        fax:
+          type: string
+          description: ''
+        phone:
+          type: string
+          description: ''
+        postalCode:
+          type: string
+          description: ''
+        stateOrProvince:
+          type: string
+          description: The state or province associated with the address.
+      description: ''
+      x-ds-definition-name: addressInformation_v2
+      x-ms-summary: ''
+    errorDetails:
+      type: object
+      properties:
+        errorCode:
+          type: string
+          description: An error code associated with the error.
+        message:
+          type: string
+          description: A short error message.
+      description: This object describes errors that occur. It is only valid for responses, and ignored in requests.
+      x-ds-definition-name: errorDetails
+      x-ms-summary: This object describes errors that occur. It is only valid for responses, and ignored in requests.
     accountRoleSettings:
       type: object
       properties:
@@ -527,6 +781,31 @@ components:
       description: ''
       x-ds-definition-name: accountRoleSettings
       x-ms-summary: ''
+    group:
+      type: object
+      properties:
+        errorDetails:
+          $ref: '#/components/schemas/errorDetails'
+        groupId:
+          type: string
+          description: The DocuSign group ID for the group.
+        groupName:
+          type: string
+          description: The name of the group.
+        groupType:
+          type: string
+          description: The group type.
+        permissionProfileId:
+          type: string
+          description: The ID of the permission profile associated with the group.
+        users:
+          type: array
+          description: List of users in the group.
+          items:
+            $ref: '#/components/schemas/userInfo'
+      description: Information about groups.
+      x-ds-definition-name: group
+      x-ms-summary: Information about groups.
     permissionProfileInformation:
       type: object
       properties:
@@ -537,206 +816,6 @@ components:
             $ref: '#/components/schemas/permissionProfile'
       description: ''
       x-ds-definition-name: permissionProfileInformation
-      x-ms-summary: ''
-    nameValue:
-      type: object
-      properties:
-        errorDetails:
-          $ref: '#/components/schemas/errorDetails'
-        name:
-          type: string
-          description: The name or key of a name/value pair.
-        originalValue:
-          type: string
-          description: 'The initial value of the tab when it was sent to the recipient. '
-        value:
-          type: string
-          description: The value field of a name/value pair.
-      description: ''
-      x-ds-definition-name: nameValue
-      x-ms-summary: ''
-    addressInformation_v2:
-      type: object
-      properties:
-        address1:
-          type: string
-          description: 'First Line of the address.
-
-            Maximum length: 100 characters.'
-        address2:
-          type: string
-          description: 'Second Line of the address.
-
-            Maximum length: 100 characters.'
-        city:
-          type: string
-          description: ''
-        country:
-          type: string
-          description: Specifies the country associated with the address.
-        fax:
-          type: string
-          description: ''
-        phone:
-          type: string
-          description: ''
-        postalCode:
-          type: string
-          description: ''
-        stateOrProvince:
-          type: string
-          description: The state or province associated with the address.
-      description: ''
-      x-ds-definition-name: addressInformation_v2
-      x-ms-summary: ''
-    errorDetails:
-      type: object
-      properties:
-        errorCode:
-          type: string
-          description: An error code associated with the error.
-        message:
-          type: string
-          description: A short error message.
-      description: This object describes errors that occur. It is only valid for responses, and ignored in requests.
-      x-ds-definition-name: errorDetails
-      x-ms-summary: This object describes errors that occur. It is only valid for responses, and ignored in requests.
-    userInformation:
-      type: object
-      properties:
-        accountManagementGranular:
-          $ref: '#/components/schemas/userAccountManagementGranularInformation'
-        activationAccessCode:
-          type: string
-          description: ''
-        countryCode:
-          type: string
-          description: ''
-        createdDateTime:
-          type: string
-          description: Indicates the date and time the item was created.
-        customSettings:
-          type: array
-          description: The name/value pair information for the user custom setting.
-          items:
-            $ref: '#/components/schemas/nameValue'
-        email:
-          type: string
-          description: ''
-        enableConnectForUser:
-          type: string
-          description: 'Specifies whether the user is enabled for updates from DocuSign Connect. Valid values: true or false.'
-        errorDetails:
-          $ref: '#/components/schemas/errorDetails'
-        firstName:
-          type: string
-          description: "The user's first name. \nMaximum Length: 50 characters."
-        forgottenPasswordInfo:
-          $ref: '#/components/schemas/forgottenPasswordInformation'
-        groupList:
-          type: array
-          description: "A list of the group information for groups to add the user to. Group information can be found by calling [ML:GET group information]. The only required parameter is groupId. \n\nThe parameters are:\n\n* groupId - The DocuSign group ID for the group.\n* groupName - The name of the group\n* permissionProfileId - The ID of the permission profile associated with the group.\n* groupType - The group type.\n"
-          items:
-            $ref: '#/components/schemas/group'
-        homeAddress:
-          $ref: '#/components/schemas/addressInformation_v2'
-        initialsImageUri:
-          type: string
-          description: Contains the URI for an endpoint that you can use to retrieve the initials image.
-        isAdmin:
-          type: string
-          description: Determines if the feature set is actively set as part of the plan.
-        jobTitle:
-          type: string
-          description: ''
-        lastLogin:
-          type: string
-          description: The date-time when the user last logged on to the system.
-        lastName:
-          type: string
-          description: The recipient's last name.
-        loginStatus:
-          type: string
-          description: ''
-        middleName:
-          type: string
-          description: "The user's middle name. \nLimit: 50 characters."
-        password:
-          type: string
-          description: ''
-        passwordExpiration:
-          type: string
-          description: If password expiration is enabled, the date-time when the user's password expires.
-        permissionProfileId:
-          type: string
-          description: ''
-        permissionProfileName:
-          type: string
-          description: ''
-        profileImageUri:
-          type: string
-          description: ''
-        sendActivationEmail:
-          type: string
-          description: ''
-        sendActivationOnInvalidLogin:
-          type: string
-          description: 'When set to **true**, specifies that an additional activation email is sent to the user if they fail a log on before activating their account. '
-        signatureImageUri:
-          type: string
-          description: Contains the URI for an endpoint that you can use to retrieve the signature image.
-        subscribe:
-          type: string
-          description: ''
-        suffixName:
-          type: string
-          description: 'The suffix for the user''s name, such as Jr, IV, PhD, etc.
-
-
-            Limit: 50 characters. '
-        title:
-          type: string
-          description: The title of the user.
-        uri:
-          type: string
-          description: ''
-        userId:
-          type: string
-          description: 'The user ID of the user being accessed. Generally this is the user ID of the authenticated user, but if the authenticated user is an Admin on the account, this may be another user the Admin user is accessing. **Note**: For the [GET /v2/accounts/{accountId}/envelopes](https://developers.docusign.com/esign-rest-api/reference/Envelopes/Envelopes/listStatusChanges/#envelopesInformation) method, the `user_id` query parameter is not implemented and should not be used.'
-        userName:
-          type: string
-          description: ''
-        userProfileLastModifiedDate:
-          type: string
-          description: The date-time when the user's profile was last modified.
-        userSettings:
-          type: array
-          description: ''
-          items:
-            $ref: '#/components/schemas/nameValue'
-        userStatus:
-          type: string
-          description: 'Status of the user''s account. One of:
-
-
-            * ActivationRequired
-
-            * ActivationSent
-
-            * Active
-
-            * Closed
-
-            * Disabled
-
-            '
-        userType:
-          type: string
-          description: ''
-        workAddress:
-          $ref: '#/components/schemas/addressInformation_v2'
-      description: ''
-      x-ds-definition-name: userInformation
       x-ms-summary: ''
     forgottenPasswordInformation:
       type: object
@@ -768,85 +847,6 @@ components:
       description: A complex element that has up to four Question/Answer pairs for forgotten password information.
       x-ds-definition-name: forgottenPasswordInformation
       x-ms-summary: A complex element that has up to four Question/Answer pairs for forgotten password information.
-    group:
-      type: object
-      properties:
-        errorDetails:
-          $ref: '#/components/schemas/errorDetails'
-        groupId:
-          type: string
-          description: The DocuSign group ID for the group.
-        groupName:
-          type: string
-          description: The name of the group.
-        groupType:
-          type: string
-          description: The group type.
-        permissionProfileId:
-          type: string
-          description: The ID of the permission profile associated with the group.
-        users:
-          type: array
-          description: List of users in the group.
-          items:
-            $ref: '#/components/schemas/userInfo'
-      description: Information about groups.
-      x-ds-definition-name: group
-      x-ms-summary: Information about groups.
-    settingsMetadata:
-      type: object
-      properties:
-        is21CFRPart11:
-          type: string
-          description: When set to **true**, indicates that this module is enabled on the account.
-        options:
-          type: array
-          description: ''
-          items:
-            type: string
-        rights:
-          type: string
-          description: ''
-        uiHint:
-          type: string
-          description: ''
-        uiOrder:
-          type: string
-          description: ''
-        uiType:
-          type: string
-          description: ''
-      description: ''
-      x-ds-definition-name: settingsMetadata
-      x-ms-summary: ''
-    permissionProfile:
-      type: object
-      properties:
-        modifiedByUsername:
-          type: string
-          description: ''
-        modifiedDateTime:
-          type: string
-          description: ''
-        permissionProfileId:
-          type: string
-          description: ''
-        permissionProfileName:
-          type: string
-          description: ''
-        settings:
-          $ref: '#/components/schemas/accountRoleSettings'
-        userCount:
-          type: string
-          description: ''
-        users:
-          type: array
-          description: ''
-          items:
-            $ref: '#/components/schemas/userInformation'
-      description: ''
-      x-ds-definition-name: permissionProfile
-      x-ms-summary: ''
 externalDocs:
   description: See the DocuSign REST API Guide for more information.
   url: https://docs.docusign.com/esign

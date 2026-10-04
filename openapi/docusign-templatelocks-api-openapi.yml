@@ -207,6 +207,18 @@ paths:
       x-codegen-request-body-name: lockRequest
 components:
   schemas:
+    errorDetails:
+      type: object
+      properties:
+        errorCode:
+          type: string
+          description: An error code associated with the error.
+        message:
+          type: string
+          description: A short error message.
+      description: This object describes errors that occur. It is only valid for responses, and ignored in requests.
+      x-ds-definition-name: errorDetails
+      x-ms-summary: This object describes errors that occur. It is only valid for responses, and ignored in requests.
     lockInformation:
       type: object
       properties:
@@ -234,27 +246,6 @@ components:
           description: "Reserved for future use.\n\nIndicates whether a scratchpad is used for editing information.\n "
       description: ''
       x-ds-definition-name: lockInformation
-      x-ms-summary: ''
-    lockRequest:
-      type: object
-      properties:
-        lockDurationInSeconds:
-          type: string
-          description: The number of seconds to lock the envelope for editing.  Must be greater than 0 seconds.
-        lockedByApp:
-          type: string
-          description: A friendly name of the application used to lock the envelope.  Will be used in error messages to the user when lock conflicts occur.
-        lockType:
-          type: string
-          description: The type of envelope lock.  Currently "edit" is the only supported type.
-        templatePassword:
-          type: string
-          description: ''
-        useScratchPad:
-          type: string
-          description: "Reserved for future use.\n\nIndicates whether a scratchpad is used for editing information.\n "
-      description: ''
-      x-ds-definition-name: lockRequest
       x-ms-summary: ''
     userInfo:
       type: object
@@ -304,18 +295,27 @@ components:
       description: ''
       x-ds-definition-name: userInfo
       x-ms-summary: ''
-    errorDetails:
+    lockRequest:
       type: object
       properties:
-        errorCode:
+        lockDurationInSeconds:
           type: string
-          description: An error code associated with the error.
-        message:
+          description: The number of seconds to lock the envelope for editing.  Must be greater than 0 seconds.
+        lockedByApp:
           type: string
-          description: A short error message.
-      description: This object describes errors that occur. It is only valid for responses, and ignored in requests.
-      x-ds-definition-name: errorDetails
-      x-ms-summary: This object describes errors that occur. It is only valid for responses, and ignored in requests.
+          description: A friendly name of the application used to lock the envelope.  Will be used in error messages to the user when lock conflicts occur.
+        lockType:
+          type: string
+          description: The type of envelope lock.  Currently "edit" is the only supported type.
+        templatePassword:
+          type: string
+          description: ''
+        useScratchPad:
+          type: string
+          description: "Reserved for future use.\n\nIndicates whether a scratchpad is used for editing information.\n "
+      description: ''
+      x-ds-definition-name: lockRequest
+      x-ms-summary: ''
 externalDocs:
   description: See the DocuSign REST API Guide for more information.
   url: https://docs.docusign.com/esign
