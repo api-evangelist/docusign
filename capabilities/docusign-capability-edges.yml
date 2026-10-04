@@ -11,7 +11,7 @@ capability_model:
   attribution: Turbo EA Capabilities by Vincent Verdet — Turbo EA, https://github.com/vincentmakes/turbo-ea-capabilities,
     CC BY 4.0
   notice: NOTICE
-edge_count: 17
+edge_count: 18
 edges:
 - tag: Envelopes
   spec_file: docusign-envelopes-api-openapi.yml
@@ -56,6 +56,17 @@ edges:
   reason: Account here is the tenant in Docusign's multi-tenant service; the operations create, retrieve,
     configure and delete accounts, i.e. tenant provisioning and lifecycle. Some spill into configuration
     and billing charges.
+- tag: Billing Plans
+  spec_file: docusign-billing-plans-api-openapi.yml
+  capability_id: BC-4240.10
+  capability_id_l1: BC-4240
+  capability_name: Plan & Entitlement Design
+  confidence: 0.75
+  evidence: GET /v2/billing_plans  BillingPlans_GetBillingPlans  Docusign Gets the list of available billing
+    plans; PUT /v2/accounts/{accountId}/billing_plan  Updates the account billing plan
+  reason: Operations expose available subscription plans, plan features/seat discounts and change the
+    account's plan — plan and entitlement design plus plan change. Schemas billingPlan, featureSet, seatDiscount
+    support this; some overlap with billing (billingInvoice) lowers certainty.
 - tag: GroupUsers
   spec_file: docusign-group-users-api-openapi.yml
   reanchored_from: docusign-groupusers-api-openapi.yml
