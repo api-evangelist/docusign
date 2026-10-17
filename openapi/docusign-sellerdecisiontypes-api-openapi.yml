@@ -90,17 +90,21 @@ paths:
       x-ds-in-sdk: true
 components:
   schemas:
-    GlobalSellerDecisionTypes:
+    ApiError:
       type: object
       properties:
-        sellerDecisionTypes:
-          type: array
-          description: A list of seller decision types.
-          items:
-            $ref: '#/components/schemas/SellerDecisionType'
-      description: Contains a list of seller decision types.
-      x-ds-definition-name: GlobalSellerDecisionTypes
-      x-ms-summary: Contains a list of seller decision types.
+        errorCode:
+          type: string
+          description: The code associated with the error condition.
+        message:
+          type: string
+          description: A brief message describing the error condition.
+        referenceId:
+          type: string
+          description: ''
+      description: This object describes errors that occur. It is valid only for responses and ignored in requests.
+      x-ds-definition-name: ApiError
+      x-ms-summary: This object describes errors that occur. It is valid only for responses and ignored in requests.
     SellerDecisionType:
       type: object
       properties:
@@ -127,21 +131,17 @@ components:
       description: Contains information about a seller decision type.
       x-ds-definition-name: SellerDecisionType
       x-ms-summary: Contains information about a seller decision type.
-    ApiError:
+    GlobalSellerDecisionTypes:
       type: object
       properties:
-        errorCode:
-          type: string
-          description: The code associated with the error condition.
-        message:
-          type: string
-          description: A brief message describing the error condition.
-        referenceId:
-          type: string
-          description: ''
-      description: This object describes errors that occur. It is valid only for responses and ignored in requests.
-      x-ds-definition-name: ApiError
-      x-ms-summary: This object describes errors that occur. It is valid only for responses and ignored in requests.
+        sellerDecisionTypes:
+          type: array
+          description: A list of seller decision types.
+          items:
+            $ref: '#/components/schemas/SellerDecisionType'
+      description: Contains a list of seller decision types.
+      x-ds-definition-name: GlobalSellerDecisionTypes
+      x-ms-summary: Contains a list of seller decision types.
   securitySchemes:
     Bearer:
       type: apiKey

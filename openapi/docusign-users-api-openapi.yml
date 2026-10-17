@@ -1574,38 +1574,66 @@ paths:
     - url: https://rooms.docusign.com/restapi
 components:
   schemas:
-    ErrorDetails:
+    UsersUpdateResponse:
       type: object
       properties:
-        error:
-          type: string
-          description: The code for the error.
-        error_description:
-          type: string
-          description: A description of the error.
-      description: Errors.
-      x-ds-definition-name: ErrorDetails
-      x-ms-summary: Errors.
-    UserUpdateResponse:
+        success:
+          type: boolean
+          description: If **true**, the request to change user information succeeded.
+        users:
+          type: array
+          description: A list of users whose email addresses have been updated.
+          items:
+            $ref: '#/components/schemas/UserUpdateResponse'
+      description: The results of changing a user's information.
+      x-ds-definition-name: UsersUpdateResponse
+      x-ms-summary: The results of changing a user's information.
+    DSGroupResponse:
       type: object
       properties:
-        id:
+        ds_group_id:
           type: string
-          description: The ID of the user whose email address has been updated.
+          description: ''
           format: uuid
           example: 00000000-0000-0000-0000-000000000000
-        site_id:
-          type: integer
-          description: The site ID.
-          format: int32
-        email:
+        account_id:
           type: string
-          description: The email address.
-        error_details:
-          $ref: '#/components/schemas/ErrorDetails'
-      description: Error result of attempting to change a user's email address.
-      x-ds-definition-name: UserUpdateResponse
-      x-ms-summary: Error result of attempting to change a user's email address.
+          description: Select users that are members of the specified account. At least one of `email`, `account_id` or `organization_reserved_domain_id` must be specified.
+          format: uuid
+          example: 00000000-0000-0000-0000-000000000000
+        source_product_name:
+          type: string
+          description: ''
+        group_id:
+          type: string
+          description: ''
+        group_name:
+          type: string
+          description: ''
+        description:
+          type: string
+          description: ''
+        is_admin:
+          type: boolean
+          description: ''
+        last_modified_on:
+          type: string
+          description: ''
+          format: date-time
+        user_count:
+          type: integer
+          description: ''
+          format: int32
+        external_account_id:
+          type: integer
+          description: ''
+          format: int64
+        account_name:
+          type: string
+          description: ''
+      description: ''
+      x-ds-definition-name: DSGroupResponse
+      x-ms-summary: ''
     OrganizationUsersResponse:
       type: object
       properties:
@@ -1619,45 +1647,6 @@ components:
       description: A response containing information about users.
       x-ds-definition-name: OrganizationUsersResponse
       x-ms-summary: A response containing information about users.
-    PagingResponseProperties:
-      type: object
-      properties:
-        result_set_size:
-          type: integer
-          description: ''
-          format: int32
-        result_set_start_position:
-          type: integer
-          description: ''
-          format: int32
-        result_set_end_position:
-          type: integer
-          description: ''
-          format: int32
-        total_set_size:
-          type: integer
-          description: ''
-          format: int32
-        next:
-          type: string
-          description: ''
-        previous:
-          type: string
-          description: ''
-      description: ''
-      x-ds-definition-name: PagingResponseProperties
-      x-ms-summary: ''
-    UpdateUsersEmailRequest:
-      type: object
-      properties:
-        users:
-          type: array
-          description: A list of users whose email address to change.
-          items:
-            $ref: '#/components/schemas/UpdateUserEmailRequest'
-      description: A change email request.
-      x-ds-definition-name: UpdateUsersEmailRequest
-      x-ms-summary: A change email request.
     OrganizationUserResponse:
       type: object
       properties:
@@ -1727,66 +1716,65 @@ components:
       description: Information about a user.
       x-ds-definition-name: OrganizationUserResponse
       x-ms-summary: Information about a user.
-    DSGroupResponse:
+    PagingResponseProperties:
       type: object
       properties:
-        ds_group_id:
-          type: string
-          description: ''
-          format: uuid
-          example: 00000000-0000-0000-0000-000000000000
-        account_id:
-          type: string
-          description: Select users that are members of the specified account. At least one of `email`, `account_id` or `organization_reserved_domain_id` must be specified.
-          format: uuid
-          example: 00000000-0000-0000-0000-000000000000
-        source_product_name:
-          type: string
-          description: ''
-        group_id:
-          type: string
-          description: ''
-        group_name:
-          type: string
-          description: ''
-        description:
-          type: string
-          description: ''
-        is_admin:
-          type: boolean
-          description: ''
-        last_modified_on:
-          type: string
-          description: ''
-          format: date-time
-        user_count:
+        result_set_size:
           type: integer
           description: ''
           format: int32
-        external_account_id:
+        result_set_start_position:
           type: integer
           description: ''
-          format: int64
-        account_name:
+          format: int32
+        result_set_end_position:
+          type: integer
+          description: ''
+          format: int32
+        total_set_size:
+          type: integer
+          description: ''
+          format: int32
+        next:
+          type: string
+          description: ''
+        previous:
           type: string
           description: ''
       description: ''
-      x-ds-definition-name: DSGroupResponse
+      x-ds-definition-name: PagingResponseProperties
       x-ms-summary: ''
-    UsersUpdateResponse:
+    UserUpdateResponse:
       type: object
       properties:
-        success:
-          type: boolean
-          description: If **true**, the request to change user information succeeded.
+        id:
+          type: string
+          description: The ID of the user whose email address has been updated.
+          format: uuid
+          example: 00000000-0000-0000-0000-000000000000
+        site_id:
+          type: integer
+          description: The site ID.
+          format: int32
+        email:
+          type: string
+          description: The email address.
+        error_details:
+          $ref: '#/components/schemas/ErrorDetails'
+      description: Error result of attempting to change a user's email address.
+      x-ds-definition-name: UserUpdateResponse
+      x-ms-summary: Error result of attempting to change a user's email address.
+    UpdateUsersEmailRequest:
+      type: object
+      properties:
         users:
           type: array
-          description: A list of users whose email addresses have been updated.
+          description: A list of users whose email address to change.
           items:
-            $ref: '#/components/schemas/UserUpdateResponse'
-      description: The results of changing a user's information.
-      x-ds-definition-name: UsersUpdateResponse
-      x-ms-summary: The results of changing a user's information.
+            $ref: '#/components/schemas/UpdateUserEmailRequest'
+      description: A change email request.
+      x-ds-definition-name: UpdateUsersEmailRequest
+      x-ms-summary: A change email request.
     UpdateUserEmailRequest:
       required:
       - email
@@ -1809,6 +1797,108 @@ components:
       description: And individual change of email.
       x-ds-definition-name: UpdateUserEmailRequest
       x-ms-summary: And individual change of email.
+    ErrorDetails:
+      type: object
+      properties:
+        error:
+          type: string
+          description: The code for the error.
+        error_description:
+          type: string
+          description: A description of the error.
+      description: Errors.
+      x-ds-definition-name: ErrorDetails
+      x-ms-summary: Errors.
+    settingsMetadata:
+      type: object
+      properties:
+        is21CFRPart11:
+          type: string
+          description: When set to **true**, indicates that this module is enabled on the account.
+        options:
+          type: array
+          description: ''
+          items:
+            type: string
+        rights:
+          type: string
+          description: ''
+        uiHint:
+          type: string
+          description: ''
+        uiOrder:
+          type: string
+          description: ''
+        uiType:
+          type: string
+          description: ''
+      description: ''
+      x-ds-definition-name: settingsMetadata
+      x-ms-summary: ''
+    forgottenPasswordInformation:
+      type: object
+      properties:
+        forgottenPasswordAnswer1:
+          type: string
+          description: The answer to the first forgotten password challenge question.
+        forgottenPasswordAnswer2:
+          type: string
+          description: The answer to the second forgotten password challenge question.
+        forgottenPasswordAnswer3:
+          type: string
+          description: The answer to the third forgotten password challenge question.
+        forgottenPasswordAnswer4:
+          type: string
+          description: The answer to the fourth forgotten password challenge question.
+        forgottenPasswordQuestion1:
+          type: string
+          description: The first challenge question presented to a user who has forgotten their password.
+        forgottenPasswordQuestion2:
+          type: string
+          description: The second challenge question presented to a user who has forgotten their password.
+        forgottenPasswordQuestion3:
+          type: string
+          description: The third challenge question presented to a user who has forgotten their password.
+        forgottenPasswordQuestion4:
+          type: string
+          description: The fourth challenge question presented to a user who has forgotten their password.
+      description: A complex element that has up to four Question/Answer pairs for forgotten password information.
+      x-ds-definition-name: forgottenPasswordInformation
+      x-ms-summary: A complex element that has up to four Question/Answer pairs for forgotten password information.
+    addressInformation_v2:
+      type: object
+      properties:
+        address1:
+          type: string
+          description: 'First Line of the address.
+
+            Maximum length: 100 characters.'
+        address2:
+          type: string
+          description: 'Second Line of the address.
+
+            Maximum length: 100 characters.'
+        city:
+          type: string
+          description: ''
+        country:
+          type: string
+          description: Specifies the country associated with the address.
+        fax:
+          type: string
+          description: ''
+        phone:
+          type: string
+          description: ''
+        postalCode:
+          type: string
+          description: ''
+        stateOrProvince:
+          type: string
+          description: The state or province associated with the address.
+      description: ''
+      x-ds-definition-name: addressInformation_v2
+      x-ms-summary: ''
     userInfo:
       type: object
       properties:
@@ -1856,6 +1946,272 @@ components:
           description: ''
       description: ''
       x-ds-definition-name: userInfo
+      x-ms-summary: ''
+    senderEmailNotifications:
+      type: object
+      properties:
+        changedSigner:
+          type: string
+          description: When set to **true**, the sender receives notification if the signer changes.
+        commentsOnlyPrivateAndMention:
+          type: string
+          description: ''
+        commentsReceiveAll:
+          type: string
+          description: ''
+        deliveryFailed:
+          type: string
+          description: When set to **true**, the sender receives notification if the delivery of the envelope fails.
+        envelopeComplete:
+          type: string
+          description: When set to **true**, the user receives notification that the envelope has been completed.
+        offlineSigningFailed:
+          type: string
+          description: When set to **true**, the user receives notification if the offline signing failed.
+        powerformResponsesLimitNotificationEmail:
+          type: string
+          description: ''
+        recipientViewed:
+          type: string
+          description: When set to **true**, the sender receives notification that the recipient viewed the enveloper.
+        senderEnvelopeDeclined:
+          type: string
+          description: ''
+        withdrawnConsent:
+          type: string
+          description: When set to **true**, the user receives notification if consent is withdrawn.
+      description: ''
+      x-ds-definition-name: senderEmailNotifications
+      x-ms-summary: ''
+    group:
+      type: object
+      properties:
+        errorDetails:
+          $ref: '#/components/schemas/errorDetails'
+        groupId:
+          type: string
+          description: The DocuSign group ID for the group.
+        groupName:
+          type: string
+          description: The name of the group.
+        groupType:
+          type: string
+          description: The group type.
+        permissionProfileId:
+          type: string
+          description: The ID of the permission profile associated with the group.
+        users:
+          type: array
+          description: List of users in the group.
+          items:
+            $ref: '#/components/schemas/userInfo'
+      description: Information about groups.
+      x-ds-definition-name: group
+      x-ms-summary: Information about groups.
+    userAccountManagementGranularInformation:
+      type: object
+      properties:
+        canManageAccountSecuritySettings:
+          type: string
+          description: ''
+        canManageAccountSecuritySettingsMetadata:
+          $ref: '#/components/schemas/settingsMetadata'
+        canManageAccountSettings:
+          type: string
+          description: ''
+        canManageAccountSettingsMetadata:
+          $ref: '#/components/schemas/settingsMetadata'
+        canManageAdmins:
+          type: string
+          description: '**True**
+
+            if the user can manage
+
+            admins.'
+        canManageAdminsMetadata:
+          $ref: '#/components/schemas/settingsMetadata'
+        canManageEnvelopeTransfer:
+          type: string
+          description: ''
+        canManageEnvelopeTransferMetadata:
+          $ref: '#/components/schemas/settingsMetadata'
+        canManageGroups:
+          type: string
+          description: '**True**
+
+            if the user can manage
+
+            groups.'
+        canManageGroupsMetadata:
+          $ref: '#/components/schemas/settingsMetadata'
+        canManageReporting:
+          type: string
+          description: ''
+        canManageReportingMetadata:
+          $ref: '#/components/schemas/settingsMetadata'
+        canManageSharing:
+          type: string
+          description: ''
+        canManageSharingMetadata:
+          $ref: '#/components/schemas/settingsMetadata'
+        canManageSigningGroups:
+          type: string
+          description: ''
+        canManageSigningGroupsMetadata:
+          $ref: '#/components/schemas/settingsMetadata'
+        canManageUsers:
+          type: string
+          description: '**True**
+
+            if the user can manage
+
+            users.'
+        canManageUsersMetadata:
+          $ref: '#/components/schemas/settingsMetadata'
+        canViewUsers:
+          type: string
+          description: ''
+        canViewUsersMetadata:
+          $ref: '#/components/schemas/settingsMetadata'
+      description: Describes which account management capabilities a user has.
+      x-ds-definition-name: userAccountManagementGranularInformation
+      x-ms-summary: Describes which account management capabilities a user has.
+    nameValue:
+      type: object
+      properties:
+        errorDetails:
+          $ref: '#/components/schemas/errorDetails'
+        name:
+          type: string
+          description: The name or key of a name/value pair.
+        originalValue:
+          type: string
+          description: 'The initial value of the tab when it was sent to the recipient. '
+        value:
+          type: string
+          description: The value field of a name/value pair.
+      description: ''
+      x-ds-definition-name: nameValue
+      x-ms-summary: ''
+    newUsersDefinition:
+      type: object
+      properties:
+        newUsers:
+          type: array
+          description: ''
+          items:
+            $ref: '#/components/schemas/userInformation'
+      description: ''
+      x-ds-definition-name: newUsersDefinition
+      x-ms-summary: ''
+    newUser:
+      type: object
+      properties:
+        apiPassword:
+          type: string
+          description: Contains a token that can be used for authentication in API calls instead of using the user name and password.
+        createdDateTime:
+          type: string
+          description: Indicates the date and time the item was created.
+        email:
+          type: string
+          description: ''
+        errorDetails:
+          $ref: '#/components/schemas/errorDetails'
+        membershipId:
+          type: string
+          description: ''
+        permissionProfileId:
+          type: string
+          description: ''
+        permissionProfileName:
+          type: string
+          description: ''
+        uri:
+          type: string
+          description: ''
+        userId:
+          type: string
+          description: Specifies the user ID for the new user.
+        userName:
+          type: string
+          description: ''
+        userStatus:
+          type: string
+          description: 'Status of the user''s account. One of:
+
+
+            * ActivationRequired
+
+            * ActivationSent
+
+            * Active
+
+            * Closed
+
+            * Disabled
+
+            '
+      description: ''
+      x-ds-definition-name: newUser
+      x-ms-summary: ''
+    errorDetails:
+      type: object
+      properties:
+        errorCode:
+          type: string
+          description: An error code associated with the error.
+        message:
+          type: string
+          description: A short error message.
+      description: This object describes errors that occur. It is only valid for responses, and ignored in requests.
+      x-ds-definition-name: errorDetails
+      x-ms-summary: This object describes errors that occur. It is only valid for responses, and ignored in requests.
+    userSettingsInformation:
+      type: object
+      properties:
+        accountManagementGranular:
+          $ref: '#/components/schemas/userAccountManagementGranularInformation'
+        senderEmailNotifications:
+          $ref: '#/components/schemas/senderEmailNotifications'
+        signerEmailNotifications:
+          $ref: '#/components/schemas/signerEmailNotifications'
+        userSettings:
+          type: array
+          description: ''
+          items:
+            $ref: '#/components/schemas/nameValue'
+      description: ''
+      x-ds-definition-name: userSettingsInformation
+      x-ms-summary: ''
+    userInformationList:
+      type: object
+      properties:
+        endPosition:
+          type: string
+          description: 'The last position in the result set. '
+        nextUri:
+          type: string
+          description: 'The URI for the next chunk of records based on the search request. It is `null` if this is the last set of results for the search. '
+        previousUri:
+          type: string
+          description: 'The URI for the prior chunk of records based on the search request. It is `null` if this is the first set of results for the search. '
+        resultSetSize:
+          type: string
+          description: 'The number of results returned in this response. '
+        startPosition:
+          type: string
+          description: Starting position of the current result set.
+        totalSetSize:
+          type: string
+          description: The total number of items in the search's result set. It will always be greater than or equal to the value of the `resultSetSize` field.
+        users:
+          type: array
+          description: ''
+          items:
+            $ref: '#/components/schemas/userInformation'
+      description: ''
+      x-ds-definition-name: userInformationList
       x-ms-summary: ''
     userInformation:
       type: object
@@ -1994,110 +2350,6 @@ components:
       description: ''
       x-ds-definition-name: userInformation
       x-ms-summary: ''
-    nameValue:
-      type: object
-      properties:
-        errorDetails:
-          $ref: '#/components/schemas/errorDetails'
-        name:
-          type: string
-          description: The name or key of a name/value pair.
-        originalValue:
-          type: string
-          description: 'The initial value of the tab when it was sent to the recipient. '
-        value:
-          type: string
-          description: The value field of a name/value pair.
-      description: ''
-      x-ds-definition-name: nameValue
-      x-ms-summary: ''
-    senderEmailNotifications:
-      type: object
-      properties:
-        changedSigner:
-          type: string
-          description: When set to **true**, the sender receives notification if the signer changes.
-        commentsOnlyPrivateAndMention:
-          type: string
-          description: ''
-        commentsReceiveAll:
-          type: string
-          description: ''
-        deliveryFailed:
-          type: string
-          description: When set to **true**, the sender receives notification if the delivery of the envelope fails.
-        envelopeComplete:
-          type: string
-          description: When set to **true**, the user receives notification that the envelope has been completed.
-        offlineSigningFailed:
-          type: string
-          description: When set to **true**, the user receives notification if the offline signing failed.
-        powerformResponsesLimitNotificationEmail:
-          type: string
-          description: ''
-        recipientViewed:
-          type: string
-          description: When set to **true**, the sender receives notification that the recipient viewed the enveloper.
-        senderEnvelopeDeclined:
-          type: string
-          description: ''
-        withdrawnConsent:
-          type: string
-          description: When set to **true**, the user receives notification if consent is withdrawn.
-      description: ''
-      x-ds-definition-name: senderEmailNotifications
-      x-ms-summary: ''
-    newUser:
-      type: object
-      properties:
-        apiPassword:
-          type: string
-          description: Contains a token that can be used for authentication in API calls instead of using the user name and password.
-        createdDateTime:
-          type: string
-          description: Indicates the date and time the item was created.
-        email:
-          type: string
-          description: ''
-        errorDetails:
-          $ref: '#/components/schemas/errorDetails'
-        membershipId:
-          type: string
-          description: ''
-        permissionProfileId:
-          type: string
-          description: ''
-        permissionProfileName:
-          type: string
-          description: ''
-        uri:
-          type: string
-          description: ''
-        userId:
-          type: string
-          description: Specifies the user ID for the new user.
-        userName:
-          type: string
-          description: ''
-        userStatus:
-          type: string
-          description: 'Status of the user''s account. One of:
-
-
-            * ActivationRequired
-
-            * ActivationSent
-
-            * Active
-
-            * Closed
-
-            * Disabled
-
-            '
-      description: ''
-      x-ds-definition-name: newUser
-      x-ms-summary: ''
     userInfoList:
       type: object
       properties:
@@ -2109,219 +2361,6 @@ components:
       description: ''
       x-ds-definition-name: userInfoList
       x-ms-summary: ''
-    usersResponse:
-      type: object
-      properties:
-        endPosition:
-          type: string
-          description: 'The last position in the result set. '
-        nextUri:
-          type: string
-          description: 'The URI for the next chunk of records based on the search request. It is `null` if this is the last set of results for the search. '
-        previousUri:
-          type: string
-          description: 'The URI for the prior chunk of records based on the search request. It is `null` if this is the first set of results for the search. '
-        resultSetSize:
-          type: string
-          description: 'The number of results returned in this response. '
-        startPosition:
-          type: string
-          description: Starting position of the current result set.
-        totalSetSize:
-          type: string
-          description: The total number of items in the search's result set. It will always be greater than or equal to the value of the `resultSetSize` field.
-        users:
-          type: array
-          description: ''
-          items:
-            $ref: '#/components/schemas/userInfo'
-      description: ''
-      x-ds-definition-name: usersResponse
-      x-ms-summary: ''
-    newUsersDefinition:
-      type: object
-      properties:
-        newUsers:
-          type: array
-          description: ''
-          items:
-            $ref: '#/components/schemas/userInformation'
-      description: ''
-      x-ds-definition-name: newUsersDefinition
-      x-ms-summary: ''
-    userInformationList:
-      type: object
-      properties:
-        endPosition:
-          type: string
-          description: 'The last position in the result set. '
-        nextUri:
-          type: string
-          description: 'The URI for the next chunk of records based on the search request. It is `null` if this is the last set of results for the search. '
-        previousUri:
-          type: string
-          description: 'The URI for the prior chunk of records based on the search request. It is `null` if this is the first set of results for the search. '
-        resultSetSize:
-          type: string
-          description: 'The number of results returned in this response. '
-        startPosition:
-          type: string
-          description: Starting position of the current result set.
-        totalSetSize:
-          type: string
-          description: The total number of items in the search's result set. It will always be greater than or equal to the value of the `resultSetSize` field.
-        users:
-          type: array
-          description: ''
-          items:
-            $ref: '#/components/schemas/userInformation'
-      description: ''
-      x-ds-definition-name: userInformationList
-      x-ms-summary: ''
-    settingsMetadata:
-      type: object
-      properties:
-        is21CFRPart11:
-          type: string
-          description: When set to **true**, indicates that this module is enabled on the account.
-        options:
-          type: array
-          description: ''
-          items:
-            type: string
-        rights:
-          type: string
-          description: ''
-        uiHint:
-          type: string
-          description: ''
-        uiOrder:
-          type: string
-          description: ''
-        uiType:
-          type: string
-          description: ''
-      description: ''
-      x-ds-definition-name: settingsMetadata
-      x-ms-summary: ''
-    addressInformation_v2:
-      type: object
-      properties:
-        address1:
-          type: string
-          description: 'First Line of the address.
-
-            Maximum length: 100 characters.'
-        address2:
-          type: string
-          description: 'Second Line of the address.
-
-            Maximum length: 100 characters.'
-        city:
-          type: string
-          description: ''
-        country:
-          type: string
-          description: Specifies the country associated with the address.
-        fax:
-          type: string
-          description: ''
-        phone:
-          type: string
-          description: ''
-        postalCode:
-          type: string
-          description: ''
-        stateOrProvince:
-          type: string
-          description: The state or province associated with the address.
-      description: ''
-      x-ds-definition-name: addressInformation_v2
-      x-ms-summary: ''
-    errorDetails:
-      type: object
-      properties:
-        errorCode:
-          type: string
-          description: An error code associated with the error.
-        message:
-          type: string
-          description: A short error message.
-      description: This object describes errors that occur. It is only valid for responses, and ignored in requests.
-      x-ds-definition-name: errorDetails
-      x-ms-summary: This object describes errors that occur. It is only valid for responses, and ignored in requests.
-    forgottenPasswordInformation:
-      type: object
-      properties:
-        forgottenPasswordAnswer1:
-          type: string
-          description: The answer to the first forgotten password challenge question.
-        forgottenPasswordAnswer2:
-          type: string
-          description: The answer to the second forgotten password challenge question.
-        forgottenPasswordAnswer3:
-          type: string
-          description: The answer to the third forgotten password challenge question.
-        forgottenPasswordAnswer4:
-          type: string
-          description: The answer to the fourth forgotten password challenge question.
-        forgottenPasswordQuestion1:
-          type: string
-          description: The first challenge question presented to a user who has forgotten their password.
-        forgottenPasswordQuestion2:
-          type: string
-          description: The second challenge question presented to a user who has forgotten their password.
-        forgottenPasswordQuestion3:
-          type: string
-          description: The third challenge question presented to a user who has forgotten their password.
-        forgottenPasswordQuestion4:
-          type: string
-          description: The fourth challenge question presented to a user who has forgotten their password.
-      description: A complex element that has up to four Question/Answer pairs for forgotten password information.
-      x-ds-definition-name: forgottenPasswordInformation
-      x-ms-summary: A complex element that has up to four Question/Answer pairs for forgotten password information.
-    userSettingsInformation:
-      type: object
-      properties:
-        accountManagementGranular:
-          $ref: '#/components/schemas/userAccountManagementGranularInformation'
-        senderEmailNotifications:
-          $ref: '#/components/schemas/senderEmailNotifications'
-        signerEmailNotifications:
-          $ref: '#/components/schemas/signerEmailNotifications'
-        userSettings:
-          type: array
-          description: ''
-          items:
-            $ref: '#/components/schemas/nameValue'
-      description: ''
-      x-ds-definition-name: userSettingsInformation
-      x-ms-summary: ''
-    group:
-      type: object
-      properties:
-        errorDetails:
-          $ref: '#/components/schemas/errorDetails'
-        groupId:
-          type: string
-          description: The DocuSign group ID for the group.
-        groupName:
-          type: string
-          description: The name of the group.
-        groupType:
-          type: string
-          description: The group type.
-        permissionProfileId:
-          type: string
-          description: The ID of the permission profile associated with the group.
-        users:
-          type: array
-          description: List of users in the group.
-          items:
-            $ref: '#/components/schemas/userInfo'
-      description: Information about groups.
-      x-ds-definition-name: group
-      x-ms-summary: Information about groups.
     newUsersSummary:
       type: object
       properties:
@@ -2387,171 +2426,35 @@ components:
       description: An array of email notifications that specifies the email the user receives when they are a sender. When the specific email notification is set to true, the user receives those types of email notifications from DocuSign. The user inherits the default account sender email notification settings when the user is created.
       x-ds-definition-name: signerEmailNotifications
       x-ms-summary: An array of email notifications that specifies the email the user receives when they are a sender. When the specific email notification is set to true, the user receives those types of email notifications from DocuSign. The user inherits the default account sender email notification settings when the user is created.
-    userAccountManagementGranularInformation:
+    usersResponse:
       type: object
       properties:
-        canManageAccountSecuritySettings:
+        endPosition:
           type: string
+          description: 'The last position in the result set. '
+        nextUri:
+          type: string
+          description: 'The URI for the next chunk of records based on the search request. It is `null` if this is the last set of results for the search. '
+        previousUri:
+          type: string
+          description: 'The URI for the prior chunk of records based on the search request. It is `null` if this is the first set of results for the search. '
+        resultSetSize:
+          type: string
+          description: 'The number of results returned in this response. '
+        startPosition:
+          type: string
+          description: Starting position of the current result set.
+        totalSetSize:
+          type: string
+          description: The total number of items in the search's result set. It will always be greater than or equal to the value of the `resultSetSize` field.
+        users:
+          type: array
           description: ''
-        canManageAccountSecuritySettingsMetadata:
-          $ref: '#/components/schemas/settingsMetadata'
-        canManageAccountSettings:
-          type: string
-          description: ''
-        canManageAccountSettingsMetadata:
-          $ref: '#/components/schemas/settingsMetadata'
-        canManageAdmins:
-          type: string
-          description: '**True**
-
-            if the user can manage
-
-            admins.'
-        canManageAdminsMetadata:
-          $ref: '#/components/schemas/settingsMetadata'
-        canManageEnvelopeTransfer:
-          type: string
-          description: ''
-        canManageEnvelopeTransferMetadata:
-          $ref: '#/components/schemas/settingsMetadata'
-        canManageGroups:
-          type: string
-          description: '**True**
-
-            if the user can manage
-
-            groups.'
-        canManageGroupsMetadata:
-          $ref: '#/components/schemas/settingsMetadata'
-        canManageReporting:
-          type: string
-          description: ''
-        canManageReportingMetadata:
-          $ref: '#/components/schemas/settingsMetadata'
-        canManageSharing:
-          type: string
-          description: ''
-        canManageSharingMetadata:
-          $ref: '#/components/schemas/settingsMetadata'
-        canManageSigningGroups:
-          type: string
-          description: ''
-        canManageSigningGroupsMetadata:
-          $ref: '#/components/schemas/settingsMetadata'
-        canManageUsers:
-          type: string
-          description: '**True**
-
-            if the user can manage
-
-            users.'
-        canManageUsersMetadata:
-          $ref: '#/components/schemas/settingsMetadata'
-        canViewUsers:
-          type: string
-          description: ''
-        canViewUsersMetadata:
-          $ref: '#/components/schemas/settingsMetadata'
-      description: Describes which account management capabilities a user has.
-      x-ds-definition-name: userAccountManagementGranularInformation
-      x-ms-summary: Describes which account management capabilities a user has.
-    UserSummary:
-      type: object
-      properties:
-        userId:
-          type: integer
-          description: The ID of the user.
-          format: int32
-          readOnly: true
-        email:
-          type: string
-          description: The user's email address.
-          readOnly: true
-        firstName:
-          type: string
-          description: The user's first name.
-          readOnly: true
-        lastName:
-          type: string
-          description: The user's last name.
-          readOnly: true
-        isLockedOut:
-          type: boolean
-          description: When **true,** an administrator has locked the user's account. For example, an administrator might want to lock an agent's account after they leave the brokerage until they determine how to transfer the agent's rooms and data to another active user.
-          readOnly: true
-        status:
-          type: string
-          description: 'The user''s status. Possible values are:
-
-
-            - `Active`
-
-            - `Pending`'
-          readOnly: true
-        accessLevel:
-          type: string
-          description: 'The user''s level of access to the account. This property determines what the user can see in the system.
-
-
-            In contrast, a user''s permissions determine the actions that they can take in a room. For example, a user who has `accessLevel` set to `Company` can see all of the rooms associated with their company. However, if they do not have a role for which the **Add documents to room** permission is set to **true,** they can''t add documents to those rooms.
-
-
-            Valid values are:
-
-
-            - `Company`: The user has access to rooms, and if they have permission to manage users, they have access to users across the entire company. What they can do in the rooms and with users is controlled by their permissions. This is the default for the Users::InviteClassicAdmin method.
-
-            - `Region`: The user has access to rooms and, if they have permission to manage users, they have access to users across their regions.
-
-            - `Office`: The user has access to rooms and, if they have permission to manage users, they have access to users across their offices.
-
-            - `Contributor`: The user has access only to their own rooms and those to which they are invited. They cannot perform any user management actions because they do not oversee other users. For example, agents typically have the `Contributor` access level.
-
-
-            **Note:** In requests, the values that you may use for this property depend on your permissions and whether you can add users at your access level or lower.'
-          enum:
-          - Contributor
-          - Office
-          - Region
-          - Company
-          - Admin
-        defaultOfficeId:
-          type: integer
-          description: The ID of the user's default office.
-          format: int32
-          readOnly: true
-        titleId:
-          type: integer
-          description: This field is deprecated in Rooms Version 6.
-          format: int32
-          readOnly: true
-        roleId:
-          type: integer
-          description: 'The ID of the company role assigned to the user.
-
-
-            You can assign external roles to users who aren''t a part of your organization.'
-          format: int32
-          readOnly: true
-        profileImageUrl:
-          type: string
-          description: The URL for the user's profile image.
-          readOnly: true
-      description: Contains details about a user.
-      x-ds-definition-name: UserSummary
-      x-ms-summary: Contains details about a user.
-    UserForUpdate:
-      required:
-      - defaultOfficeId
-      type: object
-      properties:
-        defaultOfficeId:
-          type: integer
-          description: (Required) The ID of the user's default office.
-          format: int32
-      description: 'This request object contains the information to use to update a user''s default office. '
-      x-ds-definition-name: UserForUpdate
-      x-ms-summary: 'This request object contains the information to use to update a user''s default office. '
+          items:
+            $ref: '#/components/schemas/userInfo'
+      description: ''
+      x-ds-definition-name: usersResponse
+      x-ms-summary: ''
     UserToInvite:
       required:
       - accessLevel
@@ -2638,17 +2541,6 @@ components:
       description: This request object contains information about the user that you are inviting.
       x-ds-definition-name: UserToInvite
       x-ms-summary: This request object contains information about the user that you are inviting.
-    LockedOutDetails:
-      required:
-      - reason
-      type: object
-      properties:
-        reason:
-          type: string
-          description: The reason the account was locked.
-      description: Details about a locked account.
-      x-ds-definition-name: LockedOutDetails
-      x-ms-summary: Details about a locked account.
     User:
       type: object
       properties:
@@ -2774,6 +2666,114 @@ components:
       description: This object contains information about the region associated with the member.
       x-ds-definition-name: DesignatedRegion
       x-ms-summary: This object contains information about the region associated with the member.
+    UserSummary:
+      type: object
+      properties:
+        userId:
+          type: integer
+          description: The ID of the user.
+          format: int32
+          readOnly: true
+        email:
+          type: string
+          description: The user's email address.
+          readOnly: true
+        firstName:
+          type: string
+          description: The user's first name.
+          readOnly: true
+        lastName:
+          type: string
+          description: The user's last name.
+          readOnly: true
+        isLockedOut:
+          type: boolean
+          description: When **true,** an administrator has locked the user's account. For example, an administrator might want to lock an agent's account after they leave the brokerage until they determine how to transfer the agent's rooms and data to another active user.
+          readOnly: true
+        status:
+          type: string
+          description: 'The user''s status. Possible values are:
+
+
+            - `Active`
+
+            - `Pending`'
+          readOnly: true
+        accessLevel:
+          type: string
+          description: 'The user''s level of access to the account. This property determines what the user can see in the system.
+
+
+            In contrast, a user''s permissions determine the actions that they can take in a room. For example, a user who has `accessLevel` set to `Company` can see all of the rooms associated with their company. However, if they do not have a role for which the **Add documents to room** permission is set to **true,** they can''t add documents to those rooms.
+
+
+            Valid values are:
+
+
+            - `Company`: The user has access to rooms, and if they have permission to manage users, they have access to users across the entire company. What they can do in the rooms and with users is controlled by their permissions. This is the default for the Users::InviteClassicAdmin method.
+
+            - `Region`: The user has access to rooms and, if they have permission to manage users, they have access to users across their regions.
+
+            - `Office`: The user has access to rooms and, if they have permission to manage users, they have access to users across their offices.
+
+            - `Contributor`: The user has access only to their own rooms and those to which they are invited. They cannot perform any user management actions because they do not oversee other users. For example, agents typically have the `Contributor` access level.
+
+
+            **Note:** In requests, the values that you may use for this property depend on your permissions and whether you can add users at your access level or lower.'
+          enum:
+          - Contributor
+          - Office
+          - Region
+          - Company
+          - Admin
+        defaultOfficeId:
+          type: integer
+          description: The ID of the user's default office.
+          format: int32
+          readOnly: true
+        titleId:
+          type: integer
+          description: This field is deprecated in Rooms Version 6.
+          format: int32
+          readOnly: true
+        roleId:
+          type: integer
+          description: 'The ID of the company role assigned to the user.
+
+
+            You can assign external roles to users who aren''t a part of your organization.'
+          format: int32
+          readOnly: true
+        profileImageUrl:
+          type: string
+          description: The URL for the user's profile image.
+          readOnly: true
+      description: Contains details about a user.
+      x-ds-definition-name: UserSummary
+      x-ms-summary: Contains details about a user.
+    UserForUpdate:
+      required:
+      - defaultOfficeId
+      type: object
+      properties:
+        defaultOfficeId:
+          type: integer
+          description: (Required) The ID of the user's default office.
+          format: int32
+      description: 'This request object contains the information to use to update a user''s default office. '
+      x-ds-definition-name: UserForUpdate
+      x-ms-summary: 'This request object contains the information to use to update a user''s default office. '
+    LockedOutDetails:
+      required:
+      - reason
+      type: object
+      properties:
+        reason:
+          type: string
+          description: The reason the account was locked.
+      description: Details about a locked account.
+      x-ds-definition-name: LockedOutDetails
+      x-ms-summary: Details about a locked account.
     UserSummaryList:
       type: object
       properties:

@@ -370,43 +370,6 @@ paths:
       x-ds-in-sdk: true
 components:
   schemas:
-    workspaceUserAuthorization:
-      type: object
-      properties:
-        canDelete:
-          type: string
-          description: ''
-        canMove:
-          type: string
-          description: ''
-        canTransact:
-          type: string
-          description: ''
-        canView:
-          type: string
-          description: ''
-        created:
-          type: string
-          description: The UTC DateTime when the workspace user authorization was created.
-        createdById:
-          type: string
-          description: ''
-        errorDetails:
-          $ref: '#/components/schemas/errorDetails'
-        modified:
-          type: string
-          description: ''
-        modifiedById:
-          type: string
-          description: ''
-        workspaceUserId:
-          type: string
-          description: ''
-        workspaceUserInformation:
-          $ref: '#/components/schemas/workspaceUser'
-      description: Provides properties that describe user authorization to a workspace.
-      x-ds-definition-name: workspaceUserAuthorization
-      x-ms-summary: Provides properties that describe user authorization to a workspace.
     workspaceItem:
       type: object
       properties:
@@ -467,6 +430,87 @@ components:
       description: ''
       x-ds-definition-name: workspaceItem
       x-ms-summary: ''
+    pageImages:
+      type: object
+      properties:
+        endPosition:
+          type: string
+          description: 'The last position in the result set. '
+        nextUri:
+          type: string
+          description: 'The URI for the next chunk of records based on the search request. It is `null` if this is the last set of results for the search. '
+        pages:
+          type: array
+          description: ''
+          items:
+            $ref: '#/components/schemas/page'
+        previousUri:
+          type: string
+          description: 'The URI for the prior chunk of records based on the search request. It is `null` if this is the first set of results for the search. '
+        resultSetSize:
+          type: string
+          description: 'The number of results returned in this response. '
+        startPosition:
+          type: string
+          description: Starting position of the current result set.
+        totalSetSize:
+          type: string
+          description: The total number of items in the search's result set. It will always be greater than or equal to the value of the `resultSetSize` field.
+      description: ''
+      x-ds-definition-name: pageImages
+      x-ms-summary: ''
+    workspaceItemList:
+      type: object
+      properties:
+        items:
+          type: array
+          description: ''
+          items:
+            $ref: '#/components/schemas/workspaceItem'
+      description: Provides properties that describe the items contained in a workspace.
+      x-ds-definition-name: workspaceItemList
+      x-ms-summary: Provides properties that describe the items contained in a workspace.
+    errorDetails:
+      type: object
+      properties:
+        errorCode:
+          type: string
+          description: An error code associated with the error.
+        message:
+          type: string
+          description: A short error message.
+      description: This object describes errors that occur. It is only valid for responses, and ignored in requests.
+      x-ds-definition-name: errorDetails
+      x-ms-summary: This object describes errors that occur. It is only valid for responses, and ignored in requests.
+    page:
+      type: object
+      properties:
+        dpi:
+          type: string
+          description: The number of dots per inch used for the page image.
+        errorDetails:
+          $ref: '#/components/schemas/errorDetails'
+        height:
+          type: string
+          description: Height of the tab in pixels.
+        imageBytes:
+          type: string
+          description: ''
+        mimeType:
+          type: string
+          description: ''
+        pageId:
+          type: string
+          description: ''
+        sequence:
+          type: string
+          description: ''
+        width:
+          type: string
+          description: Width of the tab in pixels.
+      description: Description of a page of a document.
+      x-ds-definition-name: page
+      x-ms-summary: Description of a page of a document.
     workspaceUser:
       type: object
       properties:
@@ -520,87 +564,43 @@ components:
       description: 'A workspaceUser representing the user. This property is only returned in response to user specific GET call. '
       x-ds-definition-name: workspaceUser
       x-ms-summary: 'A workspaceUser representing the user. This property is only returned in response to user specific GET call. '
-    pageImages:
+    workspaceUserAuthorization:
       type: object
       properties:
-        endPosition:
+        canDelete:
           type: string
-          description: 'The last position in the result set. '
-        nextUri:
-          type: string
-          description: 'The URI for the next chunk of records based on the search request. It is `null` if this is the last set of results for the search. '
-        pages:
-          type: array
           description: ''
-          items:
-            $ref: '#/components/schemas/page'
-        previousUri:
+        canMove:
           type: string
-          description: 'The URI for the prior chunk of records based on the search request. It is `null` if this is the first set of results for the search. '
-        resultSetSize:
-          type: string
-          description: 'The number of results returned in this response. '
-        startPosition:
-          type: string
-          description: Starting position of the current result set.
-        totalSetSize:
-          type: string
-          description: The total number of items in the search's result set. It will always be greater than or equal to the value of the `resultSetSize` field.
-      description: ''
-      x-ds-definition-name: pageImages
-      x-ms-summary: ''
-    workspaceItemList:
-      type: object
-      properties:
-        items:
-          type: array
           description: ''
-          items:
-            $ref: '#/components/schemas/workspaceItem'
-      description: Provides properties that describe the items contained in a workspace.
-      x-ds-definition-name: workspaceItemList
-      x-ms-summary: Provides properties that describe the items contained in a workspace.
-    page:
-      type: object
-      properties:
-        dpi:
+        canTransact:
           type: string
-          description: The number of dots per inch used for the page image.
+          description: ''
+        canView:
+          type: string
+          description: ''
+        created:
+          type: string
+          description: The UTC DateTime when the workspace user authorization was created.
+        createdById:
+          type: string
+          description: ''
         errorDetails:
           $ref: '#/components/schemas/errorDetails'
-        height:
-          type: string
-          description: Height of the tab in pixels.
-        imageBytes:
+        modified:
           type: string
           description: ''
-        mimeType:
+        modifiedById:
           type: string
           description: ''
-        pageId:
+        workspaceUserId:
           type: string
           description: ''
-        sequence:
-          type: string
-          description: ''
-        width:
-          type: string
-          description: Width of the tab in pixels.
-      description: Description of a page of a document.
-      x-ds-definition-name: page
-      x-ms-summary: Description of a page of a document.
-    errorDetails:
-      type: object
-      properties:
-        errorCode:
-          type: string
-          description: An error code associated with the error.
-        message:
-          type: string
-          description: A short error message.
-      description: This object describes errors that occur. It is only valid for responses, and ignored in requests.
-      x-ds-definition-name: errorDetails
-      x-ms-summary: This object describes errors that occur. It is only valid for responses, and ignored in requests.
+        workspaceUserInformation:
+          $ref: '#/components/schemas/workspaceUser'
+      description: Provides properties that describe user authorization to a workspace.
+      x-ds-definition-name: workspaceUserAuthorization
+      x-ms-summary: Provides properties that describe user authorization to a workspace.
     workspaceFolderContents:
       type: object
       properties:

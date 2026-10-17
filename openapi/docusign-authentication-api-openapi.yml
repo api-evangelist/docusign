@@ -227,63 +227,36 @@ paths:
       x-ds-in-sdk: true
 components:
   schemas:
-    loginInformation:
+    forgottenPasswordInformation:
       type: object
       properties:
-        apiPassword:
+        forgottenPasswordAnswer1:
           type: string
-          description: Contains a token that can be used for authentication in API calls instead of using the user name and password.
-        loginAccounts:
-          type: array
-          description: The list of accounts that authenticating user is a member of.
-          items:
-            $ref: '#/components/schemas/loginAccount'
-      description: ''
-      x-ds-definition-name: loginInformation
-      x-ms-summary: ''
-    loginAccount:
-      type: object
-      properties:
-        accountId:
+          description: The answer to the first forgotten password challenge question.
+        forgottenPasswordAnswer2:
           type: string
-          description: The account ID associated with the envelope.
-        accountIdGuid:
+          description: The answer to the second forgotten password challenge question.
+        forgottenPasswordAnswer3:
           type: string
-          description: The GUID associated with the account ID.
-        baseUrl:
+          description: The answer to the third forgotten password challenge question.
+        forgottenPasswordAnswer4:
           type: string
-          description: The URL that should be used for successive calls to this account. It includes the protocal (https), the DocuSign server where the account is located, and the account number. Use this Url to make API calls against this account. Many of the API calls provide Uri's that are relative to this baseUrl.
-        email:
+          description: The answer to the fourth forgotten password challenge question.
+        forgottenPasswordQuestion1:
           type: string
-          description: The email address for the user.
-        isDefault:
+          description: The first challenge question presented to a user who has forgotten their password.
+        forgottenPasswordQuestion2:
           type: string
-          description: This value is true if this is the default account for the user, otherwise false is returned.
-        loginAccountSettings:
-          type: array
-          description: A list of settings on the acccount that indicate what features are available.
-          items:
-            $ref: '#/components/schemas/nameValue'
-        loginUserSettings:
-          type: array
-          description: A list of user-level settings that indicate what user-specific features are available.
-          items:
-            $ref: '#/components/schemas/nameValue'
-        name:
+          description: The second challenge question presented to a user who has forgotten their password.
+        forgottenPasswordQuestion3:
           type: string
-          description: The name associated with the account.
-        siteDescription:
+          description: The third challenge question presented to a user who has forgotten their password.
+        forgottenPasswordQuestion4:
           type: string
-          description: An optional descirption of the site that hosts the account.
-        userId:
-          type: string
-          description: 'The user ID of the user being accessed. Generally this is the user ID of the authenticated user, but if the authenticated user is an Admin on the account, this may be another user the Admin user is accessing. **Note**: For the [GET /v2/accounts/{accountId}/envelopes](https://developers.docusign.com/esign-rest-api/reference/Envelopes/Envelopes/listStatusChanges/#envelopesInformation) method, the `user_id` query parameter is not implemented and should not be used.'
-        userName:
-          type: string
-          description: The name of this user as defined by the account.
-      description: ''
-      x-ds-definition-name: loginAccount
-      x-ms-summary: ''
+          description: The fourth challenge question presented to a user who has forgotten their password.
+      description: A complex element that has up to four Question/Answer pairs for forgotten password information.
+      x-ds-definition-name: forgottenPasswordInformation
+      x-ms-summary: A complex element that has up to four Question/Answer pairs for forgotten password information.
     nameValue:
       type: object
       properties:
@@ -356,36 +329,63 @@ components:
       description: ''
       x-ds-definition-name: oauthAccess
       x-ms-summary: ''
-    forgottenPasswordInformation:
+    loginInformation:
       type: object
       properties:
-        forgottenPasswordAnswer1:
+        apiPassword:
           type: string
-          description: The answer to the first forgotten password challenge question.
-        forgottenPasswordAnswer2:
+          description: Contains a token that can be used for authentication in API calls instead of using the user name and password.
+        loginAccounts:
+          type: array
+          description: The list of accounts that authenticating user is a member of.
+          items:
+            $ref: '#/components/schemas/loginAccount'
+      description: ''
+      x-ds-definition-name: loginInformation
+      x-ms-summary: ''
+    loginAccount:
+      type: object
+      properties:
+        accountId:
           type: string
-          description: The answer to the second forgotten password challenge question.
-        forgottenPasswordAnswer3:
+          description: The account ID associated with the envelope.
+        accountIdGuid:
           type: string
-          description: The answer to the third forgotten password challenge question.
-        forgottenPasswordAnswer4:
+          description: The GUID associated with the account ID.
+        baseUrl:
           type: string
-          description: The answer to the fourth forgotten password challenge question.
-        forgottenPasswordQuestion1:
+          description: The URL that should be used for successive calls to this account. It includes the protocal (https), the DocuSign server where the account is located, and the account number. Use this Url to make API calls against this account. Many of the API calls provide Uri's that are relative to this baseUrl.
+        email:
           type: string
-          description: The first challenge question presented to a user who has forgotten their password.
-        forgottenPasswordQuestion2:
+          description: The email address for the user.
+        isDefault:
           type: string
-          description: The second challenge question presented to a user who has forgotten their password.
-        forgottenPasswordQuestion3:
+          description: This value is true if this is the default account for the user, otherwise false is returned.
+        loginAccountSettings:
+          type: array
+          description: A list of settings on the acccount that indicate what features are available.
+          items:
+            $ref: '#/components/schemas/nameValue'
+        loginUserSettings:
+          type: array
+          description: A list of user-level settings that indicate what user-specific features are available.
+          items:
+            $ref: '#/components/schemas/nameValue'
+        name:
           type: string
-          description: The third challenge question presented to a user who has forgotten their password.
-        forgottenPasswordQuestion4:
+          description: The name associated with the account.
+        siteDescription:
           type: string
-          description: The fourth challenge question presented to a user who has forgotten their password.
-      description: A complex element that has up to four Question/Answer pairs for forgotten password information.
-      x-ds-definition-name: forgottenPasswordInformation
-      x-ms-summary: A complex element that has up to four Question/Answer pairs for forgotten password information.
+          description: An optional descirption of the site that hosts the account.
+        userId:
+          type: string
+          description: 'The user ID of the user being accessed. Generally this is the user ID of the authenticated user, but if the authenticated user is an Admin on the account, this may be another user the Admin user is accessing. **Note**: For the [GET /v2/accounts/{accountId}/envelopes](https://developers.docusign.com/esign-rest-api/reference/Envelopes/Envelopes/listStatusChanges/#envelopesInformation) method, the `user_id` query parameter is not implemented and should not be used.'
+        userName:
+          type: string
+          description: The name of this user as defined by the account.
+      description: ''
+      x-ds-definition-name: loginAccount
+      x-ms-summary: ''
 externalDocs:
   description: See the DocuSign REST API Guide for more information.
   url: https://docs.docusign.com/esign

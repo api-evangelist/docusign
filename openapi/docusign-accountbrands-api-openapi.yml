@@ -573,6 +573,33 @@ paths:
       x-ds-in-sdk: true
 components:
   schemas:
+    brandResources:
+      type: object
+      properties:
+        createdByUserInfo:
+          $ref: '#/components/schemas/userInfo'
+        createdDate:
+          type: string
+          description: ''
+        modifiedByUserInfo:
+          $ref: '#/components/schemas/userInfo'
+        modifiedDate:
+          type: string
+          description: ''
+        modifiedTemplates:
+          type: array
+          description: ''
+          items:
+            type: string
+        resourcesContentType:
+          type: string
+          description: ''
+        resourcesContentUri:
+          type: string
+          description: ''
+      description: ''
+      x-ds-definition-name: brandResources
+      x-ms-summary: ''
     brandLink:
       type: object
       properties:
@@ -591,38 +618,16 @@ components:
       description: ''
       x-ds-definition-name: brandLink
       x-ms-summary: ''
-    brandResourceUrls:
+    brandResourcesList:
       type: object
       properties:
-        email:
-          type: string
+        resourcesContentTypes:
+          type: array
           description: ''
-        sending:
-          type: string
-          description: ''
-        signing:
-          type: string
-          description: ''
-        signingCaptive:
-          type: string
-          description: ''
+          items:
+            $ref: '#/components/schemas/brandResources'
       description: ''
-      x-ds-definition-name: brandResourceUrls
-      x-ms-summary: ''
-    brandLogos:
-      type: object
-      properties:
-        email:
-          type: string
-          description: ''
-        primary:
-          type: string
-          description: ''
-        secondary:
-          type: string
-          description: ''
-      description: ''
-      x-ds-definition-name: brandLogos
+      x-ds-definition-name: brandResourcesList
       x-ms-summary: ''
     userInfo:
       type: object
@@ -689,6 +694,24 @@ components:
       description: ''
       x-ds-definition-name: nameValue
       x-ms-summary: ''
+    brandResourceUrls:
+      type: object
+      properties:
+        email:
+          type: string
+          description: ''
+        sending:
+          type: string
+          description: ''
+        signing:
+          type: string
+          description: ''
+        signingCaptive:
+          type: string
+          description: ''
+      description: ''
+      x-ds-definition-name: brandResourceUrls
+      x-ms-summary: ''
     AccountBrands:
       type: object
       properties:
@@ -708,33 +731,6 @@ components:
       x-ds-category: Accounts
       x-ds-order: '10'
       x-ms-summary: Brand management for accounts
-    brandResources:
-      type: object
-      properties:
-        createdByUserInfo:
-          $ref: '#/components/schemas/userInfo'
-        createdDate:
-          type: string
-          description: ''
-        modifiedByUserInfo:
-          $ref: '#/components/schemas/userInfo'
-        modifiedDate:
-          type: string
-          description: ''
-        modifiedTemplates:
-          type: array
-          description: ''
-          items:
-            type: string
-        resourcesContentType:
-          type: string
-          description: ''
-        resourcesContentUri:
-          type: string
-          description: ''
-      description: ''
-      x-ds-definition-name: brandResources
-      x-ms-summary: ''
     errorDetails:
       type: object
       properties:
@@ -747,45 +743,20 @@ components:
       description: This object describes errors that occur. It is only valid for responses, and ignored in requests.
       x-ds-definition-name: errorDetails
       x-ms-summary: This object describes errors that occur. It is only valid for responses, and ignored in requests.
-    brandResourcesList:
+    brandLogos:
       type: object
       properties:
-        resourcesContentTypes:
-          type: array
-          description: ''
-          items:
-            $ref: '#/components/schemas/brandResources'
-      description: ''
-      x-ds-definition-name: brandResourcesList
-      x-ms-summary: ''
-    brandsRequest:
-      type: object
-      properties:
-        brands:
-          type: array
-          description: The list of brands.
-          items:
-            $ref: '#/components/schemas/brandRequest'
-      description: ''
-      x-ds-definition-name: brandsRequest
-      x-ms-summary: ''
-    brandEmailContent:
-      type: object
-      properties:
-        content:
+        email:
           type: string
           description: ''
-        emailContentType:
+        primary:
           type: string
           description: ''
-        emailToLink:
-          type: string
-          description: ''
-        linkText:
+        secondary:
           type: string
           description: ''
       description: ''
-      x-ds-definition-name: brandEmailContent
+      x-ds-definition-name: brandLogos
       x-ms-summary: ''
     brand:
       type: object
@@ -836,6 +807,35 @@ components:
           $ref: '#/components/schemas/brandResourceUrls'
       description: ''
       x-ds-definition-name: brand
+      x-ms-summary: ''
+    brandsRequest:
+      type: object
+      properties:
+        brands:
+          type: array
+          description: The list of brands.
+          items:
+            $ref: '#/components/schemas/brandRequest'
+      description: ''
+      x-ds-definition-name: brandsRequest
+      x-ms-summary: ''
+    brandEmailContent:
+      type: object
+      properties:
+        content:
+          type: string
+          description: ''
+        emailContentType:
+          type: string
+          description: ''
+        emailToLink:
+          type: string
+          description: ''
+        linkText:
+          type: string
+          description: ''
+      description: ''
+      x-ds-definition-name: brandEmailContent
       x-ms-summary: ''
     brandRequest:
       type: object
