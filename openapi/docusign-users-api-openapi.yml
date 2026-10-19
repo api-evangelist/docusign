@@ -2,7 +2,7 @@ openapi: 3.2.0
 info:
   title: Docusign Users API
   version: '1.0'
-  description: 'Operations tagged Users across 3 of this provider''s published API definitions: docusign-admin-openapi-original.yml, docusign-openapi-original.yml, docusign-rooms-openapi-original.yml. Each path carries the servers of the definition it was published in.'
+  description: 'Operations tagged Users across 3 of this provider''s published API definitions: docusign-admin-openapi-original.yml, docusign-openapi.json, docusign-users-api-openapi.yml. Each path carries the servers of the definition it was published in.'
 servers:
 - url: https://api.docusign.net/Management
 - url: https://www.docusign.net/restapi
@@ -164,7 +164,877 @@ paths:
       x-ds-in-sdk: true
     servers:
     - url: https://api.docusign.net/Management
+  /v2.1/accounts/{accountId}/users:
+    parameters: []
+    get:
+      tags:
+      - Users
+      summary: Retrieves the list of users for the specified account.
+      description: 'Retrieves the list of users for the specified account.
+
+
+        The response returns the list of users for the account, with information about the result set. If the `additional_info` query is added to the endpoint and set to **true,** full user information is returned for each user.'
+      operationId: Users_GetUsers
+      parameters:
+      - name: accountId
+        in: path
+        description: (Required) The external account number (int) or account ID GUID.
+        required: true
+        schema:
+          type: string
+      - name: additional_info
+        in: query
+        description: When **true,** the custom settings information is returned for each user in the account. If this parameter is omitted, the default behavior is **false.**
+        required: false
+        schema:
+          type: string
+      - name: alternate_admins_only
+        in: query
+        required: false
+        description: When **true,** returns only alternate administrators. These users are not administrators but will be set as such if all administrator memberships are closed. The default value is **false.**
+        schema:
+          type: string
+      - name: count
+        in: query
+        description: 'The maximum number of results to return.
+
+
+          Use `start_position` to specify the number of results to skip.
+
+
+          Valid values: `1` to `100`
+
+          '
+        required: false
+        schema:
+          type: string
+      - name: domain_users_only
+        in: query
+        required: false
+        description: When **true,** return only users in [domains](https://support.docusign.com/s/document-item?rsc_301=&bundleId=rrf1583359212854&topicId=jub1589318086105.html) claimed by your organization. The default value is **false.**
+        schema:
+          type: string
+      - name: email
+        in: query
+        required: false
+        description: 'Filters results based on the email address associated with the user that you want to return.
+
+
+          **Note:** You can use either this parameter or the `email_substring` parameter, but not both. For older accounts, this parameter might return multiple users who are associated with a single email address. '
+        schema:
+          type: string
+      - name: email_substring
+        in: query
+        description: 'Filters results based on a fragment of an email address. For example, you could enter `gmail.com` to return all users who have Gmail addresses.
+
+
+          **Note:** You do not use a wildcard character with this parameter. You can use either this parameter or the `email` parameter, but not both. '
+        required: false
+        schema:
+          type: string
+      - name: group_id
+        in: query
+        description: Filters results based on one or more group IDs.
+        required: false
+        schema:
+          type: string
+      - name: include_license
+        in: query
+        required: false
+        description: ''
+        schema:
+          type: string
+      - name: include_usersettings_for_csv
+        in: query
+        required: false
+        description: When **true,** the response includes the `userSettings` object data in CSV format.
+        schema:
+          type: string
+      - name: login_status
+        in: query
+        required: false
+        description: When **true,** the response includes the login status of each user.
+        schema:
+          type: string
+      - name: not_group_id
+        in: query
+        required: false
+        description: Return user records excluding the specified group IDs.
+        schema:
+          type: string
+      - name: start_position
+        in: query
+        description: 'The zero-based index of the
+
+          result from which to start returning results.
+
+
+          Use with `count` to limit the number
+
+          of results.
+
+
+          The default value is `0`.
+
+          '
+        required: false
+        schema:
+          type: string
+      - name: status
+        in: query
+        required: false
+        description: 'Filters results by user account status.
+
+          A comma-separated list of any of the following:
+
+
+          * `ActivationRequired`
+
+          * `ActivationSent`
+
+          * `Active`
+
+          * `Closed`
+
+          * `Disabled`
+
+          '
+        schema:
+          type: string
+      - name: user_name_substring
+        in: query
+        description: Filters the user records returned by the user name or a sub-string of user name.
+        required: false
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Successful response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/userInformationList'
+        '400':
+          description: Error encountered.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorDetails'
+      deprecated: false
+      x-ds-methodname: list
+      x-ds-method: list
+      x-ds-service: Users
+      x-ds-in-sdk: true
+    put:
+      tags:
+      - Users
+      summary: Changes one or more users in the specified account
+      operationId: Users_PutUsers
+      parameters:
+      - name: accountId
+        in: path
+        description: The external account number (int) or account ID GUID.
+        required: true
+        schema:
+          type: string
+      - name: allow_all_languages
+        in: query
+        required: false
+        description: ''
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Successful response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/userInformationList'
+        '400':
+          description: Error encountered.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorDetails'
+      deprecated: false
+      x-ds-methodname: updateUsers
+      description: This method updates the information about one or more account users.
+      x-ds-method: updateList
+      x-ds-service: Users
+      x-ds-in-sdk: true
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/userInformationList'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/userInformationList'
+    post:
+      tags:
+      - Users
+      summary: Adds new users to the specified account
+      description: 'Adds new users to an account.
+
+
+        The body of this request is an array of `newUsers` objects. For each new user, you must provide at least the `userName` and `email` properties. The maximum number of users you can create in one request is 500 users.
+
+
+        The `userSettings` property specifies the actions users can perform. In the example below, Tal Mason will be able to send envelopes, and the activation email will be in French because the `locale` is set to `fr`.
+
+
+        ```
+
+        POST /restapi/v2.1/accounts/{accountId}/users
+
+        Content-Type: application/json
+
+        ```
+
+        ```
+
+        {
+
+        "newUsers": [
+
+        {
+
+        "userName": "Claire Horace",
+
+        "email": "claire@example.com"
+
+        },
+
+        {
+
+        "userName": "Tal Mason",
+
+        "email": "talmason@example.com",
+
+        "company": "TeleSel",
+
+        "userSettings": {
+
+        "locale": "fr",
+
+        "canSendEnvelope": true
+
+        }
+
+        }
+
+        ]
+
+        }
+
+        ```
+
+
+        A successful response is a `newUsers` array with information about the newly created users. If there was a problem in creating a user, that user entry will contain an `errorDetails` property that describes what went wrong.
+
+
+        ```json
+
+        {
+
+        "newUsers": [
+
+        {
+
+        "userId": "18f3be12-xxxx-xxxx-xxxx-883d8f9b8ade",
+
+        "uri": "/users/18f3be12-xxxx-xxxx-xxxx-883d8f9b8ade",
+
+        "email": "claire@example.com",
+
+        "userName": "Claire Horace",
+
+        "createdDateTime": "0001-01-01T08:00:00.0000000Z",
+
+        "errorDetails": {
+
+        "errorCode": "USER_ALREADY_EXISTS_IN_ACCOUNT",
+
+        "message": "Username and email combination already exists for this account."
+
+        }
+
+        },
+
+        {
+
+        "userId": "be9899a3-xxxx-xxxx-xxxx-2c8dd7156e33",
+
+        "uri": "/users/be9899a3-xxxx-xxxx-xxxx-2c8dd7156e33",
+
+        "email": "talmason@example.com",
+
+        "userName": "Tal Mason",
+
+        "userStatus": "ActivationSent",
+
+        "createdDateTime": "2020-05-26T23:25:30.7330000Z"
+
+        }
+
+        ]
+
+        }
+
+        ```'
+      operationId: Users_PostUsers
+      parameters:
+      - name: accountId
+        in: path
+        description: The external account number (int) or account ID GUID.
+        required: true
+        schema:
+          type: string
+      responses:
+        '201':
+          description: Successful response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/newUsersSummary'
+        '400':
+          description: Error encountered.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorDetails'
+      deprecated: false
+      x-ds-methodname: create
+      x-ds-method: create
+      x-ds-service: Users
+      x-ds-in-sdk: true
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/newUsersDefinition'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/newUsersDefinition'
+    delete:
+      tags:
+      - Users
+      summary: Closes one or more users in the account
+      description: 'Closes one or more users in the account,
+
+        preventing them from accessing account features.
+
+        Users are not permanently deleted.
+
+
+        The request body requires only
+
+        the IDs of the users to close:
+
+
+        ```json
+
+        {
+
+        "users": [
+
+        { "userId": "6b67a1ee-xxxx-xxxx-xxxx-385763624163" },
+
+        { "userId": "b6c74c52-xxxx-xxxx-xxxx-457a81d88926" },
+
+        { "userId": "464f7988-xxxx-xxxx-xxxx-781ee556ab7a" }
+
+        ]
+
+        }
+
+        ```
+
+
+        You can use `Users:update`
+
+        to re-open a closed user.'
+      operationId: Users_DeleteUsers
+      parameters:
+      - name: accountId
+        in: path
+        description: The external account number (int) or account ID GUID.
+        required: true
+        schema:
+          type: string
+      - name: delete
+        in: query
+        required: false
+        description: 'A list of groups to remove the user from.
+
+          A comma-separated list of the following:
+
+
+          - `Groups`
+
+          - `PermissionSet`
+
+          - `SigningGroupsEmail`'
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Successful response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/usersResponse'
+        '400':
+          description: Error encountered.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorDetails'
+      deprecated: false
+      x-ds-methodname: delete
+      x-ds-method: delete
+      x-ds-service: Users
+      x-ds-in-sdk: true
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/userInfoList'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/userInfoList'
+    servers:
+    - url: https://www.docusign.net/restapi
+  /v2.1/accounts/{accountId}/users/{userId}:
+    parameters: []
+    get:
+      tags:
+      - Users
+      summary: Gets the user information for a specified user using a userId (GUID).
+      description: 'Retrieves the user information for the specified user. For example:
+
+
+        ```json
+
+        {
+
+        "userName": "Tania Morales",
+
+        "userId": "6b67a1ee-xxxx-xxxx-xxxx-385763624163",
+
+        "userType": "CompanyUser",
+
+        "isAdmin": "False",
+
+        "isNAREnabled": "false",
+
+        "userStatus": "Active",
+
+        "uri": "/users/6b67a1ee-xxxx-xxxx-xxxx-385763624163",
+
+        "email": "examplename42@orobia.net",
+
+        "createdDateTime": "2019-04-01T22:11:56.4570000Z",
+
+        "userAddedToAccountDateTime": "0001-01-01T08:00:00.0000000Z",
+
+        "firstName": "Tania",
+
+        "lastName": "Morales",
+
+        "jobTitle": "",
+
+        "company": "Company",
+
+        "permissionProfileId": "12345678",
+
+        "permissionProfileName": "DocuSign Viewer",
+
+        "userSettings": {. . .},
+
+        "sendActivationOnInvalidLogin": "false",
+
+        "enableConnectForUser": "false",
+
+        "groupList": [. . .],
+
+        "workAddress": {. . .},
+
+        "homeAddress": {. . .},
+
+        "signatureImageUri": "/users/6b67a1ee-xxxx-xxxx-xxxx-385763624163/signatures/0304c47b-xxxx-xxxx-xxxx-c9673963bb50/signature_image",
+
+        "initialsImageUri": "/users/6b67a1ee-xxxx-xxxx-xxxx-385763624163/signatures/0304c47b-xxxx-xxxx-xxxx-c9673963bb50/initials_image",
+
+        "defaultAccountId": "f636f297-xxxx-xxxx-xxxx-8e7a14715950"
+
+        }
+
+        ```'
+      operationId: User_GetUser
+      parameters:
+      - name: accountId
+        in: path
+        description: The external account number (int) or account ID GUID.
+        required: true
+        schema:
+          type: string
+      - name: userId
+        in: path
+        description: 'The ID of the user to access.
+
+
+          **Note:** Users can only access their own information. A user, even one with Admin rights, cannot access another user''s settings.'
+        required: true
+        schema:
+          type: string
+      - name: additional_info
+        in: query
+        description: Setting this parameter has no effect in this operation.
+        required: false
+        schema:
+          type: string
+      - name: email
+        in: query
+        required: false
+        description: Setting this parameter has no effect in this operation.
+        schema:
+          type: string
+      - name: include_license
+        in: query
+        required: false
+        description: ''
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Successful response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/userInformation'
+        '400':
+          description: Error encountered.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorDetails'
+      deprecated: false
+      x-ds-methodname: getInformation
+      x-ds-method: get
+      x-ds-service: Users
+      x-ds-in-sdk: true
+    put:
+      tags:
+      - Users
+      summary: Updates user information for the specified user
+      operationId: User_PutUser
+      parameters:
+      - name: accountId
+        in: path
+        description: The external account number (int) or account ID GUID.
+        required: true
+        schema:
+          type: string
+      - name: userId
+        in: path
+        description: 'The ID of the user to access.
+
+
+          **Note:** Users can only access their own information. A user, even one with Admin rights, cannot access another user''s settings.'
+        required: true
+        schema:
+          type: string
+      - name: allow_all_languages
+        in: query
+        required: false
+        description: ''
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Successful response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/userInformation'
+        '400':
+          description: Error encountered.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorDetails'
+      deprecated: false
+      x-ds-methodname: updateUser
+      description: To update user information for a specific user, submit a Users object with updated field values in the request body of this operation.
+      x-ds-method: update
+      x-ds-service: Users
+      x-ds-in-sdk: true
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/userInformation'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/userInformation'
+    servers:
+    - url: https://www.docusign.net/restapi
+  /v2.1/accounts/{accountId}/users/{userId}/profile/image:
+    parameters: []
+    get:
+      tags:
+      - Users
+      summary: Retrieves the user profile image for the specified user
+      description: 'Retrieves the user profile picture for the specified user.
+
+
+        The `userId` path parameter must match the authenticated user''s user ID,
+
+        and the user must be a member of the specified account.
+
+
+        | Return value | Meaning |
+
+        | :---------------- | :----------------------------------------------------------------------------- |
+
+        | `200 OK` | The response contains the profile image in the same format as it was uploaded. |
+
+        | `404 Not found` | The user does not have a profile image. |
+
+        | `400 Bad request` | There was an error in the request. The response has more information. |'
+      operationId: UserProfileImage_GetUserProfileImage
+      parameters:
+      - name: accountId
+        in: path
+        description: The external account number (int) or account ID GUID.
+        required: true
+        schema:
+          type: string
+      - name: userId
+        in: path
+        description: 'The ID of the user to access.
+
+
+          **Note:** Users can only access their own information. A user, even one with Admin rights, cannot access another user''s settings.'
+        required: true
+        schema:
+          type: string
+      - name: encoding
+        in: query
+        required: false
+        description: Reserved for Docusign.
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Successful response.
+          content:
+            image/gif:
+              schema:
+                type: string
+                format: binary
+        '400':
+          description: Error encountered.
+          content:
+            image/gif:
+              schema:
+                $ref: '#/components/schemas/errorDetails'
+      deprecated: false
+      x-ds-methodname: getProfileImage
+      x-ds-method: getProfileImage
+      x-ds-service: Users
+      x-ds-in-sdk: true
+    put:
+      tags:
+      - Users
+      summary: Updates the user profile image for a specified user
+      description: 'Updates the user profile image by uploading an image to the user profile.
+
+
+        The supported image formats are: gif, png, jpeg, and bmp. The file must be less than 200K. For best viewing results, Docusign recommends that the image is no more than 79 pixels wide and high.'
+      operationId: UserProfileImage_PutUserProfileImage
+      parameters:
+      - name: accountId
+        in: path
+        description: The external account number (int) or account ID GUID.
+        required: true
+        schema:
+          type: string
+      - name: userId
+        in: path
+        description: 'The ID of the user to access.
+
+
+          **Note:** Users can only access their own information. A user, even one with Admin rights, cannot access another user''s settings.'
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Successful response.
+        '400':
+          description: Error encountered.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorDetails'
+      deprecated: false
+      x-ds-methodname: updateProfileImage
+      x-ds-method: updateProfileImage
+      x-ds-service: Users
+      x-ds-in-sdk: true
+    delete:
+      tags:
+      - Users
+      summary: Deletes the user profile image for the specified user
+      description: 'Deletes the user profile image from the specified user''s profile.
+
+
+        The userId parameter specified in the endpoint must match the authenticated user''s user ID and the user must be a member of the specified account.'
+      operationId: UserProfileImage_DeleteUserProfileImage
+      parameters:
+      - name: accountId
+        in: path
+        description: The external account number (int) or account ID GUID.
+        required: true
+        schema:
+          type: string
+      - name: userId
+        in: path
+        description: 'The ID of the user to access.
+
+
+          **Note:** Users can only access their own information. A user, even one with Admin rights, cannot access another user''s settings.'
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Successful response.
+        '400':
+          description: Error encountered.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorDetails'
+      deprecated: false
+      x-ds-methodname: deleteProfileImage
+      x-ds-method: deleteProfileImage
+      x-ds-service: Users
+      x-ds-in-sdk: true
+    servers:
+    - url: https://www.docusign.net/restapi
+  /v2.1/accounts/{accountId}/users/{userId}/settings:
+    parameters: []
+    get:
+      tags:
+      - Users
+      summary: Gets the user account settings for a specified user
+      description: 'Retrieves a list of the account settings and email
+
+        notification information for the specified user.
+
+
+        The response returns the account setting
+
+        name/value information and the email notification
+
+        settings for the specified user. For more
+
+        information, see
+
+        Users:create.'
+      operationId: UserSettings_GetUserSettings
+      parameters:
+      - name: accountId
+        in: path
+        description: The external account number (int) or account ID GUID.
+        required: true
+        schema:
+          type: string
+      - name: userId
+        in: path
+        description: 'The ID of the user to access.
+
+
+          **Note:** Users can only access their own information. A user, even one with Admin rights, cannot access another user''s settings.'
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Successful response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/userSettingsInformation'
+        '400':
+          description: Error encountered.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorDetails'
+      deprecated: false
+      x-ds-methodname: getSettings
+      x-ds-method: getSettings
+      x-ds-service: Users
+      x-ds-in-sdk: true
+    put:
+      tags:
+      - Users
+      summary: Updates the user account settings for a specified user
+      description: Updates the account settings list and email notification types for the specified user.
+      operationId: UserSettings_PutUserSettings
+      parameters:
+      - name: accountId
+        in: path
+        description: The external account number (int) or account ID GUID.
+        required: true
+        schema:
+          type: string
+      - name: userId
+        in: path
+        description: 'The ID of the user to access.
+
+
+          **Note:** Users can only access their own information. A user, even one with Admin rights, cannot access another user''s settings.'
+        required: true
+        schema:
+          type: string
+      - name: allow_all_languages
+        in: query
+        required: false
+        description: ''
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Successful response.
+        '400':
+          description: Error encountered.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorDetails'
+      deprecated: false
+      x-ds-methodname: updateSettings
+      x-ds-method: updateSettings
+      x-ds-service: Users
+      x-ds-in-sdk: true
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/userSettingsInformation'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/userSettingsInformation'
+    servers:
+    - url: https://www.docusign.net/restapi
   /v2/accounts/{accountId}/users:
+    servers:
+    - url: https://www.docusign.net/restapi
     get:
       tags:
       - Users
@@ -173,7 +1043,7 @@ paths:
 
 
         The response returns the list of users for the account along with the information about the result set. If the `additional_info` query was added to the endpoint and set to **true**, the full user information is returned for each user'
-      operationId: Users_GetUsers
+      operationId: getV2AccountsByAccountIdUsers
       parameters:
       - name: accountId
         in: path
@@ -247,23 +1117,25 @@ paths:
           content:
             '*/*':
               schema:
-                $ref: '#/components/schemas/userInformationList'
+                $ref: '#/components/schemas/userInformationList_2'
         '400':
           description: Error encountered.
           content:
             '*/*':
               schema:
-                $ref: '#/components/schemas/errorDetails'
+                $ref: '#/components/schemas/errorDetails_2'
       deprecated: false
       x-ds-methodname: list
       x-ds-method: list
       x-ds-service: Users
       x-ds-in-sdk: true
+      x-operation-id-source: normalized
+      x-operation-id-original: Users_GetUsers
     put:
       tags:
       - Users
       summary: Docusign Change one or more user in the specified account
-      operationId: Users_PutUsers
+      operationId: putV2AccountsByAccountIdUsers
       parameters:
       - name: accountId
         in: path
@@ -275,10 +1147,10 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/userInformationList'
+              $ref: '#/components/schemas/userInformationList_2'
           application/xml:
             schema:
-              $ref: '#/components/schemas/userInformationList'
+              $ref: '#/components/schemas/userInformationList_2'
         required: false
       responses:
         '200':
@@ -286,25 +1158,27 @@ paths:
           content:
             '*/*':
               schema:
-                $ref: '#/components/schemas/userInformationList'
+                $ref: '#/components/schemas/userInformationList_2'
         '400':
           description: Error encountered.
           content:
             '*/*':
               schema:
-                $ref: '#/components/schemas/errorDetails'
+                $ref: '#/components/schemas/errorDetails_2'
       deprecated: false
       x-ds-methodname: updateUsers
       x-ds-method: updateList
       x-ds-service: Users
       x-ds-in-sdk: true
       x-codegen-request-body-name: userInformationList
+      x-operation-id-source: normalized
+      x-operation-id-original: Users_PutUsers
     post:
       tags:
       - Users
       summary: Docusign Adds news user to the specified account
       description: Adds new users to an account.
-      operationId: Users_PostUsers
+      operationId: postV2AccountsByAccountIdUsers
       parameters:
       - name: accountId
         in: path
@@ -316,10 +1190,10 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/newUsersDefinition'
+              $ref: '#/components/schemas/newUsersDefinition_2'
           application/xml:
             schema:
-              $ref: '#/components/schemas/newUsersDefinition'
+              $ref: '#/components/schemas/newUsersDefinition_2'
         required: false
       responses:
         '201':
@@ -327,19 +1201,21 @@ paths:
           content:
             '*/*':
               schema:
-                $ref: '#/components/schemas/newUsersSummary'
+                $ref: '#/components/schemas/newUsersSummary_2'
         '400':
           description: Error encountered.
           content:
             '*/*':
               schema:
-                $ref: '#/components/schemas/errorDetails'
+                $ref: '#/components/schemas/errorDetails_2'
       deprecated: false
       x-ds-methodname: create
       x-ds-method: create
       x-ds-service: Users
       x-ds-in-sdk: true
       x-codegen-request-body-name: newUsersDefinition
+      x-operation-id-source: normalized
+      x-operation-id-original: Users_PostUsers
     delete:
       tags:
       - Users
@@ -348,7 +1224,7 @@ paths:
 
 
         The response returns whether the API execution was successful (200 - OK) or if it failed. The response contains a user structure similar to the request and includes the user changes. If an error occurred during the DELETE operation for any of the users, the response for that user contains an `errorDetails` node with `errorCode` and `message` properties.'
-      operationId: Users_DeleteUsers
+      operationId: deleteV2AccountsByAccountIdUsers
       parameters:
       - name: accountId
         in: path
@@ -364,10 +1240,10 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/userInfoList'
+              $ref: '#/components/schemas/userInfoList_2'
           application/xml:
             schema:
-              $ref: '#/components/schemas/userInfoList'
+              $ref: '#/components/schemas/userInfoList_2'
         required: false
       responses:
         '200':
@@ -375,22 +1251,24 @@ paths:
           content:
             '*/*':
               schema:
-                $ref: '#/components/schemas/usersResponse'
+                $ref: '#/components/schemas/usersResponse_2'
         '400':
           description: Error encountered.
           content:
             '*/*':
               schema:
-                $ref: '#/components/schemas/errorDetails'
+                $ref: '#/components/schemas/errorDetails_2'
       deprecated: false
       x-ds-methodname: delete
       x-ds-method: delete
       x-ds-service: Users
       x-ds-in-sdk: true
       x-codegen-request-body-name: userInfoList
+      x-operation-id-source: normalized
+      x-operation-id-original: Users_DeleteUsers
+  /v2/accounts/{accountId}/users/{userId}:
     servers:
     - url: https://www.docusign.net/restapi
-  /v2/accounts/{accountId}/users/{userId}:
     get:
       tags:
       - Users
@@ -399,7 +1277,7 @@ paths:
 
 
         To return additional user information that details the last login date, login status, and the user''s password expiration date, set the optional `additional_info` query string parameter to **true**.'
-      operationId: User_GetUser
+      operationId: getV2AccountsByAccountIdUsersByUserId
       parameters:
       - name: accountId
         in: path
@@ -428,23 +1306,25 @@ paths:
           content:
             '*/*':
               schema:
-                $ref: '#/components/schemas/userInformation'
+                $ref: '#/components/schemas/userInformation_2'
         '400':
           description: Error encountered.
           content:
             '*/*':
               schema:
-                $ref: '#/components/schemas/errorDetails'
+                $ref: '#/components/schemas/errorDetails_2'
       deprecated: false
       x-ds-methodname: getInformation
       x-ds-method: get
       x-ds-service: Users
       x-ds-in-sdk: true
+      x-operation-id-source: normalized
+      x-operation-id-original: User_GetUser
     put:
       tags:
       - Users
       summary: Docusign Updates the specified user information
-      operationId: User_PutUser
+      operationId: putV2AccountsByAccountIdUsersByUserId
       parameters:
       - name: accountId
         in: path
@@ -462,10 +1342,10 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/userInformation'
+              $ref: '#/components/schemas/userInformation_2'
           application/xml:
             schema:
-              $ref: '#/components/schemas/userInformation'
+              $ref: '#/components/schemas/userInformation_2'
         required: false
       responses:
         '200':
@@ -473,19 +1353,21 @@ paths:
           content:
             '*/*':
               schema:
-                $ref: '#/components/schemas/userInformation'
+                $ref: '#/components/schemas/userInformation_2'
         '400':
           description: Error encountered.
           content:
             '*/*':
               schema:
-                $ref: '#/components/schemas/errorDetails'
+                $ref: '#/components/schemas/errorDetails_2'
       deprecated: false
       x-ds-methodname: updateUser
       x-ds-method: update
       x-ds-service: Users
       x-ds-in-sdk: true
       x-codegen-request-body-name: userInformation
+      x-operation-id-source: normalized
+      x-operation-id-original: User_PutUser
     delete:
       tags:
       - Users
@@ -559,9 +1441,9 @@ paths:
       x-ds-method: RemoveUser
       x-ds-service: Users
       x-ds-in-sdk: true
+  /v2/accounts/{accountId}/users/{userId}/profile/image:
     servers:
     - url: https://www.docusign.net/restapi
-  /v2/accounts/{accountId}/users/{userId}/profile/image:
     get:
       tags:
       - Users
@@ -573,7 +1455,7 @@ paths:
 
 
         If successful, the response returns a 200 - OK and the user profile image.'
-      operationId: UserProfileImage_GetUserProfileImage
+      operationId: getV2AccountsByAccountIdUsersByUserIdProfileImage
       parameters:
       - name: accountId
         in: path
@@ -604,12 +1486,14 @@ paths:
           content:
             image/gif:
               schema:
-                $ref: '#/components/schemas/errorDetails'
+                $ref: '#/components/schemas/errorDetails_2'
       deprecated: false
       x-ds-methodname: getProfileImage
       x-ds-method: getProfileImage
       x-ds-service: Users
       x-ds-in-sdk: true
+      x-operation-id-source: normalized
+      x-operation-id-original: UserProfileImage_GetUserProfileImage
     put:
       tags:
       - Users
@@ -618,7 +1502,7 @@ paths:
 
 
         The supported image formats are: gif, png, jpeg, and bmp. The file must be less than 200K. For best viewing results, DocuSign recommends that the image is no more than 79 pixels wide and high.'
-      operationId: UserProfileImage_PutUserProfileImage
+      operationId: putV2AccountsByAccountIdUsersByUserIdProfileImage
       parameters:
       - name: accountId
         in: path
@@ -641,12 +1525,14 @@ paths:
           content:
             '*/*':
               schema:
-                $ref: '#/components/schemas/errorDetails'
+                $ref: '#/components/schemas/errorDetails_2'
       deprecated: false
       x-ds-methodname: updateProfileImage
       x-ds-method: updateProfileImage
       x-ds-service: Users
       x-ds-in-sdk: true
+      x-operation-id-source: normalized
+      x-operation-id-original: UserProfileImage_PutUserProfileImage
     delete:
       tags:
       - Users
@@ -655,7 +1541,7 @@ paths:
 
 
         The userId parameter specified in the endpoint must match the authenticated user''s user ID and the user must be a member of the specified account.'
-      operationId: UserProfileImage_DeleteUserProfileImage
+      operationId: deleteV2AccountsByAccountIdUsersByUserIdProfileImage
       parameters:
       - name: accountId
         in: path
@@ -678,15 +1564,17 @@ paths:
           content:
             '*/*':
               schema:
-                $ref: '#/components/schemas/errorDetails'
+                $ref: '#/components/schemas/errorDetails_2'
       deprecated: false
       x-ds-methodname: deleteProfileImage
       x-ds-method: deleteProfileImage
       x-ds-service: Users
       x-ds-in-sdk: true
+      x-operation-id-source: normalized
+      x-operation-id-original: UserProfileImage_DeleteUserProfileImage
+  /v2/accounts/{accountId}/users/{userId}/settings:
     servers:
     - url: https://www.docusign.net/restapi
-  /v2/accounts/{accountId}/users/{userId}/settings:
     get:
       tags:
       - Users
@@ -695,7 +1583,7 @@ paths:
 
 
         The response returns the account setting name/value information and the email notification settings for the specified user. For more information about the different user settings, see the [ML:userSettings list].'
-      operationId: UserSettings_GetUserSettings
+      operationId: getV2AccountsByAccountIdUsersByUserIdSettings
       parameters:
       - name: accountId
         in: path
@@ -715,24 +1603,26 @@ paths:
           content:
             '*/*':
               schema:
-                $ref: '#/components/schemas/userSettingsInformation'
+                $ref: '#/components/schemas/userSettingsInformation_2'
         '400':
           description: Error encountered.
           content:
             '*/*':
               schema:
-                $ref: '#/components/schemas/errorDetails'
+                $ref: '#/components/schemas/errorDetails_2'
       deprecated: false
       x-ds-methodname: getSettings
       x-ds-method: getSettings
       x-ds-service: Users
       x-ds-in-sdk: true
+      x-operation-id-source: normalized
+      x-operation-id-original: UserSettings_GetUserSettings
     put:
       tags:
       - Users
       summary: Docusign Updates the user account settings for a specified user
       description: Updates the account settings list and email notification types for the specified user.
-      operationId: UserSettings_PutUserSettings
+      operationId: putV2AccountsByAccountIdUsersByUserIdSettings
       parameters:
       - name: accountId
         in: path
@@ -750,10 +1640,10 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/userSettingsInformation'
+              $ref: '#/components/schemas/userSettingsInformation_2'
           application/xml:
             schema:
-              $ref: '#/components/schemas/userSettingsInformation'
+              $ref: '#/components/schemas/userSettingsInformation_2'
         required: false
       responses:
         '200':
@@ -764,16 +1654,18 @@ paths:
           content:
             '*/*':
               schema:
-                $ref: '#/components/schemas/errorDetails'
+                $ref: '#/components/schemas/errorDetails_2'
       deprecated: false
       x-ds-methodname: updateSettings
       x-ds-method: updateSettings
       x-ds-service: Users
       x-ds-in-sdk: true
       x-codegen-request-body-name: userSettingsInformation
-    servers:
-    - url: https://www.docusign.net/restapi
+      x-operation-id-source: normalized
+      x-operation-id-original: UserSettings_PutUserSettings
   /v2/accounts/{accountId}/users/invite_user:
+    servers:
+    - url: https://rooms.docusign.com/restapi
     post:
       tags:
       - Users
@@ -881,9 +1773,9 @@ paths:
       x-codegen-request-body-name: body
       security:
       - Bearer: []
+  /v2/accounts/{accountId}/users/{userId}/reinvite:
     servers:
     - url: https://rooms.docusign.com/restapi
-  /v2/accounts/{accountId}/users/{userId}/reinvite:
     post:
       tags:
       - Users
@@ -953,9 +1845,9 @@ paths:
       x-ds-in-sdk: true
       security:
       - Bearer: []
+  /v2/accounts/{accountId}/users/{userId}/add_to_office:
     servers:
     - url: https://rooms.docusign.com/restapi
-  /v2/accounts/{accountId}/users/{userId}/add_to_office:
     post:
       tags:
       - Users
@@ -1064,9 +1956,9 @@ paths:
       x-codegen-request-body-name: body
       security:
       - Bearer: []
+  /v2/accounts/{accountId}/users/{userId}/remove_from_office:
     servers:
     - url: https://rooms.docusign.com/restapi
-  /v2/accounts/{accountId}/users/{userId}/remove_from_office:
     post:
       tags:
       - Users
@@ -1178,9 +2070,9 @@ paths:
       x-codegen-request-body-name: body
       security:
       - Bearer: []
+  /v2/accounts/{accountId}/users/{userId}/add_to_region:
     servers:
     - url: https://rooms.docusign.com/restapi
-  /v2/accounts/{accountId}/users/{userId}/add_to_region:
     post:
       tags:
       - Users
@@ -1289,9 +2181,9 @@ paths:
       x-codegen-request-body-name: body
       security:
       - Bearer: []
+  /v2/accounts/{accountId}/users/{userId}/remove_from_region:
     servers:
     - url: https://rooms.docusign.com/restapi
-  /v2/accounts/{accountId}/users/{userId}/remove_from_region:
     post:
       tags:
       - Users
@@ -1400,9 +2292,9 @@ paths:
       x-codegen-request-body-name: body
       security:
       - Bearer: []
+  /v2/accounts/{accountId}/users/{userId}/lock:
     servers:
     - url: https://rooms.docusign.com/restapi
-  /v2/accounts/{accountId}/users/{userId}/lock:
     post:
       tags:
       - Users
@@ -1493,9 +2385,9 @@ paths:
       x-codegen-request-body-name: body
       security:
       - Bearer: []
+  /v2/accounts/{accountId}/users/{userId}/unlock:
     servers:
     - url: https://rooms.docusign.com/restapi
-  /v2/accounts/{accountId}/users/{userId}/unlock:
     post:
       tags:
       - Users
@@ -1570,83 +2462,8 @@ paths:
       x-ds-in-sdk: true
       security:
       - Bearer: []
-    servers:
-    - url: https://rooms.docusign.com/restapi
 components:
   schemas:
-    UsersUpdateResponse:
-      type: object
-      properties:
-        success:
-          type: boolean
-          description: If **true**, the request to change user information succeeded.
-        users:
-          type: array
-          description: A list of users whose email addresses have been updated.
-          items:
-            $ref: '#/components/schemas/UserUpdateResponse'
-      description: The results of changing a user's information.
-      x-ds-definition-name: UsersUpdateResponse
-      x-ms-summary: The results of changing a user's information.
-    DSGroupResponse:
-      type: object
-      properties:
-        ds_group_id:
-          type: string
-          description: ''
-          format: uuid
-          example: 00000000-0000-0000-0000-000000000000
-        account_id:
-          type: string
-          description: Select users that are members of the specified account. At least one of `email`, `account_id` or `organization_reserved_domain_id` must be specified.
-          format: uuid
-          example: 00000000-0000-0000-0000-000000000000
-        source_product_name:
-          type: string
-          description: ''
-        group_id:
-          type: string
-          description: ''
-        group_name:
-          type: string
-          description: ''
-        description:
-          type: string
-          description: ''
-        is_admin:
-          type: boolean
-          description: ''
-        last_modified_on:
-          type: string
-          description: ''
-          format: date-time
-        user_count:
-          type: integer
-          description: ''
-          format: int32
-        external_account_id:
-          type: integer
-          description: ''
-          format: int64
-        account_name:
-          type: string
-          description: ''
-      description: ''
-      x-ds-definition-name: DSGroupResponse
-      x-ms-summary: ''
-    OrganizationUsersResponse:
-      type: object
-      properties:
-        users:
-          type: array
-          description: A list of users.
-          items:
-            $ref: '#/components/schemas/OrganizationUserResponse'
-        paging:
-          $ref: '#/components/schemas/PagingResponseProperties'
-      description: A response containing information about users.
-      x-ds-definition-name: OrganizationUsersResponse
-      x-ms-summary: A response containing information about users.
     OrganizationUserResponse:
       type: object
       properties:
@@ -1716,34 +2533,28 @@ components:
       description: Information about a user.
       x-ds-definition-name: OrganizationUserResponse
       x-ms-summary: Information about a user.
-    PagingResponseProperties:
+    UpdateUserEmailRequest:
+      required:
+      - email
+      - id
+      - site_id
       type: object
       properties:
-        result_set_size:
-          type: integer
-          description: ''
-          format: int32
-        result_set_start_position:
-          type: integer
-          description: ''
-          format: int32
-        result_set_end_position:
-          type: integer
-          description: ''
-          format: int32
-        total_set_size:
-          type: integer
-          description: ''
-          format: int32
-        next:
+        id:
           type: string
-          description: ''
-        previous:
+          description: The ID of the users whose email address you want to change.
+          format: uuid
+          example: 00000000-0000-0000-0000-000000000000
+        site_id:
+          type: integer
+          description: The site ID.
+          format: int32
+        email:
           type: string
-          description: ''
-      description: ''
-      x-ds-definition-name: PagingResponseProperties
-      x-ms-summary: ''
+          description: The new email address.
+      description: And individual change of email.
+      x-ds-definition-name: UpdateUserEmailRequest
+      x-ms-summary: And individual change of email.
     UserUpdateResponse:
       type: object
       properties:
@@ -1775,28 +2586,19 @@ components:
       description: A change email request.
       x-ds-definition-name: UpdateUsersEmailRequest
       x-ms-summary: A change email request.
-    UpdateUserEmailRequest:
-      required:
-      - email
-      - id
-      - site_id
+    OrganizationUsersResponse:
       type: object
       properties:
-        id:
-          type: string
-          description: The ID of the users whose email address you want to change.
-          format: uuid
-          example: 00000000-0000-0000-0000-000000000000
-        site_id:
-          type: integer
-          description: The site ID.
-          format: int32
-        email:
-          type: string
-          description: The new email address.
-      description: And individual change of email.
-      x-ds-definition-name: UpdateUserEmailRequest
-      x-ms-summary: And individual change of email.
+        users:
+          type: array
+          description: A list of users.
+          items:
+            $ref: '#/components/schemas/OrganizationUserResponse'
+        paging:
+          $ref: '#/components/schemas/PagingResponseProperties'
+      description: A response containing information about users.
+      x-ds-definition-name: OrganizationUsersResponse
+      x-ms-summary: A response containing information about users.
     ErrorDetails:
       type: object
       properties:
@@ -1809,7 +2611,2168 @@ components:
       description: Errors.
       x-ds-definition-name: ErrorDetails
       x-ms-summary: Errors.
+    UsersUpdateResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          description: If **true**, the request to change user information succeeded.
+        users:
+          type: array
+          description: A list of users whose email addresses have been updated.
+          items:
+            $ref: '#/components/schemas/UserUpdateResponse'
+      description: The results of changing a user's information.
+      x-ds-definition-name: UsersUpdateResponse
+      x-ms-summary: The results of changing a user's information.
+    PagingResponseProperties:
+      type: object
+      properties:
+        result_set_size:
+          type: integer
+          description: ''
+          format: int32
+        result_set_start_position:
+          type: integer
+          description: ''
+          format: int32
+        result_set_end_position:
+          type: integer
+          description: ''
+          format: int32
+        total_set_size:
+          type: integer
+          description: ''
+          format: int32
+        next:
+          type: string
+          description: ''
+        previous:
+          type: string
+          description: ''
+      description: ''
+      x-ds-definition-name: PagingResponseProperties
+      x-ms-summary: ''
+    DSGroupResponse:
+      type: object
+      properties:
+        ds_group_id:
+          type: string
+          description: ''
+          format: uuid
+          example: 00000000-0000-0000-0000-000000000000
+        account_id:
+          type: string
+          description: Select users that are members of the specified account. At least one of `email`, `account_id` or `organization_reserved_domain_id` must be specified.
+          format: uuid
+          example: 00000000-0000-0000-0000-000000000000
+        source_product_name:
+          type: string
+          description: ''
+        group_id:
+          type: string
+          description: ''
+        group_name:
+          type: string
+          description: ''
+        description:
+          type: string
+          description: ''
+        is_admin:
+          type: boolean
+          description: ''
+        last_modified_on:
+          type: string
+          description: ''
+          format: date-time
+        user_count:
+          type: integer
+          description: ''
+          format: int32
+        external_account_id:
+          type: integer
+          description: ''
+          format: int64
+        account_name:
+          type: string
+          description: ''
+      description: ''
+      x-ds-definition-name: DSGroupResponse
+      x-ms-summary: ''
+    userInformationList:
+      type: object
+      properties:
+        endPosition:
+          description: 'The last index position in the result set. '
+          type: string
+        nextUri:
+          description: 'The URI for the next chunk of records based on the search request. It is `null` if this is the last set of results for the search. '
+          type: string
+        previousUri:
+          description: 'The URI for the prior chunk of records based on the search request. It is `null` if this is the first set of results for the search. '
+          type: string
+        resultSetSize:
+          description: The number of results in this response. Because you can filter which entries are included in the response, this value is always less than or equal to the `totalSetSize`.
+          type: string
+        startPosition:
+          description: The starting index position of the current result set.
+          type: string
+        totalSetSize:
+          description: The total number of items in the result set. This value is always greater than or equal to the value of `resultSetSize`.
+          type: string
+        users:
+          description: User management information.
+          type: array
+          items:
+            $ref: '#/components/schemas/userInformation'
+      description: Contains a list of account users.
+      x-ds-definition-name: userInformationList
+      x-ms-summary: Contains a list of account users.
     settingsMetadata:
+      type: object
+      properties:
+        is21CFRPart11:
+          description: When **true,** indicates compliance with United States Food and Drug Administration (FDA) regulations on electronic records and electronic signatures (ERES).
+          type: string
+        options:
+          description: An array of option strings supported by this setting.
+          type: array
+          items:
+            type: string
+        rights:
+          description: 'Indicates whether the property is editable. Valid values are:
+
+
+            - `editable`
+
+            - `read_only`'
+          type: string
+        uiHint:
+          description: Reserved for Docusign.
+          type: string
+        uiOrder:
+          description: Reserved for Docusign.
+          type: string
+        uiType:
+          description: Reserved for Docusign.
+          type: string
+      description: Metadata that indicates whether a property is editable and describes setting-specific options.
+      x-ds-definition-name: settingsMetadata
+      x-ms-summary: Metadata that indicates whether a property is editable and describes setting-specific options.
+    newUsersDefinition:
+      type: object
+      properties:
+        newUsers:
+          description: A list of one or more new users.
+          type: array
+          items:
+            $ref: '#/components/schemas/userInformation'
+      x-ds-definition-name: newUsersDefinition
+      description: ''
+      x-ms-summary: ''
+    senderEmailNotifications:
+      type: object
+      properties:
+        changedSigner:
+          description: When **true,** the sender receives an email notification if the signer changes.
+          type: string
+        clickwrapResponsesLimitNotificationEmail:
+          description: ''
+          type: string
+        commentsOnlyPrivateAndMention:
+          description: When **true,** the user receives only comments that mention their own user name.
+          type: string
+        commentsReceiveAll:
+          description: When **true,** the user receives all comments.
+          type: string
+        deliveryFailed:
+          description: When **true,** the sender receives an email notification if envelope delivery fails.
+          type: string
+        envelopeComplete:
+          description: When **true,** the user receives an email notification when the envelope has been completed.
+          type: string
+        offlineSigningFailed:
+          description: When **true,** the user receives an email notification if offline signing failed.
+          type: string
+        powerformResponsesLimitNotificationEmail:
+          description: ''
+          type: string
+        purgeDocuments:
+          description: When **true,** the user receives an email notification when a document purge occurs.
+          type: string
+        recipientViewed:
+          description: When **true,** the sender receives notification that a recipient viewed the envelope.
+          type: string
+        senderEnvelopeDeclined:
+          description: When **true,** the sender receives notification that the envelope was declined.
+          type: string
+        withdrawnConsent:
+          description: When **true,** the user receives an email notification if consent is withdrawn.
+          type: string
+      description: Contains the settings for the email notifications that senders receive about the envelopes that they send.
+      x-ds-definition-name: senderEmailNotifications
+      x-ms-summary: Contains the settings for the email notifications that senders receive about the envelopes that they send.
+    errorDetails:
+      description: This object describes errors that occur. It is only valid for responses and ignored in requests.
+      type: object
+      properties:
+        errorCode:
+          description: The code associated with the error condition.
+          type: string
+        message:
+          description: A brief message describing the error condition.
+          type: string
+      x-ds-definition-name: errorDetails
+      x-ms-summary: This object describes errors that occur. It is only valid for responses and ignored in requests.
+    userSettingsInformation:
+      type: object
+      properties:
+        accountAgreementsAccessType:
+          description: ''
+          type: string
+        accountAgreementsAccessTypeMetadata:
+          $ref: '#/components/schemas/settingsMetadata'
+          description: ''
+        accountManagementGranular:
+          $ref: '#/components/schemas/userAccountManagementGranularInformation'
+          description: Describes which account management capabilities a user has.
+        adminOnly:
+          description: Reserved for Docusign.
+          type: string
+        adminOnlyMetadata:
+          $ref: '#/components/schemas/settingsMetadata'
+          description: Reserved for Docusign.
+        allowAccessToAllAccountAgreements:
+          description: ''
+          type: string
+        allowAccessToAllAccountAgreementsMetadata:
+          $ref: '#/components/schemas/settingsMetadata'
+          description: ''
+        allowAutoTagging:
+          description: When **true,** the API returns suggested tabs for documents for this user.
+          type: string
+        allowedDocumentTemplateLibraryAccess:
+          description: ''
+          type: string
+        allowedDocumentTemplateLibraryAccessMetadata:
+          $ref: '#/components/schemas/settingsMetadata'
+          description: ''
+        allowedOrchestrationAccess:
+          description: ''
+          type: string
+        allowedOrchestrationAccessMetadata:
+          $ref: '#/components/schemas/settingsMetadata'
+          description: ''
+        allowEnvelopeTransferTo:
+          description: When **true,** this user can participate in envelope transfers on the account.
+          type: string
+        allowEnvelopeTransferToMetadata:
+          $ref: '#/components/schemas/settingsMetadata'
+          description: Reserved for Docusign.
+        allowEsealRecipients:
+          description: 'When **true,** this user can create [electronic seal recipients][eseal].
+
+
+            [eseal]: /docs/esign-rest-api/reference/envelopes/enveloperecipients/#seal-recipient'
+          type: string
+        allowEsealRecipientsMetadata:
+          $ref: '#/components/schemas/settingsMetadata'
+          description: Metadata about the `allowEsealRecipientsMetadata` property.
+        allowPowerFormsAdminToAccessAllPowerFormEnvelope:
+          description: When **true** and this user is an administrator, they can view all of the envelopes generated from PowerForms. The default value is **false.**
+          type: string
+        allowPowerFormsAdminToAccessAllPowerFormEnvelopeMetadata:
+          $ref: '#/components/schemas/settingsMetadata'
+          description: Metadata about the `allowPowerFormsAdminToAccessAllPowerFormEnvelopeMetadata` property.
+        allowRecipientLanguageSelection:
+          description: When **true,** this user can set the language used in the standard email format for a recipient when creating an envelope.
+          type: string
+        allowRecipientLanguageSelectionMetadata:
+          $ref: '#/components/schemas/settingsMetadata'
+          description: Metadata for allowRecipientLanguageSelection.
+        allowSendOnBehalfOf:
+          description: When **true,** this user can send envelopes "on behalf of" other users through the API.
+          type: string
+        allowSendOnBehalfOfMetadata:
+          $ref: '#/components/schemas/settingsMetadata'
+          description: Metadata for allowSendOnBehalfOf.
+        allowSupplementalDocuments:
+          description: When **true,** this user can include supplemental documents.
+          type: string
+        allowSupplementalDocumentsMetadata:
+          $ref: '#/components/schemas/settingsMetadata'
+          description: Metadata that indicates whether the `allowSupplementalDocuments` property is editable.
+        allowTransactions:
+          description: ''
+          type: string
+        allowTransactionsMetadata:
+          $ref: '#/components/schemas/settingsMetadata'
+          description: ''
+        anchorTagVersionedPlacementEnabled:
+          description: 'Reserved for Docusign.
+
+            '
+          type: string
+        apiAccountWideAccess:
+          description: When **true,** indicates that this user can send envelope-specific API requests on the account.
+          type: string
+        apiAccountWideAccessMetadata:
+          $ref: '#/components/schemas/settingsMetadata'
+          description: Metadata for apiAccountWideAccess.
+        apiCanExportAC:
+          description: When **true,** this user can export authoritative copy for the account.
+          type: string
+        apiCanExportACMetadata:
+          $ref: '#/components/schemas/settingsMetadata'
+          description: Metadata about the `apiCanExportACMetadata` property.
+        bulkSend:
+          description: When **true,** this user can use the bulk send feature for the account.
+          type: string
+        bulkSendMetadata:
+          $ref: '#/components/schemas/settingsMetadata'
+          description: 'Metadata that indicates whether the `bulkSend` property is editable.
+
+            '
+        canBulkUploadAgreements:
+          description: ''
+          type: string
+        canBulkUploadAgreementsMetadata:
+          $ref: '#/components/schemas/settingsMetadata'
+          description: ''
+        canChargeAccount:
+          description: Reserved for Docusign.
+          type: string
+        canChargeAccountMetadata:
+          $ref: '#/components/schemas/settingsMetadata'
+          description: Reserved for Docusign.
+        canCreateTransaction:
+          description: ''
+          type: string
+        canCreateTransactionMetadata:
+          $ref: '#/components/schemas/settingsMetadata'
+          description: ''
+        canDeleteDocumentsInTransaction:
+          description: ''
+          type: string
+        canDeleteDocumentsInTransactionMetadata:
+          $ref: '#/components/schemas/settingsMetadata'
+          description: ''
+        canDeleteTransaction:
+          description: ''
+          type: string
+        canDeleteTransactionMetadata:
+          $ref: '#/components/schemas/settingsMetadata'
+          description: ''
+        canEditSharedAddressbook:
+          description: When true, this user can edit the shared address book for the account.
+          type: string
+        canEditSharedAddressbookMetadata:
+          $ref: '#/components/schemas/settingsMetadata'
+          description: Metadata about the `canEditSharedAddressbookMetadata` property.
+        canLockEnvelopes:
+          description: Reserved for Docusign.
+          type: string
+        canLockEnvelopesMetadata:
+          $ref: '#/components/schemas/settingsMetadata'
+          description: Reserved for Docusign.
+        canManageAccount:
+          description: When **true,** this user is an administrator for the account.
+          type: string
+        canManageAccountMetadata:
+          $ref: '#/components/schemas/settingsMetadata'
+          description: Metadata about the `canManageAccountMetadata` property.
+        canManageAgreementParties:
+          description: ''
+          type: string
+        canManageAgreementPartiesMetadata:
+          $ref: '#/components/schemas/settingsMetadata'
+          description: ''
+        canManageDistributor:
+          description: Reserved for Docusign.
+          type: string
+        canManageDistributorMetadata:
+          $ref: '#/components/schemas/settingsMetadata'
+          description: Metadata about the `canManageDistributor` property.
+        canManageTemplates:
+          description: When **true,** this user can manage templates for the account.
+          type: string
+        canManageTemplatesMetadata:
+          $ref: '#/components/schemas/settingsMetadata'
+          description: Metadata about the `canManageTemplates` property.
+        canSendAPIRequests:
+          description: When **true,** this user can send API requests on the account.
+          type: string
+        canSendAPIRequestsMetadata:
+          $ref: '#/components/schemas/settingsMetadata'
+          description: Metadata about the `canSendAPIRequests` property.
+        canSendEnvelope:
+          description: When **true,** this user can send envelopes on the account.
+          type: string
+        canSendEnvelopeMetadata:
+          $ref: '#/components/schemas/settingsMetadata'
+          description: Metadata about the `canSendEnvelope` property.
+        canSendEnvelopesViaSMS:
+          description: ''
+          type: string
+        canSendEnvelopesViaSMSMetadata:
+          $ref: '#/components/schemas/settingsMetadata'
+          description: ''
+        canSignEnvelope:
+          description: When **true,** this user can sign envelopes.
+          type: string
+        canSignEnvelopeMetadata:
+          $ref: '#/components/schemas/settingsMetadata'
+          description: Metadata about the `canSignEnvelope` property.
+        canUseScratchpad:
+          description: When **true,** this user can use a scratchpad to edit information.
+          type: string
+        canUseScratchpadMetadata:
+          $ref: '#/components/schemas/settingsMetadata'
+          description: Metadata about the `canUseScratchpad` property.
+        canUseSmartContracts:
+          description: Reserved for Docusign.
+          type: string
+        canUseSmartContractsMetadata:
+          $ref: '#/components/schemas/settingsMetadata'
+          description: Reserved for Docusign.
+        disableDocumentUpload:
+          description: When **true,** this user is prohibited from uploading documents during sending.
+          type: string
+        disableDocumentUploadMetadata:
+          $ref: '#/components/schemas/settingsMetadata'
+          description: 'Metadata that indicates whether the `disableDocumentUpload` property is editable.
+
+            '
+        disableOtherActions:
+          description: When **true,** this user can access the **Other Actions** menu.
+          type: string
+        disableOtherActionsMetadata:
+          $ref: '#/components/schemas/settingsMetadata'
+          description: 'Metadata that indicates whether the `disableOtherActions` property is editable.
+
+            '
+        enableDSPro:
+          description: Reserved for Docusign.
+          type: string
+        enableDSProMetadata:
+          $ref: '#/components/schemas/settingsMetadata'
+          description: 'Metadata that indicates whether the `enableDSPro` property is editable.
+
+            '
+        enableKeyTermsSuggestionsByDocumentType:
+          description: ''
+          type: string
+        enableKeyTermsSuggestionsByDocumentTypeMetadata:
+          $ref: '#/components/schemas/settingsMetadata'
+          description: ''
+        enableSequentialSigningAPI:
+          description: 'When **true,** the account can define the routing
+
+            order of recipients for envelopes sent by using the eSignature API.
+
+
+            **Note:** Only SysAdmin users can change this setting.'
+          type: string
+        enableSequentialSigningAPIMetadata:
+          $ref: '#/components/schemas/settingsMetadata'
+          description: 'Metadata that indicates whether the `enableSequentialSigningAPI` property is editable.
+
+            '
+        enableSequentialSigningUI:
+          description: 'When **true,** the account can define the routing order
+
+            of recipients for envelopes sent by using the Docusign application.
+
+
+            **Note:** Only SysAdmin users can change this setting.
+
+            '
+          type: string
+        enableSequentialSigningUIMetadata:
+          $ref: '#/components/schemas/settingsMetadata'
+          description: 'Metadata that indicates whether the `enableSequentialSigningUI` property is editable.
+
+            '
+        enableSignerAttachments:
+          description: When **true,** this user can use the signing attachments feature.
+          type: string
+        enableSignerAttachmentsMetadata:
+          $ref: '#/components/schemas/settingsMetadata'
+          description: 'Metadata that indicates whether the `enableSignerAttachments` property is editable.
+
+            '
+        enableSignOnPaperOverride:
+          description: 'When **true,** a user can override the default default account setting for the Sign on Paper option, which specifies whether signers can sign documents on paper as an option to signing electronically.
+
+
+            **Note:** Only Admin users can change this setting.'
+          type: string
+        enableSignOnPaperOverrideMetadata:
+          $ref: '#/components/schemas/settingsMetadata'
+          description: 'Metadata that indicates whether the `enableSignOnPaperOverride` property is editable.
+
+            '
+        enableTransactionPoint:
+          description: Reserved for Docusign.
+          type: string
+        enableTransactionPointMetadata:
+          $ref: '#/components/schemas/settingsMetadata'
+          description: Reserved for Docusign.
+        enableVaulting:
+          description: When **true,** Vaulting is enabled for the account.
+          type: string
+        enableVaultingMetadata:
+          $ref: '#/components/schemas/settingsMetadata'
+          description: 'Metadata that indicates whether the `enableVaulting` property is editable.
+
+            '
+        expressSendOnly:
+          description: When **false,** this user can apply tabs to documents during the sending experience.
+          type: string
+        isManagedByScim:
+          description: ''
+          type: string
+        isManagedByScimMetadata:
+          $ref: '#/components/schemas/settingsMetadata'
+          description: ''
+        isMembershipManagedByScim:
+          description: ''
+          type: string
+        isMembershipManagedByScimMetadata:
+          $ref: '#/components/schemas/settingsMetadata'
+          description: ''
+        locale:
+          description: 'The user''s locale code. Valid values are:
+
+            - `zh_CN`
+
+            - `zh_TW`
+
+            - `nl`
+
+            - `en`
+
+            - `fr`
+
+            - `de`
+
+            - `it`
+
+            - `ja`
+
+            - `ko`
+
+            - `pt`
+
+            - `pt_BR`
+
+            - `ru`
+
+            - `es`'
+          type: string
+        localeMetadata:
+          $ref: '#/components/schemas/settingsMetadata'
+          description: Metadata about the `locale` property.
+        localePolicy:
+          $ref: '#/components/schemas/localePolicy'
+          description: Locale-specific settings.
+        manageClickwrapsMode:
+          description: When **true,** this user can create and manage [Clickwraps](/docs/click-api/).
+          type: string
+        manageClickwrapsModeMetadata:
+          $ref: '#/components/schemas/settingsMetadata'
+          description: Metadata about the `manageClickwrapsMode` property.
+        modifiedBy:
+          description: The user ID (GUID) of the user who last modified this user record. This property is read-only.
+          type: string
+        modifiedByMetadata:
+          $ref: '#/components/schemas/settingsMetadata'
+          description: Metadata about the `modifiedBy` property.
+        modifiedDate:
+          description: The date on which this user record was last modified.
+          type: string
+        modifiedDateMetadata:
+          $ref: '#/components/schemas/settingsMetadata'
+          description: Metadata about the `modifiedDate` property.
+        modifiedPage:
+          description: Note referencing the page that modified this user record.
+          type: string
+        modifiedPageMetadata:
+          $ref: '#/components/schemas/settingsMetadata'
+          description: Metadata about the `modifiedPage` property.
+        newSendUI:
+          description: Reserved for Docusign.
+          type: string
+        newSendUIMetadata:
+          $ref: '#/components/schemas/settingsMetadata'
+          description: Metadata about the `newSendUI` property.
+        powerFormMode:
+          description: 'Indicates the Power Form mode setting for the user:
+
+            - `none`
+
+            - `admin`
+
+            - `user`'
+          type: string
+        powerFormModeMetadata:
+          $ref: '#/components/schemas/settingsMetadata'
+          description: Metadata about the `powerFormMode` property.
+        recipientViewedNotification:
+          description: When **true,** this user receives notifications when envelopes are viewed.
+          type: string
+        recipientViewedNotificationMetadata:
+          $ref: '#/components/schemas/settingsMetadata'
+          description: Metadata about the `recipientViewedNotification` property.
+        sealIdentifiers:
+          description: Information about the seals associated with this user.
+          type: array
+          items:
+            $ref: '#/components/schemas/sealIdentifier'
+        selfSignedRecipientEmailDocument:
+          description: "Sets how self-signed documents are presented to the email recipients.\nValid values are:\n\n- `include_pdf`: A PDF of the completed document is attached to the email.\n- `include_link`: A secure link to the self-signed documents is included\n   in the email.\n\n**Note:** Only Admin users can change this setting.\n"
+          type: string
+        selfSignedRecipientEmailDocumentMetadata:
+          $ref: '#/components/schemas/settingsMetadata'
+          description: 'Metadata that indicates whether the `selfSignedRecipientEmailDocument` property is editable.
+
+            '
+        senderEmailNotifications:
+          $ref: '#/components/schemas/senderEmailNotifications'
+          description: " \nAn array of email notifications that sets the email the user receives when they are a sender. When the specific email notification is set to true, the user will receive those types of email notifications from Docusign. \n\nThe user inherits the default account sender email notification settings when the user is created. The email notifications are:\n\n* envelopeComplete\n* changedSigner \n* senderEnvelopeDeclined \n* withdrawnConsent \n* recipientViewed \n* deliveryFailed \n "
+        signerEmailNotifications:
+          $ref: '#/components/schemas/signerEmailNotifications'
+          description: 'An array of email notifications that specifies the email the user receives when they are a recipient. When the specific email notification is set to true, the user receives those types of email notifications from Docusign. The user inherits the default account email notification settings when the user is created.
+
+            '
+        supplementalDocumentIncludeInDownload:
+          description: When **true,** this user gets supplemental documents when downloading documents.
+          type: string
+        supplementalDocumentsMustAccept:
+          description: When **true,** this user must accept supplemental documents.
+          type: string
+        supplementalDocumentsMustAcceptMetadata:
+          $ref: '#/components/schemas/settingsMetadata'
+          description: 'Metadata that indicates whether the `supplementalDocumentsMustAccept` property is editable.
+
+            '
+        supplementalDocumentsMustRead:
+          description: When **true,** this user must both view and accept supplemental documents.
+          type: string
+        supplementalDocumentsMustReadMetadata:
+          $ref: '#/components/schemas/settingsMetadata'
+          description: 'Metadata that indicates whether the `supplementalDocumentsMustRead` property is editable.
+
+            '
+        supplementalDocumentsMustView:
+          description: When **true,** this user must view supplemental documents.
+          type: string
+        supplementalDocumentsMustViewMetadata:
+          $ref: '#/components/schemas/settingsMetadata'
+          description: 'Metadata that indicates whether the `supplementalDocumentsMustView` property is editable.
+
+            '
+        templateActiveCreation:
+          description: When **true,** a new template is created each time the user sends an envelope.
+          type: string
+        templateActiveCreationMetadata:
+          $ref: '#/components/schemas/settingsMetadata'
+          description: Metadata about the `templateActiveCreation` property.
+        templateApplyNotify:
+          description: When **true,** the system notifies this user before applying a matching template.
+          type: string
+        templateApplyNotifyMetadata:
+          $ref: '#/components/schemas/settingsMetadata'
+          description: Metadata about the `templateApplyNotify` property.
+        templateAutoMatching:
+          description: When **true,** the system automatically applies a matching template to a document if only one template matches. If there are multiple matches, it displays a list of matches to select from.
+          type: string
+        templateAutoMatchingMetadata:
+          $ref: '#/components/schemas/settingsMetadata'
+          description: Metadata about the `templateAutoMatching` property.
+        templateMatchingSensitivity:
+          description: Percentage used when matching templates.
+          type: string
+        templateMatchingSensitivityMetadata:
+          $ref: '#/components/schemas/settingsMetadata'
+          description: Metadata about the `tempalteMatchingSensitivity` property.
+        templatePageLevelMatching:
+          description: When **true,** users see template matching functionality.
+          type: string
+        templatePageLevelMatchingMetadata:
+          $ref: '#/components/schemas/settingsMetadata'
+          description: Metadata about the `templatePageLevelMatching` property.
+        timezoneDST:
+          description: When true, daylight savings time is in effect for this user's time zone.
+          type: string
+        timezoneDSTMetadata:
+          $ref: '#/components/schemas/settingsMetadata'
+          description: Metadata about the `timezoneDST` property.
+        timezoneMask:
+          description: The custom DateTime format setting for this user.
+          type: string
+        timezoneMaskMetadata:
+          $ref: '#/components/schemas/settingsMetadata'
+          description: Metadata about the `timezoneMask` property.
+        timezoneOffset:
+          description: 'The timezone offset for the user. Valid values:
+
+            - `tz_01_afghanistan`
+
+            - `tz_02_alaskan`
+
+            - `tz_03_arab`
+
+            - `tz_04_arabian`
+
+            - `tz_05_arabic`
+
+            - `tz_06_argentina`
+
+            - `tz_07_atlantic`
+
+            - `tz_08_aus_central`
+
+            - `tz_09_aus_eastern`
+
+            - `tz_10_azerbaijan`
+
+            - `tz_11_azores`
+
+            - `tz_12_bangladesh`
+
+            - `tz_13_canada_central`
+
+            - `tz_14_cape_verde`
+
+            - `tz_15_caucasus`
+
+            - `tz_16_central_australia`
+
+            - `tz_17_central_america`
+
+            - `tz_18_central_asia`
+
+            - `tz_19_central_brazilian`
+
+            - `tz_20_central_europe`
+
+            - `tz_21_central_european`
+
+            - `tz_22_central_pacific`
+
+            - `tz_23_central`
+
+            - `tz_24_central_mexico`
+
+            - `tz_25_china`
+
+            - `tz_26_dateline`
+
+            - `tz_27_east_africa`
+
+            - `tz_28_east_australia`
+
+            - `tz_29_east_europe`
+
+            - `tz_30_east_south_america`
+
+            - `tz_31_eastern`
+
+            - `tz_32_egypt`
+
+            - `tz_33_ekaterinburg`
+
+            - `tz_34_fiji`
+
+            - `tz_35_fli`
+
+            - `tz_36_georgian`
+
+            - `tz_37_gmt`
+
+            - `tz_38_greenland`
+
+            - `tz_39_greenwich`
+
+            - `tz_40_gtb`
+
+            - `tz_41_hawaiian`
+
+            - `tz_42_india`
+
+            - `tz_43_iran`
+
+            - `tz_44_israel`
+
+            - `tz_45_jordan`
+
+            - `tz_46_kaliningrad`
+
+            - `tz_47_kamchatka`
+
+            - `tz_48_korea`
+
+            - `tz_49_magadan`
+
+            - `tz_50_mauritius`
+
+            - `tz_51_mid_atlantic`
+
+            - `tz_52_middle_east`
+
+            - `tz_53_montevideo`
+
+            - `tz_54_morocco`
+
+            - `tz_55_mountain`
+
+            - `tz_56_mountain_mexico`
+
+            - `tz_57_myanmar`
+
+            - `tz_58_north_central_asia`
+
+            - `tz_59_namibia`
+
+            - `tz_60_nepal`
+
+            - `tz_61_new_zealand`
+
+            - `tz_62_new_foundland`
+
+            - `tz_63_north_asia_east`
+
+            - `tz_64_north_asia`
+
+            - `tz_65_pacific_sa`
+
+            - `tz_66_pacific`
+
+            - `tz_67_pacific_mexico`
+
+            - `tz_68_pakistan`
+
+            - `tz_69_paraguay`
+
+            - `tz_70_romance`
+
+            - `tz_71_russian`
+
+            - `tz_72_sa_eastern`
+
+            - `tz_73_sa_pacific`
+
+            - `tz_74_sa_western`
+
+            - `tz_75_samoa`
+
+            - `tz_76_se_asia`
+
+            - `tz_77_singapore`
+
+            - `tz_78_south_africa`
+
+            - `tz_79_sriLanka`
+
+            - `tz_80_syria`
+
+            - `tz_81_taipei`
+
+            - `tz_82_tasmania`
+
+            - `tz_83_tokyo`
+
+            - `tz_84_tonga`
+
+            - `tz_85_turkey`
+
+            - `tz_86_ulaanbaatar`
+
+            - `tz_87_us_eastern`
+
+            - `tz_88_us_mountain`
+
+            - `tz_89_venezuela`
+
+            - `tz_90_vladivostok`
+
+            - `tz_91_west_australia`
+
+            - `tz_92_west_central_africa`
+
+            - `tz_93_west_europe`
+
+            - `tz_94_west_asia`
+
+            - `tz_95_west_pacific`
+
+            - `tz_96_yakutsk`'
+          type: string
+        timezoneOffsetMetadata:
+          $ref: '#/components/schemas/settingsMetadata'
+          description: Metadata about the `timezoneOffset` property.
+        timezoneSendingPref:
+          description: Reserved for Docusign.
+          type: string
+        timezoneSendingPrefMetadata:
+          $ref: '#/components/schemas/settingsMetadata'
+          description: Reserved for Docusign.
+        timezoneSigningPref:
+          description: Reserved for Docusign.
+          type: string
+        timezoneSigningPrefMetadata:
+          $ref: '#/components/schemas/settingsMetadata'
+          description: Reserved for Docusign.
+        transactionPointSiteNameURL:
+          description: Reserved for Docusign.
+          type: string
+        transactionPointSiteNameURLMetadata:
+          $ref: '#/components/schemas/settingsMetadata'
+          description: Reserved for Docusign.
+        transactionPointUserName:
+          description: Reserved for Docusign.
+          type: string
+        transactionPointUserNameMetadata:
+          $ref: '#/components/schemas/settingsMetadata'
+          description: Reserved for Docusign.
+        vaultingMode:
+          description: 'Indicates the specified Vaulting mode:
+
+            - `none`
+
+            - `estored`
+
+            - `electronic_original`'
+          type: string
+        vaultingModeMetadata:
+          $ref: '#/components/schemas/settingsMetadata'
+          description: Metadata about the `vaultingMode` property.
+        webForms:
+          description: ''
+          type: string
+        webFormsMetadata:
+          $ref: '#/components/schemas/settingsMetadata'
+          description: ''
+      description: 'Properties that configure the settings for a user. Some elements of this object have a `metadata` property, which includes the following:
+
+        - `rights`: The calling users permissions to edit this setting (can be `editable` or `read_only`)
+
+        - `uiHint`: Internally used to build UIs (can be `available` or `hidden`)
+
+        - `options`: The values supported for this setting (not all settings have this element)'
+      x-ds-definition-name: userSettingsInformation
+      x-ms-summary: 'Properties that configure the settings for a user. Some elements of this object have a `metadata` property, which includes the following:
+
+        - `rights`: The calling users permissions to edit this setting (can be `editable` or `read_only`)
+
+        - `uiHint`: Internally used to build UIs (can be `available` or `hidden`)
+
+        - `options`: The values supported for this setting (not all settings have this element)'
+    usersResponse:
+      type: object
+      properties:
+        endPosition:
+          description: 'The last index position in the result set. '
+          type: string
+        nextUri:
+          description: 'The URI for the next chunk of records based on the search request. It is `null` if this is the last set of results for the search. '
+          type: string
+        previousUri:
+          description: 'The URI for the prior chunk of records based on the search request. It is `null` if this is the first set of results for the search. '
+          type: string
+        resultSetSize:
+          description: The number of results in this response. Because you can filter which entries are included in the response, this value is always less than or equal to the `totalSetSize`.
+          type: string
+        startPosition:
+          description: The starting index position of the current result set.
+          type: string
+        totalSetSize:
+          description: The total number of items in the result set. This value is always greater than or equal to the value of `resultSetSize`.
+          type: string
+        users:
+          description: User management information.
+          type: array
+          items:
+            $ref: '#/components/schemas/userInfo'
+      x-ds-definition-name: usersResponse
+      description: ''
+      x-ms-summary: ''
+    connectUserObject:
+      type: object
+      properties:
+        configurationtype:
+          description: The type of custom Connect configuration being accessed.
+          type: string
+        connectId:
+          description: The ID of the custom Connect configuration being accessed.
+          type: string
+        enabled:
+          description: Boolean value that indicates whether the custom Connect configuration is enabled or not.
+          type: string
+        hasAccess:
+          description: ''
+          type: string
+        senderSearchableItems:
+          description: ''
+          type: array
+          items:
+            type: string
+      x-ds-definition-name: connectUserObject
+      description: ''
+      x-ms-summary: ''
+    userInfo:
+      type: object
+      properties:
+        accountId:
+          description: The account ID associated with the envelope.
+          type: string
+        accountName:
+          description: The name on the account.
+          type: string
+        activationAccessCode:
+          description: Access code provided to the user to activate the account.
+          type: string
+        email:
+          description: The user's email address.
+          type: string
+        errorDetails:
+          $ref: '#/components/schemas/errorDetails'
+          description: This object describes errors that occur. It is only valid for responses and ignored in requests.
+        ipAddress:
+          description: ''
+          type: string
+        loginStatus:
+          description: When **true,** indicates that the user is logged in. This is a read-only property.
+          type: string
+        membershipId:
+          description: The user's membership ID.
+          type: string
+        sendActivationEmail:
+          description: This field is no longer supported for most accounts. To create an eSignature user without sending an activation email, use the Admin API by following [these steps](/docs/admin-api/how-to/create-active-user/).
+          type: string
+        uri:
+          description: A URI containing the user ID.
+          type: string
+        userId:
+          description: The ID of the user to access.
+          type: string
+        userName:
+          description: The name of the user.
+          type: string
+        userStatus:
+          description: 'Status of the user''s account. One of:
+
+
+            - `ActivationRequired`
+
+            - `ActivationSent`
+
+            - `Active`
+
+            - `Closed`
+
+            - `Disabled`
+
+            '
+          type: string
+        userType:
+          description: The type of user, for example `CompanyUser`.
+          type: string
+      x-ds-definition-name: userInfo
+      description: ''
+      x-ms-summary: ''
+    newUser:
+      type: object
+      properties:
+        apiPassword:
+          description: Contains a token that can be used for authentication in API calls instead of using the user name and password.
+          type: string
+        createdDateTime:
+          description: The UTC DateTime when the item was created.
+          type: string
+        email:
+          description: The user's email address.
+          type: string
+        errorDetails:
+          $ref: '#/components/schemas/errorDetails'
+          description: This object describes errors that occur. It is only valid for responses and ignored in requests.
+        licenseStatus:
+          description: ''
+          type: string
+        licenseType:
+          description: ''
+          type: string
+        membershipId:
+          description: The user's membership ID.
+          type: string
+        permissionProfileId:
+          description: 'The ID of the permission profile.
+
+
+            Use [AccountPermissionProfiles: list](/docs/esign-rest-api/reference/accounts/accountpermissionprofiles/list/)
+
+            to get a list of permission profiles and their IDs.
+
+
+            You can also download a CSV file of all permission profiles
+
+            and their IDs from the **Settings > Permission Profiles** page
+
+            of your eSignature account page.
+
+            '
+          type: string
+        permissionProfileName:
+          description: "The name of the account permission profile. \n\nExample: `Account Administrator`"
+          type: string
+        uri:
+          description: A URI containing the user ID.
+          type: string
+        userId:
+          description: Specifies the user ID for the new user.
+          type: string
+        userName:
+          description: The name of the user.
+          type: string
+        userStatus:
+          description: 'Status of the user''s account. One of:
+
+
+            - `ActivationRequired`
+
+            - `ActivationSent`
+
+            - `Active`
+
+            - `Closed`
+
+            - `Disabled`
+
+            '
+          type: string
+      description: Object representing a new user.
+      x-ds-definition-name: newUser
+      x-ms-summary: Object representing a new user.
+    userInfoList:
+      type: object
+      properties:
+        users:
+          description: An array of `userInfo` objects containing information about the users in the group.
+          type: array
+          items:
+            $ref: '#/components/schemas/userInfo'
+      x-ds-definition-name: userInfoList
+      description: ''
+      x-ms-summary: ''
+    signerEmailNotifications:
+      description: 'An array of email notifications that specifies the email the user receives when they are a recipient. When the specific email notification is set to true, the user receives those types of email notifications from Docusign. The user inherits the default account email notification settings when the user is created.
+
+        '
+      type: object
+      properties:
+        agentNotification:
+          description: When **true,** the user receives agent notification emails.
+          type: string
+        carbonCopyNotification:
+          description: When **true,** the user receives notifications of carbon copy deliveries.
+          type: string
+        certifiedDeliveryNotification:
+          description: When **true,** the user receives notifications of certified deliveries.
+          type: string
+        commentsOnlyPrivateAndMention:
+          description: When **true,** the user receives only comments that mention their own user name.
+          type: string
+        commentsReceiveAll:
+          description: When **true,** the user receives all comments.
+          type: string
+        documentMarkupActivation:
+          description: When **true,** the user receives notification that document markup has been activated.
+          type: string
+        envelopeActivation:
+          description: When **true,** the user receives notification that the envelope has been activated.
+          type: string
+        envelopeComplete:
+          description: When **true,** the user receives an email notification when the envelope has been completed.
+          type: string
+        envelopeCorrected:
+          description: When **true,** the user receives notification that the envelope has been corrected.
+          type: string
+        envelopeDeclined:
+          description: When **true,** the user receives notification that the envelope has been declined.
+          type: string
+        envelopeVoided:
+          description: When **true,** the user receives notification that the envelope has been voided.
+          type: string
+        faxReceived:
+          description: Reserved for Docusign.
+          type: string
+        offlineSigningFailed:
+          description: When **true,** the user receives an email notification if offline signing failed.
+          type: string
+        purgeDocuments:
+          description: When **true,** the user receives an email notification when a document purge occurs.
+          type: string
+        reassignedSigner:
+          description: When **true,** the user receives notification that the envelope has been reassigned.
+          type: string
+        whenSigningGroupMember:
+          description: When **true,** the user receives notification that he or she is a member of the signing group.
+          type: string
+      x-ds-definition-name: signerEmailNotifications
+      x-ms-summary: 'An array of email notifications that specifies the email the user receives when they are a recipient. When the specific email notification is set to true, the user receives those types of email notifications from Docusign. The user inherits the default account email notification settings when the user is created.
+
+        '
+    forgottenPasswordInformation:
+      description: A complex element that has up to four Question/Answer pairs for forgotten password information.
+      type: object
+      properties:
+        forgottenPasswordAnswer1:
+          description: The answer to the first forgotten password challenge question.
+          type: string
+        forgottenPasswordAnswer2:
+          description: The answer to the second forgotten password challenge question.
+          type: string
+        forgottenPasswordAnswer3:
+          description: The answer to the third forgotten password challenge question.
+          type: string
+        forgottenPasswordAnswer4:
+          description: The answer to the fourth forgotten password challenge question.
+          type: string
+        forgottenPasswordQuestion1:
+          description: The first challenge question presented to a user who has forgotten their password.
+          type: string
+        forgottenPasswordQuestion2:
+          description: The second challenge question presented to a user who has forgotten their password.
+          type: string
+        forgottenPasswordQuestion3:
+          description: The third challenge question presented to a user who has forgotten their password.
+          type: string
+        forgottenPasswordQuestion4:
+          description: The fourth challenge question presented to a user who has forgotten their password.
+          type: string
+      x-ds-definition-name: forgottenPasswordInformation
+      x-ms-summary: A complex element that has up to four Question/Answer pairs for forgotten password information.
+    addressInformation:
+      description: Contains address information.
+      type: object
+      properties:
+        address1:
+          description: 'The first line of the user''s address.
+
+            Maximum length: 100 characters.'
+          type: string
+        address2:
+          description: 'The second line of the user''s address.
+
+            Maximum length: 100 characters.'
+          type: string
+        city:
+          description: 'The user''s city. Maximum length: 40 characters.'
+          type: string
+        country:
+          description: 'The user''s country. Maximum length: 50 characters.'
+          type: string
+        fax:
+          description: A fax number associated with the address, if one is available.
+          type: string
+        phone:
+          description: A phone number associated with the address.
+          type: string
+        postalCode:
+          description: 'The user''s postal code. Maximum length: 20 characters.'
+          type: string
+        stateOrProvince:
+          description: 'The user''s state or province. Maximum length: 40 characters.'
+          type: string
+        zipPlus4:
+          description: ''
+          type: string
+      x-ds-definition-name: addressInformation
+      x-ms-summary: Contains address information.
+    group:
+      type: object
+      properties:
+        accessType:
+          description: ''
+          type: string
+        dsGroupId:
+          description: Reserved for Docusign.
+          type: string
+        errorDetails:
+          $ref: '#/components/schemas/errorDetails'
+          description: This object describes errors that occur. It is only valid for responses and ignored in requests.
+        groupId:
+          description: 'The Docusign group ID for the group.
+
+            This is a read-only property.'
+          type: string
+        groupName:
+          description: The name of the group.
+          type: string
+        groupType:
+          description: The group type.
+          type: string
+        isManagedByScim:
+          description: ''
+          type: boolean
+        lastModifiedOn:
+          description: ''
+          type: string
+        permissionProfileId:
+          description: 'The ID of the permission profile associated with the group.
+
+
+            Use [AccountPermissionProfiles: list](/docs/esign-rest-api/reference/accounts/accountpermissionprofiles/list/)
+
+            to get a list of permission profiles and their IDs.'
+          type: string
+        userGroupType:
+          description: ''
+          type: string
+        users:
+          description: 'A list of the users in the group. This property is not used by [Groups: list](/docs/esign-rest-api/reference/usergroups/groups/list/). To get a list of users see [GroupUsers: list](/docs/esign-rest-api/reference/usergroups/groupusers/list/)
+
+            '
+          type: array
+          items:
+            $ref: '#/components/schemas/userInfo'
+        usersCount:
+          description: The total number of users in the group.
+          type: string
+      description: This object contains information about a group.
+      x-ds-definition-name: group
+      x-ms-summary: This object contains information about a group.
+    userInformation:
+      type: object
+      properties:
+        activationAccessCode:
+          description: Access code provided to the user to activate the account.
+          type: string
+        company:
+          description: The name of the user's company.
+          type: string
+        connectConfigurations:
+          description: Object representing the user's custom Connect configuration.
+          type: array
+          items:
+            $ref: '#/components/schemas/connectUserObject'
+        countryCode:
+          description: The two-letter code for the user's country.
+          type: string
+        createdDateTime:
+          description: The UTC DateTime when the item was created.
+          type: string
+        customSettings:
+          description: The name/value pair information for the user custom setting.
+          type: array
+          items:
+            $ref: '#/components/schemas/nameValue'
+        defaultAccountId:
+          description: The default account ID associated with the user.
+          type: string
+        email:
+          description: 'The user''s email address.
+
+
+            This property cannot be updated via `PUT` requests.'
+          type: string
+        enableConnectForUser:
+          description: Boolean value that specifies whether the user is enabled for updates from Docusign Connect.
+          type: string
+        errorDetails:
+          $ref: '#/components/schemas/errorDetails'
+          description: This object describes errors that occur. It is only valid for responses and ignored in requests.
+        firstName:
+          description: "The user's first name. \nMaximum Length: 50 characters."
+          type: string
+        forgottenPasswordInfo:
+          $ref: '#/components/schemas/forgottenPasswordInformation'
+          description: A complex element containing up to four Question/Answer pairs for forgotten password information.
+        groupList:
+          description: 'A list of the group information for groups to add the user to.
+
+            Use [UserGroups: listGroups](/docs/esign-rest-api/reference/usergroups/groups/list/) to get information about groups.
+
+
+            When setting a user''s group, only the `groupId` is required.
+
+            '
+          type: array
+          items:
+            $ref: '#/components/schemas/group'
+        hasRemoteNotary:
+          description: ''
+          type: boolean
+        homeAddress:
+          $ref: '#/components/schemas/addressInformation'
+          description: "Specifies the email for the signing host. It is a Required element for In Person Signers recipient Type. \nMaximum Length: 100 characters."
+        initialsImageUri:
+          description: The URI for retrieving the image of the user's initials.
+          type: string
+        isAdmin:
+          description: When **true,** the user is an administrator.
+          type: string
+        isAlternateAdmin:
+          description: When **true,** the user is an alternate administrator. This user is not an administrator but will be set as such if all administrator memberships are closed.
+          type: string
+        isManagedByScim:
+          description: ''
+          type: string
+        isMembershipManagedByScim:
+          description: ''
+          type: string
+        isNAREnabled:
+          description: When **true,** National Association of Realtors (NAR) signature logos are enabled for the user.
+          type: string
+        jobTitle:
+          description: The user's job title.
+          type: string
+        lastLogin:
+          description: This property has been deprecated.
+          type: string
+        lastName:
+          description: "The user's last name. \nMaximum Length: 50 characters."
+          type: string
+        licenseStatus:
+          description: ''
+          type: string
+        licenseType:
+          description: ''
+          type: string
+        loginStatus:
+          description: Boolean value that indicates whether the user is currently logged in or not.
+          type: string
+        middleName:
+          description: "The user's middle name. \nLimit: 50 characters."
+          type: string
+        password:
+          description: 'The user''s password.
+
+
+            This property is used only when adding a new user via a [Users: create](/docs/esign-rest-api/reference/users/users/create/) request. The value must conform to the password rules defined in the account [Security Settings](https://apps-d.docusign.com/admin/authenticate?goTo=securityInfo).
+
+
+            This property is not returned by `GET` requests and cannot be updated via `PUT` requests.'
+          type: string
+        passwordExpiration:
+          description: If password expiration is enabled, the date-time when the user's password expires.
+          type: string
+        permissionProfileId:
+          description: 'The ID of the permission profile.
+
+
+            Use [AccountPermissionProfiles: list](/docs/esign-rest-api/reference/accounts/accountpermissionprofiles/list/)
+
+            to get a list of permission profiles and their IDs.
+
+
+            You can also download a CSV file of all permission profiles
+
+            and their IDs from the **Settings > Permission Profiles** page
+
+            of your eSignature account page.
+
+            '
+          type: string
+        permissionProfileName:
+          description: "The name of the account permission profile. \n\nExample: `Account Administrator`"
+          type: string
+        profileImageUri:
+          description: The URL for retrieving the user's profile image.
+          type: string
+        sendActivationEmail:
+          description: This field is no longer supported for most accounts. To create an eSignature user without sending an activation email, use the Admin API by following [these steps](/docs/admin-api/how-to/create-active-user/).
+          type: string
+        sendActivationOnInvalidLogin:
+          description: When **true,** specifies that an additional activation email be sent if user's log on fails before the account is activated.
+          type: string
+        signatureImageUri:
+          description: An endpoint URI that you can use to retrieve the user's signature image.
+          type: string
+        subscribe:
+          description: ''
+          type: string
+        suffixName:
+          description: 'The suffix for the user''s name, such as Jr, IV, PhD, etc.
+
+
+            Limit: 50 characters. '
+          type: string
+        title:
+          description: The title of the user.
+          type: string
+        uri:
+          description: A URI containing the user ID.
+          type: string
+        userAddedToAccountDateTime:
+          description: The date and time that the user was added to the account.
+          type: string
+        userId:
+          description: 'The ID of the user to access.
+
+
+            **Note:** Users can only access their own information. A user, even one with Admin rights, cannot access another user''s settings.'
+          type: string
+        userName:
+          description: The name of the user.
+          type: string
+        userProfileLastModifiedDate:
+          description: The date and time that the user's profile was last modified.
+          type: string
+        userSettings:
+          $ref: '#/components/schemas/userSettingsInformation'
+          description: The collection of settings representing the actions a user can perform. See [userSettingsInformation](/docs/esign-rest-api/reference/users/users/get/#userSettingsInformation) for available settings.
+        userStatus:
+          description: 'Status of the user''s account. One of:
+
+
+            - `ActivationRequired`
+
+            - `ActivationSent`
+
+            - `Active`
+
+            - `Closed`
+
+            - `Disabled`
+
+            '
+          type: string
+        userType:
+          description: The type of user, for example `CompanyUser`.
+          type: string
+        workAddress:
+          $ref: '#/components/schemas/addressInformation'
+          description: ''
+      description: User information.
+      x-ds-definition-name: userInformation
+      x-ms-summary: User information.
+    nameValue:
+      type: object
+      properties:
+        errorDetails:
+          $ref: '#/components/schemas/errorDetails'
+          description: This object describes errors that occur. It is only valid for responses and ignored in requests.
+        name:
+          description: The name of the item.
+          type: string
+        originalValue:
+          description: The initial value of the item.
+          type: string
+        value:
+          description: The current value of the item.
+          type: string
+      description: A name-value pair that describes an item and provides a value for the item.
+      x-ds-definition-name: nameValue
+      x-ms-summary: A name-value pair that describes an item and provides a value for the item.
+    localePolicy:
+      type: object
+      properties:
+        addressFormat:
+          description: 'Specifies the address format. Valid values:
+
+
+            - `en_us`
+
+            - `ja_jp`
+
+            - `zh_cn_tw`
+
+            '
+          type: string
+        addressFormatMetadata:
+          $ref: '#/components/schemas/settingsMetadata'
+          description: Metadata that indicates if the `addressFormat` property is editable.
+        allowRegion:
+          description: ''
+          type: string
+        calendarType:
+          description: 'Specifies the type of calendar. Valid values:
+
+
+            - `gregorian`
+
+            - `japanese`
+
+            - `buddhist`
+
+            '
+          type: string
+        calendarTypeMetadata:
+          $ref: '#/components/schemas/settingsMetadata'
+          description: Metadata that indicates whether the `calendarType` property is editable.
+        cultureName:
+          description: The two letter [ISO 639-1](https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes) language code.
+          type: string
+        cultureNameMetadata:
+          $ref: '#/components/schemas/settingsMetadata'
+          description: Metadata that indicates whether the `cultureName` property is editable.
+        currencyCode:
+          description: 'The [ISO 4217](https://en.wikipedia.org/wiki/ISO_4217) currency code.
+
+            '
+          type: string
+        currencyCodeMetadata:
+          $ref: '#/components/schemas/settingsMetadata'
+          description: Metadata that indicates whether the `currencyCode` property is editable.
+        currencyNegativeFormat:
+          description: "Determines how negative currency values\nare displayed.\n\nIn most cases, you should not need to change\nthis value. See [Explicitly define formatting](/docs/esign-rest-api/esign101/concepts/tabs/number-fields/#explicitly-define-formatting).\n\nValid values:\n\n- `Default`<br>\n  `0`\n- `OPar_CSym_1_Comma_234_Comma_567_Period_89_CPar`<br>\n  `($1,234,567.89)`\n- `Minus_CSym_1_Comma_234_Comma_567_Period_89`<br>\n  `-$1,234,567.89`\n- `Minus_CSym_Space_1_Period_234_Period_567_Comma_89`<br>\n  `-$ 1.234.567,89`\n- `CSym_Space_Minus_1_Period_234_Period_567_Comma_89`<br>\n  `$ -1.234.567,89`\n- `Minus_1_Period_234_Period_567_Comma_89_Space_CSym`<br>\n  `-1.234.567,89 $`\n- `OPar_1_Space_234_Space_567_Comma_89_Space_CSym_CPar`<br>\n  `(1 234 567,89 $)`\n- `Minus_1_Space_234_Space_567_Comma_89_Space_CSym`<br>\n  `-1 234 567,89 $`\n- `CSym_Minus_1_Quote_234_Quote_567_Period_89`<br>\n  `$-1'234'567.89`\n- `Minus_CSym_1_Period_234_Period_567_Comma_89`<br>\n  `-$1.234.567,89`\n- `Minus_CSym_1_Comma_234_Comma_567`<br>\n  `-$1,234,567`\n- `Minus_CSym_12_Comma_34_Comma_567_Period_89`<br>\n  `-$12,34,567.89`\n- `OPar_CSym_Space_1234_Comma_567_Period_89_CPar`<br>\n  `($ 1234,567.89)`\n- `CSym_Space_Minus_12_Comma_34_Comma_567_Period_89`<br>\n  `$ -12,34,567.89`\n- `CSym_Minus_12_Comma_34_Comma_567_Period_89`<br>\n  `$-1,234,567.89`\n- `CSym_Space_Minus_1_Space_234_Space_567_Comma_89`<br>\n  `$ -1 234 567,89`\n- `CSym_Space_Minus_1_Space_234_Space_567_Period_89`<br>\n  `$ -1 234 567.89`\n- `Minus_CSym_Space_1_Space_234_Space_567_Comma_89`<br>\n  `-$ 1 234 567,89`\n- `Minus_1_Space_234_Space_567_Comma_89_CSym`<br>\n  `-1 234 567,89$`\n- `Minus_1_Space_234_Space_567_Period_89_Space_CSym`<br>\n  `-1 234 567.89 $`\n- `OPar_CSym_1_Period_234_Period_567_CPar`<br>\n  `(1.234.567)`\n- `OPar_CSym_1_Comma_234_Comma_567_CPar`<br>\n  `($1,234,567)`\n- `Minus_1_Comma_234_Comma_567_Period_89_Space_CSym`<br>\n  `-1,234,567.89 $`\n- `Minus_CSym_Space_1_Comma_234_Comma_567_Period_89`<br>\n  `-$ 1,234,567.89`\n- `OPar_CSym_Space_1_Period_234_Period_567_Comma_89_CPar`<br>\n  `($ 1.234.567,89)`\n- `OPar_CSym_Space_1_Quote_234_Quote_567_Period_89_CPar`<br>\n  `($ 1'234'567.89)`\n- `OPar_CSym_Space_1_Space_234_Space_567_Comma_89_CPar`<br>\n  `($ 1 234 567,89)`\n- `OPar_CSym_Space_1_Space_234_Space_567_Period_89_CPar`<br>\n  `($ 1 234 567.89)`\n- `OPar_CSym_12_Comma_34_Comma_567_Period_89_CPar`<br>\n  `($12,34,567.89)`\n- `OPar_CSym_Space_12_Comma_34_Comma_567_Period_89_CPar`<br>\n  `($ 12,34,567.89)`\n- `OPar_1_Comma_234_Comma_567_Period_89_Space_CSym_CPar`<br>\n  `(1,234,567.89 $)`\n- `OPar_1_Period_234_Period_567_Comma_89_Space_CSym_CPar`<br>\n  `(1.234.567,89 $)`\n- `OPar_1_Space_234_Space_567_Comma_89_CSym_CPar`<br>\n  `(1 234 567,89$)`\n- `OPar_1_Space_234_Space_567_Period_89_Space_CSym_CPar`<br>\n  `(1 234 567.89 $)`\n- `OPar_CSym_Space_1_Comma_234_Comma_567_Period_89_CPar`<br>\n  `($ 1,234,567.89)`\n- `Minus_CSym_1_Period_234_Period_567`<br>\n  `-$ 1.234.567`\n- `Minus_CSym_Space_1_Quote_234_Quote_567_Period_89`<br>\n  `-$ 1'234'567.89`\n- `Minus_CSym_Space_1_Space_234_Space_567_Period_89`<br>\n  `-$ 1 234 567.89`\n- `CSym_Minus_1_Comma_234_Comma_567`<br>\n  `$-1,234,567`\n- `CSym_Minus_1_Period_234_Period_567`<br>\n  `$-1.234.567`\n- `CSym_Space_Minus_1_Quote_234_Quote_567_Period_89`<br>\n  `$ -1'234'567.89`\n- `CSym_Space_Minus_1_Comma_234_Comma_567_Period_89`<br>\n  `$ -1,234,567.89`\n- `Minus_CSym_Space_12_Comma_34_Comma_567_Period_89`<br>\n  `-$ 12,34,567.89`\n- `Minus_1_Period_234_Period_567_Space_CSym`<br>\n  `-123.456.789 $`\n- `CSym_Minus_1_Space_234_Space_567_Comma_89`<br>\n  `$-123 456 789,00`\n- `Minus_1_Quote_234_Quote_567_Period_89_Space_CSym`<br>\n  `-123'456'789.00 $`\n- `CSym_1_Comma_234_Comma_567_Period_89_Minus`<br>\n  `$123,456,789.00-`\n- `CSym_Minus_1_Period_234_Period_567_Comma_89`<br>\n  `$-123.456.789,00`\n- `OPar_CSym_1_Period_234_Period_567_Comma_89_CPar`<br>\n  `($123.456.789,00)`\n- `Minus_CSym_1234_Comma_567_Period_89`<br>\n  `-$123456,789.00`\n- `Minus_CSym_1_Space_234_Space_567_Comma_89`<br>\n  `-$123 456 789,00`\n"
+          type: string
+        currencyNegativeFormatMetadata:
+          $ref: '#/components/schemas/settingsMetadata'
+          description: Metadata that indicates whether the `currencyNegativeFormat` property is editable.
+        currencyPositiveFormat:
+          description: "Determines how positive currency values\nare displayed.\n\nIn most cases, you should not need to change\nthis value. See [Explicitly define formatting](/docs/esign-rest-api/esign101/concepts/tabs/number-fields/#explicitly-define-formatting).\n\nValid values:\n\n\n- `Default`<br>\n  Uses the current locale.\n- `CSym_1_Comma_234_Comma_567_Period_89`<br>\n  `$1,234,567.89`\n- `CSym_Space_1_Period_234_Period_567_Comma_89`<br>\n  `$ 1.234.567,89`\n- `Leading_1_Period_234_Period_567_Comma_89_Space_CSym`<br>\n  `1.234.567,89 $`\n- `Leading_1_Space_234_Space_567_Comma_89_Space_CSym`<br>\n  `1 234 567,89 $`\n- `CSym_Space_1_Quote_234_Quote_567_Period_89`<br>\n  `$ 1'234'567.89`\n- `CSym_1_Comma_234_Comma_567`<br>\n  `$1,234,567`\n- `CSym_Space_12_Comma_34_Comma_567_Period_89`<br>\n  `$ 12,34,567.89`\n- `CSym_12_Comma_34_Comma_567_Period_89`<br>\n  `$12,34,567.89`\n- `CSym_Space_1234_Comma_567_Period_89`<br>\n  `$ 1234,567.89`\n- `Leading_1_Space_234_Space_567_Period_89_Space_CSym`<br>\n  `1 234 567.89 $`\n- `CSym_Space_1_Space_234_Space_567_Comma_89`<br>\n  `$ 1 234 567,89`\n- `CSym_Space_1_Space_234_Space_567_Period_89`<br>\n  `$ 1 234 567.89`\n- `Leading_1_Space_234_Space_567_Comma_89_CSym`<br>\n  `1 234 567,89$`\n- `CSym_1_Period_234_Period_567`<br>\n  `$1.234.567`\n- `Leading_1_Comma_234_Comma_567_Period_89_Space_CSym`<br>\n  `1,234,567. $` (New Armenian)\n- `CSym_Space_1_Comma_234_Comma_567_Period_89`<br>\n  `$ 1,234,567.89` (Persian)\n- `CSym_1_Period_234_Period_567_Comma_89`<br>\n  `$123.456.789,00` (es-CO)\n- `Leading_1_Quote_234_Quote_567_Period_89_Space_CSym`<br>\n  `123'456'789.00 $` (fr-ch)\n- `CSym_1234_Comma_567_Period_89`<br>\n  `$123456,789.00` (es-PR)\n- `Leading_1_Period_234_Period_567_Space_CSym`<br>\n  `123.456.789 $`\n- `CSym_1_Space_234_Space_567_Comma_89`<br>\n  `$123 456 789,00` (en-ZA, es-CR)\n"
+          type: string
+        currencyPositiveFormatMetadata:
+          $ref: '#/components/schemas/settingsMetadata'
+          description: Metadata that indicates whether the `currencyPositiveFormat` property is editable.
+        customDateFormat:
+          description: ''
+          type: string
+        customSignDateFormat:
+          description: ''
+          type: string
+        customSignTimeFormat:
+          description: ''
+          type: string
+        customTimeFormat:
+          description: ''
+          type: string
+        dateFormat:
+          description: "Specifies the date format. Valid values:\n\n- `default` <br> used the UI's \n- `longformat` <br> use the UI's long format\n- `dd_mm_yy` <br> dd-MM-yy\n- `dd_mmm_yy` <br> dd-MMM-yy\n- `dd_mm_yyyy` <br> dd-MM-yyyy\n- `dd_mmm_yyyy` <br> dd-MMM-yyyy\n- `ddmmmmyyyy` <br> dd MMMM yyyy\n- `ddmmyyyy` <br> dd/MM/yyyy\n- `ddmmyyyy_de` <br> dd.MM.yyyy\n- `dmyyyy` <br> d/M/yyyy\n- `d_m_yyyy` <br> d-M-yyyy\n- `mmmd_yyyy` <br> MMM d, yyyy\n- `mmm_dd_yyyy` <br> MMM-dd-yyyy\n- `mmmmd_yyyy` <br> MMMM d, yyyy\n- `mm_dd_yyyy` <br> MM-dd-yyyy\n- `mdyyyy` <br> M/d/yyyy\n- `yyyy_mmm_dd` <br> yyyy-MMM-dd\n- `yyyy_mm_dd` <br> yyyy-MM-dd\n- `yyyymmdd` <br> yyyy/MM/dd\n- `yyyymd` <br> yyyy/M/d\n- `custom` <br> Customer set own value\n- `mmddyyyy` <br> MM/dd/yyyy\n- `mmddyy` <br> MM/dd/yy\n- `yyyy_mmmm_d` <br> yyyy MMMM d\n"
+          type: string
+        dateFormatMetadata:
+          $ref: '#/components/schemas/settingsMetadata'
+          description: Metadata that indicates whether the `dateFormat` property is editable.
+        effectiveAddressFormat:
+          description: ''
+          type: string
+        effectiveCalendarType:
+          description: ''
+          type: string
+        effectiveCurrencyCode:
+          description: ''
+          type: string
+        effectiveCurrencyNegativeFormat:
+          description: ''
+          type: string
+        effectiveCurrencyPositiveFormat:
+          description: ''
+          type: string
+        effectiveCustomDateFormat:
+          description: ''
+          type: string
+        effectiveCustomTimeFormat:
+          description: ''
+          type: string
+        effectiveDateFormat:
+          description: ''
+          type: string
+        effectiveInitialFormat:
+          description: ''
+          type: string
+        effectiveNameFormat:
+          description: ''
+          type: string
+        effectiveTimeFormat:
+          description: ''
+          type: string
+        effectiveTimeZone:
+          description: ''
+          type: string
+        initialFormat:
+          description: 'When a user is required to enter their initials,
+
+            this property
+
+            specifies how initials are rendered.
+
+            The examples show the
+
+            initials for "William Henry Gates".
+
+
+
+            - `first1last1`<br> "WG"
+
+            - `last2`<br> "GA"
+
+            - `first2`<br> "WI"
+
+            - `last2_cjk`<br> first two characters from last name in CJK characters.
+
+
+            <!-- Components/BusinessObjects/Models/ConcealedApiRestModels/localePolicyEnums.cs -->
+
+            '
+          type: string
+        initialFormatMetadata:
+          $ref: '#/components/schemas/settingsMetadata'
+          description: Metadata that indicates whether the `initialFormat` property is editable.
+        nameFormat:
+          description: 'Describes how names are displayed. Valid values:
+
+
+            - `first_middle_last`<br>William Henry Gates
+
+            - `full`<br>Mr William Henry Gates III
+
+            - `last_first`<br>Gates William
+
+            - `lastfirst`<br>GatesWilliam
+
+            - `last_first_cjk`<br>Gates William only with CJK characters
+
+            - `lastfirst_cjk`<br>GatesWilliam only with CJK characters
+
+
+            <!-- Web/RestApi/Models/v2_1/localePolicy.cs#L341-L366 -->
+
+            '
+          type: string
+        nameFormatMetadata:
+          $ref: '#/components/schemas/settingsMetadata'
+          description: Metadata that indicates whether the `nameFormat` property is editable.
+        signDateFormat:
+          description: 'The format for the signature date. Valid values are:
+
+
+            - `d/M/yyyy`
+
+            - `dd-MM-yy`
+
+            - `dd-MMM-yy`
+
+            - `dd-MM-yyyy`
+
+            - `dd.MM.yyyy`
+
+            - `dd-MMM-yyyy`
+
+            - `dd MMMM yyyy`
+
+            - `M/d/yyyy`
+
+            - `MM-dd-yyyy`
+
+            - `MM/dd/yyyy`
+
+            - `MM/dd/yy`
+
+            - `MMM-dd-yyyy`
+
+            - `MMM d, yyyy`
+
+            - `MMMM d, yyyy`
+
+            - `yyyy-MM-dd`
+
+            - `yyyy-MMM-dd`
+
+            - `yyyy/MM/dd`
+
+            - `yyyy MMMM d`
+
+
+            **Note:** Only Admin users can change this setting.
+
+            '
+          type: string
+        signDateFormatMetadata:
+          $ref: '#/components/schemas/settingsMetadata'
+          description: 'Metadata that indicates whether the `signDateFormat` property is editable.
+
+            '
+        signTimeFormat:
+          description: 'The format for the signature time. Valid values are:
+
+
+            - `none`
+
+            - `HH:mm`
+
+            - `h:mm`
+
+            - `HH:mm:ss`
+
+            - `h:mm:ss`
+
+            '
+          type: string
+        signTimeFormatMetadata:
+          $ref: '#/components/schemas/settingsMetadata'
+          description: 'Metadata that indicates whether the `signTimeFormat` property is editable.
+
+            '
+        timeFormat:
+          description: "Specifies the time format. Valid values:\n\n- `none`      <br>None\n- `hh_mm`     <br>hh:mm \n- `hhmm`      <br>HH:mm\n- `hhmmss`    <br>HH:mm:ss\n- `hhmmsstt`  <br>HH:mm:ss tt\n- `hhmmtt`    <br> HH:mm tt\n- `hmm`       <br>h:mm\n- `hmmss`     <br>h:mm:ss\n- `hmmsstt`   <br>h:mm:ss tt\n- `hmmtt`     <br>h:mm tt\n- `custom`    <br>Customer-set format\n\n<!-- Web/RestApi/Models/v2_1/localePolicy.cs#L501-L546 -->"
+          type: string
+        timeFormatMetadata:
+          $ref: '#/components/schemas/settingsMetadata'
+          description: Metadata that indicates whether the `timeFormat` property is editable.
+        timeZone:
+          description: 'Specifies the time zone. Valid values:
+
+
+            - `TZ_01_AfghanistanStandardTime`
+
+            - `TZ_02_AlaskanStandardTime`
+
+            - `TZ_03_ArabStandardTime`
+
+            - `TZ_04_ArabianStandardTime`
+
+            - `TZ_05_ArabicStandardTime`
+
+            - `TZ_06_ArgentinaStandardTime`
+
+            - `TZ_07_AtlanticStandardTime`
+
+            - `TZ_08_AUS_CentralStandardTime`
+
+            - `TZ_09_AUS_EasternStandardTime`
+
+            - `TZ_10_AzerbaijanStandardTime`
+
+            - `TZ_11_AzoresStandardTime`
+
+            - `TZ_12_BangladeshStandardTime`
+
+            - `TZ_13_CanadaCentralStandardTime`
+
+            - `TZ_14_CapeVerdeStandardTime`
+
+            - `TZ_15_CaucasusStandardTime`
+
+            - `TZ_16_CentralAustraliaStandardTime`
+
+            - `TZ_17_CentralAmericaStandardTime`
+
+            - `TZ_18_CentralAsiaStandardTime`
+
+            - `TZ_19_CentralBrazilianStandardTime`
+
+            - `TZ_20_CentralEuropeStandardTime`
+
+            - `TZ_21_CentralEuropeanStandardTime`
+
+            - `TZ_22_CentralPacificStandardTime`
+
+            - `TZ_23_CentralStandardTime`
+
+            - `TZ_24_CentralStandardTimeMexico`
+
+            - `TZ_25_ChinaStandardTime`
+
+            - `TZ_26_DatelineStandardTime`
+
+            - `TZ_27_E_AfricaStandardTime`
+
+            - `TZ_28_E_AustraliaStandardTime`
+
+            - `TZ_29_E_EuropeStandardTime`
+
+            - `TZ_30_E_SouthAmericaStandardTime`
+
+            - `TZ_31_EasternStandardTime`
+
+            - `TZ_32_EgyptStandardTime`
+
+            - `TZ_33_EkaterinburgStandardTime`
+
+            - `TZ_34_FijiStandardTime`
+
+            - `TZ_35_FLE_StandardTime`
+
+            - `TZ_36_GeorgianStandardTime`
+
+            - `TZ_37_GMT_StandardTime`
+
+            - `TZ_38_GreenlandStandardTime`
+
+            - `TZ_39_GreenwichStandardTime`
+
+            - `TZ_40_GTB_StandardTime`
+
+            - `TZ_41_HawaiianStandardTime`
+
+            - `TZ_42_IndiaStandardTime`
+
+            - `TZ_43_IranStandardTime`
+
+            - `TZ_44_IsraelStandardTime`
+
+            - `TZ_45_JordanStandardTime`
+
+            - `TZ_46_KaliningradStandardTime`
+
+            - `TZ_47_KamchatkaStandardTime`
+
+            - `TZ_48_KoreaStandardTime`
+
+            - `TZ_49_MagadanStandardTime`
+
+            - `TZ_50_MauritiusStandardTime`
+
+            - `TZ_51_MidAtlanticStandardTime`
+
+            - `TZ_52_MiddleEastStandardTime`
+
+            - `TZ_53_MontevideoStandardTime`
+
+            - `TZ_54_MoroccoStandardTime`
+
+            - `TZ_55_MountainStandardTime`
+
+            - `TZ_56_MountainStandardTimeMMexico`
+
+            - `TZ_57_MyanmarStandardTime`
+
+            - `TZ_58_N_CentralAsiaStandardTime`
+
+            - `TZ_59_NamibiaStandardTime`
+
+            - `TZ_60_NepalStandardTime`
+
+            - `TZ_61_NewZealandStandardTime`
+
+            - `TZ_62_NewfoundlandStandardTime`
+
+            - `TZ_63_NorthAsiaEastStandardTime`
+
+            - `TZ_64_NorthAsiaStandardTime`
+
+            - `TZ_65_PacificSAStandardTime`
+
+            - `TZ_66_PacificStandardTime`
+
+            - `TZ_67_PacificStandardTimeMexico`
+
+            - `TZ_68_PakistanStandardTime`
+
+            - `TZ_69_ParaguayStandardTime`
+
+            - `TZ_70_RomanceStandardTime`
+
+            - `TZ_71_RussianStandardTime`
+
+            - `TZ_72_SAEasternStandardTime`
+
+            - `TZ_73_SAPacificStandardTime`
+
+            - `TZ_74_SAWesternStandardTime`
+
+            - `TZ_75_SamoaStandardTime`
+
+            - `TZ_76_SE_AsiaStandardTime`
+
+            - `TZ_77_SingaporeStandardTime`
+
+            - `TZ_78_SouthAfricaStandardTime`
+
+            - `TZ_79_SriLankaStandardTime`
+
+            - `TZ_80_SyriaStandardTime`
+
+            - `TZ_81_TaipeiStandardTime`
+
+            - `TZ_82_TasmaniaStandardTime`
+
+            - `TZ_83_TokyoStandardTime`
+
+            - `TZ_84_TongaStandardTime`
+
+            - `TZ_85_TurkeyStandardTime`
+
+            - `TZ_86_UlaanbaatarStandardTime`
+
+            - `TZ_87_US_EasternStandardTime`
+
+            - `TZ_88_USMountainStandardTime`
+
+            - `TZ_89_VenezuelaStandardTime`
+
+            - `TZ_90_VladivostokStandardTime`
+
+            - `TZ_91_W_AustraliaStandardTime`
+
+            - `TZ_92_W_CentralAfricaStandardTime`
+
+            - `TZ_93_W_EuropeStandardTime`
+
+            - `TZ_94_WestAsiaStandardTime`
+
+            - `TZ_95_WestPacificStandardTime`
+
+            - `TZ_96_YakutskStandardTime`
+
+            '
+          type: string
+        timeZoneMetadata:
+          $ref: '#/components/schemas/settingsMetadata'
+          description: Metadata that indicates whether the `timeZone` property is editable.
+      x-ds-definition-name: localePolicy
+      description: ''
+      x-ms-summary: ''
+    userAccountManagementGranularInformation:
+      type: object
+      properties:
+        canManageAccountSecuritySettings:
+          description: '**True** if the user can manage account security settings.'
+          type: string
+        canManageAccountSecuritySettingsMetadata:
+          $ref: '#/components/schemas/settingsMetadata'
+          description: ''
+        canManageAccountSettings:
+          description: '**True** if the user can manage account settings.'
+          type: string
+        canManageAccountSettingsMetadata:
+          $ref: '#/components/schemas/settingsMetadata'
+          description: ''
+        canManageAdmins:
+          description: '**True** if the user can manage administrators.'
+          type: string
+        canManageAdminsMetadata:
+          $ref: '#/components/schemas/settingsMetadata'
+          description: 'Metadata that indicates whether the `canManageAdmins` property is editable.
+
+            '
+        canManageConnect:
+          description: ''
+          type: string
+        canManageConnectMetadata:
+          $ref: '#/components/schemas/settingsMetadata'
+          description: ''
+        canManageDocumentRetention:
+          description: ''
+          type: string
+        canManageDocumentRetentionMetadata:
+          $ref: '#/components/schemas/settingsMetadata'
+          description: ''
+        canManageEnvelopeTransfer:
+          description: ''
+          type: string
+        canManageEnvelopeTransferMetadata:
+          $ref: '#/components/schemas/settingsMetadata'
+          description: ''
+        canManageGroupsButNotUsers:
+          description: ''
+          type: string
+        canManageGroupsButNotUsersMetadata:
+          $ref: '#/components/schemas/settingsMetadata'
+          description: ''
+        canManageJointAgreements:
+          description: ''
+          type: string
+        canManageJointAgreementsMetadata:
+          $ref: '#/components/schemas/settingsMetadata'
+          description: ''
+        canManageReporting:
+          description: '**True** if the user can manage reporting.'
+          type: string
+        canManageReportingMetadata:
+          $ref: '#/components/schemas/settingsMetadata'
+          description: ''
+        canManageSharing:
+          description: '**True** if the user can manage sharing.'
+          type: string
+        canManageSharingMetadata:
+          $ref: '#/components/schemas/settingsMetadata'
+          description: 'Metadata that indicates whether the `canManageSharing` property is editable.
+
+            '
+        canManageSigningGroups:
+          description: '**True** if the user can manage signing groups.'
+          type: string
+        canManageSigningGroupsMetadata:
+          $ref: '#/components/schemas/settingsMetadata'
+          description: ''
+        canManageStamps:
+          description: ''
+          type: string
+        canManageStampsMetadata:
+          $ref: '#/components/schemas/settingsMetadata'
+          description: ''
+        canManageUsers:
+          description: '**True** if the user can manage users.'
+          type: string
+        canManageUsersMetadata:
+          $ref: '#/components/schemas/settingsMetadata'
+          description: 'Metadata that indicates whether the `canManageUsers` property is editable.
+
+            '
+        canViewUsers:
+          description: ''
+          type: string
+      description: Describes which account management capabilities a user has.
+      x-ds-definition-name: userAccountManagementGranularInformation
+      x-ms-summary: Describes which account management capabilities a user has.
+    newUsersSummary:
+      type: object
+      properties:
+        newUsers:
+          description: A list of one or more new users.
+          type: array
+          items:
+            $ref: '#/components/schemas/newUser'
+      description: Object representing a summary of data for new users.
+      x-ds-definition-name: newUsersSummary
+      x-ms-summary: Object representing a summary of data for new users.
+    sealIdentifier:
+      type: object
+      properties:
+        sealDisplayName:
+          description: The user-friendly display name for a seal.
+          type: string
+        sealName:
+          description: The name of a seal.
+          type: string
+      x-ds-definition-name: sealIdentifier
+      description: ''
+      x-ms-summary: ''
+    LockedOutDetails:
+      required:
+      - reason
+      type: object
+      properties:
+        reason:
+          type: string
+          description: The reason the account was locked.
+      description: Details about a locked account.
+      x-ds-definition-name: LockedOutDetails
+      x-ms-summary: Details about a locked account.
+    userInformationList_2:
+      type: object
+      properties:
+        endPosition:
+          type: string
+          description: 'The last position in the result set. '
+        nextUri:
+          type: string
+          description: 'The URI for the next chunk of records based on the search request. It is `null` if this is the last set of results for the search. '
+        previousUri:
+          type: string
+          description: 'The URI for the prior chunk of records based on the search request. It is `null` if this is the first set of results for the search. '
+        resultSetSize:
+          type: string
+          description: 'The number of results returned in this response. '
+        startPosition:
+          type: string
+          description: Starting position of the current result set.
+        totalSetSize:
+          type: string
+          description: The total number of items in the search's result set. It will always be greater than or equal to the value of the `resultSetSize` field.
+        users:
+          type: array
+          description: ''
+          items:
+            $ref: '#/components/schemas/userInformation_2'
+      description: ''
+      x-ds-definition-name: userInformationList
+      x-ms-summary: ''
+    settingsMetadata_2:
       type: object
       properties:
         is21CFRPart11:
@@ -1834,626 +4797,6 @@ components:
           description: ''
       description: ''
       x-ds-definition-name: settingsMetadata
-      x-ms-summary: ''
-    forgottenPasswordInformation:
-      type: object
-      properties:
-        forgottenPasswordAnswer1:
-          type: string
-          description: The answer to the first forgotten password challenge question.
-        forgottenPasswordAnswer2:
-          type: string
-          description: The answer to the second forgotten password challenge question.
-        forgottenPasswordAnswer3:
-          type: string
-          description: The answer to the third forgotten password challenge question.
-        forgottenPasswordAnswer4:
-          type: string
-          description: The answer to the fourth forgotten password challenge question.
-        forgottenPasswordQuestion1:
-          type: string
-          description: The first challenge question presented to a user who has forgotten their password.
-        forgottenPasswordQuestion2:
-          type: string
-          description: The second challenge question presented to a user who has forgotten their password.
-        forgottenPasswordQuestion3:
-          type: string
-          description: The third challenge question presented to a user who has forgotten their password.
-        forgottenPasswordQuestion4:
-          type: string
-          description: The fourth challenge question presented to a user who has forgotten their password.
-      description: A complex element that has up to four Question/Answer pairs for forgotten password information.
-      x-ds-definition-name: forgottenPasswordInformation
-      x-ms-summary: A complex element that has up to four Question/Answer pairs for forgotten password information.
-    addressInformation_v2:
-      type: object
-      properties:
-        address1:
-          type: string
-          description: 'First Line of the address.
-
-            Maximum length: 100 characters.'
-        address2:
-          type: string
-          description: 'Second Line of the address.
-
-            Maximum length: 100 characters.'
-        city:
-          type: string
-          description: ''
-        country:
-          type: string
-          description: Specifies the country associated with the address.
-        fax:
-          type: string
-          description: ''
-        phone:
-          type: string
-          description: ''
-        postalCode:
-          type: string
-          description: ''
-        stateOrProvince:
-          type: string
-          description: The state or province associated with the address.
-      description: ''
-      x-ds-definition-name: addressInformation_v2
-      x-ms-summary: ''
-    userInfo:
-      type: object
-      properties:
-        activationAccessCode:
-          type: string
-          description: ''
-        email:
-          type: string
-          description: ''
-        errorDetails:
-          $ref: '#/components/schemas/errorDetails'
-        loginStatus:
-          type: string
-          description: ''
-        sendActivationEmail:
-          type: string
-          description: ''
-        uri:
-          type: string
-          description: ''
-        userId:
-          type: string
-          description: 'The user ID of the user being accessed. Generally this is the user ID of the authenticated user, but if the authenticated user is an Admin on the account, this may be another user the Admin user is accessing. **Note**: For the [GET /v2/accounts/{accountId}/envelopes](https://developers.docusign.com/esign-rest-api/reference/Envelopes/Envelopes/listStatusChanges/#envelopesInformation) method, the `user_id` query parameter is not implemented and should not be used.'
-        userName:
-          type: string
-          description: ''
-        userStatus:
-          type: string
-          description: 'Status of the user''s account. One of:
-
-
-            * ActivationRequired
-
-            * ActivationSent
-
-            * Active
-
-            * Closed
-
-            * Disabled
-
-            '
-        userType:
-          type: string
-          description: ''
-      description: ''
-      x-ds-definition-name: userInfo
-      x-ms-summary: ''
-    senderEmailNotifications:
-      type: object
-      properties:
-        changedSigner:
-          type: string
-          description: When set to **true**, the sender receives notification if the signer changes.
-        commentsOnlyPrivateAndMention:
-          type: string
-          description: ''
-        commentsReceiveAll:
-          type: string
-          description: ''
-        deliveryFailed:
-          type: string
-          description: When set to **true**, the sender receives notification if the delivery of the envelope fails.
-        envelopeComplete:
-          type: string
-          description: When set to **true**, the user receives notification that the envelope has been completed.
-        offlineSigningFailed:
-          type: string
-          description: When set to **true**, the user receives notification if the offline signing failed.
-        powerformResponsesLimitNotificationEmail:
-          type: string
-          description: ''
-        recipientViewed:
-          type: string
-          description: When set to **true**, the sender receives notification that the recipient viewed the enveloper.
-        senderEnvelopeDeclined:
-          type: string
-          description: ''
-        withdrawnConsent:
-          type: string
-          description: When set to **true**, the user receives notification if consent is withdrawn.
-      description: ''
-      x-ds-definition-name: senderEmailNotifications
-      x-ms-summary: ''
-    group:
-      type: object
-      properties:
-        errorDetails:
-          $ref: '#/components/schemas/errorDetails'
-        groupId:
-          type: string
-          description: The DocuSign group ID for the group.
-        groupName:
-          type: string
-          description: The name of the group.
-        groupType:
-          type: string
-          description: The group type.
-        permissionProfileId:
-          type: string
-          description: The ID of the permission profile associated with the group.
-        users:
-          type: array
-          description: List of users in the group.
-          items:
-            $ref: '#/components/schemas/userInfo'
-      description: Information about groups.
-      x-ds-definition-name: group
-      x-ms-summary: Information about groups.
-    userAccountManagementGranularInformation:
-      type: object
-      properties:
-        canManageAccountSecuritySettings:
-          type: string
-          description: ''
-        canManageAccountSecuritySettingsMetadata:
-          $ref: '#/components/schemas/settingsMetadata'
-        canManageAccountSettings:
-          type: string
-          description: ''
-        canManageAccountSettingsMetadata:
-          $ref: '#/components/schemas/settingsMetadata'
-        canManageAdmins:
-          type: string
-          description: '**True**
-
-            if the user can manage
-
-            admins.'
-        canManageAdminsMetadata:
-          $ref: '#/components/schemas/settingsMetadata'
-        canManageEnvelopeTransfer:
-          type: string
-          description: ''
-        canManageEnvelopeTransferMetadata:
-          $ref: '#/components/schemas/settingsMetadata'
-        canManageGroups:
-          type: string
-          description: '**True**
-
-            if the user can manage
-
-            groups.'
-        canManageGroupsMetadata:
-          $ref: '#/components/schemas/settingsMetadata'
-        canManageReporting:
-          type: string
-          description: ''
-        canManageReportingMetadata:
-          $ref: '#/components/schemas/settingsMetadata'
-        canManageSharing:
-          type: string
-          description: ''
-        canManageSharingMetadata:
-          $ref: '#/components/schemas/settingsMetadata'
-        canManageSigningGroups:
-          type: string
-          description: ''
-        canManageSigningGroupsMetadata:
-          $ref: '#/components/schemas/settingsMetadata'
-        canManageUsers:
-          type: string
-          description: '**True**
-
-            if the user can manage
-
-            users.'
-        canManageUsersMetadata:
-          $ref: '#/components/schemas/settingsMetadata'
-        canViewUsers:
-          type: string
-          description: ''
-        canViewUsersMetadata:
-          $ref: '#/components/schemas/settingsMetadata'
-      description: Describes which account management capabilities a user has.
-      x-ds-definition-name: userAccountManagementGranularInformation
-      x-ms-summary: Describes which account management capabilities a user has.
-    nameValue:
-      type: object
-      properties:
-        errorDetails:
-          $ref: '#/components/schemas/errorDetails'
-        name:
-          type: string
-          description: The name or key of a name/value pair.
-        originalValue:
-          type: string
-          description: 'The initial value of the tab when it was sent to the recipient. '
-        value:
-          type: string
-          description: The value field of a name/value pair.
-      description: ''
-      x-ds-definition-name: nameValue
-      x-ms-summary: ''
-    newUsersDefinition:
-      type: object
-      properties:
-        newUsers:
-          type: array
-          description: ''
-          items:
-            $ref: '#/components/schemas/userInformation'
-      description: ''
-      x-ds-definition-name: newUsersDefinition
-      x-ms-summary: ''
-    newUser:
-      type: object
-      properties:
-        apiPassword:
-          type: string
-          description: Contains a token that can be used for authentication in API calls instead of using the user name and password.
-        createdDateTime:
-          type: string
-          description: Indicates the date and time the item was created.
-        email:
-          type: string
-          description: ''
-        errorDetails:
-          $ref: '#/components/schemas/errorDetails'
-        membershipId:
-          type: string
-          description: ''
-        permissionProfileId:
-          type: string
-          description: ''
-        permissionProfileName:
-          type: string
-          description: ''
-        uri:
-          type: string
-          description: ''
-        userId:
-          type: string
-          description: Specifies the user ID for the new user.
-        userName:
-          type: string
-          description: ''
-        userStatus:
-          type: string
-          description: 'Status of the user''s account. One of:
-
-
-            * ActivationRequired
-
-            * ActivationSent
-
-            * Active
-
-            * Closed
-
-            * Disabled
-
-            '
-      description: ''
-      x-ds-definition-name: newUser
-      x-ms-summary: ''
-    errorDetails:
-      type: object
-      properties:
-        errorCode:
-          type: string
-          description: An error code associated with the error.
-        message:
-          type: string
-          description: A short error message.
-      description: This object describes errors that occur. It is only valid for responses, and ignored in requests.
-      x-ds-definition-name: errorDetails
-      x-ms-summary: This object describes errors that occur. It is only valid for responses, and ignored in requests.
-    userSettingsInformation:
-      type: object
-      properties:
-        accountManagementGranular:
-          $ref: '#/components/schemas/userAccountManagementGranularInformation'
-        senderEmailNotifications:
-          $ref: '#/components/schemas/senderEmailNotifications'
-        signerEmailNotifications:
-          $ref: '#/components/schemas/signerEmailNotifications'
-        userSettings:
-          type: array
-          description: ''
-          items:
-            $ref: '#/components/schemas/nameValue'
-      description: ''
-      x-ds-definition-name: userSettingsInformation
-      x-ms-summary: ''
-    userInformationList:
-      type: object
-      properties:
-        endPosition:
-          type: string
-          description: 'The last position in the result set. '
-        nextUri:
-          type: string
-          description: 'The URI for the next chunk of records based on the search request. It is `null` if this is the last set of results for the search. '
-        previousUri:
-          type: string
-          description: 'The URI for the prior chunk of records based on the search request. It is `null` if this is the first set of results for the search. '
-        resultSetSize:
-          type: string
-          description: 'The number of results returned in this response. '
-        startPosition:
-          type: string
-          description: Starting position of the current result set.
-        totalSetSize:
-          type: string
-          description: The total number of items in the search's result set. It will always be greater than or equal to the value of the `resultSetSize` field.
-        users:
-          type: array
-          description: ''
-          items:
-            $ref: '#/components/schemas/userInformation'
-      description: ''
-      x-ds-definition-name: userInformationList
-      x-ms-summary: ''
-    userInformation:
-      type: object
-      properties:
-        accountManagementGranular:
-          $ref: '#/components/schemas/userAccountManagementGranularInformation'
-        activationAccessCode:
-          type: string
-          description: ''
-        countryCode:
-          type: string
-          description: ''
-        createdDateTime:
-          type: string
-          description: Indicates the date and time the item was created.
-        customSettings:
-          type: array
-          description: The name/value pair information for the user custom setting.
-          items:
-            $ref: '#/components/schemas/nameValue'
-        email:
-          type: string
-          description: ''
-        enableConnectForUser:
-          type: string
-          description: 'Specifies whether the user is enabled for updates from DocuSign Connect. Valid values: true or false.'
-        errorDetails:
-          $ref: '#/components/schemas/errorDetails'
-        firstName:
-          type: string
-          description: "The user's first name. \nMaximum Length: 50 characters."
-        forgottenPasswordInfo:
-          $ref: '#/components/schemas/forgottenPasswordInformation'
-        groupList:
-          type: array
-          description: "A list of the group information for groups to add the user to. Group information can be found by calling [ML:GET group information]. The only required parameter is groupId. \n\nThe parameters are:\n\n* groupId - The DocuSign group ID for the group.\n* groupName - The name of the group\n* permissionProfileId - The ID of the permission profile associated with the group.\n* groupType - The group type.\n"
-          items:
-            $ref: '#/components/schemas/group'
-        homeAddress:
-          $ref: '#/components/schemas/addressInformation_v2'
-        initialsImageUri:
-          type: string
-          description: Contains the URI for an endpoint that you can use to retrieve the initials image.
-        isAdmin:
-          type: string
-          description: Determines if the feature set is actively set as part of the plan.
-        jobTitle:
-          type: string
-          description: ''
-        lastLogin:
-          type: string
-          description: The date-time when the user last logged on to the system.
-        lastName:
-          type: string
-          description: The recipient's last name.
-        loginStatus:
-          type: string
-          description: ''
-        middleName:
-          type: string
-          description: "The user's middle name. \nLimit: 50 characters."
-        password:
-          type: string
-          description: ''
-        passwordExpiration:
-          type: string
-          description: If password expiration is enabled, the date-time when the user's password expires.
-        permissionProfileId:
-          type: string
-          description: ''
-        permissionProfileName:
-          type: string
-          description: ''
-        profileImageUri:
-          type: string
-          description: ''
-        sendActivationEmail:
-          type: string
-          description: ''
-        sendActivationOnInvalidLogin:
-          type: string
-          description: 'When set to **true**, specifies that an additional activation email is sent to the user if they fail a log on before activating their account. '
-        signatureImageUri:
-          type: string
-          description: Contains the URI for an endpoint that you can use to retrieve the signature image.
-        subscribe:
-          type: string
-          description: ''
-        suffixName:
-          type: string
-          description: 'The suffix for the user''s name, such as Jr, IV, PhD, etc.
-
-
-            Limit: 50 characters. '
-        title:
-          type: string
-          description: The title of the user.
-        uri:
-          type: string
-          description: ''
-        userId:
-          type: string
-          description: 'The user ID of the user being accessed. Generally this is the user ID of the authenticated user, but if the authenticated user is an Admin on the account, this may be another user the Admin user is accessing. **Note**: For the [GET /v2/accounts/{accountId}/envelopes](https://developers.docusign.com/esign-rest-api/reference/Envelopes/Envelopes/listStatusChanges/#envelopesInformation) method, the `user_id` query parameter is not implemented and should not be used.'
-        userName:
-          type: string
-          description: ''
-        userProfileLastModifiedDate:
-          type: string
-          description: The date-time when the user's profile was last modified.
-        userSettings:
-          type: array
-          description: ''
-          items:
-            $ref: '#/components/schemas/nameValue'
-        userStatus:
-          type: string
-          description: 'Status of the user''s account. One of:
-
-
-            * ActivationRequired
-
-            * ActivationSent
-
-            * Active
-
-            * Closed
-
-            * Disabled
-
-            '
-        userType:
-          type: string
-          description: ''
-        workAddress:
-          $ref: '#/components/schemas/addressInformation_v2'
-      description: ''
-      x-ds-definition-name: userInformation
-      x-ms-summary: ''
-    userInfoList:
-      type: object
-      properties:
-        users:
-          type: array
-          description: ''
-          items:
-            $ref: '#/components/schemas/userInfo'
-      description: ''
-      x-ds-definition-name: userInfoList
-      x-ms-summary: ''
-    newUsersSummary:
-      type: object
-      properties:
-        newUsers:
-          type: array
-          description: ''
-          items:
-            $ref: '#/components/schemas/newUser'
-      description: ''
-      x-ds-definition-name: newUsersSummary
-      x-ms-summary: ''
-    signerEmailNotifications:
-      type: object
-      properties:
-        agentNotification:
-          type: string
-          description: When set to **true**, the user receives agent notification emails.
-        carbonCopyNotification:
-          type: string
-          description: When set to **true**, the user receives notifications of carbon copy deliveries.
-        certifiedDeliveryNotification:
-          type: string
-          description: When set to **true**, the user receives notifications of certified deliveries.
-        commentsOnlyPrivateAndMention:
-          type: string
-          description: ''
-        commentsReceiveAll:
-          type: string
-          description: ''
-        documentMarkupActivation:
-          type: string
-          description: When set to **true**, the user receives notification that document markup has been activated.
-        envelopeActivation:
-          type: string
-          description: When set to **true**, the user receives notification that the envelope has been activated.
-        envelopeComplete:
-          type: string
-          description: When set to **true**, the user receives notification that the envelope has been completed.
-        envelopeCorrected:
-          type: string
-          description: When set to **true**, the user receives notification that the envelope has been corrected.
-        envelopeDeclined:
-          type: string
-          description: When set to **true**, the user receives notification that the envelope has been declined.
-        envelopeVoided:
-          type: string
-          description: When set to **true**, the user receives notification that the envelope has been voided.
-        faxReceived:
-          type: string
-          description: 'Reserved:'
-        offlineSigningFailed:
-          type: string
-          description: When set to **true**, the user receives notification if the offline signing failed.
-        purgeDocuments:
-          type: string
-          description: When set to **true**, the user receives notification of document purges.
-        reassignedSigner:
-          type: string
-          description: When set to **true**, the user receives notification that the envelope has been reassigned.
-        whenSigningGroupMember:
-          type: string
-          description: ''
-      description: An array of email notifications that specifies the email the user receives when they are a sender. When the specific email notification is set to true, the user receives those types of email notifications from DocuSign. The user inherits the default account sender email notification settings when the user is created.
-      x-ds-definition-name: signerEmailNotifications
-      x-ms-summary: An array of email notifications that specifies the email the user receives when they are a sender. When the specific email notification is set to true, the user receives those types of email notifications from DocuSign. The user inherits the default account sender email notification settings when the user is created.
-    usersResponse:
-      type: object
-      properties:
-        endPosition:
-          type: string
-          description: 'The last position in the result set. '
-        nextUri:
-          type: string
-          description: 'The URI for the next chunk of records based on the search request. It is `null` if this is the last set of results for the search. '
-        previousUri:
-          type: string
-          description: 'The URI for the prior chunk of records based on the search request. It is `null` if this is the first set of results for the search. '
-        resultSetSize:
-          type: string
-          description: 'The number of results returned in this response. '
-        startPosition:
-          type: string
-          description: Starting position of the current result set.
-        totalSetSize:
-          type: string
-          description: The total number of items in the search's result set. It will always be greater than or equal to the value of the `resultSetSize` field.
-        users:
-          type: array
-          description: ''
-          items:
-            $ref: '#/components/schemas/userInfo'
-      description: ''
-      x-ds-definition-name: usersResponse
       x-ms-summary: ''
     UserToInvite:
       required:
@@ -2541,6 +4884,193 @@ components:
       description: This request object contains information about the user that you are inviting.
       x-ds-definition-name: UserToInvite
       x-ms-summary: This request object contains information about the user that you are inviting.
+    newUsersDefinition_2:
+      type: object
+      properties:
+        newUsers:
+          type: array
+          description: ''
+          items:
+            $ref: '#/components/schemas/userInformation_2'
+      description: ''
+      x-ds-definition-name: newUsersDefinition
+      x-ms-summary: ''
+    senderEmailNotifications_2:
+      type: object
+      properties:
+        changedSigner:
+          type: string
+          description: When set to **true**, the sender receives notification if the signer changes.
+        commentsOnlyPrivateAndMention:
+          type: string
+          description: ''
+        commentsReceiveAll:
+          type: string
+          description: ''
+        deliveryFailed:
+          type: string
+          description: When set to **true**, the sender receives notification if the delivery of the envelope fails.
+        envelopeComplete:
+          type: string
+          description: When set to **true**, the user receives notification that the envelope has been completed.
+        offlineSigningFailed:
+          type: string
+          description: When set to **true**, the user receives notification if the offline signing failed.
+        powerformResponsesLimitNotificationEmail:
+          type: string
+          description: ''
+        recipientViewed:
+          type: string
+          description: When set to **true**, the sender receives notification that the recipient viewed the enveloper.
+        senderEnvelopeDeclined:
+          type: string
+          description: ''
+        withdrawnConsent:
+          type: string
+          description: When set to **true**, the user receives notification if consent is withdrawn.
+      description: ''
+      x-ds-definition-name: senderEmailNotifications
+      x-ms-summary: ''
+    errorDetails_2:
+      type: object
+      properties:
+        errorCode:
+          type: string
+          description: An error code associated with the error.
+        message:
+          type: string
+          description: A short error message.
+      description: This object describes errors that occur. It is only valid for responses, and ignored in requests.
+      x-ds-definition-name: errorDetails
+      x-ms-summary: This object describes errors that occur. It is only valid for responses, and ignored in requests.
+    ClassicManagerPermissions:
+      type: object
+      properties:
+        isVisibleInTransactionRooms:
+          type: boolean
+          description: 'When **true,** the user is visible in company rooms.
+
+
+            **Note:** Inherited managers are automatically added to rooms and are visible in those rooms unless this setting is set to **false.** Inherited managers are users who oversee others and have the **auto-access to rooms of members the user manages** permission enabled.'
+        canDeleteCompanyRooms:
+          type: boolean
+          description: When **true,** the user can delete company rooms.
+        canDeleteCompanyDocuments:
+          type: boolean
+          description: When **true,** the user can delete company documents.
+        canManageCompanyRooms:
+          type: boolean
+          description: When **true,** the user can manage company rooms.
+        canManageCompanyAccount:
+          type: boolean
+          description: When **true,** the user can manage the company's account.
+        canManageCompanySharedLibrary:
+          type: boolean
+          description: When **true,** the user can manage the company's shared library.
+        canManageCompanyMembers:
+          type: boolean
+          description: When **true,** the user can manage other users on the company's account.
+        canCloseCompanyRooms:
+          type: boolean
+          description: When **true,** the user can close company rooms.
+        canApproveCompanyChecklists:
+          type: boolean
+          description: When **true,** the user can approve company checklists.
+        isCompanySystemAdmin:
+          type: boolean
+          description: When **true,** the user is a system administrator for the company.
+        isRegionManager:
+          type: boolean
+          description: When **true,** the user is a region manager.
+        isOfficeManager:
+          type: boolean
+          description: When **true,** the user is an office manager.
+        autoAccessToCompanyRooms:
+          type: boolean
+          description: When **true,** the user is automatically added to new company rooms and is visible in those rooms.
+      description: This object contains details about user permissions. These permissions are associated only with Rooms v5.
+      x-ds-definition-name: ClassicManagerPermissions
+      x-ms-summary: This object contains details about user permissions. These permissions are associated only with Rooms v5.
+    userSettingsInformation_2:
+      type: object
+      properties:
+        accountManagementGranular:
+          $ref: '#/components/schemas/userAccountManagementGranularInformation_2'
+        senderEmailNotifications:
+          $ref: '#/components/schemas/senderEmailNotifications_2'
+        signerEmailNotifications:
+          $ref: '#/components/schemas/signerEmailNotifications_2'
+        userSettings:
+          type: array
+          description: ''
+          items:
+            $ref: '#/components/schemas/nameValue_2'
+      description: ''
+      x-ds-definition-name: userSettingsInformation
+      x-ms-summary: ''
+    usersResponse_2:
+      type: object
+      properties:
+        endPosition:
+          type: string
+          description: 'The last position in the result set. '
+        nextUri:
+          type: string
+          description: 'The URI for the next chunk of records based on the search request. It is `null` if this is the last set of results for the search. '
+        previousUri:
+          type: string
+          description: 'The URI for the prior chunk of records based on the search request. It is `null` if this is the first set of results for the search. '
+        resultSetSize:
+          type: string
+          description: 'The number of results returned in this response. '
+        startPosition:
+          type: string
+          description: Starting position of the current result set.
+        totalSetSize:
+          type: string
+          description: The total number of items in the search's result set. It will always be greater than or equal to the value of the `resultSetSize` field.
+        users:
+          type: array
+          description: ''
+          items:
+            $ref: '#/components/schemas/userInfo_2'
+      description: ''
+      x-ds-definition-name: usersResponse
+      x-ms-summary: ''
+    addressInformation_v2:
+      type: object
+      properties:
+        address1:
+          type: string
+          description: 'First Line of the address.
+
+            Maximum length: 100 characters.'
+        address2:
+          type: string
+          description: 'Second Line of the address.
+
+            Maximum length: 100 characters.'
+        city:
+          type: string
+          description: ''
+        country:
+          type: string
+          description: Specifies the country associated with the address.
+        fax:
+          type: string
+          description: ''
+        phone:
+          type: string
+          description: ''
+        postalCode:
+          type: string
+          description: ''
+        stateOrProvince:
+          type: string
+          description: The state or province associated with the address.
+      description: ''
+      x-ds-definition-name: addressInformation_v2
+      x-ms-summary: ''
     User:
       type: object
       properties:
@@ -2627,18 +5157,105 @@ components:
       description: Contains details about a user.
       x-ds-definition-name: User
       x-ms-summary: Contains details about a user.
-    DesignatedOffice:
-      required:
-      - officeId
+    newUser_2:
       type: object
       properties:
-        officeId:
-          type: integer
-          description: (Required) The ID of the office. This is the ID that the system generated when you created the office.
-          format: int32
-      description: This object contains information about the office that you want to add a member to or remove a member from.
-      x-ds-definition-name: DesignatedOffice
-      x-ms-summary: This object contains information about the office that you want to add a member to or remove a member from.
+        apiPassword:
+          type: string
+          description: Contains a token that can be used for authentication in API calls instead of using the user name and password.
+        createdDateTime:
+          type: string
+          description: Indicates the date and time the item was created.
+        email:
+          type: string
+          description: ''
+        errorDetails:
+          $ref: '#/components/schemas/errorDetails_2'
+        membershipId:
+          type: string
+          description: ''
+        permissionProfileId:
+          type: string
+          description: ''
+        permissionProfileName:
+          type: string
+          description: ''
+        uri:
+          type: string
+          description: ''
+        userId:
+          type: string
+          description: Specifies the user ID for the new user.
+        userName:
+          type: string
+          description: ''
+        userStatus:
+          type: string
+          description: 'Status of the user''s account. One of:
+
+
+            * ActivationRequired
+
+            * ActivationSent
+
+            * Active
+
+            * Closed
+
+            * Disabled
+
+            '
+      description: ''
+      x-ds-definition-name: newUser
+      x-ms-summary: ''
+    userInfo_2:
+      type: object
+      properties:
+        activationAccessCode:
+          type: string
+          description: ''
+        email:
+          type: string
+          description: ''
+        errorDetails:
+          $ref: '#/components/schemas/errorDetails_2'
+        loginStatus:
+          type: string
+          description: ''
+        sendActivationEmail:
+          type: string
+          description: ''
+        uri:
+          type: string
+          description: ''
+        userId:
+          type: string
+          description: 'The user ID of the user being accessed. Generally this is the user ID of the authenticated user, but if the authenticated user is an Admin on the account, this may be another user the Admin user is accessing. **Note**: For the [GET /v2/accounts/{accountId}/envelopes](https://developers.docusign.com/esign-rest-api/reference/Envelopes/Envelopes/listStatusChanges/#envelopesInformation) method, the `user_id` query parameter is not implemented and should not be used.'
+        userName:
+          type: string
+          description: ''
+        userStatus:
+          type: string
+          description: 'Status of the user''s account. One of:
+
+
+            * ActivationRequired
+
+            * ActivationSent
+
+            * Active
+
+            * Closed
+
+            * Disabled
+
+            '
+        userType:
+          type: string
+          description: ''
+      description: ''
+      x-ds-definition-name: userInfo
+      x-ms-summary: ''
     ApiError:
       type: object
       properties:
@@ -2654,6 +5271,83 @@ components:
       description: This object describes errors that occur. It is valid only for responses and ignored in requests.
       x-ds-definition-name: ApiError
       x-ms-summary: This object describes errors that occur. It is valid only for responses and ignored in requests.
+    userInfoList_2:
+      type: object
+      properties:
+        users:
+          type: array
+          description: ''
+          items:
+            $ref: '#/components/schemas/userInfo_2'
+      description: ''
+      x-ds-definition-name: userInfoList
+      x-ms-summary: ''
+    DesignatedOffice:
+      required:
+      - officeId
+      type: object
+      properties:
+        officeId:
+          type: integer
+          description: (Required) The ID of the office. This is the ID that the system generated when you created the office.
+          format: int32
+      description: This object contains information about the office that you want to add a member to or remove a member from.
+      x-ds-definition-name: DesignatedOffice
+      x-ms-summary: This object contains information about the office that you want to add a member to or remove a member from.
+    signerEmailNotifications_2:
+      type: object
+      properties:
+        agentNotification:
+          type: string
+          description: When set to **true**, the user receives agent notification emails.
+        carbonCopyNotification:
+          type: string
+          description: When set to **true**, the user receives notifications of carbon copy deliveries.
+        certifiedDeliveryNotification:
+          type: string
+          description: When set to **true**, the user receives notifications of certified deliveries.
+        commentsOnlyPrivateAndMention:
+          type: string
+          description: ''
+        commentsReceiveAll:
+          type: string
+          description: ''
+        documentMarkupActivation:
+          type: string
+          description: When set to **true**, the user receives notification that document markup has been activated.
+        envelopeActivation:
+          type: string
+          description: When set to **true**, the user receives notification that the envelope has been activated.
+        envelopeComplete:
+          type: string
+          description: When set to **true**, the user receives notification that the envelope has been completed.
+        envelopeCorrected:
+          type: string
+          description: When set to **true**, the user receives notification that the envelope has been corrected.
+        envelopeDeclined:
+          type: string
+          description: When set to **true**, the user receives notification that the envelope has been declined.
+        envelopeVoided:
+          type: string
+          description: When set to **true**, the user receives notification that the envelope has been voided.
+        faxReceived:
+          type: string
+          description: 'Reserved:'
+        offlineSigningFailed:
+          type: string
+          description: When set to **true**, the user receives notification if the offline signing failed.
+        purgeDocuments:
+          type: string
+          description: When set to **true**, the user receives notification of document purges.
+        reassignedSigner:
+          type: string
+          description: When set to **true**, the user receives notification that the envelope has been reassigned.
+        whenSigningGroupMember:
+          type: string
+          description: ''
+      description: An array of email notifications that specifies the email the user receives when they are a sender. When the specific email notification is set to true, the user receives those types of email notifications from DocuSign. The user inherits the default account sender email notification settings when the user is created.
+      x-ds-definition-name: signerEmailNotifications
+      x-ms-summary: An array of email notifications that specifies the email the user receives when they are a sender. When the specific email notification is set to true, the user receives those types of email notifications from DocuSign. The user inherits the default account sender email notification settings when the user is created.
     DesignatedRegion:
       required:
       - regionId
@@ -2666,196 +5360,264 @@ components:
       description: This object contains information about the region associated with the member.
       x-ds-definition-name: DesignatedRegion
       x-ms-summary: This object contains information about the region associated with the member.
-    UserSummary:
+    group_2:
       type: object
       properties:
-        userId:
-          type: integer
-          description: The ID of the user.
-          format: int32
-          readOnly: true
+        errorDetails:
+          $ref: '#/components/schemas/errorDetails_2'
+        groupId:
+          type: string
+          description: The DocuSign group ID for the group.
+        groupName:
+          type: string
+          description: The name of the group.
+        groupType:
+          type: string
+          description: The group type.
+        permissionProfileId:
+          type: string
+          description: The ID of the permission profile associated with the group.
+        users:
+          type: array
+          description: List of users in the group.
+          items:
+            $ref: '#/components/schemas/userInfo_2'
+      description: Information about groups.
+      x-ds-definition-name: group
+      x-ms-summary: Information about groups.
+    userInformation_2:
+      type: object
+      properties:
+        accountManagementGranular:
+          $ref: '#/components/schemas/userAccountManagementGranularInformation_2'
+        activationAccessCode:
+          type: string
+          description: ''
+        countryCode:
+          type: string
+          description: ''
+        createdDateTime:
+          type: string
+          description: Indicates the date and time the item was created.
+        customSettings:
+          type: array
+          description: The name/value pair information for the user custom setting.
+          items:
+            $ref: '#/components/schemas/nameValue_2'
         email:
           type: string
-          description: The user's email address.
-          readOnly: true
+          description: ''
+        enableConnectForUser:
+          type: string
+          description: 'Specifies whether the user is enabled for updates from DocuSign Connect. Valid values: true or false.'
+        errorDetails:
+          $ref: '#/components/schemas/errorDetails_2'
         firstName:
           type: string
-          description: The user's first name.
-          readOnly: true
+          description: "The user's first name. \nMaximum Length: 50 characters."
+        forgottenPasswordInfo:
+          $ref: '#/components/schemas/forgottenPasswordInformation'
+        groupList:
+          type: array
+          description: "A list of the group information for groups to add the user to. Group information can be found by calling [ML:GET group information]. The only required parameter is groupId. \n\nThe parameters are:\n\n* groupId - The DocuSign group ID for the group.\n* groupName - The name of the group\n* permissionProfileId - The ID of the permission profile associated with the group.\n* groupType - The group type.\n"
+          items:
+            $ref: '#/components/schemas/group_2'
+        homeAddress:
+          $ref: '#/components/schemas/addressInformation_v2'
+        initialsImageUri:
+          type: string
+          description: Contains the URI for an endpoint that you can use to retrieve the initials image.
+        isAdmin:
+          type: string
+          description: Determines if the feature set is actively set as part of the plan.
+        jobTitle:
+          type: string
+          description: ''
+        lastLogin:
+          type: string
+          description: The date-time when the user last logged on to the system.
         lastName:
           type: string
-          description: The user's last name.
-          readOnly: true
-        isLockedOut:
-          type: boolean
-          description: When **true,** an administrator has locked the user's account. For example, an administrator might want to lock an agent's account after they leave the brokerage until they determine how to transfer the agent's rooms and data to another active user.
-          readOnly: true
-        status:
+          description: The recipient's last name.
+        loginStatus:
           type: string
-          description: 'The user''s status. Possible values are:
-
-
-            - `Active`
-
-            - `Pending`'
-          readOnly: true
-        accessLevel:
-          type: string
-          description: 'The user''s level of access to the account. This property determines what the user can see in the system.
-
-
-            In contrast, a user''s permissions determine the actions that they can take in a room. For example, a user who has `accessLevel` set to `Company` can see all of the rooms associated with their company. However, if they do not have a role for which the **Add documents to room** permission is set to **true,** they can''t add documents to those rooms.
-
-
-            Valid values are:
-
-
-            - `Company`: The user has access to rooms, and if they have permission to manage users, they have access to users across the entire company. What they can do in the rooms and with users is controlled by their permissions. This is the default for the Users::InviteClassicAdmin method.
-
-            - `Region`: The user has access to rooms and, if they have permission to manage users, they have access to users across their regions.
-
-            - `Office`: The user has access to rooms and, if they have permission to manage users, they have access to users across their offices.
-
-            - `Contributor`: The user has access only to their own rooms and those to which they are invited. They cannot perform any user management actions because they do not oversee other users. For example, agents typically have the `Contributor` access level.
-
-
-            **Note:** In requests, the values that you may use for this property depend on your permissions and whether you can add users at your access level or lower.'
-          enum:
-          - Contributor
-          - Office
-          - Region
-          - Company
-          - Admin
-        defaultOfficeId:
-          type: integer
-          description: The ID of the user's default office.
-          format: int32
-          readOnly: true
-        titleId:
-          type: integer
-          description: This field is deprecated in Rooms Version 6.
-          format: int32
-          readOnly: true
-        roleId:
-          type: integer
-          description: 'The ID of the company role assigned to the user.
-
-
-            You can assign external roles to users who aren''t a part of your organization.'
-          format: int32
-          readOnly: true
-        profileImageUrl:
-          type: string
-          description: The URL for the user's profile image.
-          readOnly: true
-      description: Contains details about a user.
-      x-ds-definition-name: UserSummary
-      x-ms-summary: Contains details about a user.
-    UserForUpdate:
-      required:
-      - defaultOfficeId
-      type: object
-      properties:
-        defaultOfficeId:
-          type: integer
-          description: (Required) The ID of the user's default office.
-          format: int32
-      description: 'This request object contains the information to use to update a user''s default office. '
-      x-ds-definition-name: UserForUpdate
-      x-ms-summary: 'This request object contains the information to use to update a user''s default office. '
-    LockedOutDetails:
-      required:
-      - reason
-      type: object
-      properties:
-        reason:
-          type: string
-          description: The reason the account was locked.
-      description: Details about a locked account.
-      x-ds-definition-name: LockedOutDetails
-      x-ms-summary: Details about a locked account.
-    UserSummaryList:
-      type: object
-      properties:
-        userSummaries:
-          type: array
-          description: A list of users.
-          items:
-            $ref: '#/components/schemas/UserSummary'
-        resultSetSize:
-          type: integer
-          description: The number of results returned in this response.
-          format: int32
-        startPosition:
-          type: integer
-          description: The starting zero-based index position of the results set. When this property is used as a query parameter, the default value is `0`.
-          format: int32
-        endPosition:
-          type: integer
-          description: The last zero-based index position in the result set.
-          format: int32
-          readOnly: true
-        nextUri:
-          type: string
-          description: The URI for the next chunk of records based on the search request. This property is `null` for the last set of search results.
-        priorUri:
-          type: string
-          description: The URI for the previous chunk of records based on the search request. This property is `null` for the first set of search results.
-        totalRowCount:
-          type: integer
           description: ''
-          format: int32
-      description: Contains a list of users.
-      x-ds-definition-name: UserSummaryList
-      x-ms-summary: Contains a list of users.
-    ClassicManagerPermissions:
+        middleName:
+          type: string
+          description: "The user's middle name. \nLimit: 50 characters."
+        password:
+          type: string
+          description: ''
+        passwordExpiration:
+          type: string
+          description: If password expiration is enabled, the date-time when the user's password expires.
+        permissionProfileId:
+          type: string
+          description: ''
+        permissionProfileName:
+          type: string
+          description: ''
+        profileImageUri:
+          type: string
+          description: ''
+        sendActivationEmail:
+          type: string
+          description: ''
+        sendActivationOnInvalidLogin:
+          type: string
+          description: 'When set to **true**, specifies that an additional activation email is sent to the user if they fail a log on before activating their account. '
+        signatureImageUri:
+          type: string
+          description: Contains the URI for an endpoint that you can use to retrieve the signature image.
+        subscribe:
+          type: string
+          description: ''
+        suffixName:
+          type: string
+          description: 'The suffix for the user''s name, such as Jr, IV, PhD, etc.
+
+
+            Limit: 50 characters. '
+        title:
+          type: string
+          description: The title of the user.
+        uri:
+          type: string
+          description: ''
+        userId:
+          type: string
+          description: 'The user ID of the user being accessed. Generally this is the user ID of the authenticated user, but if the authenticated user is an Admin on the account, this may be another user the Admin user is accessing. **Note**: For the [GET /v2/accounts/{accountId}/envelopes](https://developers.docusign.com/esign-rest-api/reference/Envelopes/Envelopes/listStatusChanges/#envelopesInformation) method, the `user_id` query parameter is not implemented and should not be used.'
+        userName:
+          type: string
+          description: ''
+        userProfileLastModifiedDate:
+          type: string
+          description: The date-time when the user's profile was last modified.
+        userSettings:
+          type: array
+          description: ''
+          items:
+            $ref: '#/components/schemas/nameValue_2'
+        userStatus:
+          type: string
+          description: 'Status of the user''s account. One of:
+
+
+            * ActivationRequired
+
+            * ActivationSent
+
+            * Active
+
+            * Closed
+
+            * Disabled
+
+            '
+        userType:
+          type: string
+          description: ''
+        workAddress:
+          $ref: '#/components/schemas/addressInformation_v2'
+      description: ''
+      x-ds-definition-name: userInformation
+      x-ms-summary: ''
+    nameValue_2:
       type: object
       properties:
-        isVisibleInTransactionRooms:
-          type: boolean
-          description: 'When **true,** the user is visible in company rooms.
+        errorDetails:
+          $ref: '#/components/schemas/errorDetails_2'
+        name:
+          type: string
+          description: The name or key of a name/value pair.
+        originalValue:
+          type: string
+          description: 'The initial value of the tab when it was sent to the recipient. '
+        value:
+          type: string
+          description: The value field of a name/value pair.
+      description: ''
+      x-ds-definition-name: nameValue
+      x-ms-summary: ''
+    userAccountManagementGranularInformation_2:
+      type: object
+      properties:
+        canManageAccountSecuritySettings:
+          type: string
+          description: ''
+        canManageAccountSecuritySettingsMetadata:
+          $ref: '#/components/schemas/settingsMetadata_2'
+        canManageAccountSettings:
+          type: string
+          description: ''
+        canManageAccountSettingsMetadata:
+          $ref: '#/components/schemas/settingsMetadata_2'
+        canManageAdmins:
+          type: string
+          description: '**True**
 
+            if the user can manage
 
-            **Note:** Inherited managers are automatically added to rooms and are visible in those rooms unless this setting is set to **false.** Inherited managers are users who oversee others and have the **auto-access to rooms of members the user manages** permission enabled.'
-        canDeleteCompanyRooms:
-          type: boolean
-          description: When **true,** the user can delete company rooms.
-        canDeleteCompanyDocuments:
-          type: boolean
-          description: When **true,** the user can delete company documents.
-        canManageCompanyRooms:
-          type: boolean
-          description: When **true,** the user can manage company rooms.
-        canManageCompanyAccount:
-          type: boolean
-          description: When **true,** the user can manage the company's account.
-        canManageCompanySharedLibrary:
-          type: boolean
-          description: When **true,** the user can manage the company's shared library.
-        canManageCompanyMembers:
-          type: boolean
-          description: When **true,** the user can manage other users on the company's account.
-        canCloseCompanyRooms:
-          type: boolean
-          description: When **true,** the user can close company rooms.
-        canApproveCompanyChecklists:
-          type: boolean
-          description: When **true,** the user can approve company checklists.
-        isCompanySystemAdmin:
-          type: boolean
-          description: When **true,** the user is a system administrator for the company.
-        isRegionManager:
-          type: boolean
-          description: When **true,** the user is a region manager.
-        isOfficeManager:
-          type: boolean
-          description: When **true,** the user is an office manager.
-        autoAccessToCompanyRooms:
-          type: boolean
-          description: When **true,** the user is automatically added to new company rooms and is visible in those rooms.
-      description: This object contains details about user permissions. These permissions are associated only with Rooms v5.
-      x-ds-definition-name: ClassicManagerPermissions
-      x-ms-summary: This object contains details about user permissions. These permissions are associated only with Rooms v5.
+            admins.'
+        canManageAdminsMetadata:
+          $ref: '#/components/schemas/settingsMetadata_2'
+        canManageEnvelopeTransfer:
+          type: string
+          description: ''
+        canManageEnvelopeTransferMetadata:
+          $ref: '#/components/schemas/settingsMetadata_2'
+        canManageGroups:
+          type: string
+          description: '**True**
+
+            if the user can manage
+
+            groups.'
+        canManageGroupsMetadata:
+          $ref: '#/components/schemas/settingsMetadata_2'
+        canManageReporting:
+          type: string
+          description: ''
+        canManageReportingMetadata:
+          $ref: '#/components/schemas/settingsMetadata_2'
+        canManageSharing:
+          type: string
+          description: ''
+        canManageSharingMetadata:
+          $ref: '#/components/schemas/settingsMetadata_2'
+        canManageSigningGroups:
+          type: string
+          description: ''
+        canManageSigningGroupsMetadata:
+          $ref: '#/components/schemas/settingsMetadata_2'
+        canManageUsers:
+          type: string
+          description: '**True**
+
+            if the user can manage
+
+            users.'
+        canManageUsersMetadata:
+          $ref: '#/components/schemas/settingsMetadata_2'
+        canViewUsers:
+          type: string
+          description: ''
+        canViewUsersMetadata:
+          $ref: '#/components/schemas/settingsMetadata_2'
+      description: Describes which account management capabilities a user has.
+      x-ds-definition-name: userAccountManagementGranularInformation
+      x-ms-summary: Describes which account management capabilities a user has.
+    newUsersSummary_2:
+      type: object
+      properties:
+        newUsers:
+          type: array
+          description: ''
+          items:
+            $ref: '#/components/schemas/newUser_2'
+      description: ''
+      x-ds-definition-name: newUsersSummary
+      x-ms-summary: ''
   securitySchemes:
     accessCode:
       type: oauth2
@@ -2879,10 +5641,13 @@ components:
       description: 'JWT Authorization header using the Bearer scheme. Example: "Authorization: Bearer {token}"'
       name: Authorization
       in: header
+externalDocs:
+  description: See the Docusign eSignature REST API Guide for more information.
+  url: https://docs.docusign.com/esign
 x-refined-from:
 - docusign-admin-openapi-original.yml
-- docusign-openapi-original.yml
-- docusign-rooms-openapi-original.yml
+- docusign-openapi.json
+- docusign-users-api-openapi.yml
 x-ds-categories:
 - name: UserManagement
   summary: Methods to manage users in an account.

@@ -1,165 +1,397 @@
 openapi: 3.2.0
 info:
-  title: DocuSign REST Identity Verifications API
-  description: The DocuSign REST API provides you with a powerful, convenient, and simple Web services API for interacting with DocuSign.
+  version: v2.1
+  title: Docusign eSignature REST Identity Verifications API
+  description: The Docusign eSignature REST API provides you with a powerful, convenient, and simple Web services API for interacting with Docusign.
   termsOfService: https://www.docusign.com/company/terms-and-conditions/web
   contact:
-    name: DocuSign Developer Center
+    name: Docusign Developer Center
     url: https://developers.docusign.com/
     email: devcenter@docusign.com
-  version: v2
 servers:
 - url: https://www.docusign.net/restapi
 tags:
 - name: Identity Verifications
-  description: ''
+  description: 'The Docusign Identity Verification process requires a signer to submit an image of their valid government ID and wait for the image to be uploaded and verified before they can access a document.
+
+
+    Identity Verification supports government photo IDs and European eIDs, analyzing the document security features and matching the name on the agreement against the name on the ID. After a successful verification, the signer can view the agreement and sign as usual.
+
+
+    To use Identity Verification, the Docusign Identity Verification product must be enabled for your account.
+
+
+    For more information, see Digital ID Verification of Government-Issued IDs.'
 paths:
-  /v2/accounts/{accountId}/identity_verification:
+  /v2.1/accounts/{accountId}/identity_verification:
+    parameters: []
     get:
       tags:
       - Identity Verifications
+      summary: Retrieves the Identity Verification workflows available to an account
       operationId: AccountIdentityVerification_GetAccountIdentityVerification
       parameters:
       - name: accountId
         in: path
-        description: The external account number (int) or account id GUID.
+        description: The external account number (int) or account ID GUID.
         required: true
+        schema:
+          type: string
+      - name: identity_verification_workflow_status
+        in: query
+        required: false
+        description: 'Filters the workflows returned according to status. Valid values:
+
+
+          - `active`: Only active workflows are returned. This is the default.
+
+          - `deactivated`: Only deactivated workflows are returned.
+
+          - `all`: All workflows are returned.
+
+          '
         schema:
           type: string
       responses:
         '200':
           description: Successful response.
           content:
-            '*/*':
+            application/json:
               schema:
                 $ref: '#/components/schemas/accountIdentityVerificationResponse'
         '400':
           description: Error encountered.
           content:
-            '*/*':
+            application/json:
               schema:
                 $ref: '#/components/schemas/errorDetails'
       deprecated: false
       x-ds-methodname: getAccountIdentityVerification
+      description: 'This method returns a list of Identity Verification workflows that are available to an account.
+
+
+        **Note:** To use this method, you must either be an account administrator or a sender.
+
+
+        ### Related topics
+
+
+        - How to require ID Verification (IDV) for a recipient'
       x-ds-method: list
       x-ds-service: Uncategorized
       x-ds-in-sdk: true
-      summary: Account identity verification get account identity verification
-      x-summary-source: derived
 components:
   schemas:
-    accountIdentityVerificationStep:
+    signatureProviderRequiredOption:
       type: object
       properties:
-        name:
-          type: string
-          description: ''
-        type:
-          type: string
-          description: 'Type of the user. Valid values: type_owner, type_participant.'
-      description: ''
-      x-ds-definition-name: accountIdentityVerificationStep
-      x-ms-summary: ''
-    errorDetails:
-      type: object
-      properties:
-        errorCode:
-          type: string
-          description: An error code associated with the error.
-        message:
-          type: string
-          description: A short error message.
-      description: This object describes errors that occur. It is only valid for responses, and ignored in requests.
-      x-ds-definition-name: errorDetails
-      x-ms-summary: This object describes errors that occur. It is only valid for responses, and ignored in requests.
-    accountIdentityVerificationWorkflow:
-      type: object
-      properties:
-        defaultName:
-          type: string
-          description: ''
-        steps:
+        requiredSignatureProviderOptionIds:
+          description: Reserved for Docusign.
           type: array
-          description: ''
           items:
-            $ref: '#/components/schemas/accountIdentityVerificationStep'
-        workflowId:
+            type: string
+        signerType:
+          description: Reserved for Docusign.
           type: string
-          description: ''
-      description: ''
-      x-ds-definition-name: accountIdentityVerificationWorkflow
-      x-ms-summary: ''
+      description: Contains additional information that a specific signature provider requires.
+      x-ds-definition-name: signatureProviderRequiredOption
+      x-ms-summary: Contains additional information that a specific signature provider requires.
     accountIdentityVerificationResponse:
       type: object
       properties:
         identityVerification:
+          description: Specifies the ID Verification workflow applied on an envelope by workflow ID. <br/>See the [list](/docs/esign-rest-api/reference/accounts/identityverifications/list/) method in the [IdentityVerifications](/docs/esign-rest-api/reference/accounts/identityverifications/) resource for more information on how to retrieve workflow IDs available for an account. <br/>This can be used in addition to other [recipient authentication](https://support.docusign.com/s/document-item?bundleId=gav1643676262430&topicId=kzp1578456318101.html) methods. <br/>Note that ID Verification and ID Check are two distinct methods. ID Verification checks recipients' identity by verifying their ID while ID Check relies on data available on public records (such as current and former address).
           type: array
-          description: Specifies the ID Verification workflow applied on an envelope by workflow ID. <br/>See the [list](https://developers.docusign.com/esign-rest-api/reference/Accounts/IdentityVerifications/list) method in the [IdentityVerifications](https://developers.docusign.com/esign-rest-api/reference/Accounts/IdentityVerifications) resource for more information on how to retrieve workflow IDs available for an account. <br/>This can be used in addition to other [recipient authentication](https://support.docusign.com/en/guides/ndse-user-guide-recipient-authentication) methods. <br/>Note that ID Verification and ID Check are two distinct methods. ID Verification checks recipients' identity by verifying their ID while ID Check relies on data available on public records (such as current and former address).
           items:
             $ref: '#/components/schemas/accountIdentityVerificationWorkflow'
-      description: ''
       x-ds-definition-name: accountIdentityVerificationResponse
+      description: ''
+      x-ms-summary: ''
+    accountIdentityVerificationWorkflow:
+      type: object
+      properties:
+        defaultDescription:
+          description: Text describing the purpose of the Identity Verification workflow.
+          type: string
+        defaultName:
+          description: The name of the Identity Verification workflow.
+          type: string
+        displayOrder:
+          format: int32
+          description: The position on the page where the display section appears.
+          type: string
+        inputOptions:
+          description: ''
+          type: array
+          items:
+            $ref: '#/components/schemas/accountIdentityInputOption'
+        isDisabled:
+          description: When **true,** the workflow is disabled.
+          type: string
+        ownerType:
+          description: ''
+          type: string
+        signatureProvider:
+          $ref: '#/components/schemas/accountSignatureProvider'
+          description: The signature provider associated with the Identity Verification workflow.
+        workflowId:
+          description: 'Workflow unique ID</br>This is the ID you must specify when setting ID Verification in an envelope using the `identityVerification`
+
+            [core recipient parameter](/docs/esign-rest-api/reference/envelopes/enveloperecipients/#core-recipient-parameters)'
+          type: string
+        workflowLabel:
+          description: ''
+          type: string
+        workflowResourceKey:
+          description: Reserved for Docusign.
+          type: string
+      description: Specifies an Identity Verification workflow.
+      x-ds-definition-name: accountIdentityVerificationWorkflow
+      x-ms-summary: Specifies an Identity Verification workflow.
+    accountSignatureProvider:
+      type: object
+      properties:
+        isRequired:
+          description: Reserved for Docusign.
+          type: string
+        priority:
+          description: Reserved for Docusign.
+          type: string
+        signatureProviderDisplayName:
+          description: Reserved for Docusign.
+          type: string
+        signatureProviderId:
+          description: Reserved for Docusign.
+          type: string
+        signatureProviderName:
+          description: 'The name of an Electronic or Standards Based Signature (digital signature) provider for the signer to use. For details, see [the current provider list](/docs/esign-rest-api/esign101/concepts/standards-based-signatures/). You can also retrieve the list by using the [AccountSignatureProviders: List](/docs/esign-rest-api/reference/accounts/accountsignatureproviders/list/) method.
+
+
+            Example: `universalsignaturepen_default`
+
+
+            '
+          type: string
+        signatureProviderOptionsMetadata:
+          description: Reserved for Docusign.
+          type: array
+          items:
+            $ref: '#/components/schemas/accountSignatureProviderOption'
+        signatureProviderRequiredOptions:
+          description: Reserved for Docusign.
+          type: array
+          items:
+            $ref: '#/components/schemas/signatureProviderRequiredOption'
+      description: 'Contains information about the signature provider associated with the Identity Verification workflow.
+
+        If empty, then this specific workflow is not intended for signers.
+
+        '
+      x-ds-definition-name: accountSignatureProvider
+      x-ms-summary: 'Contains information about the signature provider associated with the Identity Verification workflow.
+
+        If empty, then this specific workflow is not intended for signers.
+
+        '
+    accountSignatureProviderOption:
+      type: object
+      properties:
+        signatureProviderOptionDisplayName:
+          description: Reserved for Docusign.
+          type: string
+        signatureProviderOptionHintOverrideValue:
+          description: ''
+          type: string
+        signatureProviderOptionId:
+          description: Reserved for Docusign.
+          type: string
+        signatureProviderOptionName:
+          description: Reserved for Docusign.
+          type: string
+        signatureProviderOptionRegexValidationPattern:
+          description: ''
+          type: string
+      description: Reserved for Docusign.
+      x-ds-definition-name: accountSignatureProviderOption
+      x-ms-summary: Reserved for Docusign.
+    errorDetails:
+      description: This object describes errors that occur. It is only valid for responses and ignored in requests.
+      type: object
+      properties:
+        errorCode:
+          description: The code associated with the error condition.
+          type: string
+        message:
+          description: A brief message describing the error condition.
+          type: string
+      x-ds-definition-name: errorDetails
+      x-ms-summary: This object describes errors that occur. It is only valid for responses and ignored in requests.
+    accountIdentityInputOption:
+      type: object
+      properties:
+        isRequired:
+          description: ''
+          type: boolean
+        optionName:
+          description: ''
+          type: string
+        valueType:
+          description: ''
+          type: string
+      x-ds-definition-name: accountIdentityInputOption
+      description: ''
       x-ms-summary: ''
 externalDocs:
-  description: See the DocuSign REST API Guide for more information.
+  description: See the Docusign eSignature REST API Guide for more information.
   url: https://docs.docusign.com/esign
 x-ds-allow-editing: false
 x-ds-categories:
-- name: Authentication
-  summary: Logging in and authentication
-  description: 'Use the Authentication category to manage various account login tasks including:
-
-
-    * Getting login information for a user.
-
-    * Managing linked social accounts.
-
-    * Getting and revoking OAuth tokens.'
 - name: Envelopes
-  summary: Creating and sending envelopes
-  description: 'The DocuSign API Envelope category includes the resources and methods for sending and managing envelopes and envelope data.
+  summary: This section shows you how to create and send envelopes.
+  description: 'The eSignature API Envelope category includes the resources and methods for sending and managing envelopes and envelope data.
 
 
-    Envelopes are the key objects within the DocuSign eSignature system. As a result, they are complex data structures with few required fields. See the [API Recipes](https://www.docusign.com/developer-center/recipes) for use case examples and their solutions.
+    Envelopes are the key objects in the Docusign platform. As a result, they are complex data structures with few required fields. See the [How-to guides](/docs/esign-rest-api/how-to/) for examples and solutions.
 
 
-    To create and send envelopes, see the [Envelopes resource](Envelopes).
-
+    To learn more about envelopes, see [Envelopes](/docs/esign-rest-api/esign101/concepts/envelopes/).
 
     '
 - name: Connect
-  summary: Connect configuration and logging
-  description: "The Connect category enables your application to be called via HTTPS when an event of interest occurs.\n\nUse the Connect service to \"end the polling madness.\" With Connect, there is no need for your application to poll DocuSign every 15 minutes to learn the latest about your envelopes.\n\nInstead, you register your interest in one or more types of envelope or recipient events. Then, when an interesting event occurs, the DocuSign platform will contact your application with the event's details and data. You can register interest in envelopes sent by particular users in your account, or for envelopes sent by any user.\n\n## Incoming Connect Calls\nTo use the Connect service, your application needs to provide an https url that can be called from the public internet. If your application runs on a server behind your organization's firewall, then you will need to create a \"pinhole\" in the firewall to allow the incoming Connect calls from DocuSign to reach your application. Other techniques for receiving the incoming calls including proxy servers and DMZ networking can also be used. \n\n## Per-envelope Connect Configuration\nInstead of registering a general Connect configuration and listener, an individual envelope can have its own Connect configuration. See the `eventNotification` field for envelopes.\n\n## Categories\nUse the Connect category for:\n\n* Programmatically creating Connect configurations. Connect configurations can be created manually by using the DocuSign web service, or programmatically via the API. Configurations created via the API can be seen and updated from the web service.\n* Retrieving and managing the event log for your Connect configurations. \n* Requesting that an event be re-published to the listener."
+  summary: "Docusign Connect is the Docusign platform notification service. The service uses webhooks to proactively notify your application when an event occurs that your application wants to know about. Docusign recommends that all applications use Connect instead of polling the Docusign Signature Service. This section provides information about Connect configuration and logging. \n\n**Note:** To make API calls to any of the Connect endpoints, you must be an account administrator.\n\nFor more information about Connect, see [Docusign Connect](/platform/webhooks/connect/) and [Custom Connect Configuration](https://support.docusign.com/s/document-item?bundleId=pik1583277475390&topicId=khw1583277390582.html)."
+  description: 'The Connect service enables your application to be called via
+
+    HTTPS when an event of interest occurs.
+
+
+    Use the Connect service to "end the polling madness." With
+
+    Connect, there is no need for your application to poll Docusign
+
+    every 15 minutes to learn the latest about your envelopes.
+
+
+    Instead, you register your interest in one or more types of
+
+    envelope or recipient events. Then, when an interesting event
+
+    occurs, the Docusign platform will contact your application with
+
+    the event''s details and data. You can register interest in
+
+    envelopes sent by particular users in your account, or for
+
+    envelopes sent by any user.
+
+
+    Connect can empower your organization to manage document actions
+
+    as they occur, and allows you to track their changes within your
+
+    own systems. Upon completion, envelope information, including
+
+    document content, can be stored in your own databases or CMS
+
+    systems, and these events can be triggered via webhooks
+
+    delivering messages to your application.
+
+
+    **Note:** To make API calls to any of the Connect endpoints, you must be an account administrator.
+
+
+    ## Incoming Connect Calls
+
+
+    To use the Connect service, your application needs to provide an
+
+    HTTPS URL that can be called from the public Internet. If your
+
+    application runs on a server behind your organization''s firewall,
+
+    then you will need to create a "pinhole" in the firewall to allow
+
+    the incoming Connect calls from Docusign to reach your
+
+    application. You can also use other techniques such as proxy
+
+    servers and DMZ networking for receiving the incoming calls.
+
+
+    Connect delivers events over HTTP requests in JSON or XML.
+
+    See [Docusign Connect overview](/platform/webhooks/connect/).
+
+
+    If your application is not configured to accept post messages,
+
+    Docusign will NOT return an additional post error response to
+
+    your listener application. If you''ve enabled logging on your
+
+    configuration, it will be logged in Admin under the configuration
+
+    failure log.
+
+
+    ## Per-envelope Connect Configuration
+
+
+    Instead of registering a general Connect configuration and
+
+    listener, an individual envelope can have its own Connect
+
+    configuration. See the
+
+    [`eventNotification`](/docs/esign-rest-api/reference/envelopes/envelopes/create/#schema__envelopedefinition_eventnotification)
+
+    property for envelopes.
+
+
+    ## Historical Publish Endpoint
+
+
+    To submit existing envelopes to an endpoint, use the [EnvelopePublish](/docs/esign-rest-api/reference/envelopes/envelopepublish/) resource.
+
+    '
 - name: Templates
   summary: Template creation and management
   description: 'Use the Templates category to manage your account''s templates.
 
 
-    You can:
+    This section shows you how to perform the following tasks:
 
 
     * Create, list, get, update, and delete templates.
 
-    * Manage templates'' notification and group sharing settings.
+    * Manage the notification and group sharing settings for templates.
 
     * Fetch and rotate pages from a document used by a template.
 
 
-    Templates can be created programmatically or can be created via the DocuSign web interface and then used by your application.'
+    You can create templates either programmatically or through the Docusign web interface and then used by your application.'
 - name: SigningGroups
-  summary: Send a signing request to a group of potential signers
-  description: 'Use the SigningGroup category to manage signing groups that allow you anyone in the group to sign a document.
+  summary: Send a signing request to a group of potential signers.
+  description: 'Use the Signing Group category to manage signing groups that allow anyone in the group to sign a document. When you send an envelope to a signing group, anyone in the group can open it and sign it with their own signature.
 
 
-    The category allows you create the signing group and manage the users in the group.'
+    This category shows account administrators how to create a signing group and manage the users in the group.
+
+
+    **Note:** To create and manage signing groups, you must be an account administrator.
+
+
+    For more information about this topic, see [Signing Groups](https://support.docusign.com/s/document-item?bundleId=gav1643676262430&topicId=zgn1578456447934.html).'
 - name: Folders
-  summary: Folders for completed envelopes
-  description: "Use the Folders category to manage envelopes in your folders. \n\nYou can list the folder contents and move envelopes between folders."
+  summary: Folders allow you to organize envelopes and templates.
+  description: 'Use the Folders category to organize envelopes and templates.
+
+    You can list the folder contents and move envelopes and templates between folders.'
 - name: CustomTabs
   summary: Custom tabs
   description: "Custom Tabs enable accounts to have one or more pre-configured (custom) tabs. Custom tabs save time when users are tagging documents since the users don't have to manually set the tabs' parameters.\n\nThis category enables custom tabs to be managed programmatically, including creation, deletion, etc. \n"
 - name: CloudStorage
-  summary: Cloud storage providers and user management
+  summary: This section shows you how to manage your cloud storage providers and users.
   description: 'Use the Cloud Storage category to list the user''s cloud storage document contents.
 
 
@@ -178,7 +410,7 @@ x-ds-categories:
 
     * Add delete users.
 
-    * Add and delete the intials and signature images for a user.'
+    * Add and delete the initials and signature images for a user.'
 - name: UserGroups
   summary: Group users for common permissions and branding
   description: 'Use the User Groups category to manage your permissions groups.
@@ -192,9 +424,28 @@ x-ds-categories:
     * Add users to, and delete users from, your groups.
 
     * Manage the brand information associated with a group.'
+- name: BulkEnvelopes
+  summary: Bulk envelopes
+  description: Use the BulkEnvelopes category to manage the sending of envelopes to multiple recipients.
 - name: Accounts
   summary: Account management
-  description: "Use the Account category for various account management tasks including:\n\n* Programmatically creating and deleting accounts.\n* Getting information about an account and its capabilities.\n* Branding the account with custom colors, message text, and more.\n* Account charges.\n\nThe Account category also includes end points for \n* Listing the recipient names associated with an email address that was used by the account. For example, a single email address is often shared by mulitple members of a family.\n\n\n"
+  description: 'Use the Account category for various account management tasks including:
+
+
+    * Programmatically creating and deleting accounts.
+
+    * Getting information about an account and its capabilities.
+
+    * Branding the account with custom colors, message text, and more.
+
+    * Account charges.
+
+
+    The Accounts category also includes end points for listing the recipient names associated with an email address that was used by the account. For example, a single email address is often shared by multiple members of a family.
+
+
+
+    '
 - name: Billing
   summary: Invoices
   description: 'Use the Billing category to manage the following billing related tasks:
@@ -216,18 +467,42 @@ x-ds-categories:
 
     * Getting information on the API''s resources and versions.'
 - name: PowerForms
-  summary: PowerForm creation and management
-  description: The PowerForms category enables PowerForms to be created and managed.
+  summary: The PowerForms category provides methods that enable you to create and manage fillable forms.
+  description: The PowerForms category enables you to create and manage PowerForms that you can use for self service and email forms.
 - name: Workspaces
-  summary: Workspace creation and management
-  description: 'Workspaces creation and management.
-
-
-    '
+  summary: A Docusign workspace is a collaboration area for sharing files and data.
+  description: "A workspace is a collaborative space for sharing documents and managing workflows. A workspace has a single owner who must be a Docusign user. The owner can invite others to the workspace as collaborators. Individuals who are not Docusign users must create a Docusign account to join a workspace as a collaborator.\n \nYou can create an envelope directly from a workspace.\n\nWorkspaces store the following information:\n\n- **Files:** Files uploaded to a workspace for storage or reuse.\n- **Documents:** A document is a component of a transaction, template, or workspace. When a file is added to a transaction, template, or workspace, it is copied as a document. Each document in a workspace has a single owner.\n- **Templates:** A set of documents that you can use to create a transaction or a workspace.\n- **Transactions:** A transaction is a series of workflow events related to one or more documents. These events route the documents to one or more individuals for the purposes of doing business. Each transaction has a single owner (the sender).\n\n**Note:** Documents in a template are not individually listed as files."
 - name: Payments
   summary: Manage Payments
   description: This category includes resources for managing payment gateways. Payment information is added to envelopes via methods in the Envelopes category.
-- name: Signature
+- name: EmailArchive
+  summary: This section shows you how to set and manage the BCC email addresses that you want to use to archive the emails that Docusign sends.
+  description: 'Email archives enable Docusign partners and other multi-account customers to easily archive emails sent through Docusign. The `EmailArchive` resource provides methods for managing your email archive configuration, which consists of the BCC email address or addresses that you want to use to archive Docusign emails. Each account can use up to five BCC email addresses for archiving purposes.
+
+
+    For more information, see [Email Archive Configuration](https://support.docusign.com/s/document-item?bundleId=pik1583277475390&topicId=xjm1583277371373.html).
+
+
+    **Note:** This feature is only available for certain account plans and must be enabled by Docusign.'
+- name: Notary
+  summary: 'Docusign eNotary makes the notarization process fully digital
+
+    for senders, signers, and notaries.
+
+    It enables a notary public to act as an in-person witness
+
+    to electronic signing of documents.
+
+    '
+  description: 'Docusign eNotary makes the notarization process fully digital
+
+    for senders, signers, and notaries.
+
+    It enables a notary public to act as an in-person witness
+
+    to electronic signing of documents.
+
+    '
+- name: Envelope
   summary: ''
   description: ''
-x-original-swagger-version: '2.0'

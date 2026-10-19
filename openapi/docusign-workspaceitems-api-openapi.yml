@@ -1,93 +1,118 @@
 openapi: 3.2.0
 info:
-  title: DocuSign REST Workspace Items API
-  description: The DocuSign REST API provides you with a powerful, convenient, and simple Web services API for interacting with DocuSign.
+  version: v2.1
+  title: Docusign eSignature REST Workspace Items API
+  description: The Docusign eSignature REST API provides you with a powerful, convenient, and simple Web services API for interacting with Docusign.
   termsOfService: https://www.docusign.com/company/terms-and-conditions/web
   contact:
-    name: DocuSign Developer Center
+    name: Docusign Developer Center
     url: https://developers.docusign.com/
     email: devcenter@docusign.com
-  version: v2
 servers:
 - url: https://www.docusign.net/restapi
 tags:
 - name: WorkspaceItems
-  description: 'The WorkspaceItems resource provides methods that allow you to manage
+  description: 'The WorkspaceItems resource provides methods that enable you to manage
 
     workspace items.'
 paths:
-  /v2/accounts/{accountId}/workspaces/{workspaceId}/folders/{folderId}:
+  /v2.1/accounts/{accountId}/workspaces/{workspaceId}/folders/{folderId}:
+    parameters: []
     get:
       tags:
       - WorkspaceItems
-      summary: Docusign List Workspace Folder Contents
-      description: Retrieves workspace folder contents, which can include sub folders and files.
+      summary: List workspace folder contents
+      description: This method returns the contents of a workspace folder, which can include sub-folders and files.
       operationId: WorkspaceFolder_GetWorkspaceFolder
       parameters:
       - name: accountId
         in: path
-        description: The external account number (int) or account id GUID.
+        description: The external account number (int) or account ID GUID.
         required: true
         schema:
           type: string
       - name: folderId
         in: path
-        description: The ID of the folder being accessed.
+        description: The ID of the folder.
         required: true
         schema:
           type: string
       - name: workspaceId
         in: path
-        description: Specifies the workspace ID GUID.
+        description: The ID of the workspace.
         required: true
         schema:
           type: string
       - name: count
         in: query
-        description: The maximum number of results to be returned by this request.
+        description: 'The maximum number of results to return.
+
+
+          Use `start_position` to specify the number of results to skip.
+
+          '
+        required: false
         schema:
           type: string
       - name: include_files
         in: query
-        description: When set to **true**, file information is returned in the response along with folder information. The default is **false**.
+        description: When **true,** the response includes file information (in addition to folder information). The default is **false.**
+        required: false
         schema:
           type: string
       - name: include_sub_folders
         in: query
-        description: When set to **true**, information about the sub-folders of the current folder is returned. The default is **false**.
+        description: When **true,** the response includes information about the sub-folders of the current folder. The default is **false.**
+        required: false
         schema:
           type: string
       - name: include_thumbnails
         in: query
-        description: When set to **true**, thumbnails are returned as part of the response.  The default is **false**.
+        description: When **true,** the response returns thumbnails.  The default is **false.**
+        required: false
         schema:
           type: string
       - name: include_user_detail
         in: query
-        description: Set to **true** to return extended details about the user. The default is **false**.
+        description: When **true,** the response includes extended details about the user. The default is **false.**
+        required: false
         schema:
           type: string
       - name: start_position
         in: query
-        description: The position within the total result set from which to start returning values.
+        description: 'The zero-based index of the
+
+          result from which to start returning results.
+
+
+          Use with `count` to limit the number
+
+          of results.
+
+
+          The default value is `0`.
+
+          '
+        required: false
         schema:
           type: string
       - name: workspace_user_id
         in: query
-        description: If set, then the results are filtered to those associated with the specified userId.
+        description: If set, the response only includes results associated with the `userId` that you specify.
+        required: false
         schema:
           type: string
       responses:
         '200':
           description: Successful response.
           content:
-            '*/*':
+            application/json:
               schema:
                 $ref: '#/components/schemas/workspaceFolderContents'
         '400':
           description: Error encountered.
           content:
-            '*/*':
+            application/json:
               schema:
                 $ref: '#/components/schemas/errorDetails'
       deprecated: false
@@ -98,27 +123,45 @@ paths:
     delete:
       tags:
       - WorkspaceItems
-      summary: Docusign Deletes workspace one or more specific files/folders from the given…
+      summary: Deletes files or sub-folders from a workspace
       operationId: WorkspaceFolder_DeleteWorkspaceItems
       parameters:
       - name: accountId
         in: path
-        description: The external account number (int) or account id GUID.
+        description: The external account number (int) or account ID GUID.
         required: true
         schema:
           type: string
       - name: folderId
         in: path
-        description: The ID of the folder being accessed.
+        description: The ID of the folder.
         required: true
         schema:
           type: string
       - name: workspaceId
         in: path
-        description: Specifies the workspace ID GUID.
+        description: The ID of the workspace.
         required: true
         schema:
           type: string
+      responses:
+        '200':
+          description: Successful response.
+        '400':
+          description: Error encountered.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorDetails'
+      deprecated: false
+      x-ds-methodname: deleteWorkspaceFolderItems
+      description: 'This method deletes one or more files or sub-folders from a workspace folder or root.
+
+
+        Note: To delete items from a workspace, the `status` of the workspace must be `active`.'
+      x-ds-method: deleteFolderItems
+      x-ds-service: Workspaces
+      x-ds-in-sdk: true
       requestBody:
         content:
           application/json:
@@ -127,45 +170,29 @@ paths:
           application/xml:
             schema:
               $ref: '#/components/schemas/workspaceItemList'
-        required: false
-      responses:
-        '200':
-          description: Successful response.
-          content: {}
-        '400':
-          description: Error encountered.
-          content:
-            '*/*':
-              schema:
-                $ref: '#/components/schemas/errorDetails'
-      deprecated: false
-      x-ds-methodname: deleteWorkspaceFolderItems
-      x-ds-method: deleteFolderItems
-      x-ds-service: Workspaces
-      x-ds-in-sdk: true
-      x-codegen-request-body-name: workspaceItemList
-  /v2/accounts/{accountId}/workspaces/{workspaceId}/folders/{folderId}/files:
+  /v2.1/accounts/{accountId}/workspaces/{workspaceId}/folders/{folderId}/files:
+    parameters: []
     post:
       tags:
       - WorkspaceItems
-      summary: Docusign Creates a workspace file
+      summary: Creates a workspace file
       operationId: WorkspaceFile_PostWorkspaceFiles
       parameters:
       - name: accountId
         in: path
-        description: The external account number (int) or account id GUID.
+        description: The external account number (int) or account ID GUID.
         required: true
         schema:
           type: string
       - name: folderId
         in: path
-        description: The ID of the folder being accessed.
+        description: The ID of the folder.
         required: true
         schema:
           type: string
       - name: workspaceId
         in: path
-        description: Specifies the workspace ID GUID.
+        description: The ID of the workspace.
         required: true
         schema:
           type: string
@@ -173,70 +200,73 @@ paths:
         '201':
           description: Successful response.
           content:
-            '*/*':
+            application/json:
               schema:
                 $ref: '#/components/schemas/workspaceItem'
         '400':
           description: Error encountered.
           content:
-            '*/*':
+            application/json:
               schema:
                 $ref: '#/components/schemas/errorDetails'
       deprecated: false
       x-ds-methodname: createWorkspaceFile
+      description: This method adds a file to a workspace.
       x-ds-method: createFIle
       x-ds-service: Workspaces
       x-ds-in-sdk: true
-  /v2/accounts/{accountId}/workspaces/{workspaceId}/folders/{folderId}/files/{fileId}:
+  /v2.1/accounts/{accountId}/workspaces/{workspaceId}/folders/{folderId}/files/{fileId}:
+    parameters: []
     get:
       tags:
       - WorkspaceItems
-      summary: Docusign Get Workspace File
-      description: Retrieves a workspace file (the binary).
+      summary: Gets a workspace file
+      description: This method returns a binary version of a file in a workspace.
       operationId: WorkspaceFile_GetWorkspaceFile
       parameters:
       - name: accountId
         in: path
-        description: The external account number (int) or account id GUID.
+        description: The external account number (int) or account ID GUID.
         required: true
         schema:
           type: string
       - name: fileId
         in: path
-        description: Specifies the room file ID GUID.
+        description: The ID of the file.
         required: true
         schema:
           type: string
       - name: folderId
         in: path
-        description: The ID of the folder being accessed.
+        description: The ID of the folder.
         required: true
         schema:
           type: string
       - name: workspaceId
         in: path
-        description: Specifies the workspace ID GUID.
+        description: The ID of the workspace.
         required: true
         schema:
           type: string
       - name: is_download
         in: query
-        description: When set to **true**, the Content-Disposition header is set in the response. The value of the header provides the filename of the file. Default is **false**.
+        description: When **true,** the `Content-Disposition` header is set in the response. The value of the header provides the filename of the file. The default is **false.**
+        required: false
         schema:
           type: string
       - name: pdf_version
         in: query
-        description: When set to **true** the file returned as a PDF.
+        description: When **true** the file is returned in PDF format.
+        required: false
         schema:
           type: string
       responses:
         '200':
           description: Successful response.
-          content: {}
         '400':
           description: Error encountered.
           content:
-            '*/*':
+            application/json:
               schema:
                 $ref: '#/components/schemas/errorDetails'
       deprecated: false
@@ -247,31 +277,31 @@ paths:
     put:
       tags:
       - WorkspaceItems
-      summary: Docusign Update Workspace File Metadata
-      description: Updates workspace item metadata for one or more specific files/folders.
+      summary: Update workspace file or folder metadata
+      description: This method updates the metadata for one or more specific files or folders in a workspace.
       operationId: WorkspaceFile_PutWorkspaceFile
       parameters:
       - name: accountId
         in: path
-        description: The external account number (int) or account id GUID.
+        description: The external account number (int) or account ID GUID.
         required: true
         schema:
           type: string
       - name: fileId
         in: path
-        description: Specifies the room file ID GUID.
+        description: The ID of the file.
         required: true
         schema:
           type: string
       - name: folderId
         in: path
-        description: The ID of the folder being accessed.
+        description: The ID of the folder.
         required: true
         schema:
           type: string
       - name: workspaceId
         in: path
-        description: Specifies the workspace ID GUID.
+        description: The ID of the workspace.
         required: true
         schema:
           type: string
@@ -279,13 +309,13 @@ paths:
         '200':
           description: Successful response.
           content:
-            '*/*':
+            application/json:
               schema:
                 $ref: '#/components/schemas/workspaceItem'
         '400':
           description: Error encountered.
           content:
-            '*/*':
+            application/json:
               schema:
                 $ref: '#/components/schemas/errorDetails'
       deprecated: false
@@ -293,74 +323,97 @@ paths:
       x-ds-method: updateFile
       x-ds-service: Workspaces
       x-ds-in-sdk: true
-  /v2/accounts/{accountId}/workspaces/{workspaceId}/folders/{folderId}/files/{fileId}/pages:
+  /v2.1/accounts/{accountId}/workspaces/{workspaceId}/folders/{folderId}/files/{fileId}/pages:
+    parameters: []
     get:
       tags:
       - WorkspaceItems
-      summary: Docusign List File Pages
-      description: Retrieves a workspace file as rasterized pages.
+      summary: List File Pages
+      description: This method returns a workspace file as rasterized pages.
       operationId: WorkspaceFilePages_GetWorkspaceFilePages
       parameters:
       - name: accountId
         in: path
-        description: The external account number (int) or account id GUID.
+        description: The external account number (int) or account ID GUID.
         required: true
         schema:
           type: string
       - name: fileId
         in: path
-        description: Specifies the room file ID GUID.
+        description: The ID of the file.
         required: true
         schema:
           type: string
       - name: folderId
         in: path
-        description: The ID of the folder being accessed.
+        description: The ID of the folder.
         required: true
         schema:
           type: string
       - name: workspaceId
         in: path
-        description: Specifies the workspace ID GUID.
+        description: The ID of the workspace.
         required: true
         schema:
           type: string
       - name: count
         in: query
-        description: The maximum number of results to be returned by this request.
+        description: 'The maximum number of results to return.
+
+
+          Use `start_position` to specify the number of results to skip.
+
+          '
+        required: false
         schema:
           type: string
       - name: dpi
         in: query
-        description: Number of dots per inch for the resulting image. The default if not used is 94. The range is 1-310.
+        description: The number of dots per inch (DPI) for the resulting images. Valid values are 1-310 DPI. The default value is 94.
+        required: false
         schema:
           type: string
       - name: max_height
         in: query
-        description: Sets the maximum height (in pixels) of the returned image.
+        description: Sets the maximum height of the returned images in pixels.
+        required: false
         schema:
           type: string
       - name: max_width
         in: query
-        description: Sets the maximum width (in pixels) of the returned image.
+        description: Sets the maximum width of the returned images in pixels.
+        required: false
         schema:
           type: string
       - name: start_position
         in: query
-        description: The position within the total result set from which to start returning values. The value **thumbnail** may be used to return the page image.
+        description: 'The zero-based index of the
+
+          result from which to start returning results.
+
+
+          Use with `count` to limit the number
+
+          of results.
+
+
+          The default value is `0`.
+
+          '
+        required: false
         schema:
           type: string
       responses:
         '200':
           description: Successful response.
           content:
-            '*/*':
+            application/json:
               schema:
                 $ref: '#/components/schemas/pageImages'
         '400':
           description: Error encountered.
           content:
-            '*/*':
+            application/json:
               schema:
                 $ref: '#/components/schemas/errorDetails'
       deprecated: false
@@ -370,330 +423,460 @@ paths:
       x-ds-in-sdk: true
 components:
   schemas:
-    workspaceItem:
+    page:
+      description: Description of a page of a document.
       type: object
       properties:
-        callerAuthorization:
-          $ref: '#/components/schemas/workspaceUserAuthorization'
-        contentType:
+        dpi:
+          description: The number of dots per inch used for the page image.
           type: string
-          description: ''
+        errorDetails:
+          $ref: '#/components/schemas/errorDetails'
+          description: If an error occurs, this property describes the error.
+        height:
+          description: 'The height of the page in pixels.
+
+            Must be an integer.'
+          type: string
+        imageBytes:
+          description: The number of image bytes.
+          type: string
+        mimeType:
+          description: The MIME type.
+          type: string
+        pageId:
+          description: The ID of the page.
+          type: string
+        sequence:
+          description: The sequence of the page in the document, or page number.
+          type: string
+        width:
+          description: 'The width of the page in pixels.
+
+            Must be an integer.'
+          type: string
+      x-ds-definition-name: page
+      x-ms-summary: Description of a page of a document.
+    workspaceUserAuthorization:
+      description: Provides properties that describe user authorization to a workspace.
+      type: object
+      properties:
+        canDelete:
+          description: When **true,** the workspace user can delete items from the workspace.
+          type: string
+        canMove:
+          description: When **true,** the workspace user can move the items in the workspace.
+          type: string
+        canTransact:
+          description: When **true,** the workspace user can create transactions from the workspace.
+          type: string
+        canView:
+          description: When **true,** the workspace user can view the items in the workspace.
+          type: string
         created:
-          type: string
           description: The UTC DateTime when the workspace user authorization was created.
+          type: string
         createdById:
+          description: 'The ID of the user who created the workspace user authorization. '
           type: string
-          description: ''
-        createdByInformation:
+        errorDetails:
+          $ref: '#/components/schemas/errorDetails'
+          description: This object describes errors that occur. It is only valid for responses and ignored in requests.
+        modified:
+          description: The UTC DateTime when the workspace user authorization was last modified.
+          type: string
+        modifiedById:
+          description: The ID of the user who last modified the workspace user authorization.
+          type: string
+        workspaceUserId:
+          description: The ID of the workspace user.
+          type: string
+        workspaceUserInformation:
           $ref: '#/components/schemas/workspaceUser'
-        extension:
-          type: string
-          description: ''
-        fileSize:
-          type: string
-          description: ''
-        fileUri:
-          type: string
-          description: ''
-        id:
-          type: string
-          description: ''
-        isPublic:
-          type: string
-          description: ' If true, this supersedes need for bit mask permission with workspaceUserAuthorization'
-        lastModified:
-          type: string
-          description: Utc date and time the comment was last updated (can only be done by creator.)
-        lastModifiedById:
-          type: string
-          description: ''
-        lastModifiedByInformation:
-          $ref: '#/components/schemas/workspaceUser'
-        name:
-          type: string
-          description: ''
-        pageCount:
-          type: string
-          description: ''
-        parentFolderId:
-          type: string
-          description: ''
-        parentFolderUri:
-          type: string
-          description: ''
-        type:
-          type: string
-          description: 'Type of the user. Valid values: type_owner, type_participant.'
-        uri:
-          type: string
-          description: ''
-      description: ''
-      x-ds-definition-name: workspaceItem
-      x-ms-summary: ''
+          description: An object that provides details about the workspace user.
+      x-ds-definition-name: workspaceUserAuthorization
+      x-ms-summary: Provides properties that describe user authorization to a workspace.
     pageImages:
       type: object
       properties:
         endPosition:
+          description: 'The last index position in the result set. '
           type: string
-          description: 'The last position in the result set. '
         nextUri:
-          type: string
           description: 'The URI for the next chunk of records based on the search request. It is `null` if this is the last set of results for the search. '
+          type: string
         pages:
+          description: An array of page objects.
           type: array
-          description: ''
           items:
             $ref: '#/components/schemas/page'
         previousUri:
-          type: string
           description: 'The URI for the prior chunk of records based on the search request. It is `null` if this is the first set of results for the search. '
+          type: string
         resultSetSize:
+          description: The number of results in this response. Because you can filter which entries are included in the response, this value is always less than or equal to the `totalSetSize`.
           type: string
-          description: 'The number of results returned in this response. '
         startPosition:
+          description: The starting index position of the current result set.
           type: string
-          description: Starting position of the current result set.
         totalSetSize:
+          description: The total number of items in the result set. This value is always greater than or equal to the value of `resultSetSize`.
           type: string
-          description: The total number of items in the search's result set. It will always be greater than or equal to the value of the `resultSetSize` field.
-      description: ''
       x-ds-definition-name: pageImages
+      description: ''
       x-ms-summary: ''
     workspaceItemList:
+      description: An array of objects that describe the items in a workspace.
       type: object
       properties:
         items:
+          description: A list of workspace items.
           type: array
-          description: ''
           items:
             $ref: '#/components/schemas/workspaceItem'
-      description: Provides properties that describe the items contained in a workspace.
       x-ds-definition-name: workspaceItemList
-      x-ms-summary: Provides properties that describe the items contained in a workspace.
-    errorDetails:
+      x-ms-summary: An array of objects that describe the items in a workspace.
+    workspaceItem:
+      description: This object represents an item in a workspace, which can be either a file or folder.
       type: object
       properties:
-        errorCode:
-          type: string
-          description: An error code associated with the error.
-        message:
-          type: string
-          description: A short error message.
-      description: This object describes errors that occur. It is only valid for responses, and ignored in requests.
-      x-ds-definition-name: errorDetails
-      x-ms-summary: This object describes errors that occur. It is only valid for responses, and ignored in requests.
-    page:
-      type: object
-      properties:
-        dpi:
-          type: string
-          description: The number of dots per inch used for the page image.
-        errorDetails:
-          $ref: '#/components/schemas/errorDetails'
-        height:
-          type: string
-          description: Height of the tab in pixels.
-        imageBytes:
-          type: string
+        callerAuthorization:
+          $ref: '#/components/schemas/workspaceUserAuthorization'
           description: ''
-        mimeType:
+        contentType:
+          description: If the item is a file, this property specifies the content type of the file.
           type: string
+        created:
+          description: The UTC DateTime when the workspace item was created.
+          type: string
+        createdById:
+          description: The ID of the user who created the workspace item.
+          type: string
+        createdByInformation:
+          $ref: '#/components/schemas/workspaceUser'
+          description: Details about the user who created the workspace item.
+        extension:
+          description: The file extension of a file item.
+          type: string
+        fileSize:
+          description: The size of the file in bytes.
+          type: string
+        fileUri:
+          description: The URI for retrieving the file.
+          type: string
+        id:
+          description: A unique ID for the Salesforce object.
+          type: string
+        isPublic:
+          description: ' When **true,** the item is public.'
+          type: string
+        lastModified:
+          description: 'The UTC date and time that the comment was last updated.
+
+
+            **Note:** This can only be done by the creator.'
+          type: string
+        lastModifiedById:
+          description: The ID of the user who last modified the item.
+          type: string
+        lastModifiedByInformation:
+          $ref: '#/components/schemas/workspaceUser'
+          description: Details about the user who last modified the workspace item.
+        name:
+          description: The name of the file or folder.
+          type: string
+        pageCount:
+          description: The number of pages in a file.
+          type: string
+        parentFolderId:
+          description: The ID of the parent folder, or the special value `root` for the root folder.
+          type: string
+        parentFolderUri:
+          description: The URI of the parent folder.
+          type: string
+        sha256:
+          description: A 64-byte, Secure Hash Algorithm 256 (SHA256) checksum that the caller computes across the entirety of the original content of a file. Docusign compares this value to its own computation. If the two values are not equal, the original content and received content are not the same and the upload is refused.
+          type: string
+        thumbHeight:
+          description: The height of the thumbnail image.
+          type: string
+        thumbnail:
+          $ref: '#/components/schemas/page'
           description: ''
-        pageId:
+        thumbWidth:
+          description: The width of the thumbnail image.
           type: string
+        type:
+          description: The type of the workspace item. Valid values are file, folder.
+          type: string
+        uri:
+          description: A URI containing the user ID.
+          type: string
+        userAuthorization:
+          $ref: '#/components/schemas/workspaceUserAuthorization'
           description: ''
-        sequence:
-          type: string
-          description: ''
-        width:
-          type: string
-          description: Width of the tab in pixels.
-      description: Description of a page of a document.
-      x-ds-definition-name: page
-      x-ms-summary: Description of a page of a document.
+      x-ds-definition-name: workspaceItem
+      x-ms-summary: This object represents an item in a workspace, which can be either a file or folder.
     workspaceUser:
+      description: 'This object represents the workspace user. This property is only returned in response to user specific GET call. '
       type: object
       properties:
         accountId:
+          description: The account ID associated with the workspace user.
           type: string
-          description: The account ID associated with the envelope.
         accountName:
-          type: string
           description: The name of the account that the workspace user belongs to.
+          type: string
         activeSince:
+          description: The UTC DateTime when the user joined the workspace.
           type: string
-          description: ''
         created:
-          type: string
           description: The UTC DateTime when the workspace user was created.
+          type: string
         createdById:
+          description: The ID of the user who created this workspace user.
           type: string
-          description: ''
         email:
+          description: The workspace user's email address.
           type: string
-          description: ''
         errorDetails:
           $ref: '#/components/schemas/errorDetails'
+          description: This object describes errors that occur. It is only valid for responses and ignored in requests.
+        invitationEmailBlurb:
+          description: The text of the workspace invitation email message sent to the user.
+          type: string
+        invitationEmailSubject:
+          description: The subject line of the workspace invitation email message sent to the user.
+          type: string
         lastModified:
+          description: The UTC DateTime that the workspace user was last modified.
           type: string
-          description: Utc date and time the comment was last updated (can only be done by creator.)
         lastModifiedById:
+          description: The ID of the user who last modified the workspace user.
           type: string
-          description: ''
         status:
-          type: string
           description: "Filters the results by user status.\nYou can specify a comma-separated\nlist of the following statuses:\n\n* ActivationRequired \n* ActivationSent \n* Active\n* Closed \n* Disabled"
+          type: string
         type:
-          type: string
           description: 'Type of the user. Valid values: type_owner, type_participant.'
+          type: string
         userId:
+          description: The ID of the workspace user.
           type: string
-          description: 'The user ID of the user being accessed. Generally this is the user ID of the authenticated user, but if the authenticated user is an Admin on the account, this may be another user the Admin user is accessing. **Note**: For the [GET /v2/accounts/{accountId}/envelopes](https://developers.docusign.com/esign-rest-api/reference/Envelopes/Envelopes/listStatusChanges/#envelopesInformation) method, the `user_id` query parameter is not implemented and should not be used.'
         userName:
+          description: The name of workspace user.
           type: string
-          description: ''
         workspaceId:
+          description: The ID of the workspace.
           type: string
-          description: Specifies the workspace ID GUID.
         workspaceUserBaseUrl:
+          description: The URL for accessing the workspace user.
           type: string
-          description: The relative URI that may be used to access a workspace user.
         workspaceUserId:
+          description: The ID of the workspace user.
           type: string
-          description: ''
-      description: 'A workspaceUser representing the user. This property is only returned in response to user specific GET call. '
+        workspaceUserUri:
+          description: The URI for accessing the workspace user.
+          type: string
       x-ds-definition-name: workspaceUser
-      x-ms-summary: 'A workspaceUser representing the user. This property is only returned in response to user specific GET call. '
-    workspaceUserAuthorization:
+      x-ms-summary: 'This object represents the workspace user. This property is only returned in response to user specific GET call. '
+    errorDetails:
+      description: This object describes errors that occur. It is only valid for responses and ignored in requests.
       type: object
       properties:
-        canDelete:
+        errorCode:
+          description: The code associated with the error condition.
           type: string
-          description: ''
-        canMove:
+        message:
+          description: A brief message describing the error condition.
           type: string
-          description: ''
-        canTransact:
-          type: string
-          description: ''
-        canView:
-          type: string
-          description: ''
-        created:
-          type: string
-          description: The UTC DateTime when the workspace user authorization was created.
-        createdById:
-          type: string
-          description: ''
-        errorDetails:
-          $ref: '#/components/schemas/errorDetails'
-        modified:
-          type: string
-          description: ''
-        modifiedById:
-          type: string
-          description: ''
-        workspaceUserId:
-          type: string
-          description: ''
-        workspaceUserInformation:
-          $ref: '#/components/schemas/workspaceUser'
-      description: Provides properties that describe user authorization to a workspace.
-      x-ds-definition-name: workspaceUserAuthorization
-      x-ms-summary: Provides properties that describe user authorization to a workspace.
+      x-ds-definition-name: errorDetails
+      x-ms-summary: This object describes errors that occur. It is only valid for responses and ignored in requests.
     workspaceFolderContents:
+      description: This object's properties describe the contents of a workspace folder.
       type: object
       properties:
         endPosition:
+          description: 'The last index position in the result set. '
           type: string
-          description: 'The last position in the result set. '
         folder:
           $ref: '#/components/schemas/workspaceItem'
+          description: The folder from which to return items. You can enter either the folder name or folder ID.
         items:
+          description: A list of workspace items.
           type: array
-          description: ''
           items:
             $ref: '#/components/schemas/workspaceItem'
         parentFolders:
-          type: array
           description: ''
+          type: array
           items:
             $ref: '#/components/schemas/workspaceItem'
         resultSetSize:
+          description: The number of results in this response. Because you can filter which entries are included in the response, this value is always less than or equal to the `totalSetSize`.
           type: string
-          description: 'The number of results returned in this response. '
         startPosition:
+          description: The starting index position of the current result set.
           type: string
-          description: Starting position of the current result set.
         totalSetSize:
+          description: The total number of items in the result set. This value is always greater than or equal to the value of `resultSetSize`.
           type: string
-          description: The total number of items in the search's result set. It will always be greater than or equal to the value of the `resultSetSize` field.
         workspaceId:
+          description: The ID of the workspace, always populated.
           type: string
-          description: The id of the workspace, always populated.
-      description: Provides properties that describe the contents of a workspace folder.
       x-ds-definition-name: workspaceFolderContents
-      x-ms-summary: Provides properties that describe the contents of a workspace folder.
+      x-ms-summary: This object's properties describe the contents of a workspace folder.
 externalDocs:
-  description: See the DocuSign REST API Guide for more information.
+  description: See the Docusign eSignature REST API Guide for more information.
   url: https://docs.docusign.com/esign
 x-ds-allow-editing: false
 x-ds-categories:
-- name: Authentication
-  summary: Logging in and authentication
-  description: 'Use the Authentication category to manage various account login tasks including:
-
-
-    * Getting login information for a user.
-
-    * Managing linked social accounts.
-
-    * Getting and revoking OAuth tokens.'
 - name: Envelopes
-  summary: Creating and sending envelopes
-  description: 'The DocuSign API Envelope category includes the resources and methods for sending and managing envelopes and envelope data.
+  summary: This section shows you how to create and send envelopes.
+  description: 'The eSignature API Envelope category includes the resources and methods for sending and managing envelopes and envelope data.
 
 
-    Envelopes are the key objects within the DocuSign eSignature system. As a result, they are complex data structures with few required fields. See the [API Recipes](https://www.docusign.com/developer-center/recipes) for use case examples and their solutions.
+    Envelopes are the key objects in the Docusign platform. As a result, they are complex data structures with few required fields. See the [How-to guides](/docs/esign-rest-api/how-to/) for examples and solutions.
 
 
-    To create and send envelopes, see the [Envelopes resource](Envelopes).
-
+    To learn more about envelopes, see [Envelopes](/docs/esign-rest-api/esign101/concepts/envelopes/).
 
     '
 - name: Connect
-  summary: Connect configuration and logging
-  description: "The Connect category enables your application to be called via HTTPS when an event of interest occurs.\n\nUse the Connect service to \"end the polling madness.\" With Connect, there is no need for your application to poll DocuSign every 15 minutes to learn the latest about your envelopes.\n\nInstead, you register your interest in one or more types of envelope or recipient events. Then, when an interesting event occurs, the DocuSign platform will contact your application with the event's details and data. You can register interest in envelopes sent by particular users in your account, or for envelopes sent by any user.\n\n## Incoming Connect Calls\nTo use the Connect service, your application needs to provide an https url that can be called from the public internet. If your application runs on a server behind your organization's firewall, then you will need to create a \"pinhole\" in the firewall to allow the incoming Connect calls from DocuSign to reach your application. Other techniques for receiving the incoming calls including proxy servers and DMZ networking can also be used. \n\n## Per-envelope Connect Configuration\nInstead of registering a general Connect configuration and listener, an individual envelope can have its own Connect configuration. See the `eventNotification` field for envelopes.\n\n## Categories\nUse the Connect category for:\n\n* Programmatically creating Connect configurations. Connect configurations can be created manually by using the DocuSign web service, or programmatically via the API. Configurations created via the API can be seen and updated from the web service.\n* Retrieving and managing the event log for your Connect configurations. \n* Requesting that an event be re-published to the listener."
+  summary: "Docusign Connect is the Docusign platform notification service. The service uses webhooks to proactively notify your application when an event occurs that your application wants to know about. Docusign recommends that all applications use Connect instead of polling the Docusign Signature Service. This section provides information about Connect configuration and logging. \n\n**Note:** To make API calls to any of the Connect endpoints, you must be an account administrator.\n\nFor more information about Connect, see [Docusign Connect](/platform/webhooks/connect/) and [Custom Connect Configuration](https://support.docusign.com/s/document-item?bundleId=pik1583277475390&topicId=khw1583277390582.html)."
+  description: 'The Connect service enables your application to be called via
+
+    HTTPS when an event of interest occurs.
+
+
+    Use the Connect service to "end the polling madness." With
+
+    Connect, there is no need for your application to poll Docusign
+
+    every 15 minutes to learn the latest about your envelopes.
+
+
+    Instead, you register your interest in one or more types of
+
+    envelope or recipient events. Then, when an interesting event
+
+    occurs, the Docusign platform will contact your application with
+
+    the event''s details and data. You can register interest in
+
+    envelopes sent by particular users in your account, or for
+
+    envelopes sent by any user.
+
+
+    Connect can empower your organization to manage document actions
+
+    as they occur, and allows you to track their changes within your
+
+    own systems. Upon completion, envelope information, including
+
+    document content, can be stored in your own databases or CMS
+
+    systems, and these events can be triggered via webhooks
+
+    delivering messages to your application.
+
+
+    **Note:** To make API calls to any of the Connect endpoints, you must be an account administrator.
+
+
+    ## Incoming Connect Calls
+
+
+    To use the Connect service, your application needs to provide an
+
+    HTTPS URL that can be called from the public Internet. If your
+
+    application runs on a server behind your organization''s firewall,
+
+    then you will need to create a "pinhole" in the firewall to allow
+
+    the incoming Connect calls from Docusign to reach your
+
+    application. You can also use other techniques such as proxy
+
+    servers and DMZ networking for receiving the incoming calls.
+
+
+    Connect delivers events over HTTP requests in JSON or XML.
+
+    See [Docusign Connect overview](/platform/webhooks/connect/).
+
+
+    If your application is not configured to accept post messages,
+
+    Docusign will NOT return an additional post error response to
+
+    your listener application. If you''ve enabled logging on your
+
+    configuration, it will be logged in Admin under the configuration
+
+    failure log.
+
+
+    ## Per-envelope Connect Configuration
+
+
+    Instead of registering a general Connect configuration and
+
+    listener, an individual envelope can have its own Connect
+
+    configuration. See the
+
+    [`eventNotification`](/docs/esign-rest-api/reference/envelopes/envelopes/create/#schema__envelopedefinition_eventnotification)
+
+    property for envelopes.
+
+
+    ## Historical Publish Endpoint
+
+
+    To submit existing envelopes to an endpoint, use the [EnvelopePublish](/docs/esign-rest-api/reference/envelopes/envelopepublish/) resource.
+
+    '
 - name: Templates
   summary: Template creation and management
   description: 'Use the Templates category to manage your account''s templates.
 
 
-    You can:
+    This section shows you how to perform the following tasks:
 
 
     * Create, list, get, update, and delete templates.
 
-    * Manage templates'' notification and group sharing settings.
+    * Manage the notification and group sharing settings for templates.
 
     * Fetch and rotate pages from a document used by a template.
 
 
-    Templates can be created programmatically or can be created via the DocuSign web interface and then used by your application.'
+    You can create templates either programmatically or through the Docusign web interface and then used by your application.'
 - name: SigningGroups
-  summary: Send a signing request to a group of potential signers
-  description: 'Use the SigningGroup category to manage signing groups that allow you anyone in the group to sign a document.
+  summary: Send a signing request to a group of potential signers.
+  description: 'Use the Signing Group category to manage signing groups that allow anyone in the group to sign a document. When you send an envelope to a signing group, anyone in the group can open it and sign it with their own signature.
 
 
-    The category allows you create the signing group and manage the users in the group.'
+    This category shows account administrators how to create a signing group and manage the users in the group.
+
+
+    **Note:** To create and manage signing groups, you must be an account administrator.
+
+
+    For more information about this topic, see [Signing Groups](https://support.docusign.com/s/document-item?bundleId=gav1643676262430&topicId=zgn1578456447934.html).'
 - name: Folders
-  summary: Folders for completed envelopes
-  description: "Use the Folders category to manage envelopes in your folders. \n\nYou can list the folder contents and move envelopes between folders."
+  summary: Folders allow you to organize envelopes and templates.
+  description: 'Use the Folders category to organize envelopes and templates.
+
+    You can list the folder contents and move envelopes and templates between folders.'
 - name: CustomTabs
   summary: Custom tabs
   description: "Custom Tabs enable accounts to have one or more pre-configured (custom) tabs. Custom tabs save time when users are tagging documents since the users don't have to manually set the tabs' parameters.\n\nThis category enables custom tabs to be managed programmatically, including creation, deletion, etc. \n"
 - name: CloudStorage
-  summary: Cloud storage providers and user management
+  summary: This section shows you how to manage your cloud storage providers and users.
   description: 'Use the Cloud Storage category to list the user''s cloud storage document contents.
 
 
@@ -712,7 +895,7 @@ x-ds-categories:
 
     * Add delete users.
 
-    * Add and delete the intials and signature images for a user.'
+    * Add and delete the initials and signature images for a user.'
 - name: UserGroups
   summary: Group users for common permissions and branding
   description: 'Use the User Groups category to manage your permissions groups.
@@ -726,9 +909,28 @@ x-ds-categories:
     * Add users to, and delete users from, your groups.
 
     * Manage the brand information associated with a group.'
+- name: BulkEnvelopes
+  summary: Bulk envelopes
+  description: Use the BulkEnvelopes category to manage the sending of envelopes to multiple recipients.
 - name: Accounts
   summary: Account management
-  description: "Use the Account category for various account management tasks including:\n\n* Programmatically creating and deleting accounts.\n* Getting information about an account and its capabilities.\n* Branding the account with custom colors, message text, and more.\n* Account charges.\n\nThe Account category also includes end points for \n* Listing the recipient names associated with an email address that was used by the account. For example, a single email address is often shared by mulitple members of a family.\n\n\n"
+  description: 'Use the Account category for various account management tasks including:
+
+
+    * Programmatically creating and deleting accounts.
+
+    * Getting information about an account and its capabilities.
+
+    * Branding the account with custom colors, message text, and more.
+
+    * Account charges.
+
+
+    The Accounts category also includes end points for listing the recipient names associated with an email address that was used by the account. For example, a single email address is often shared by multiple members of a family.
+
+
+
+    '
 - name: Billing
   summary: Invoices
   description: 'Use the Billing category to manage the following billing related tasks:
@@ -750,18 +952,42 @@ x-ds-categories:
 
     * Getting information on the API''s resources and versions.'
 - name: PowerForms
-  summary: PowerForm creation and management
-  description: The PowerForms category enables PowerForms to be created and managed.
+  summary: The PowerForms category provides methods that enable you to create and manage fillable forms.
+  description: The PowerForms category enables you to create and manage PowerForms that you can use for self service and email forms.
 - name: Workspaces
-  summary: Workspace creation and management
-  description: 'Workspaces creation and management.
-
-
-    '
+  summary: A Docusign workspace is a collaboration area for sharing files and data.
+  description: "A workspace is a collaborative space for sharing documents and managing workflows. A workspace has a single owner who must be a Docusign user. The owner can invite others to the workspace as collaborators. Individuals who are not Docusign users must create a Docusign account to join a workspace as a collaborator.\n \nYou can create an envelope directly from a workspace.\n\nWorkspaces store the following information:\n\n- **Files:** Files uploaded to a workspace for storage or reuse.\n- **Documents:** A document is a component of a transaction, template, or workspace. When a file is added to a transaction, template, or workspace, it is copied as a document. Each document in a workspace has a single owner.\n- **Templates:** A set of documents that you can use to create a transaction or a workspace.\n- **Transactions:** A transaction is a series of workflow events related to one or more documents. These events route the documents to one or more individuals for the purposes of doing business. Each transaction has a single owner (the sender).\n\n**Note:** Documents in a template are not individually listed as files."
 - name: Payments
   summary: Manage Payments
   description: This category includes resources for managing payment gateways. Payment information is added to envelopes via methods in the Envelopes category.
-- name: Signature
+- name: EmailArchive
+  summary: This section shows you how to set and manage the BCC email addresses that you want to use to archive the emails that Docusign sends.
+  description: 'Email archives enable Docusign partners and other multi-account customers to easily archive emails sent through Docusign. The `EmailArchive` resource provides methods for managing your email archive configuration, which consists of the BCC email address or addresses that you want to use to archive Docusign emails. Each account can use up to five BCC email addresses for archiving purposes.
+
+
+    For more information, see [Email Archive Configuration](https://support.docusign.com/s/document-item?bundleId=pik1583277475390&topicId=xjm1583277371373.html).
+
+
+    **Note:** This feature is only available for certain account plans and must be enabled by Docusign.'
+- name: Notary
+  summary: 'Docusign eNotary makes the notarization process fully digital
+
+    for senders, signers, and notaries.
+
+    It enables a notary public to act as an in-person witness
+
+    to electronic signing of documents.
+
+    '
+  description: 'Docusign eNotary makes the notarization process fully digital
+
+    for senders, signers, and notaries.
+
+    It enables a notary public to act as an in-person witness
+
+    to electronic signing of documents.
+
+    '
+- name: Envelope
   summary: ''
   description: ''
-x-original-swagger-version: '2.0'

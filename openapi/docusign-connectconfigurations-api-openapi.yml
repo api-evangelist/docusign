@@ -1,33 +1,143 @@
 openapi: 3.2.0
 info:
-  title: DocuSign REST Connect Configurations API
-  description: The DocuSign REST API provides you with a powerful, convenient, and simple Web services API for interacting with DocuSign.
+  version: v2.1
+  title: Docusign eSignature REST Connect Configurations API
+  description: The Docusign eSignature REST API provides you with a powerful, convenient, and simple Web services API for interacting with Docusign.
   termsOfService: https://www.docusign.com/company/terms-and-conditions/web
   contact:
-    name: DocuSign Developer Center
+    name: Docusign Developer Center
     url: https://developers.docusign.com/
     email: devcenter@docusign.com
-  version: v2
 servers:
 - url: https://www.docusign.net/restapi
 tags:
 - name: ConnectConfigurations
-  description: The ConnectConfigurations resource methods enable you to configure the DocuSign Connect service associated with an account.
+  description: 'The `ConnectConfigurations` resource enables you to configure the
+
+    Docusign Connect service for your account.
+
+
+    You can use this resource to configure account-level webhooks
+
+    that send notifications about every envelope sent from your
+
+    account. You can set account-level webhooks to listen for events
+
+    for envelopes sent by a specific user on your account, by
+
+    multiple specific users, or from any of the users on your
+
+    account. These events will be tracked, and can be delivered to a
+
+    listening application.
+
+
+    **Note:** To create an envelope-level webhook instead of using
+
+    account-level webhooks, use the Envelopes::Create method and add
+
+    an `eventNotification` object to an envelope object.
+
+
+    Docusign Connect offers two delivery modes:
+
+
+    - Send Individual Messages
+
+    - Send Aggregated Messages
+
+
+    By default, the Send Individual Messages mode
+
+    is enabled.
+
+    You can disable it
+
+    (enabling Aggregated Messages mode)
+
+    through Docusign Admin
+
+    in the **Updates** section.
+
+
+    **Note:** In either mode, Connect
+
+    must be enabled
+
+    in your Docusign account. It is not enabled by default.
+
+
+    ## Send Individual Messages
+
+
+    Send Individual Messages (SIM) mode is the default.
+
+
+    In this mode Docusign delivers notifications for each
+
+    envelope events individually.
+
+    When a final recipient completes an envelope,
+
+    your listener will receive
+
+    a single **Recipient Signed/Completed** event
+
+    followed by a single **Envelope Signed/Completed** event
+
+    for the final participating party on the agreement.
+
+
+    For more information about SIM mode, see
+
+    Using Connect''s Send Individual Messages Feature.
+
+
+    ## Aggregated Messages
+
+
+    In Aggregated Messages mode,
+
+    Connect aggregates similar events
+
+    into a single delivery.
+
+    Similar or simultaneous events
+
+    are aggregated,
+
+    so that your listener doesn''t
+
+    receive extraneous messages.
+
+
+    When the final recipient signs an envelope, the
+
+    system delivers a single, aggregated Connect event, rather than
+
+    separate Recipient: complete and Envelope: complete messages.
+
+    This aggregation process ensures that you only receive the
+
+    minimal viable number of messages about an envelope''s life cycle.'
 paths:
-  /v2/accounts/{accountId}/connect:
+  /v2.1/accounts/{accountId}/connect:
+    parameters: []
     get:
       tags:
       - ConnectConfigurations
-      summary: Docusign Get Connect Configuration Information
-      description: 'Retrieves all the DocuSign Custom Connect definitions for the specified account.
+      summary: Get Connect configuration information
+      description: 'Retrieves all the Docusign Custom Connect definitions for the specified account.
 
 
-        ###### Note: Connect must be enabled for your account to use this function. This does not retrieve information for Connect configurations for Box, eOriginal, or Salesforce.'
+        To use this method, you must be an account administrator
+
+        and Connect must be enabled on your account.'
       operationId: Connect_GetConnectConfigs
       parameters:
       - name: accountId
         in: path
-        description: The external account number (int) or account id GUID.
+        description: The external account number (int) or account ID GUID.
         required: true
         schema:
           type: string
@@ -35,13 +145,13 @@ paths:
         '200':
           description: Successful response.
           content:
-            '*/*':
+            application/json:
               schema:
                 $ref: '#/components/schemas/connectConfigResults'
         '400':
           description: Error encountered.
           content:
-            '*/*':
+            application/json:
               schema:
                 $ref: '#/components/schemas/errorDetails'
       deprecated: false
@@ -52,39 +162,35 @@ paths:
     put:
       tags:
       - ConnectConfigurations
-      summary: Docusign Updates a specified Connect configuration
-      description: 'Updates the specified DocuSign Connect configuration in your account.
+      summary: Updates a specified Connect configuration
+      description: 'Updates the specified Docusign Connect configuration in your account. To enable the configuration, set the `allowEnvelopePublish` property to **true.**
 
 
-        ###### Note: Connect must be enabled for your account to use this function. This cannot be used to update Connect configurations for Box, eOriginal, or Salesforce.'
+        After any updates, test your configuration to make sure it works as expected.
+
+
+        To use this method, you must be an account administrator
+
+        and Connect must be enabled on your account.'
       operationId: Connect_PutConnectConfiguration
       parameters:
       - name: accountId
         in: path
-        description: The external account number (int) or account id GUID.
+        description: The external account number (int) or account ID GUID.
         required: true
         schema:
           type: string
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/connectCustomConfiguration'
-          application/xml:
-            schema:
-              $ref: '#/components/schemas/connectCustomConfiguration'
-        required: false
       responses:
         '200':
           description: Successful response.
           content:
-            '*/*':
+            application/json:
               schema:
                 $ref: '#/components/schemas/connectCustomConfiguration'
         '400':
           description: Error encountered.
           content:
-            '*/*':
+            application/json:
               schema:
                 $ref: '#/components/schemas/errorDetails'
       deprecated: false
@@ -92,23 +198,6 @@ paths:
       x-ds-method: update
       x-ds-service: Connect
       x-ds-in-sdk: true
-      x-codegen-request-body-name: connectCustomConfiguration
-    post:
-      tags:
-      - ConnectConfigurations
-      summary: Docusign Creates a connect configuration for the specified account
-      description: 'Creates a DocuSign Custom Connect definition for your account. DocuSign Connect enables the sending of real-time data updates to external applications. These updates are generated by user transactions as the envelope progresses through actions to completion. The Connect Service provides updated information about the status of these transactions and returns updates that include the actual content of document form fields. Be aware that, these updates might or might not include the document itself. For more information about Connect, see the [ML:DocuSign Connect Service Guide].
-
-
-        ###### Note: Connect must be enabled for your account to use this function. This cannot be used to set up Connect configurations for Salesforce or eOriginal.'
-      operationId: Connect_PostConnectConfiguration
-      parameters:
-      - name: accountId
-        in: path
-        description: The external account number (int) or account id GUID.
-        required: true
-        schema:
-          type: string
       requestBody:
         content:
           application/json:
@@ -117,18 +206,195 @@ paths:
           application/xml:
             schema:
               $ref: '#/components/schemas/connectCustomConfiguration'
-        required: false
+    post:
+      tags:
+      - ConnectConfigurations
+      summary: Creates a Connect configuration
+      description: 'Creates a custom Connect configuration for the specified account.
+
+
+        To use this method, you must be an account administrator
+
+        and Connect must be enabled on your account.
+
+
+        Connect is a webhook service that provides updates when certain events occur in your eSignature workflows. You can use this endpoint to create:
+
+        * Account-level Connect configurations to listen for events related to any envelopes sent by one or more account users
+
+        * Recipient Connect configurations that are triggered when one or more of your account users receive an envelope
+
+
+        To set an account-level configuration, set `configurationType` to **custom.**
+
+        To set a Recipient Connect configuration, set `configurationType` to **customrecipient.**
+
+
+        If you want to listen for events on only one envelope, use the eventNotification object instead.
+
+
+        ## Data models
+
+
+        There are four possible data models for your Connect configuration. Consider:
+
+        * Do you want the data in JSON or XML?
+
+        * Do you want events sent individually (SIM) or in aggregate?
+
+
+        Docusign recommends using the JSON SIM event model.
+
+
+        JSON SIM (Recommended)
+
+
+        Set `deliveryMode` to **SIM** and `eventData.version` to **restv2.1.** Use the `events` property to set the event statuses that will trigger your configuration.
+
+
+        The following sample request shows how to create an envelope-level configuration using JSON SIM:
+
+        ```
+
+        {
+
+        "configurationType": "custom",
+
+        "urlToPublishTo": "YOUR-WEBHOOK-URL",
+
+        "allUsers": "true",
+
+        "name": "jsonSimTest",
+
+        "deliveryMode": "SIM",
+
+        "allowEnvelopePublish": "true",
+
+        "enableLog": "true",
+
+        "eventData": {
+
+        "version": "restv2.1"
+
+        },
+
+        "events": [
+
+        "envelope-sent",
+
+        "envelope-delivered",
+
+        "envelope-completed"
+
+        ]
+
+        }
+
+        ```
+
+
+        The following sample request shows how to create a Recipient Connect configuration using JSON SIM:
+
+        ```
+
+        {
+
+        "configurationType": "customrecipient",
+
+        "urlToPublishTo": "YOUR-WEBHOOK-URL",
+
+        "allUsers": "true",
+
+        "name": "jsonSimTest",
+
+        "deliveryMode": "SIM",
+
+        "allowEnvelopePublish": "true",
+
+        "enableLog": "true",
+
+        "eventData": {
+
+        "version": "restv2.1"
+
+        },
+
+        "events": [
+
+        "recipient-sent",
+
+        "recipient-completed"
+
+        ]
+
+        }
+
+        ```
+
+
+        JSON Aggregate
+
+
+        Set `deliveryMode` to **aggregate** and `eventData.version` to **restv2.1.** Use the `envelopeEvents` or `recipientEvents` property to set the event statuses that will trigger your configuration.
+
+
+        XML Aggregate
+
+
+        Set `deliveryMode` to **aggregate.** Use the `envelopeEvents` or `recipientEvents` property to set the event statuses that will trigger your configuration.
+
+
+        XML SIM (Legacy apps only)
+
+
+        **Note:** This model is deprecated.
+
+
+        Set `deliveryMode` to **SIM.** Use the `envelopeEvents` or `recipientEvents` property to set the event statuses that will trigger your configuration.
+
+
+        ## Troubleshooting
+
+
+        If your configuration is not working, check the following.
+
+
+        * Connect must be enabled for your account to use this function.
+
+        * If you are using `envelopeEvents` or `recipientEvents`, make sure that the event values are sentence case, not lowercase.
+
+        * Make sure you have either set `allUsers` to **true** or set `userIds` to a non-empty array of IDs.
+
+        * By default, this endpoint creates a disabled configuration. To enable the configuration immediately, set the body parameter `allowEnvelopePublish` to **true.** You can also enable the configuration in the UI.
+
+        * To check if events are being emitted, set `enableLog` to **true** to view event logs in the Connect console.
+
+
+        ## Related topics
+
+
+        * For more information about Connect, see the Docusign Connect guide.
+
+        * Use the MyAPICalls sample app to see an example of this endpoint using the JSON SIM model.'
+      operationId: Connect_PostConnectConfiguration
+      parameters:
+      - name: accountId
+        in: path
+        description: The external account number (int) or account ID GUID.
+        required: true
+        schema:
+          type: string
       responses:
         '201':
           description: Successful response.
           content:
-            '*/*':
+            application/json:
               schema:
                 $ref: '#/components/schemas/connectCustomConfiguration'
         '400':
           description: Error encountered.
           content:
-            '*/*':
+            application/json:
               schema:
                 $ref: '#/components/schemas/errorDetails'
       deprecated: false
@@ -136,21 +402,31 @@ paths:
       x-ds-method: create
       x-ds-service: Connect
       x-ds-in-sdk: true
-      x-codegen-request-body-name: connectCustomConfiguration
-  /v2/accounts/{accountId}/connect/{connectId}:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/connectCustomConfiguration'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/connectCustomConfiguration'
+  /v2.1/accounts/{accountId}/connect/{connectId}:
+    parameters: []
     get:
       tags:
       - ConnectConfigurations
-      summary: Docusign Get information on a Connect Configuration
-      description: 'Retrieves the information for the specified DocuSign Connect configuration.
+      summary: Gets the details about a Connect configuration
+      description: 'Retrieves the information for the specified Docusign Connect configuration.
 
 
-        ###### Note: Connect must be enabled for your account to use this function.'
+        To use this method, you must be an account administrator
+
+        and Connect must be enabled on your account.'
       operationId: Connect_GetConnectConfig
       parameters:
       - name: accountId
         in: path
-        description: The external account number (int) or account id GUID.
+        description: The external account number (int) or account ID GUID.
         required: true
         schema:
           type: string
@@ -164,13 +440,13 @@ paths:
         '200':
           description: Successful response.
           content:
-            '*/*':
+            application/json:
               schema:
                 $ref: '#/components/schemas/connectConfigResults'
         '400':
           description: Error encountered.
           content:
-            '*/*':
+            application/json:
               schema:
                 $ref: '#/components/schemas/errorDetails'
       deprecated: false
@@ -181,16 +457,18 @@ paths:
     delete:
       tags:
       - ConnectConfigurations
-      summary: Docusign Deletes the specified connect configuration
-      description: 'Deletes the specified DocuSign Connect configuration.
+      summary: Deletes the specified Connect configuration
+      description: 'Deletes the specified Docusign Connect configuration.
 
 
-        ###### Note: Connect must be enabled for your account to use this function.'
+        To use this method, you must be an account administrator
+
+        and Connect must be enabled on your account.'
       operationId: Connect_DeleteConnectConfig
       parameters:
       - name: accountId
         in: path
-        description: The external account number (int) or account id GUID.
+        description: The external account number (int) or account ID GUID.
         required: true
         schema:
           type: string
@@ -203,11 +481,10 @@ paths:
       responses:
         '200':
           description: Successful response.
-          content: {}
         '400':
           description: Error encountered.
           content:
-            '*/*':
+            application/json:
               schema:
                 $ref: '#/components/schemas/errorDetails'
       deprecated: false
@@ -215,17 +492,17 @@ paths:
       x-ds-method: delete
       x-ds-service: Connect
       x-ds-in-sdk: true
-  /v2/accounts/{accountId}/connect/{connectId}/users:
+  /v2.1/accounts/{accountId}/connect/{connectId}/all/users:
+    parameters: []
     get:
       tags:
       - ConnectConfigurations
-      summary: Docusign Returns users from the configured Connect service
-      description: Returns users from the configured Connect service.
-      operationId: Connect_GetConnectUsers
+      summary: Returns all users from the configured Connect service
+      operationId: Connect_GetConnectAllUsers
       parameters:
       - name: accountId
         in: path
-        description: The external account number (int) or account id GUID.
+        description: The external account number (int) or account ID GUID.
         required: true
         schema:
           type: string
@@ -237,46 +514,161 @@ paths:
           type: string
       - name: count
         in: query
-        description: 'Optional. Number of items to return.
-
-          '
+        required: false
+        description: The maximum number of results to return.
+        schema:
+          type: string
+      - name: domain_users_only
+        in: query
+        required: false
+        description: ''
         schema:
           type: string
       - name: email_substring
         in: query
-        description: Filters the returned user records by the email address or a sub-string of email address.
-        schema:
-          type: string
-      - name: list_included_users
-        in: query
+        required: false
+        description: Filters returned user records by full email address or a substring of email address.
         schema:
           type: string
       - name: start_position
         in: query
+        required: false
         description: The position within the total result set from which to start returning values. The value **thumbnail** may be used to return the page image.
         schema:
           type: string
       - name: status
         in: query
-        description: "Filters the results by user status.\nYou can specify a comma-separated\nlist of the following statuses:\n\n* ActivationRequired \n* ActivationSent \n* Active\n* Closed \n* Disabled\n"
+        required: false
+        description: The status of the item.
         schema:
           type: string
       - name: user_name_substring
         in: query
-        description: Filters the user records returned by the user name or a sub-string of user name.
+        required: false
+        description: 'Filters results based on a full or partial user name.
+
+
+          **Note:** When you enter a partial user name, you do not use a wildcard character.'
         schema:
           type: string
       responses:
         '200':
           description: Successful response.
           content:
-            '*/*':
+            application/json:
+              schema:
+                $ref: '#/components/schemas/integratedConnectUserInfoList'
+        '400':
+          description: Error encountered.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorDetails'
+      deprecated: false
+      x-ds-methodname: getConnectAllUsers
+      description: 'Returns all users from the configured Connect service.
+
+
+        To use this method, you must be an account administrator
+
+        and Connect must be enabled on your account.'
+      x-ds-method: getConnectAllUsers
+      x-ds-service: Uncategorized
+      x-ds-in-sdk: true
+  /v2.1/accounts/{accountId}/connect/{connectId}/users:
+    parameters: []
+    get:
+      tags:
+      - ConnectConfigurations
+      summary: Returns users from the configured Connect service
+      description: 'Returns users from the configured Connect service.
+
+
+        To use this method, you must be an account administrator
+
+        and Connect must be enabled on your account.'
+      operationId: Connect_GetConnectUsers
+      parameters:
+      - name: accountId
+        in: path
+        description: The external account number (int) or account ID GUID.
+        required: true
+        schema:
+          type: string
+      - name: connectId
+        in: path
+        description: The ID of the custom Connect configuration being accessed.
+        required: true
+        schema:
+          type: string
+      - name: count
+        in: query
+        required: false
+        description: 'The maximum number of results to return.
+
+
+          Use `start_position` to specify the number of results to skip.
+
+
+          '
+        schema:
+          type: string
+      - name: email_substring
+        in: query
+        required: false
+        description: Filters returned user records by full email address or a substring of email address.
+        schema:
+          type: string
+      - name: list_included_users
+        in: query
+        required: false
+        description: ''
+        schema:
+          type: string
+      - name: start_position
+        in: query
+        required: false
+        description: 'The zero-based index of the
+
+          result from which to start returning results.
+
+
+          Use with `count` to limit the number
+
+          of results.
+
+
+          The default value is `0`.
+
+          '
+        schema:
+          type: string
+      - name: status
+        in: query
+        required: false
+        description: "Filters the results by user status.\nYou can specify a comma-separated\nlist of the following statuses:\n\n* ActivationRequired \n* ActivationSent \n* Active\n* Closed \n* Disabled\n"
+        schema:
+          type: string
+      - name: user_name_substring
+        in: query
+        required: false
+        description: 'Filters results based on a full or partial user name.
+
+
+          **Note:** When you enter a partial user name, you do not use a wildcard character.'
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Successful response.
+          content:
+            application/json:
               schema:
                 $ref: '#/components/schemas/integratedUserInfoList'
         '400':
           description: Error encountered.
           content:
-            '*/*':
+            application/json:
               schema:
                 $ref: '#/components/schemas/errorDetails'
       deprecated: false
@@ -284,249 +676,1174 @@ paths:
       x-ds-method: listUsers
       x-ds-service: Connect
       x-ds-in-sdk: true
+  /v2.1/accounts/{accountId}/connect/oauth:
+    parameters: []
+    get:
+      tags:
+      - ConnectConfigurations
+      summary: Retrieves the Connect OAuth information for the account
+      operationId: ConnectOAuthConfig_GetConnectOAuthConfig
+      parameters:
+      - name: accountId
+        in: path
+        description: The external account number (int) or account ID GUID.
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Successful response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connectOAuthConfig'
+        '400':
+          description: Error encountered.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorDetails'
+      deprecated: false
+      x-ds-methodname: getConnectOAuthConfig
+      x-ds-method: getConnectOAuthConfig
+      x-ds-service: Uncategorized
+      description: 'Gets the Connect OAuth configuration for the specified account.
+
+
+        To use this method, you must be an account administrator
+
+        and Connect must be enabled on your account.
+
+
+        ## Related topics:
+
+        - OAuth for Docusign Connect'
+      x-ds-in-sdk: true
+    put:
+      tags:
+      - ConnectConfigurations
+      summary: Updates the existing Connect OAuth configuration for the account
+      operationId: ConnectOAuthConfig_PutConnectOAuthConfig
+      parameters:
+      - name: accountId
+        in: path
+        description: The external account number (int) or account ID GUID.
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Successful response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connectOAuthConfig'
+        '400':
+          description: Error encountered.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorDetails'
+      deprecated: false
+      x-ds-methodname: updateConnectOAuthConfig
+      x-ds-method: updateConnectOAuthConfig
+      x-ds-service: Uncategorized
+      description: ''
+      x-ds-in-sdk: true
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/connectOAuthConfig'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/connectOAuthConfig'
+    post:
+      tags:
+      - ConnectConfigurations
+      summary: Set up Connect OAuth for the specified account
+      operationId: ConnectOAuthConfig_PostConnectOAuthConfig
+      parameters:
+      - name: accountId
+        in: path
+        description: The external account number (int) or account ID GUID.
+        required: true
+        schema:
+          type: string
+      responses:
+        '201':
+          description: Successful response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connectOAuthConfig'
+        '400':
+          description: Error encountered.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorDetails'
+      deprecated: false
+      x-ds-methodname: createConnectOAuthConfig
+      x-ds-method: createConnectOAuthConfig
+      x-ds-service: Uncategorized
+      description: 'Sets up Connect OAuth for the specified account using an authorization server of your choice. To use this endpoint, get the client ID and client secret from your authorization server.
+
+
+        When you call this endpoint, Docusign requests an access token from your authorization server. Docusign will use that token in the Authorization HTTP header of your account''s Connect messages. Finally, your listener will be responsible for validating the token by calling the authorization server.
+
+
+        To use this method, you must be an account administrator
+
+        and Connect must be enabled on your account.
+
+
+        ## Related topics:
+
+        - OAuth for Docusign Connect'
+      x-ds-in-sdk: true
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/connectOAuthConfig'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/connectOAuthConfig'
+    delete:
+      tags:
+      - ConnectConfigurations
+      summary: Delete the Connect OAuth configuration
+      operationId: ConnectOAuthConfig_DeleteConnectOAuthConfig
+      parameters:
+      - name: accountId
+        in: path
+        description: The external account number (int) or account ID GUID.
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Successful response.
+        '400':
+          description: Error encountered.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorDetails'
+      deprecated: false
+      x-ds-methodname: deleteConnectOAuthConfig
+      x-ds-method: deleteConnectOAuthConfig
+      x-ds-service: Uncategorized
+      description: 'Deletes the Connect OAuth configuration for the specified account.
+
+
+        To use this method, you must be an account administrator
+
+        and Connect must be enabled on your account.
+
+
+        ## Related topics:
+
+        - OAuth for Docusign Connect'
+      x-ds-in-sdk: true
+  /v2.1/accounts/{accountId}/connect/secret:
+    parameters: []
+    get:
+      tags:
+      - ConnectConfigurations
+      summary: Connect HMAC get connect secret
+      operationId: ConnectHMAC_GetConnectSecret
+      parameters:
+      - name: accountId
+        in: path
+        description: The external account number (int) or account ID GUID.
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Successful response.
+        '400':
+          description: Error encountered.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorDetails'
+      deprecated: false
+      x-ds-methodname: getConnectSecret
+      x-ds-method: getConnectSecret
+      x-ds-service: Uncategorized
+      description: ''
+      x-ds-in-sdk: true
+      x-summary-source: derived
+    post:
+      tags:
+      - ConnectConfigurations
+      summary: Generates a new connect HMAC Secret
+      operationId: ConnectHMAC_CreateConnectSecret
+      parameters:
+      - name: accountId
+        in: path
+        description: The external account number (int) or account ID GUID.
+        required: true
+        schema:
+          type: string
+      responses:
+        '201':
+          description: Successful response.
+        '400':
+          description: Error encountered.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorDetails'
+      deprecated: false
+      x-ds-methodname: createConnectSecret
+      x-ds-method: createConnectSecret
+      x-ds-service: Uncategorized
+      description: ''
+      x-ds-in-sdk: true
+  /v2.1/accounts/{accountId}/connect/secret/{keyId}:
+    parameters: []
+    delete:
+      tags:
+      - ConnectConfigurations
+      summary: Deletes the connect HMAC Secret for specified account
+      operationId: ConnectHMAC_DeleteConnectSecret
+      parameters:
+      - name: accountId
+        in: path
+        description: The external account number (int) or account ID GUID.
+        required: true
+        schema:
+          type: string
+      - name: keyId
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Successful response.
+        '400':
+          description: Error encountered.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorDetails'
+      deprecated: false
+      x-ds-methodname: deleteConnectSecret
+      x-ds-method: deleteConnectSecret
+      x-ds-service: Uncategorized
+      description: ''
+      x-ds-in-sdk: true
 components:
   schemas:
-    connectCustomConfiguration:
-      type: object
-      properties:
-        allowEnvelopePublish:
-          type: string
-          description: When set to **true**, data is sent to the urlToPublishTo web address. This option can be set to false to stop sending data while maintaining the Connect configuration information.
-        allUsers:
-          type: string
-          description: When set to **true**, the tracked envelope and recipient events for all users, including users that are added a later time, are sent through Connect.
-        configurationType:
-          type: string
-          description: If merge field's are being used, specifies the type of the merge field. The only  supported value is **salesforce**.
-        connectId:
-          type: string
-          description: The ID of the custom Connect configuration being accessed.
-        enableLog:
-          type: string
-          description: This turns Connect logging on or off. When set to **true**, logging is turned on.
-        envelopeEvents:
-          type: string
-          description: "A list of envelope-level event statuses that will trigger Connect to send updates to the endpoint specified in the `url` property. \n\nTo receive notifications, you must include either an `envelopeEvents` node or a `recipientEvents` node. You do not need to specify both."
-        includeCertificateOfCompletion:
-          type: string
-          description: 'When set to **true**, the Connect Service includes the Certificate of Completion with completed envelopes. '
-        includeCertSoapHeader:
-          type: string
-          description: ''
-        includeDocumentFields:
-          type: string
-          description: 'When set to **true**, the Document Fields associated with the envelope''s documents are included in the notification messages. Document Fields are optional custom name-value pairs added to documents using the API. '
-        includeDocuments:
-          type: string
-          description: reserved
-        includeEnvelopeVoidReason:
-          type: string
-          description: 'When set to **true**, if the envelope is voided, the Connect Service notification will include the void reason, as entered by the person that voided the envelope. '
-        includeHMAC:
-          type: string
-          description: ''
-        includeSenderAccountasCustomField:
-          type: string
-          description: When set to **true**, Connect will include the sender account as Custom Field in the data.
-        includeTimeZoneInformation:
-          type: string
-          description: When set to **true**, Connect will include the envelope time zone information.
-        name:
-          type: string
-          description: ''
-        recipientEvents:
-          type: string
-          description: "An array of recipient event statuses that will trigger Connect to send notifications to your webhook listener at the url endpoint specified in the `url` property. \n\nTo receive notifications, you must include either an `envelopeEvents` node or a `recipientEvents` node. You do not need to specify both."
-        requiresAcknowledgement:
-          type: string
-          description: "#### When set to **true**, and SIM mode is activated:\n\nIf the HTTP Status response to a notification message is not in the range of 200-299 then the message delivery failed, and the configuration is marked as *down.*\n\nThe message will be queued and retried once per day. While a Connect configuration is marked down, subsequent notifications will not be tried, they'll be immediately queued with reason \"Pending.\" Once a message succeeds, all queued messages for the configuration will be tried immediately, in order.\n\nThere is a maximum of ten retries Alternately, you can use Republish Connect Information to manually republish the notification.\n\n#### When set to **true**, and SIM mode is not activated: \n\nIf the HTTP Status response to a notification message is not in the range of 200-299 then the message delivery failed, and the message is queued.\n\nThe message will be retried after at least a day the next time a subsequent message is successfully sent to this configuration (subscription).  Subsequent notifications will be tried when they occur.\nThere is a maximum of ten retries Alternately, you can use Republish Connect Information to manually republish the notification."
-        signMessageWithX509Certificate:
-          type: string
-          description: 'When set to **true**, Mutual TLS will be enabled for notifications. Mutual TLS must be initiated by the listener (the customer''s web server) during the TLS handshake protocol. '
-        soapNamespace:
-          type: string
-          description: 'The namespace of the SOAP interface.
-
-
-            The namespace value must be set if useSoapInterface is set to true.'
-        urlToPublishTo:
-          type: string
-          description: This is the web address and name of your listener or Retrieving Service endpoint. You need to include HTTPS:// in the web address.
-        userIds:
-          type: string
-          description: "A comma separated list of userIds. This sets the users associated with the tracked envelope and recipient events. When a tracked event occurs for a set user, the a notification message is sent to your Connect listener. \n\n###### Note: If allUsers is set to `false` then you must provide a list of user ids."
-        useSoapInterface:
-          type: string
-          description: 'When set to **true**, the notifications are sent to your endpoint as SOAP requests. '
-      description: ''
-      x-ds-definition-name: connectCustomConfiguration
-      x-ms-summary: ''
-    userInfo:
-      type: object
-      properties:
-        activationAccessCode:
-          type: string
-          description: ''
-        email:
-          type: string
-          description: ''
-        errorDetails:
-          $ref: '#/components/schemas/errorDetails'
-        loginStatus:
-          type: string
-          description: ''
-        sendActivationEmail:
-          type: string
-          description: ''
-        uri:
-          type: string
-          description: ''
-        userId:
-          type: string
-          description: 'The user ID of the user being accessed. Generally this is the user ID of the authenticated user, but if the authenticated user is an Admin on the account, this may be another user the Admin user is accessing. **Note**: For the [GET /v2/accounts/{accountId}/envelopes](https://developers.docusign.com/esign-rest-api/reference/Envelopes/Envelopes/listStatusChanges/#envelopesInformation) method, the `user_id` query parameter is not implemented and should not be used.'
-        userName:
-          type: string
-          description: ''
-        userStatus:
-          type: string
-          description: 'Status of the user''s account. One of:
-
-
-            * ActivationRequired
-
-            * ActivationSent
-
-            * Active
-
-            * Closed
-
-            * Disabled
-
-            '
-        userType:
-          type: string
-          description: ''
-      description: ''
-      x-ds-definition-name: userInfo
-      x-ms-summary: ''
-    errorDetails:
-      type: object
-      properties:
-        errorCode:
-          type: string
-          description: An error code associated with the error.
-        message:
-          type: string
-          description: A short error message.
-      description: This object describes errors that occur. It is only valid for responses, and ignored in requests.
-      x-ds-definition-name: errorDetails
-      x-ms-summary: This object describes errors that occur. It is only valid for responses, and ignored in requests.
     connectConfigResults:
       type: object
       properties:
         configurations:
+          description: An array of Docusign Connect configurations.
           type: array
-          description: Array of Connect Configurations
           items:
             $ref: '#/components/schemas/connectCustomConfiguration'
         totalRecords:
+          description: The number of results.
           type: string
-          description: Record count.
-      description: ''
+      description: This object contains the results of a ConnectConfigurations::GET method.
       x-ds-definition-name: connectConfigResults
+      x-ms-summary: This object contains the results of a ConnectConfigurations::GET method.
+    connectOAuthConfig:
+      type: object
+      properties:
+        authorizationServerUrl:
+          description: 'The token URL for your authorization server or OAuth service.
+
+
+            This property is required.'
+          type: string
+        clientId:
+          description: 'The client ID assigned to your app by your authorization server or OAuth service.
+
+
+            This property is required.'
+          type: string
+        clientSecret:
+          description: 'The secret value provided by your authorization server.
+
+
+            This property is required.'
+          type: string
+        customParameters:
+          description: ''
+          type: object
+          additionalProperties:
+            type: string
+        scope:
+          description: 'The scopes that your app will request from the authorization server.
+
+
+            This property is optional.
+
+
+            **Note:** If you are using Azure, this value is the application ID URI of the secified resource affixed with the `.default`. For example: `api://{{clientId}}/.default`'
+          type: string
+      x-ds-definition-name: connectOAuthConfig
+      description: A complex object describing a Connect OAuth configuration.
+      x-ms-summary: A complex object describing a Connect OAuth configuration.
+    connectSalesforceField:
+      type: object
+      properties:
+        dsAttribute:
+          description: ''
+          type: string
+        dsLink:
+          description: A URL that links to the information in the Docusign field.
+          type: string
+        dsNode:
+          description: ''
+          type: string
+        id:
+          description: A unique ID for the Salesforce object.
+          type: string
+        sfField:
+          description: ''
+          type: string
+        sfFieldName:
+          description: The name of the Salesforce field.
+          type: string
+        sfFolder:
+          description: The name of the Salesforce folder.
+          type: string
+        sfLockedValue:
+          description: ''
+          type: string
+      description: This object is used to match a Docusign field to a Salesforce field so that Docusign can send information to your Salesforce account.
+      x-ds-definition-name: connectSalesforceField
+      x-ms-summary: This object is used to match a Docusign field to a Salesforce field so that Docusign can send information to your Salesforce account.
+    connectSalesforceObject:
+      type: object
+      properties:
+        active:
+          description: When **true,** the `connectSalesforceObject` is active.
+          type: string
+        description:
+          description: A description of the `connectSalesforceObject`.
+          type: string
+        id:
+          description: The ID of the `connectSalesforceObject`.
+          type: string
+        insert:
+          description: ''
+          type: string
+        onCompleteOnly:
+          description: When **true,** Salesforce is updated only when the envelope is complete.
+          type: string
+        selectFields:
+          description: The Docusign and Salesforce fields that you want to use to match a Salesforce object with Docusign information. This information tells Connect when to send updates to Salesforce.
+          type: array
+          items:
+            $ref: '#/components/schemas/connectSalesforceField'
+        sfObject:
+          description: The Salesforce.com object type, such as `case`, `contact`, or `opportunity`.
+          type: string
+        sfObjectName:
+          description: 'A name for the Salesforce object.
+
+
+            **Note:** You can enter any name for the object. It does not have to match the `sfObject` property.'
+          type: string
+        updateFields:
+          description: "The Docusign and Salesforce fields that you want to update. \n\n**Note:** You can choose to update SalesForce (with information from Docusign) only, update Docusign only, or both."
+          type: array
+          items:
+            $ref: '#/components/schemas/connectSalesforceField'
+      description: "A `connectSalesforceObject` is an object that updates envelope and document status or recipient status in your Salesforce account.\n\nWhen you install Docusign Connect for Salesforce, the service automatically sets up two Connect objects: one that updates envelope status and documents and one that updates recipient status. You can also customize Docusign Connect for Salesforce by associating Docusign objects with Salesforce objects so that Docusign Connect for Salesforce updates or inserts the information into the Salesforce object. For more information, see \n[Docusign for Salesforce - Adding Completed Documents to the Notes and Attachments](https://support.docusign.com/s/articles/DocuSign-for-Salesforce-Adding-Completed-Documents-to-the-Notes-and-Attachments-New)."
+      x-ds-definition-name: connectSalesforceObject
+      x-ms-summary: "A `connectSalesforceObject` is an object that updates envelope and document status or recipient status in your Salesforce account.\n\nWhen you install Docusign Connect for Salesforce, the service automatically sets up two Connect objects: one that updates envelope status and documents and one that updates recipient status. You can also customize Docusign Connect for Salesforce by associating Docusign objects with Salesforce objects so that Docusign Connect for Salesforce updates or inserts the information into the Salesforce object. For more information, see \n[Docusign for Salesforce - Adding Completed Documents to the Notes and Attachments](https://support.docusign.com/s/articles/DocuSign-for-Salesforce-Adding-Completed-Documents-to-the-Notes-and-Attachments-New)."
+    connectUserInfo:
+      type: object
+      properties:
+        email:
+          description: ''
+          type: string
+        isIncluded:
+          description: ''
+          type: string
+        userId:
+          description: 'The ID of the user to access.
+
+
+            **Note:** Users can only access their own information. A user, even one with Admin rights, cannot access another user''s settings.'
+          type: string
+        userName:
+          description: The name of the user.
+          type: string
+      x-ds-definition-name: connectUserInfo
+      description: ''
       x-ms-summary: ''
     integratedUserInfoList:
       type: object
       properties:
         allUsersSelected:
-          type: string
           description: ''
+          type: string
         endPosition:
+          description: 'The last index position in the result set. '
           type: string
-          description: 'The last position in the result set. '
         nextUri:
-          type: string
           description: 'The URI for the next chunk of records based on the search request. It is `null` if this is the last set of results for the search. '
+          type: string
         previousUri:
-          type: string
           description: 'The URI for the prior chunk of records based on the search request. It is `null` if this is the first set of results for the search. '
+          type: string
         resultSetSize:
+          description: The number of results in this response. Because you can filter which entries are included in the response, this value is always less than or equal to the `totalSetSize`.
           type: string
-          description: 'The number of results returned in this response. '
         startPosition:
+          description: The starting index position of the current result set.
           type: string
-          description: Starting position of the current result set.
         totalSetSize:
+          description: The total number of items in the result set. This value is always greater than or equal to the value of `resultSetSize`.
           type: string
-          description: The total number of items in the search's result set. It will always be greater than or equal to the value of the `resultSetSize` field.
         users:
+          description: User management information.
           type: array
-          description: ''
           items:
             $ref: '#/components/schemas/userInfo'
-      description: ''
       x-ds-definition-name: integratedUserInfoList
+      description: ''
       x-ms-summary: ''
+    errorDetails:
+      description: This object describes errors that occur. It is only valid for responses and ignored in requests.
+      type: object
+      properties:
+        errorCode:
+          description: The code associated with the error condition.
+          type: string
+        message:
+          description: A brief message describing the error condition.
+          type: string
+      x-ds-definition-name: errorDetails
+      x-ms-summary: This object describes errors that occur. It is only valid for responses and ignored in requests.
+    integratedConnectUserInfoList:
+      type: object
+      properties:
+        endPosition:
+          description: 'The last index position in the result set. '
+          type: string
+        nextUri:
+          description: 'The URI for the next chunk of records based on the search request. It is `null` if this is the last set of results for the search. '
+          type: string
+        previousUri:
+          description: 'The URI for the prior chunk of records based on the search request. It is `null` if this is the first set of results for the search. '
+          type: string
+        resultSetSize:
+          description: The number of results in this response. Because you can filter which entries are included in the response, this value is always less than or equal to the `totalSetSize`.
+          type: string
+        startPosition:
+          description: The starting index position of the current result set.
+          type: string
+        totalSetSize:
+          description: The total number of items in the result set. This value is always greater than or equal to the value of `resultSetSize`.
+          type: string
+        users:
+          description: User management information.
+          type: array
+          items:
+            $ref: '#/components/schemas/connectUserInfo'
+      x-ds-definition-name: integratedConnectUserInfoList
+      description: ''
+      x-ms-summary: ''
+    userInfo:
+      type: object
+      properties:
+        accountId:
+          description: The account ID associated with the envelope.
+          type: string
+        accountName:
+          description: The name on the account.
+          type: string
+        activationAccessCode:
+          description: Access code provided to the user to activate the account.
+          type: string
+        email:
+          description: The user's email address.
+          type: string
+        errorDetails:
+          $ref: '#/components/schemas/errorDetails'
+          description: This object describes errors that occur. It is only valid for responses and ignored in requests.
+        ipAddress:
+          description: ''
+          type: string
+        loginStatus:
+          description: When **true,** indicates that the user is logged in. This is a read-only property.
+          type: string
+        membershipId:
+          description: The user's membership ID.
+          type: string
+        sendActivationEmail:
+          description: This field is no longer supported for most accounts. To create an eSignature user without sending an activation email, use the Admin API by following [these steps](/docs/admin-api/how-to/create-active-user/).
+          type: string
+        uri:
+          description: A URI containing the user ID.
+          type: string
+        userId:
+          description: The ID of the user to access.
+          type: string
+        userName:
+          description: The name of the user.
+          type: string
+        userStatus:
+          description: 'Status of the user''s account. One of:
+
+
+            - `ActivationRequired`
+
+            - `ActivationSent`
+
+            - `Active`
+
+            - `Closed`
+
+            - `Disabled`
+
+            '
+          type: string
+        userType:
+          description: The type of user, for example `CompanyUser`.
+          type: string
+      x-ds-definition-name: userInfo
+      description: ''
+      x-ms-summary: ''
+    connectEventData:
+      type: object
+      properties:
+        format:
+          description: Reserved for Docusign.
+          type: string
+        includeData:
+          description: 'A string array of the data to be included.
+
+            The default is the empty array `[]`.
+
+
+            - `attachments`: Include attachments associated with the envelope.
+
+            - `custom_fields`: Include the custom fields associated with the envelope.
+
+            - `documents`: Include the documents associated with the envelope.
+
+            - `extensions`: Include information about the email settings associated with the envelope.
+
+            - `folders`: Include the folder where the envelope exists.
+
+            - `payment_tabs`: Include the payment tabs associated with the envelope.
+
+            - `powerform`: Include the PowerForms associated with the envelope.
+
+            - `prefill_tabs`: Include the [pre-filled tabs](/docs/esign-rest-api/esign101/concepts/tabs/prefilled-tabs/) associated with the envelope.
+
+            - `recipients`: Include the recipients associated with the envelope.
+
+            - `tabs`: Include the tabs associated with the envelope.
+
+            '
+          type: array
+          items:
+            type: string
+        version:
+          description: Set this property to `restv2.1` to return event data in JSON. If the property is not set, the event data will be returned in XML by default.
+          type: string
+      description: This object lets you choose the data format of your Connect response.
+      x-ds-definition-name: connectEventData
+      x-ms-summary: This object lets you choose the data format of your Connect response.
+    connectCustomConfiguration:
+      type: object
+      properties:
+        allowEnvelopePublish:
+          description: Set this value to **true** to enable the webhook. The default property is **false.**
+          type: string
+        allowSalesforcePublish:
+          description: 'When **true,** Docusign sends data to the designated Salesforce account through Connect. The default value is **true.**
+
+
+            This property is not used for the `createHistoricalEnvelopePublishTransaction` endpoint.'
+          type: string
+        allUsers:
+          description: 'When **true,** the tracked envelope and recipient events for all users, including users that are added a later time, are sent through Connect. The default value is **false.**
+
+
+            **Note:** If this property is **false,** make sure you set the `userIds` property to a non-empty array of user IDs.
+
+
+            This property is not used for the `createHistoricalEnvelopePublishTransaction` endpoint.'
+          type: string
+        allUsersExcept:
+          description: 'This flag enables you to toggle between including and excluding specified users from the configuration. When **false,** the users corresponding to the IDs in `userIds` will be included in the configuration. Conversely, when **true,** the users will be excluded from the configuration. The default value is **false.**
+
+
+            This property is not used for the `createHistoricalEnvelopePublishTransaction` endpoint.'
+          type: string
+        configurationType:
+          description: 'The type of the configuration. Valid values:
+
+
+            * `custom`: Creates an account-level configuration
+
+            * `customrecipient`: Creates a Recipient Connect configuration
+
+            * `salesforce`
+
+            * `eOriginal`
+
+
+            This property is required.'
+          type: string
+        connectId:
+          description: 'The Docusign-generated ID for the Connect configuration.
+
+
+            This property is read-only.'
+          type: string
+        deliveryMode:
+          description: 'The delivery mode of the configuration. Valid values:
+
+
+            * `SIM`
+
+            * `Aggregate`
+
+
+            This property is required.'
+          type: string
+        disabledBy:
+          description: ''
+          type: string
+        enableLog:
+          description: "When **true,** Connect logging is turned on. Docusign recommends that you enable this functionality to help troubleshoot any issues. \n\nYou can have a maximum of 100 active logs in your account. You can view the entries in active logs in the **Logs** tab in the Connect console.\n\nThis property is required."
+          type: string
+        enableOAuthPerConfiguration:
+          description: ''
+          type: string
+        envelopeEvents:
+          description: 'A list of envelope-level event statuses that will trigger Connect to send updates to the endpoint specified in the `url` property.
+
+
+            When using any of
+
+            [the legacy event message formats](/platform/webhooks/connect/legacy-message-formats/),
+
+            you must include either the `envelopeEvents` property
+
+            or the `recipientEvents` property.
+
+            If you are instead using the
+
+            [JSON SIM event model](/platform/webhooks/connect/json-sim-event-model/),
+
+            use the [`events`](/docs/esign-rest-api/reference/connect/connectconfigurations/create/#schema__connectcustomconfiguration_events) property.
+
+
+            The [possible event statuses](/platform/webhooks/connect/event-triggers/) are:
+
+
+            * `Sent`
+
+            * `Delivered`
+
+            * `Completed`
+
+            * `Declined`
+
+            * `Voided`
+
+
+            **Note:** These values are case-sensitive.
+
+
+            This property is not used for the `createHistoricalEnvelopePublishTransaction` endpoint.'
+          type: array
+          items:
+            type: string
+        eventData:
+          $ref: '#/components/schemas/connectEventData'
+          description: 'Allows you to specify the format of the information the Connect webhooks returns.
+
+
+            This property is required.'
+        events:
+          description: 'A comma-separated list of envelope-level event statuses that will trigger Connect to send updates to the endpoint specified in the `urlToPublishTo` property.
+
+
+            Set this property when you are using the [JSON SIM event model](/platform/webhooks/connect/json-sim-event-model/). If you are instead using any of [the legacy event message formats](/platform/webhooks/connect/legacy-message-formats/), set either the `envelopeEvents` property or the `recipientEvents` property.
+
+
+            The [possible event statuses](/platform/webhooks/connect/json-sim-event-reference/) are:
+
+
+            * `envelope-created`
+
+            * `envelope-sent`
+
+            * `envelope-resent`
+
+            * `envelope-delivered`
+
+            * `envelope-completed`
+
+            * `envelope-declined`
+
+            * `envelope-voided`
+
+            * `recipient-authenticationfailed`
+
+            * `recipient-autoresponded`
+
+            * `recipient-declined`
+
+            * `recipient-delivered`
+
+            * `recipient-completed`
+
+            * `recipient-sent`
+
+            * `recipient-resent`
+
+            * `template-created`
+
+            * `template-modified`
+
+            * `template-deleted`
+
+            * `envelope-corrected`
+
+            * `envelope-purge`
+
+            * `envelope-deleted`
+
+            * `envelope-discard`
+
+            * `recipient-reassign`
+
+            * `recipient-delegate`
+
+            * `recipient-finish-later`
+
+            * `click-agreed`
+
+            * `click-declined`
+
+
+            This property is not used for the `createHistoricalEnvelopePublishTransaction` endpoint.'
+          type: array
+          items:
+            type: string
+        externalFolderId:
+          description: 'The ID of an external folder.
+
+
+            This property is not used for the `createHistoricalEnvelopePublishTransaction` endpoint.'
+          type: string
+        externalFolderLabel:
+          description: 'The label for an external folder.
+
+
+            This property is not used for the `createHistoricalEnvelopePublishTransaction` endpoint.'
+          type: string
+        groupIds:
+          description: ''
+          type: array
+          items:
+            type: string
+        includeCertificateOfCompletion:
+          description: 'When **true,** the Connect Service includes the Certificate of Completion with completed envelopes.
+
+
+            This property is not used for the `createHistoricalEnvelopePublishTransaction` endpoint.'
+          type: string
+        includeCertSoapHeader:
+          description: ''
+          type: string
+        includeDocumentFields:
+          description: 'When **true,** the document fields associated with the envelope''s documents are included in the notification messages. Document fields are optional custom name-value pairs added to documents using the API.
+
+
+            This property is not used for the `createHistoricalEnvelopePublishTransaction` endpoint.'
+          type: string
+        includeDocuments:
+          description: Reserved for Docusign.
+          type: string
+        includeEnvelopeVoidReason:
+          description: 'When **true,** if the envelope is voided, the Connect Service notification will include the void reason, as entered by the person that voided the envelope.
+
+
+            This property is not used for the `createHistoricalEnvelopePublishTransaction` endpoint.'
+          type: string
+        includeHMAC:
+          description: 'When **true,** Connect will use HMAC to verify the request.
+
+
+            This property is required. '
+          type: string
+        includeOAuth:
+          description: ''
+          type: string
+        includeSenderAccountasCustomField:
+          description: 'When **true,** Connect will include the sender account as custom field in the data.
+
+
+            This property is not used for the `createHistoricalEnvelopePublishTransaction` endpoint.'
+          type: string
+        includeTimeZoneInformation:
+          description: 'When **true,** Connect will include the envelope time zone information.
+
+
+            This property is not used for the `createHistoricalEnvelopePublishTransaction` endpoint.'
+          type: string
+        integratorManaged:
+          description: ''
+          type: string
+        name:
+          description: 'The name of the Connect configuration.
+
+
+            This property is required.'
+          type: string
+        oAuthConfiguration:
+          $ref: '#/components/schemas/connectOAuthConfig'
+          description: ''
+        password:
+          description: 'The password for the Connect configuration.
+
+
+            This property is not used for the `createHistoricalEnvelopePublishTransaction` endpoint.
+
+            '
+          type: string
+        pausePublish:
+          description: ''
+          type: string
+        recipientEvents:
+          description: 'An array of recipient event statuses that will trigger Connect to send notifications to your webhook listener at the URL endpoint specified in the `url` property.
+
+
+            When using any of [the legacy event message formats](/platform/webhooks/connect/legacy-message-formats/), you must include either the `envelopeEvents` property or the `recipientEvents` property. If you are instead using the [JSON SIM event model](/platform/webhooks/connect/json-sim-event-model/), use the `events` property.
+
+
+            The [possible event statuses](/platform/webhooks/connect/event-triggers/) are:
+
+
+            * `Sent`
+
+            * `AutoResponded`
+
+            * `Delivered`
+
+            * `Completed`
+
+            * `Declined`
+
+            * `AuthenticationFailed`
+
+
+            **Note:** These values are case-sensitive.
+
+
+            This property is not used for the `createHistoricalEnvelopePublishTransaction` endpoint.'
+          type: array
+          items:
+            type: string
+        requireMutualTls:
+          description: 'When **true,** [Mutual TLS](/platform/webhooks/mutual-tls/) authentication is enabled.
+
+
+            This property is not used for the `createHistoricalEnvelopePublishTransaction` endpoint.'
+          type: string
+        requiresAcknowledgement:
+          description: 'When **true,** event delivery acknowledgements are enabled for your Connect configuration.
+
+
+            Docusign Connect awaits a valid 200 response from your application acknowledging that it received a message. If you do not acknowledge receiving an event notification message within 100 seconds, Docusign treats the message as a failure and places it into a failure queue. It is imperative that you acknowledge successful receipt of Connect events as they occur by sending a 200 event back.
+
+
+            #### When **true** and Send Individual Messages (SIM) mode is activated
+
+
+            If the HTTP status response to a notification message is not in the range of 200-299,
+
+            then the message delivery failed, and the configuration is marked as down.
+
+
+            The message will be queued and retried once per day.
+
+            While a Connect configuration is marked down, subsequent notifications will not be tried. Instead, they will be immediately queued with the reason `Pending`.
+
+            When a message succeeds, all queued messages for the configuration will be tried immediately, in order.
+
+
+            There is a maximum of ten retries. Alternately, you can use **Republish Connect Information** to manually republish the notification.
+
+
+            #### When **true** and SIM mode is not activated
+
+
+            If the HTTP Status response to a notification message is not in the range of 200-299,  then the message delivery failed, and the message is queued.
+
+
+            The message will be retried after at least a day the next time a subsequent message is successfully sent to this configuration (subscription).  Subsequent notifications will be tried when they occur.
+
+            There is a maximum of ten retries. Alternately, you can use **Republish Connect Information** to manually republish the notification.
+
+
+            #### When **false**
+
+
+            When `requiresAcknowledgement` is set to **false** and you do not acknowledge receiving an event notification message within 100 seconds, Docusign treats the message as a failure and determines that the server is unavailable. It does not retry to send the notification message, and you must handle the failure manually.
+
+
+            This property is required.'
+          type: string
+        salesforceApiVersion:
+          description: 'The version of the Salesforce API that you are using.
+
+
+            This property is not used for the `createHistoricalEnvelopePublishTransaction` endpoint.'
+          type: string
+        salesforceAuthcode:
+          description: ''
+          type: string
+        salesforceCallBackUrl:
+          description: ''
+          type: string
+        salesforceDocumentsAsContentFiles:
+          description: 'When **true,** Docusign can use documents in your Salesforce account for sending and signing.
+
+
+            This property is not used for the `createHistoricalEnvelopePublishTransaction` endpoint.'
+          type: string
+        senderOverride:
+          description: ''
+          type: string
+        senderSelectableItems:
+          description: 'This property sets the items that are available for selection when adding or editing Connect objects.
+
+
+            This property is not used for the `createHistoricalEnvelopePublishTransaction` endpoint.'
+          type: array
+          items:
+            type: string
+        sfObjects:
+          description: 'An array of Salesforce objects.
+
+
+            This property is not used for the `createHistoricalEnvelopePublishTransaction` endpoint.'
+          type: array
+          items:
+            $ref: '#/components/schemas/connectSalesforceObject'
+        signMessageWithX509Certificate:
+          description: 'When **true,** Mutual TLS will be enabled for notifications. Mutual TLS must be initiated by the listener (the customer''s web server) during the TLS handshake protocol.
+
+
+            This property is required.'
+          type: string
+        soapNamespace:
+          description: 'The namespace of the SOAP interface.
+
+
+            **Note:** If `useSoapInterface` is set to **true,** you must set this value.
+
+
+            This property is not used for the `createHistoricalEnvelopePublishTransaction` endpoint.'
+          type: string
+        urlToPublishTo:
+          description: 'The web address of the listener or retrieving service endpoint. It must be an HTTPS URL.
+
+
+            This property is required.'
+          type: string
+        userIds:
+          description: 'A comma-separated list of user IDs. This sets the users associated with the tracked envelope and recipient events. When a tracked event occurs for a set user, the a notification message is sent to your Connect listener.
+
+
+            By default, the users will be included in the configuration. If you want to exclude the users, set the `allUsersExcept` property to **true.**
+
+
+            **Note:** If `allUsers` is set to `false`, then you must provide a list of user IDs.
+
+
+            This property is not used for the `createHistoricalEnvelopePublishTransaction` endpoint.'
+          type: array
+          items:
+            type: string
+        userName:
+          description: 'The name of the user.
+
+
+            This property is not used for the `createHistoricalEnvelopePublishTransaction` endpoint.'
+          type: string
+        useSoapInterface:
+          description: 'When **true,** the notifications are sent to your endpoint as SOAP requests.
+
+
+            This property is not used for the `createHistoricalEnvelopePublishTransaction` endpoint.'
+          type: string
+      description: The `connectCustomConfiguration` object describes a Connect configuration for your account.
+      x-ds-definition-name: connectCustomConfiguration
+      x-ms-summary: The `connectCustomConfiguration` object describes a Connect configuration for your account.
 externalDocs:
-  description: See the DocuSign REST API Guide for more information.
+  description: See the Docusign eSignature REST API Guide for more information.
   url: https://docs.docusign.com/esign
 x-ds-allow-editing: false
 x-ds-categories:
-- name: Authentication
-  summary: Logging in and authentication
-  description: 'Use the Authentication category to manage various account login tasks including:
-
-
-    * Getting login information for a user.
-
-    * Managing linked social accounts.
-
-    * Getting and revoking OAuth tokens.'
 - name: Envelopes
-  summary: Creating and sending envelopes
-  description: 'The DocuSign API Envelope category includes the resources and methods for sending and managing envelopes and envelope data.
+  summary: This section shows you how to create and send envelopes.
+  description: 'The eSignature API Envelope category includes the resources and methods for sending and managing envelopes and envelope data.
 
 
-    Envelopes are the key objects within the DocuSign eSignature system. As a result, they are complex data structures with few required fields. See the [API Recipes](https://www.docusign.com/developer-center/recipes) for use case examples and their solutions.
+    Envelopes are the key objects in the Docusign platform. As a result, they are complex data structures with few required fields. See the [How-to guides](/docs/esign-rest-api/how-to/) for examples and solutions.
 
 
-    To create and send envelopes, see the [Envelopes resource](Envelopes).
-
+    To learn more about envelopes, see [Envelopes](/docs/esign-rest-api/esign101/concepts/envelopes/).
 
     '
 - name: Connect
-  summary: Connect configuration and logging
-  description: "The Connect category enables your application to be called via HTTPS when an event of interest occurs.\n\nUse the Connect service to \"end the polling madness.\" With Connect, there is no need for your application to poll DocuSign every 15 minutes to learn the latest about your envelopes.\n\nInstead, you register your interest in one or more types of envelope or recipient events. Then, when an interesting event occurs, the DocuSign platform will contact your application with the event's details and data. You can register interest in envelopes sent by particular users in your account, or for envelopes sent by any user.\n\n## Incoming Connect Calls\nTo use the Connect service, your application needs to provide an https url that can be called from the public internet. If your application runs on a server behind your organization's firewall, then you will need to create a \"pinhole\" in the firewall to allow the incoming Connect calls from DocuSign to reach your application. Other techniques for receiving the incoming calls including proxy servers and DMZ networking can also be used. \n\n## Per-envelope Connect Configuration\nInstead of registering a general Connect configuration and listener, an individual envelope can have its own Connect configuration. See the `eventNotification` field for envelopes.\n\n## Categories\nUse the Connect category for:\n\n* Programmatically creating Connect configurations. Connect configurations can be created manually by using the DocuSign web service, or programmatically via the API. Configurations created via the API can be seen and updated from the web service.\n* Retrieving and managing the event log for your Connect configurations. \n* Requesting that an event be re-published to the listener."
+  summary: "Docusign Connect is the Docusign platform notification service. The service uses webhooks to proactively notify your application when an event occurs that your application wants to know about. Docusign recommends that all applications use Connect instead of polling the Docusign Signature Service. This section provides information about Connect configuration and logging. \n\n**Note:** To make API calls to any of the Connect endpoints, you must be an account administrator.\n\nFor more information about Connect, see [Docusign Connect](/platform/webhooks/connect/) and [Custom Connect Configuration](https://support.docusign.com/s/document-item?bundleId=pik1583277475390&topicId=khw1583277390582.html)."
+  description: 'The Connect service enables your application to be called via
+
+    HTTPS when an event of interest occurs.
+
+
+    Use the Connect service to "end the polling madness." With
+
+    Connect, there is no need for your application to poll Docusign
+
+    every 15 minutes to learn the latest about your envelopes.
+
+
+    Instead, you register your interest in one or more types of
+
+    envelope or recipient events. Then, when an interesting event
+
+    occurs, the Docusign platform will contact your application with
+
+    the event''s details and data. You can register interest in
+
+    envelopes sent by particular users in your account, or for
+
+    envelopes sent by any user.
+
+
+    Connect can empower your organization to manage document actions
+
+    as they occur, and allows you to track their changes within your
+
+    own systems. Upon completion, envelope information, including
+
+    document content, can be stored in your own databases or CMS
+
+    systems, and these events can be triggered via webhooks
+
+    delivering messages to your application.
+
+
+    **Note:** To make API calls to any of the Connect endpoints, you must be an account administrator.
+
+
+    ## Incoming Connect Calls
+
+
+    To use the Connect service, your application needs to provide an
+
+    HTTPS URL that can be called from the public Internet. If your
+
+    application runs on a server behind your organization''s firewall,
+
+    then you will need to create a "pinhole" in the firewall to allow
+
+    the incoming Connect calls from Docusign to reach your
+
+    application. You can also use other techniques such as proxy
+
+    servers and DMZ networking for receiving the incoming calls.
+
+
+    Connect delivers events over HTTP requests in JSON or XML.
+
+    See [Docusign Connect overview](/platform/webhooks/connect/).
+
+
+    If your application is not configured to accept post messages,
+
+    Docusign will NOT return an additional post error response to
+
+    your listener application. If you''ve enabled logging on your
+
+    configuration, it will be logged in Admin under the configuration
+
+    failure log.
+
+
+    ## Per-envelope Connect Configuration
+
+
+    Instead of registering a general Connect configuration and
+
+    listener, an individual envelope can have its own Connect
+
+    configuration. See the
+
+    [`eventNotification`](/docs/esign-rest-api/reference/envelopes/envelopes/create/#schema__envelopedefinition_eventnotification)
+
+    property for envelopes.
+
+
+    ## Historical Publish Endpoint
+
+
+    To submit existing envelopes to an endpoint, use the [EnvelopePublish](/docs/esign-rest-api/reference/envelopes/envelopepublish/) resource.
+
+    '
 - name: Templates
   summary: Template creation and management
   description: 'Use the Templates category to manage your account''s templates.
 
 
-    You can:
+    This section shows you how to perform the following tasks:
 
 
     * Create, list, get, update, and delete templates.
 
-    * Manage templates'' notification and group sharing settings.
+    * Manage the notification and group sharing settings for templates.
 
     * Fetch and rotate pages from a document used by a template.
 
 
-    Templates can be created programmatically or can be created via the DocuSign web interface and then used by your application.'
+    You can create templates either programmatically or through the Docusign web interface and then used by your application.'
 - name: SigningGroups
-  summary: Send a signing request to a group of potential signers
-  description: 'Use the SigningGroup category to manage signing groups that allow you anyone in the group to sign a document.
+  summary: Send a signing request to a group of potential signers.
+  description: 'Use the Signing Group category to manage signing groups that allow anyone in the group to sign a document. When you send an envelope to a signing group, anyone in the group can open it and sign it with their own signature.
 
 
-    The category allows you create the signing group and manage the users in the group.'
+    This category shows account administrators how to create a signing group and manage the users in the group.
+
+
+    **Note:** To create and manage signing groups, you must be an account administrator.
+
+
+    For more information about this topic, see [Signing Groups](https://support.docusign.com/s/document-item?bundleId=gav1643676262430&topicId=zgn1578456447934.html).'
 - name: Folders
-  summary: Folders for completed envelopes
-  description: "Use the Folders category to manage envelopes in your folders. \n\nYou can list the folder contents and move envelopes between folders."
+  summary: Folders allow you to organize envelopes and templates.
+  description: 'Use the Folders category to organize envelopes and templates.
+
+    You can list the folder contents and move envelopes and templates between folders.'
 - name: CustomTabs
   summary: Custom tabs
   description: "Custom Tabs enable accounts to have one or more pre-configured (custom) tabs. Custom tabs save time when users are tagging documents since the users don't have to manually set the tabs' parameters.\n\nThis category enables custom tabs to be managed programmatically, including creation, deletion, etc. \n"
 - name: CloudStorage
-  summary: Cloud storage providers and user management
+  summary: This section shows you how to manage your cloud storage providers and users.
   description: 'Use the Cloud Storage category to list the user''s cloud storage document contents.
 
 
@@ -545,7 +1862,7 @@ x-ds-categories:
 
     * Add delete users.
 
-    * Add and delete the intials and signature images for a user.'
+    * Add and delete the initials and signature images for a user.'
 - name: UserGroups
   summary: Group users for common permissions and branding
   description: 'Use the User Groups category to manage your permissions groups.
@@ -559,9 +1876,28 @@ x-ds-categories:
     * Add users to, and delete users from, your groups.
 
     * Manage the brand information associated with a group.'
+- name: BulkEnvelopes
+  summary: Bulk envelopes
+  description: Use the BulkEnvelopes category to manage the sending of envelopes to multiple recipients.
 - name: Accounts
   summary: Account management
-  description: "Use the Account category for various account management tasks including:\n\n* Programmatically creating and deleting accounts.\n* Getting information about an account and its capabilities.\n* Branding the account with custom colors, message text, and more.\n* Account charges.\n\nThe Account category also includes end points for \n* Listing the recipient names associated with an email address that was used by the account. For example, a single email address is often shared by mulitple members of a family.\n\n\n"
+  description: 'Use the Account category for various account management tasks including:
+
+
+    * Programmatically creating and deleting accounts.
+
+    * Getting information about an account and its capabilities.
+
+    * Branding the account with custom colors, message text, and more.
+
+    * Account charges.
+
+
+    The Accounts category also includes end points for listing the recipient names associated with an email address that was used by the account. For example, a single email address is often shared by multiple members of a family.
+
+
+
+    '
 - name: Billing
   summary: Invoices
   description: 'Use the Billing category to manage the following billing related tasks:
@@ -583,18 +1919,42 @@ x-ds-categories:
 
     * Getting information on the API''s resources and versions.'
 - name: PowerForms
-  summary: PowerForm creation and management
-  description: The PowerForms category enables PowerForms to be created and managed.
+  summary: The PowerForms category provides methods that enable you to create and manage fillable forms.
+  description: The PowerForms category enables you to create and manage PowerForms that you can use for self service and email forms.
 - name: Workspaces
-  summary: Workspace creation and management
-  description: 'Workspaces creation and management.
-
-
-    '
+  summary: A Docusign workspace is a collaboration area for sharing files and data.
+  description: "A workspace is a collaborative space for sharing documents and managing workflows. A workspace has a single owner who must be a Docusign user. The owner can invite others to the workspace as collaborators. Individuals who are not Docusign users must create a Docusign account to join a workspace as a collaborator.\n \nYou can create an envelope directly from a workspace.\n\nWorkspaces store the following information:\n\n- **Files:** Files uploaded to a workspace for storage or reuse.\n- **Documents:** A document is a component of a transaction, template, or workspace. When a file is added to a transaction, template, or workspace, it is copied as a document. Each document in a workspace has a single owner.\n- **Templates:** A set of documents that you can use to create a transaction or a workspace.\n- **Transactions:** A transaction is a series of workflow events related to one or more documents. These events route the documents to one or more individuals for the purposes of doing business. Each transaction has a single owner (the sender).\n\n**Note:** Documents in a template are not individually listed as files."
 - name: Payments
   summary: Manage Payments
   description: This category includes resources for managing payment gateways. Payment information is added to envelopes via methods in the Envelopes category.
-- name: Signature
+- name: EmailArchive
+  summary: This section shows you how to set and manage the BCC email addresses that you want to use to archive the emails that Docusign sends.
+  description: 'Email archives enable Docusign partners and other multi-account customers to easily archive emails sent through Docusign. The `EmailArchive` resource provides methods for managing your email archive configuration, which consists of the BCC email address or addresses that you want to use to archive Docusign emails. Each account can use up to five BCC email addresses for archiving purposes.
+
+
+    For more information, see [Email Archive Configuration](https://support.docusign.com/s/document-item?bundleId=pik1583277475390&topicId=xjm1583277371373.html).
+
+
+    **Note:** This feature is only available for certain account plans and must be enabled by Docusign.'
+- name: Notary
+  summary: 'Docusign eNotary makes the notarization process fully digital
+
+    for senders, signers, and notaries.
+
+    It enables a notary public to act as an in-person witness
+
+    to electronic signing of documents.
+
+    '
+  description: 'Docusign eNotary makes the notarization process fully digital
+
+    for senders, signers, and notaries.
+
+    It enables a notary public to act as an in-person witness
+
+    to electronic signing of documents.
+
+    '
+- name: Envelope
   summary: ''
   description: ''
-x-original-swagger-version: '2.0'

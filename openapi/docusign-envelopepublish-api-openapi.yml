@@ -1,0 +1,1127 @@
+openapi: 3.2.0
+info:
+  version: v2.1
+  title: Docusign eSignature REST Envelope Publish API
+  description: The Docusign eSignature REST API provides you with a powerful, convenient, and simple Web services API for interacting with Docusign.
+  termsOfService: https://www.docusign.com/company/terms-and-conditions/web
+  contact:
+    name: Docusign Developer Center
+    url: https://developers.docusign.com/
+    email: devcenter@docusign.com
+servers:
+- url: https://www.docusign.net/restapi
+tags:
+- name: EnvelopePublish
+  description: The EnvelopePublish resource provides a method for submitting existing envelopes to a webhook using an ad hoc Connect configuration. See the Connect category for related endpoints.
+paths:
+  /v2.1/accounts/{accountId}/connect/envelopes/publish/historical:
+    parameters: []
+    post:
+      tags:
+      - EnvelopePublish
+      summary: Submits a batch of historical envelopes for republish to a webhook
+      operationId: HistoricalEnvelopePublish_PostHistoricalEnvelopePublishTransaction
+      parameters:
+      - name: accountId
+        in: path
+        description: The external account number (int) or account ID GUID.
+        required: true
+        schema:
+          type: string
+      responses:
+        '201':
+          description: Successful response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/envelopePublishTransaction'
+        '400':
+          description: Error encountered.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorDetails'
+      deprecated: false
+      x-ds-methodname: createHistoricalEnvelopePublishTransaction
+      x-ds-method: createHistoricalEnvelopePublishTransaction
+      x-ds-service: Uncategorized
+      description: 'This endpoint submits a batch of existing envelopes to a webhook of your choice. Set the webhook address with the `urlToPublishTo` request body parameter.
+
+
+        This endpoint does not call an existing Connect configuration or create a new Connect listener to monitor new activity. It simply uses an ad hoc configuration to submit existing envelopes. You must include all the configuration data in the request body.
+
+
+        The envelope data will always be transmitted in JSON format. XML, Salesforce, and eOriginal configuration types are not supported.
+
+
+        Your request should match the following format:
+
+
+        ```
+
+        {
+
+        "envelopes": ["4280f274-xxxx-xxxx-xxxx-b218b7eeda08", "8373a938-xxxx-xxxx-xxxx-e992a2abae01"],
+
+        "config": {
+
+        "configurationType":"custom",
+
+        "name": "Test",
+
+        "urlToPublishTo":"YOUR-WEBHOOK-URL",
+
+        "allowEnvelopePublish": "true",
+
+        "enableLog": "true",
+
+        "requiresAcknowledgement": "true",
+
+        "IncludeHMAC": "true",
+
+        "SignMessageWithX509Cert": "true",
+
+        "deliveryMode": "SIM",
+
+        "eventData": {
+
+        "version": "restv2.1",
+
+        "format": "json",
+
+        "includedata": ["tabs","payment_tabs","custom_fields","powerform","recipients","folders","extensions","attachments", "prefill_tabs", "documents"]
+
+        }
+
+        }
+
+        }
+
+        ```
+
+
+        If the request succeeds, it returns a 201 (Created) HTTP response code and the response body property `processingStatus` will be set to `processing`. You can then view the status of each historical republish request in the Bulk Actions Log.'
+      x-ds-in-sdk: true
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/connectHistoricalEnvelopeRepublish'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/connectHistoricalEnvelopeRepublish'
+components:
+  schemas:
+    envelopePublishTransaction:
+      type: object
+      properties:
+        applyConnectSettings:
+          description: ''
+          type: string
+        envelopeCount:
+          description: ''
+          type: string
+        envelopeLevelErrorRollups:
+          description: ''
+          type: array
+          items:
+            $ref: '#/components/schemas/envelopePublishTransactionErrorRollup'
+        envelopePublishTransactionId:
+          description: The ID of the publish transaction.
+          type: string
+        errorCount:
+          description: ''
+          type: string
+        fileLevelErrors:
+          description: ''
+          type: array
+          items:
+            type: string
+        noActionRequiredEnvelopeCount:
+          description: ''
+          type: string
+        processedEnvelopeCount:
+          description: ''
+          type: string
+        processingStatus:
+          description: 'The status of the transaction. Valid values:
+
+
+            * `unprocessed`
+
+            * `processing`
+
+            * `complete`
+
+            * `fatal_error`
+
+            '
+          type: string
+        resultsUri:
+          description: ''
+          type: string
+        submissionDate:
+          description: ''
+          type: string
+        submittedByUserInfo:
+          $ref: '#/components/schemas/userInfo'
+          description: ''
+        submittedForPublishingEnvelopeCount:
+          description: ''
+          type: string
+      x-ds-definition-name: envelopePublishTransaction
+      description: ''
+      x-ms-summary: ''
+    connectOAuthConfig:
+      type: object
+      properties:
+        authorizationServerUrl:
+          description: 'The token URL for your authorization server or OAuth service.
+
+
+            This property is required.'
+          type: string
+        clientId:
+          description: 'The client ID assigned to your app by your authorization server or OAuth service.
+
+
+            This property is required.'
+          type: string
+        clientSecret:
+          description: 'The secret value provided by your authorization server.
+
+
+            This property is required.'
+          type: string
+        customParameters:
+          description: ''
+          type: object
+          additionalProperties:
+            type: string
+        scope:
+          description: 'The scopes that your app will request from the authorization server.
+
+
+            This property is optional.
+
+
+            **Note:** If you are using Azure, this value is the application ID URI of the secified resource affixed with the `.default`. For example: `api://{{clientId}}/.default`'
+          type: string
+      x-ds-definition-name: connectOAuthConfig
+      description: A complex object describing a Connect OAuth configuration.
+      x-ms-summary: A complex object describing a Connect OAuth configuration.
+    connectSalesforceField:
+      type: object
+      properties:
+        dsAttribute:
+          description: ''
+          type: string
+        dsLink:
+          description: A URL that links to the information in the Docusign field.
+          type: string
+        dsNode:
+          description: ''
+          type: string
+        id:
+          description: A unique ID for the Salesforce object.
+          type: string
+        sfField:
+          description: ''
+          type: string
+        sfFieldName:
+          description: The name of the Salesforce field.
+          type: string
+        sfFolder:
+          description: The name of the Salesforce folder.
+          type: string
+        sfLockedValue:
+          description: ''
+          type: string
+      description: This object is used to match a Docusign field to a Salesforce field so that Docusign can send information to your Salesforce account.
+      x-ds-definition-name: connectSalesforceField
+      x-ms-summary: This object is used to match a Docusign field to a Salesforce field so that Docusign can send information to your Salesforce account.
+    connectSalesforceObject:
+      type: object
+      properties:
+        active:
+          description: When **true,** the `connectSalesforceObject` is active.
+          type: string
+        description:
+          description: A description of the `connectSalesforceObject`.
+          type: string
+        id:
+          description: The ID of the `connectSalesforceObject`.
+          type: string
+        insert:
+          description: ''
+          type: string
+        onCompleteOnly:
+          description: When **true,** Salesforce is updated only when the envelope is complete.
+          type: string
+        selectFields:
+          description: The Docusign and Salesforce fields that you want to use to match a Salesforce object with Docusign information. This information tells Connect when to send updates to Salesforce.
+          type: array
+          items:
+            $ref: '#/components/schemas/connectSalesforceField'
+        sfObject:
+          description: The Salesforce.com object type, such as `case`, `contact`, or `opportunity`.
+          type: string
+        sfObjectName:
+          description: 'A name for the Salesforce object.
+
+
+            **Note:** You can enter any name for the object. It does not have to match the `sfObject` property.'
+          type: string
+        updateFields:
+          description: "The Docusign and Salesforce fields that you want to update. \n\n**Note:** You can choose to update SalesForce (with information from Docusign) only, update Docusign only, or both."
+          type: array
+          items:
+            $ref: '#/components/schemas/connectSalesforceField'
+      description: "A `connectSalesforceObject` is an object that updates envelope and document status or recipient status in your Salesforce account.\n\nWhen you install Docusign Connect for Salesforce, the service automatically sets up two Connect objects: one that updates envelope status and documents and one that updates recipient status. You can also customize Docusign Connect for Salesforce by associating Docusign objects with Salesforce objects so that Docusign Connect for Salesforce updates or inserts the information into the Salesforce object. For more information, see \n[Docusign for Salesforce - Adding Completed Documents to the Notes and Attachments](https://support.docusign.com/s/articles/DocuSign-for-Salesforce-Adding-Completed-Documents-to-the-Notes-and-Attachments-New)."
+      x-ds-definition-name: connectSalesforceObject
+      x-ms-summary: "A `connectSalesforceObject` is an object that updates envelope and document status or recipient status in your Salesforce account.\n\nWhen you install Docusign Connect for Salesforce, the service automatically sets up two Connect objects: one that updates envelope status and documents and one that updates recipient status. You can also customize Docusign Connect for Salesforce by associating Docusign objects with Salesforce objects so that Docusign Connect for Salesforce updates or inserts the information into the Salesforce object. For more information, see \n[Docusign for Salesforce - Adding Completed Documents to the Notes and Attachments](https://support.docusign.com/s/articles/DocuSign-for-Salesforce-Adding-Completed-Documents-to-the-Notes-and-Attachments-New)."
+    envelopePublishTransactionErrorRollup:
+      type: object
+      properties:
+        count:
+          description: The maximum number of results to return.
+          type: string
+        errorType:
+          description: ''
+          type: string
+      x-ds-definition-name: envelopePublishTransactionErrorRollup
+      description: ''
+      x-ms-summary: ''
+    connectHistoricalEnvelopeRepublish:
+      type: object
+      properties:
+        config:
+          $ref: '#/components/schemas/connectCustomConfiguration'
+          description: 'An object describing the ad hoc Connect configuration data. This object is required.
+
+
+            **Note:** Regardless of the `eventData.version` parameter on this object, envelope data will always be transmitted in JSON format. XML is not supported.'
+        envelopes:
+          description: 'An array of envelope IDs as comma-separated strings. This property is required.
+
+
+            For example: `["4280f274-xxxx-xxxx-xxxx-b218b7eeda08","9586h293-xxxx-xxxx-xxxx-m923b8opre71","2347w948-xxxx-xxxx-xxxx-t096b8krno89"]`'
+          type: array
+          items:
+            type: string
+      x-ds-definition-name: connectHistoricalEnvelopeRepublish
+      description: The request body for the `createHistoricalEnvelopePublishTransaction` endpoint.
+      x-ms-summary: The request body for the `createHistoricalEnvelopePublishTransaction` endpoint.
+    errorDetails:
+      description: This object describes errors that occur. It is only valid for responses and ignored in requests.
+      type: object
+      properties:
+        errorCode:
+          description: The code associated with the error condition.
+          type: string
+        message:
+          description: A brief message describing the error condition.
+          type: string
+      x-ds-definition-name: errorDetails
+      x-ms-summary: This object describes errors that occur. It is only valid for responses and ignored in requests.
+    userInfo:
+      type: object
+      properties:
+        accountId:
+          description: The account ID associated with the envelope.
+          type: string
+        accountName:
+          description: The name on the account.
+          type: string
+        activationAccessCode:
+          description: Access code provided to the user to activate the account.
+          type: string
+        email:
+          description: The user's email address.
+          type: string
+        errorDetails:
+          $ref: '#/components/schemas/errorDetails'
+          description: This object describes errors that occur. It is only valid for responses and ignored in requests.
+        ipAddress:
+          description: ''
+          type: string
+        loginStatus:
+          description: When **true,** indicates that the user is logged in. This is a read-only property.
+          type: string
+        membershipId:
+          description: The user's membership ID.
+          type: string
+        sendActivationEmail:
+          description: This field is no longer supported for most accounts. To create an eSignature user without sending an activation email, use the Admin API by following [these steps](/docs/admin-api/how-to/create-active-user/).
+          type: string
+        uri:
+          description: A URI containing the user ID.
+          type: string
+        userId:
+          description: The ID of the user to access.
+          type: string
+        userName:
+          description: The name of the user.
+          type: string
+        userStatus:
+          description: 'Status of the user''s account. One of:
+
+
+            - `ActivationRequired`
+
+            - `ActivationSent`
+
+            - `Active`
+
+            - `Closed`
+
+            - `Disabled`
+
+            '
+          type: string
+        userType:
+          description: The type of user, for example `CompanyUser`.
+          type: string
+      x-ds-definition-name: userInfo
+      description: ''
+      x-ms-summary: ''
+    connectEventData:
+      type: object
+      properties:
+        format:
+          description: Reserved for Docusign.
+          type: string
+        includeData:
+          description: 'A string array of the data to be included.
+
+            The default is the empty array `[]`.
+
+
+            - `attachments`: Include attachments associated with the envelope.
+
+            - `custom_fields`: Include the custom fields associated with the envelope.
+
+            - `documents`: Include the documents associated with the envelope.
+
+            - `extensions`: Include information about the email settings associated with the envelope.
+
+            - `folders`: Include the folder where the envelope exists.
+
+            - `payment_tabs`: Include the payment tabs associated with the envelope.
+
+            - `powerform`: Include the PowerForms associated with the envelope.
+
+            - `prefill_tabs`: Include the [pre-filled tabs](/docs/esign-rest-api/esign101/concepts/tabs/prefilled-tabs/) associated with the envelope.
+
+            - `recipients`: Include the recipients associated with the envelope.
+
+            - `tabs`: Include the tabs associated with the envelope.
+
+            '
+          type: array
+          items:
+            type: string
+        version:
+          description: Set this property to `restv2.1` to return event data in JSON. If the property is not set, the event data will be returned in XML by default.
+          type: string
+      description: This object lets you choose the data format of your Connect response.
+      x-ds-definition-name: connectEventData
+      x-ms-summary: This object lets you choose the data format of your Connect response.
+    connectCustomConfiguration:
+      type: object
+      properties:
+        allowEnvelopePublish:
+          description: Set this value to **true** to enable the webhook. The default property is **false.**
+          type: string
+        allowSalesforcePublish:
+          description: 'When **true,** Docusign sends data to the designated Salesforce account through Connect. The default value is **true.**
+
+
+            This property is not used for the `createHistoricalEnvelopePublishTransaction` endpoint.'
+          type: string
+        allUsers:
+          description: 'When **true,** the tracked envelope and recipient events for all users, including users that are added a later time, are sent through Connect. The default value is **false.**
+
+
+            **Note:** If this property is **false,** make sure you set the `userIds` property to a non-empty array of user IDs.
+
+
+            This property is not used for the `createHistoricalEnvelopePublishTransaction` endpoint.'
+          type: string
+        allUsersExcept:
+          description: 'This flag enables you to toggle between including and excluding specified users from the configuration. When **false,** the users corresponding to the IDs in `userIds` will be included in the configuration. Conversely, when **true,** the users will be excluded from the configuration. The default value is **false.**
+
+
+            This property is not used for the `createHistoricalEnvelopePublishTransaction` endpoint.'
+          type: string
+        configurationType:
+          description: 'The type of the configuration. Valid values:
+
+
+            * `custom`: Creates an account-level configuration
+
+            * `customrecipient`: Creates a Recipient Connect configuration
+
+            * `salesforce`
+
+            * `eOriginal`
+
+
+            This property is required.'
+          type: string
+        connectId:
+          description: 'The Docusign-generated ID for the Connect configuration.
+
+
+            This property is read-only.'
+          type: string
+        deliveryMode:
+          description: 'The delivery mode of the configuration. Valid values:
+
+
+            * `SIM`
+
+            * `Aggregate`
+
+
+            This property is required.'
+          type: string
+        disabledBy:
+          description: ''
+          type: string
+        enableLog:
+          description: "When **true,** Connect logging is turned on. Docusign recommends that you enable this functionality to help troubleshoot any issues. \n\nYou can have a maximum of 100 active logs in your account. You can view the entries in active logs in the **Logs** tab in the Connect console.\n\nThis property is required."
+          type: string
+        enableOAuthPerConfiguration:
+          description: ''
+          type: string
+        envelopeEvents:
+          description: 'A list of envelope-level event statuses that will trigger Connect to send updates to the endpoint specified in the `url` property.
+
+
+            When using any of
+
+            [the legacy event message formats](/platform/webhooks/connect/legacy-message-formats/),
+
+            you must include either the `envelopeEvents` property
+
+            or the `recipientEvents` property.
+
+            If you are instead using the
+
+            [JSON SIM event model](/platform/webhooks/connect/json-sim-event-model/),
+
+            use the [`events`](/docs/esign-rest-api/reference/connect/connectconfigurations/create/#schema__connectcustomconfiguration_events) property.
+
+
+            The [possible event statuses](/platform/webhooks/connect/event-triggers/) are:
+
+
+            * `Sent`
+
+            * `Delivered`
+
+            * `Completed`
+
+            * `Declined`
+
+            * `Voided`
+
+
+            **Note:** These values are case-sensitive.
+
+
+            This property is not used for the `createHistoricalEnvelopePublishTransaction` endpoint.'
+          type: array
+          items:
+            type: string
+        eventData:
+          $ref: '#/components/schemas/connectEventData'
+          description: 'Allows you to specify the format of the information the Connect webhooks returns.
+
+
+            This property is required.'
+        events:
+          description: 'A comma-separated list of envelope-level event statuses that will trigger Connect to send updates to the endpoint specified in the `urlToPublishTo` property.
+
+
+            Set this property when you are using the [JSON SIM event model](/platform/webhooks/connect/json-sim-event-model/). If you are instead using any of [the legacy event message formats](/platform/webhooks/connect/legacy-message-formats/), set either the `envelopeEvents` property or the `recipientEvents` property.
+
+
+            The [possible event statuses](/platform/webhooks/connect/json-sim-event-reference/) are:
+
+
+            * `envelope-created`
+
+            * `envelope-sent`
+
+            * `envelope-resent`
+
+            * `envelope-delivered`
+
+            * `envelope-completed`
+
+            * `envelope-declined`
+
+            * `envelope-voided`
+
+            * `recipient-authenticationfailed`
+
+            * `recipient-autoresponded`
+
+            * `recipient-declined`
+
+            * `recipient-delivered`
+
+            * `recipient-completed`
+
+            * `recipient-sent`
+
+            * `recipient-resent`
+
+            * `template-created`
+
+            * `template-modified`
+
+            * `template-deleted`
+
+            * `envelope-corrected`
+
+            * `envelope-purge`
+
+            * `envelope-deleted`
+
+            * `envelope-discard`
+
+            * `recipient-reassign`
+
+            * `recipient-delegate`
+
+            * `recipient-finish-later`
+
+            * `click-agreed`
+
+            * `click-declined`
+
+
+            This property is not used for the `createHistoricalEnvelopePublishTransaction` endpoint.'
+          type: array
+          items:
+            type: string
+        externalFolderId:
+          description: 'The ID of an external folder.
+
+
+            This property is not used for the `createHistoricalEnvelopePublishTransaction` endpoint.'
+          type: string
+        externalFolderLabel:
+          description: 'The label for an external folder.
+
+
+            This property is not used for the `createHistoricalEnvelopePublishTransaction` endpoint.'
+          type: string
+        groupIds:
+          description: ''
+          type: array
+          items:
+            type: string
+        includeCertificateOfCompletion:
+          description: 'When **true,** the Connect Service includes the Certificate of Completion with completed envelopes.
+
+
+            This property is not used for the `createHistoricalEnvelopePublishTransaction` endpoint.'
+          type: string
+        includeCertSoapHeader:
+          description: ''
+          type: string
+        includeDocumentFields:
+          description: 'When **true,** the document fields associated with the envelope''s documents are included in the notification messages. Document fields are optional custom name-value pairs added to documents using the API.
+
+
+            This property is not used for the `createHistoricalEnvelopePublishTransaction` endpoint.'
+          type: string
+        includeDocuments:
+          description: Reserved for Docusign.
+          type: string
+        includeEnvelopeVoidReason:
+          description: 'When **true,** if the envelope is voided, the Connect Service notification will include the void reason, as entered by the person that voided the envelope.
+
+
+            This property is not used for the `createHistoricalEnvelopePublishTransaction` endpoint.'
+          type: string
+        includeHMAC:
+          description: 'When **true,** Connect will use HMAC to verify the request.
+
+
+            This property is required. '
+          type: string
+        includeOAuth:
+          description: ''
+          type: string
+        includeSenderAccountasCustomField:
+          description: 'When **true,** Connect will include the sender account as custom field in the data.
+
+
+            This property is not used for the `createHistoricalEnvelopePublishTransaction` endpoint.'
+          type: string
+        includeTimeZoneInformation:
+          description: 'When **true,** Connect will include the envelope time zone information.
+
+
+            This property is not used for the `createHistoricalEnvelopePublishTransaction` endpoint.'
+          type: string
+        integratorManaged:
+          description: ''
+          type: string
+        name:
+          description: 'The name of the Connect configuration.
+
+
+            This property is required.'
+          type: string
+        oAuthConfiguration:
+          $ref: '#/components/schemas/connectOAuthConfig'
+          description: ''
+        password:
+          description: 'The password for the Connect configuration.
+
+
+            This property is not used for the `createHistoricalEnvelopePublishTransaction` endpoint.
+
+            '
+          type: string
+        pausePublish:
+          description: ''
+          type: string
+        recipientEvents:
+          description: 'An array of recipient event statuses that will trigger Connect to send notifications to your webhook listener at the URL endpoint specified in the `url` property.
+
+
+            When using any of [the legacy event message formats](/platform/webhooks/connect/legacy-message-formats/), you must include either the `envelopeEvents` property or the `recipientEvents` property. If you are instead using the [JSON SIM event model](/platform/webhooks/connect/json-sim-event-model/), use the `events` property.
+
+
+            The [possible event statuses](/platform/webhooks/connect/event-triggers/) are:
+
+
+            * `Sent`
+
+            * `AutoResponded`
+
+            * `Delivered`
+
+            * `Completed`
+
+            * `Declined`
+
+            * `AuthenticationFailed`
+
+
+            **Note:** These values are case-sensitive.
+
+
+            This property is not used for the `createHistoricalEnvelopePublishTransaction` endpoint.'
+          type: array
+          items:
+            type: string
+        requireMutualTls:
+          description: 'When **true,** [Mutual TLS](/platform/webhooks/mutual-tls/) authentication is enabled.
+
+
+            This property is not used for the `createHistoricalEnvelopePublishTransaction` endpoint.'
+          type: string
+        requiresAcknowledgement:
+          description: 'When **true,** event delivery acknowledgements are enabled for your Connect configuration.
+
+
+            Docusign Connect awaits a valid 200 response from your application acknowledging that it received a message. If you do not acknowledge receiving an event notification message within 100 seconds, Docusign treats the message as a failure and places it into a failure queue. It is imperative that you acknowledge successful receipt of Connect events as they occur by sending a 200 event back.
+
+
+            #### When **true** and Send Individual Messages (SIM) mode is activated
+
+
+            If the HTTP status response to a notification message is not in the range of 200-299,
+
+            then the message delivery failed, and the configuration is marked as down.
+
+
+            The message will be queued and retried once per day.
+
+            While a Connect configuration is marked down, subsequent notifications will not be tried. Instead, they will be immediately queued with the reason `Pending`.
+
+            When a message succeeds, all queued messages for the configuration will be tried immediately, in order.
+
+
+            There is a maximum of ten retries. Alternately, you can use **Republish Connect Information** to manually republish the notification.
+
+
+            #### When **true** and SIM mode is not activated
+
+
+            If the HTTP Status response to a notification message is not in the range of 200-299,  then the message delivery failed, and the message is queued.
+
+
+            The message will be retried after at least a day the next time a subsequent message is successfully sent to this configuration (subscription).  Subsequent notifications will be tried when they occur.
+
+            There is a maximum of ten retries. Alternately, you can use **Republish Connect Information** to manually republish the notification.
+
+
+            #### When **false**
+
+
+            When `requiresAcknowledgement` is set to **false** and you do not acknowledge receiving an event notification message within 100 seconds, Docusign treats the message as a failure and determines that the server is unavailable. It does not retry to send the notification message, and you must handle the failure manually.
+
+
+            This property is required.'
+          type: string
+        salesforceApiVersion:
+          description: 'The version of the Salesforce API that you are using.
+
+
+            This property is not used for the `createHistoricalEnvelopePublishTransaction` endpoint.'
+          type: string
+        salesforceAuthcode:
+          description: ''
+          type: string
+        salesforceCallBackUrl:
+          description: ''
+          type: string
+        salesforceDocumentsAsContentFiles:
+          description: 'When **true,** Docusign can use documents in your Salesforce account for sending and signing.
+
+
+            This property is not used for the `createHistoricalEnvelopePublishTransaction` endpoint.'
+          type: string
+        senderOverride:
+          description: ''
+          type: string
+        senderSelectableItems:
+          description: 'This property sets the items that are available for selection when adding or editing Connect objects.
+
+
+            This property is not used for the `createHistoricalEnvelopePublishTransaction` endpoint.'
+          type: array
+          items:
+            type: string
+        sfObjects:
+          description: 'An array of Salesforce objects.
+
+
+            This property is not used for the `createHistoricalEnvelopePublishTransaction` endpoint.'
+          type: array
+          items:
+            $ref: '#/components/schemas/connectSalesforceObject'
+        signMessageWithX509Certificate:
+          description: 'When **true,** Mutual TLS will be enabled for notifications. Mutual TLS must be initiated by the listener (the customer''s web server) during the TLS handshake protocol.
+
+
+            This property is required.'
+          type: string
+        soapNamespace:
+          description: 'The namespace of the SOAP interface.
+
+
+            **Note:** If `useSoapInterface` is set to **true,** you must set this value.
+
+
+            This property is not used for the `createHistoricalEnvelopePublishTransaction` endpoint.'
+          type: string
+        urlToPublishTo:
+          description: 'The web address of the listener or retrieving service endpoint. It must be an HTTPS URL.
+
+
+            This property is required.'
+          type: string
+        userIds:
+          description: 'A comma-separated list of user IDs. This sets the users associated with the tracked envelope and recipient events. When a tracked event occurs for a set user, the a notification message is sent to your Connect listener.
+
+
+            By default, the users will be included in the configuration. If you want to exclude the users, set the `allUsersExcept` property to **true.**
+
+
+            **Note:** If `allUsers` is set to `false`, then you must provide a list of user IDs.
+
+
+            This property is not used for the `createHistoricalEnvelopePublishTransaction` endpoint.'
+          type: array
+          items:
+            type: string
+        userName:
+          description: 'The name of the user.
+
+
+            This property is not used for the `createHistoricalEnvelopePublishTransaction` endpoint.'
+          type: string
+        useSoapInterface:
+          description: 'When **true,** the notifications are sent to your endpoint as SOAP requests.
+
+
+            This property is not used for the `createHistoricalEnvelopePublishTransaction` endpoint.'
+          type: string
+      description: The `connectCustomConfiguration` object describes a Connect configuration for your account.
+      x-ds-definition-name: connectCustomConfiguration
+      x-ms-summary: The `connectCustomConfiguration` object describes a Connect configuration for your account.
+externalDocs:
+  description: See the Docusign eSignature REST API Guide for more information.
+  url: https://docs.docusign.com/esign
+x-ds-allow-editing: false
+x-ds-categories:
+- name: Envelopes
+  summary: This section shows you how to create and send envelopes.
+  description: 'The eSignature API Envelope category includes the resources and methods for sending and managing envelopes and envelope data.
+
+
+    Envelopes are the key objects in the Docusign platform. As a result, they are complex data structures with few required fields. See the [How-to guides](/docs/esign-rest-api/how-to/) for examples and solutions.
+
+
+    To learn more about envelopes, see [Envelopes](/docs/esign-rest-api/esign101/concepts/envelopes/).
+
+    '
+- name: Connect
+  summary: "Docusign Connect is the Docusign platform notification service. The service uses webhooks to proactively notify your application when an event occurs that your application wants to know about. Docusign recommends that all applications use Connect instead of polling the Docusign Signature Service. This section provides information about Connect configuration and logging. \n\n**Note:** To make API calls to any of the Connect endpoints, you must be an account administrator.\n\nFor more information about Connect, see [Docusign Connect](/platform/webhooks/connect/) and [Custom Connect Configuration](https://support.docusign.com/s/document-item?bundleId=pik1583277475390&topicId=khw1583277390582.html)."
+  description: 'The Connect service enables your application to be called via
+
+    HTTPS when an event of interest occurs.
+
+
+    Use the Connect service to "end the polling madness." With
+
+    Connect, there is no need for your application to poll Docusign
+
+    every 15 minutes to learn the latest about your envelopes.
+
+
+    Instead, you register your interest in one or more types of
+
+    envelope or recipient events. Then, when an interesting event
+
+    occurs, the Docusign platform will contact your application with
+
+    the event''s details and data. You can register interest in
+
+    envelopes sent by particular users in your account, or for
+
+    envelopes sent by any user.
+
+
+    Connect can empower your organization to manage document actions
+
+    as they occur, and allows you to track their changes within your
+
+    own systems. Upon completion, envelope information, including
+
+    document content, can be stored in your own databases or CMS
+
+    systems, and these events can be triggered via webhooks
+
+    delivering messages to your application.
+
+
+    **Note:** To make API calls to any of the Connect endpoints, you must be an account administrator.
+
+
+    ## Incoming Connect Calls
+
+
+    To use the Connect service, your application needs to provide an
+
+    HTTPS URL that can be called from the public Internet. If your
+
+    application runs on a server behind your organization''s firewall,
+
+    then you will need to create a "pinhole" in the firewall to allow
+
+    the incoming Connect calls from Docusign to reach your
+
+    application. You can also use other techniques such as proxy
+
+    servers and DMZ networking for receiving the incoming calls.
+
+
+    Connect delivers events over HTTP requests in JSON or XML.
+
+    See [Docusign Connect overview](/platform/webhooks/connect/).
+
+
+    If your application is not configured to accept post messages,
+
+    Docusign will NOT return an additional post error response to
+
+    your listener application. If you''ve enabled logging on your
+
+    configuration, it will be logged in Admin under the configuration
+
+    failure log.
+
+
+    ## Per-envelope Connect Configuration
+
+
+    Instead of registering a general Connect configuration and
+
+    listener, an individual envelope can have its own Connect
+
+    configuration. See the
+
+    [`eventNotification`](/docs/esign-rest-api/reference/envelopes/envelopes/create/#schema__envelopedefinition_eventnotification)
+
+    property for envelopes.
+
+
+    ## Historical Publish Endpoint
+
+
+    To submit existing envelopes to an endpoint, use the [EnvelopePublish](/docs/esign-rest-api/reference/envelopes/envelopepublish/) resource.
+
+    '
+- name: Templates
+  summary: Template creation and management
+  description: 'Use the Templates category to manage your account''s templates.
+
+
+    This section shows you how to perform the following tasks:
+
+
+    * Create, list, get, update, and delete templates.
+
+    * Manage the notification and group sharing settings for templates.
+
+    * Fetch and rotate pages from a document used by a template.
+
+
+    You can create templates either programmatically or through the Docusign web interface and then used by your application.'
+- name: SigningGroups
+  summary: Send a signing request to a group of potential signers.
+  description: 'Use the Signing Group category to manage signing groups that allow anyone in the group to sign a document. When you send an envelope to a signing group, anyone in the group can open it and sign it with their own signature.
+
+
+    This category shows account administrators how to create a signing group and manage the users in the group.
+
+
+    **Note:** To create and manage signing groups, you must be an account administrator.
+
+
+    For more information about this topic, see [Signing Groups](https://support.docusign.com/s/document-item?bundleId=gav1643676262430&topicId=zgn1578456447934.html).'
+- name: Folders
+  summary: Folders allow you to organize envelopes and templates.
+  description: 'Use the Folders category to organize envelopes and templates.
+
+    You can list the folder contents and move envelopes and templates between folders.'
+- name: CustomTabs
+  summary: Custom tabs
+  description: "Custom Tabs enable accounts to have one or more pre-configured (custom) tabs. Custom tabs save time when users are tagging documents since the users don't have to manually set the tabs' parameters.\n\nThis category enables custom tabs to be managed programmatically, including creation, deletion, etc. \n"
+- name: CloudStorage
+  summary: This section shows you how to manage your cloud storage providers and users.
+  description: 'Use the Cloud Storage category to list the user''s cloud storage document contents.
+
+
+    It is also used to manage the user''s authentication/accounts with cloud storage service providers.'
+- name: Users
+  summary: User management
+  description: 'Use the Users category to manage the users in your accounts.
+
+
+    You can:
+
+
+    * Set custom user settings.
+
+    * Manage a users profile.
+
+    * Add delete users.
+
+    * Add and delete the initials and signature images for a user.'
+- name: UserGroups
+  summary: Group users for common permissions and branding
+  description: 'Use the User Groups category to manage your permissions groups.
+
+
+    You can:
+
+
+    * Create and delete groups.
+
+    * Add users to, and delete users from, your groups.
+
+    * Manage the brand information associated with a group.'
+- name: BulkEnvelopes
+  summary: Bulk envelopes
+  description: Use the BulkEnvelopes category to manage the sending of envelopes to multiple recipients.
+- name: Accounts
+  summary: Account management
+  description: 'Use the Account category for various account management tasks including:
+
+
+    * Programmatically creating and deleting accounts.
+
+    * Getting information about an account and its capabilities.
+
+    * Branding the account with custom colors, message text, and more.
+
+    * Account charges.
+
+
+    The Accounts category also includes end points for listing the recipient names associated with an email address that was used by the account. For example, a single email address is often shared by multiple members of a family.
+
+
+
+    '
+- name: Billing
+  summary: Invoices
+  description: 'Use the Billing category to manage the following billing related tasks:
+
+
+    * Retrieve and update billing plan information.
+
+    * Retrieve invoices.
+
+    * Retrieve and update payment information.'
+- name: Diagnostics
+  summary: Diagnostics and request logging
+  description: 'The Diagnostics category provides miscellaneous end points.
+
+
+    They include:
+
+    * Requesting and managing the API call-logging feature. (Perfect for debugging your app!)
+
+    * Getting information on the API''s resources and versions.'
+- name: PowerForms
+  summary: The PowerForms category provides methods that enable you to create and manage fillable forms.
+  description: The PowerForms category enables you to create and manage PowerForms that you can use for self service and email forms.
+- name: Workspaces
+  summary: A Docusign workspace is a collaboration area for sharing files and data.
+  description: "A workspace is a collaborative space for sharing documents and managing workflows. A workspace has a single owner who must be a Docusign user. The owner can invite others to the workspace as collaborators. Individuals who are not Docusign users must create a Docusign account to join a workspace as a collaborator.\n \nYou can create an envelope directly from a workspace.\n\nWorkspaces store the following information:\n\n- **Files:** Files uploaded to a workspace for storage or reuse.\n- **Documents:** A document is a component of a transaction, template, or workspace. When a file is added to a transaction, template, or workspace, it is copied as a document. Each document in a workspace has a single owner.\n- **Templates:** A set of documents that you can use to create a transaction or a workspace.\n- **Transactions:** A transaction is a series of workflow events related to one or more documents. These events route the documents to one or more individuals for the purposes of doing business. Each transaction has a single owner (the sender).\n\n**Note:** Documents in a template are not individually listed as files."
+- name: Payments
+  summary: Manage Payments
+  description: This category includes resources for managing payment gateways. Payment information is added to envelopes via methods in the Envelopes category.
+- name: EmailArchive
+  summary: This section shows you how to set and manage the BCC email addresses that you want to use to archive the emails that Docusign sends.
+  description: 'Email archives enable Docusign partners and other multi-account customers to easily archive emails sent through Docusign. The `EmailArchive` resource provides methods for managing your email archive configuration, which consists of the BCC email address or addresses that you want to use to archive Docusign emails. Each account can use up to five BCC email addresses for archiving purposes.
+
+
+    For more information, see [Email Archive Configuration](https://support.docusign.com/s/document-item?bundleId=pik1583277475390&topicId=xjm1583277371373.html).
+
+
+    **Note:** This feature is only available for certain account plans and must be enabled by Docusign.'
+- name: Notary
+  summary: 'Docusign eNotary makes the notarization process fully digital
+
+    for senders, signers, and notaries.
+
+    It enables a notary public to act as an in-person witness
+
+    to electronic signing of documents.
+
+    '
+  description: 'Docusign eNotary makes the notarization process fully digital
+
+    for senders, signers, and notaries.
+
+    It enables a notary public to act as an in-person witness
+
+    to electronic signing of documents.
+
+    '
+- name: Envelope
+  summary: ''
+  description: ''

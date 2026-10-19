@@ -182,7 +182,115 @@ paths:
       tags:
       - UserImport
       summary: Docusign Bulk updates information for existing users
-      description: Bulk updates information for existing users.
+      description: 'Bulk updates information for existing users. - Required scopes: `user_write`
+
+
+        Your CSV import file is made up of a header row with the column headers and a row of user or account data for each user you want to add to an account. Only new users can be imported. Any changes to existing users will be ignored. To make changes to existing users, use `updateBulkUserImports`. **Update limit**: You can update up to 2,000 users on an account and include up to 50 accounts per import. The maximum number of updated users per import is 8,000. This method requires the following HTTP headers:
+
+
+        | Header | Value |
+
+        | :--- | :--- |
+
+        | Content-Type | `text/csv` |
+
+        | Content-Disposition | `filename=filename.csv` |
+
+
+        To ensure your CSV is properly formatted, use the
+
+        Sample Bulk Update CSV file
+
+        as a template. The following table describes the columns. Note that the columns for bulk adding users and bulk update users are slightly different. The update CSV file requires an `APIUserName` column, and does not have an `AutoActivate` column. | Column | Required | Description |
+
+        | :------------------ | :------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+
+        | AccountID | yes | The 32-character API account ID of the user''s account in your organization. You can find this value in the API and Keys section of the Admin area of the account. |
+
+        | AccountName | | The name of the user''s account in your organization. The account name must match the account ID provided. |
+
+        | FirstName | yes | The user''s first name. |
+
+        | LastName | yes | The user''s last name. |
+
+        | UserEmail | yes | The user''s complete email address. |
+
+        | PermissionSet | yes | The user''s permission set. The PermissionSet value must match an existing permission set for the account. This value is not case sensitive. |
+
+        | UserTitle | | The user''s job title. |
+
+        | CompanyName | | The user''s company name. |
+
+        | Group | | The user''s assigned groups. The Group values must match existing Group names for the account. Additional Group columns can be added to the file to add users to more than one group. You do not need to add users to the Everyone group, since all new users are automatically added to that group. |
+
+        | AddressLine1 | | The user''s address, first line. |
+
+        | AddressLine2 | | The user''s address, second line. |
+
+        | City | | The user''s city name. |
+
+        | StateRegionProvince | | The user''s regional location. |
+
+        | PostalCode | | The user''s postal code. |
+
+        | Phone | | The user''s phone number. |
+
+        | Language | | The user''s display language for their DocuSign account. Must be one of:
+
+
+        Chinese Simplified: zh_CN
+
+
+        Chinese Traditional: zh_TW
+
+
+        Dutch: nl
+
+
+        English: en
+
+
+        French: fr
+
+
+        German: de
+
+
+        Italian: it
+
+
+        Japanese: ja
+
+
+        Korean: ko
+
+
+        Portuguese: pt
+
+
+        Portuguese Brazil: pt_BR
+
+
+        Russian: ru
+
+
+        Spanish: es
+
+
+        |
+
+        | LoginPolicy | | The user''s login policy. Valid values include the following:
+
+
+        Column left blank = The user is created with no policy assigned. FedAuthRequired = The user must log in with an Identity Provider. FedAuthBypass = The user may log in with an Identity Provider or their DocuSign username and password. For more information on login policies, see Setting User Login Policy. |
+
+        | AutoActivate | | For domain users, new users can be activated automatically for domain accounts using SSO by setting the value to **true**. The user is activated automatically once the import is complete. Memberships activated in this way do not receive an activation email. |
+
+
+        ## Updating user email addresses
+
+
+        Changing a user''s email address should be done carefully. The user''s email address is used to log in to DocuSign and receive documents to sign from others.'
       operationId: OrganizationImport_OrganizationImportUsers_Update
       parameters:
       - name: organizationId
@@ -491,24 +599,6 @@ paths:
       x-ds-in-sdk: true
 components:
   schemas:
-    OrganizationImportResponseRequestor:
-      type: object
-      properties:
-        name:
-          type: string
-          description: ''
-        id:
-          type: string
-          description: ''
-        type:
-          type: string
-          description: ''
-        email:
-          type: string
-          description: The email address.
-      description: ''
-      x-ds-definition-name: OrganizationImportResponseRequestor
-      x-ms-summary: ''
     OrganizationImportResponse:
       type: object
       properties:
@@ -610,19 +700,6 @@ components:
       description: ''
       x-ds-definition-name: OrganizationImportResponse
       x-ms-summary: ''
-    OrganizationImportResponseErrorRollup:
-      type: object
-      properties:
-        error_type:
-          type: string
-          description: ''
-        count:
-          type: integer
-          description: ''
-          format: int32
-      description: ''
-      x-ds-definition-name: OrganizationImportResponseErrorRollup
-      x-ms-summary: ''
     OrganizationImportsResponse:
       type: object
       properties:
@@ -646,6 +723,37 @@ components:
           format: int32
       description: ''
       x-ds-definition-name: OrganizationImportResponseWarningRollup
+      x-ms-summary: ''
+    OrganizationImportResponseRequestor:
+      type: object
+      properties:
+        name:
+          type: string
+          description: ''
+        id:
+          type: string
+          description: ''
+        type:
+          type: string
+          description: ''
+        email:
+          type: string
+          description: The email address.
+      description: ''
+      x-ds-definition-name: OrganizationImportResponseRequestor
+      x-ms-summary: ''
+    OrganizationImportResponseErrorRollup:
+      type: object
+      properties:
+        error_type:
+          type: string
+          description: ''
+        count:
+          type: integer
+          description: ''
+          format: int32
+      description: ''
+      x-ds-definition-name: OrganizationImportResponseErrorRollup
       x-ms-summary: ''
   securitySchemes:
     accessCode:

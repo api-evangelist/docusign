@@ -1,34 +1,36 @@
 openapi: 3.2.0
 info:
-  title: DocuSign REST Template Html Definitions API
-  description: The DocuSign REST API provides you with a powerful, convenient, and simple Web services API for interacting with DocuSign.
+  version: v2.1
+  title: Docusign eSignature REST Template Html Definitions API
+  description: The Docusign eSignature REST API provides you with a powerful, convenient, and simple Web services API for interacting with Docusign.
   termsOfService: https://www.docusign.com/company/terms-and-conditions/web
   contact:
-    name: DocuSign Developer Center
+    name: Docusign Developer Center
     url: https://developers.docusign.com/
     email: devcenter@docusign.com
-  version: v2
 servers:
 - url: https://www.docusign.net/restapi
 tags:
 - name: TemplateHtmlDefinitions
   description: ''
 paths:
-  /v2/accounts/{accountId}/templates/{templateId}/html_definitions:
+  /v2.1/accounts/{accountId}/templates/{templateId}/html_definitions:
+    parameters: []
     get:
       tags:
       - TemplateHtmlDefinitions
+      summary: Gets the Original HTML Definition used to generate the Responsive HTML for the…
       operationId: ResponsiveHtml_GetTemplateHtmlDefinitions
       parameters:
       - name: accountId
         in: path
-        description: The external account number (int) or account id GUID.
+        description: The external account number (int) or account ID GUID.
         required: true
         schema:
           type: string
       - name: templateId
         in: path
-        description: The ID of the template being accessed.
+        description: The ID of the template.
         required: true
         schema:
           type: string
@@ -36,264 +38,506 @@ paths:
         '200':
           description: Successful response.
           content:
-            '*/*':
+            application/json:
               schema:
                 $ref: '#/components/schemas/documentHtmlDefinitionOriginals'
         '400':
           description: Error encountered.
           content:
-            '*/*':
+            application/json:
               schema:
                 $ref: '#/components/schemas/errorDetails'
       deprecated: false
       x-ds-methodname: getTemplateHtmlDefinitions
+      description: ''
       x-ds-method: list
       x-ds-service: Uncategorized
       x-ds-in-sdk: true
-      summary: Responsive html get template html definitions
-      x-summary-source: derived
 components:
   schemas:
-    documentHtmlDefinition:
+    documentHtmlDefinitionOriginals:
       type: object
       properties:
-        displayAnchorPrefix:
-          type: string
-          description: ''
-        displayAnchors:
+        htmlDefinitions:
+          description: Holds the properties that define how to generate the responsive-formatted HTML for the document.
           type: array
-          description: ''
           items:
-            $ref: '#/components/schemas/documentHtmlDisplayAnchor'
-        displayOrder:
-          type: string
-          description: ''
-        displayPageNumber:
-          type: string
-          description: ''
-        documentGuid:
-          type: string
-          description: ''
-        documentId:
-          type: string
-          description: The ID of the document being accessed.
-        headerLabel:
-          type: string
-          description: ''
-        maxScreenWidth:
-          type: string
-          description: ''
-        removeEmptyTags:
-          type: string
-          description: ''
-        showMobileOptimizedToggle:
-          type: string
-          description: ''
-        source:
-          type: string
-          description: ''
+            $ref: '#/components/schemas/documentHtmlDefinitionOriginal'
+      x-ds-definition-name: documentHtmlDefinitionOriginals
       description: ''
-      x-ds-definition-name: documentHtmlDefinition
-      x-ms-summary: ''
-    documentHtmlCollapsibleDisplaySettings:
-      type: object
-      properties:
-        arrowClosed:
-          type: string
-          description: ''
-        arrowColor:
-          type: string
-          description: ''
-        arrowLocation:
-          type: string
-          description: ''
-        arrowOpen:
-          type: string
-          description: ''
-        arrowSize:
-          type: string
-          description: ''
-        arrowStyle:
-          type: string
-          description: ''
-        containerStyle:
-          type: string
-          description: ''
-        labelStyle:
-          type: string
-          description: ''
-        onlyArrowIsClickable:
-          type: boolean
-          description: ''
-        outerLabelAndArrowStyle:
-          type: string
-          description: ''
-      description: ''
-      x-ds-definition-name: documentHtmlCollapsibleDisplaySettings
       x-ms-summary: ''
     documentHtmlDefinitionOriginal:
       type: object
       properties:
         documentId:
+          description: Specifies the document ID number that the tab is placed on. This must refer to an existing Document's ID attribute.
           type: string
-          description: The ID of the document being accessed.
         documentIdGuid:
+          description: The GUID of the document.
           type: string
-          description: ''
         htmlDefinition:
           $ref: '#/components/schemas/documentHtmlDefinition'
-      description: ''
+          description: Defines how to generate the responsive-formatted HTML for the document.
       x-ds-definition-name: documentHtmlDefinitionOriginal
+      description: ''
       x-ms-summary: ''
+    documentHtmlCollapsibleDisplaySettings:
+      type: object
+      properties:
+        arrowClosed:
+          description: 'Indicates the direction of the disclosure arrow
+
+            when the collapsible section is in the closed state.
+
+
+            One of the following:
+
+
+            - `up`: In the closed state, the disclosure arrow points up.
+
+            - `down`: In the closed state, the disclosure arrow points down.
+
+            - `left`: In the closed state, the disclosure arrow points left.
+
+            - `right`: In the closed state, the disclosure arrow points right.
+
+            '
+          type: string
+        arrowColor:
+          description: 'A CSS color value (such as `#DCF851`) that indicates the color of the arrow.
+
+            '
+          type: string
+        arrowLocation:
+          description: 'The location of the arrow relative to the collapsible section''s label. Possible values are:
+
+
+            - `right` (default)
+
+            - `left`
+
+            '
+          type: string
+        arrowOpen:
+          description: 'Indicates the direction of the disclosure arrow
+
+            when the collapsible section is in the open state.
+
+
+            One of the following:
+
+
+            - `up`: In the open state, the disclosure arrow points up.
+
+            - `down`: In the open state, the disclosure arrow points down.
+
+            - `left`: In the open state, the disclosure arrow points left.
+
+            - `right`: In the open state, the disclosure arrow points right.
+
+            '
+          type: string
+        arrowSize:
+          description: 'Indicates the size of the collapsible arrows. Possible values are:
+
+
+            - `small`
+
+            - `large` (default)
+
+            '
+          type: string
+        arrowStyle:
+          description: 'The name of the CSS style to be used on collapsible arrow section.
+
+            '
+          type: string
+        containerStyle:
+          description: 'The name of the CSS style to be used for the collapsible container.
+
+            '
+          type: string
+        labelStyle:
+          description: The name of the CSS style to be used for the collapsible container's label.
+          type: string
+        onlyArrowIsClickable:
+          description: 'When **true,** only the arrow is clickable to expand or collapse the section.
+
+            When **false** (the default), both the label and the arrow are clickable.
+
+
+            If no arrow is used, this setting is ignored.
+
+            '
+          type: boolean
+        outerLabelAndArrowStyle:
+          description: The name of the CSS style to be used for the collapsible container's outer label and arrow style.
+          type: string
+      description: Display settings for collapsible section.
+      x-ds-definition-name: documentHtmlCollapsibleDisplaySettings
+      x-ms-summary: Display settings for collapsible section.
     documentHtmlDisplayAnchor:
       type: object
       properties:
         caseSensitive:
+          description: When **true,** the start or end anchor strings must match the strings specified by the start and end anchor settings in case as well as in content.
           type: boolean
-          description: ''
         displaySettings:
           $ref: '#/components/schemas/documentHtmlDisplaySettings'
+          description: This object defines how the HTML section inside the `startAnchor` and `endAnchor` displays.
         endAnchor:
+          description: 'Specifies the end of the area in the HTML where the display settings will be applied. If you do not specify an end anchor, the end of the document will be used by default.
+
+
+            **Note:** A start anchor, an end anchor, or both are required.'
           type: string
-          description: ''
         removeEndAnchor:
+          description: When **true,** removes the end anchor string for the Smart Section from the HTML, preventing it from displaying.
           type: boolean
-          description: ''
         removeStartAnchor:
+          description: When **true,** removes the start anchor string for the Smart Section from the HTML, preventing it from displaying.
           type: boolean
-          description: ''
         startAnchor:
+          description: 'Specifies the beginning of the area in the HTML where the display settings will be applied. If you do not specify a start anchor, the beginning of the document will be used by default.
+
+
+            **Note:** A start anchor, an end anchor, or both are required.'
           type: string
-          description: ''
-      description: ''
       x-ds-definition-name: documentHtmlDisplayAnchor
+      description: ''
       x-ms-summary: ''
+    errorDetails:
+      description: This object describes errors that occur. It is only valid for responses and ignored in requests.
+      type: object
+      properties:
+        errorCode:
+          description: The code associated with the error condition.
+          type: string
+        message:
+          description: A brief message describing the error condition.
+          type: string
+      x-ds-definition-name: errorDetails
+      x-ms-summary: This object describes errors that occur. It is only valid for responses and ignored in requests.
+    documentHtmlDefinition:
+      type: object
+      properties:
+        displayAnchorPrefix:
+          description: Contains text that all display anchors must start with. Using at least four characters will improve anchor processing performance.
+          type: string
+        displayAnchors:
+          description: 'An object that defines how to handle a section of the HTML in signing. This property enables an incoming request to make a section of the HTML collapsible and expandable or hidden from view.
+
+
+            A start anchor, end anchor, or both are required.
+
+            If the anchors are not found, the display anchor will be ignored.
+
+
+            For a list of the available types, see the
+
+            [`display` property](/docs/esign-rest-api/reference/envelopes/envelopes/create/#schema__envelopedefinition_documents_htmldefinition_displayanchors_displaysettings_display)
+
+            of the
+
+            [`displaySettings` object.](/docs/esign-rest-api/reference/envelopes/envelopes/create/#schema__envelopedefinition_documents_htmldefinition_displayanchors_displaysettings)'
+          type: array
+          items:
+            $ref: '#/components/schemas/documentHtmlDisplayAnchor'
+        displayOrder:
+          description: The position on the page where the display section appears.
+          type: string
+        displayPageNumber:
+          description: The number of the page on which the display section appears.
+          type: string
+        documentGuid:
+          description: The GUID of the document.
+          type: string
+        documentId:
+          description: Specifies the document ID number that the tab is placed on. This must refer to an existing Document's ID attribute.
+          type: string
+        headerLabel:
+          description: Header text or an HTML tag to place above the responsive HTML block.
+          type: string
+        maxScreenWidth:
+          description: 'If set, the responsive HTML version of the signing document will only display on screens with the specified pixel width or less. If the screen is larger than the value that you specify, the default PDF version of the content displays instead.
+
+
+            This setting can also be configured at the account level.
+
+            '
+          type: string
+        removeEmptyTags:
+          description: Holds a comma-separated list of HTML tags to remove if they have no text within their node (including child nodes).
+          type: string
+        showMobileOptimizedToggle:
+          description: 'When **true** (the default), the **Mobile-Friendly** toggle displays at the top of the screen on the user''s mobile device. When **false,** the toggle will not be displayed.
+
+
+            the **Mobile-Friendly** toggle lets the user switch between the mobile-friendly and the PDF versions of a document. For example, the recipient can use this toggle to review the document using the PDF view before they finish signing.
+
+            '
+          type: string
+        source:
+          description: 'Specifies the type of responsive signing that will be used with the document.
+
+
+            If the value of this property is valid HTML,
+
+            and the [smart sections feature][] is enabled,
+
+            the HTML code is used to display the signing page:
+
+
+            ```
+
+            source: "<html> ... <body><p>hello world</p></body></html>"
+
+            ```
+
+
+            If the value of this property is the string `document`,
+
+            the HTML signing page is generated from the provided document.
+
+
+            ```
+
+            source: "document"
+
+            ```
+
+
+            **Related topics**
+
+
+            - [How to create a signable HTML document](/docs/esign-rest-api/how-to/creating-signable-html/)
+
+            - [How to convert a PDF file into a signable HTML document](/docs/esign-rest-api/how-to/converting-pdf/)
+
+            - [Responsive signing](/docs/esign-rest-api/esign101/concepts/responsive/)
+
+
+
+            [smart sections feature]: https://support.docusign.com/s/document-item?bundleId=gbo1643332197980&topicId=qlx1578456478178.html'
+          type: string
+      description: 'Holds the properties that define how to generate the responsive-formatted HTML for the document.
+
+        See [Responsive signing](/docs/esign-rest-api/esign101/concepts/responsive/)
+
+        in the [eSignature concepts guide](/docs/esign-rest-api/esign101/concepts/).'
+      x-ds-definition-name: documentHtmlDefinition
+      x-ms-summary: 'Holds the properties that define how to generate the responsive-formatted HTML for the document.
+
+        See [Responsive signing](/docs/esign-rest-api/esign101/concepts/responsive/)
+
+        in the [eSignature concepts guide](/docs/esign-rest-api/esign101/concepts/).'
     documentHtmlDisplaySettings:
       type: object
       properties:
         cellStyle:
+          description: Specifies the valid CSS-formatted styles to use on responsive table cells. Only valid in display sections of `responsive_table` or `responsive_table_single_column` types.
           type: string
-          description: ''
         collapsibleSettings:
           $ref: '#/components/schemas/documentHtmlCollapsibleDisplaySettings'
+          description: This object defines the appearance and function of a collapsible section or item.
         display:
+          description: "Sets the display and behavior properties. Possible  values are:\n\n- `inline`:\n  Leaves the HTML where it is in the document.\n  This property lets you add a label or present on a separate page.\n\n- `collapsible`:\n  The HTML in this section may be expanded or collapsed.\n  Initially this section is expanded.\n\n- `collapsed`:\n  The HTML in this section may be expanded or collapsed.\n  Initially this section is collapsed.\n\n- `continue_button`:\n  Creates a stop point in the document to draw the reader's\n  attention before proceeding to the next section.\n\n- `responsive_table`:\n  Turns this section into a responsive table.\n  Note that this is only used on HTML tables that fall within the anchor start and end positions.\n\n- `responsive_table_single_column`:\n  Turns this section into a responsive single-column table.\n  Note this is only used on HTML tables that fall within the anchor start and end positions.\n  The table will be converted to one single column where each current column will become a row, then stacked.\n\n- `print_only`:\n  Do not show this portion of the HTML in the responsive signing view.\n\n\n"
           type: string
-          description: "This string sets the display and behavior properties of\nthe document during signing. The possible values are:\n\n* `modal`<br>\n  The document is shown as a supplement action strip\n  and can be viewed, downloaded, or printed in a modal window.\n  This is the recommended value for supplemental documents. \n\n* `download`<br>\n  The document is shown as a supplement action strip\n  and can be viewed, downloaded, or printed in a new browser window. \n\n* `inline`<br>\n  The document is shown in the normal signing window.\n  This value is not used with supplemental documents,\n  but is the default value for all other documents.\n"
         displayLabel:
+          description: 'The label to add to this display section in the signing page.
+
+            '
           type: string
-          description: ''
         displayOrder:
-          type: integer
-          description: ''
           format: int32
+          description: The position on the page where the display section appears.
+          type: integer
         displayPageNumber:
-          type: integer
-          description: ''
           format: int32
+          description: The number of the page on which the display section appears.
+          type: integer
         hideLabelWhenOpened:
+          description: When **true,** the `displayLabel` is hidden when the display section is expanded and the display section is no longer collapsible. This property is valid only when the value of the `display` property is `collapsed`.
           type: boolean
-          description: ''
         inlineOuterStyle:
+          description: Specifies the valid CSS-formatted styles to use on inline display sections. This property is valid only when the value of the `display` property is `inline`.
           type: string
-          description: ''
         labelWhenOpened:
+          description: The label for the display section when it is expanded from a collapsed state. This label displays only on the first opening and is only valid with the value of the `display` property is `collapsed`.
           type: string
-          description: ''
         preLabel:
+          description: Enables you to add descriptive text that appears before a collapsed section or continue button.
           type: string
-          description: ''
         scrollToTopWhenOpened:
+          description: 'When **true** and the section is expanded,
+
+            the position of the section-close control
+
+            scrolls to the top of the screen. This property is only valid when the value of the `display` property is `collapsed`.
+
+            '
           type: boolean
-          description: ''
         tableStyle:
+          description: Specifies the valid CSS-formatted styles to use on responsive tables. This property is valid only when the value of the `display` property is `responsive_table` or `responsive_table_single_column`.
           type: string
-          description: ''
-      description: ''
       x-ds-definition-name: documentHtmlDisplaySettings
-      x-ms-summary: ''
-    errorDetails:
-      type: object
-      properties:
-        errorCode:
-          type: string
-          description: An error code associated with the error.
-        message:
-          type: string
-          description: A short error message.
-      description: This object describes errors that occur. It is only valid for responses, and ignored in requests.
-      x-ds-definition-name: errorDetails
-      x-ms-summary: This object describes errors that occur. It is only valid for responses, and ignored in requests.
-    documentHtmlDefinitionOriginals:
-      type: object
-      properties:
-        htmlDefinitions:
-          type: array
-          description: ''
-          items:
-            $ref: '#/components/schemas/documentHtmlDefinitionOriginal'
-      description: ''
-      x-ds-definition-name: documentHtmlDefinitionOriginals
-      x-ms-summary: ''
+      description: 'This object defines how to display the HTML
+
+        between the `startAnchor` and `endAnchor`.'
+      x-ms-summary: 'This object defines how to display the HTML
+
+        between the `startAnchor` and `endAnchor`.'
 externalDocs:
-  description: See the DocuSign REST API Guide for more information.
+  description: See the Docusign eSignature REST API Guide for more information.
   url: https://docs.docusign.com/esign
 x-ds-allow-editing: false
 x-ds-categories:
-- name: Authentication
-  summary: Logging in and authentication
-  description: 'Use the Authentication category to manage various account login tasks including:
-
-
-    * Getting login information for a user.
-
-    * Managing linked social accounts.
-
-    * Getting and revoking OAuth tokens.'
 - name: Envelopes
-  summary: Creating and sending envelopes
-  description: 'The DocuSign API Envelope category includes the resources and methods for sending and managing envelopes and envelope data.
+  summary: This section shows you how to create and send envelopes.
+  description: 'The eSignature API Envelope category includes the resources and methods for sending and managing envelopes and envelope data.
 
 
-    Envelopes are the key objects within the DocuSign eSignature system. As a result, they are complex data structures with few required fields. See the [API Recipes](https://www.docusign.com/developer-center/recipes) for use case examples and their solutions.
+    Envelopes are the key objects in the Docusign platform. As a result, they are complex data structures with few required fields. See the [How-to guides](/docs/esign-rest-api/how-to/) for examples and solutions.
 
 
-    To create and send envelopes, see the [Envelopes resource](Envelopes).
-
+    To learn more about envelopes, see [Envelopes](/docs/esign-rest-api/esign101/concepts/envelopes/).
 
     '
 - name: Connect
-  summary: Connect configuration and logging
-  description: "The Connect category enables your application to be called via HTTPS when an event of interest occurs.\n\nUse the Connect service to \"end the polling madness.\" With Connect, there is no need for your application to poll DocuSign every 15 minutes to learn the latest about your envelopes.\n\nInstead, you register your interest in one or more types of envelope or recipient events. Then, when an interesting event occurs, the DocuSign platform will contact your application with the event's details and data. You can register interest in envelopes sent by particular users in your account, or for envelopes sent by any user.\n\n## Incoming Connect Calls\nTo use the Connect service, your application needs to provide an https url that can be called from the public internet. If your application runs on a server behind your organization's firewall, then you will need to create a \"pinhole\" in the firewall to allow the incoming Connect calls from DocuSign to reach your application. Other techniques for receiving the incoming calls including proxy servers and DMZ networking can also be used. \n\n## Per-envelope Connect Configuration\nInstead of registering a general Connect configuration and listener, an individual envelope can have its own Connect configuration. See the `eventNotification` field for envelopes.\n\n## Categories\nUse the Connect category for:\n\n* Programmatically creating Connect configurations. Connect configurations can be created manually by using the DocuSign web service, or programmatically via the API. Configurations created via the API can be seen and updated from the web service.\n* Retrieving and managing the event log for your Connect configurations. \n* Requesting that an event be re-published to the listener."
+  summary: "Docusign Connect is the Docusign platform notification service. The service uses webhooks to proactively notify your application when an event occurs that your application wants to know about. Docusign recommends that all applications use Connect instead of polling the Docusign Signature Service. This section provides information about Connect configuration and logging. \n\n**Note:** To make API calls to any of the Connect endpoints, you must be an account administrator.\n\nFor more information about Connect, see [Docusign Connect](/platform/webhooks/connect/) and [Custom Connect Configuration](https://support.docusign.com/s/document-item?bundleId=pik1583277475390&topicId=khw1583277390582.html)."
+  description: 'The Connect service enables your application to be called via
+
+    HTTPS when an event of interest occurs.
+
+
+    Use the Connect service to "end the polling madness." With
+
+    Connect, there is no need for your application to poll Docusign
+
+    every 15 minutes to learn the latest about your envelopes.
+
+
+    Instead, you register your interest in one or more types of
+
+    envelope or recipient events. Then, when an interesting event
+
+    occurs, the Docusign platform will contact your application with
+
+    the event''s details and data. You can register interest in
+
+    envelopes sent by particular users in your account, or for
+
+    envelopes sent by any user.
+
+
+    Connect can empower your organization to manage document actions
+
+    as they occur, and allows you to track their changes within your
+
+    own systems. Upon completion, envelope information, including
+
+    document content, can be stored in your own databases or CMS
+
+    systems, and these events can be triggered via webhooks
+
+    delivering messages to your application.
+
+
+    **Note:** To make API calls to any of the Connect endpoints, you must be an account administrator.
+
+
+    ## Incoming Connect Calls
+
+
+    To use the Connect service, your application needs to provide an
+
+    HTTPS URL that can be called from the public Internet. If your
+
+    application runs on a server behind your organization''s firewall,
+
+    then you will need to create a "pinhole" in the firewall to allow
+
+    the incoming Connect calls from Docusign to reach your
+
+    application. You can also use other techniques such as proxy
+
+    servers and DMZ networking for receiving the incoming calls.
+
+
+    Connect delivers events over HTTP requests in JSON or XML.
+
+    See [Docusign Connect overview](/platform/webhooks/connect/).
+
+
+    If your application is not configured to accept post messages,
+
+    Docusign will NOT return an additional post error response to
+
+    your listener application. If you''ve enabled logging on your
+
+    configuration, it will be logged in Admin under the configuration
+
+    failure log.
+
+
+    ## Per-envelope Connect Configuration
+
+
+    Instead of registering a general Connect configuration and
+
+    listener, an individual envelope can have its own Connect
+
+    configuration. See the
+
+    [`eventNotification`](/docs/esign-rest-api/reference/envelopes/envelopes/create/#schema__envelopedefinition_eventnotification)
+
+    property for envelopes.
+
+
+    ## Historical Publish Endpoint
+
+
+    To submit existing envelopes to an endpoint, use the [EnvelopePublish](/docs/esign-rest-api/reference/envelopes/envelopepublish/) resource.
+
+    '
 - name: Templates
   summary: Template creation and management
   description: 'Use the Templates category to manage your account''s templates.
 
 
-    You can:
+    This section shows you how to perform the following tasks:
 
 
     * Create, list, get, update, and delete templates.
 
-    * Manage templates'' notification and group sharing settings.
+    * Manage the notification and group sharing settings for templates.
 
     * Fetch and rotate pages from a document used by a template.
 
 
-    Templates can be created programmatically or can be created via the DocuSign web interface and then used by your application.'
+    You can create templates either programmatically or through the Docusign web interface and then used by your application.'
 - name: SigningGroups
-  summary: Send a signing request to a group of potential signers
-  description: 'Use the SigningGroup category to manage signing groups that allow you anyone in the group to sign a document.
+  summary: Send a signing request to a group of potential signers.
+  description: 'Use the Signing Group category to manage signing groups that allow anyone in the group to sign a document. When you send an envelope to a signing group, anyone in the group can open it and sign it with their own signature.
 
 
-    The category allows you create the signing group and manage the users in the group.'
+    This category shows account administrators how to create a signing group and manage the users in the group.
+
+
+    **Note:** To create and manage signing groups, you must be an account administrator.
+
+
+    For more information about this topic, see [Signing Groups](https://support.docusign.com/s/document-item?bundleId=gav1643676262430&topicId=zgn1578456447934.html).'
 - name: Folders
-  summary: Folders for completed envelopes
-  description: "Use the Folders category to manage envelopes in your folders. \n\nYou can list the folder contents and move envelopes between folders."
+  summary: Folders allow you to organize envelopes and templates.
+  description: 'Use the Folders category to organize envelopes and templates.
+
+    You can list the folder contents and move envelopes and templates between folders.'
 - name: CustomTabs
   summary: Custom tabs
   description: "Custom Tabs enable accounts to have one or more pre-configured (custom) tabs. Custom tabs save time when users are tagging documents since the users don't have to manually set the tabs' parameters.\n\nThis category enables custom tabs to be managed programmatically, including creation, deletion, etc. \n"
 - name: CloudStorage
-  summary: Cloud storage providers and user management
+  summary: This section shows you how to manage your cloud storage providers and users.
   description: 'Use the Cloud Storage category to list the user''s cloud storage document contents.
 
 
@@ -312,7 +556,7 @@ x-ds-categories:
 
     * Add delete users.
 
-    * Add and delete the intials and signature images for a user.'
+    * Add and delete the initials and signature images for a user.'
 - name: UserGroups
   summary: Group users for common permissions and branding
   description: 'Use the User Groups category to manage your permissions groups.
@@ -326,9 +570,28 @@ x-ds-categories:
     * Add users to, and delete users from, your groups.
 
     * Manage the brand information associated with a group.'
+- name: BulkEnvelopes
+  summary: Bulk envelopes
+  description: Use the BulkEnvelopes category to manage the sending of envelopes to multiple recipients.
 - name: Accounts
   summary: Account management
-  description: "Use the Account category for various account management tasks including:\n\n* Programmatically creating and deleting accounts.\n* Getting information about an account and its capabilities.\n* Branding the account with custom colors, message text, and more.\n* Account charges.\n\nThe Account category also includes end points for \n* Listing the recipient names associated with an email address that was used by the account. For example, a single email address is often shared by mulitple members of a family.\n\n\n"
+  description: 'Use the Account category for various account management tasks including:
+
+
+    * Programmatically creating and deleting accounts.
+
+    * Getting information about an account and its capabilities.
+
+    * Branding the account with custom colors, message text, and more.
+
+    * Account charges.
+
+
+    The Accounts category also includes end points for listing the recipient names associated with an email address that was used by the account. For example, a single email address is often shared by multiple members of a family.
+
+
+
+    '
 - name: Billing
   summary: Invoices
   description: 'Use the Billing category to manage the following billing related tasks:
@@ -350,18 +613,42 @@ x-ds-categories:
 
     * Getting information on the API''s resources and versions.'
 - name: PowerForms
-  summary: PowerForm creation and management
-  description: The PowerForms category enables PowerForms to be created and managed.
+  summary: The PowerForms category provides methods that enable you to create and manage fillable forms.
+  description: The PowerForms category enables you to create and manage PowerForms that you can use for self service and email forms.
 - name: Workspaces
-  summary: Workspace creation and management
-  description: 'Workspaces creation and management.
-
-
-    '
+  summary: A Docusign workspace is a collaboration area for sharing files and data.
+  description: "A workspace is a collaborative space for sharing documents and managing workflows. A workspace has a single owner who must be a Docusign user. The owner can invite others to the workspace as collaborators. Individuals who are not Docusign users must create a Docusign account to join a workspace as a collaborator.\n \nYou can create an envelope directly from a workspace.\n\nWorkspaces store the following information:\n\n- **Files:** Files uploaded to a workspace for storage or reuse.\n- **Documents:** A document is a component of a transaction, template, or workspace. When a file is added to a transaction, template, or workspace, it is copied as a document. Each document in a workspace has a single owner.\n- **Templates:** A set of documents that you can use to create a transaction or a workspace.\n- **Transactions:** A transaction is a series of workflow events related to one or more documents. These events route the documents to one or more individuals for the purposes of doing business. Each transaction has a single owner (the sender).\n\n**Note:** Documents in a template are not individually listed as files."
 - name: Payments
   summary: Manage Payments
   description: This category includes resources for managing payment gateways. Payment information is added to envelopes via methods in the Envelopes category.
-- name: Signature
+- name: EmailArchive
+  summary: This section shows you how to set and manage the BCC email addresses that you want to use to archive the emails that Docusign sends.
+  description: 'Email archives enable Docusign partners and other multi-account customers to easily archive emails sent through Docusign. The `EmailArchive` resource provides methods for managing your email archive configuration, which consists of the BCC email address or addresses that you want to use to archive Docusign emails. Each account can use up to five BCC email addresses for archiving purposes.
+
+
+    For more information, see [Email Archive Configuration](https://support.docusign.com/s/document-item?bundleId=pik1583277475390&topicId=xjm1583277371373.html).
+
+
+    **Note:** This feature is only available for certain account plans and must be enabled by Docusign.'
+- name: Notary
+  summary: 'Docusign eNotary makes the notarization process fully digital
+
+    for senders, signers, and notaries.
+
+    It enables a notary public to act as an in-person witness
+
+    to electronic signing of documents.
+
+    '
+  description: 'Docusign eNotary makes the notarization process fully digital
+
+    for senders, signers, and notaries.
+
+    It enables a notary public to act as an in-person witness
+
+    to electronic signing of documents.
+
+    '
+- name: Envelope
   summary: ''
   description: ''
-x-original-swagger-version: '2.0'

@@ -1,0 +1,891 @@
+openapi: 3.2.0
+info:
+  version: v2.1
+  title: Docusign eSignature REST Notary Jurisdiction API
+  description: The Docusign eSignature REST API provides you with a powerful, convenient, and simple Web services API for interacting with Docusign.
+  termsOfService: https://www.docusign.com/company/terms-and-conditions/web
+  contact:
+    name: Docusign Developer Center
+    url: https://developers.docusign.com/
+    email: devcenter@docusign.com
+servers:
+- url: https://www.docusign.net/restapi
+tags:
+- name: NotaryJurisdiction
+  description: Creating, updating, and deleting notary jurisdiction objects.
+paths:
+  /v2.1/current_user/notary/jurisdictions:
+    parameters: []
+    get:
+      tags:
+      - NotaryJurisdiction
+      summary: Returns a list of jurisdictions that the notary is registered in
+      operationId: NotaryJurisdictions_GetNotaryJurisdictions
+      responses:
+        '200':
+          description: Successful response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/notaryJurisdictionList'
+        '400':
+          description: Error encountered.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorDetails'
+      deprecated: false
+      x-ds-methodname: getNotaryJurisdictions
+      description: 'Returns a list of jurisdictions that the notary is registered in.
+
+        The current user must be a notary.'
+      x-ds-method: getNotaryJurisdictions
+      x-ds-service: Uncategorized
+      x-ds-in-sdk: true
+    post:
+      tags:
+      - NotaryJurisdiction
+      summary: Creates a jurisdiction object
+      operationId: NotaryJurisdictions_PostNotaryJurisdictions
+      responses:
+        '201':
+          description: Successful response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/notaryJurisdiction'
+        '400':
+          description: Error encountered.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorDetails'
+      deprecated: false
+      x-ds-methodname: createNotaryJurisdictions
+      description: Creates a jurisdiction object.
+      x-ds-method: createNotaryJurisdictions
+      x-ds-service: Uncategorized
+      x-ds-in-sdk: true
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/notaryJurisdiction'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/notaryJurisdiction'
+  /v2.1/current_user/notary/jurisdictions/{jurisdictionId}:
+    parameters: []
+    get:
+      tags:
+      - NotaryJurisdiction
+      summary: Gets a jurisdiction object for the current user. The user must be a notary
+      operationId: NotaryJurisdictions_GetNotaryJurisdiction
+      parameters:
+      - name: jurisdictionId
+        in: path
+        required: true
+        description: 'The ID of the jurisdiction.
+
+          The following jurisdictions
+
+          are supported:
+
+
+          -  `5 - California`
+
+          -  `6 - Colorado`
+
+          -  `9 - Florida`
+
+          -  `10 - Georgia`
+
+          -  `12 - Idaho`
+
+          -  `13 - Illinois`
+
+          -  `14 - Indiana`
+
+          -  `15 - Iowa`
+
+          -  `17 - Kentucky`
+
+          -  `23 - Minnesota`
+
+          -  `25 - Missouri`
+
+          -  `30 - New Jersey`
+
+          -  `32 - New York`
+
+          -  `33 - North Carolina`
+
+          -  `35 - Ohio`
+
+          -  `37 - Oregon`
+
+          -  `38 - Pennsylvania`
+
+          -  `40 - South Carolina`
+
+          -  `43 - Texas`
+
+          -  `44 - Utah`
+
+          -  `47 - Washington`
+
+          -  `48 - West Virginia`
+
+          -  `49 - Wisconsin`
+
+          -  `62 - Florida Commissioner of Deeds`
+
+          '
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Successful response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/notaryJurisdiction'
+        '400':
+          description: Error encountered.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorDetails'
+      deprecated: false
+      x-ds-methodname: getNotaryJurisdiction
+      description: 'Gets a jurisdiction object for the current user. The following restrictions apply:
+
+
+        - The current user must be a notary.
+
+        - The `jurisdictionId` must be a jurisdiction that the notary is registered for.'
+      x-ds-method: getNotaryJurisdiction
+      x-ds-service: Uncategorized
+      x-ds-in-sdk: true
+    put:
+      tags:
+      - NotaryJurisdiction
+      summary: Updates the jurisdiction information about a notary
+      operationId: NotaryJurisdictions_PutNotaryJurisdiction
+      parameters:
+      - name: jurisdictionId
+        in: path
+        required: true
+        description: 'The ID of the jurisdiction.
+
+          The following jurisdictions
+
+          are supported:
+
+
+          -  `5 - California`
+
+          -  `6 - Colorado`
+
+          -  `9 - Florida`
+
+          -  `10 - Georgia`
+
+          -  `12 - Idaho`
+
+          -  `13 - Illinois`
+
+          -  `14 - Indiana`
+
+          -  `15 - Iowa`
+
+          -  `17 - Kentucky`
+
+          -  `23 - Minnesota`
+
+          -  `25 - Missouri`
+
+          -  `30 - New Jersey`
+
+          -  `32 - New York`
+
+          -  `33 - North Carolina`
+
+          -  `35 - Ohio`
+
+          -  `37 - Oregon`
+
+          -  `38 - Pennsylvania`
+
+          -  `40 - South Carolina`
+
+          -  `43 - Texas`
+
+          -  `44 - Utah`
+
+          -  `47 - Washington`
+
+          -  `48 - West Virginia`
+
+          -  `49 - Wisconsin`
+
+          -  `62 - Florida Commissioner of Deeds`
+
+          '
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Successful response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/notaryJurisdiction'
+        '400':
+          description: Error encountered.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorDetails'
+      deprecated: false
+      x-ds-methodname: updateNotaryJurisdiction
+      description: 'Updates the jurisdiction information about a notary.
+
+
+        The following restrictions apply:
+
+
+        - The current user must be a notary.
+
+        - The `jurisdictionId` path parameter must be a jurisdiction that the notary is registered for.
+
+        - The `jurisdictionId` path parameter must match the request body''s `jurisdiction.jurisdictionId`.
+
+
+        The request body must have a full `jurisdiction` object for the jurisdiction property.
+
+        The best way to do this is to use `getNotaryJurisdiction` to obtain the current values and update the properties you want to change.
+
+
+        For example, assume `getNotaryJurisdiction` returns this:
+
+
+        ```
+
+        {
+
+        "jurisdiction": {
+
+        "jurisdictionId": "15",
+
+        "name": "Iowa",
+
+        "county": "",
+
+        "enabled": "true",
+
+        "countyInSeal": "false",
+
+        "commissionIdInSeal": "true",
+
+        "stateNameInSeal": "true",
+
+        "notaryPublicInSeal": "true",
+
+        "allowSystemCreatedSeal": "true",
+
+        "allowUserUploadedSeal": "false"
+
+        },
+
+        "commissionId": "123456",
+
+        "commissionExpiration": "2020-08-31T07:00:00.0000000Z",
+
+        "registeredName": "Bob Notary",
+
+        "county": "Adams",
+
+        "sealType": "system_created"
+
+        }
+
+        ```
+
+
+        If you want to change the name of the notary from "Bob Notary" to "Robert Notary", your request body would be:
+
+
+        ```
+
+        {
+
+        "jurisdiction": {
+
+        "jurisdictionId": "15",
+
+        "name": "Iowa",
+
+        "county": "",
+
+        "enabled": "true",
+
+        "countyInSeal": "false",
+
+        "commissionIdInSeal": "true",
+
+        "stateNameInSeal": "true",
+
+        "notaryPublicInSeal": "true",
+
+        "allowSystemCreatedSeal": "true",
+
+        "allowUserUploadedSeal": "false"
+
+        },
+
+        "commissionId": "123456",
+
+        "commissionExpiration": "2020-08-31T07:00:00.0000000Z",
+
+        "registeredName": "Robert Notary",
+
+        "county": "Adams",
+
+        "sealType": "system_created"
+
+        }
+
+        ```'
+      x-ds-method: updateNotaryJurisdiction
+      x-ds-service: Uncategorized
+      x-ds-in-sdk: true
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/notaryJurisdiction'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/notaryJurisdiction'
+    delete:
+      tags:
+      - NotaryJurisdiction
+      summary: Deletes the specified jurisdiction
+      operationId: NotaryJurisdictions_DeleteNotaryJurisdiction
+      parameters:
+      - name: jurisdictionId
+        in: path
+        required: true
+        description: 'The ID of the jurisdiction.
+
+          The following jurisdictions
+
+          are supported:
+
+
+          -  `5 - California`
+
+          -  `6 - Colorado`
+
+          -  `9 - Florida`
+
+          -  `10 - Georgia`
+
+          -  `12 - Idaho`
+
+          -  `13 - Illinois`
+
+          -  `14 - Indiana`
+
+          -  `15 - Iowa`
+
+          -  `17 - Kentucky`
+
+          -  `23 - Minnesota`
+
+          -  `25 - Missouri`
+
+          -  `30 - New Jersey`
+
+          -  `32 - New York`
+
+          -  `33 - North Carolina`
+
+          -  `35 - Ohio`
+
+          -  `37 - Oregon`
+
+          -  `38 - Pennsylvania`
+
+          -  `40 - South Carolina`
+
+          -  `43 - Texas`
+
+          -  `44 - Utah`
+
+          -  `47 - Washington`
+
+          -  `48 - West Virginia`
+
+          -  `49 - Wisconsin`
+
+          -  `62 - Florida Commissioner of Deeds`
+
+          '
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Successful response.
+        '400':
+          description: Error encountered.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorDetails'
+      deprecated: false
+      x-ds-methodname: deleteNotaryJurisdiction
+      description: Deletes the specified jurisdiction.
+      x-ds-method: deleteNotaryJurisdiction
+      x-ds-service: Uncategorized
+      x-ds-in-sdk: true
+components:
+  schemas:
+    notaryJurisdictionList:
+      type: object
+      properties:
+        endPosition:
+          description: 'The last index position in the result set. '
+          type: string
+        nextUri:
+          description: 'The URI for the next chunk of records based on the search request. It is `null` if this is the last set of results for the search. '
+          type: string
+        notaryJurisdictions:
+          description: An array of jurisdictions.
+          type: array
+          items:
+            $ref: '#/components/schemas/notaryJurisdiction'
+        previousUri:
+          description: 'The URI for the prior chunk of records based on the search request. It is `null` if this is the first set of results for the search. '
+          type: string
+        resultSetSize:
+          description: The number of results in this response. Because you can filter which entries are included in the response, this value is always less than or equal to the `totalSetSize`.
+          type: string
+        startPosition:
+          description: The starting index position of the current result set.
+          type: string
+        totalSetSize:
+          description: The total number of items in the result set. This value is always greater than or equal to the value of `resultSetSize`.
+          type: string
+      description: A paged list of jurisdictions.
+      x-ds-definition-name: notaryJurisdictionList
+      x-ms-summary: A paged list of jurisdictions.
+    jurisdiction:
+      type: object
+      properties:
+        allowSystemCreatedSeal:
+          description: When **true,** the seal can be generated by the platform.
+          type: string
+        allowUserUploadedSeal:
+          description: When **true,** the seal can be uploaded by the user.
+          type: string
+        commissionIdInSeal:
+          description: When **true,** the notary's `comissionId` appears in the seal.
+          type: string
+        county:
+          description: The county of the jurisdiction.
+          type: string
+        countyInSeal:
+          description: When **true,** the county name appears in the seal.
+          type: string
+        enabled:
+          description: When **true,** this jurisdiction is enabled.
+          type: string
+        jurisdictionId:
+          description: 'The ID of the jurisdiction.
+
+            The following jurisdictions
+
+            are supported:
+
+
+            -  `5 - California`
+
+            -  `6 - Colorado`
+
+            -  `9 - Florida`
+
+            -  `10 - Georgia`
+
+            -  `12 - Idaho`
+
+            -  `13 - Illinois`
+
+            -  `14 - Indiana`
+
+            -  `15 - Iowa`
+
+            -  `17 - Kentucky`
+
+            -  `23 - Minnesota`
+
+            -  `25 - Missouri`
+
+            -  `30 - New Jersey`
+
+            -  `32 - New York`
+
+            -  `33 - North Carolina`
+
+            -  `35 - Ohio`
+
+            -  `37 - Oregon`
+
+            -  `38 - Pennsylvania`
+
+            -  `40 - South Carolina`
+
+            -  `43 - Texas`
+
+            -  `44 - Utah`
+
+            -  `47 - Washington`
+
+            -  `48 - West Virginia`
+
+            -  `49 - Wisconsin`
+
+            -  `62 - Florida Commissioner of Deeds`
+
+            '
+          type: string
+        name:
+          description: The name of the jurisdiction. Typically the state name.
+          type: string
+        notaryPublicInSeal:
+          description: When **true,** the name of the notary appears in the seal.
+          type: string
+        stateNameInSeal:
+          description: When **true,** the name of the state appears in the seal.
+          type: string
+      description: 'Describes the jurisdiction of a notary.
+
+        This is read-only object.'
+      x-ds-definition-name: jurisdiction
+      x-ms-summary: 'Describes the jurisdiction of a notary.
+
+        This is read-only object.'
+    notaryJurisdiction:
+      type: object
+      properties:
+        commissionExpiration:
+          description: 'The expiration date of the notary''s commission in format: `MM/DD/YYYY`.'
+          type: string
+        commissionId:
+          description: The notary's commission identification. This varies from jurisdiction to jurisdiction.
+          type: string
+        county:
+          description: The county that the commission is valid in.
+          type: string
+        errorDetails:
+          $ref: '#/components/schemas/errorDetails'
+          description: This object describes errors that occur. It is only valid for responses and ignored in requests.
+        jurisdiction:
+          $ref: '#/components/schemas/jurisdiction'
+          description: 'Description of the jurisdiction for this notary.
+
+            This is a read-only property.'
+        registeredName:
+          description: The registered name of the notary.
+          type: string
+        sealType:
+          description: 'The seal type used for this juridiction.
+
+
+            - `not_available`
+
+            - `system_created`
+
+            - `user_uploaded`'
+          type: string
+      description: A notary jurisdiction.
+      x-ds-definition-name: notaryJurisdiction
+      x-ms-summary: A notary jurisdiction.
+    errorDetails:
+      description: This object describes errors that occur. It is only valid for responses and ignored in requests.
+      type: object
+      properties:
+        errorCode:
+          description: The code associated with the error condition.
+          type: string
+        message:
+          description: A brief message describing the error condition.
+          type: string
+      x-ds-definition-name: errorDetails
+      x-ms-summary: This object describes errors that occur. It is only valid for responses and ignored in requests.
+externalDocs:
+  description: See the Docusign eSignature REST API Guide for more information.
+  url: https://docs.docusign.com/esign
+x-ds-allow-editing: false
+x-ds-categories:
+- name: Envelopes
+  summary: This section shows you how to create and send envelopes.
+  description: 'The eSignature API Envelope category includes the resources and methods for sending and managing envelopes and envelope data.
+
+
+    Envelopes are the key objects in the Docusign platform. As a result, they are complex data structures with few required fields. See the [How-to guides](/docs/esign-rest-api/how-to/) for examples and solutions.
+
+
+    To learn more about envelopes, see [Envelopes](/docs/esign-rest-api/esign101/concepts/envelopes/).
+
+    '
+- name: Connect
+  summary: "Docusign Connect is the Docusign platform notification service. The service uses webhooks to proactively notify your application when an event occurs that your application wants to know about. Docusign recommends that all applications use Connect instead of polling the Docusign Signature Service. This section provides information about Connect configuration and logging. \n\n**Note:** To make API calls to any of the Connect endpoints, you must be an account administrator.\n\nFor more information about Connect, see [Docusign Connect](/platform/webhooks/connect/) and [Custom Connect Configuration](https://support.docusign.com/s/document-item?bundleId=pik1583277475390&topicId=khw1583277390582.html)."
+  description: 'The Connect service enables your application to be called via
+
+    HTTPS when an event of interest occurs.
+
+
+    Use the Connect service to "end the polling madness." With
+
+    Connect, there is no need for your application to poll Docusign
+
+    every 15 minutes to learn the latest about your envelopes.
+
+
+    Instead, you register your interest in one or more types of
+
+    envelope or recipient events. Then, when an interesting event
+
+    occurs, the Docusign platform will contact your application with
+
+    the event''s details and data. You can register interest in
+
+    envelopes sent by particular users in your account, or for
+
+    envelopes sent by any user.
+
+
+    Connect can empower your organization to manage document actions
+
+    as they occur, and allows you to track their changes within your
+
+    own systems. Upon completion, envelope information, including
+
+    document content, can be stored in your own databases or CMS
+
+    systems, and these events can be triggered via webhooks
+
+    delivering messages to your application.
+
+
+    **Note:** To make API calls to any of the Connect endpoints, you must be an account administrator.
+
+
+    ## Incoming Connect Calls
+
+
+    To use the Connect service, your application needs to provide an
+
+    HTTPS URL that can be called from the public Internet. If your
+
+    application runs on a server behind your organization''s firewall,
+
+    then you will need to create a "pinhole" in the firewall to allow
+
+    the incoming Connect calls from Docusign to reach your
+
+    application. You can also use other techniques such as proxy
+
+    servers and DMZ networking for receiving the incoming calls.
+
+
+    Connect delivers events over HTTP requests in JSON or XML.
+
+    See [Docusign Connect overview](/platform/webhooks/connect/).
+
+
+    If your application is not configured to accept post messages,
+
+    Docusign will NOT return an additional post error response to
+
+    your listener application. If you''ve enabled logging on your
+
+    configuration, it will be logged in Admin under the configuration
+
+    failure log.
+
+
+    ## Per-envelope Connect Configuration
+
+
+    Instead of registering a general Connect configuration and
+
+    listener, an individual envelope can have its own Connect
+
+    configuration. See the
+
+    [`eventNotification`](/docs/esign-rest-api/reference/envelopes/envelopes/create/#schema__envelopedefinition_eventnotification)
+
+    property for envelopes.
+
+
+    ## Historical Publish Endpoint
+
+
+    To submit existing envelopes to an endpoint, use the [EnvelopePublish](/docs/esign-rest-api/reference/envelopes/envelopepublish/) resource.
+
+    '
+- name: Templates
+  summary: Template creation and management
+  description: 'Use the Templates category to manage your account''s templates.
+
+
+    This section shows you how to perform the following tasks:
+
+
+    * Create, list, get, update, and delete templates.
+
+    * Manage the notification and group sharing settings for templates.
+
+    * Fetch and rotate pages from a document used by a template.
+
+
+    You can create templates either programmatically or through the Docusign web interface and then used by your application.'
+- name: SigningGroups
+  summary: Send a signing request to a group of potential signers.
+  description: 'Use the Signing Group category to manage signing groups that allow anyone in the group to sign a document. When you send an envelope to a signing group, anyone in the group can open it and sign it with their own signature.
+
+
+    This category shows account administrators how to create a signing group and manage the users in the group.
+
+
+    **Note:** To create and manage signing groups, you must be an account administrator.
+
+
+    For more information about this topic, see [Signing Groups](https://support.docusign.com/s/document-item?bundleId=gav1643676262430&topicId=zgn1578456447934.html).'
+- name: Folders
+  summary: Folders allow you to organize envelopes and templates.
+  description: 'Use the Folders category to organize envelopes and templates.
+
+    You can list the folder contents and move envelopes and templates between folders.'
+- name: CustomTabs
+  summary: Custom tabs
+  description: "Custom Tabs enable accounts to have one or more pre-configured (custom) tabs. Custom tabs save time when users are tagging documents since the users don't have to manually set the tabs' parameters.\n\nThis category enables custom tabs to be managed programmatically, including creation, deletion, etc. \n"
+- name: CloudStorage
+  summary: This section shows you how to manage your cloud storage providers and users.
+  description: 'Use the Cloud Storage category to list the user''s cloud storage document contents.
+
+
+    It is also used to manage the user''s authentication/accounts with cloud storage service providers.'
+- name: Users
+  summary: User management
+  description: 'Use the Users category to manage the users in your accounts.
+
+
+    You can:
+
+
+    * Set custom user settings.
+
+    * Manage a users profile.
+
+    * Add delete users.
+
+    * Add and delete the initials and signature images for a user.'
+- name: UserGroups
+  summary: Group users for common permissions and branding
+  description: 'Use the User Groups category to manage your permissions groups.
+
+
+    You can:
+
+
+    * Create and delete groups.
+
+    * Add users to, and delete users from, your groups.
+
+    * Manage the brand information associated with a group.'
+- name: BulkEnvelopes
+  summary: Bulk envelopes
+  description: Use the BulkEnvelopes category to manage the sending of envelopes to multiple recipients.
+- name: Accounts
+  summary: Account management
+  description: 'Use the Account category for various account management tasks including:
+
+
+    * Programmatically creating and deleting accounts.
+
+    * Getting information about an account and its capabilities.
+
+    * Branding the account with custom colors, message text, and more.
+
+    * Account charges.
+
+
+    The Accounts category also includes end points for listing the recipient names associated with an email address that was used by the account. For example, a single email address is often shared by multiple members of a family.
+
+
+
+    '
+- name: Billing
+  summary: Invoices
+  description: 'Use the Billing category to manage the following billing related tasks:
+
+
+    * Retrieve and update billing plan information.
+
+    * Retrieve invoices.
+
+    * Retrieve and update payment information.'
+- name: Diagnostics
+  summary: Diagnostics and request logging
+  description: 'The Diagnostics category provides miscellaneous end points.
+
+
+    They include:
+
+    * Requesting and managing the API call-logging feature. (Perfect for debugging your app!)
+
+    * Getting information on the API''s resources and versions.'
+- name: PowerForms
+  summary: The PowerForms category provides methods that enable you to create and manage fillable forms.
+  description: The PowerForms category enables you to create and manage PowerForms that you can use for self service and email forms.
+- name: Workspaces
+  summary: A Docusign workspace is a collaboration area for sharing files and data.
+  description: "A workspace is a collaborative space for sharing documents and managing workflows. A workspace has a single owner who must be a Docusign user. The owner can invite others to the workspace as collaborators. Individuals who are not Docusign users must create a Docusign account to join a workspace as a collaborator.\n \nYou can create an envelope directly from a workspace.\n\nWorkspaces store the following information:\n\n- **Files:** Files uploaded to a workspace for storage or reuse.\n- **Documents:** A document is a component of a transaction, template, or workspace. When a file is added to a transaction, template, or workspace, it is copied as a document. Each document in a workspace has a single owner.\n- **Templates:** A set of documents that you can use to create a transaction or a workspace.\n- **Transactions:** A transaction is a series of workflow events related to one or more documents. These events route the documents to one or more individuals for the purposes of doing business. Each transaction has a single owner (the sender).\n\n**Note:** Documents in a template are not individually listed as files."
+- name: Payments
+  summary: Manage Payments
+  description: This category includes resources for managing payment gateways. Payment information is added to envelopes via methods in the Envelopes category.
+- name: EmailArchive
+  summary: This section shows you how to set and manage the BCC email addresses that you want to use to archive the emails that Docusign sends.
+  description: 'Email archives enable Docusign partners and other multi-account customers to easily archive emails sent through Docusign. The `EmailArchive` resource provides methods for managing your email archive configuration, which consists of the BCC email address or addresses that you want to use to archive Docusign emails. Each account can use up to five BCC email addresses for archiving purposes.
+
+
+    For more information, see [Email Archive Configuration](https://support.docusign.com/s/document-item?bundleId=pik1583277475390&topicId=xjm1583277371373.html).
+
+
+    **Note:** This feature is only available for certain account plans and must be enabled by Docusign.'
+- name: Notary
+  summary: 'Docusign eNotary makes the notarization process fully digital
+
+    for senders, signers, and notaries.
+
+    It enables a notary public to act as an in-person witness
+
+    to electronic signing of documents.
+
+    '
+  description: 'Docusign eNotary makes the notarization process fully digital
+
+    for senders, signers, and notaries.
+
+    It enables a notary public to act as an in-person witness
+
+    to electronic signing of documents.
+
+    '
+- name: Envelope
+  summary: ''
+  description: ''

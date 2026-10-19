@@ -1,112 +1,91 @@
 openapi: 3.2.0
 info:
-  title: DocuSign REST Contacts API
-  description: The DocuSign REST API provides you with a powerful, convenient, and simple Web services API for interacting with DocuSign.
+  version: v2.1
+  title: Docusign eSignature REST Contacts API
+  description: The Docusign eSignature REST API provides you with a powerful, convenient, and simple Web services API for interacting with Docusign.
   termsOfService: https://www.docusign.com/company/terms-and-conditions/web
   contact:
-    name: DocuSign Developer Center
+    name: Docusign Developer Center
     url: https://developers.docusign.com/
     email: devcenter@docusign.com
-  version: v2
 servers:
 - url: https://www.docusign.net/restapi
 tags:
 - name: Contacts
-  description: The Contacts resource provides methods that allow you to manage contacts.
+  description: Docusign eSignature includes a contacts list (also referred to as an address book) to help make sending envelopes even easier. When you send an envelope, the recipients' names and email addresses are automatically added to your contacts list. You can use the contacts list to quickly add recipients to the envelopes you send. The `Contacts` resource provides methods that enable you to manage your contacts.
 paths:
-  /v2/accounts/{accountId}/contacts:
+  /v2.1/accounts/{accountId}/contacts:
+    parameters: []
     put:
       tags:
       - Contacts
-      summary: Replaces contacts associated with an account for the DocuSign service
+      summary: Updates one or more contacts
       operationId: Contacts_PutContacts
       parameters:
       - name: accountId
         in: path
-        description: The external account number (int) or account id GUID.
+        description: The external account number (int) or account ID GUID.
         required: true
         schema:
           type: string
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/contactModRequest'
-          application/xml:
-            schema:
-              $ref: '#/components/schemas/contactModRequest'
-        required: false
       responses:
         '200':
           description: Successful response.
           content:
-            '*/*':
+            application/json:
               schema:
                 $ref: '#/components/schemas/contactUpdateResponse'
         '400':
           description: Error encountered.
           content:
-            '*/*':
+            application/json:
               schema:
                 $ref: '#/components/schemas/errorDetails'
       deprecated: false
       x-ds-methodname: putContacts
+      description: This method updates one or more contacts associated with an account.
       x-ds-method: update
       x-ds-service: Users
       x-ds-in-sdk: true
-      x-codegen-request-body-name: contactModRequest
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/contactModRequest'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/contactModRequest'
     post:
       tags:
       - Contacts
-      summary: Docusign Imports multiple new contacts into the contacts collection from CSV…
+      summary: Add contacts to a contacts list
       operationId: Contacts_PostContacts
       parameters:
       - name: accountId
         in: path
-        description: The external account number (int) or account id GUID.
+        description: The external account number (int) or account ID GUID.
         required: true
         schema:
           type: string
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/contactModRequest'
-          application/xml:
-            schema:
-              $ref: '#/components/schemas/contactModRequest'
-        required: false
       responses:
         '201':
           description: Successful response.
           content:
-            '*/*':
+            application/json:
               schema:
                 $ref: '#/components/schemas/contactUpdateResponse'
         '400':
           description: Error encountered.
           content:
-            '*/*':
+            application/json:
               schema:
                 $ref: '#/components/schemas/errorDetails'
       deprecated: false
       x-ds-methodname: postContacts
+      description: This method adds multiple contacts into a contacts list.
       x-ds-method: create
       x-ds-service: Users
       x-ds-in-sdk: true
-      x-codegen-request-body-name: contactModRequest
-    delete:
-      tags:
-      - Contacts
-      summary: Delete contacts associated with an account for the DocuSign service
-      operationId: Contacts_DeleteContacts
-      parameters:
-      - name: accountId
-        in: path
-        description: The external account number (int) or account id GUID.
-        required: true
-        schema:
-          type: string
       requestBody:
         content:
           application/json:
@@ -115,78 +94,133 @@ paths:
           application/xml:
             schema:
               $ref: '#/components/schemas/contactModRequest'
-        required: false
+    delete:
+      tags:
+      - Contacts
+      summary: Deletes multiple contacts from an account
+      operationId: Contacts_DeleteContacts
+      parameters:
+      - name: accountId
+        in: path
+        description: The external account number (int) or account ID GUID.
+        required: true
+        schema:
+          type: string
       responses:
         '200':
           description: Successful response.
           content:
-            '*/*':
+            application/json:
               schema:
                 $ref: '#/components/schemas/contactUpdateResponse'
         '400':
           description: Error encountered.
           content:
-            '*/*':
+            application/json:
               schema:
                 $ref: '#/components/schemas/errorDetails'
       deprecated: false
       x-ds-methodname: deleteContacts
+      description: This method deletes multiple contacts associated with an account.
       x-ds-method: deleteList
       x-ds-service: Users
       x-ds-in-sdk: true
-      x-codegen-request-body-name: contactModRequest
-  /v2/accounts/{accountId}/contacts/{contactId}:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/contactModRequest'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/contactModRequest'
+  /v2.1/accounts/{accountId}/contacts/{contactId}:
+    parameters: []
     get:
       tags:
       - Contacts
-      summary: Docusign Gets a particular contact associated with the user's account
+      summary: Gets one or more contacts
       operationId: Contacts_GetContactById
       parameters:
       - name: accountId
         in: path
-        description: The external account number (int) or account id GUID.
+        description: The external account number (int) or account ID GUID.
         required: true
         schema:
           type: string
       - name: contactId
         in: path
-        description: The unique identifier of a person in the contacts address book.
+        description: 'The ID of a contact person in the account''s address book.
+
+
+          **Note:** To return all contacts, omit this parameter. It is not required.'
         required: true
+        schema:
+          type: string
+      - name: cloud_provider
+        in: query
+        required: false
+        description: '(Optional) The cloud provider from which to retrieve the contacts. Valid values are:
+
+
+          - `rooms`
+
+          - `docusignCore` (default)'
         schema:
           type: string
       responses:
         '200':
           description: Successful response.
           content:
-            '*/*':
+            application/json:
               schema:
                 $ref: '#/components/schemas/contactGetResponse'
         '400':
           description: Error encountered.
           content:
-            '*/*':
+            application/json:
               schema:
                 $ref: '#/components/schemas/errorDetails'
       deprecated: false
       x-ds-methodname: getContactById
+      description: 'This method returns one or more contacts
+
+        associated with a Docusign account. You can also
+
+        retrieve contacts from connected [cloud storage][CloudStorage] providers by using the
+
+        `cloud_provider` query parameter. By default,
+
+        contacts are retrieved from the Docusign account''s
+
+        default address book.
+
+
+        To return a specific contact, use the `contactId`
+
+        query parameter. To return all contacts associated
+
+        with an account, omit this parameter.
+
+
+        [CloudStorage]: /docs/esign-rest-api/reference/cloudstorage/'
       x-ds-method: get
       x-ds-service: Users
       x-ds-in-sdk: true
     delete:
       tags:
       - Contacts
-      summary: Replaces a particular contact associated with an account for the DocuSign…
+      summary: Deletes a contact
       operationId: Contacts_DeleteContactWithId
       parameters:
       - name: accountId
         in: path
-        description: The external account number (int) or account id GUID.
+        description: The external account number (int) or account ID GUID.
         required: true
         schema:
           type: string
       - name: contactId
         in: path
-        description: The unique identifier of a person in the contacts address book.
+        description: The ID of a contact person in the account's address book.
         required: true
         schema:
           type: string
@@ -194,17 +228,18 @@ paths:
         '200':
           description: Successful response.
           content:
-            '*/*':
+            application/json:
               schema:
                 $ref: '#/components/schemas/contactUpdateResponse'
         '400':
           description: Error encountered.
           content:
-            '*/*':
+            application/json:
               schema:
                 $ref: '#/components/schemas/errorDetails'
       deprecated: false
       x-ds-methodname: deleteContactWithId
+      description: This method deletes a contact associated with an account.
       x-ds-method: delete
       x-ds-service: Users
       x-ds-in-sdk: true
@@ -214,66 +249,121 @@ components:
       type: object
       properties:
         contacts:
+          description: A list of contacts.
           type: array
-          description: ''
           items:
             $ref: '#/components/schemas/contact'
-      description: ''
+      description: This response objects shows the updated details for the contacts.
       x-ds-definition-name: contactUpdateResponse
-      x-ms-summary: ''
-    errorDetails:
+      x-ms-summary: This response objects shows the updated details for the contacts.
+    contactPhoneNumber:
       type: object
       properties:
-        errorCode:
+        phoneNumber:
+          description: 'The contact''s phone number.
+
+
+            Example: `+12223334444`'
           type: string
-          description: An error code associated with the error.
-        message:
+        phoneType:
+          description: 'The type of phone number. Valid values are:
+
+
+            - `home`
+
+            - `mobile`
+
+            - `work`
+
+            - `other`
+
+            - `fax`'
           type: string
-          description: A short error message.
-      description: This object describes errors that occur. It is only valid for responses, and ignored in requests.
-      x-ds-definition-name: errorDetails
-      x-ms-summary: This object describes errors that occur. It is only valid for responses, and ignored in requests.
+      description: Details about the phone numbers associated with a specific contact.
+      x-ds-definition-name: contactPhoneNumber
+      x-ms-summary: Details about the phone numbers associated with a specific contact.
+    contactModRequest:
+      type: object
+      properties:
+        contactList:
+          description: A list of contacts.
+          type: array
+          items:
+            $ref: '#/components/schemas/contact'
+      description: The request object containing the new information for the contacts.
+      x-ds-definition-name: contactModRequest
+      x-ms-summary: The request object containing the new information for the contacts.
     contactGetResponse:
       type: object
       properties:
         contacts:
+          description: A list of contacts.
           type: array
-          description: ''
           items:
             $ref: '#/components/schemas/contact'
         endPosition:
+          description: 'The last index position in the result set. '
           type: string
-          description: 'The last position in the result set. '
         nextUri:
-          type: string
           description: 'The URI for the next chunk of records based on the search request. It is `null` if this is the last set of results for the search. '
+          type: string
         previousUri:
-          type: string
           description: 'The URI for the prior chunk of records based on the search request. It is `null` if this is the first set of results for the search. '
+          type: string
         resultSetSize:
+          description: The number of results in this response. Because you can filter which entries are included in the response, this value is always less than or equal to the `totalSetSize`.
           type: string
-          description: 'The number of results returned in this response. '
         startPosition:
+          description: The starting index position of the current result set.
           type: string
-          description: Starting position of the current result set.
         totalSetSize:
+          description: The total number of items in the result set. This value is always greater than or equal to the value of `resultSetSize`.
           type: string
-          description: The total number of items in the search's result set. It will always be greater than or equal to the value of the `resultSetSize` field.
-      description: ''
+      description: This response object contains information about the contacts associated with an account.
       x-ds-definition-name: contactGetResponse
-      x-ms-summary: ''
+      x-ms-summary: This response object contains information about the contacts associated with an account.
     contact:
       type: object
       properties:
-        contactId:
+        canManage:
+          description: ''
           type: string
-          description: The unique identifier of a person in the contacts address book.
+        cloudProvider:
+          description: 'The cloud service that provided the contact. Valid values are:
+
+
+            - `rooms`
+
+            - `docusignCore` (default)
+
+
+            <!-- Future:
+
+
+            - `Box`
+
+            - `GoogleDrive`
+
+            - `Dropbox`
+
+            - `SalesForce`
+
+            - `SkyDrive`
+
+
+            -->'
+          type: string
+        cloudProviderContainerId:
+          description: The ID of the container at the cloud provider. For example, this might be the room ID for a Docusign Transaction Room.
+          type: string
+        contactId:
+          description: The ID of a contact person in the account's address book.
+          type: string
         contactPhoneNumbers:
-          type: array
           description: 'A list of the contact''s phone numbers.
 
 
-            **Note**: The phone numbers associated with shared contacts do not display to users other than the user who added the contact. Additionally, in the following scenarios, the phone number of a shared contact does not populate automatically for anyone other than the user who added the contact:
+            **Note:** The phone numbers associated with shared contacts do not display to users other than the user who added the contact. Additionally, in the following scenarios, the phone number of a shared contact does not populate automatically for anyone other than the user who added the contact:
 
 
             - Sending an envelope by using SMS
@@ -282,119 +372,297 @@ components:
 
 
             You must ask the user who added the contact for the phone number and then manually enter it into the authentication box.'
+          type: array
           items:
             $ref: '#/components/schemas/contactPhoneNumber'
         contactUri:
-          type: string
           description: The URI for retrieving information about the contact.
+          type: string
         emails:
+          description: An array of email addresses.
           type: array
-          description: ''
           items:
             type: string
         errorDetails:
           $ref: '#/components/schemas/errorDetails'
+          description: This object describes errors that occur. It is only valid for responses and ignored in requests.
+        isOwner:
+          description: ''
+          type: boolean
         name:
+          description: The name of the contact.
           type: string
+        notaryContactDetails:
+          $ref: '#/components/schemas/notaryContactDetails'
           description: ''
         organization:
-          type: string
           description: ''
+          type: string
+        roomContactType:
+          description: ''
+          type: string
         shared:
+          description: When **true,** this contact is shared.
           type: string
-          description: ''
         signingGroup:
+          description: The ID of the signing group.
           type: string
-          description: ''
         signingGroupName:
+          description: "Optional. The name of the signing group. \n\nMaximum Length: 100 characters. "
           type: string
-          description: "The display name for the signing group. \n\nMaximum Length: 100 characters. "
-      description: ''
       x-ds-definition-name: contact
+      description: ''
       x-ms-summary: ''
-    contactModRequest:
+    notaryContactDetails:
       type: object
       properties:
-        contacts:
+        hasDocusignCertificate:
+          description: ''
+          type: string
+        jurisdictions:
+          description: ''
           type: array
-          description: ''
           items:
-            $ref: '#/components/schemas/contact'
+            $ref: '#/components/schemas/jurisdictionSummary'
+      x-ds-definition-name: notaryContactDetails
       description: ''
-      x-ds-definition-name: contactModRequest
       x-ms-summary: ''
-    contactPhoneNumber:
+    errorDetails:
+      description: This object describes errors that occur. It is only valid for responses and ignored in requests.
       type: object
       properties:
-        phoneNumber:
+        errorCode:
+          description: The code associated with the error condition.
           type: string
-          description: ''
-        phoneType:
+        message:
+          description: A brief message describing the error condition.
           type: string
+      x-ds-definition-name: errorDetails
+      x-ms-summary: This object describes errors that occur. It is only valid for responses and ignored in requests.
+    jurisdictionSummary:
+      type: object
+      properties:
+        authorizedForIPen:
           description: ''
+          type: string
+        authorizedForRon:
+          description: ''
+          type: string
+        jurisdictionId:
+          description: 'The ID of the jurisdiction.
+
+            The following jurisdictions
+
+            are supported:
+
+
+            -  `5 - California`
+
+            -  `6 - Colorado`
+
+            -  `9 - Florida`
+
+            -  `10 - Georgia`
+
+            -  `12 - Idaho`
+
+            -  `13 - Illinois`
+
+            -  `14 - Indiana`
+
+            -  `15 - Iowa`
+
+            -  `17 - Kentucky`
+
+            -  `23 - Minnesota`
+
+            -  `25 - Missouri`
+
+            -  `30 - New Jersey`
+
+            -  `32 - New York`
+
+            -  `33 - North Carolina`
+
+            -  `35 - Ohio`
+
+            -  `37 - Oregon`
+
+            -  `38 - Pennsylvania`
+
+            -  `40 - South Carolina`
+
+            -  `43 - Texas`
+
+            -  `44 - Utah`
+
+            -  `47 - Washington`
+
+            -  `48 - West Virginia`
+
+            -  `49 - Wisconsin`
+
+            -  `62 - Florida Commissioner of Deeds`
+
+            '
+          type: string
+        jurisdictionName:
+          description: ''
+          type: string
+      x-ds-definition-name: jurisdictionSummary
       description: ''
-      x-ds-definition-name: contactPhoneNumber
       x-ms-summary: ''
 externalDocs:
-  description: See the DocuSign REST API Guide for more information.
+  description: See the Docusign eSignature REST API Guide for more information.
   url: https://docs.docusign.com/esign
 x-ds-allow-editing: false
 x-ds-categories:
-- name: Authentication
-  summary: Logging in and authentication
-  description: 'Use the Authentication category to manage various account login tasks including:
-
-
-    * Getting login information for a user.
-
-    * Managing linked social accounts.
-
-    * Getting and revoking OAuth tokens.'
 - name: Envelopes
-  summary: Creating and sending envelopes
-  description: 'The DocuSign API Envelope category includes the resources and methods for sending and managing envelopes and envelope data.
+  summary: This section shows you how to create and send envelopes.
+  description: 'The eSignature API Envelope category includes the resources and methods for sending and managing envelopes and envelope data.
 
 
-    Envelopes are the key objects within the DocuSign eSignature system. As a result, they are complex data structures with few required fields. See the [API Recipes](https://www.docusign.com/developer-center/recipes) for use case examples and their solutions.
+    Envelopes are the key objects in the Docusign platform. As a result, they are complex data structures with few required fields. See the [How-to guides](/docs/esign-rest-api/how-to/) for examples and solutions.
 
 
-    To create and send envelopes, see the [Envelopes resource](Envelopes).
-
+    To learn more about envelopes, see [Envelopes](/docs/esign-rest-api/esign101/concepts/envelopes/).
 
     '
 - name: Connect
-  summary: Connect configuration and logging
-  description: "The Connect category enables your application to be called via HTTPS when an event of interest occurs.\n\nUse the Connect service to \"end the polling madness.\" With Connect, there is no need for your application to poll DocuSign every 15 minutes to learn the latest about your envelopes.\n\nInstead, you register your interest in one or more types of envelope or recipient events. Then, when an interesting event occurs, the DocuSign platform will contact your application with the event's details and data. You can register interest in envelopes sent by particular users in your account, or for envelopes sent by any user.\n\n## Incoming Connect Calls\nTo use the Connect service, your application needs to provide an https url that can be called from the public internet. If your application runs on a server behind your organization's firewall, then you will need to create a \"pinhole\" in the firewall to allow the incoming Connect calls from DocuSign to reach your application. Other techniques for receiving the incoming calls including proxy servers and DMZ networking can also be used. \n\n## Per-envelope Connect Configuration\nInstead of registering a general Connect configuration and listener, an individual envelope can have its own Connect configuration. See the `eventNotification` field for envelopes.\n\n## Categories\nUse the Connect category for:\n\n* Programmatically creating Connect configurations. Connect configurations can be created manually by using the DocuSign web service, or programmatically via the API. Configurations created via the API can be seen and updated from the web service.\n* Retrieving and managing the event log for your Connect configurations. \n* Requesting that an event be re-published to the listener."
+  summary: "Docusign Connect is the Docusign platform notification service. The service uses webhooks to proactively notify your application when an event occurs that your application wants to know about. Docusign recommends that all applications use Connect instead of polling the Docusign Signature Service. This section provides information about Connect configuration and logging. \n\n**Note:** To make API calls to any of the Connect endpoints, you must be an account administrator.\n\nFor more information about Connect, see [Docusign Connect](/platform/webhooks/connect/) and [Custom Connect Configuration](https://support.docusign.com/s/document-item?bundleId=pik1583277475390&topicId=khw1583277390582.html)."
+  description: 'The Connect service enables your application to be called via
+
+    HTTPS when an event of interest occurs.
+
+
+    Use the Connect service to "end the polling madness." With
+
+    Connect, there is no need for your application to poll Docusign
+
+    every 15 minutes to learn the latest about your envelopes.
+
+
+    Instead, you register your interest in one or more types of
+
+    envelope or recipient events. Then, when an interesting event
+
+    occurs, the Docusign platform will contact your application with
+
+    the event''s details and data. You can register interest in
+
+    envelopes sent by particular users in your account, or for
+
+    envelopes sent by any user.
+
+
+    Connect can empower your organization to manage document actions
+
+    as they occur, and allows you to track their changes within your
+
+    own systems. Upon completion, envelope information, including
+
+    document content, can be stored in your own databases or CMS
+
+    systems, and these events can be triggered via webhooks
+
+    delivering messages to your application.
+
+
+    **Note:** To make API calls to any of the Connect endpoints, you must be an account administrator.
+
+
+    ## Incoming Connect Calls
+
+
+    To use the Connect service, your application needs to provide an
+
+    HTTPS URL that can be called from the public Internet. If your
+
+    application runs on a server behind your organization''s firewall,
+
+    then you will need to create a "pinhole" in the firewall to allow
+
+    the incoming Connect calls from Docusign to reach your
+
+    application. You can also use other techniques such as proxy
+
+    servers and DMZ networking for receiving the incoming calls.
+
+
+    Connect delivers events over HTTP requests in JSON or XML.
+
+    See [Docusign Connect overview](/platform/webhooks/connect/).
+
+
+    If your application is not configured to accept post messages,
+
+    Docusign will NOT return an additional post error response to
+
+    your listener application. If you''ve enabled logging on your
+
+    configuration, it will be logged in Admin under the configuration
+
+    failure log.
+
+
+    ## Per-envelope Connect Configuration
+
+
+    Instead of registering a general Connect configuration and
+
+    listener, an individual envelope can have its own Connect
+
+    configuration. See the
+
+    [`eventNotification`](/docs/esign-rest-api/reference/envelopes/envelopes/create/#schema__envelopedefinition_eventnotification)
+
+    property for envelopes.
+
+
+    ## Historical Publish Endpoint
+
+
+    To submit existing envelopes to an endpoint, use the [EnvelopePublish](/docs/esign-rest-api/reference/envelopes/envelopepublish/) resource.
+
+    '
 - name: Templates
   summary: Template creation and management
   description: 'Use the Templates category to manage your account''s templates.
 
 
-    You can:
+    This section shows you how to perform the following tasks:
 
 
     * Create, list, get, update, and delete templates.
 
-    * Manage templates'' notification and group sharing settings.
+    * Manage the notification and group sharing settings for templates.
 
     * Fetch and rotate pages from a document used by a template.
 
 
-    Templates can be created programmatically or can be created via the DocuSign web interface and then used by your application.'
+    You can create templates either programmatically or through the Docusign web interface and then used by your application.'
 - name: SigningGroups
-  summary: Send a signing request to a group of potential signers
-  description: 'Use the SigningGroup category to manage signing groups that allow you anyone in the group to sign a document.
+  summary: Send a signing request to a group of potential signers.
+  description: 'Use the Signing Group category to manage signing groups that allow anyone in the group to sign a document. When you send an envelope to a signing group, anyone in the group can open it and sign it with their own signature.
 
 
-    The category allows you create the signing group and manage the users in the group.'
+    This category shows account administrators how to create a signing group and manage the users in the group.
+
+
+    **Note:** To create and manage signing groups, you must be an account administrator.
+
+
+    For more information about this topic, see [Signing Groups](https://support.docusign.com/s/document-item?bundleId=gav1643676262430&topicId=zgn1578456447934.html).'
 - name: Folders
-  summary: Folders for completed envelopes
-  description: "Use the Folders category to manage envelopes in your folders. \n\nYou can list the folder contents and move envelopes between folders."
+  summary: Folders allow you to organize envelopes and templates.
+  description: 'Use the Folders category to organize envelopes and templates.
+
+    You can list the folder contents and move envelopes and templates between folders.'
 - name: CustomTabs
   summary: Custom tabs
   description: "Custom Tabs enable accounts to have one or more pre-configured (custom) tabs. Custom tabs save time when users are tagging documents since the users don't have to manually set the tabs' parameters.\n\nThis category enables custom tabs to be managed programmatically, including creation, deletion, etc. \n"
 - name: CloudStorage
-  summary: Cloud storage providers and user management
+  summary: This section shows you how to manage your cloud storage providers and users.
   description: 'Use the Cloud Storage category to list the user''s cloud storage document contents.
 
 
@@ -413,7 +681,7 @@ x-ds-categories:
 
     * Add delete users.
 
-    * Add and delete the intials and signature images for a user.'
+    * Add and delete the initials and signature images for a user.'
 - name: UserGroups
   summary: Group users for common permissions and branding
   description: 'Use the User Groups category to manage your permissions groups.
@@ -427,9 +695,28 @@ x-ds-categories:
     * Add users to, and delete users from, your groups.
 
     * Manage the brand information associated with a group.'
+- name: BulkEnvelopes
+  summary: Bulk envelopes
+  description: Use the BulkEnvelopes category to manage the sending of envelopes to multiple recipients.
 - name: Accounts
   summary: Account management
-  description: "Use the Account category for various account management tasks including:\n\n* Programmatically creating and deleting accounts.\n* Getting information about an account and its capabilities.\n* Branding the account with custom colors, message text, and more.\n* Account charges.\n\nThe Account category also includes end points for \n* Listing the recipient names associated with an email address that was used by the account. For example, a single email address is often shared by mulitple members of a family.\n\n\n"
+  description: 'Use the Account category for various account management tasks including:
+
+
+    * Programmatically creating and deleting accounts.
+
+    * Getting information about an account and its capabilities.
+
+    * Branding the account with custom colors, message text, and more.
+
+    * Account charges.
+
+
+    The Accounts category also includes end points for listing the recipient names associated with an email address that was used by the account. For example, a single email address is often shared by multiple members of a family.
+
+
+
+    '
 - name: Billing
   summary: Invoices
   description: 'Use the Billing category to manage the following billing related tasks:
@@ -451,18 +738,42 @@ x-ds-categories:
 
     * Getting information on the API''s resources and versions.'
 - name: PowerForms
-  summary: PowerForm creation and management
-  description: The PowerForms category enables PowerForms to be created and managed.
+  summary: The PowerForms category provides methods that enable you to create and manage fillable forms.
+  description: The PowerForms category enables you to create and manage PowerForms that you can use for self service and email forms.
 - name: Workspaces
-  summary: Workspace creation and management
-  description: 'Workspaces creation and management.
-
-
-    '
+  summary: A Docusign workspace is a collaboration area for sharing files and data.
+  description: "A workspace is a collaborative space for sharing documents and managing workflows. A workspace has a single owner who must be a Docusign user. The owner can invite others to the workspace as collaborators. Individuals who are not Docusign users must create a Docusign account to join a workspace as a collaborator.\n \nYou can create an envelope directly from a workspace.\n\nWorkspaces store the following information:\n\n- **Files:** Files uploaded to a workspace for storage or reuse.\n- **Documents:** A document is a component of a transaction, template, or workspace. When a file is added to a transaction, template, or workspace, it is copied as a document. Each document in a workspace has a single owner.\n- **Templates:** A set of documents that you can use to create a transaction or a workspace.\n- **Transactions:** A transaction is a series of workflow events related to one or more documents. These events route the documents to one or more individuals for the purposes of doing business. Each transaction has a single owner (the sender).\n\n**Note:** Documents in a template are not individually listed as files."
 - name: Payments
   summary: Manage Payments
   description: This category includes resources for managing payment gateways. Payment information is added to envelopes via methods in the Envelopes category.
-- name: Signature
+- name: EmailArchive
+  summary: This section shows you how to set and manage the BCC email addresses that you want to use to archive the emails that Docusign sends.
+  description: 'Email archives enable Docusign partners and other multi-account customers to easily archive emails sent through Docusign. The `EmailArchive` resource provides methods for managing your email archive configuration, which consists of the BCC email address or addresses that you want to use to archive Docusign emails. Each account can use up to five BCC email addresses for archiving purposes.
+
+
+    For more information, see [Email Archive Configuration](https://support.docusign.com/s/document-item?bundleId=pik1583277475390&topicId=xjm1583277371373.html).
+
+
+    **Note:** This feature is only available for certain account plans and must be enabled by Docusign.'
+- name: Notary
+  summary: 'Docusign eNotary makes the notarization process fully digital
+
+    for senders, signers, and notaries.
+
+    It enables a notary public to act as an in-person witness
+
+    to electronic signing of documents.
+
+    '
+  description: 'Docusign eNotary makes the notarization process fully digital
+
+    for senders, signers, and notaries.
+
+    It enables a notary public to act as an in-person witness
+
+    to electronic signing of documents.
+
+    '
+- name: Envelope
   summary: ''
   description: ''
-x-original-swagger-version: '2.0'

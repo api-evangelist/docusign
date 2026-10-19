@@ -1,71 +1,87 @@
 openapi: 3.2.0
 info:
-  title: DocuSign REST Billing Plans API
-  description: The DocuSign REST API provides you with a powerful, convenient, and simple Web services API for interacting with DocuSign.
+  version: v2.1
+  title: Docusign eSignature REST Billing Plans API
+  description: The Docusign eSignature REST API provides you with a powerful, convenient, and simple Web services API for interacting with Docusign.
   termsOfService: https://www.docusign.com/company/terms-and-conditions/web
   contact:
-    name: DocuSign Developer Center
+    name: Docusign Developer Center
     url: https://developers.docusign.com/
     email: devcenter@docusign.com
-  version: v2
 servers:
 - url: https://www.docusign.net/restapi
 tags:
 - name: Billing Plans
-  description: The Billing resource provides methods that allow you to manage the billing plans,associated with an account.
+  description: The Billing resource provides methods that allow you to manage the billing plans associated with an account.
 paths:
-  /v2/accounts/{accountId}/billing_plan:
+  /v2.1/accounts/{accountId}/billing_plan:
+    parameters: []
     get:
       tags:
       - Billing Plans
-      summary: Docusign Get Account Billing Plan
+      summary: Get Account Billing Plan
       description: 'Retrieves the billing plan information for the specified account, including the current billing plan, successor plans, billing address, and billing credit card.
 
 
-        By default the successor plan and credit card information is included in the response. This information can be excluded from the response by adding the appropriate optional query string with the `setting` set to **false**.
+        By default the successor plan and credit card information is included in the response. You can exclude this information from the response by adding the appropriate optional query string and setting it to **false.**
 
 
         Response
 
 
-        The response returns the billing plan information, including the currency code, for the plan. The `billingPlan` and `succesorPlans` property values are the same as those shown in the [ML:Get Billing Plan Details] reference. the `billingAddress` and `creditCardInformation` property values are the same as those shown in the [ML:Update Billing Plan] reference.
+        The response returns the billing plan information, including the currency code, for the plan. The `billingPlan` and `succesorPlans` property values are the same as those shown in the Billing: getBillingPlan reference. the `billingAddress` and `creditCardInformation` property values are the same as those shown in the Billing: updatePlan reference.
 
 
-        ###### Note: When credit card number information is shown, a mask is applied to the response so that only the last 4 digits of the card number are visible.'
+        **Note:** When credit card number information displays, a mask is applied to the response so that only the last 4 digits of the card number are visible.'
       operationId: BillingPlan_GetBillingPlan
       parameters:
       - name: accountId
         in: path
-        description: The external account number (int) or account id GUID.
+        description: The external account number (int) or account ID GUID.
         required: true
         schema:
           type: string
       - name: include_credit_card_information
         in: query
-        description: When set to **true**, payment information including credit card information will show in the return.
+        description: When **true,** payment information including credit card information will show in the return.
+        required: false
+        schema:
+          type: string
+      - name: include_downgrade_information
+        in: query
+        required: false
+        description: ''
         schema:
           type: string
       - name: include_metadata
         in: query
-        description: 'When set to **true**, the `canUpgrade` and `renewalStatus` properities are included the response and an array of `supportedCountries` property is added to the `billingAddress` information. '
+        description: 'When **true,** the `canUpgrade` and `renewalStatus` properties are included the response and an array of `supportedCountries` is added to the `billingAddress` information. '
+        required: false
         schema:
           type: string
       - name: include_successor_plans
         in: query
-        description: When set to **true**, excludes successor information from the response.
+        description: When **true,** excludes successor information from the response.
+        required: false
+        schema:
+          type: string
+      - name: include_tax_exempt_id
+        in: query
+        required: false
+        description: ''
         schema:
           type: string
       responses:
         '200':
           description: Successful response.
           content:
-            '*/*':
+            application/json:
               schema:
                 $ref: '#/components/schemas/accountBillingPlanResponse'
         '400':
           description: Error encountered.
           content:
-            '*/*':
+            application/json:
               schema:
                 $ref: '#/components/schemas/errorDetails'
       deprecated: false
@@ -76,41 +92,33 @@ paths:
     put:
       tags:
       - Billing Plans
-      summary: Docusign Updates the account billing plan
+      summary: Updates an account billing plan
       description: Updates the billing plan information, billing address, and credit card information for the specified account.
       operationId: BillingPlan_PutBillingPlan
       parameters:
       - name: accountId
         in: path
-        description: The external account number (int) or account id GUID.
+        description: The external account number (int) or account ID GUID.
         required: true
         schema:
           type: string
       - name: preview_billing_plan
         in: query
-        description: When set to **true**, updates the account using a preview billing plan.
+        description: When **true,** updates the account using a preview billing plan.
+        required: false
         schema:
           type: string
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/billingPlanInformation'
-          application/xml:
-            schema:
-              $ref: '#/components/schemas/billingPlanInformation'
-        required: false
       responses:
         '200':
           description: Successful response.
           content:
-            '*/*':
+            application/json:
               schema:
                 $ref: '#/components/schemas/billingPlanUpdateResponse'
         '400':
           description: Error encountered.
           content:
-            '*/*':
+            application/json:
               schema:
                 $ref: '#/components/schemas/errorDetails'
       deprecated: false
@@ -118,17 +126,25 @@ paths:
       x-ds-method: update
       x-ds-service: Billing
       x-ds-in-sdk: true
-      x-codegen-request-body-name: billingPlanInformation
-  /v2/accounts/{accountId}/billing_plan/credit_card:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/billingPlanInformation'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/billingPlanInformation'
+  /v2.1/accounts/{accountId}/billing_plan/credit_card:
+    parameters: []
     get:
       tags:
       - Billing Plans
-      summary: Docusign Get metadata for a given credit card
+      summary: Get credit card information
       operationId: BillingPlan_GetCreditCardInfo
       parameters:
       - name: accountId
         in: path
-        description: The external account number (int) or account id GUID.
+        description: The external account number (int) or account ID GUID.
         required: true
         schema:
           type: string
@@ -136,34 +152,122 @@ paths:
         '200':
           description: Successful response.
           content:
-            '*/*':
+            application/json:
               schema:
                 $ref: '#/components/schemas/creditCardInformation'
         '400':
           description: Error encountered.
           content:
-            '*/*':
+            application/json:
               schema:
                 $ref: '#/components/schemas/errorDetails'
       deprecated: false
       x-ds-methodname: getCreditCardInfo
+      description: This method returns information about a credit card associated with an account.
       x-ds-method: getCreditCard
       x-ds-service: Billing
       x-ds-in-sdk: true
-  /v2/accounts/{accountId}/billing_plan/purchased_envelopes:
+  /v2.1/accounts/{accountId}/billing_plan/downgrade:
+    parameters: []
+    get:
+      tags:
+      - Billing Plans
+      summary: Returns downgrade plan information for the specified account
+      operationId: BillingPlan_GetDowngradeRequestBillingInfo
+      parameters:
+      - name: accountId
+        in: path
+        description: The external account number (int) or account ID GUID.
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Successful response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/downgradRequestBillingInfoResponse'
+        '400':
+          description: Error encountered.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorDetails'
+      deprecated: false
+      x-ds-methodname: getDowngradeRequestBillingInfo
+      description: ''
+      x-ds-method: getDowngradeRequestBillingInfo
+      x-ds-service: Uncategorized
+      x-ds-in-sdk: true
     put:
       tags:
       - Billing Plans
-      summary: 'Docusign Reserverd: Purchase additional envelopes'
-      description: 'Reserved: At this time, this endpoint is limited to DocuSign internal use only. Completes the purchase of envelopes for your account. The actual purchase is done as part of an internal workflow interaction with an envelope vendor.'
+      summary: Queues downgrade billing plan request for an account
+      operationId: BillingPlan_PutDowngradeAccountBillingPlan
+      parameters:
+      - name: accountId
+        in: path
+        description: The external account number (int) or account ID GUID.
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Successful response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/downgradePlanUpdateResponse'
+        '400':
+          description: Error encountered.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorDetails'
+      deprecated: false
+      x-ds-methodname: updateDowngradeAccountBillingPlan
+      description: ''
+      x-ds-method: updateDowngradeAccountBillingPlan
+      x-ds-service: Uncategorized
+      x-ds-in-sdk: true
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/downgradeBillingPlanInformation'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/downgradeBillingPlanInformation'
+  /v2.1/accounts/{accountId}/billing_plan/purchased_envelopes:
+    parameters: []
+    put:
+      tags:
+      - Billing Plans
+      summary: 'Reserved: Purchase additional envelopes'
+      description: 'Reserved: At this time, this endpoint is limited to Docusign internal use only. Completes the purchase of envelopes for your account. The actual purchase is done as part of an internal workflow interaction with an envelope vendor.'
       operationId: PurchasedEnvelopes_PutPurchasedEnvelopes
       parameters:
       - name: accountId
         in: path
-        description: The external account number (int) or account id GUID.
+        description: The external account number (int) or account ID GUID.
         required: true
         schema:
           type: string
+      responses:
+        '200':
+          description: Successful response.
+        '400':
+          description: Error encountered.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorDetails'
+      deprecated: false
+      x-ds-methodname: purchaseEnvelopes
+      x-ds-method: purchaseEnvelopes
+      x-ds-service: Billing
+      x-ds-in-sdk: true
       requestBody:
         content:
           application/json:
@@ -172,41 +276,25 @@ paths:
           application/xml:
             schema:
               $ref: '#/components/schemas/purchasedEnvelopesInformation'
-        required: false
-      responses:
-        '200':
-          description: Successful response.
-          content: {}
-        '400':
-          description: Error encountered.
-          content:
-            '*/*':
-              schema:
-                $ref: '#/components/schemas/errorDetails'
-      deprecated: false
-      x-ds-methodname: purchaseEnvelopes
-      x-ds-method: purchaseEnvelopes
-      x-ds-service: Billing
-      x-ds-in-sdk: true
-      x-codegen-request-body-name: purchasedEnvelopesInformation
-  /v2/billing_plans:
+  /v2.1/billing_plans:
+    parameters: []
     get:
       tags:
       - Billing Plans
-      summary: Docusign Gets the list of available billing plans
+      summary: Gets a list of available billing plans
       description: Retrieves a list of the billing plans associated with a distributor.
       operationId: BillingPlans_GetBillingPlans
       responses:
         '200':
           description: Successful response.
           content:
-            '*/*':
+            application/json:
               schema:
                 $ref: '#/components/schemas/billingPlansResponse'
         '400':
           description: Error encountered.
           content:
-            '*/*':
+            application/json:
               schema:
                 $ref: '#/components/schemas/errorDetails'
       deprecated: false
@@ -214,11 +302,12 @@ paths:
       x-ds-method: list
       x-ds-service: Billing
       x-ds-in-sdk: true
-  /v2/billing_plans/{billingPlanId}:
+  /v2.1/billing_plans/{billingPlanId}:
+    parameters: []
     get:
       tags:
       - Billing Plans
-      summary: Docusign Get the billing plan details
+      summary: Gets billing plan details
       description: Retrieves the billing plan details for the specified billing plan ID.
       operationId: BillingPlans_GetBillingPlan
       parameters:
@@ -232,13 +321,13 @@ paths:
         '200':
           description: Successful response.
           content:
-            '*/*':
+            application/json:
               schema:
                 $ref: '#/components/schemas/billingPlanResponse'
         '400':
           description: Error encountered.
           content:
-            '*/*':
+            application/json:
               schema:
                 $ref: '#/components/schemas/errorDetails'
       deprecated: false
@@ -248,244 +337,747 @@ paths:
       x-ds-in-sdk: true
 components:
   schemas:
-    addressInformation:
-      type: object
-      properties:
-        city:
-          type: string
-          description: The city associated with the address.
-        country:
-          type: string
-          description: Specifies the country associated with the address.
-        fax:
-          type: string
-          description: A Fax number associated with the address if one is available.
-        phone:
-          type: string
-          description: A phone number associated with the address.
-        state:
-          type: string
-          description: The state or province associated with the address.
-        street1:
-          type: string
-          description: The first line of the address.
-        street2:
-          type: string
-          description: The second line of the address (optional).
-        zip:
-          type: string
-          description: The zip or postal code associated with the address.
-        zipPlus4:
-          type: string
-          description: ''
-      description: Contains address information.
-      x-ds-definition-name: addressInformation
-      x-ms-summary: Contains address information.
-    billingInvoice:
-      type: object
-      properties:
-        amount:
-          type: string
-          description: The total amount of the purchase.
-        balance:
-          type: string
-          description: 'Reserved: TBD'
-        dueDate:
-          type: string
-          description: 'Reserved: TBD'
-        invoiceId:
-          type: string
-          description: ''
-        invoiceItems:
-          type: array
-          description: 'Reserved: TBD'
-          items:
-            $ref: '#/components/schemas/billingInvoiceItem'
-        invoiceNumber:
-          type: string
-          description: 'Reserved: TBD'
-        invoiceUri:
-          type: string
-          description: Contains a URI for an endpoint that you can use to retrieve invoice information.
-        nonTaxableAmount:
-          type: string
-          description: ''
-        pdfAvailable:
-          type: string
-          description: ''
-        taxableAmount:
-          type: string
-          description: ''
-      description: ''
-      x-ds-definition-name: billingInvoice
-      x-ms-summary: ''
-    currencyFeatureSetPrice:
+    currencyPlanPrice:
       type: object
       properties:
         currencyCode:
+          description: Specifies the [ISO 4217](https://en.wikipedia.org/wiki/ISO_4217) currency code for the account.
           type: string
-          description: 'Specifies the alternate ISO currency code for the account. '
         currencySymbol:
+          description: 'Specifies the currency symbol.
+
+            Valid values:
+
+
+            - `AED` <br>  "د.إ"
+
+            - `AFN` <br>  "؋"
+
+            - `ALL` <br>  "L"
+
+            - `AMD` <br>  "֏"
+
+            - `ANG` <br>  "ƒ"
+
+            - `AOA` <br>  "Kz"
+
+            - `ARS` <br>  "$"
+
+            - `AUD` <br>  "$"
+
+            - `AWG` <br>  "ƒ"
+
+            - `AZN` <br>  "₼"
+
+            - `BAM` <br>  "KM"
+
+            - `BBD` <br>  "$"
+
+            - `BDT` <br>  "৳"
+
+            - `BGN` <br>  "лв"
+
+            - `BHD` <br>  ".د.ب"
+
+            - `BIF` <br>  "FBu"
+
+            - `BMD` <br>  "$"
+
+            - `BND` <br>  "$"
+
+            - `BOB` <br>  "$b"
+
+            - `BOV` <br>  "BOV"
+
+            - `BRL` <br>  "R$"
+
+            - `BSD` <br>  "$"
+
+            - `BTN` <br>  "Nu."
+
+            - `BWP` <br>  "P"
+
+            - `BYN` <br>  "Br"
+
+            - `BYR` <br>  "Br"
+
+            - `BZD` <br>  "BZ$"
+
+            - `CAD` <br>  "$"
+
+            - `CDF` <br>  "FC"
+
+            - `CHE` <br>  "CHE"
+
+            - `CHF` <br>  "CHF"
+
+            - `CHW` <br>  "CHW"
+
+            - `CLF` <br>  "CLF"
+
+            - `CLP` <br>  "$"
+
+            - `CNY` <br>  "¥"
+
+            - `COP` <br>  "$"
+
+            - `COU` <br>  "COU"
+
+            - `CRC` <br>  "₡"
+
+            - `CUC` <br>  "$"
+
+            - `CUP` <br>  "₱"
+
+            - `CVE` <br>  "$"
+
+            - `CZK` <br>  "Kč"
+
+            - `DJF` <br>  "Fdj"
+
+            - `DKK` <br>  "kr"
+
+            - `DOP` <br>  "RD$"
+
+            - `DZD` <br>  "دج"
+
+            - `EGP` <br>  "£"
+
+            - `ERN` <br>  "Nfk"
+
+            - `ETB` <br>  "Br"
+
+            - `EUR` <br>  "€"
+
+            - `FJD` <br>  "$"
+
+            - `FKP` <br>  "£"
+
+            - `GBP` <br>  "£"
+
+            - `GEL` <br>  "₾"
+
+            - `GHS` <br>  "GH₵"
+
+            - `GIP` <br>  "£"
+
+            - `GMD` <br>  "D"
+
+            - `GNF` <br>  "FG"
+
+            - `GTQ` <br>  "Q"
+
+            - `GYD` <br>  "$"
+
+            - `HKD` <br>  "$"
+
+            - `HNL` <br>  "L"
+
+            - `HRK` <br>  "kn"
+
+            - `HTG` <br>  "G"
+
+            - `HUF` <br>  "Ft"
+
+            - `IDR` <br>  "Rp"
+
+            - `ILS` <br>  "₪"
+
+            - `INR` <br>  "₹"
+
+            - `IQD` <br>  "ع.د"
+
+            - `IRR` <br>  "﷼"
+
+            - `ISK` <br>  "kr"
+
+            - `JMD` <br>  "J$"
+
+            - `JOD` <br>  "JD"
+
+            - `JPY` <br>  "¥"
+
+            - `KES` <br>  "KSh"
+
+            - `KGS` <br>  "лв"
+
+            - `KHR` <br>  "៛"
+
+            - `KMF` <br>  "CF"
+
+            - `KPW` <br>  "₩"
+
+            - `KRW` <br>  "₩"
+
+            - `KWD` <br>  "KD"
+
+            - `KYD` <br>  "$"
+
+            - `KZT` <br>  "₸"
+
+            - `LAK` <br>  "₭"
+
+            - `LBP` <br>  "£"
+
+            - `LKR` <br>  "₨"
+
+            - `LRD` <br>  "$"
+
+            - `LSL` <br>  "M"
+
+            - `LYD` <br>  "LD"
+
+            - `MAD` <br>  "MAD"
+
+            - `MDL` <br>  "lei"
+
+            - `MGA` <br>  "Ar"
+
+            - `MKD` <br>  "ден"
+
+            - `MMK` <br>  "K"
+
+            - `MNT` <br>  "₮"
+
+            - `MOP` <br>  "MOP$"
+
+            - `MRO` <br>  "UM"
+
+            - `MUR` <br>  "₨"
+
+            - `MVR` <br>  "Rf"
+
+            - `MWK` <br>  "MK"
+
+            - `MXN` <br>  "$"
+
+            - `MXV` <br>  "MXV"
+
+            - `MYR` <br>  "RM"
+
+            - `MZN` <br>  "MT"
+
+            - `NAD` <br>  "$"
+
+            - `NGN` <br>  "₦"
+
+            - `NIO` <br>  "C$"
+
+            - `NOK` <br>  "kr"
+
+            - `NPR` <br>  "₨"
+
+            - `NZD` <br>  "$"
+
+            - `OMR` <br>  "﷼"
+
+            - `PAB` <br>  "B/."
+
+            - `PEN` <br>  "S/."
+
+            - `PGK` <br>  "K"
+
+            - `PHP` <br>  "₱"
+
+            - `PKR` <br>  "₨"
+
+            - `PLN` <br>  "zł"
+
+            - `PYG` <br>  "Gs"
+
+            - `QAR` <br>  "﷼"
+
+            - `RON` <br>  "lei"
+
+            - `RSD` <br>  "Дин."
+
+            - `RUB` <br>  "₽"
+
+            - `RWF` <br>  "R₣"
+
+            - `SAR` <br>  "﷼"
+
+            - `SBD` <br>  "$"
+
+            - `SCR` <br>  "₨"
+
+            - `SDG` <br>  "ج.س."
+
+            - `SEK` <br>  "kr"
+
+            - `SGD` <br>  "S$"
+
+            - `SHP` <br>  "£"
+
+            - `SLL` <br>  "Le"
+
+            - `SOS` <br>  "S"
+
+            - `SRD` <br>  "$"
+
+            - `SSP` <br>  "£"
+
+            - `STD` <br>  "Db"
+
+            - `SVC` <br>  "$"
+
+            - `SYP` <br>  "£"
+
+            - `SZL` <br>  "E"
+
+            - `THB` <br>  "฿"
+
+            - `TJS` <br>  "SM"
+
+            - `TMT` <br>  "T"
+
+            - `TND` <br>  "د.ت"
+
+            - `TOP` <br>  "T$"
+
+            - `TRY` <br>  "₺"
+
+            - `TTD` <br>  "TT$"
+
+            - `TWD` <br>  "NT$"
+
+            - `TZS` <br>  "TSh"
+
+            - `UAH` <br>  "₴"
+
+            - `UGX` <br>  "USh"
+
+            - `USD` <br>  "$"
+
+            - `USN` <br>  "$"
+
+            - `UYI` <br>  "UYI"
+
+            - `UYU` <br>  "$U"
+
+            - `UZS` <br>  "лв"
+
+            - `VEF` <br>  "Bs"
+
+            - `VND` <br>  "₫"
+
+            - `VUV` <br>  "VT"
+
+            - `WST` <br>  "WS$"
+
+            - `XAF` <br>  "FCFA"
+
+            - `XAG` <br>  "XAG"  Silver
+
+            - `XAU` <br>  "XAU"  Gold
+
+            - `XBA` <br>  "XBA"  Bond Markets Units European Composite Unit (EURCO)
+
+            - `XBB` <br>  "XBB"  European Monetary Unit (E.M.U.-6)
+
+            - `XBC` <br>  "XBC"  European Unit of Account 9(E.U.A.-9)
+
+            - `XBD` <br>  "XBD"  European Unit of Account 17(E.U.A.-17)
+
+            - `XCD` <br>  "$"
+
+            - `XDR` <br>  "XDR" }` <br>  // Special Drawing Rights (SDRs)` <br>  units of account for IMF
+
+            - `XOF` <br>  "CFA"
+
+            - `XPD` <br>  "XPD"  Palladium
+
+            - `XPF` <br>  "₣"
+
+            - `XPT` <br>  "XPT"  Platinum
+
+            - `XSU` <br>  "Sucre"
+
+            - `XTS` <br>  "XTS" Reserved for testing purposes
+
+            - `XUA` <br>  "XUA"
+
+            - `XXX` <br>  "XXX" Denotes transaction involving no currency
+
+            - `YER` <br>  "﷼"
+
+            - `ZAR` <br>  "R"
+
+            - `ZMW` <br>  "ZK"
+
+            - `ZWL` <br>  "$"
+
+            '
           type: string
-          description: Specifies the alternate currency symbol for the account.
+        perSeatPrice:
+          description: 'The per-seat price associated with the plan.
+
+
+            Example: `"456.0000"`'
+          type: string
+        supportedCardTypes:
+          $ref: '#/components/schemas/creditCardTypes'
+          description: 'A simple type enumeration of the language used. The supported languages, with the language value shown in parenthesis, are: Arabic (ar), Bahasa Indonesia (id), Bahasa Melayu (ms) Bulgarian (bg), Czech (cs), Chinese Simplified (zh_CN), Chinese Traditional (zh_TW), Croatian (hr), Danish (da), Dutch (nl), English US (en), English UK (en_GB), Estonian (et), Farsi (fa), Finnish (fi), French (fr), French Canada (fr_CA), German (de), Greek (el), Hebrew (he), Hindi (hi), Hungarian (hu), Italian (it), Japanese (ja), Korean (ko), Latvian (lv), Lithuanian (lt), Norwegian (no), Polish (pl), Portuguese (pt), Portuguese Brazil (pt_BR), Romanian (ro),Russian (ru), Serbian (sr), Slovak (sk), Slovenian (sl), Spanish (es),Spanish Latin America (es_MX), Swedish (sv), Thai (th), Turkish (tr), Ukrainian (uk) and Vietnamese (vi).'
+        supportIncidentFee:
+          description: 'The support incident fee charged for each support incident.
+
+
+            Example: `"$0.00"`'
+          type: string
+        supportPlanFee:
+          description: 'The support plan fee charged for this plan.
+
+
+            Example: `"$0.00"`'
+          type: string
+      x-ds-definition-name: currencyPlanPrice
+      description: ''
+      x-ms-summary: ''
+    billingPlanPreview:
+      description: Information used to provide a preview of a billing plan.
+      type: object
+      properties:
+        currencyCode:
+          description: Specifies the [ISO 4217](https://en.wikipedia.org/wiki/ISO_4217) currency code for the account.
+          type: string
+        invoice:
+          $ref: '#/components/schemas/billingInvoice'
+          description: ''
+        isProrated:
+          description: When **true,** the billing plan is prorated.
+          type: string
+        subtotalAmount:
+          description: ''
+          type: string
+        taxAmount:
+          description: ''
+          type: string
+        totalAmount:
+          description: ''
+          type: string
+      x-ds-definition-name: billingPlanPreview
+      x-ms-summary: Information used to provide a preview of a billing plan.
+    downgradRequestBillingInfoResponse:
+      type: object
+      properties:
+        downgradePlanInformation:
+          $ref: '#/components/schemas/downgradePlanUpdateResponse'
+          description: ''
+        paymentMethod:
+          description: 'The payment method used for the billing plan. Valid values are:
+
+
+            - `NotSupported`
+
+            - `CreditCard`
+
+            - `PurchaseOrder`
+
+            - `Premium`
+
+            - `Freemium`
+
+            - `FreeTrial`
+
+            - `AppStore`
+
+            - `DigitalExternal`
+
+            - `DirectDebit`'
+          type: string
+      x-ds-definition-name: downgradRequestBillingInfoResponse
+      description: ''
+      x-ms-summary: ''
+    featureSet:
+      type: object
+      properties:
+        currencyFeatureSetPrices:
+          description: Reserved for Docusign.
+          type: array
+          items:
+            $ref: '#/components/schemas/currencyFeatureSetPrice'
         envelopeFee:
+          description: Reserved for Docusign.
           type: string
-          description: An incremental envelope cost for plans with envelope overages (when `isEnabled` is set to **true**.)
+        featureSetId:
+          description: Reserved for Docusign.
+          type: string
         fixedFee:
+          description: Reserved for Docusign.
           type: string
-          description: Specifies a one-time fee associated with the plan (when `isEnabled` is set to **true**.)
-        seatFee:
+        is21CFRPart11:
+          description: Reserved for Docusign.
           type: string
-          description: Specifies an incremental seat cost for seat-based plans (when `isEnabled` is set to **true**.)
-      description: ''
-      x-ds-definition-name: currencyFeatureSetPrice
-      x-ms-summary: ''
-    appStoreProduct:
-      type: object
-      properties:
-        marketPlace:
+        isActive:
+          description: Reserved for Docusign.
           type: string
-          description: ''
-        productId:
+        isEnabled:
+          description: When **true,** the feature set is actively enabled as part of the plan.
           type: string
-          description: The Product ID from the AppStore.
-      description: Contains information about an APP store product.
-      x-ds-definition-name: appStoreProduct
-      x-ms-summary: Contains information about an APP store product.
-    country:
-      type: object
-      properties:
-        isoCode:
-          type: string
-          description: ''
         name:
+          description: Reserved for Docusign.
           type: string
-          description: ''
-        provinces:
-          type: array
-          description: ''
-          items:
-            $ref: '#/components/schemas/province'
-        provinceValidated:
+        seatFee:
+          description: Reserved for Docusign.
           type: string
-          description: ''
-      description: ''
-      x-ds-definition-name: country
-      x-ms-summary: ''
-    creditCardTypes:
+      description: This object provides details about a feature set, or add-on product that is associated with an account. It is reserved for Docusign internal use only.
+      x-ds-definition-name: featureSet
+      x-ms-summary: This object provides details about a feature set, or add-on product that is associated with an account. It is reserved for Docusign internal use only.
+    billingEntityInformationResponse:
       type: object
       properties:
-        cardTypes:
-          type: array
-          description: An array containing supported credit card types.
-          items:
-            type: string
+        billingProfile:
+          description: "The type of billing method on the account. Valid values are: \n\n- `direct`\n- `web`"
+          type: string
+        entityName:
+          description: ''
+          type: string
+        externalEntityId:
+          description: ''
+          type: string
+        isExternallyBilled:
+          description: ''
+          type: string
+      x-ds-definition-name: billingEntityInformationResponse
       description: ''
-      x-ds-definition-name: creditCardTypes
       x-ms-summary: ''
-    accountAddress:
+    directDebitProcessorInformation:
       type: object
       properties:
-        address1:
-          type: string
-          description: 'First Line of the address.
+        bankBranchCode:
+          description: 'The branch code of the bank used for direct debit.
 
-            Maximum length: 100 characters.'
-        address2:
-          type: string
-          description: 'Second Line of the address.
 
-            Maximum length: 100 characters.'
-        city:
+            Maximum Length: 10 characters.'
           type: string
-          description: The city value of the address.
+        bankCheckDigit:
+          description: 'The check digit or digits in the international bank account number. These digits are used to confirm the validity of the account.
+
+
+            Maximum Length: 4 characters.'
+          type: string
+        bankCode:
+          description: 'The code or number that identifies the bank. This is also known as the sort code.
+
+
+            Example: `200000`
+
+
+            Maximum Length: 18 characters.'
+          type: string
+        bankName:
+          description: 'The name of the direct debit bank.
+
+
+            Maximum Length: 80 characters.'
+          type: string
+        bankTransferAccountName:
+          description: 'The name on the direct debit bank account. This field is required for POST and PUT requests.
+
+
+            Maximum Length: 60 characters.'
+          type: string
+        bankTransferAccountNumber:
+          description: 'The customer''s bank account number. This value will be obfuscated. This field is required for POST and PUT requests.
+
+
+            Maximum Length: 30 characters.'
+          type: string
+        bankTransferType:
+          description: 'Specifies the type of direct debit transfer. The value of this field is dependent on the user''s country. This field is required for POST and PUT requests. Possible values are:
+
+
+            - `DirectDebitUK`
+
+            - `DirectEntryAU`
+
+            - `SEPA`'
+          type: string
         country:
+          description: 'The user''s country. The system populates this value automatically.
+
+
+            '
           type: string
-          description: Specifies the country associated with the address.
         email:
+          description: 'The email address of the user who is associated with the payment method. This field is required for POST and PUT requests.
+
+
+            Maximum Length: 80 characters.'
           type: string
-          description: ''
-        fax:
-          type: string
-          description: ''
         firstName:
+          description: 'The user''s first name. This field is required for POST and PUT requests.
+
+
+            Maximum Length: 30 characters.'
           type: string
-          description: "The user's first name. \nMaximum Length: 50 characters."
+        iBAN:
+          description: "The International Bank Account Number (IBAN). \n\nExample: `DE89370400440532013000`\n\nFor more information, see [PeopleSoft's guide to Setting Up Banks](https://docs.oracle.com/cd/E16365_01/fscm91pbr0/eng/psbooks/fsbk/chapter.htm?File=fsbk/htm/fsbk03.htm).\n\n**Note:** This number will be obfuscated."
+          type: string
         lastName:
+          description: 'The user''s last name. This field is required for POST and PUT requests.
+
+
+            Maximum Length: 70 characters.'
           type: string
-          description: The recipient's last name.
-        phone:
+      description: Contains information about a bank that processes a customer's direct debit payments.
+      x-ds-definition-name: directDebitProcessorInformation
+      x-ms-summary: Contains information about a bank that processes a customer's direct debit payments.
+    errorDetails:
+      description: This object describes errors that occur. It is only valid for responses and ignored in requests.
+      type: object
+      properties:
+        errorCode:
+          description: The code associated with the error condition.
           type: string
+        message:
+          description: A brief message describing the error condition.
+          type: string
+      x-ds-definition-name: errorDetails
+      x-ms-summary: This object describes errors that occur. It is only valid for responses and ignored in requests.
+    downgradePlanUpdateResponse:
+      type: object
+      properties:
+        accountPaymentMethod:
+          description: 'The type of payment method used for the account. Valid values are:
+
+
+            - `credit_card`
+
+            - '
+          type: string
+        discountApplied:
           description: ''
-        postalCode:
           type: string
+        downgradeEffectiveDate:
           description: ''
-        state:
           type: string
-          description: The state or province associated with the address.
-        supportedCountries:
+        downgradePaymentCycle:
+          description: ''
+          type: string
+        downgradePlanId:
+          description: ''
+          type: string
+        downgradePlanName:
+          description: ''
+          type: string
+        downgradeRequestStatus:
+          description: ''
+          type: string
+        message:
+          description: ''
+          type: string
+        productId:
+          description: The Product ID from the AppStore.
+          type: string
+        promoCode:
+          description: ''
+          type: string
+        saleDiscount:
+          description: ''
+          type: string
+        saleDiscountPeriods:
+          description: Reserved for Docusign.
+          type: string
+        saleDiscountType:
+          description: ''
+          type: string
+      x-ds-definition-name: downgradePlanUpdateResponse
+      description: ''
+      x-ms-summary: ''
+    billingPlanResponse:
+      description: Defines a billing plan response object.
+      type: object
+      properties:
+        billingPlan:
+          $ref: '#/components/schemas/billingPlan'
+          description: An object that contains details about the billing plan.
+        successorPlans:
+          description: A list of billing plans that the current billing plan can be rolled into.
           type: array
-          description: Contains an array of countries supported by the billing plan.
           items:
-            $ref: '#/components/schemas/country'
-      description: Contains information about an account address.
-      x-ds-definition-name: accountAddress
-      x-ms-summary: Contains information about an account address.
+            $ref: '#/components/schemas/billingPlan'
+      x-ds-definition-name: billingPlanResponse
+      x-ms-summary: Defines a billing plan response object.
+    recipientDomain:
+      type: object
+      properties:
+        active:
+          description: ''
+          type: string
+        domainCode:
+          description: ''
+          type: string
+        domainName:
+          description: ''
+          type: string
+        recipientDomainId:
+          description: ''
+          type: string
+      x-ds-definition-name: recipientDomain
+      description: ''
+      x-ms-summary: ''
     accountBillingPlan:
+      description: Contains information about an account billing plan.
       type: object
       properties:
         addOns:
+          description: Reserved for Docusign.
           type: array
-          description: 'Reserved:'
           items:
             $ref: '#/components/schemas/addOn'
         appStoreReceiptExpirationDate:
-          type: string
           description: ''
+          type: string
         appStoreReceiptPurchaseDate:
-          type: string
           description: ''
+          type: string
         canCancelRenewal:
+          description: Reserved for Docusign.
           type: string
-          description: 'Reserved: TBD'
         canUpgrade:
+          description: When **true,** specifies that you can upgrade the account through the API. For GET methods, you must set the `include_metadata` query parameter to **true** for this property to appear in the response.
           type: string
-          description: When set to **true**, specifies that you can upgrade the account through the API.
         currencyCode:
+          description: Specifies the [ISO 4217](https://en.wikipedia.org/wiki/ISO_4217) currency code to use for the account.
           type: string
-          description: Specifies the ISO currency code for the account.
+        downgradePlanInformation:
+          $ref: '#/components/schemas/downgradePlanUpdateResponse'
+          description: ''
         enableSupport:
+          description: When **true,** customer support is provided as part of the account plan.
           type: string
-          description: When set to **true**, then customer support is provided as part of the account plan.
         includedSeats:
+          description: The number of seats (users) included in the plan.
           type: string
-          description: The number of seats (users) included.
         incrementalSeats:
+          description: Reserved for Docusign.
           type: string
-          description: 'Reserved: TBD'
         isDowngrade:
+          description: When **true,** the account has been downgraded from a premium account type. Otherwise **false.**
           type: string
-          description: ''
         notificationType:
-          type: string
           description: ''
+          type: string
         otherDiscountPercent:
-          type: string
           description: ' Any other percentage discount for the plan. '
+          type: string
         paymentCycle:
+          description: "The payment cycle associated with the plan. Valid values: \n\n- `Monthly`\n- `Annually` "
           type: string
-          description: ''
         paymentMethod:
+          description: ' The payment method used with the plan. Valid values: CreditCard, PurchaseOrder, Premium, or Freemium. '
           type: string
-          description: ' The payment method used with the plan. The possible values are: CreditCard, PurchaseOrder, Premium, or Freemium. '
         perSeatPrice:
+          description: 'The per-seat price associated with the plan.
+
+
+            Example: `"456.0000"`'
           type: string
-          description: ''
         planClassification:
+          description: "Identifies the type of plan. Examples include:\n\n- `business`\n- `corporate`\n- `enterprise` \n- `free`"
           type: string
-          description: Identifies the type of plan. Examples include Business, Corporate, Enterprise, Free.
         planFeatureSets:
-          type: array
           description: 'A complex type that sets the feature sets for the account. It contains the following information (all string content):
 
 
@@ -506,631 +1098,1020 @@ components:
             * seatFee - An incremental seat cost for seat-based plans (when isEnabled=true).
 
             '
+          type: array
           items:
             $ref: '#/components/schemas/featureSet'
         planId:
+          description: Docusign's ID for the account plan.
           type: string
-          description: The DocuSign Plan ID for the account.
         planName:
-          type: string
           description: The name of the Billing Plan.
-        renewalStatus:
           type: string
-          description: 'The renewal status for the account. The acceptable values are:
+        planStartDate:
+          description: The date that the Account started using the current plan.
+          type: string
+        productId:
+          description: The Product ID from the AppStore.
+          type: string
+        renewalDate:
+          description: ''
+          type: string
+        renewalStatus:
+          description: 'The renewal status for the account. Valid values are:
 
 
-            * auto: The account automatically renews.
+            * `auto`: The account automatically renews.
 
-            * queued_for_close: Account will be closed at the billingPeriodEndDate.
+            * `queued_for_close`: The account will be closed at the `billingPeriodEndDate`.
 
-            * queued_for_downgrade: Account will be downgraded at the billingPeriodEndDate.'
+            * `queued_for_downgrade`: The account will be downgraded at the `billingPeriodEndDate`.
+
+
+            **Note:** For GET methods, you must set the `include_metadata` query parameter to **true** for this property to appear in the response.'
+          type: string
         seatDiscounts:
+          description: " A complex type that contains any seat discount information. Valid values:\n \n - `BeginSeatCount` \n - `EndSeatCount`\n - `SeatDiscountPercent`\n \n"
           type: array
-          description: " A complex type that contains any seat discount information.\n\nValues are: BeginSeatCount, EndSeatCount, and SeatDiscountPercent.\n "
           items:
             $ref: '#/components/schemas/seatDiscount'
+        subscriptionStartDate:
+          description: ''
+          type: string
         supportIncidentFee:
+          description: 'The support incident fee charged for each support incident.
+
+
+            Example: `"$0.00"`'
           type: string
-          description: The support incident fee charged for each support incident.
         supportPlanFee:
+          description: 'The support plan fee charged for this plan.
+
+
+            Example: `"$0.00"`'
           type: string
-          description: The support plan fee charged for this plan.
-      description: Contains information about an account billing plan.
+        taxExemptId:
+          description: ''
+          type: string
       x-ds-definition-name: accountBillingPlan
       x-ms-summary: Contains information about an account billing plan.
-    province:
-      type: object
-      properties:
-        isoCode:
-          type: string
-          description: ''
-        name:
-          type: string
-          description: ''
-      description: ''
-      x-ds-definition-name: province
-      x-ms-summary: ''
-    creditCardInformation:
-      type: object
-      properties:
-        address:
-          $ref: '#/components/schemas/addressInformation'
-        cardNumber:
-          type: string
-          description: The number on the credit card.
-        cardType:
-          type: string
-          description: 'The credit card type. Valid values are: visa, mastercard, or amex.'
-        expirationMonth:
-          type: string
-          description: The month that the credit card expires (1-12).
-        expirationYear:
-          type: string
-          description: The year 4 digit year in which the credit card expires.
-        nameOnCard:
-          type: string
-          description: The exact name printed on the credit card.
-      description: ''
-      x-ds-definition-name: creditCardInformation
-      x-ms-summary: ''
-    recipientDomain:
-      type: object
-      properties:
-        active:
-          type: string
-          description: ''
-        domainCode:
-          type: string
-          description: ''
-        domainName:
-          type: string
-          description: ''
-        recipientDomainId:
-          type: string
-          description: ''
-      description: ''
-      x-ds-definition-name: recipientDomain
-      x-ms-summary: ''
-    addOn:
-      type: object
-      properties:
-        active:
-          type: string
-          description: 'Reserved:'
-        addOnId:
-          type: string
-          description: 'Reserved:'
-        id:
-          type: string
-          description: ''
-        name:
-          type: string
-          description: 'Reserved:'
-      description: Contains information about add ons.
-      x-ds-definition-name: addOn
-      x-ms-summary: Contains information about add ons.
-    purchasedEnvelopesInformation:
-      type: object
-      properties:
-        amount:
-          type: string
-          description: The total amount of the purchase.
-        appName:
-          type: string
-          description: The AppName of the client application.
-        currencyCode:
-          type: string
-          description: Specifies the ISO currency code of the purchase. This is based on the ISO 4217 currency code information.
-        platform:
-          type: string
-          description: The Platform of the client application
-        productId:
-          type: string
-          description: The Product ID from the AppStore.
-        quantity:
-          type: string
-          description: The quantity of envelopes to add to the account.
-        receiptData:
-          type: string
-          description: The encrypted Base64 encoded receipt data.
-        storeName:
-          type: string
-          description: The name of the AppStore.
-        transactionId:
-          type: string
-          description: Specifies the Transaction ID from the AppStore.
-      description: ''
-      x-ds-definition-name: purchasedEnvelopesInformation
-      x-ms-summary: ''
-    billingPlanUpdateResponse:
-      type: object
-      properties:
-        accountPaymentMethod:
-          type: string
-          description: ''
-        billingPlanPreview:
-          $ref: '#/components/schemas/billingPlanPreview'
-        currencyCode:
-          type: string
-          description: Specifies the ISO currency code for the account.
-        includedSeats:
-          type: string
-          description: The number of seats (users) included.
-        paymentCycle:
-          type: string
-          description: ''
-        paymentMethod:
-          type: string
-          description: ''
-        planId:
-          type: string
-          description: The DocuSign Plan ID for the account.
-        planName:
-          type: string
-          description: ''
-      description: Defines a billing plan update response object.
-      x-ds-definition-name: billingPlanUpdateResponse
-      x-ms-summary: Defines a billing plan update response object.
-    billingPlan:
-      type: object
-      properties:
-        appStoreProducts:
-          type: array
-          description: 'Reserved: TBD'
-          items:
-            $ref: '#/components/schemas/appStoreProduct'
-        currencyPlanPrices:
-          type: array
-          description: Contains the currencyCode and currencySymbol for the alternate currency values for envelopeFee, fixedFee, and seatFee that are configured for this plan feature set.
-          items:
-            $ref: '#/components/schemas/currencyPlanPrice'
-        enableSupport:
-          type: string
-          description: When set to **true**, then customer support is provided as part of the account plan.
-        includedSeats:
-          type: string
-          description: The number of seats (users) included.
-        otherDiscountPercent:
-          type: string
-          description: ''
-        paymentCycle:
-          type: string
-          description: ' The payment cycle associated with the plan. The possible values are: Monthly or Annually. '
-        paymentMethod:
-          type: string
-          description: ''
-        perSeatPrice:
-          type: string
-          description: The per seat price for the plan.
-        planClassification:
-          type: string
-          description: Identifies the type of plan. Examples include Business, Corporate, Enterprise, Free.
-        planFeatureSets:
-          type: array
-          description: A complex type that sets the feature sets for the account.
-          items:
-            $ref: '#/components/schemas/featureSet'
-        planId:
-          type: string
-          description: The DocuSign Plan ID for the account.
-        planName:
-          type: string
-          description: The name of the Billing Plan.
-        seatDiscounts:
-          type: array
-          description: ''
-          items:
-            $ref: '#/components/schemas/seatDiscount'
-        supportIncidentFee:
-          type: string
-          description: The support incident fee charged for each support incident.
-        supportPlanFee:
-          type: string
-          description: The support plan fee charged for this plan.
-      description: Contains information about a billing plan.
-      x-ds-definition-name: billingPlan
-      x-ms-summary: Contains information about a billing plan.
-    billingPlansResponse:
-      type: object
-      properties:
-        billingPlans:
-          type: array
-          description: 'Reserved: TBD'
-          items:
-            $ref: '#/components/schemas/billingPlan'
-      description: Defines a billing plans response object.
-      x-ds-definition-name: billingPlansResponse
-      x-ms-summary: Defines a billing plans response object.
-    featureSet:
-      type: object
-      properties:
-        currencyFeatureSetPrices:
-          type: array
-          description: A complex type that contains alternate currency values that are configured for this plan feature set.
-          items:
-            $ref: '#/components/schemas/currencyFeatureSetPrice'
-        envelopeFee:
-          type: string
-          description: ''
-        featureSetId:
-          type: string
-          description: A unique ID for the feature set.
-        fixedFee:
-          type: string
-          description: ''
-        is21CFRPart11:
-          type: string
-          description: When set to **true**, indicates that this module is enabled on the account.
-        isActive:
-          type: string
-          description: ''
-        isEnabled:
-          type: string
-          description: Specifies whether the feature set is actively enabled as part of the plan.
-        name:
-          type: string
-          description: ''
-        seatFee:
-          type: string
-          description: An incremental seat cost for seat-based plans. Only valid when isEnabled for the feature set is set to true.
-      description: ''
-      x-ds-definition-name: featureSet
-      x-ms-summary: ''
-    seatDiscount:
-      type: object
-      properties:
-        beginSeatCount:
-          type: string
-          description: 'Reserved: TBD'
-        discountPercent:
-          type: string
-          description: ''
-        endSeatCount:
-          type: string
-          description: 'Reserved: TBD'
-      description: ''
-      x-ds-definition-name: seatDiscount
-      x-ms-summary: ''
-    appStoreReceipt:
-      type: object
-      properties:
-        productId:
-          type: string
-          description: The Product ID from the AppStore.
-        receiptData:
-          type: string
-          description: 'Reserved: TBD'
-      description: Contains information about an APP store receipt.
-      x-ds-definition-name: appStoreReceipt
-      x-ms-summary: Contains information about an APP store receipt.
-    referralInformation:
-      type: object
-      properties:
-        advertisementId:
-          type: string
-          description: "A complex type that contains the following information for entering referral and discount information. The following items are included in the referral information (all string content): enableSupport, includedSeats, saleDiscountPercent, saleDiscountAmount, saleDiscountFixedAmount, saleDiscountPeriods, saleDiscountSeatPriceOverride, planStartMonth, referralCode, referrerName, advertisementId, publisherId, shopperId, promoCode, groupMemberId, idType, and industry.\n\n###### Note: saleDiscountPercent, saleDiscountAmount, saleDiscountFixedAmount, saleDiscountPeriods, and saleDiscountSeatPriceOverride are reserved for DoucSign use only. \n"
-        enableSupport:
-          type: string
-          description: When set to **true**, then customer support is provided as part of the account plan.
-        externalOrgId:
-          type: string
-          description: ''
-        groupMemberId:
-          type: string
-          description: ''
-        idType:
-          type: string
-          description: ''
-        includedSeats:
-          type: string
-          description: The number of seats (users) included.
-        industry:
-          type: string
-          description: ''
-        planStartMonth:
-          type: string
-          description: ''
-        promoCode:
-          type: string
-          description: ''
-        publisherId:
-          type: string
-          description: ''
-        referralCode:
-          type: string
-          description: ''
-        referrerName:
-          type: string
-          description: ''
-        saleDiscountAmount:
-          type: string
-          description: Reserved for DocuSign use only.
-        saleDiscountFixedAmount:
-          type: string
-          description: Reserved for DocuSign use only.
-        saleDiscountPercent:
-          type: string
-          description: Reserved for DocuSign use only.
-        saleDiscountPeriods:
-          type: string
-          description: Reserved for DocuSign use only.
-        saleDiscountSeatPriceOverride:
-          type: string
-          description: Reserved for DocuSign use only.
-        shopperId:
-          type: string
-          description: ''
-      description: "A complex type that contains the following information for entering referral and discount information. The following items are included in the referral information (all string content): enableSupport, includedSeats, saleDiscountPercent, saleDiscountAmount, saleDiscountFixedAmount, saleDiscountPeriods, saleDiscountSeatPriceOverride, planStartMonth, referralCode, referrerName, advertisementId, publisherId, shopperId, promoCode, groupMemberId, idType, and industry \n\n###### Note: saleDiscountPercent, saleDiscountAmount, saleDiscountFixedAmount, saleDiscountPeriods, and saleDiscountSeatPriceOverride are reserved for DoucSign use only."
-      x-ds-definition-name: referralInformation
-      x-ms-summary: "A complex type that contains the following information for entering referral and discount information. The following items are included in the referral information (all string content): enableSupport, includedSeats, saleDiscountPercent, saleDiscountAmount, saleDiscountFixedAmount, saleDiscountPeriods, saleDiscountSeatPriceOverride, planStartMonth, referralCode, referrerName, advertisementId, publisherId, shopperId, promoCode, groupMemberId, idType, and industry \n\n###### Note: saleDiscountPercent, saleDiscountAmount, saleDiscountFixedAmount, saleDiscountPeriods, and saleDiscountSeatPriceOverride are reserved for DoucSign use only."
-    planInformation:
-      type: object
-      properties:
-        addOns:
-          type: array
-          description: 'Reserved:'
-          items:
-            $ref: '#/components/schemas/addOn'
-        currencyCode:
-          type: string
-          description: Specifies the ISO currency code for the account.
-        freeTrialDaysOverride:
-          type: string
-          description: Reserved for DocuSign use only.
-        planFeatureSets:
-          type: array
-          description: A complex type that sets the feature sets for the account.
-          items:
-            $ref: '#/components/schemas/featureSet'
-        planId:
-          type: string
-          description: The DocuSign Plan ID for the account.
-        recipientDomains:
-          type: array
-          description: ''
-          items:
-            $ref: '#/components/schemas/recipientDomain'
-      description: An object used to identify the features and attributes of the account being created.
-      x-ds-definition-name: planInformation
-      x-ms-summary: An object used to identify the features and attributes of the account being created.
     paymentProcessorInformation:
       type: object
       properties:
         address:
           $ref: '#/components/schemas/addressInformation'
+          description: The mailing address associated with the payment processor.
         billingAgreementId:
+          description: The ID of the billing agreement.
           type: string
-          description: ''
         email:
+          description: The email address associated with the payment processor.
           type: string
-          description: ''
-      description: ''
       x-ds-definition-name: paymentProcessorInformation
+      description: ''
       x-ms-summary: ''
+    downgradeBillingPlanInformation:
+      type: object
+      properties:
+        downgradeEventType:
+          description: ''
+          type: string
+        planInformation:
+          $ref: '#/components/schemas/planInformation'
+          description: An object used to identify the features and attributes of the account being created.
+        promoCode:
+          description: ''
+          type: string
+        saleDiscount:
+          description: ''
+          type: string
+        saleDiscountPeriods:
+          description: Reserved for Docusign.
+          type: string
+        saleDiscountType:
+          description: ''
+          type: string
+      x-ds-definition-name: downgradeBillingPlanInformation
+      description: ''
+      x-ms-summary: ''
+    currencyFeatureSetPrice:
+      type: object
+      properties:
+        currencyCode:
+          description: 'Specifies the alternate ISO currency code for the account. '
+          type: string
+        currencySymbol:
+          description: Reserved for Docusign.
+          type: string
+        envelopeFee:
+          description: Reserved for Docusign.
+          type: string
+        fixedFee:
+          description: Reserved for Docusign.
+          type: string
+        seatFee:
+          description: Reserved for Docusign.
+          type: string
+      description: Information about the price and currency associated with the feature set. Reserved for internal Docusign use only.
+      x-ds-definition-name: currencyFeatureSetPrice
+      x-ms-summary: Information about the price and currency associated with the feature set. Reserved for internal Docusign use only.
+    appStoreProduct:
+      description: Contains information about an APP store product.
+      type: object
+      properties:
+        marketPlace:
+          description: ''
+          type: string
+        productId:
+          description: The Product ID from the AppStore.
+          type: string
+      x-ds-definition-name: appStoreProduct
+      x-ms-summary: Contains information about an APP store product.
+    accountAddress:
+      description: Contains information about the address associated with the account.
+      type: object
+      properties:
+        address1:
+          description: 'The first line of the address. Maximum length: 100 characters.'
+          type: string
+        address2:
+          description: 'The second line of the address. Maximum length: 100 characters.'
+          type: string
+        city:
+          description: 'The city associated with the address. Maximum length: 40 characters.'
+          type: string
+        country:
+          description: 'The country associated with the address. Maximum length: 50 characters.'
+          type: string
+        email:
+          description: The email address associated with the account.
+          type: string
+        fax:
+          description: The fax number associated with the account.
+          type: string
+        firstName:
+          description: 'The first name of the user associated with the account. Maximum Length: 50 characters.'
+          type: string
+        lastName:
+          description: The last name of the user associated with the account.
+          type: string
+        phone:
+          description: The phone number associated with the account.
+          type: string
+        postalCode:
+          description: 'The postal code associated with the address. Maximum length: 20 characters.'
+          type: string
+        state:
+          description: 'The state or province associated with the address. Maximum length: 40 characters.'
+          type: string
+        supportedCountries:
+          description: An array of supported countries associated with the account.
+          type: array
+          items:
+            $ref: '#/components/schemas/country'
+      x-ds-definition-name: accountAddress
+      x-ms-summary: Contains information about the address associated with the account.
+    province:
+      type: object
+      properties:
+        isoCode:
+          description: ''
+          type: string
+        name:
+          description: ''
+          type: string
+      x-ds-definition-name: province
+      description: ''
+      x-ms-summary: ''
+    purchasedEnvelopesInformation:
+      type: object
+      properties:
+        amount:
+          description: The total amount of the purchase.
+          type: string
+        appName:
+          description: The AppName of the client application.
+          type: string
+        currencyCode:
+          description: 'Specifies the [ISO 4217](https://en.wikipedia.org/wiki/ISO_4217) currency code of the purchase.
+
+            '
+          type: string
+        platform:
+          description: The Platform of the client application
+          type: string
+        productId:
+          description: The Product ID from the AppStore.
+          type: string
+        quantity:
+          description: The quantity of envelopes to add to the account.
+          type: string
+        receiptData:
+          description: The encrypted Base64 encoded receipt data.
+          type: string
+        storeName:
+          description: The name of the AppStore.
+          type: string
+        transactionId:
+          description: Specifies the Transaction ID from the AppStore.
+          type: string
+      x-ds-definition-name: purchasedEnvelopesInformation
+      description: ''
+      x-ms-summary: ''
+    country:
+      type: object
+      properties:
+        isoCode:
+          description: ''
+          type: string
+        name:
+          description: ''
+          type: string
+        provinces:
+          description: ''
+          type: array
+          items:
+            $ref: '#/components/schemas/province'
+        provinceValidated:
+          description: ''
+          type: string
+      x-ds-definition-name: country
+      description: ''
+      x-ms-summary: ''
+    billingPlansResponse:
+      description: Defines a billing plans response object.
+      type: object
+      properties:
+        billingPlans:
+          description: Reserved for Docusign.
+          type: array
+          items:
+            $ref: '#/components/schemas/billingPlan'
+      x-ds-definition-name: billingPlansResponse
+      x-ms-summary: Defines a billing plans response object.
+    planInformation:
+      description: An object used to identify the features and attributes of the account being created.
+      type: object
+      properties:
+        addOns:
+          description: Reserved for Docusign.
+          type: array
+          items:
+            $ref: '#/components/schemas/addOn'
+        currencyCode:
+          description: Specifies the [ISO 4217](https://en.wikipedia.org/wiki/ISO_4217) currency code for the account.
+          type: string
+        freeTrialDaysOverride:
+          description: Reserved for Docusign.
+          type: string
+        planFeatureSets:
+          description: Reserved for Docusign.
+          type: array
+          items:
+            $ref: '#/components/schemas/featureSet'
+        planId:
+          description: Docusign's ID for the account plan.
+          type: string
+        recipientDomains:
+          description: ''
+          type: array
+          items:
+            $ref: '#/components/schemas/recipientDomain'
+      x-ds-definition-name: planInformation
+      x-ms-summary: An object used to identify the features and attributes of the account being created.
+    addressInformation:
+      description: Contains address information.
+      type: object
+      properties:
+        address1:
+          description: 'The first line of the user''s address.
+
+            Maximum length: 100 characters.'
+          type: string
+        address2:
+          description: 'The second line of the user''s address.
+
+            Maximum length: 100 characters.'
+          type: string
+        city:
+          description: 'The user''s city. Maximum length: 40 characters.'
+          type: string
+        country:
+          description: 'The user''s country. Maximum length: 50 characters.'
+          type: string
+        fax:
+          description: A fax number associated with the address, if one is available.
+          type: string
+        phone:
+          description: A phone number associated with the address.
+          type: string
+        postalCode:
+          description: 'The user''s postal code. Maximum length: 20 characters.'
+          type: string
+        stateOrProvince:
+          description: 'The user''s state or province. Maximum length: 40 characters.'
+          type: string
+        zipPlus4:
+          description: ''
+          type: string
+      x-ds-definition-name: addressInformation
+      x-ms-summary: Contains address information.
+    seatDiscount:
+      type: object
+      properties:
+        beginSeatCount:
+          description: Reserved for Docusign.
+          type: string
+        discountPercent:
+          description: "The percent of the discount. \n\nExample: `\"0.00\"`"
+          type: string
+        endSeatCount:
+          description: Reserved for Docusign.
+          type: string
+      description: This object contains information about a seat discount.
+      x-ds-definition-name: seatDiscount
+      x-ms-summary: This object contains information about a seat discount.
+    billingInvoice:
+      description: Contains information about a billing invoice.
+      type: object
+      properties:
+        amount:
+          description: The total amount of the purchase.
+          type: string
+        balance:
+          description: Reserved for Docusign.
+          type: string
+        dueDate:
+          description: Reserved for Docusign.
+          type: string
+        invoiceId:
+          description: Reserved for Docusign.
+          type: string
+        invoiceItems:
+          description: Reserved for Docusign.
+          type: array
+          items:
+            $ref: '#/components/schemas/billingInvoiceItem'
+        invoiceNumber:
+          description: Reserved for Docusign.
+          type: string
+        invoiceUri:
+          description: Contains a URI for an endpoint that you can use to retrieve invoice information.
+          type: string
+        nonTaxableAmount:
+          description: ''
+          type: string
+        pdfAvailable:
+          description: ''
+          type: string
+        taxableAmount:
+          description: ''
+          type: string
+      x-ds-definition-name: billingInvoice
+      x-ms-summary: Contains information about a billing invoice.
+    downgradeRequestInformation:
+      type: object
+      properties:
+        downgradeRequestCreation:
+          description: ''
+          type: string
+        downgradeRequestProductId:
+          description: ''
+          type: string
+        downgradeRequestStatus:
+          description: ''
+          type: string
+      x-ds-definition-name: downgradeRequestInformation
+      description: ''
+      x-ms-summary: ''
+    billingPlanUpdateResponse:
+      description: Defines a billing plan update response object.
+      type: object
+      properties:
+        accountPaymentMethod:
+          description: 'The type of payment method used for the account. Valid values are:
+
+
+            - `credit_card`
+
+            - '
+          type: string
+        billingPlanPreview:
+          $ref: '#/components/schemas/billingPlanPreview'
+          description: ''
+        currencyCode:
+          description: Specifies the [ISO 4217](https://en.wikipedia.org/wiki/ISO_4217) currency code for the account.
+          type: string
+        includedSeats:
+          description: The number of seats (users) included in the plan.
+          type: string
+        paymentCycle:
+          description: "The payment cycle associated with the plan. Valid values: \n\n- `Monthly`\n- `Annually` "
+          type: string
+        paymentMethod:
+          description: 'The payment method used for the billing plan. Valid values are:
+
+
+            - `NotSupported`
+
+            - `CreditCard`
+
+            - `PurchaseOrder`
+
+            - `Premium`
+
+            - `Freemium`
+
+            - `FreeTrial`
+
+            - `AppStore`
+
+            - `DigitalExternal`
+
+            - `DirectDebit`'
+          type: string
+        planId:
+          description: Docusign's ID for the account plan.
+          type: string
+        planName:
+          description: "The name of the billing plan used for the account.\n\nExamples: \n\n- `Personal - Annual`\n- `Unlimited Envelope Subscription - Annual Billing`"
+          type: string
+      x-ds-definition-name: billingPlanUpdateResponse
+      x-ms-summary: Defines a billing plan update response object.
     billingPlanInformation:
       type: object
       properties:
         appStoreReceipt:
           $ref: '#/components/schemas/appStoreReceipt'
+          description: ''
         billingAddress:
           $ref: '#/components/schemas/accountAddress'
+          description: The billing address for the account.
         creditCardInformation:
           $ref: '#/components/schemas/creditCardInformation'
+          description: A complex type that has information about the credit card used to pay for this account.
+        directDebitProcessorInformation:
+          $ref: '#/components/schemas/directDebitProcessorInformation'
+          description: Information about the bank that processes direct debits for the payment plan.
         downgradeReason:
+          description: (Optional) The user's reason for downgrading their billing plan.
           type: string
+        enablePreAuth:
           description: ''
+          type: string
         enableSupport:
+          description: When **true,** customer support is provided as part of the account plan.
           type: string
-          description: When set to **true**, then customer support is provided as part of the account plan.
         includedSeats:
+          description: The number of seats (users) included in the plan.
           type: string
-          description: The number of seats (users) included.
         incrementalSeats:
+          description: Reserved for Docusign.
           type: string
-          description: 'Reserved: TBD'
+        paymentMethod:
+          description: 'The payment method used for the billing plan. Valid values are:
+
+
+            - `NotSupported`
+
+            - `CreditCard`
+
+            - `PurchaseOrder`
+
+            - `Premium`
+
+            - `Freemium`
+
+            - `FreeTrial`
+
+            - `AppStore`
+
+            - `DigitalExternal`
+
+            - `DirectDebit`'
+          type: string
+        paymentProcessor:
+          description: ''
+          type: string
         paymentProcessorInformation:
           $ref: '#/components/schemas/paymentProcessorInformation'
+          description: Information about the entity that processes payments for the billing plan.
         planInformation:
           $ref: '#/components/schemas/planInformation'
+          description: An object used to identify the features and attributes of the account being created.
+        processPayment:
+          description: ''
+          type: string
         referralInformation:
           $ref: '#/components/schemas/referralInformation'
+          description: A complex type that contains properties for entering referral and discount information.
         renewalStatus:
+          description: "The renewal status of the account. Possible values are:\n\n- `auto`: The account automatically renews. \n- `queued_for_close`: The account will be closed at the billingPeriodEndDate. \n- queued_for_downgrade`: The account will be downgraded at the `billingPeriodEndDate`."
           type: string
-          description: ''
         saleDiscountAmount:
+          description: Reserved for Docusign.
           type: string
-          description: Reserved for DocuSign use only.
         saleDiscountFixedAmount:
+          description: Reserved for Docusign.
           type: string
-          description: Reserved for DocuSign use only.
         saleDiscountPercent:
+          description: Reserved for Docusign.
           type: string
-          description: Reserved for DocuSign use only.
         saleDiscountPeriods:
+          description: Reserved for Docusign.
           type: string
-          description: Reserved for DocuSign use only.
         saleDiscountSeatPriceOverride:
+          description: Reserved for Docusign.
           type: string
-          description: Reserved for DocuSign use only.
-      description: ''
+        taxExemptId:
+          description: ''
+          type: string
+      description: This object contains details about a billing plan.
       x-ds-definition-name: billingPlanInformation
-      x-ms-summary: ''
+      x-ms-summary: This object contains details about a billing plan.
+    accountBillingPlanResponse:
+      description: Defines an account billing plan response object.
+      type: object
+      properties:
+        billingAddress:
+          $ref: '#/components/schemas/accountAddress'
+          description: The billing address for the account.
+        billingAddressIsCreditCardAddress:
+          description: When **true,** the credit card address information is the same as that returned as the billing address. If false, then the billing address is considered a billing contact address, and the credit card address can be different.
+          type: string
+        billingPlan:
+          $ref: '#/components/schemas/accountBillingPlan'
+          description: An object that contains details about the billing plan.
+        creditCardInformation:
+          $ref: '#/components/schemas/creditCardInformation'
+          description: A complex type that has information about the credit card used to pay for this account.
+        directDebitProcessorInformation:
+          $ref: '#/components/schemas/directDebitProcessorInformation'
+          description: Information about the bank that processes direct debits for the payment plan.
+        downgradePlanInformation:
+          $ref: '#/components/schemas/downgradePlanUpdateResponse'
+          description: ''
+        downgradeRequestInformation:
+          $ref: '#/components/schemas/downgradeRequestInformation'
+          description: ''
+        entityInformation:
+          $ref: '#/components/schemas/billingEntityInformationResponse'
+          description: ''
+        paymentMethod:
+          description: 'The payment method used for the billing plan. Valid values are:
+
+
+            - `NotSupported`
+
+            - `CreditCard`
+
+            - `PurchaseOrder`
+
+            - `Premium`
+
+            - `Freemium`
+
+            - `FreeTrial`
+
+            - `AppStore`
+
+            - `DigitalExternal`
+
+            - `DirectDebit`'
+          type: string
+        paymentProcessorInformation:
+          $ref: '#/components/schemas/paymentProcessorInformation'
+          description: Information about the entity that processes payments for the billing plan.
+        referralInformation:
+          $ref: '#/components/schemas/referralInformation'
+          description: A complex type that contains properties for entering referral and discount information.
+        successorPlans:
+          description: A list of billing plans that the current billing plan can be rolled into.
+          type: array
+          items:
+            $ref: '#/components/schemas/billingPlan'
+        taxExemptId:
+          description: ''
+          type: string
+      x-ds-definition-name: accountBillingPlanResponse
+      x-ms-summary: Defines an account billing plan response object.
+    appStoreReceipt:
+      description: Contains information about an APP store receipt.
+      type: object
+      properties:
+        downgradeProductId:
+          description: ''
+          type: string
+        isDowngradeCancellation:
+          description: ''
+          type: string
+        productId:
+          description: The Product ID from the AppStore.
+          type: string
+        receiptData:
+          description: Reserved for Docusign.
+          type: string
+      x-ds-definition-name: appStoreReceipt
+      x-ms-summary: Contains information about an APP store receipt.
+    addOn:
+      description: Contains information about add ons.
+      type: object
+      properties:
+        active:
+          description: Reserved for Docusign.
+          type: string
+        addOnId:
+          description: Reserved for Docusign.
+          type: string
+        id:
+          description: A unique ID for the Salesforce object.
+          type: string
+        name:
+          description: Reserved for Docusign.
+          type: string
+      x-ds-definition-name: addOn
+      x-ms-summary: Contains information about add ons.
+    creditCardInformation:
+      type: object
+      properties:
+        address:
+          $ref: '#/components/schemas/addressInformation'
+          description: A complex element containing the credit card billing address information.
+        cardLastDigits:
+          description: ''
+          type: string
+        cardNumber:
+          description: The credit card number.
+          type: string
+        cardType:
+          description: "The type of credit card. Valid values are: \n\n- `visa` \n- `mastercard` \n- `amex`"
+          type: string
+        cvNumber:
+          description: The 3 or 4-digit card verification value (CVV) number associated with the credit card. CVV numbers are also referred to as card security codes (CSCs).
+          type: string
+        expirationMonth:
+          description: The month that the credit card expires, expressed as a number from 1 to 12.
+          type: string
+        expirationYear:
+          description: The year in which the credit card expires, in 4-digit format.
+          type: string
+        nameOnCard:
+          description: The exact name as it appears on the credit card.
+          type: string
+        tokenizedCard:
+          description: ''
+          type: string
+      description: This object contains information about a credit card that is associated with an account.
+      x-ds-definition-name: creditCardInformation
+      x-ms-summary: This object contains information about a credit card that is associated with an account.
+    billingPlan:
+      description: Contains information about a billing plan.
+      type: object
+      properties:
+        appStoreProducts:
+          description: Reserved for Docusign.
+          type: array
+          items:
+            $ref: '#/components/schemas/appStoreProduct'
+        currencyPlanPrices:
+          description: Contains the `currencyCode` and `currencySymbol` for the alternate currency values for `envelopeFee`, `fixedFee`, and `seatFee` that are configured for this plan feature set.
+          type: array
+          items:
+            $ref: '#/components/schemas/currencyPlanPrice'
+        enableSupport:
+          description: When **true,** customer support is provided as part of the account plan.
+          type: string
+        includedSeats:
+          description: The number of seats (users) included in the plan.
+          type: string
+        otherDiscountPercent:
+          description: 'Any other percentage discount for the plan.
+
+
+            Example: `"0.00"`'
+          type: string
+        paymentCycle:
+          description: ' The payment cycle associated with the plan. Valid values: Monthly or Annually. '
+          type: string
+        paymentMethod:
+          description: 'The payment method used for the billing plan. Valid values are:
+
+
+            - `NotSupported`
+
+            - `CreditCard`
+
+            - `PurchaseOrder`
+
+            - `Premium`
+
+            - `Freemium`
+
+            - `FreeTrial`
+
+            - `AppStore`
+
+            - `DigitalExternal`
+
+            - `DirectDebit`'
+          type: string
+        perSeatPrice:
+          description: The per seat price for the plan.
+          type: string
+        planClassification:
+          description: "Identifies the type of plan. Examples include:\n\n- `business`\n- `corporate`\n- `enterprise` \n- `free`"
+          type: string
+        planFeatureSets:
+          description: Reserved for Docusign.
+          type: array
+          items:
+            $ref: '#/components/schemas/featureSet'
+        planId:
+          description: Docusign's ID for the account plan.
+          type: string
+        planName:
+          description: 'The name of the billing plan.
+
+            '
+          type: string
+        seatDiscounts:
+          description: A complex type that returns information about any seat discounts. It contains the information `BeginSeatCount`, `EndSeatCount` and `SeatDiscountPercent`.
+          type: array
+          items:
+            $ref: '#/components/schemas/seatDiscount'
+        supportIncidentFee:
+          description: 'The support incident fee charged for each support incident.
+
+
+            Example: `"$0.00"`'
+          type: string
+        supportPlanFee:
+          description: 'The support plan fee charged for this plan.
+
+
+            Example: `"$0.00"`'
+          type: string
+      x-ds-definition-name: billingPlan
+      x-ms-summary: Contains information about a billing plan.
+    referralInformation:
+      description: 'A complex type that contains the following information for entering referral and discount information. The following items are included in the referral information (all string content): enableSupport, includedSeats, saleDiscountPercent, saleDiscountAmount, saleDiscountFixedAmount, saleDiscountPeriods, saleDiscountSeatPriceOverride, planStartMonth, referralCode, referrerName, advertisementId, publisherId, shopperId, promoCode, groupMemberId, idType, and industry
+
+
+        **Note:** saleDiscountPercent, saleDiscountAmount, saleDiscountFixedAmount, saleDiscountPeriods, and saleDiscountSeatPriceOverride are reserved for Docusign use only.'
+      type: object
+      properties:
+        advertisementId:
+          description: 'A complex type that contains the following information for entering referral and discount information. The following items are included in the referral information (all string content): enableSupport, includedSeats, saleDiscountPercent, saleDiscountAmount, saleDiscountFixedAmount, saleDiscountPeriods, saleDiscountSeatPriceOverride, planStartMonth, referralCode, referrerName, advertisementId, publisherId, shopperId, promoCode, groupMemberId, idType, and industry.
+
+
+            **Note:** saleDiscountPercent, saleDiscountAmount, saleDiscountFixedAmount, saleDiscountPeriods, and saleDiscountSeatPriceOverride are reserved for Docusign use only.
+
+            '
+          type: string
+        enableSupport:
+          description: When **true,** customer support is provided as part of the account plan.
+          type: string
+        externalOrgId:
+          description: An optional external ID for the referral.
+          type: string
+        groupMemberId:
+          description: ''
+          type: string
+        idType:
+          description: ''
+          type: string
+        includedSeats:
+          description: The number of seats (users) included in the plan.
+          type: string
+        industry:
+          description: "The name of the industry associated with the referral. \n\nExample: `Accounting`"
+          type: string
+        planStartMonth:
+          description: ''
+          type: string
+        promoCode:
+          description: ''
+          type: string
+        publisherId:
+          description: ''
+          type: string
+        referralCode:
+          description: ''
+          type: string
+        referrerName:
+          description: The name of the referrer.
+          type: string
+        saleDiscountAmount:
+          description: Reserved for Docusign.
+          type: string
+        saleDiscountFixedAmount:
+          description: Reserved for Docusign.
+          type: string
+        saleDiscountPercent:
+          description: Reserved for Docusign.
+          type: string
+        saleDiscountPeriods:
+          description: Reserved for Docusign.
+          type: string
+        saleDiscountSeatPriceOverride:
+          description: Reserved for Docusign.
+          type: string
+        shopperId:
+          description: ''
+          type: string
+      x-ds-definition-name: referralInformation
+      x-ms-summary: 'A complex type that contains the following information for entering referral and discount information. The following items are included in the referral information (all string content): enableSupport, includedSeats, saleDiscountPercent, saleDiscountAmount, saleDiscountFixedAmount, saleDiscountPeriods, saleDiscountSeatPriceOverride, planStartMonth, referralCode, referrerName, advertisementId, publisherId, shopperId, promoCode, groupMemberId, idType, and industry
+
+
+        **Note:** saleDiscountPercent, saleDiscountAmount, saleDiscountFixedAmount, saleDiscountPeriods, and saleDiscountSeatPriceOverride are reserved for Docusign use only.'
     billingInvoiceItem:
+      description: Contains information about an item on a billing invoice.
       type: object
       properties:
         chargeAmount:
+          description: Reserved for Docusign.
           type: string
-          description: 'Reserved: TBD'
         chargeName:
+          description: Reserved for Docusign.
           type: string
-          description: 'Reserved: TBD'
         invoiceItemId:
+          description: Reserved for Docusign.
           type: string
-          description: 'Reserved: TBD'
         quantity:
-          type: string
           description: The quantity of envelopes to add to the account.
-        unitPrice:
           type: string
-          description: 'Reserved: TBD'
-      description: Contains information about an item on a billing invoice.
+        taxAmount:
+          description: ''
+          type: string
+        taxExemptAmount:
+          description: ''
+          type: string
+        unitPrice:
+          description: Reserved for Docusign.
+          type: string
       x-ds-definition-name: billingInvoiceItem
       x-ms-summary: Contains information about an item on a billing invoice.
-    billingPlanPreview:
+    creditCardTypes:
       type: object
       properties:
-        currencyCode:
-          type: string
-          description: Specifies the ISO currency code for the account.
-        invoice:
-          $ref: '#/components/schemas/billingInvoice'
-        isProrated:
-          type: string
-          description: ''
-        subtotalAmount:
-          type: string
-          description: ''
-        taxAmount:
-          type: string
-          description: ''
-        totalAmount:
-          type: string
-          description: ''
-      description: Contains information about a preview billing plan.
-      x-ds-definition-name: billingPlanPreview
-      x-ms-summary: Contains information about a preview billing plan.
-    errorDetails:
-      type: object
-      properties:
-        errorCode:
-          type: string
-          description: An error code associated with the error.
-        message:
-          type: string
-          description: A short error message.
-      description: This object describes errors that occur. It is only valid for responses, and ignored in requests.
-      x-ds-definition-name: errorDetails
-      x-ms-summary: This object describes errors that occur. It is only valid for responses, and ignored in requests.
-    accountBillingPlanResponse:
-      type: object
-      properties:
-        billingAddress:
-          $ref: '#/components/schemas/accountAddress'
-        billingAddressIsCreditCardAddress:
-          type: string
-          description: When set to **true**, the credit card address information is the same as that returned as the billing address. If false, then the billing address is considered a billing contact address, and the credit card address can be different.
-        billingPlan:
-          $ref: '#/components/schemas/accountBillingPlan'
-        creditCardInformation:
-          $ref: '#/components/schemas/creditCardInformation'
-        paymentProcessorInformation:
-          $ref: '#/components/schemas/paymentProcessorInformation'
-        referralInformation:
-          $ref: '#/components/schemas/referralInformation'
-        successorPlans:
+        cardTypes:
+          description: An array containing supported credit card types.
           type: array
-          description: ''
           items:
-            $ref: '#/components/schemas/billingPlan'
+            type: string
+      x-ds-definition-name: creditCardTypes
       description: ''
-      x-ds-definition-name: accountBillingPlanResponse
       x-ms-summary: ''
-    currencyPlanPrice:
-      type: object
-      properties:
-        currencyCode:
-          type: string
-          description: Specifies the ISO currency code for the account.
-        currencySymbol:
-          type: string
-          description: Specifies the currency symbol for the account.
-        perSeatPrice:
-          type: string
-          description: ''
-        supportedCardTypes:
-          $ref: '#/components/schemas/creditCardTypes'
-        supportIncidentFee:
-          type: string
-          description: The support incident fee charged for each support incident.
-        supportPlanFee:
-          type: string
-          description: The support plan fee charged for this plan.
-      description: ''
-      x-ds-definition-name: currencyPlanPrice
-      x-ms-summary: ''
-    billingPlanResponse:
-      type: object
-      properties:
-        billingPlan:
-          $ref: '#/components/schemas/billingPlan'
-        successorPlans:
-          type: array
-          description: ''
-          items:
-            $ref: '#/components/schemas/billingPlan'
-      description: Defines a billing plan response object.
-      x-ds-definition-name: billingPlanResponse
-      x-ms-summary: Defines a billing plan response object.
 externalDocs:
-  description: See the DocuSign REST API Guide for more information.
+  description: See the Docusign eSignature REST API Guide for more information.
   url: https://docs.docusign.com/esign
 x-ds-allow-editing: false
 x-ds-categories:
-- name: Authentication
-  summary: Logging in and authentication
-  description: 'Use the Authentication category to manage various account login tasks including:
-
-
-    * Getting login information for a user.
-
-    * Managing linked social accounts.
-
-    * Getting and revoking OAuth tokens.'
 - name: Envelopes
-  summary: Creating and sending envelopes
-  description: 'The DocuSign API Envelope category includes the resources and methods for sending and managing envelopes and envelope data.
+  summary: This section shows you how to create and send envelopes.
+  description: 'The eSignature API Envelope category includes the resources and methods for sending and managing envelopes and envelope data.
 
 
-    Envelopes are the key objects within the DocuSign eSignature system. As a result, they are complex data structures with few required fields. See the [API Recipes](https://www.docusign.com/developer-center/recipes) for use case examples and their solutions.
+    Envelopes are the key objects in the Docusign platform. As a result, they are complex data structures with few required fields. See the [How-to guides](/docs/esign-rest-api/how-to/) for examples and solutions.
 
 
-    To create and send envelopes, see the [Envelopes resource](Envelopes).
-
+    To learn more about envelopes, see [Envelopes](/docs/esign-rest-api/esign101/concepts/envelopes/).
 
     '
 - name: Connect
-  summary: Connect configuration and logging
-  description: "The Connect category enables your application to be called via HTTPS when an event of interest occurs.\n\nUse the Connect service to \"end the polling madness.\" With Connect, there is no need for your application to poll DocuSign every 15 minutes to learn the latest about your envelopes.\n\nInstead, you register your interest in one or more types of envelope or recipient events. Then, when an interesting event occurs, the DocuSign platform will contact your application with the event's details and data. You can register interest in envelopes sent by particular users in your account, or for envelopes sent by any user.\n\n## Incoming Connect Calls\nTo use the Connect service, your application needs to provide an https url that can be called from the public internet. If your application runs on a server behind your organization's firewall, then you will need to create a \"pinhole\" in the firewall to allow the incoming Connect calls from DocuSign to reach your application. Other techniques for receiving the incoming calls including proxy servers and DMZ networking can also be used. \n\n## Per-envelope Connect Configuration\nInstead of registering a general Connect configuration and listener, an individual envelope can have its own Connect configuration. See the `eventNotification` field for envelopes.\n\n## Categories\nUse the Connect category for:\n\n* Programmatically creating Connect configurations. Connect configurations can be created manually by using the DocuSign web service, or programmatically via the API. Configurations created via the API can be seen and updated from the web service.\n* Retrieving and managing the event log for your Connect configurations. \n* Requesting that an event be re-published to the listener."
+  summary: "Docusign Connect is the Docusign platform notification service. The service uses webhooks to proactively notify your application when an event occurs that your application wants to know about. Docusign recommends that all applications use Connect instead of polling the Docusign Signature Service. This section provides information about Connect configuration and logging. \n\n**Note:** To make API calls to any of the Connect endpoints, you must be an account administrator.\n\nFor more information about Connect, see [Docusign Connect](/platform/webhooks/connect/) and [Custom Connect Configuration](https://support.docusign.com/s/document-item?bundleId=pik1583277475390&topicId=khw1583277390582.html)."
+  description: 'The Connect service enables your application to be called via
+
+    HTTPS when an event of interest occurs.
+
+
+    Use the Connect service to "end the polling madness." With
+
+    Connect, there is no need for your application to poll Docusign
+
+    every 15 minutes to learn the latest about your envelopes.
+
+
+    Instead, you register your interest in one or more types of
+
+    envelope or recipient events. Then, when an interesting event
+
+    occurs, the Docusign platform will contact your application with
+
+    the event''s details and data. You can register interest in
+
+    envelopes sent by particular users in your account, or for
+
+    envelopes sent by any user.
+
+
+    Connect can empower your organization to manage document actions
+
+    as they occur, and allows you to track their changes within your
+
+    own systems. Upon completion, envelope information, including
+
+    document content, can be stored in your own databases or CMS
+
+    systems, and these events can be triggered via webhooks
+
+    delivering messages to your application.
+
+
+    **Note:** To make API calls to any of the Connect endpoints, you must be an account administrator.
+
+
+    ## Incoming Connect Calls
+
+
+    To use the Connect service, your application needs to provide an
+
+    HTTPS URL that can be called from the public Internet. If your
+
+    application runs on a server behind your organization''s firewall,
+
+    then you will need to create a "pinhole" in the firewall to allow
+
+    the incoming Connect calls from Docusign to reach your
+
+    application. You can also use other techniques such as proxy
+
+    servers and DMZ networking for receiving the incoming calls.
+
+
+    Connect delivers events over HTTP requests in JSON or XML.
+
+    See [Docusign Connect overview](/platform/webhooks/connect/).
+
+
+    If your application is not configured to accept post messages,
+
+    Docusign will NOT return an additional post error response to
+
+    your listener application. If you''ve enabled logging on your
+
+    configuration, it will be logged in Admin under the configuration
+
+    failure log.
+
+
+    ## Per-envelope Connect Configuration
+
+
+    Instead of registering a general Connect configuration and
+
+    listener, an individual envelope can have its own Connect
+
+    configuration. See the
+
+    [`eventNotification`](/docs/esign-rest-api/reference/envelopes/envelopes/create/#schema__envelopedefinition_eventnotification)
+
+    property for envelopes.
+
+
+    ## Historical Publish Endpoint
+
+
+    To submit existing envelopes to an endpoint, use the [EnvelopePublish](/docs/esign-rest-api/reference/envelopes/envelopepublish/) resource.
+
+    '
 - name: Templates
   summary: Template creation and management
   description: 'Use the Templates category to manage your account''s templates.
 
 
-    You can:
+    This section shows you how to perform the following tasks:
 
 
     * Create, list, get, update, and delete templates.
 
-    * Manage templates'' notification and group sharing settings.
+    * Manage the notification and group sharing settings for templates.
 
     * Fetch and rotate pages from a document used by a template.
 
 
-    Templates can be created programmatically or can be created via the DocuSign web interface and then used by your application.'
+    You can create templates either programmatically or through the Docusign web interface and then used by your application.'
 - name: SigningGroups
-  summary: Send a signing request to a group of potential signers
-  description: 'Use the SigningGroup category to manage signing groups that allow you anyone in the group to sign a document.
+  summary: Send a signing request to a group of potential signers.
+  description: 'Use the Signing Group category to manage signing groups that allow anyone in the group to sign a document. When you send an envelope to a signing group, anyone in the group can open it and sign it with their own signature.
 
 
-    The category allows you create the signing group and manage the users in the group.'
+    This category shows account administrators how to create a signing group and manage the users in the group.
+
+
+    **Note:** To create and manage signing groups, you must be an account administrator.
+
+
+    For more information about this topic, see [Signing Groups](https://support.docusign.com/s/document-item?bundleId=gav1643676262430&topicId=zgn1578456447934.html).'
 - name: Folders
-  summary: Folders for completed envelopes
-  description: "Use the Folders category to manage envelopes in your folders. \n\nYou can list the folder contents and move envelopes between folders."
+  summary: Folders allow you to organize envelopes and templates.
+  description: 'Use the Folders category to organize envelopes and templates.
+
+    You can list the folder contents and move envelopes and templates between folders.'
 - name: CustomTabs
   summary: Custom tabs
   description: "Custom Tabs enable accounts to have one or more pre-configured (custom) tabs. Custom tabs save time when users are tagging documents since the users don't have to manually set the tabs' parameters.\n\nThis category enables custom tabs to be managed programmatically, including creation, deletion, etc. \n"
 - name: CloudStorage
-  summary: Cloud storage providers and user management
+  summary: This section shows you how to manage your cloud storage providers and users.
   description: 'Use the Cloud Storage category to list the user''s cloud storage document contents.
 
 
@@ -1149,7 +2130,7 @@ x-ds-categories:
 
     * Add delete users.
 
-    * Add and delete the intials and signature images for a user.'
+    * Add and delete the initials and signature images for a user.'
 - name: UserGroups
   summary: Group users for common permissions and branding
   description: 'Use the User Groups category to manage your permissions groups.
@@ -1163,9 +2144,28 @@ x-ds-categories:
     * Add users to, and delete users from, your groups.
 
     * Manage the brand information associated with a group.'
+- name: BulkEnvelopes
+  summary: Bulk envelopes
+  description: Use the BulkEnvelopes category to manage the sending of envelopes to multiple recipients.
 - name: Accounts
   summary: Account management
-  description: "Use the Account category for various account management tasks including:\n\n* Programmatically creating and deleting accounts.\n* Getting information about an account and its capabilities.\n* Branding the account with custom colors, message text, and more.\n* Account charges.\n\nThe Account category also includes end points for \n* Listing the recipient names associated with an email address that was used by the account. For example, a single email address is often shared by mulitple members of a family.\n\n\n"
+  description: 'Use the Account category for various account management tasks including:
+
+
+    * Programmatically creating and deleting accounts.
+
+    * Getting information about an account and its capabilities.
+
+    * Branding the account with custom colors, message text, and more.
+
+    * Account charges.
+
+
+    The Accounts category also includes end points for listing the recipient names associated with an email address that was used by the account. For example, a single email address is often shared by multiple members of a family.
+
+
+
+    '
 - name: Billing
   summary: Invoices
   description: 'Use the Billing category to manage the following billing related tasks:
@@ -1187,18 +2187,42 @@ x-ds-categories:
 
     * Getting information on the API''s resources and versions.'
 - name: PowerForms
-  summary: PowerForm creation and management
-  description: The PowerForms category enables PowerForms to be created and managed.
+  summary: The PowerForms category provides methods that enable you to create and manage fillable forms.
+  description: The PowerForms category enables you to create and manage PowerForms that you can use for self service and email forms.
 - name: Workspaces
-  summary: Workspace creation and management
-  description: 'Workspaces creation and management.
-
-
-    '
+  summary: A Docusign workspace is a collaboration area for sharing files and data.
+  description: "A workspace is a collaborative space for sharing documents and managing workflows. A workspace has a single owner who must be a Docusign user. The owner can invite others to the workspace as collaborators. Individuals who are not Docusign users must create a Docusign account to join a workspace as a collaborator.\n \nYou can create an envelope directly from a workspace.\n\nWorkspaces store the following information:\n\n- **Files:** Files uploaded to a workspace for storage or reuse.\n- **Documents:** A document is a component of a transaction, template, or workspace. When a file is added to a transaction, template, or workspace, it is copied as a document. Each document in a workspace has a single owner.\n- **Templates:** A set of documents that you can use to create a transaction or a workspace.\n- **Transactions:** A transaction is a series of workflow events related to one or more documents. These events route the documents to one or more individuals for the purposes of doing business. Each transaction has a single owner (the sender).\n\n**Note:** Documents in a template are not individually listed as files."
 - name: Payments
   summary: Manage Payments
   description: This category includes resources for managing payment gateways. Payment information is added to envelopes via methods in the Envelopes category.
-- name: Signature
+- name: EmailArchive
+  summary: This section shows you how to set and manage the BCC email addresses that you want to use to archive the emails that Docusign sends.
+  description: 'Email archives enable Docusign partners and other multi-account customers to easily archive emails sent through Docusign. The `EmailArchive` resource provides methods for managing your email archive configuration, which consists of the BCC email address or addresses that you want to use to archive Docusign emails. Each account can use up to five BCC email addresses for archiving purposes.
+
+
+    For more information, see [Email Archive Configuration](https://support.docusign.com/s/document-item?bundleId=pik1583277475390&topicId=xjm1583277371373.html).
+
+
+    **Note:** This feature is only available for certain account plans and must be enabled by Docusign.'
+- name: Notary
+  summary: 'Docusign eNotary makes the notarization process fully digital
+
+    for senders, signers, and notaries.
+
+    It enables a notary public to act as an in-person witness
+
+    to electronic signing of documents.
+
+    '
+  description: 'Docusign eNotary makes the notarization process fully digital
+
+    for senders, signers, and notaries.
+
+    It enables a notary public to act as an in-person witness
+
+    to electronic signing of documents.
+
+    '
+- name: Envelope
   summary: ''
   description: ''
-x-original-swagger-version: '2.0'

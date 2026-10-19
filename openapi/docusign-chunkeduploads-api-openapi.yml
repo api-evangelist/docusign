@@ -1,202 +1,317 @@
 openapi: 3.2.0
 info:
-  title: DocuSign REST Chunked Uploads API
-  description: The DocuSign REST API provides you with a powerful, convenient, and simple Web services API for interacting with DocuSign.
+  version: v2.1
+  title: Docusign eSignature REST Chunked Uploads API
+  description: The Docusign eSignature REST API provides you with a powerful, convenient, and simple Web services API for interacting with Docusign.
   termsOfService: https://www.docusign.com/company/terms-and-conditions/web
   contact:
-    name: DocuSign Developer Center
+    name: Docusign Developer Center
     url: https://developers.docusign.com/
     email: devcenter@docusign.com
-  version: v2
 servers:
 - url: https://www.docusign.net/restapi
 tags:
 - name: ChunkedUploads
-  description: The ChunkedUploads resource provides methods to complete integrity checks, and to add, commit, retrieve, initiate and delete chunked uploads.
+  description: 'A chunked upload is a temporary file that you upload in parts and stage at Docusign, then refer to as the content for other API calls. For example, you might use it for document content when assembling an envelope or template.
+
+
+    A chunked upload is linked to the Docusign account member who initiated the API call. This user is the only user who is able to reference the chunked upload.
+
+
+    A ChunkedUpload is intended to be an area for briefly staging data for use with other Docusign API calls. The ChunkedUpload API endpoints do not provide an action to download the ChunkedUpload''s content.
+
+
+    The typical flow for using a chunked upload involves the following steps:
+
+
+    1) Initiate the chunked upload with content representing part 0.
+
+
+    2) Add more parts to the chunked upload until you have transmitted the entirety of the content.
+
+
+    3) Commit the chunked upload, preparing it for use with other API calls.
+
+
+    4) Assemble a Docusign envelope with a document that includes a reference to the chunked upload as the content.
+
+
+    5) Continue with envelope-related processes.
+
+
+    **Note:** You must fully upload and use a chunked upload within 20 minutes of initializing it.
+
+
+    After the chunked upload has been correctly referenced within another API call, it becomes unavailable for any further use and is promptly removed from the system.
+
+
+    Chunked uploads have the following limits, which are configured per Docusign environment, account, or integrator:
+
+
+    - The maximum number of all of a member''s unexpired, unconsumed ChunkedUploads. The default value is 64.
+
+    - The maximum total size of all of a member''s unexpired, unconsumed ChunkedUploads. The default value is 1 GB.
+
+    - The amount of time that a chunked upload is active after you initialize it. The default value is 20 minutes.'
 paths:
-  /v2/accounts/{accountId}/chunked_uploads:
+  /v2.1/accounts/{accountId}/chunked_uploads:
+    parameters: []
     post:
       tags:
       - ChunkedUploads
-      summary: Docusign Initiate a new ChunkedUpload
+      summary: Initiate a new chunked upload
       operationId: ChunkedUploads_PostChunkedUploads
       parameters:
       - name: accountId
         in: path
-        description: The external account number (int) or account id GUID.
+        description: The external account number (int) or account ID GUID.
         required: true
         schema:
           type: string
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/chunkedUploadRequest'
-          application/xml:
-            schema:
-              $ref: '#/components/schemas/chunkedUploadRequest'
-        required: false
       responses:
         '201':
           description: Successful response.
           content:
-            '*/*':
+            application/json:
               schema:
                 $ref: '#/components/schemas/chunkedUploadResponse'
         '400':
           description: Error encountered.
           content:
-            '*/*':
+            application/json:
               schema:
                 $ref: '#/components/schemas/errorDetails'
       deprecated: false
       x-ds-methodname: createChunkedUpload
       x-ds-api-status: beta
+      description: This method initiates a new chunked upload with the first part of the content.
       x-ds-method: create
       x-ds-service: Envelopes
       x-ds-in-sdk: true
-      x-codegen-request-body-name: chunkedUploadRequest
-  /v2/accounts/{accountId}/chunked_uploads/{chunkedUploadId}:
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/chunkedUploadRequest'
+  /v2.1/accounts/{accountId}/chunked_uploads/{chunkedUploadId}:
+    parameters: []
     get:
       tags:
       - ChunkedUploads
-      summary: Docusign Retrieves the current metadata of a ChunkedUpload
+      summary: Retrieves metadata about a chunked upload
       operationId: ChunkedUploads_GetChunkedUpload
       parameters:
       - name: accountId
         in: path
-        description: The external account number (int) or account id GUID.
+        description: The external account number (int) or account ID GUID.
         required: true
         schema:
           type: string
       - name: chunkedUploadId
         in: path
         required: true
+        description: 'The ID of the chunked upload. '
         schema:
           type: string
       - name: include
         in: query
-        description: "A comma-separated list of additional information to include in the response. Valid values are: \n\n- `recipients`: Includes information about template recipients.\n- `folders`: Includes information about the folder that holds the template. \n- `documents` : Includes information about template documents.\n- `custom_fields`: Includes information about template custom fields.\n- `notifications`: Includes information about the notification settings for templates.\n- `advanced_templates`: Includes advanced templates in the response. For example, these include templates that use advanced recipient routing. We recommend that you use this option to ensure that the response includes all relevant templates. "
+        required: false
+        description: (Optional) This parameter enables you to include additional attribute data in the response. The valid value for this method is `checksum`, which returns an SHA256 checksum of the content of the chunked upload in the response. You can use compare this checksum against your own checksum of the original content to verify that there are no missing parts before you attempt to commit the chunked upload.
         schema:
           type: string
       responses:
         '200':
           description: Successful response.
           content:
-            '*/*':
+            application/json:
               schema:
                 $ref: '#/components/schemas/chunkedUploadResponse'
         '400':
           description: Error encountered.
           content:
-            '*/*':
+            application/json:
               schema:
                 $ref: '#/components/schemas/errorDetails'
       deprecated: false
       x-ds-methodname: getChunkedUpload
       x-ds-api-status: beta
+      description: 'Returns the details (but not the content) about a chunked upload.
+
+
+        **Note:** You cannot obtain details about a chunked upload that has expired, been deleted, or consumed by other actions.'
       x-ds-method: get
       x-ds-service: Envelopes
       x-ds-in-sdk: true
     put:
       tags:
       - ChunkedUploads
-      summary: Docusign Integrity-Check and Commit a ChunkedUpload, readying it for use…
+      summary: Commit a chunked upload
       operationId: ChunkedUploads_PutChunkedUploads
       parameters:
       - name: accountId
         in: path
-        description: The external account number (int) or account id GUID.
+        description: (Required) The external account number (int) or account ID GUID.
         required: true
         schema:
           type: string
       - name: chunkedUploadId
         in: path
         required: true
+        description: (Required) The ID of the chunked upload to commit.
         schema:
           type: string
       - name: action
         in: query
+        required: false
+        description: (Required) You must use this query parameter with the value `commit`, which affirms the request to validate and prepare the chunked upload for use with other API calls.
         schema:
           type: string
       responses:
         '200':
           description: Successful response.
           content:
-            '*/*':
+            application/json:
               schema:
                 $ref: '#/components/schemas/chunkedUploadResponse'
         '400':
           description: Error encountered.
           content:
-            '*/*':
+            application/json:
               schema:
                 $ref: '#/components/schemas/errorDetails'
       deprecated: false
       x-ds-methodname: updateChunkedUpload
       x-ds-api-status: beta
+      description: 'This method checks the integrity of a chunked upload and then commits it. When this request is successful, the chunked upload is then ready to be referenced in other API calls.
+
+
+        If the request is unsuccessful, ensure that you have uploaded all of the parts by using the Update method.
+
+
+        **Note:** After you commit a chunked upload, it no longer accepts additional parts.'
       x-ds-method: commit
       x-ds-service: Envelopes
       x-ds-in-sdk: true
     delete:
       tags:
       - ChunkedUploads
-      summary: Docusign Delete an existing ChunkedUpload
+      summary: Deletes a chunked upload
       operationId: ChunkedUploads_DeleteChunkedUpload
       parameters:
       - name: accountId
         in: path
-        description: The external account number (int) or account id GUID.
+        description: The external account number (int) or account ID GUID.
         required: true
         schema:
           type: string
       - name: chunkedUploadId
         in: path
         required: true
+        description: 'The ID of the chunked upload. '
         schema:
           type: string
       responses:
         '200':
           description: Successful response.
           content:
-            '*/*':
+            application/json:
               schema:
                 $ref: '#/components/schemas/chunkedUploadResponse'
         '400':
           description: Error encountered.
           content:
-            '*/*':
+            application/json:
               schema:
                 $ref: '#/components/schemas/errorDetails'
       deprecated: false
       x-ds-methodname: deleteChunkedUpload
       x-ds-api-status: beta
+      description: 'Deletes a chunked upload that has been committed but not yet consumed.
+
+
+        This method cannot be used to delete the following types of chunked uploads, which the system deletes automatically:
+
+
+        - Chunked uploads that have been consumed by use in another API call.
+
+        - Expired chunked uploads.
+
+
+        **Note:** If you are aware of a chunked upload that can be discarded, the best practice is to explicitly delete it. If you wait for the system to automatically delete it after it expires, the chunked upload will continue to count against your quota.'
       x-ds-method: delete
       x-ds-service: Envelopes
       x-ds-in-sdk: true
-  /v2/accounts/{accountId}/chunked_uploads/{chunkedUploadId}/{chunkedUploadPartSeq}:
+  /v2.1/accounts/{accountId}/chunked_uploads/{chunkedUploadId}/{chunkedUploadPartSeq}:
+    parameters: []
     put:
       tags:
       - ChunkedUploads
-      summary: Docusign Add a chunk, a chunk 'part', to an existing ChunkedUpload
+      summary: Add a chunk to an existing chunked upload
       operationId: ChunkedUploads_PutChunkedUploadPart
       parameters:
       - name: accountId
         in: path
-        description: The external account number (int) or account id GUID.
+        description: The external account number (int) or account ID GUID.
         required: true
         schema:
           type: string
       - name: chunkedUploadId
         in: path
         required: true
+        description: 'The ID of the chunked upload. '
         schema:
           type: string
       - name: chunkedUploadPartSeq
         in: path
         required: true
+        description: 'The sequence or order of the part in the chunked upload. By default, the sequence of the first part that is uploaded as part of the Create request is `0`.
+
+
+          **Note:** You can add parts out of order. However, the chunked upload must consist of a contiguous series of one or more parts before you can successfully commit it.'
         schema:
           type: string
+      responses:
+        '200':
+          description: Successful response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/chunkedUploadResponse'
+        '400':
+          description: Error encountered.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorDetails'
+      deprecated: false
+      x-ds-methodname: updateChunkedUploadPart
+      x-ds-api-status: beta
+      description: 'Adds a chunk or part to an existing chunked upload. After you use the Create method to initiate a new chunked upload and upload the first part,
+
+        use this method to upload subsequent parts.
+
+
+        For simplicity, Docusign recommends that you upload the parts in their sequential order ( 1,2, 3, 4, etc.). The Create method adds the first part and assigns it the `sequence` value `0`. As a result, Docusign recommends that you start with a `sequence` value of `1` when you use this method, and continue uploading parts contiguously until you have uploaded the entirety of the original content to Docusign.
+
+
+        Example:
+
+
+        ```
+
+        PUT /v2.1/accounts/{accountId}/chunked_uploads/{chunkedUploadId}/1
+
+        PUT /v2.1/accounts/{accountId}/chunked_uploads/{chunkedUploadId}/2
+
+        PUT /v2.1/accounts/{accountId}/chunked_uploads/{chunkedUploadId}/3
+
+        ```
+
+
+        **Note:** You cannot replace a part that Docusign has already received, or add parts to a chunked upload that is already successfully committed.'
+      x-ds-method: update
+      x-ds-service: Envelopes
+      x-ds-in-sdk: true
       requestBody:
         content:
           application/json:
@@ -205,160 +320,236 @@ paths:
           application/xml:
             schema:
               $ref: '#/components/schemas/chunkedUploadRequest'
-        required: false
-      responses:
-        '200':
-          description: Successful response.
-          content:
-            '*/*':
-              schema:
-                $ref: '#/components/schemas/chunkedUploadResponse'
-        '400':
-          description: Error encountered.
-          content:
-            '*/*':
-              schema:
-                $ref: '#/components/schemas/errorDetails'
-      deprecated: false
-      x-ds-methodname: updateChunkedUploadPart
-      x-ds-api-status: beta
-      x-ds-method: update
-      x-ds-service: Envelopes
-      x-ds-in-sdk: true
-      x-codegen-request-body-name: chunkedUploadRequest
 components:
   schemas:
-    chunkedUploadResponse:
-      type: object
-      properties:
-        checksum:
-          type: string
-          description: ''
-        chunkedUploadId:
-          type: string
-          description: ''
-        chunkedUploadParts:
-          type: array
-          description: ''
-          items:
-            $ref: '#/components/schemas/chunkedUploadPart'
-        chunkedUploadUri:
-          type: string
-          description: ''
-        committed:
-          type: string
-          description: ''
-        expirationDateTime:
-          type: string
-          description: ''
-        maxChunkedUploadParts:
-          type: string
-          description: ''
-        maxTotalSize:
-          type: string
-          description: ''
-        totalSize:
-          type: string
-          description: ''
-      description: ''
-      x-ds-definition-name: chunkedUploadResponse
-      x-ms-summary: ''
-    errorDetails:
-      type: object
-      properties:
-        errorCode:
-          type: string
-          description: An error code associated with the error.
-        message:
-          type: string
-          description: A short error message.
-      description: This object describes errors that occur. It is only valid for responses, and ignored in requests.
-      x-ds-definition-name: errorDetails
-      x-ms-summary: This object describes errors that occur. It is only valid for responses, and ignored in requests.
     chunkedUploadPart:
       type: object
       properties:
         sequence:
+          description: The order of the part in the chunked upload.
           type: string
-          description: ''
         size:
+          description: "The size of the part in bytes. \n\nDocusign recommends that a chunked upload part is no larger than a few MB in size."
           type: string
-          description: 'Reserved: TBD'
-      description: ''
+      description: An object that contains information about the chunked upload part.
       x-ds-definition-name: chunkedUploadPart
-      x-ms-summary: ''
+      x-ms-summary: An object that contains information about the chunked upload part.
+    chunkedUploadResponse:
+      type: object
+      properties:
+        checksum:
+          description: A 64-byte, Secure Hash Algorithm 256 (SHA256) checksum that the caller computes across the entirety of the original content that has been uploaded to the chunked upload. Docusign compares this value to its own computation. If the two values are not equal, the original content and received content are not the same and the commit action is refused.
+          type: string
+        chunkedUploadId:
+          description: 'The ID of the chunked upload. '
+          type: string
+        chunkedUploadParts:
+          description: A list of the parts that compose the chunked upload, including their byte sizes. The list must be contiguous before you can commit the chunked upload.
+          type: array
+          items:
+            $ref: '#/components/schemas/chunkedUploadPart'
+        chunkedUploadUri:
+          description: 'The URI that you use to reference the chunked upload in other API requests, such as envelope document and envelope attachment requests. '
+          type: string
+        committed:
+          description: 'When **true,** the chunked upload has been committed. A committed chunked upload can no longer receive any additional parts and is ready for use within other API requests. '
+          type: string
+        expirationDateTime:
+          description: "The UTC time at which the chunked upload expires and is no longer addressable. \n\n**Note:** You must fully upload and use a chunked upload within 20 minutes of initializing it.\n"
+          type: string
+        maxChunkedUploadParts:
+          description: 'The maximum number of parts allowed for a chunked upload. This value is configurable per Docusign environment, account, or integrator. The default value is 128. The maximum possible value is 256.  '
+          type: string
+        maxTotalSize:
+          description: The maximum total size allowed for a chunked upload. This value is configured per Docusign environment, account, or integrator. The default value is 50 MB.
+          type: string
+        totalSize:
+          description: 'The total size of the parts of the chunked upload.
+
+
+            **Note:** When a chunked upload is used as an envelope document, it is subject to the PDF size limit (25 MB) and page count limit that apply to all envelope documents.'
+          type: string
+      description: This response object is returned after you upload a chunked upload.
+      x-ds-definition-name: chunkedUploadResponse
+      x-ms-summary: This response object is returned after you upload a chunked upload.
     chunkedUploadRequest:
       type: object
       properties:
         chunkedUploadId:
+          description: 'The ID of the chunked upload.
+
+
+            **Note:** This property is ignored in requests, and overridden with an auto-generated value in responses.'
           type: string
-          description: ''
         data:
+          description: "A base64-encoded representation of the content that is used to upload the file. \n\nMaximum size: 50 MB. However, data is also subject to REST API limits regarding request sizes, and Internet Information Systems (IIS) might place further constraints on file size."
           type: string
-          description: ''
-      description: ''
+      description: This is the request object for uploading a chunked upload.
       x-ds-definition-name: chunkedUploadRequest
-      x-ms-summary: ''
+      x-ms-summary: This is the request object for uploading a chunked upload.
+    errorDetails:
+      description: This object describes errors that occur. It is only valid for responses and ignored in requests.
+      type: object
+      properties:
+        errorCode:
+          description: The code associated with the error condition.
+          type: string
+        message:
+          description: A brief message describing the error condition.
+          type: string
+      x-ds-definition-name: errorDetails
+      x-ms-summary: This object describes errors that occur. It is only valid for responses and ignored in requests.
 externalDocs:
-  description: See the DocuSign REST API Guide for more information.
+  description: See the Docusign eSignature REST API Guide for more information.
   url: https://docs.docusign.com/esign
 x-ds-allow-editing: false
 x-ds-categories:
-- name: Authentication
-  summary: Logging in and authentication
-  description: 'Use the Authentication category to manage various account login tasks including:
-
-
-    * Getting login information for a user.
-
-    * Managing linked social accounts.
-
-    * Getting and revoking OAuth tokens.'
 - name: Envelopes
-  summary: Creating and sending envelopes
-  description: 'The DocuSign API Envelope category includes the resources and methods for sending and managing envelopes and envelope data.
+  summary: This section shows you how to create and send envelopes.
+  description: 'The eSignature API Envelope category includes the resources and methods for sending and managing envelopes and envelope data.
 
 
-    Envelopes are the key objects within the DocuSign eSignature system. As a result, they are complex data structures with few required fields. See the [API Recipes](https://www.docusign.com/developer-center/recipes) for use case examples and their solutions.
+    Envelopes are the key objects in the Docusign platform. As a result, they are complex data structures with few required fields. See the [How-to guides](/docs/esign-rest-api/how-to/) for examples and solutions.
 
 
-    To create and send envelopes, see the [Envelopes resource](Envelopes).
-
+    To learn more about envelopes, see [Envelopes](/docs/esign-rest-api/esign101/concepts/envelopes/).
 
     '
 - name: Connect
-  summary: Connect configuration and logging
-  description: "The Connect category enables your application to be called via HTTPS when an event of interest occurs.\n\nUse the Connect service to \"end the polling madness.\" With Connect, there is no need for your application to poll DocuSign every 15 minutes to learn the latest about your envelopes.\n\nInstead, you register your interest in one or more types of envelope or recipient events. Then, when an interesting event occurs, the DocuSign platform will contact your application with the event's details and data. You can register interest in envelopes sent by particular users in your account, or for envelopes sent by any user.\n\n## Incoming Connect Calls\nTo use the Connect service, your application needs to provide an https url that can be called from the public internet. If your application runs on a server behind your organization's firewall, then you will need to create a \"pinhole\" in the firewall to allow the incoming Connect calls from DocuSign to reach your application. Other techniques for receiving the incoming calls including proxy servers and DMZ networking can also be used. \n\n## Per-envelope Connect Configuration\nInstead of registering a general Connect configuration and listener, an individual envelope can have its own Connect configuration. See the `eventNotification` field for envelopes.\n\n## Categories\nUse the Connect category for:\n\n* Programmatically creating Connect configurations. Connect configurations can be created manually by using the DocuSign web service, or programmatically via the API. Configurations created via the API can be seen and updated from the web service.\n* Retrieving and managing the event log for your Connect configurations. \n* Requesting that an event be re-published to the listener."
+  summary: "Docusign Connect is the Docusign platform notification service. The service uses webhooks to proactively notify your application when an event occurs that your application wants to know about. Docusign recommends that all applications use Connect instead of polling the Docusign Signature Service. This section provides information about Connect configuration and logging. \n\n**Note:** To make API calls to any of the Connect endpoints, you must be an account administrator.\n\nFor more information about Connect, see [Docusign Connect](/platform/webhooks/connect/) and [Custom Connect Configuration](https://support.docusign.com/s/document-item?bundleId=pik1583277475390&topicId=khw1583277390582.html)."
+  description: 'The Connect service enables your application to be called via
+
+    HTTPS when an event of interest occurs.
+
+
+    Use the Connect service to "end the polling madness." With
+
+    Connect, there is no need for your application to poll Docusign
+
+    every 15 minutes to learn the latest about your envelopes.
+
+
+    Instead, you register your interest in one or more types of
+
+    envelope or recipient events. Then, when an interesting event
+
+    occurs, the Docusign platform will contact your application with
+
+    the event''s details and data. You can register interest in
+
+    envelopes sent by particular users in your account, or for
+
+    envelopes sent by any user.
+
+
+    Connect can empower your organization to manage document actions
+
+    as they occur, and allows you to track their changes within your
+
+    own systems. Upon completion, envelope information, including
+
+    document content, can be stored in your own databases or CMS
+
+    systems, and these events can be triggered via webhooks
+
+    delivering messages to your application.
+
+
+    **Note:** To make API calls to any of the Connect endpoints, you must be an account administrator.
+
+
+    ## Incoming Connect Calls
+
+
+    To use the Connect service, your application needs to provide an
+
+    HTTPS URL that can be called from the public Internet. If your
+
+    application runs on a server behind your organization''s firewall,
+
+    then you will need to create a "pinhole" in the firewall to allow
+
+    the incoming Connect calls from Docusign to reach your
+
+    application. You can also use other techniques such as proxy
+
+    servers and DMZ networking for receiving the incoming calls.
+
+
+    Connect delivers events over HTTP requests in JSON or XML.
+
+    See [Docusign Connect overview](/platform/webhooks/connect/).
+
+
+    If your application is not configured to accept post messages,
+
+    Docusign will NOT return an additional post error response to
+
+    your listener application. If you''ve enabled logging on your
+
+    configuration, it will be logged in Admin under the configuration
+
+    failure log.
+
+
+    ## Per-envelope Connect Configuration
+
+
+    Instead of registering a general Connect configuration and
+
+    listener, an individual envelope can have its own Connect
+
+    configuration. See the
+
+    [`eventNotification`](/docs/esign-rest-api/reference/envelopes/envelopes/create/#schema__envelopedefinition_eventnotification)
+
+    property for envelopes.
+
+
+    ## Historical Publish Endpoint
+
+
+    To submit existing envelopes to an endpoint, use the [EnvelopePublish](/docs/esign-rest-api/reference/envelopes/envelopepublish/) resource.
+
+    '
 - name: Templates
   summary: Template creation and management
   description: 'Use the Templates category to manage your account''s templates.
 
 
-    You can:
+    This section shows you how to perform the following tasks:
 
 
     * Create, list, get, update, and delete templates.
 
-    * Manage templates'' notification and group sharing settings.
+    * Manage the notification and group sharing settings for templates.
 
     * Fetch and rotate pages from a document used by a template.
 
 
-    Templates can be created programmatically or can be created via the DocuSign web interface and then used by your application.'
+    You can create templates either programmatically or through the Docusign web interface and then used by your application.'
 - name: SigningGroups
-  summary: Send a signing request to a group of potential signers
-  description: 'Use the SigningGroup category to manage signing groups that allow you anyone in the group to sign a document.
+  summary: Send a signing request to a group of potential signers.
+  description: 'Use the Signing Group category to manage signing groups that allow anyone in the group to sign a document. When you send an envelope to a signing group, anyone in the group can open it and sign it with their own signature.
 
 
-    The category allows you create the signing group and manage the users in the group.'
+    This category shows account administrators how to create a signing group and manage the users in the group.
+
+
+    **Note:** To create and manage signing groups, you must be an account administrator.
+
+
+    For more information about this topic, see [Signing Groups](https://support.docusign.com/s/document-item?bundleId=gav1643676262430&topicId=zgn1578456447934.html).'
 - name: Folders
-  summary: Folders for completed envelopes
-  description: "Use the Folders category to manage envelopes in your folders. \n\nYou can list the folder contents and move envelopes between folders."
+  summary: Folders allow you to organize envelopes and templates.
+  description: 'Use the Folders category to organize envelopes and templates.
+
+    You can list the folder contents and move envelopes and templates between folders.'
 - name: CustomTabs
   summary: Custom tabs
   description: "Custom Tabs enable accounts to have one or more pre-configured (custom) tabs. Custom tabs save time when users are tagging documents since the users don't have to manually set the tabs' parameters.\n\nThis category enables custom tabs to be managed programmatically, including creation, deletion, etc. \n"
 - name: CloudStorage
-  summary: Cloud storage providers and user management
+  summary: This section shows you how to manage your cloud storage providers and users.
   description: 'Use the Cloud Storage category to list the user''s cloud storage document contents.
 
 
@@ -377,7 +568,7 @@ x-ds-categories:
 
     * Add delete users.
 
-    * Add and delete the intials and signature images for a user.'
+    * Add and delete the initials and signature images for a user.'
 - name: UserGroups
   summary: Group users for common permissions and branding
   description: 'Use the User Groups category to manage your permissions groups.
@@ -391,9 +582,28 @@ x-ds-categories:
     * Add users to, and delete users from, your groups.
 
     * Manage the brand information associated with a group.'
+- name: BulkEnvelopes
+  summary: Bulk envelopes
+  description: Use the BulkEnvelopes category to manage the sending of envelopes to multiple recipients.
 - name: Accounts
   summary: Account management
-  description: "Use the Account category for various account management tasks including:\n\n* Programmatically creating and deleting accounts.\n* Getting information about an account and its capabilities.\n* Branding the account with custom colors, message text, and more.\n* Account charges.\n\nThe Account category also includes end points for \n* Listing the recipient names associated with an email address that was used by the account. For example, a single email address is often shared by mulitple members of a family.\n\n\n"
+  description: 'Use the Account category for various account management tasks including:
+
+
+    * Programmatically creating and deleting accounts.
+
+    * Getting information about an account and its capabilities.
+
+    * Branding the account with custom colors, message text, and more.
+
+    * Account charges.
+
+
+    The Accounts category also includes end points for listing the recipient names associated with an email address that was used by the account. For example, a single email address is often shared by multiple members of a family.
+
+
+
+    '
 - name: Billing
   summary: Invoices
   description: 'Use the Billing category to manage the following billing related tasks:
@@ -415,18 +625,42 @@ x-ds-categories:
 
     * Getting information on the API''s resources and versions.'
 - name: PowerForms
-  summary: PowerForm creation and management
-  description: The PowerForms category enables PowerForms to be created and managed.
+  summary: The PowerForms category provides methods that enable you to create and manage fillable forms.
+  description: The PowerForms category enables you to create and manage PowerForms that you can use for self service and email forms.
 - name: Workspaces
-  summary: Workspace creation and management
-  description: 'Workspaces creation and management.
-
-
-    '
+  summary: A Docusign workspace is a collaboration area for sharing files and data.
+  description: "A workspace is a collaborative space for sharing documents and managing workflows. A workspace has a single owner who must be a Docusign user. The owner can invite others to the workspace as collaborators. Individuals who are not Docusign users must create a Docusign account to join a workspace as a collaborator.\n \nYou can create an envelope directly from a workspace.\n\nWorkspaces store the following information:\n\n- **Files:** Files uploaded to a workspace for storage or reuse.\n- **Documents:** A document is a component of a transaction, template, or workspace. When a file is added to a transaction, template, or workspace, it is copied as a document. Each document in a workspace has a single owner.\n- **Templates:** A set of documents that you can use to create a transaction or a workspace.\n- **Transactions:** A transaction is a series of workflow events related to one or more documents. These events route the documents to one or more individuals for the purposes of doing business. Each transaction has a single owner (the sender).\n\n**Note:** Documents in a template are not individually listed as files."
 - name: Payments
   summary: Manage Payments
   description: This category includes resources for managing payment gateways. Payment information is added to envelopes via methods in the Envelopes category.
-- name: Signature
+- name: EmailArchive
+  summary: This section shows you how to set and manage the BCC email addresses that you want to use to archive the emails that Docusign sends.
+  description: 'Email archives enable Docusign partners and other multi-account customers to easily archive emails sent through Docusign. The `EmailArchive` resource provides methods for managing your email archive configuration, which consists of the BCC email address or addresses that you want to use to archive Docusign emails. Each account can use up to five BCC email addresses for archiving purposes.
+
+
+    For more information, see [Email Archive Configuration](https://support.docusign.com/s/document-item?bundleId=pik1583277475390&topicId=xjm1583277371373.html).
+
+
+    **Note:** This feature is only available for certain account plans and must be enabled by Docusign.'
+- name: Notary
+  summary: 'Docusign eNotary makes the notarization process fully digital
+
+    for senders, signers, and notaries.
+
+    It enables a notary public to act as an in-person witness
+
+    to electronic signing of documents.
+
+    '
+  description: 'Docusign eNotary makes the notarization process fully digital
+
+    for senders, signers, and notaries.
+
+    It enables a notary public to act as an in-person witness
+
+    to electronic signing of documents.
+
+    '
+- name: Envelope
   summary: ''
   description: ''
-x-original-swagger-version: '2.0'

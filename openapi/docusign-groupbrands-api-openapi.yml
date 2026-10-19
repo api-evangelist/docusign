@@ -1,36 +1,37 @@
 openapi: 3.2.0
 info:
-  title: DocuSign REST Group Brands API
-  description: The DocuSign REST API provides you with a powerful, convenient, and simple Web services API for interacting with DocuSign.
+  version: v2.1
+  title: Docusign eSignature REST Group Brands API
+  description: The Docusign eSignature REST API provides you with a powerful, convenient, and simple Web services API for interacting with Docusign.
   termsOfService: https://www.docusign.com/company/terms-and-conditions/web
   contact:
-    name: DocuSign Developer Center
+    name: Docusign Developer Center
     url: https://developers.docusign.com/
     email: devcenter@docusign.com
-  version: v2
 servers:
 - url: https://www.docusign.net/restapi
 tags:
 - name: GroupBrands
-  description: The GroupBrands resource provides methods that allow you to manage
+  description: For the custom groups you define for your account, you can assign brands to specify the ones that group members can use. Group members can use the available brands when they send envelopes or create templates. For more information, see Assign Brands to Groups.
 paths:
-  /v2/accounts/{accountId}/groups/{groupId}/brands:
+  /v2.1/accounts/{accountId}/groups/{groupId}/brands:
+    parameters: []
     get:
       tags:
       - GroupBrands
-      summary: Docusign Gets group brand ID Information
-      description: Retrieves information about the brands associated with the requested group.
+      summary: Gets the brand information for a group
+      description: This method returns information about the brands associated with a group.
       operationId: Brands_GetGroupBrands
       parameters:
       - name: accountId
         in: path
-        description: The external account number (int) or account id GUID.
+        description: The external account number (int) or account ID GUID.
         required: true
         schema:
           type: string
       - name: groupId
         in: path
-        description: The ID of the group being accessed.
+        description: The ID of the group.
         required: true
         schema:
           type: string
@@ -38,13 +39,13 @@ paths:
         '200':
           description: Successful response.
           content:
-            '*/*':
+            application/json:
               schema:
                 $ref: '#/components/schemas/GroupBrands'
         '400':
           description: Error encountered.
           content:
-            '*/*':
+            application/json:
               schema:
                 $ref: '#/components/schemas/errorDetails'
       deprecated: false
@@ -55,13 +56,13 @@ paths:
     put:
       tags:
       - GroupBrands
-      summary: Docusign Adds group brand ID information to a group
-      description: Adds group brand ID information to a group.
+      summary: Adds an existing brand to a group
+      description: This method adds one or more existing brands to a group based on the `groupId`.
       operationId: Brands_PutGroupBrands
       parameters:
       - name: accountId
         in: path
-        description: The external account number (int) or account id GUID.
+        description: The external account number (int) or account ID GUID.
         required: true
         schema:
           type: string
@@ -71,26 +72,17 @@ paths:
         required: true
         schema:
           type: string
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/brandsRequest'
-          application/xml:
-            schema:
-              $ref: '#/components/schemas/brandsRequest'
-        required: false
       responses:
         '200':
           description: Successful response.
           content:
-            '*/*':
+            application/json:
               schema:
                 $ref: '#/components/schemas/GroupBrands'
         '400':
           description: Error encountered.
           content:
-            '*/*':
+            application/json:
               schema:
                 $ref: '#/components/schemas/errorDetails'
       deprecated: false
@@ -98,26 +90,6 @@ paths:
       x-ds-method: update
       x-ds-service: Groups
       x-ds-in-sdk: true
-      x-codegen-request-body-name: brandsRequest
-    delete:
-      tags:
-      - GroupBrands
-      summary: Docusign Deletes brand information from the requested group
-      description: Deletes brand information from the requested group.
-      operationId: Brands_DeleteGroupBrands
-      parameters:
-      - name: accountId
-        in: path
-        description: The external account number (int) or account id GUID.
-        required: true
-        schema:
-          type: string
-      - name: groupId
-        in: path
-        description: The ID of the group being accessed.
-        required: true
-        schema:
-          type: string
       requestBody:
         content:
           application/json:
@@ -126,18 +98,36 @@ paths:
           application/xml:
             schema:
               $ref: '#/components/schemas/brandsRequest'
-        required: false
+    delete:
+      tags:
+      - GroupBrands
+      summary: Deletes brand information from a group
+      description: This method deletes one or more brands from a group.
+      operationId: Brands_DeleteGroupBrands
+      parameters:
+      - name: accountId
+        in: path
+        description: The external account number (int) or account ID GUID.
+        required: true
+        schema:
+          type: string
+      - name: groupId
+        in: path
+        description: The ID of the group.
+        required: true
+        schema:
+          type: string
       responses:
         '200':
           description: Successful response.
           content:
-            '*/*':
+            application/json:
               schema:
                 $ref: '#/components/schemas/GroupBrands'
         '400':
           description: Error encountered.
           content:
-            '*/*':
+            application/json:
               schema:
                 $ref: '#/components/schemas/errorDetails'
       deprecated: false
@@ -145,256 +135,646 @@ paths:
       x-ds-method: delete
       x-ds-service: Groups
       x-ds-in-sdk: true
-      x-codegen-request-body-name: brandsRequest
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/brandsRequest'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/brandsRequest'
 components:
   schemas:
+    brandLogoIds:
+      type: object
+      properties:
+        emailLogoId:
+          description: ''
+          type: string
+        primaryLogoId:
+          description: ''
+          type: string
+        secondaryLogoId:
+          description: ''
+          type: string
+      x-ds-definition-name: brandLogoIds
+      description: ''
+      x-ms-summary: ''
+    brandRequest:
+      type: object
+      properties:
+        brandId:
+          description: The ID of the brand used in API calls
+          type: string
+      description: This request object contains information about a specific brand.
+      x-ds-definition-name: brandRequest
+      x-ms-summary: This request object contains information about a specific brand.
+    brand:
+      type: object
+      properties:
+        brandCompany:
+          description: The name of the company associated with the brand.
+          type: string
+        brandId:
+          description: The ID used to identify a specific brand in API calls.
+          type: string
+        brandLanguages:
+          description: 'An array of two-letter codes for the languages that you want to use with the brand. The supported languages are:
+
+
+            - Arabic (`ar`)
+
+            - Armenian (`hy`)
+
+            - Bahasa Indonesia (`id`)
+
+            - Bahasa Malay (`ms`)
+
+            - Bulgarian (`bg`)
+
+            - Chinese Simplified (`zh_CN`)
+
+            - Chinese Traditional (`zh_TW`)
+
+            - Croatian (`hr`)
+
+            - Czech (`cs`)
+
+            - Danish (`da`)
+
+            - Dutch (`nl`)
+
+            - English UK (`en_GB`)
+
+            - English US (`en`)
+
+            - Estonian (`et`)
+
+            - Farsi (`fa`)
+
+            - Finnish (`fi`)
+
+            - French (`fr`)
+
+            - French Canada (`fr_CA`)
+
+            - German (`de`)
+
+            - Greek (`el`)
+
+            - Hebrew (`he`)
+
+            - Hindi (`hi`)
+
+            - Hungarian (`hu`)
+
+            - Italian (`it`)
+
+            - Japanese (`ja`)
+
+            - Korean (`ko`)
+
+            - Latvian (`lv`)
+
+            - Lithuanian (`lt`)
+
+            - Norwegian (`no`)
+
+            - Polish (`pl`)
+
+            - Portuguese (`pt`)
+
+            - Portuguese Brasil (`pt_BR`)
+
+            - Romanian (`ro`)
+
+            - Russian (`ru`)
+
+            - Serbian (`sr`)
+
+            - Slovak (`sk`)
+
+            - Slovenian (`sl`)
+
+            - Spanish (`es`)
+
+            - Spanish Latin America (`es_MX`)
+
+            - Swedish (`sv`)
+
+            - Thai (`th`)
+
+            - Turkish (`tr`)
+
+            - Ukranian (`uk`)
+
+            - Vietnamese (`vi`)'
+          type: array
+          items:
+            type: string
+        brandName:
+          description: The name of the brand.
+          type: string
+        colors:
+          description: 'An array of name-value pairs specifying the colors that the brand uses for the following elements:
+
+
+            - Button background
+
+            - Button text
+
+            - Header background
+
+            - Header text'
+          type: array
+          items:
+            $ref: '#/components/schemas/nameValue'
+        defaultBrandLanguage:
+          description: 'The two-letter code for the language that you want to use as the brand default. The supported languages are:
+
+
+            - Arabic (`ar`)
+
+            - Armenian (`hy`)
+
+            - Bahasa Indonesia (`id`)
+
+            - Bahasa Malay (`ms`)
+
+            - Bulgarian (`bg`)
+
+            - Chinese Simplified (`zh_CN`)
+
+            - Chinese Traditional (`zh_TW`)
+
+            - Croatian (`hr`)
+
+            - Czech (`cs`)
+
+            - Danish (`da`)
+
+            - Dutch (`nl`)
+
+            - English UK (`en_GB`)
+
+            - English US (`en`)
+
+            - Estonian (`et`)
+
+            - Farsi (`fa`)
+
+            - Finnish (`fi`)
+
+            - French (`fr`)
+
+            - French Canada (`fr_CA`)
+
+            - German (`de`)
+
+            - Greek (`el`)
+
+            - Hebrew (`he`)
+
+            - Hindi (`hi`)
+
+            - Hungarian (`hu`)
+
+            - Italian (`it`)
+
+            - Japanese (`ja`)
+
+            - Korean (`ko`)
+
+            - Latvian (`lv`)
+
+            - Lithuanian (`lt`)
+
+            - Norwegian (`no`)
+
+            - Polish (`pl`)
+
+            - Portuguese (`pt`)
+
+            - Portuguese Brasil (`pt_BR`)
+
+            - Romanian (`ro`)
+
+            - Russian (`ru`)
+
+            - Serbian (`sr`)
+
+            - Slovak (`sk`)
+
+            - Slovenian (`sl`)
+
+            - Spanish (`es`)
+
+            - Spanish Latin America (`es_MX`)
+
+            - Swedish (`sv`)
+
+            - Thai (`th`)
+
+            - Turkish (`tr`)
+
+            - Ukranian (`uk`)
+
+            - Vietnamese (`vi`)'
+          type: string
+        emailContent:
+          description: Deprecated.
+          type: array
+          items:
+            $ref: '#/components/schemas/brandEmailContent'
+        errorDetails:
+          $ref: '#/components/schemas/errorDetails'
+          description: This object describes errors that occur. It is only valid for responses and ignored in requests.
+        isOrganizationBrand:
+          description: ''
+          type: string
+        isOverridingCompanyName:
+          description: When **true,** the `brandCompany` property is overriding the name of the company in the account settings.
+          type: boolean
+        isSendingDefault:
+          description: When **true,** the sending brand is the default brand for sending new envelopes.
+          type: boolean
+        isSigningDefault:
+          description: When **true,** the siging brand is the default brand for the signing experience.
+          type: boolean
+        landingPages:
+          description: 'An array of name/value pairs specifying the pages to which the user is redirected after the following events occur:
+
+
+            - Signing Completed
+
+            - Viewed Exit
+
+            - Finish Later
+
+            - Decline
+
+            - Session Timeout
+
+            - Authentication Failure
+
+
+            If you do not specify landing pages, the Docusign default pages are used.'
+          type: array
+          items:
+            $ref: '#/components/schemas/nameValue'
+        links:
+          description: An array of `brandLink` objects that contain information about the links that the brand uses.
+          type: array
+          items:
+            $ref: '#/components/schemas/brandLink'
+        logoIds:
+          $ref: '#/components/schemas/brandLogoIds'
+          description: ''
+        logos:
+          $ref: '#/components/schemas/brandLogos'
+          description: The URIs for retrieving the logos that are associated with the brand.
+        organizationBrandLogo:
+          description: ''
+          type: string
+        resources:
+          $ref: '#/components/schemas/brandResourceUrls'
+          description: 'An object containing the URLs for the four Docusign master resource files that the brand uses for sending, signing, email messages, and captive (embedded) signing. You can modify the default email messages and formats in these file to customize the user experience.
+
+
+            **Note:** This object is returned only when the `resourceContentType` is `sending`, `signing`, `email`, or `signing_captive`.'
+      description: Information about a brand that is associated with an account. A brand applies custom styles and text to an envelope.
+      x-ds-definition-name: brand
+      x-ms-summary: Information about a brand that is associated with an account. A brand applies custom styles and text to an envelope.
+    GroupBrands:
+      type: object
+      properties:
+        recipientBrandIdDefault:
+          description: The brand that envelope recipients see when a brand is not explicitly set.
+          type: string
+        senderBrandIdDefault:
+          description: The brand that envelope senders see when a brand is not explicitly set.
+          type: string
+        brandOptions:
+          description: A list of brands.
+          type: array
+          items:
+            $ref: '#/components/schemas/brand'
+      x-ds-definition-name: brandsResponse
+      description: If your account includes multiple signing brands, you can use the groups functionality to assign different brands to different groups. This resource enables you to manage group brands.
+      x-ds-category: UserGroups
+      x-ds-order: '30'
+      x-ms-summary: If your account includes multiple signing brands, you can use the groups functionality to assign different brands to different groups. This resource enables you to manage group brands.
+    brandEmailContent:
+      type: object
+      properties:
+        content:
+          description: Deprecated.
+          type: string
+        emailContentType:
+          description: Deprecated.
+          type: string
+        emailToLink:
+          description: Deprecated.
+          type: string
+        linkText:
+          description: Deprecated.
+          type: string
+      description: Deprecated.
+      x-ds-definition-name: brandEmailContent
+      x-ms-summary: Deprecated.
     brandLink:
       type: object
       properties:
         linkText:
+          description: The text used for the link.
           type: string
-          description: ''
         linkType:
+          description: 'The type of link. Valid values include:
+
+
+            - `aboutDocusign`
+
+            - `closeButton`'
           type: string
-          description: ''
         showLink:
+          description: When **true,** the link displays to the recipient.
           type: string
-          description: ''
         urlOrMailTo:
+          description: The URL or mailto address of the link.
           type: string
-          description: ''
-      description: ''
+      description: Information about a link that a brand uses.
       x-ds-definition-name: brandLink
-      x-ms-summary: ''
+      x-ms-summary: Information about a link that a brand uses.
     nameValue:
       type: object
       properties:
         errorDetails:
           $ref: '#/components/schemas/errorDetails'
+          description: This object describes errors that occur. It is only valid for responses and ignored in requests.
         name:
+          description: The name of the item.
           type: string
-          description: The name or key of a name/value pair.
         originalValue:
+          description: The initial value of the item.
           type: string
-          description: 'The initial value of the tab when it was sent to the recipient. '
         value:
+          description: The current value of the item.
           type: string
-          description: The value field of a name/value pair.
-      description: ''
+      description: A name-value pair that describes an item and provides a value for the item.
       x-ds-definition-name: nameValue
-      x-ms-summary: ''
+      x-ms-summary: A name-value pair that describes an item and provides a value for the item.
     brandResourceUrls:
       type: object
       properties:
         email:
+          description: The URI for the email resource file that the brand uses.
           type: string
-          description: ''
         sending:
+          description: The URI for the sending resource file that the brand uses.
           type: string
-          description: ''
         signing:
+          description: The URI for the signing resource file that the brand uses.
           type: string
-          description: ''
         signingCaptive:
+          description: The URI for the captive (embedded) signing resource file that the brand uses.
           type: string
-          description: ''
-      description: ''
+      description: "Brands use resource files to style the following experiences: \n\n- Email\n- Sending\n- Signing\n- Captive (embedded) signing \n\nYou can modify these resource files to customize these experiences."
       x-ds-definition-name: brandResourceUrls
-      x-ms-summary: ''
-    errorDetails:
-      type: object
-      properties:
-        errorCode:
-          type: string
-          description: An error code associated with the error.
-        message:
-          type: string
-          description: A short error message.
-      description: This object describes errors that occur. It is only valid for responses, and ignored in requests.
-      x-ds-definition-name: errorDetails
-      x-ms-summary: This object describes errors that occur. It is only valid for responses, and ignored in requests.
-    brandLogos:
-      type: object
-      properties:
-        email:
-          type: string
-          description: ''
-        primary:
-          type: string
-          description: ''
-        secondary:
-          type: string
-          description: ''
-      description: ''
-      x-ds-definition-name: brandLogos
-      x-ms-summary: ''
-    brand:
-      type: object
-      properties:
-        brandCompany:
-          type: string
-          description: The name of the company associated with this brand.
-        brandId:
-          type: string
-          description: The ID used to identify a specific brand in API calls.
-        brandName:
-          type: string
-          description: The name of the brand.
-        colors:
-          type: array
-          description: ''
-          items:
-            $ref: '#/components/schemas/nameValue'
-        emailContent:
-          type: array
-          description: ''
-          items:
-            $ref: '#/components/schemas/brandEmailContent'
-        errorDetails:
-          $ref: '#/components/schemas/errorDetails'
-        isOverridingCompanyName:
-          type: string
-          description: ''
-        isSendingDefault:
-          type: string
-          description: ''
-        isSigningDefault:
-          type: string
-          description: ''
-        landingPages:
-          type: array
-          description: ''
-          items:
-            $ref: '#/components/schemas/nameValue'
-        links:
-          type: array
-          description: ''
-          items:
-            $ref: '#/components/schemas/brandLink'
-        logos:
-          $ref: '#/components/schemas/brandLogos'
-        resources:
-          $ref: '#/components/schemas/brandResourceUrls'
-      description: ''
-      x-ds-definition-name: brand
-      x-ms-summary: ''
+      x-ms-summary: "Brands use resource files to style the following experiences: \n\n- Email\n- Sending\n- Signing\n- Captive (embedded) signing \n\nYou can modify these resource files to customize these experiences."
     brandsRequest:
       type: object
       properties:
         brands:
+          description: A list of brands.
           type: array
-          description: The list of brands.
           items:
             $ref: '#/components/schemas/brandRequest'
-      description: ''
+      description: Details about one or more brands.
       x-ds-definition-name: brandsRequest
-      x-ms-summary: ''
-    brandEmailContent:
+      x-ms-summary: Details about one or more brands.
+    errorDetails:
+      description: This object describes errors that occur. It is only valid for responses and ignored in requests.
       type: object
       properties:
-        content:
+        errorCode:
+          description: The code associated with the error condition.
           type: string
-          description: ''
-        emailContentType:
+        message:
+          description: A brief message describing the error condition.
           type: string
-          description: ''
-        emailToLink:
-          type: string
-          description: ''
-        linkText:
-          type: string
-          description: ''
-      description: ''
-      x-ds-definition-name: brandEmailContent
-      x-ms-summary: ''
-    GroupBrands:
+      x-ds-definition-name: errorDetails
+      x-ms-summary: This object describes errors that occur. It is only valid for responses and ignored in requests.
+    brandLogos:
       type: object
       properties:
-        recipientBrandIdDefault:
+        email:
+          description: 'The URI for the brand''s secondary logo.
+
+
+            This is a read-only property that provides a URI to the logo in use.
+
+            To update a logo use
+
+            [AccountBrands: updateLogo](/docs/esign-rest-api/reference/accounts/accountbrands/updatelogo/).
+
+            '
           type: string
-          description: The brand seen by envelope recipients when a brand is not explicitly set.
-        senderBrandIdDefault:
+        primary:
+          description: 'The URI for the brand''s secondary logo.
+
+
+            This is a read-only property that provides a URI to the logo in use.
+
+            To update a logo use
+
+            [AccountBrands: updateLogo](/docs/esign-rest-api/reference/accounts/accountbrands/updatelogo/).
+
+            '
           type: string
-          description: The brand seen by envelope senders when a brand is not explicitly set.
-        brandOptions:
-          type: array
-          description: The list of brands.
-          items:
-            $ref: '#/components/schemas/brand'
-      description: Brand management for groups
-      x-ds-definition-name: brandsResponse
-      x-ds-category: UserGroups
-      x-ds-order: '30'
-      x-ms-summary: Brand management for groups
-    brandRequest:
-      type: object
-      properties:
-        brandId:
+        secondary:
+          description: 'The URI for the brand''s secondary logo.
+
+
+            This is a read-only property that provides a URI to the logo in use.
+
+            To update a logo use
+
+            [AccountBrands: updateLogo](/docs/esign-rest-api/reference/accounts/accountbrands/updatelogo/).
+
+            '
           type: string
-          description: The ID of the brand used in API calls
-      description: ''
-      x-ds-definition-name: brandRequest
-      x-ms-summary: ''
+      description: 'The URIs for retrieving the logos that are associated with the brand.
+
+
+        These are read-only properties that provide a URI to logos in use.
+
+        To update a logo use
+
+        [AccountBrands: updateLogo](/docs/esign-rest-api/reference/accounts/accountbrands/updatelogo/).
+
+        '
+      x-ds-definition-name: brandLogos
+      x-ms-summary: 'The URIs for retrieving the logos that are associated with the brand.
+
+
+        These are read-only properties that provide a URI to logos in use.
+
+        To update a logo use
+
+        [AccountBrands: updateLogo](/docs/esign-rest-api/reference/accounts/accountbrands/updatelogo/).
+
+        '
 externalDocs:
-  description: See the DocuSign REST API Guide for more information.
+  description: See the Docusign eSignature REST API Guide for more information.
   url: https://docs.docusign.com/esign
 x-ds-allow-editing: false
 x-ds-categories:
-- name: Authentication
-  summary: Logging in and authentication
-  description: 'Use the Authentication category to manage various account login tasks including:
-
-
-    * Getting login information for a user.
-
-    * Managing linked social accounts.
-
-    * Getting and revoking OAuth tokens.'
 - name: Envelopes
-  summary: Creating and sending envelopes
-  description: 'The DocuSign API Envelope category includes the resources and methods for sending and managing envelopes and envelope data.
+  summary: This section shows you how to create and send envelopes.
+  description: 'The eSignature API Envelope category includes the resources and methods for sending and managing envelopes and envelope data.
 
 
-    Envelopes are the key objects within the DocuSign eSignature system. As a result, they are complex data structures with few required fields. See the [API Recipes](https://www.docusign.com/developer-center/recipes) for use case examples and their solutions.
+    Envelopes are the key objects in the Docusign platform. As a result, they are complex data structures with few required fields. See the [How-to guides](/docs/esign-rest-api/how-to/) for examples and solutions.
 
 
-    To create and send envelopes, see the [Envelopes resource](Envelopes).
-
+    To learn more about envelopes, see [Envelopes](/docs/esign-rest-api/esign101/concepts/envelopes/).
 
     '
 - name: Connect
-  summary: Connect configuration and logging
-  description: "The Connect category enables your application to be called via HTTPS when an event of interest occurs.\n\nUse the Connect service to \"end the polling madness.\" With Connect, there is no need for your application to poll DocuSign every 15 minutes to learn the latest about your envelopes.\n\nInstead, you register your interest in one or more types of envelope or recipient events. Then, when an interesting event occurs, the DocuSign platform will contact your application with the event's details and data. You can register interest in envelopes sent by particular users in your account, or for envelopes sent by any user.\n\n## Incoming Connect Calls\nTo use the Connect service, your application needs to provide an https url that can be called from the public internet. If your application runs on a server behind your organization's firewall, then you will need to create a \"pinhole\" in the firewall to allow the incoming Connect calls from DocuSign to reach your application. Other techniques for receiving the incoming calls including proxy servers and DMZ networking can also be used. \n\n## Per-envelope Connect Configuration\nInstead of registering a general Connect configuration and listener, an individual envelope can have its own Connect configuration. See the `eventNotification` field for envelopes.\n\n## Categories\nUse the Connect category for:\n\n* Programmatically creating Connect configurations. Connect configurations can be created manually by using the DocuSign web service, or programmatically via the API. Configurations created via the API can be seen and updated from the web service.\n* Retrieving and managing the event log for your Connect configurations. \n* Requesting that an event be re-published to the listener."
+  summary: "Docusign Connect is the Docusign platform notification service. The service uses webhooks to proactively notify your application when an event occurs that your application wants to know about. Docusign recommends that all applications use Connect instead of polling the Docusign Signature Service. This section provides information about Connect configuration and logging. \n\n**Note:** To make API calls to any of the Connect endpoints, you must be an account administrator.\n\nFor more information about Connect, see [Docusign Connect](/platform/webhooks/connect/) and [Custom Connect Configuration](https://support.docusign.com/s/document-item?bundleId=pik1583277475390&topicId=khw1583277390582.html)."
+  description: 'The Connect service enables your application to be called via
+
+    HTTPS when an event of interest occurs.
+
+
+    Use the Connect service to "end the polling madness." With
+
+    Connect, there is no need for your application to poll Docusign
+
+    every 15 minutes to learn the latest about your envelopes.
+
+
+    Instead, you register your interest in one or more types of
+
+    envelope or recipient events. Then, when an interesting event
+
+    occurs, the Docusign platform will contact your application with
+
+    the event''s details and data. You can register interest in
+
+    envelopes sent by particular users in your account, or for
+
+    envelopes sent by any user.
+
+
+    Connect can empower your organization to manage document actions
+
+    as they occur, and allows you to track their changes within your
+
+    own systems. Upon completion, envelope information, including
+
+    document content, can be stored in your own databases or CMS
+
+    systems, and these events can be triggered via webhooks
+
+    delivering messages to your application.
+
+
+    **Note:** To make API calls to any of the Connect endpoints, you must be an account administrator.
+
+
+    ## Incoming Connect Calls
+
+
+    To use the Connect service, your application needs to provide an
+
+    HTTPS URL that can be called from the public Internet. If your
+
+    application runs on a server behind your organization''s firewall,
+
+    then you will need to create a "pinhole" in the firewall to allow
+
+    the incoming Connect calls from Docusign to reach your
+
+    application. You can also use other techniques such as proxy
+
+    servers and DMZ networking for receiving the incoming calls.
+
+
+    Connect delivers events over HTTP requests in JSON or XML.
+
+    See [Docusign Connect overview](/platform/webhooks/connect/).
+
+
+    If your application is not configured to accept post messages,
+
+    Docusign will NOT return an additional post error response to
+
+    your listener application. If you''ve enabled logging on your
+
+    configuration, it will be logged in Admin under the configuration
+
+    failure log.
+
+
+    ## Per-envelope Connect Configuration
+
+
+    Instead of registering a general Connect configuration and
+
+    listener, an individual envelope can have its own Connect
+
+    configuration. See the
+
+    [`eventNotification`](/docs/esign-rest-api/reference/envelopes/envelopes/create/#schema__envelopedefinition_eventnotification)
+
+    property for envelopes.
+
+
+    ## Historical Publish Endpoint
+
+
+    To submit existing envelopes to an endpoint, use the [EnvelopePublish](/docs/esign-rest-api/reference/envelopes/envelopepublish/) resource.
+
+    '
 - name: Templates
   summary: Template creation and management
   description: 'Use the Templates category to manage your account''s templates.
 
 
-    You can:
+    This section shows you how to perform the following tasks:
 
 
     * Create, list, get, update, and delete templates.
 
-    * Manage templates'' notification and group sharing settings.
+    * Manage the notification and group sharing settings for templates.
 
     * Fetch and rotate pages from a document used by a template.
 
 
-    Templates can be created programmatically or can be created via the DocuSign web interface and then used by your application.'
+    You can create templates either programmatically or through the Docusign web interface and then used by your application.'
 - name: SigningGroups
-  summary: Send a signing request to a group of potential signers
-  description: 'Use the SigningGroup category to manage signing groups that allow you anyone in the group to sign a document.
+  summary: Send a signing request to a group of potential signers.
+  description: 'Use the Signing Group category to manage signing groups that allow anyone in the group to sign a document. When you send an envelope to a signing group, anyone in the group can open it and sign it with their own signature.
 
 
-    The category allows you create the signing group and manage the users in the group.'
+    This category shows account administrators how to create a signing group and manage the users in the group.
+
+
+    **Note:** To create and manage signing groups, you must be an account administrator.
+
+
+    For more information about this topic, see [Signing Groups](https://support.docusign.com/s/document-item?bundleId=gav1643676262430&topicId=zgn1578456447934.html).'
 - name: Folders
-  summary: Folders for completed envelopes
-  description: "Use the Folders category to manage envelopes in your folders. \n\nYou can list the folder contents and move envelopes between folders."
+  summary: Folders allow you to organize envelopes and templates.
+  description: 'Use the Folders category to organize envelopes and templates.
+
+    You can list the folder contents and move envelopes and templates between folders.'
 - name: CustomTabs
   summary: Custom tabs
   description: "Custom Tabs enable accounts to have one or more pre-configured (custom) tabs. Custom tabs save time when users are tagging documents since the users don't have to manually set the tabs' parameters.\n\nThis category enables custom tabs to be managed programmatically, including creation, deletion, etc. \n"
 - name: CloudStorage
-  summary: Cloud storage providers and user management
+  summary: This section shows you how to manage your cloud storage providers and users.
   description: 'Use the Cloud Storage category to list the user''s cloud storage document contents.
 
 
@@ -413,7 +793,7 @@ x-ds-categories:
 
     * Add delete users.
 
-    * Add and delete the intials and signature images for a user.'
+    * Add and delete the initials and signature images for a user.'
 - name: UserGroups
   summary: Group users for common permissions and branding
   description: 'Use the User Groups category to manage your permissions groups.
@@ -427,9 +807,28 @@ x-ds-categories:
     * Add users to, and delete users from, your groups.
 
     * Manage the brand information associated with a group.'
+- name: BulkEnvelopes
+  summary: Bulk envelopes
+  description: Use the BulkEnvelopes category to manage the sending of envelopes to multiple recipients.
 - name: Accounts
   summary: Account management
-  description: "Use the Account category for various account management tasks including:\n\n* Programmatically creating and deleting accounts.\n* Getting information about an account and its capabilities.\n* Branding the account with custom colors, message text, and more.\n* Account charges.\n\nThe Account category also includes end points for \n* Listing the recipient names associated with an email address that was used by the account. For example, a single email address is often shared by mulitple members of a family.\n\n\n"
+  description: 'Use the Account category for various account management tasks including:
+
+
+    * Programmatically creating and deleting accounts.
+
+    * Getting information about an account and its capabilities.
+
+    * Branding the account with custom colors, message text, and more.
+
+    * Account charges.
+
+
+    The Accounts category also includes end points for listing the recipient names associated with an email address that was used by the account. For example, a single email address is often shared by multiple members of a family.
+
+
+
+    '
 - name: Billing
   summary: Invoices
   description: 'Use the Billing category to manage the following billing related tasks:
@@ -451,18 +850,42 @@ x-ds-categories:
 
     * Getting information on the API''s resources and versions.'
 - name: PowerForms
-  summary: PowerForm creation and management
-  description: The PowerForms category enables PowerForms to be created and managed.
+  summary: The PowerForms category provides methods that enable you to create and manage fillable forms.
+  description: The PowerForms category enables you to create and manage PowerForms that you can use for self service and email forms.
 - name: Workspaces
-  summary: Workspace creation and management
-  description: 'Workspaces creation and management.
-
-
-    '
+  summary: A Docusign workspace is a collaboration area for sharing files and data.
+  description: "A workspace is a collaborative space for sharing documents and managing workflows. A workspace has a single owner who must be a Docusign user. The owner can invite others to the workspace as collaborators. Individuals who are not Docusign users must create a Docusign account to join a workspace as a collaborator.\n \nYou can create an envelope directly from a workspace.\n\nWorkspaces store the following information:\n\n- **Files:** Files uploaded to a workspace for storage or reuse.\n- **Documents:** A document is a component of a transaction, template, or workspace. When a file is added to a transaction, template, or workspace, it is copied as a document. Each document in a workspace has a single owner.\n- **Templates:** A set of documents that you can use to create a transaction or a workspace.\n- **Transactions:** A transaction is a series of workflow events related to one or more documents. These events route the documents to one or more individuals for the purposes of doing business. Each transaction has a single owner (the sender).\n\n**Note:** Documents in a template are not individually listed as files."
 - name: Payments
   summary: Manage Payments
   description: This category includes resources for managing payment gateways. Payment information is added to envelopes via methods in the Envelopes category.
-- name: Signature
+- name: EmailArchive
+  summary: This section shows you how to set and manage the BCC email addresses that you want to use to archive the emails that Docusign sends.
+  description: 'Email archives enable Docusign partners and other multi-account customers to easily archive emails sent through Docusign. The `EmailArchive` resource provides methods for managing your email archive configuration, which consists of the BCC email address or addresses that you want to use to archive Docusign emails. Each account can use up to five BCC email addresses for archiving purposes.
+
+
+    For more information, see [Email Archive Configuration](https://support.docusign.com/s/document-item?bundleId=pik1583277475390&topicId=xjm1583277371373.html).
+
+
+    **Note:** This feature is only available for certain account plans and must be enabled by Docusign.'
+- name: Notary
+  summary: 'Docusign eNotary makes the notarization process fully digital
+
+    for senders, signers, and notaries.
+
+    It enables a notary public to act as an in-person witness
+
+    to electronic signing of documents.
+
+    '
+  description: 'Docusign eNotary makes the notarization process fully digital
+
+    for senders, signers, and notaries.
+
+    It enables a notary public to act as an in-person witness
+
+    to electronic signing of documents.
+
+    '
+- name: Envelope
   summary: ''
   description: ''
-x-original-swagger-version: '2.0'

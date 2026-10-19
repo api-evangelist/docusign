@@ -1,0 +1,1807 @@
+openapi: 3.2.0
+info:
+  version: v2.1
+  title: Docusign eSignature REST Envelope Workflow Definition API
+  description: The Docusign eSignature REST API provides you with a powerful, convenient, and simple Web services API for interacting with Docusign.
+  termsOfService: https://www.docusign.com/company/terms-and-conditions/web
+  contact:
+    name: Docusign Developer Center
+    url: https://developers.docusign.com/
+    email: devcenter@docusign.com
+servers:
+- url: https://www.docusign.net/restapi
+tags:
+- name: EnvelopeWorkflowDefinition
+  description: 'Describes the workflow for an envelope or template. These methods enable you to use the scheduled sending and delayed routing features.
+
+
+    ### Related topics
+
+
+    - How to schedule an envelope
+
+    - How to send an envelope with delayed routing'
+paths:
+  /v2.1/accounts/{accountId}/envelopes/{envelopeId}/workflow:
+    parameters: []
+    get:
+      tags:
+      - EnvelopeWorkflowDefinition
+      summary: Returns the workflow definition for an envelope
+      operationId: EnvelopeWorkflowDefinitionV2_GetEnvelopeWorkflowDefinition
+      parameters:
+      - name: accountId
+        in: path
+        description: The external account number (int) or account ID GUID.
+        required: true
+        schema:
+          type: string
+      - name: envelopeId
+        in: path
+        description: "The envelope's GUID. \n\nExample: `93be49ab-xxxx-xxxx-xxxx-f752070d71ec`\n"
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Successful response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/workflow'
+        '400':
+          description: Error encountered.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorDetails'
+      deprecated: false
+      x-ds-methodname: getEnvelopeWorkflowDefinition
+      description: Returns the workflow definition for the envelope specified by `envelopeId`. If the envelope does not have a workflow object, this method returns a 404.
+      x-ds-method: getEnvelopeWorkflowDefinition
+      x-ds-service: Uncategorized
+      x-ds-in-sdk: true
+    put:
+      tags:
+      - EnvelopeWorkflowDefinition
+      summary: Updates the workflow definition for an envelope
+      operationId: EnvelopeWorkflowDefinitionV2_PutEnvelopeWorkflowDefinition
+      parameters:
+      - name: accountId
+        in: path
+        description: The external account number (int) or account ID GUID.
+        required: true
+        schema:
+          type: string
+      - name: envelopeId
+        in: path
+        description: "The envelope's GUID. \n\nExample: `93be49ab-xxxx-xxxx-xxxx-f752070d71ec`\n"
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Successful response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/workflow'
+        '400':
+          description: Error encountered.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorDetails'
+      deprecated: false
+      x-ds-methodname: updateEnvelopeWorkflowDefinition
+      description: 'Updates the specified envelope''s workflow.
+
+
+        You can use this endpoint to add scheduled sending to a draft envelope. You can also update the scheduled sending for a sent envelope if the scheduled sending countdown is in progress. In that case, the envelope will be reset to a draft state.
+
+
+        You can also add delayed routing to a draft envelope or a sent envelope that has not started workflow processing.'
+      x-ds-method: updateEnvelopeWorkflowDefinition
+      x-ds-service: Uncategorized
+      x-ds-in-sdk: true
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/workflow'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/workflow'
+    delete:
+      tags:
+      - EnvelopeWorkflowDefinition
+      summary: Delete the workflow definition for an envelope
+      operationId: EnvelopeWorkflowDefinitionV2_DeleteEnvelopeWorkflowDefinition
+      parameters:
+      - name: accountId
+        in: path
+        description: The external account number (int) or account ID GUID.
+        required: true
+        schema:
+          type: string
+      - name: envelopeId
+        in: path
+        description: "The envelope's GUID. \n\nExample: `93be49ab-xxxx-xxxx-xxxx-f752070d71ec`\n"
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Successful response.
+        '400':
+          description: Error encountered.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorDetails'
+      deprecated: false
+      x-ds-methodname: deleteEnvelopeWorkflowDefinition
+      description: 'Deletes the specified envelope''s workflow definition if it has one.
+
+
+        **Note:** If the envelope was scheduled to be sent, this endpoint will cancel the scheduled send and the envelope status will be reset to
+
+        `created`. To resend the envelope, call the update the status to `sent` with the Envelopes::Update method.'
+      x-ds-method: deleteEnvelopeWorkflowDefinition
+      x-ds-service: Uncategorized
+      x-ds-in-sdk: true
+  /v2.1/accounts/{accountId}/envelopes/{envelopeId}/workflow/scheduledSending:
+    parameters: []
+    get:
+      tags:
+      - EnvelopeWorkflowDefinition
+      summary: Returns the scheduled sending rules for an envelope's workflow definition
+      operationId: EnvelopeWorkflowScheduledSending_GetEnvelopeScheduledSendingDefinition
+      parameters:
+      - name: accountId
+        in: path
+        description: The external account number (int) or account ID GUID.
+        required: true
+        schema:
+          type: string
+      - name: envelopeId
+        in: path
+        description: "The envelope's GUID. \n\nExample: `93be49ab-xxxx-xxxx-xxxx-f752070d71ec`\n"
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Successful response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/scheduledSending'
+        '400':
+          description: Error encountered.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorDetails'
+      deprecated: false
+      x-ds-methodname: getEnvelopeScheduledSendingDefinition
+      x-ds-method: getEnvelopeScheduledSendingDefinition
+      x-ds-service: Uncategorized
+      description: 'Given a template and a workflow step, returns the scheduled sending rules for that workflow step.
+
+
+        **Note:** If the workflow step does not have a scheduled sending object, this method returns a 404.'
+      x-ds-in-sdk: true
+    put:
+      tags:
+      - EnvelopeWorkflowDefinition
+      summary: Updates the scheduled sending rules for an envelope's workflow
+      operationId: EnvelopeWorkflowScheduledSending_PutEnvelopeScheduledSendingDefinition
+      parameters:
+      - name: accountId
+        in: path
+        description: The external account number (int) or account ID GUID.
+        required: true
+        schema:
+          type: string
+      - name: envelopeId
+        in: path
+        description: "The envelope's GUID. \n\nExample: `93be49ab-xxxx-xxxx-xxxx-f752070d71ec`\n"
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Successful response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/scheduledSending'
+        '400':
+          description: Error encountered.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorDetails'
+      deprecated: false
+      x-ds-methodname: updateEnvelopeScheduledSendingDefinition
+      x-ds-method: updateEnvelopeScheduledSendingDefinition
+      x-ds-service: Uncategorized
+      description: Updates the scheduled sending rules for an envelope's workflow. The envelope must have an existing workflow object.
+      x-ds-in-sdk: true
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/scheduledSending'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/scheduledSending'
+        description: An object that describes the settings for scheduled sending.
+    delete:
+      tags:
+      - EnvelopeWorkflowDefinition
+      summary: Deletes the scheduled sending rules for the envelope's workflow
+      operationId: EnvelopeWorkflowScheduledSending_DeleteEnvelopeScheduledSendingDefinition
+      parameters:
+      - name: accountId
+        in: path
+        description: The external account number (int) or account ID GUID.
+        required: true
+        schema:
+          type: string
+      - name: envelopeId
+        in: path
+        description: "The envelope's GUID. \n\nExample: `93be49ab-xxxx-xxxx-xxxx-f752070d71ec`\n"
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Successful response.
+        '400':
+          description: Error encountered.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorDetails'
+      deprecated: false
+      x-ds-methodname: deleteEnvelopeScheduledSendingDefinition
+      x-ds-method: deleteEnvelopeScheduledSendingDefinition
+      x-ds-service: Uncategorized
+      description: Deletes the scheduled sending rules for an envelope's workflow. You cannot call this endpoint once the scheduled sending countdown has begun.
+      x-ds-in-sdk: true
+  /v2.1/accounts/{accountId}/envelopes/{envelopeId}/workflow/steps:
+    parameters: []
+    post:
+      tags:
+      - EnvelopeWorkflowDefinition
+      summary: Adds a new step to an envelope's workflow
+      operationId: EnvelopeWorkflowStep_PostEnvelopeWorkflowStepDefinition
+      parameters:
+      - name: accountId
+        in: path
+        description: The external account number (int) or account ID GUID.
+        required: true
+        schema:
+          type: string
+      - name: envelopeId
+        in: path
+        description: "The envelope's GUID. \n\nExample: `93be49ab-xxxx-xxxx-xxxx-f752070d71ec`\n"
+        required: true
+        schema:
+          type: string
+      responses:
+        '201':
+          description: Successful response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/workflowStep'
+        '400':
+          description: Error encountered.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorDetails'
+      deprecated: false
+      x-ds-methodname: createEnvelopeWorkflowStepDefinition
+      x-ds-method: createEnvelopeWorkflowStepDefinition
+      x-ds-service: Uncategorized
+      description: Adds a new step to an envelope's workflow.
+      x-ds-in-sdk: true
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/workflowStep'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/workflowStep'
+  /v2.1/accounts/{accountId}/envelopes/{envelopeId}/workflow/steps/{workflowStepId}:
+    parameters: []
+    get:
+      tags:
+      - EnvelopeWorkflowDefinition
+      summary: Returns a specified workflow step for a specified template
+      operationId: EnvelopeWorkflowStep_GetEnvelopeWorkflowStepDefinition
+      parameters:
+      - name: accountId
+        in: path
+        description: The external account number (int) or account ID GUID.
+        required: true
+        schema:
+          type: string
+      - name: envelopeId
+        in: path
+        description: "The envelope's GUID. \n\nExample: `93be49ab-xxxx-xxxx-xxxx-f752070d71ec`\n"
+        required: true
+        schema:
+          type: string
+      - name: workflowStepId
+        in: path
+        required: true
+        description: The ID of the workflow step.
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Successful response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/workflowStep'
+        '400':
+          description: Error encountered.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorDetails'
+      deprecated: false
+      x-ds-methodname: getEnvelopeWorkflowStepDefinition
+      x-ds-method: getEnvelopeWorkflowStepDefinition
+      x-ds-service: Uncategorized
+      description: Returns a workflow step specified by `workflowStepId` for an envelope specified by `envelopeId`.
+      x-ds-in-sdk: true
+    put:
+      tags:
+      - EnvelopeWorkflowDefinition
+      summary: Updates the specified workflow step for an envelope
+      operationId: EnvelopeWorkflowStep_PutEnvelopeWorkflowStepDefinition
+      parameters:
+      - name: accountId
+        in: path
+        description: The external account number (int) or account ID GUID.
+        required: true
+        schema:
+          type: string
+      - name: envelopeId
+        in: path
+        description: "The envelope's GUID. \n\nExample: `93be49ab-xxxx-xxxx-xxxx-f752070d71ec`\n"
+        required: true
+        schema:
+          type: string
+      - name: workflowStepId
+        in: path
+        required: true
+        description: The ID of the workflow step.
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Successful response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/workflowStep'
+        '400':
+          description: Error encountered.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorDetails'
+      deprecated: false
+      x-ds-methodname: updateEnvelopeWorkflowStepDefinition
+      x-ds-method: updateEnvelopeWorkflowStepDefinition
+      x-ds-service: Uncategorized
+      description: 'Updates the workflow step specified by `workflowStepId` for an envelope.
+
+
+        You can use this endpoint to add or update delayed routing for a draft envelope. You can add or update delayed routing for a sent envelope as long as the previous workflow step has not been completed.'
+      x-ds-in-sdk: true
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/workflowStep'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/workflowStep'
+    delete:
+      tags:
+      - EnvelopeWorkflowDefinition
+      summary: Deletes a workflow step from an envelope's workflow definition
+      operationId: EnvelopeWorkflowStep_DeleteEnvelopeWorkflowStepDefinition
+      parameters:
+      - name: accountId
+        in: path
+        description: The external account number (int) or account ID GUID.
+        required: true
+        schema:
+          type: string
+      - name: envelopeId
+        in: path
+        description: "The envelope's GUID. \n\nExample: `93be49ab-xxxx-xxxx-xxxx-f752070d71ec`\n"
+        required: true
+        schema:
+          type: string
+      - name: workflowStepId
+        in: path
+        required: true
+        description: The ID of the workflow step.
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Successful response.
+        '400':
+          description: Error encountered.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorDetails'
+      deprecated: false
+      x-ds-methodname: deleteEnvelopeWorkflowStepDefinition
+      x-ds-method: deleteEnvelopeWorkflowStepDefinition
+      x-ds-service: Uncategorized
+      description: Deletes the workflow step specified by `workflowStepId` from an envelope specified by `envelopeId`.
+      x-ds-in-sdk: true
+  /v2.1/accounts/{accountId}/envelopes/{envelopeId}/workflow/steps/{workflowStepId}/delayedRouting:
+    parameters: []
+    get:
+      tags:
+      - EnvelopeWorkflowDefinition
+      summary: Returns the delayed routing rules for an envelope's workflow step definition
+      operationId: EnvelopeWorkflowDelayedRouting_GetEnvelopeDelayedRoutingDefinition
+      parameters:
+      - name: accountId
+        in: path
+        description: The external account number (int) or account ID GUID.
+        required: true
+        schema:
+          type: string
+      - name: envelopeId
+        in: path
+        description: "The envelope's GUID. \n\nExample: `93be49ab-xxxx-xxxx-xxxx-f752070d71ec`\n"
+        required: true
+        schema:
+          type: string
+      - name: workflowStepId
+        in: path
+        required: true
+        description: The ID of the workflow step.
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Successful response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/delayedRouting'
+        '400':
+          description: Error encountered.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorDetails'
+      deprecated: false
+      x-ds-methodname: getEnvelopeDelayedRoutingDefinition
+      x-ds-method: getEnvelopeDelayedRoutingDefinition
+      x-ds-service: Uncategorized
+      description: 'Given an envelope and a workflow step, returns the delayed routing rules for that workflow step.
+
+
+        **Note:** If the workflow step does not have a delayed routing object, this method returns a 404.'
+      x-ds-in-sdk: true
+    put:
+      tags:
+      - EnvelopeWorkflowDefinition
+      summary: Updates the delayed routing rules for an envelope's workflow step definition
+      operationId: EnvelopeWorkflowDelayedRouting_PutEnvelopeDelayedRoutingDefinition
+      parameters:
+      - name: accountId
+        in: path
+        description: The external account number (int) or account ID GUID.
+        required: true
+        schema:
+          type: string
+      - name: envelopeId
+        in: path
+        description: "The envelope's GUID. \n\nExample: `93be49ab-xxxx-xxxx-xxxx-f752070d71ec`\n"
+        required: true
+        schema:
+          type: string
+      - name: workflowStepId
+        in: path
+        required: true
+        description: The ID of the workflow step.
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Successful response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/delayedRouting'
+        '400':
+          description: Error encountered.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorDetails'
+      deprecated: false
+      x-ds-methodname: updateEnvelopeDelayedRoutingDefinition
+      x-ds-method: updateEnvelopeDelayedRoutingDefinition
+      x-ds-service: Uncategorized
+      description: 'Updates the delayed routing rules for an envelope''s workflow step definition.
+
+
+        You can use this endpoint to add delayed routing to a draft envelope or a sent envelope (as long as the previous workflow step has not yet been completed). You can also update the delayed routing rule for an envelope, as long as the delay is not yet complete. If you update the delayed routing rule while the delay is already in progress, the countdown will reset.'
+      x-ds-in-sdk: true
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/delayedRouting'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/delayedRouting'
+        description: A complex element that specifies the delayed routing settings for the workflow step.
+    delete:
+      tags:
+      - EnvelopeWorkflowDefinition
+      summary: Deletes the delayed routing rules for the specified envelope workflow step
+      operationId: EnvelopeWorkflowDelayedRouting_DeleteEnvelopeDelayedRoutingDefinition
+      parameters:
+      - name: accountId
+        in: path
+        description: The external account number (int) or account ID GUID.
+        required: true
+        schema:
+          type: string
+      - name: envelopeId
+        in: path
+        description: "The envelope's GUID. \n\nExample: `93be49ab-xxxx-xxxx-xxxx-f752070d71ec`\n"
+        required: true
+        schema:
+          type: string
+      - name: workflowStepId
+        in: path
+        required: true
+        description: The ID of the workflow step.
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Successful response.
+        '400':
+          description: Error encountered.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorDetails'
+      deprecated: false
+      x-ds-methodname: deleteEnvelopeDelayedRoutingDefinition
+      x-ds-method: deleteEnvelopeDelayedRoutingDefinition
+      x-ds-service: Uncategorized
+      description: 'Delete the delayed routing object for an envelope''s workflow step. You cannot call this endpoint once the delay is in progress. As a workaround, you can update the delay or send time to one minute in the future using the updateEnvelopeDelayedRoutingDefinition endpoint.
+
+
+        **Note:** After deleting the delayed routing object, the workflow step still contains the `pause_before` action. Once the workflow step is reached, you will need to unpause the envelope. If you want to delete the step entirely, use deleteEnvelopeWorkflowStepDefinition instead.'
+      x-ds-in-sdk: true
+  /v2.1/accounts/{accountId}/templates/{templateId}/workflow:
+    parameters: []
+    get:
+      tags:
+      - EnvelopeWorkflowDefinition
+      summary: Returns the workflow definition for a template
+      operationId: TemplateWorkflowDefinition_GetTemplateWorkflowDefinition
+      parameters:
+      - name: accountId
+        in: path
+        description: The external account number (int) or account ID GUID.
+        required: true
+        schema:
+          type: string
+      - name: templateId
+        in: path
+        description: The ID of the template.
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Successful response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/workflow'
+        '400':
+          description: Error encountered.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorDetails'
+      deprecated: false
+      x-ds-methodname: getTemplateWorkflowDefinition
+      description: Returns the workflow definition for the template specified by `templateId`. If the template does not have a workflow object, this method returns a 404.
+      x-ds-method: getTemplateWorkflowDefinition
+      x-ds-service: Uncategorized
+      x-ds-in-sdk: true
+    put:
+      tags:
+      - EnvelopeWorkflowDefinition
+      summary: Updates the workflow definition for a template
+      operationId: TemplateWorkflowDefinition_PutTemplateWorkflowDefinition
+      parameters:
+      - name: accountId
+        in: path
+        description: The external account number (int) or account ID GUID.
+        required: true
+        schema:
+          type: string
+      - name: templateId
+        in: path
+        description: The ID of the template.
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Successful response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/workflow'
+        '400':
+          description: Error encountered.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorDetails'
+      deprecated: false
+      x-ds-methodname: updateTemplateWorkflowDefinition
+      description: Updates the specified template's workflow definition.
+      x-ds-method: updateTemplateWorkflowDefinition
+      x-ds-service: Uncategorized
+      x-ds-in-sdk: true
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/workflow'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/workflow'
+    delete:
+      tags:
+      - EnvelopeWorkflowDefinition
+      summary: Delete the workflow definition for a template
+      operationId: TemplateWorkflowDefinition_DeleteTemplateWorkflowDefinition
+      parameters:
+      - name: accountId
+        in: path
+        description: The external account number (int) or account ID GUID.
+        required: true
+        schema:
+          type: string
+      - name: templateId
+        in: path
+        description: The ID of the template.
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Successful response.
+        '400':
+          description: Error encountered.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorDetails'
+      deprecated: false
+      x-ds-methodname: deleteTemplateWorkflowDefinition
+      description: 'Deletes the specified template''s workflow definition if it has one.
+
+
+        **Note:** If the specified template does not have a workflow definition, this endpoint returns a 200 response.'
+      x-ds-method: deleteTemplateWorkflowDefinition
+      x-ds-service: Uncategorized
+      x-ds-in-sdk: true
+  /v2.1/accounts/{accountId}/templates/{templateId}/workflow/scheduledSending:
+    parameters: []
+    get:
+      tags:
+      - EnvelopeWorkflowDefinition
+      summary: Returns the scheduled sending rules for a template's workflow definition
+      operationId: TemplateWorkflowScheduledSending_GetTemplateScheduledSendingDefinition
+      parameters:
+      - name: accountId
+        in: path
+        description: The external account number (int) or account ID GUID.
+        required: true
+        schema:
+          type: string
+      - name: templateId
+        in: path
+        description: The ID of the template.
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Successful response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/scheduledSending'
+        '400':
+          description: Error encountered.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorDetails'
+      deprecated: false
+      x-ds-methodname: getTemplateScheduledSendingDefinition
+      x-ds-method: getTemplateScheduledSendingDefinition
+      x-ds-service: Uncategorized
+      description: 'Given a template specified by `templateId`, returns the scheduled sending rules for that template''s workflow object.
+
+
+        **Note:** If the template''s workflow does not have a scheduled sending object, this method returns a 404.'
+      x-ds-in-sdk: true
+    put:
+      tags:
+      - EnvelopeWorkflowDefinition
+      summary: Updates the scheduled sending rules for a template's workflow definition
+      operationId: TemplateWorkflowScheduledSending_PutTemplateScheduledSendingDefinition
+      parameters:
+      - name: accountId
+        in: path
+        description: The external account number (int) or account ID GUID.
+        required: true
+        schema:
+          type: string
+      - name: templateId
+        in: path
+        description: The ID of the template.
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Successful response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/scheduledSending'
+        '400':
+          description: Error encountered.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorDetails'
+      deprecated: false
+      x-ds-methodname: updateTemplateScheduledSendingDefinition
+      x-ds-method: updateTemplateScheduledSendingDefinition
+      x-ds-service: Uncategorized
+      description: ''
+      x-ds-in-sdk: true
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/scheduledSending'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/scheduledSending'
+        description: An object that describes the settings for scheduled sending.
+    delete:
+      tags:
+      - EnvelopeWorkflowDefinition
+      summary: Deletes the scheduled sending rules for the template's workflow
+      operationId: TemplateWorkflowScheduledSending_DeleteTemplateScheduledSendingDefinition
+      parameters:
+      - name: accountId
+        in: path
+        description: The external account number (int) or account ID GUID.
+        required: true
+        schema:
+          type: string
+      - name: templateId
+        in: path
+        description: The ID of the template.
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Successful response.
+        '400':
+          description: Error encountered.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorDetails'
+      deprecated: false
+      x-ds-methodname: deleteTemplateScheduledSendingDefinition
+      x-ds-method: deleteTemplateScheduledSendingDefinition
+      x-ds-service: Uncategorized
+      description: Deletes the scheduled sending rules for the template's workflow.
+      x-ds-in-sdk: true
+  /v2.1/accounts/{accountId}/templates/{templateId}/workflow/steps:
+    parameters: []
+    post:
+      tags:
+      - EnvelopeWorkflowDefinition
+      summary: Adds a new step to a template's workflow
+      operationId: TemplateWorkflowStep_PostTemplateWorkflowStepDefinition
+      parameters:
+      - name: accountId
+        in: path
+        description: The external account number (int) or account ID GUID.
+        required: true
+        schema:
+          type: string
+      - name: templateId
+        in: path
+        description: The ID of the template.
+        required: true
+        schema:
+          type: string
+      responses:
+        '201':
+          description: Successful response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/workflowStep'
+        '400':
+          description: Error encountered.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorDetails'
+      deprecated: false
+      x-ds-methodname: createTemplateWorkflowStepDefinition
+      x-ds-method: createTemplateWorkflowStepDefinition
+      x-ds-service: Uncategorized
+      description: Adds a new step to a template's workflow.
+      x-ds-in-sdk: true
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/workflowStep'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/workflowStep'
+  /v2.1/accounts/{accountId}/templates/{templateId}/workflow/steps/{workflowStepId}:
+    parameters: []
+    get:
+      tags:
+      - EnvelopeWorkflowDefinition
+      summary: Returns a specified workflow step for a specified envelope
+      operationId: TemplateWorkflowStep_GetTemplateWorkflowStepDefinition
+      parameters:
+      - name: accountId
+        in: path
+        description: The external account number (int) or account ID GUID.
+        required: true
+        schema:
+          type: string
+      - name: templateId
+        in: path
+        description: The ID of the template.
+        required: true
+        schema:
+          type: string
+      - name: workflowStepId
+        in: path
+        required: true
+        description: The ID of the workflow step.
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Successful response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/workflowStep'
+        '400':
+          description: Error encountered.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorDetails'
+      deprecated: false
+      x-ds-methodname: getTemplateWorkflowStepDefinition
+      x-ds-method: getTemplateWorkflowStepDefinition
+      x-ds-service: Uncategorized
+      description: Returns a workflow step specified by `workflowStepId` for a template specified by `templateId`.
+      x-ds-in-sdk: true
+    put:
+      tags:
+      - EnvelopeWorkflowDefinition
+      summary: Updates a specified workflow step for a template
+      operationId: TemplateWorkflowStep_PutTemplateWorkflowStepDefinition
+      parameters:
+      - name: accountId
+        in: path
+        description: The external account number (int) or account ID GUID.
+        required: true
+        schema:
+          type: string
+      - name: templateId
+        in: path
+        description: The ID of the template.
+        required: true
+        schema:
+          type: string
+      - name: workflowStepId
+        in: path
+        required: true
+        description: The ID of the workflow step.
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Successful response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/workflowStep'
+        '400':
+          description: Error encountered.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorDetails'
+      deprecated: false
+      x-ds-methodname: updateTemplateWorkflowStepDefinition
+      x-ds-method: updateTemplateWorkflowStepDefinition
+      x-ds-service: Uncategorized
+      description: Updates a specified workflow step for a template.
+      x-ds-in-sdk: true
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/workflowStep'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/workflowStep'
+    delete:
+      tags:
+      - EnvelopeWorkflowDefinition
+      summary: Deletes a workflow step from an template's workflow definition
+      operationId: TemplateWorkflowStep_DeleteTemplateWorkflowStepDefinition
+      parameters:
+      - name: accountId
+        in: path
+        description: The external account number (int) or account ID GUID.
+        required: true
+        schema:
+          type: string
+      - name: templateId
+        in: path
+        description: The ID of the template.
+        required: true
+        schema:
+          type: string
+      - name: workflowStepId
+        in: path
+        required: true
+        description: The ID of the workflow step.
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Successful response.
+        '400':
+          description: Error encountered.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorDetails'
+      deprecated: false
+      x-ds-methodname: deleteTemplateWorkflowStepDefinition
+      x-ds-method: deleteTemplateWorkflowStepDefinition
+      x-ds-service: Uncategorized
+      description: Deletes a workflow step from an template's workflow definition.
+      x-ds-in-sdk: true
+  /v2.1/accounts/{accountId}/templates/{templateId}/workflow/steps/{workflowStepId}/delayedRouting:
+    parameters: []
+    get:
+      tags:
+      - EnvelopeWorkflowDefinition
+      summary: Returns the delayed routing rules for a template's workflow step definition
+      operationId: TemplateWorkflowDelayedRouting_GetTemplateDelayedRoutingDefinition
+      parameters:
+      - name: accountId
+        in: path
+        description: The external account number (int) or account ID GUID.
+        required: true
+        schema:
+          type: string
+      - name: templateId
+        in: path
+        description: The ID of the template.
+        required: true
+        schema:
+          type: string
+      - name: workflowStepId
+        in: path
+        required: true
+        description: The ID of the workflow step.
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Successful response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/delayedRouting'
+        '400':
+          description: Error encountered.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorDetails'
+      deprecated: false
+      x-ds-methodname: getTemplateDelayedRoutingDefinition
+      x-ds-method: getTemplateDelayedRoutingDefinition
+      x-ds-service: Uncategorized
+      description: 'Given a template and a workflow step, returns the delayed routing rules for that workflow step.
+
+
+        **Note:** If the workflow step does not have a delayed routing object, this method returns a 404.'
+      x-ds-in-sdk: true
+    put:
+      tags:
+      - EnvelopeWorkflowDefinition
+      summary: Updates the delayed routing rules for a template's workflow step
+      operationId: TemplateWorkflowDelayedRouting_PutTemplateDelayedRoutingDefinition
+      parameters:
+      - name: accountId
+        in: path
+        description: The external account number (int) or account ID GUID.
+        required: true
+        schema:
+          type: string
+      - name: templateId
+        in: path
+        description: The ID of the template.
+        required: true
+        schema:
+          type: string
+      - name: workflowStepId
+        in: path
+        required: true
+        description: The ID of the workflow step.
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Successful response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/delayedRouting'
+        '400':
+          description: Error encountered.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorDetails'
+      deprecated: false
+      x-ds-methodname: updateTemplateDelayedRoutingDefinition
+      x-ds-method: updateTemplateDelayedRoutingDefinition
+      x-ds-service: Uncategorized
+      description: Updates the scheduled sending rules for a template's workflow.
+      x-ds-in-sdk: true
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/delayedRouting'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/delayedRouting'
+        description: A complex element that specifies the delayed routing settings for the workflow step.
+    delete:
+      tags:
+      - EnvelopeWorkflowDefinition
+      summary: Deletes the delayed routing rules for the specified template workflow step
+      operationId: TemplateWorkflowDelayedRouting_DeleteTemplateDelayedRoutingDefinition
+      parameters:
+      - name: accountId
+        in: path
+        description: The external account number (int) or account ID GUID.
+        required: true
+        schema:
+          type: string
+      - name: templateId
+        in: path
+        description: The ID of the template.
+        required: true
+        schema:
+          type: string
+      - name: workflowStepId
+        in: path
+        required: true
+        description: The ID of the workflow step.
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Successful response.
+        '400':
+          description: Error encountered.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorDetails'
+      deprecated: false
+      x-ds-methodname: deleteTemplateDelayedRoutingDefinition
+      x-ds-method: deleteTemplateDelayedRoutingDefinition
+      x-ds-service: Uncategorized
+      description: Deletes the delayed routing rules for the specified template workflow step.
+      x-ds-in-sdk: true
+components:
+  schemas:
+    scheduledSending:
+      type: object
+      properties:
+        bulkListId:
+          description: The ID of the bulk list. Set this optional value to use scheduled sending with a bulk send operation.
+          type: string
+        resumeDate:
+          description: 'The timestamp of when the envelope is scheduled to be sent in ISO 8601 format.
+
+
+            This property is read-only.
+
+            '
+          type: string
+        rules:
+          description: User-specified rules indicating how and when the envelope should be scheduled for sending. Only one rule may be specified.
+          type: array
+          items:
+            $ref: '#/components/schemas/envelopeDelayRule'
+        status:
+          description: 'Status of the scheduled sending job. Valid values:
+
+
+            * `pending`: The envelope has not yet been sent and the scheduled sending delay has not been initiated.
+
+            * `started`: The sender has initiated the sending process. The delay has not elapsed, so the envelope has not yet been sent to the first recipient.
+
+            * `completed`: The delay has elapsed and the envelope has been sent to the first recipient.
+
+
+            This property is read-only.'
+          type: string
+      x-ds-definition-name: scheduledSending
+      description: A complex element that specifies the scheduled sending settings for the envelope.
+      x-ms-summary: A complex element that specifies the scheduled sending settings for the envelope.
+    envelopeDelayRule:
+      type: object
+      properties:
+        delay:
+          description: A string timespan representing the duration of the sending delay. The timespan is in the format `d.hh:mm:ss` where `d` is the number of days, `hh` is the number of hours (measured on a 24-hour clock), `mm` is minutes, and `ss` is seconds. The maximum delay is 30 days.
+          type: string
+        resumeDate:
+          description: An ISO 8601 formatted datetime string indicating the date and time that the envelope will be sent. The specified datetime must occur in the future. It must not exceed 30 days from the time that the request is made.
+          type: string
+      description: 'A user-specified object that describes the envelope delay.
+
+
+        To indicate a relative delay, use `delay`. To indicate the exact datetime the envelope should be sent, use `resumeDate`. Only one of the two properties can be used.'
+      x-ds-definition-name: envelopeDelayRule
+      x-ms-summary: 'A user-specified object that describes the envelope delay.
+
+
+        To indicate a relative delay, use `delay`. To indicate the exact datetime the envelope should be sent, use `resumeDate`. Only one of the two properties can be used.'
+    recipientGroup:
+      type: object
+      properties:
+        groupMessage:
+          description: The group message, typically a description of the group.
+          type: string
+        groupName:
+          description: The name of the group.
+          type: string
+        recipients:
+          description: An array of recipient objects that provides details about the recipients of the envelope.
+          type: array
+          items:
+            $ref: '#/components/schemas/recipientOption'
+      description: Describes a group of recipients.
+      x-ds-definition-name: recipientGroup
+      x-ms-summary: Describes a group of recipients.
+    recipientRouting:
+      type: object
+      properties:
+        rules:
+          $ref: '#/components/schemas/recipientRules'
+          description: The recipient routing rules.
+      description: Describes the recipient routing rules.
+      x-ds-definition-name: recipientRouting
+      x-ms-summary: Describes the recipient routing rules.
+    recipientRules:
+      type: object
+      properties:
+        conditionalRecipients:
+          description: ''
+          type: array
+          items:
+            $ref: '#/components/schemas/conditionalRecipientRule'
+      x-ds-definition-name: recipientRules
+      description: ''
+      x-ms-summary: ''
+    workflowStep:
+      type: object
+      properties:
+        action:
+          description: 'Indicates the action to perform. Valid values:
+
+
+            - `pause_before`: The workflow should pause before the trigger described by `triggerOnItem` is reached.
+
+            '
+          type: string
+        completedDate:
+          description: 'The timestamp of when the workflow step transitioned to `completed` status.
+
+
+            This property is read-only.'
+          type: string
+        delayedRouting:
+          $ref: '#/components/schemas/delayedRouting'
+          description: A complex element that specifies the delayed routing settings for the workflow step.
+        itemId:
+          description: The unique ID of the item being triggered.
+          type: string
+        recipientRouting:
+          $ref: '#/components/schemas/recipientRouting'
+          description: The rules for recipient routing.
+        status:
+          description: 'The status of the step. Valid values:
+
+
+            - `inactive`
+
+            - `in_progress`
+
+            - `paused`
+
+            - `pending`
+
+            - `completed`
+
+
+            This property is read-only.'
+          type: string
+        triggeredDate:
+          description: 'The timestamp of when the workflow step transitioned to `in_progress` status.
+
+
+            This property is read-only.'
+          type: string
+        triggerOnItem:
+          description: 'The type of item that triggers this workflow step. Valid values:
+
+
+            * `routing_order`'
+          type: string
+        workflowStepId:
+          description: 'A unique identifier for this workflow step.
+
+
+            This property is read-only.'
+          type: string
+      description: Describes a single step in a workflow.
+      x-ds-definition-name: workflowStep
+      x-ms-summary: Describes a single step in a workflow.
+    conditionalRecipientRule:
+      type: object
+      properties:
+        conditions:
+          description: An array of conditions that define when the recipients will be used.
+          type: array
+          items:
+            $ref: '#/components/schemas/conditionalRecipientRuleCondition'
+        order:
+          description: 'An integer that specifies the order in which rules are processed.
+
+            Lower values are processed before higher values.'
+          type: string
+        recipientGroup:
+          $ref: '#/components/schemas/recipientGroup'
+          description: A set of recipients that may be used for the envelope, depending on the `conditions` defined.
+        recipientId:
+          description: 'The ID of the recipient to whom the condition will be applied. This value should match the `recipientId` defined in the recipient object.
+
+            '
+          type: string
+      description: A rule that defines a set of recipients and the conditions under which they will be used for the envelope.
+      x-ds-definition-name: conditionalRecipientRule
+      x-ms-summary: A rule that defines a set of recipients and the conditions under which they will be used for the envelope.
+    delayedRouting:
+      type: object
+      properties:
+        resumeDate:
+          description: 'The ISO 8601 timestamp of when the envelope is scheduled to be sent to the recipients associated with the workflow step. This property is `null` if the workflow step has not been initiated.
+
+
+            This property is read-only.
+
+            '
+          type: string
+        rules:
+          description: User-specified rules indicating how and when the envelope should sent for the workflow step and its associated recipients. Only one rule may be specified.
+          type: array
+          items:
+            $ref: '#/components/schemas/envelopeDelayRule'
+        status:
+          description: 'Status of the delayed routing step. Valid values:
+
+
+            * `pending`: The workflow step has not been reached and the delay has not been initiated.
+
+            * `started`: The workflow step has begun and the delay is in progress. The envelope has not yet been sent to the workflow step''s recipients.
+
+            * `completed`: The delay has elapsed and the envelope has been sent to the workflow step''s recipients.
+
+
+            This property is read-only.'
+          type: string
+      x-ds-definition-name: delayedRouting
+      description: A complex element that specifies the delayed routing settings for the workflow step.
+      x-ms-summary: A complex element that specifies the delayed routing settings for the workflow step.
+    errorDetails:
+      description: This object describes errors that occur. It is only valid for responses and ignored in requests.
+      type: object
+      properties:
+        errorCode:
+          description: The code associated with the error condition.
+          type: string
+        message:
+          description: A brief message describing the error condition.
+          type: string
+      x-ds-definition-name: errorDetails
+      x-ms-summary: This object describes errors that occur. It is only valid for responses and ignored in requests.
+    workflow:
+      type: object
+      properties:
+        currentWorkflowStepId:
+          description: 'The `workflowStepId` of the current step.
+
+            This is not an index into the `workflowSteps` array in this object.
+
+            See the `workflowStep` object.'
+          type: string
+        resumeDate:
+          description: 'The ISO 8601 timestamp of when the envelope is scheduled to be sent, if applicable. Its value is the maximum of the `resumeDate` property on `scheduledSending` and the `resumeDate` property on the current `workflowStep`.
+
+
+            This property is read-only.'
+          type: string
+        scheduledSending:
+          $ref: '#/components/schemas/scheduledSending'
+          description: An object that describes the settings for scheduled sending.
+        workflowStatus:
+          description: 'The status of the workflow:
+
+
+            - `paused` if the workflow is paused
+
+            - `in_progress` if the workflow is in progress'
+          type: string
+        workflowSteps:
+          description: An array of workflow steps.
+          type: array
+          items:
+            $ref: '#/components/schemas/workflowStep'
+      description: Describes the workflow for an envelope.
+      x-ds-definition-name: workflow
+      x-ms-summary: Describes the workflow for an envelope.
+    conditionalRecipientRuleCondition:
+      type: object
+      properties:
+        filters:
+          description: ''
+          type: array
+          items:
+            $ref: '#/components/schemas/conditionalRecipientRuleFilter'
+        order:
+          description: 'An integer that specifies the order in which rules are processed.
+
+            Lower values are processed before higher values.'
+          type: string
+        recipientLabel:
+          description: 'An identifier for the recipient. After assigning this value in a `recipient` object, you can reference it in the `conditions` object to set the recipient as a conditional recipient. For an example, see [How to use conditional recipients](/docs/esign-rest-api/how-to/use-conditional-recipients/).
+
+            '
+          type: string
+      x-ds-definition-name: conditionalRecipientRuleCondition
+      description: ''
+      x-ms-summary: ''
+    recipientOption:
+      type: object
+      properties:
+        email:
+          description: 'The email ID of the agent. This property is required. Maximum length: 100 characters.'
+          type: string
+        name:
+          description: 'The full legal name of the recipient. Maximum length: 100 characters.'
+          type: string
+        recipientLabel:
+          description: 'An identifier for the recipient. After assigning this value in a `recipient` object, you can reference it in the `conditions` object to set the recipient as a conditional recipient. For an example, see [How to use conditional recipients](/docs/esign-rest-api/how-to/use-conditional-recipients/).
+
+            '
+          type: string
+        roleName:
+          description: Specifies the signing group role of the recipient. This property is required.
+          type: string
+        signingGroupId:
+          description: 'The ID of the [signing group](https://support.docusign.com/s/document-item?bundleId=gav1643676262430&topicId=zgn1578456447934.html).
+
+            '
+          type: string
+      description: Describes a recipient who is a member of a conditional group.
+      x-ds-definition-name: recipientOption
+      x-ms-summary: Describes a recipient who is a member of a conditional group.
+    conditionalRecipientRuleFilter:
+      type: object
+      properties:
+        operator:
+          description: 'How the tab value is compared to the `value` property. Valid values:
+
+
+            * `equals`
+
+            * `greaterThan`
+
+            * `greaterThanEquals`
+
+            * `lessThan`
+
+            * `lessThanEquals`
+
+            * `filled`
+
+            * `selected`'
+          type: string
+        recipientId:
+          description: 'A local reference used to map
+
+            recipients to other objects, such as specific
+
+            document tabs.
+
+
+            A `recipientId` must be
+
+            either an integer or a GUID,
+
+            and the `recipientId` must be
+
+            unique within an envelope.
+
+
+            For example, many envelopes assign the first recipient
+
+            a `recipientId` of `1`.
+
+            '
+          type: string
+        scope:
+          description: 'The scope under which the condition is evaluated. Valid values:
+
+
+            * `tabs`'
+          type: string
+        tabId:
+          description: The unique identifier for the tab.
+          type: string
+        tabLabel:
+          description: 'The label associated with the tab. This value may be an empty string.
+
+            If no value is provided, the tab type is used as the value.
+
+
+            Maximum Length: 500 characters.
+
+            '
+          type: string
+        tabType:
+          description: Indicates the type of tab (for example, `signHere` or `initialHere`).
+          type: string
+        value:
+          description: A set value to which the tab's actual value is compared.
+          type: string
+      x-ds-definition-name: conditionalRecipientRuleFilter
+      description: ''
+      x-ms-summary: ''
+externalDocs:
+  description: See the Docusign eSignature REST API Guide for more information.
+  url: https://docs.docusign.com/esign
+x-ds-allow-editing: false
+x-ds-categories:
+- name: Envelopes
+  summary: This section shows you how to create and send envelopes.
+  description: 'The eSignature API Envelope category includes the resources and methods for sending and managing envelopes and envelope data.
+
+
+    Envelopes are the key objects in the Docusign platform. As a result, they are complex data structures with few required fields. See the [How-to guides](/docs/esign-rest-api/how-to/) for examples and solutions.
+
+
+    To learn more about envelopes, see [Envelopes](/docs/esign-rest-api/esign101/concepts/envelopes/).
+
+    '
+- name: Connect
+  summary: "Docusign Connect is the Docusign platform notification service. The service uses webhooks to proactively notify your application when an event occurs that your application wants to know about. Docusign recommends that all applications use Connect instead of polling the Docusign Signature Service. This section provides information about Connect configuration and logging. \n\n**Note:** To make API calls to any of the Connect endpoints, you must be an account administrator.\n\nFor more information about Connect, see [Docusign Connect](/platform/webhooks/connect/) and [Custom Connect Configuration](https://support.docusign.com/s/document-item?bundleId=pik1583277475390&topicId=khw1583277390582.html)."
+  description: 'The Connect service enables your application to be called via
+
+    HTTPS when an event of interest occurs.
+
+
+    Use the Connect service to "end the polling madness." With
+
+    Connect, there is no need for your application to poll Docusign
+
+    every 15 minutes to learn the latest about your envelopes.
+
+
+    Instead, you register your interest in one or more types of
+
+    envelope or recipient events. Then, when an interesting event
+
+    occurs, the Docusign platform will contact your application with
+
+    the event''s details and data. You can register interest in
+
+    envelopes sent by particular users in your account, or for
+
+    envelopes sent by any user.
+
+
+    Connect can empower your organization to manage document actions
+
+    as they occur, and allows you to track their changes within your
+
+    own systems. Upon completion, envelope information, including
+
+    document content, can be stored in your own databases or CMS
+
+    systems, and these events can be triggered via webhooks
+
+    delivering messages to your application.
+
+
+    **Note:** To make API calls to any of the Connect endpoints, you must be an account administrator.
+
+
+    ## Incoming Connect Calls
+
+
+    To use the Connect service, your application needs to provide an
+
+    HTTPS URL that can be called from the public Internet. If your
+
+    application runs on a server behind your organization''s firewall,
+
+    then you will need to create a "pinhole" in the firewall to allow
+
+    the incoming Connect calls from Docusign to reach your
+
+    application. You can also use other techniques such as proxy
+
+    servers and DMZ networking for receiving the incoming calls.
+
+
+    Connect delivers events over HTTP requests in JSON or XML.
+
+    See [Docusign Connect overview](/platform/webhooks/connect/).
+
+
+    If your application is not configured to accept post messages,
+
+    Docusign will NOT return an additional post error response to
+
+    your listener application. If you''ve enabled logging on your
+
+    configuration, it will be logged in Admin under the configuration
+
+    failure log.
+
+
+    ## Per-envelope Connect Configuration
+
+
+    Instead of registering a general Connect configuration and
+
+    listener, an individual envelope can have its own Connect
+
+    configuration. See the
+
+    [`eventNotification`](/docs/esign-rest-api/reference/envelopes/envelopes/create/#schema__envelopedefinition_eventnotification)
+
+    property for envelopes.
+
+
+    ## Historical Publish Endpoint
+
+
+    To submit existing envelopes to an endpoint, use the [EnvelopePublish](/docs/esign-rest-api/reference/envelopes/envelopepublish/) resource.
+
+    '
+- name: Templates
+  summary: Template creation and management
+  description: 'Use the Templates category to manage your account''s templates.
+
+
+    This section shows you how to perform the following tasks:
+
+
+    * Create, list, get, update, and delete templates.
+
+    * Manage the notification and group sharing settings for templates.
+
+    * Fetch and rotate pages from a document used by a template.
+
+
+    You can create templates either programmatically or through the Docusign web interface and then used by your application.'
+- name: SigningGroups
+  summary: Send a signing request to a group of potential signers.
+  description: 'Use the Signing Group category to manage signing groups that allow anyone in the group to sign a document. When you send an envelope to a signing group, anyone in the group can open it and sign it with their own signature.
+
+
+    This category shows account administrators how to create a signing group and manage the users in the group.
+
+
+    **Note:** To create and manage signing groups, you must be an account administrator.
+
+
+    For more information about this topic, see [Signing Groups](https://support.docusign.com/s/document-item?bundleId=gav1643676262430&topicId=zgn1578456447934.html).'
+- name: Folders
+  summary: Folders allow you to organize envelopes and templates.
+  description: 'Use the Folders category to organize envelopes and templates.
+
+    You can list the folder contents and move envelopes and templates between folders.'
+- name: CustomTabs
+  summary: Custom tabs
+  description: "Custom Tabs enable accounts to have one or more pre-configured (custom) tabs. Custom tabs save time when users are tagging documents since the users don't have to manually set the tabs' parameters.\n\nThis category enables custom tabs to be managed programmatically, including creation, deletion, etc. \n"
+- name: CloudStorage
+  summary: This section shows you how to manage your cloud storage providers and users.
+  description: 'Use the Cloud Storage category to list the user''s cloud storage document contents.
+
+
+    It is also used to manage the user''s authentication/accounts with cloud storage service providers.'
+- name: Users
+  summary: User management
+  description: 'Use the Users category to manage the users in your accounts.
+
+
+    You can:
+
+
+    * Set custom user settings.
+
+    * Manage a users profile.
+
+    * Add delete users.
+
+    * Add and delete the initials and signature images for a user.'
+- name: UserGroups
+  summary: Group users for common permissions and branding
+  description: 'Use the User Groups category to manage your permissions groups.
+
+
+    You can:
+
+
+    * Create and delete groups.
+
+    * Add users to, and delete users from, your groups.
+
+    * Manage the brand information associated with a group.'
+- name: BulkEnvelopes
+  summary: Bulk envelopes
+  description: Use the BulkEnvelopes category to manage the sending of envelopes to multiple recipients.
+- name: Accounts
+  summary: Account management
+  description: 'Use the Account category for various account management tasks including:
+
+
+    * Programmatically creating and deleting accounts.
+
+    * Getting information about an account and its capabilities.
+
+    * Branding the account with custom colors, message text, and more.
+
+    * Account charges.
+
+
+    The Accounts category also includes end points for listing the recipient names associated with an email address that was used by the account. For example, a single email address is often shared by multiple members of a family.
+
+
+
+    '
+- name: Billing
+  summary: Invoices
+  description: 'Use the Billing category to manage the following billing related tasks:
+
+
+    * Retrieve and update billing plan information.
+
+    * Retrieve invoices.
+
+    * Retrieve and update payment information.'
+- name: Diagnostics
+  summary: Diagnostics and request logging
+  description: 'The Diagnostics category provides miscellaneous end points.
+
+
+    They include:
+
+    * Requesting and managing the API call-logging feature. (Perfect for debugging your app!)
+
+    * Getting information on the API''s resources and versions.'
+- name: PowerForms
+  summary: The PowerForms category provides methods that enable you to create and manage fillable forms.
+  description: The PowerForms category enables you to create and manage PowerForms that you can use for self service and email forms.
+- name: Workspaces
+  summary: A Docusign workspace is a collaboration area for sharing files and data.
+  description: "A workspace is a collaborative space for sharing documents and managing workflows. A workspace has a single owner who must be a Docusign user. The owner can invite others to the workspace as collaborators. Individuals who are not Docusign users must create a Docusign account to join a workspace as a collaborator.\n \nYou can create an envelope directly from a workspace.\n\nWorkspaces store the following information:\n\n- **Files:** Files uploaded to a workspace for storage or reuse.\n- **Documents:** A document is a component of a transaction, template, or workspace. When a file is added to a transaction, template, or workspace, it is copied as a document. Each document in a workspace has a single owner.\n- **Templates:** A set of documents that you can use to create a transaction or a workspace.\n- **Transactions:** A transaction is a series of workflow events related to one or more documents. These events route the documents to one or more individuals for the purposes of doing business. Each transaction has a single owner (the sender).\n\n**Note:** Documents in a template are not individually listed as files."
+- name: Payments
+  summary: Manage Payments
+  description: This category includes resources for managing payment gateways. Payment information is added to envelopes via methods in the Envelopes category.
+- name: EmailArchive
+  summary: This section shows you how to set and manage the BCC email addresses that you want to use to archive the emails that Docusign sends.
+  description: 'Email archives enable Docusign partners and other multi-account customers to easily archive emails sent through Docusign. The `EmailArchive` resource provides methods for managing your email archive configuration, which consists of the BCC email address or addresses that you want to use to archive Docusign emails. Each account can use up to five BCC email addresses for archiving purposes.
+
+
+    For more information, see [Email Archive Configuration](https://support.docusign.com/s/document-item?bundleId=pik1583277475390&topicId=xjm1583277371373.html).
+
+
+    **Note:** This feature is only available for certain account plans and must be enabled by Docusign.'
+- name: Notary
+  summary: 'Docusign eNotary makes the notarization process fully digital
+
+    for senders, signers, and notaries.
+
+    It enables a notary public to act as an in-person witness
+
+    to electronic signing of documents.
+
+    '
+  description: 'Docusign eNotary makes the notarization process fully digital
+
+    for senders, signers, and notaries.
+
+    It enables a notary public to act as an in-person witness
+
+    to electronic signing of documents.
+
+    '
+- name: Envelope
+  summary: ''
+  description: ''

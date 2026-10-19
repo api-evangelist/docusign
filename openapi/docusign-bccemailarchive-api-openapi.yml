@@ -1,0 +1,709 @@
+openapi: 3.2.0
+info:
+  version: v2.1
+  title: Docusign eSignature REST BCC Email Archive API
+  description: The Docusign eSignature REST API provides you with a powerful, convenient, and simple Web services API for interacting with Docusign.
+  termsOfService: https://www.docusign.com/company/terms-and-conditions/web
+  contact:
+    name: Docusign Developer Center
+    url: https://developers.docusign.com/
+    email: devcenter@docusign.com
+servers:
+- url: https://www.docusign.net/restapi
+tags:
+- name: BCCEmailArchive
+  description: 'You can configure automatic archiving of emails sent from all of your Docusign accounts.
+
+
+    For more information, see Email Archive Configuration.
+
+
+    **Note:** This feature is only available for certain account plans and must be enabled by Docusign.'
+paths:
+  /v2.1/accounts/{accountId}/settings/bcc_email_archives:
+    parameters: []
+    get:
+      tags:
+      - BCCEmailArchive
+      summary: Gets the BCC email archive configurations for an account
+      operationId: BCCEmailArchive_GetBCCEmailArchiveList
+      parameters:
+      - name: accountId
+        in: path
+        description: The external account number (int) or account ID GUID.
+        required: true
+        schema:
+          type: string
+      - name: count
+        in: query
+        required: false
+        description: 'The maximum number of results to return.
+
+
+          Use `start_position` to specify the number of results to skip.
+
+          '
+        schema:
+          type: string
+      - name: start_position
+        in: query
+        required: false
+        description: 'The zero-based index of the
+
+          result from which to start returning results.
+
+
+          Use with `count` to limit the number
+
+          of results.
+
+
+          The default value is `0`.
+
+          '
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Successful response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/bccEmailArchiveList'
+        '400':
+          description: Error encountered.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorDetails'
+      deprecated: false
+      x-ds-methodname: list
+      description: This method retrieves all of the BCC email archive configurations associated with an account.
+      x-ds-method: list
+      x-ds-service: Uncategorized
+      x-ds-in-sdk: true
+    post:
+      tags:
+      - BCCEmailArchive
+      summary: Creates a BCC email archive configuration
+      operationId: BCCEmailArchive_PostBCCEmailArchive
+      parameters:
+      - name: accountId
+        in: path
+        description: The external account number (int) or account ID GUID.
+        required: true
+        schema:
+          type: string
+      responses:
+        '201':
+          description: Successful response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/bccEmailArchive'
+        '400':
+          description: Error encountered.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorDetails'
+      deprecated: false
+      x-ds-methodname: create
+      description: 'This method creates a BCC email archive configuration for an account (adds a BCC email address to the account for archiving the emails that Docusign generates).
+
+
+        The only property that you must set in the request body is the BCC email address that you want to use.
+
+
+        **Note:** An account can have up to five active and pending email archive addresses combined, but you must use this method to add them to the account one at a time. Each email address is considered a separate BCC email archive configuration.'
+      x-ds-method: create
+      x-ds-service: Uncategorized
+      x-ds-in-sdk: true
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/bccEmailArchive'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/bccEmailArchive'
+        description: Boolean that specifies whether BCC for Email Archive is enabled for the account. BCC for Email Archive allows you to set up an archive email address so that a BCC copy of an envelope is sent only to that address.
+  /v2.1/accounts/{accountId}/settings/bcc_email_archives/{bccEmailArchiveId}:
+    parameters: []
+    get:
+      tags:
+      - BCCEmailArchive
+      summary: Gets a BCC email archive configuration and its history
+      operationId: BCCEmailArchive_GetBCCEmailArchiveHistoryList
+      parameters:
+      - name: accountId
+        in: path
+        description: The external account number (int) or account ID GUID.
+        required: true
+        schema:
+          type: string
+      - name: bccEmailArchiveId
+        in: path
+        required: true
+        description: The ID of the BCC email archive configuration.
+        schema:
+          type: string
+      - name: count
+        in: query
+        required: false
+        description: 'The maximum number of results to return.
+
+
+          Use `start_position` to specify the number of items to skip.
+
+          '
+        schema:
+          type: string
+      - name: start_position
+        in: query
+        required: false
+        description: 'The zero-based index of the
+
+          result from which to start returning results.
+
+
+          Use with `count` to limit the number
+
+          of results.
+
+
+          The default value is `0`.
+
+          '
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Successful response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/bccEmailArchiveHistoryList'
+        '400':
+          description: Error encountered.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorDetails'
+      deprecated: false
+      x-ds-methodname: get
+      description: This method returns a specific BCC email archive configuration for an account, as well as the history of changes to the email address.
+      x-ds-method: get
+      x-ds-service: Uncategorized
+      x-ds-in-sdk: true
+    delete:
+      tags:
+      - BCCEmailArchive
+      summary: Deletes a BCC email archive configuration
+      operationId: BCCEmailArchive_DeleteBCCEmailArchive
+      parameters:
+      - name: accountId
+        in: path
+        description: The external account number (int) or account ID GUID.
+        required: true
+        schema:
+          type: string
+      - name: bccEmailArchiveId
+        in: path
+        required: true
+        description: The ID of the BCC email archive configuration.
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Successful response.
+        '400':
+          description: Error encountered.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorDetails'
+      deprecated: false
+      x-ds-methodname: delete
+      description: 'This method deletes a BCC email archive configuration from an account.
+
+
+        When you use this method, the status of the BCC email archive configuration switches to `closed` and the BCC email address is no longer used to archive Docusign-generated email messages.'
+      x-ds-method: delete
+      x-ds-service: Uncategorized
+      x-ds-in-sdk: true
+components:
+  schemas:
+    bccEmailArchive:
+      type: object
+      properties:
+        accountId:
+          description: The ID of the account that owns the BCC email archive configuration.
+          type: string
+        bccEmailArchiveId:
+          description: The ID of the BCC email archive configuration.
+          type: string
+        created:
+          description: The UTC DateTime when the BCC email archive configuration was created.
+          type: string
+        createdBy:
+          $ref: '#/components/schemas/userInfo'
+          description: Details about the user who created the BCC email archive configuration.
+        email:
+          description: 'The BCC email address to use for archiving Docusign messages.
+
+
+            Example: customer_bcc@example.com'
+          type: string
+        emailNotificationId:
+          description: The GUID of the activation email message sent to the BCC email address.
+          type: string
+        modified:
+          description: The UTC DateTime when the BCC email archive configuration was last modified.
+          type: string
+        modifiedBy:
+          $ref: '#/components/schemas/userInfo'
+          description: Details about the user who last modified the BCC email archive configuration.
+        status:
+          description: 'The status of the BCC email address. Possible values are:
+
+
+            - `activation_sent`: An activation link has been sent to the BCC email address.
+
+            - `active`: The BCC email address is actively used for archiving.
+
+            - `closed`: The BCC email address is no longer used for archiving.'
+          type: string
+        uri:
+          description: The helper URI for retrieving the BCC email archive.
+          type: string
+      description: This object contains information abut a BCC email archive configuration (a BCC email address used to archive Docusign-generated emails).
+      x-ds-definition-name: bccEmailArchive
+      x-ms-summary: This object contains information abut a BCC email archive configuration (a BCC email address used to archive Docusign-generated emails).
+    bccEmailArchiveList:
+      type: object
+      properties:
+        bccEmailArchives:
+          description: A list of  BCC email archive configurations.
+          type: array
+          items:
+            $ref: '#/components/schemas/bccEmailArchive'
+        endPosition:
+          description: 'The last index position in the result set. '
+          type: string
+        nextUri:
+          description: 'The URI for the next chunk of records based on the search request. It is `null` if this is the last set of results for the search. '
+          type: string
+        previousUri:
+          description: 'The URI for the prior chunk of records based on the search request. It is `null` if this is the first set of results for the search. '
+          type: string
+        resultSetSize:
+          description: The number of results in this response. Because you can filter which entries are included in the response, this value is always less than or equal to the `totalSetSize`.
+          type: string
+        startPosition:
+          description: The starting index position of the current result set.
+          type: string
+        totalSetSize:
+          description: The total number of items in the result set. This value is always greater than or equal to the value of `resultSetSize`.
+          type: string
+      description: Contains a list of BCC email archive configurations.
+      x-ds-definition-name: bccEmailArchiveList
+      x-ms-summary: Contains a list of BCC email archive configurations.
+    bccEmailArchiveHistory:
+      type: object
+      properties:
+        accountId:
+          description: The ID of the account that owns the BCC email archive configuration.
+          type: string
+        action:
+          description: "The action taken on the BCC email archive configuration.\n\nExamples: \n\n- `CREATED`: The BCC email archive configuration has been created.\n- `UPDATED`: The BCC email address has been activated by clicking on the activation link in the activation email message.\n- `CLOSED`: The BCC email address has been marked as closed is no longer used for archiving."
+          type: string
+        email:
+          description: "The BCC email address used to archive the emails that Docusign generates. \n\nExample: customer_bcc@example.com"
+          type: string
+        modified:
+          description: The UTC DateTime when the BCC email address was last modified.
+          type: string
+        modifiedBy:
+          $ref: '#/components/schemas/userInfo'
+          description: Details about the user who last modified the BCC email archive configuration.
+        status:
+          description: 'The status of the BCC email address. Possible values are:
+
+
+            - `activation_sent`: An activation link has been sent to the BCC email address.
+
+            - `active`: The BCC email address is actively used for archiving.
+
+            - `closed`: The BCC email address is no longer used for archiving.'
+          type: string
+      description: Contains details about the history of the BCC email archive configuration.
+      x-ds-definition-name: bccEmailArchiveHistory
+      x-ms-summary: Contains details about the history of the BCC email archive configuration.
+    errorDetails:
+      description: This object describes errors that occur. It is only valid for responses and ignored in requests.
+      type: object
+      properties:
+        errorCode:
+          description: The code associated with the error condition.
+          type: string
+        message:
+          description: A brief message describing the error condition.
+          type: string
+      x-ds-definition-name: errorDetails
+      x-ms-summary: This object describes errors that occur. It is only valid for responses and ignored in requests.
+    userInfo:
+      type: object
+      properties:
+        accountId:
+          description: The account ID associated with the envelope.
+          type: string
+        accountName:
+          description: The name on the account.
+          type: string
+        activationAccessCode:
+          description: Access code provided to the user to activate the account.
+          type: string
+        email:
+          description: The user's email address.
+          type: string
+        errorDetails:
+          $ref: '#/components/schemas/errorDetails'
+          description: This object describes errors that occur. It is only valid for responses and ignored in requests.
+        ipAddress:
+          description: ''
+          type: string
+        loginStatus:
+          description: When **true,** indicates that the user is logged in. This is a read-only property.
+          type: string
+        membershipId:
+          description: The user's membership ID.
+          type: string
+        sendActivationEmail:
+          description: This field is no longer supported for most accounts. To create an eSignature user without sending an activation email, use the Admin API by following [these steps](/docs/admin-api/how-to/create-active-user/).
+          type: string
+        uri:
+          description: A URI containing the user ID.
+          type: string
+        userId:
+          description: The ID of the user to access.
+          type: string
+        userName:
+          description: The name of the user.
+          type: string
+        userStatus:
+          description: 'Status of the user''s account. One of:
+
+
+            - `ActivationRequired`
+
+            - `ActivationSent`
+
+            - `Active`
+
+            - `Closed`
+
+            - `Disabled`
+
+            '
+          type: string
+        userType:
+          description: The type of user, for example `CompanyUser`.
+          type: string
+      x-ds-definition-name: userInfo
+      description: ''
+      x-ms-summary: ''
+    bccEmailArchiveHistoryList:
+      type: object
+      properties:
+        bccEmailArchiveHistory:
+          description: A list of changes to the BCC email archive configuration.
+          type: array
+          items:
+            $ref: '#/components/schemas/bccEmailArchiveHistory'
+        endPosition:
+          description: 'The last index position in the result set. '
+          type: string
+        nextUri:
+          description: 'The URI for the next chunk of records based on the search request. It is `null` if this is the last set of results for the search. '
+          type: string
+        previousUri:
+          description: 'The URI for the prior chunk of records based on the search request. It is `null` if this is the first set of results for the search. '
+          type: string
+        resultSetSize:
+          description: The number of results in this response. Because you can filter which entries are included in the response, this value is always less than or equal to the `totalSetSize`.
+          type: string
+        startPosition:
+          description: The starting index position of the current result set.
+          type: string
+        totalSetSize:
+          description: The total number of items in the result set. This value is always greater than or equal to the value of `resultSetSize`.
+          type: string
+      x-ds-definition-name: bccEmailArchiveHistoryList
+      description: ''
+      x-ms-summary: ''
+externalDocs:
+  description: See the Docusign eSignature REST API Guide for more information.
+  url: https://docs.docusign.com/esign
+x-ds-allow-editing: false
+x-ds-categories:
+- name: Envelopes
+  summary: This section shows you how to create and send envelopes.
+  description: 'The eSignature API Envelope category includes the resources and methods for sending and managing envelopes and envelope data.
+
+
+    Envelopes are the key objects in the Docusign platform. As a result, they are complex data structures with few required fields. See the [How-to guides](/docs/esign-rest-api/how-to/) for examples and solutions.
+
+
+    To learn more about envelopes, see [Envelopes](/docs/esign-rest-api/esign101/concepts/envelopes/).
+
+    '
+- name: Connect
+  summary: "Docusign Connect is the Docusign platform notification service. The service uses webhooks to proactively notify your application when an event occurs that your application wants to know about. Docusign recommends that all applications use Connect instead of polling the Docusign Signature Service. This section provides information about Connect configuration and logging. \n\n**Note:** To make API calls to any of the Connect endpoints, you must be an account administrator.\n\nFor more information about Connect, see [Docusign Connect](/platform/webhooks/connect/) and [Custom Connect Configuration](https://support.docusign.com/s/document-item?bundleId=pik1583277475390&topicId=khw1583277390582.html)."
+  description: 'The Connect service enables your application to be called via
+
+    HTTPS when an event of interest occurs.
+
+
+    Use the Connect service to "end the polling madness." With
+
+    Connect, there is no need for your application to poll Docusign
+
+    every 15 minutes to learn the latest about your envelopes.
+
+
+    Instead, you register your interest in one or more types of
+
+    envelope or recipient events. Then, when an interesting event
+
+    occurs, the Docusign platform will contact your application with
+
+    the event''s details and data. You can register interest in
+
+    envelopes sent by particular users in your account, or for
+
+    envelopes sent by any user.
+
+
+    Connect can empower your organization to manage document actions
+
+    as they occur, and allows you to track their changes within your
+
+    own systems. Upon completion, envelope information, including
+
+    document content, can be stored in your own databases or CMS
+
+    systems, and these events can be triggered via webhooks
+
+    delivering messages to your application.
+
+
+    **Note:** To make API calls to any of the Connect endpoints, you must be an account administrator.
+
+
+    ## Incoming Connect Calls
+
+
+    To use the Connect service, your application needs to provide an
+
+    HTTPS URL that can be called from the public Internet. If your
+
+    application runs on a server behind your organization''s firewall,
+
+    then you will need to create a "pinhole" in the firewall to allow
+
+    the incoming Connect calls from Docusign to reach your
+
+    application. You can also use other techniques such as proxy
+
+    servers and DMZ networking for receiving the incoming calls.
+
+
+    Connect delivers events over HTTP requests in JSON or XML.
+
+    See [Docusign Connect overview](/platform/webhooks/connect/).
+
+
+    If your application is not configured to accept post messages,
+
+    Docusign will NOT return an additional post error response to
+
+    your listener application. If you''ve enabled logging on your
+
+    configuration, it will be logged in Admin under the configuration
+
+    failure log.
+
+
+    ## Per-envelope Connect Configuration
+
+
+    Instead of registering a general Connect configuration and
+
+    listener, an individual envelope can have its own Connect
+
+    configuration. See the
+
+    [`eventNotification`](/docs/esign-rest-api/reference/envelopes/envelopes/create/#schema__envelopedefinition_eventnotification)
+
+    property for envelopes.
+
+
+    ## Historical Publish Endpoint
+
+
+    To submit existing envelopes to an endpoint, use the [EnvelopePublish](/docs/esign-rest-api/reference/envelopes/envelopepublish/) resource.
+
+    '
+- name: Templates
+  summary: Template creation and management
+  description: 'Use the Templates category to manage your account''s templates.
+
+
+    This section shows you how to perform the following tasks:
+
+
+    * Create, list, get, update, and delete templates.
+
+    * Manage the notification and group sharing settings for templates.
+
+    * Fetch and rotate pages from a document used by a template.
+
+
+    You can create templates either programmatically or through the Docusign web interface and then used by your application.'
+- name: SigningGroups
+  summary: Send a signing request to a group of potential signers.
+  description: 'Use the Signing Group category to manage signing groups that allow anyone in the group to sign a document. When you send an envelope to a signing group, anyone in the group can open it and sign it with their own signature.
+
+
+    This category shows account administrators how to create a signing group and manage the users in the group.
+
+
+    **Note:** To create and manage signing groups, you must be an account administrator.
+
+
+    For more information about this topic, see [Signing Groups](https://support.docusign.com/s/document-item?bundleId=gav1643676262430&topicId=zgn1578456447934.html).'
+- name: Folders
+  summary: Folders allow you to organize envelopes and templates.
+  description: 'Use the Folders category to organize envelopes and templates.
+
+    You can list the folder contents and move envelopes and templates between folders.'
+- name: CustomTabs
+  summary: Custom tabs
+  description: "Custom Tabs enable accounts to have one or more pre-configured (custom) tabs. Custom tabs save time when users are tagging documents since the users don't have to manually set the tabs' parameters.\n\nThis category enables custom tabs to be managed programmatically, including creation, deletion, etc. \n"
+- name: CloudStorage
+  summary: This section shows you how to manage your cloud storage providers and users.
+  description: 'Use the Cloud Storage category to list the user''s cloud storage document contents.
+
+
+    It is also used to manage the user''s authentication/accounts with cloud storage service providers.'
+- name: Users
+  summary: User management
+  description: 'Use the Users category to manage the users in your accounts.
+
+
+    You can:
+
+
+    * Set custom user settings.
+
+    * Manage a users profile.
+
+    * Add delete users.
+
+    * Add and delete the initials and signature images for a user.'
+- name: UserGroups
+  summary: Group users for common permissions and branding
+  description: 'Use the User Groups category to manage your permissions groups.
+
+
+    You can:
+
+
+    * Create and delete groups.
+
+    * Add users to, and delete users from, your groups.
+
+    * Manage the brand information associated with a group.'
+- name: BulkEnvelopes
+  summary: Bulk envelopes
+  description: Use the BulkEnvelopes category to manage the sending of envelopes to multiple recipients.
+- name: Accounts
+  summary: Account management
+  description: 'Use the Account category for various account management tasks including:
+
+
+    * Programmatically creating and deleting accounts.
+
+    * Getting information about an account and its capabilities.
+
+    * Branding the account with custom colors, message text, and more.
+
+    * Account charges.
+
+
+    The Accounts category also includes end points for listing the recipient names associated with an email address that was used by the account. For example, a single email address is often shared by multiple members of a family.
+
+
+
+    '
+- name: Billing
+  summary: Invoices
+  description: 'Use the Billing category to manage the following billing related tasks:
+
+
+    * Retrieve and update billing plan information.
+
+    * Retrieve invoices.
+
+    * Retrieve and update payment information.'
+- name: Diagnostics
+  summary: Diagnostics and request logging
+  description: 'The Diagnostics category provides miscellaneous end points.
+
+
+    They include:
+
+    * Requesting and managing the API call-logging feature. (Perfect for debugging your app!)
+
+    * Getting information on the API''s resources and versions.'
+- name: PowerForms
+  summary: The PowerForms category provides methods that enable you to create and manage fillable forms.
+  description: The PowerForms category enables you to create and manage PowerForms that you can use for self service and email forms.
+- name: Workspaces
+  summary: A Docusign workspace is a collaboration area for sharing files and data.
+  description: "A workspace is a collaborative space for sharing documents and managing workflows. A workspace has a single owner who must be a Docusign user. The owner can invite others to the workspace as collaborators. Individuals who are not Docusign users must create a Docusign account to join a workspace as a collaborator.\n \nYou can create an envelope directly from a workspace.\n\nWorkspaces store the following information:\n\n- **Files:** Files uploaded to a workspace for storage or reuse.\n- **Documents:** A document is a component of a transaction, template, or workspace. When a file is added to a transaction, template, or workspace, it is copied as a document. Each document in a workspace has a single owner.\n- **Templates:** A set of documents that you can use to create a transaction or a workspace.\n- **Transactions:** A transaction is a series of workflow events related to one or more documents. These events route the documents to one or more individuals for the purposes of doing business. Each transaction has a single owner (the sender).\n\n**Note:** Documents in a template are not individually listed as files."
+- name: Payments
+  summary: Manage Payments
+  description: This category includes resources for managing payment gateways. Payment information is added to envelopes via methods in the Envelopes category.
+- name: EmailArchive
+  summary: This section shows you how to set and manage the BCC email addresses that you want to use to archive the emails that Docusign sends.
+  description: 'Email archives enable Docusign partners and other multi-account customers to easily archive emails sent through Docusign. The `EmailArchive` resource provides methods for managing your email archive configuration, which consists of the BCC email address or addresses that you want to use to archive Docusign emails. Each account can use up to five BCC email addresses for archiving purposes.
+
+
+    For more information, see [Email Archive Configuration](https://support.docusign.com/s/document-item?bundleId=pik1583277475390&topicId=xjm1583277371373.html).
+
+
+    **Note:** This feature is only available for certain account plans and must be enabled by Docusign.'
+- name: Notary
+  summary: 'Docusign eNotary makes the notarization process fully digital
+
+    for senders, signers, and notaries.
+
+    It enables a notary public to act as an in-person witness
+
+    to electronic signing of documents.
+
+    '
+  description: 'Docusign eNotary makes the notarization process fully digital
+
+    for senders, signers, and notaries.
+
+    It enables a notary public to act as an in-person witness
+
+    to electronic signing of documents.
+
+    '
+- name: Envelope
+  summary: ''
+  description: ''

@@ -1,63 +1,76 @@
 openapi: 3.2.0
 info:
-  title: DocuSign REST User Signatures API
-  description: The DocuSign REST API provides you with a powerful, convenient, and simple Web services API for interacting with DocuSign.
+  version: v2.1
+  title: Docusign eSignature REST User Signatures API
+  description: The Docusign eSignature REST API provides you with a powerful, convenient, and simple Web services API for interacting with Docusign.
   termsOfService: https://www.docusign.com/company/terms-and-conditions/web
   contact:
-    name: DocuSign Developer Center
+    name: Docusign Developer Center
     url: https://developers.docusign.com/
     email: devcenter@docusign.com
-  version: v2
 servers:
 - url: https://www.docusign.net/restapi
 tags:
 - name: UserSignatures
-  description: The UserSignatures resource provides methods that allow you manage the intials and signature images for a user.
+  description: The UserSignatures resource provides methods that allow you manage the initials and signature images for a user.
 paths:
-  /v2/accounts/{accountId}/users/{userId}/signatures:
+  /v2.1/accounts/{accountId}/users/{userId}/signatures:
+    parameters: []
     get:
       tags:
       - UserSignatures
-      summary: Docusign Retrieves a list of user signature definitions for a specified user
-      description: 'Retrieves the signature definitions for the specified user.
+      summary: Retrieves a list of signature definitions for a user
+      description: 'This method retrieves the signature definitions for the user that you specify.
 
 
-        The userId parameter specified in the endpoint must match the authenticated user''s user ID and the user must be a member of the account.
+        The `userId` parameter specified in the endpoint must match the authenticated user''s user ID, and the user must be a member of the account.
 
 
-        The `signatureId` parameter accepts a signature ID or a signature name. DocuSign recommends you use signature ID (`signatureId`), since some names contain characters that do not properly encode into a URL. If you use the user name, it is likely that the name includes spaces. In that case, URL encode the name before using it in the endpoint.
+        The `signatureId` parameter accepts a signature ID or a signature name. Docusign recommends you use signature ID (`signatureId`), since some names contain characters that do not properly encode into a URL. If you use the user name, it is likely that the name includes spaces. In that case, URL encode the name before using it in the endpoint.
 
 
-        For example encode "Bob Smith" as "Bob%20Smith".'
+        For example, encode "Bob Smith" as "Bob%20Smith".'
       operationId: UserSignatures_GetUserSignatures
       parameters:
       - name: accountId
         in: path
-        description: The external account number (int) or account id GUID.
+        description: The external account number (int) or account ID GUID.
         required: true
         schema:
           type: string
       - name: userId
         in: path
-        description: 'The user ID of the user being accessed. Generally this is the user ID of the authenticated user, but if the authenticated user is an Admin on the account, this may be another user the Admin user is accessing. **Note**: For the [GET /v2/accounts/{accountId}/envelopes](https://developers.docusign.com/esign-rest-api/reference/Envelopes/Envelopes/listStatusChanges/#envelopesInformation) method, the `user_id` query parameter is not implemented and should not be used.'
+        description: 'The ID of the user to access.
+
+
+          **Note:** Users can only access their own information. A user, even one with Admin rights, cannot access another user''s settings.'
         required: true
         schema:
           type: string
       - name: stamp_type
         in: query
+        required: false
+        description: 'The type of stamps to return. Valid values are:
+
+
+          - `signature`: Returns information about signature images only. This is the default value.
+
+          - `stamp`: Returns information about eHanko and custom stamps only.
+
+          - null'
         schema:
           type: string
       responses:
         '200':
           description: Successful response.
           content:
-            '*/*':
+            application/json:
               schema:
                 $ref: '#/components/schemas/userSignaturesInformation'
         '400':
           description: Error encountered.
           content:
-            '*/*':
+            application/json:
               schema:
                 $ref: '#/components/schemas/errorDetails'
       deprecated: false
@@ -68,21 +81,43 @@ paths:
     put:
       tags:
       - UserSignatures
-      summary: Docusign Adds/updates a user signature
+      summary: Adds/updates a user signature
       operationId: UserSignatures_PutUserSignature
       parameters:
       - name: accountId
         in: path
-        description: The external account number (int) or account id GUID.
+        description: The external account number (int) or account ID GUID.
         required: true
         schema:
           type: string
       - name: userId
         in: path
-        description: 'The user ID of the user being accessed. Generally this is the user ID of the authenticated user, but if the authenticated user is an Admin on the account, this may be another user the Admin user is accessing. **Note**: For the [GET /v2/accounts/{accountId}/envelopes](https://developers.docusign.com/esign-rest-api/reference/Envelopes/Envelopes/listStatusChanges/#envelopesInformation) method, the `user_id` query parameter is not implemented and should not be used.'
+        description: 'The ID of the user to access.
+
+
+          **Note:** Users can only access their own information. A user, even one with Admin rights, cannot access another user''s settings.'
         required: true
         schema:
           type: string
+      responses:
+        '200':
+          description: Successful response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/userSignaturesInformation'
+        '400':
+          description: Error encountered.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorDetails'
+      deprecated: false
+      x-ds-methodname: updateSignatures
+      description: ''
+      x-ds-method: updateList
+      x-ds-service: Users
+      x-ds-in-sdk: true
       requestBody:
         content:
           application/json:
@@ -91,42 +126,22 @@ paths:
           application/xml:
             schema:
               $ref: '#/components/schemas/userSignaturesInformation'
-        required: false
-      responses:
-        '200':
-          description: Successful response.
-          content:
-            '*/*':
-              schema:
-                $ref: '#/components/schemas/userSignaturesInformation'
-        '400':
-          description: Error encountered.
-          content:
-            '*/*':
-              schema:
-                $ref: '#/components/schemas/errorDetails'
-      deprecated: false
-      x-ds-methodname: updateSignatures
-      x-ds-method: updateList
-      x-ds-service: Users
-      x-ds-in-sdk: true
-      x-codegen-request-body-name: userSignaturesInformation
     post:
       tags:
       - UserSignatures
-      summary: Docusign Adds user Signature and initials images to a Signature
+      summary: Adds user Signature and initials images to a Signature
       description: 'Adds a user signature image and/or user initials image to the specified user.
 
 
-        The userId property specified in the endpoint must match the authenticated user''s userId and the user must be a member of the account.
+        The userId property specified in the endpoint must match the authenticated user''s `userId` and the user must be a member of the account.
 
 
         The rules and processes associated with this are:
 
 
-        * If Content-Type is set to application/json, then the default behavior for creating a default signature image, based on the name and a DocuSign font, is used.
+        * If `Content-Type` is set to `application/json`, then the default behavior for creating a default signature image, based on the name and a Docusign font, is used.
 
-        * If Content-Type is set to multipart/form-data, then the request must contain a first part with the user signature information, followed by parts that contain the images.
+        * If `Content-Type` is set to `multipart/form-data`, then the request must contain a first part with the user signature information, followed by parts that contain the images.
 
 
         For each Image part, the Content-Disposition header has a "filename" value that is used to map to the `signatureName` and/or `signatureInitials` properties in the JSON to the image.
@@ -148,16 +163,37 @@ paths:
       parameters:
       - name: accountId
         in: path
-        description: The external account number (int) or account id GUID.
+        description: The external account number (int) or account ID GUID.
         required: true
         schema:
           type: string
       - name: userId
         in: path
-        description: 'The user ID of the user being accessed. Generally this is the user ID of the authenticated user, but if the authenticated user is an Admin on the account, this may be another user the Admin user is accessing. **Note**: For the [GET /v2/accounts/{accountId}/envelopes](https://developers.docusign.com/esign-rest-api/reference/Envelopes/Envelopes/listStatusChanges/#envelopesInformation) method, the `user_id` query parameter is not implemented and should not be used.'
+        description: 'The ID of the user to access.
+
+
+          **Note:** Users can only access their own information. A user, even one with Admin rights, cannot access another user''s settings.'
         required: true
         schema:
           type: string
+      responses:
+        '201':
+          description: Successful response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/userSignaturesInformation'
+        '400':
+          description: Error encountered.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorDetails'
+      deprecated: false
+      x-ds-methodname: createSignatures
+      x-ds-method: create
+      x-ds-service: Users
+      x-ds-in-sdk: true
       requestBody:
         content:
           application/json:
@@ -166,38 +202,19 @@ paths:
           application/xml:
             schema:
               $ref: '#/components/schemas/userSignaturesInformation'
-        required: false
-      responses:
-        '201':
-          description: Successful response.
-          content:
-            '*/*':
-              schema:
-                $ref: '#/components/schemas/userSignaturesInformation'
-        '400':
-          description: Error encountered.
-          content:
-            '*/*':
-              schema:
-                $ref: '#/components/schemas/errorDetails'
-      deprecated: false
-      x-ds-methodname: createSignatures
-      x-ds-method: create
-      x-ds-service: Users
-      x-ds-in-sdk: true
-      x-codegen-request-body-name: userSignaturesInformation
-  /v2/accounts/{accountId}/users/{userId}/signatures/{signatureId}:
+  /v2.1/accounts/{accountId}/users/{userId}/signatures/{signatureId}:
+    parameters: []
     get:
       tags:
       - UserSignatures
-      summary: Docusign Gets the user signature information for the specified user
+      summary: Gets the user signature information for the specified user
       description: 'Retrieves the structure of a single signature with a known signature name.
 
 
         The userId specified in the endpoint must match the authenticated user''s user ID and the user must be a member of the account.
 
 
-        The `signatureId` parameter accepts a signature ID or a signature name. DocuSign recommends you use signature ID (`signatureId`), since some names contain characters that do not properly encode into a URL. If you use the user name, it is likely that the name includes spaces. In that case, URL encode the name before using it in the endpoint.
+        The `signatureId` parameter accepts a signature ID or a signature name. Docusign recommends you use signature ID (`signatureId`), since some names contain characters that do not properly encode into a URL. If you use the user name, it is likely that the name includes spaces. In that case, URL encode the name before using it in the endpoint.
 
 
         For example encode "Bob Smith" as "Bob%20Smith".'
@@ -205,19 +222,22 @@ paths:
       parameters:
       - name: accountId
         in: path
-        description: The external account number (int) or account id GUID.
+        description: The external account number (int) or account ID GUID.
         required: true
         schema:
           type: string
       - name: signatureId
         in: path
-        description: The ID of the signature being accessed.
+        description: The ID of the account stamp.
         required: true
         schema:
           type: string
       - name: userId
         in: path
-        description: 'The user ID of the user being accessed. Generally this is the user ID of the authenticated user, but if the authenticated user is an Admin on the account, this may be another user the Admin user is accessing. **Note**: For the [GET /v2/accounts/{accountId}/envelopes](https://developers.docusign.com/esign-rest-api/reference/Envelopes/Envelopes/listStatusChanges/#envelopesInformation) method, the `user_id` query parameter is not implemented and should not be used.'
+        description: 'The ID of the user to access.
+
+
+          **Note:** Users can only access their own information. A user, even one with Admin rights, cannot access another user''s settings.'
         required: true
         schema:
           type: string
@@ -225,13 +245,13 @@ paths:
         '200':
           description: Successful response.
           content:
-            '*/*':
+            application/json:
               schema:
                 $ref: '#/components/schemas/userSignature'
         '400':
           description: Error encountered.
           content:
-            '*/*':
+            application/json:
               schema:
                 $ref: '#/components/schemas/errorDetails'
       deprecated: false
@@ -242,17 +262,17 @@ paths:
     put:
       tags:
       - UserSignatures
-      summary: Docusign Updates the user signature for a specified user
+      summary: Updates the user signature for a specified user
       description: 'Creates, or updates, the signature font and initials for the specified user. When creating a signature, you use this resource to create the signature name and then add the signature and initials images into the signature.
 
 
-        ###### Note: This will also create a default signature for the user when one does not exist.
+        **Note:** This will also create a default signature for the user when one does not exist.
 
 
         The userId property specified in the endpoint must match the authenticated user''s user ID and the user must be a member of the account.
 
 
-        The `signatureId` parameter accepts a signature ID. DocuSign recommends you use signature ID (`signatureId`), since some names contain characters that do not properly encode into a URL. If you use the user name, it is likely that the name includes spaces. In that case, URL encode the name before using it in the endpoint.
+        The `signatureId` parameter accepts a signature ID. Docusign recommends you use signature ID (`signatureId`), since some names contain characters that do not properly encode into a URL. If you use the user name, it is likely that the name includes spaces. In that case, URL encode the name before using it in the endpoint.
 
 
         For example encode "Bob Smith" as "Bob%20Smith".'
@@ -260,27 +280,49 @@ paths:
       parameters:
       - name: accountId
         in: path
-        description: The external account number (int) or account id GUID.
+        description: The external account number (int) or account ID GUID.
         required: true
         schema:
           type: string
       - name: signatureId
         in: path
-        description: The ID of the signature being accessed.
+        description: The ID of the account stamp.
         required: true
         schema:
           type: string
       - name: userId
         in: path
-        description: 'The user ID of the user being accessed. Generally this is the user ID of the authenticated user, but if the authenticated user is an Admin on the account, this may be another user the Admin user is accessing. **Note**: For the [GET /v2/accounts/{accountId}/envelopes](https://developers.docusign.com/esign-rest-api/reference/Envelopes/Envelopes/listStatusChanges/#envelopesInformation) method, the `user_id` query parameter is not implemented and should not be used.'
+        description: 'The ID of the user to access.
+
+
+          **Note:** Users can only access their own information. A user, even one with Admin rights, cannot access another user''s settings.'
         required: true
         schema:
           type: string
       - name: close_existing_signature
         in: query
-        description: When set to **true**, closes the current signature.
+        description: When **true,** closes the current signature.
+        required: false
         schema:
           type: string
+      responses:
+        '200':
+          description: Successful response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/userSignature'
+        '400':
+          description: Error encountered.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorDetails'
+      deprecated: false
+      x-ds-methodname: updateSignature
+      x-ds-method: update
+      x-ds-service: Users
+      x-ds-in-sdk: true
       requestBody:
         content:
           application/json:
@@ -289,37 +331,17 @@ paths:
           application/xml:
             schema:
               $ref: '#/components/schemas/userSignatureDefinition'
-        required: false
-      responses:
-        '200':
-          description: Successful response.
-          content:
-            '*/*':
-              schema:
-                $ref: '#/components/schemas/userSignature'
-        '400':
-          description: Error encountered.
-          content:
-            '*/*':
-              schema:
-                $ref: '#/components/schemas/errorDetails'
-      deprecated: false
-      x-ds-methodname: updateSignature
-      x-ds-method: update
-      x-ds-service: Users
-      x-ds-in-sdk: true
-      x-codegen-request-body-name: userSignatureDefinition
     delete:
       tags:
       - UserSignatures
-      summary: Docusign Removes removes signature information for the specified user
+      summary: Removes removes signature information for the specified user
       description: 'Removes the signature information for the user.
 
 
         The userId parameter specified in the endpoint must match the authenticated user''s user ID and the user must be a member of the account.
 
 
-        The `signatureId` accepts a signature ID or a signature name. DocuSign recommends you use signature ID (`signatureId`), since some names contain characters that do not properly encode into a URL. If you use the user name, it is likely that the name includes spaces. In that case, URL encode the name before using it in the endpoint.
+        The `signatureId` accepts a signature ID or a signature name. Docusign recommends you use signature ID (`signatureId`), since some names contain characters that do not properly encode into a URL. If you use the user name, it is likely that the name includes spaces. In that case, URL encode the name before using it in the endpoint.
 
 
         For example encode "Bob Smith" as "Bob%20Smith".'
@@ -327,30 +349,32 @@ paths:
       parameters:
       - name: accountId
         in: path
-        description: The external account number (int) or account id GUID.
+        description: The external account number (int) or account ID GUID.
         required: true
         schema:
           type: string
       - name: signatureId
         in: path
-        description: The ID of the signature being accessed.
+        description: The ID of the account stamp.
         required: true
         schema:
           type: string
       - name: userId
         in: path
-        description: 'The user ID of the user being accessed. Generally this is the user ID of the authenticated user, but if the authenticated user is an Admin on the account, this may be another user the Admin user is accessing. **Note**: For the [GET /v2/accounts/{accountId}/envelopes](https://developers.docusign.com/esign-rest-api/reference/Envelopes/Envelopes/listStatusChanges/#envelopesInformation) method, the `user_id` query parameter is not implemented and should not be used.'
+        description: 'The ID of the user to access.
+
+
+          **Note:** Users can only access their own information. A user, even one with Admin rights, cannot access another user''s settings.'
         required: true
         schema:
           type: string
       responses:
         '200':
           description: Successful response.
-          content: {}
         '400':
           description: Error encountered.
           content:
-            '*/*':
+            application/json:
               schema:
                 $ref: '#/components/schemas/errorDetails'
       deprecated: false
@@ -358,52 +382,65 @@ paths:
       x-ds-method: delete
       x-ds-service: Users
       x-ds-in-sdk: true
-  /v2/accounts/{accountId}/users/{userId}/signatures/{signatureId}/{imageType}:
+  /v2.1/accounts/{accountId}/users/{userId}/signatures/{signatureId}/{imageType}:
+    parameters: []
     get:
       tags:
       - UserSignatures
-      summary: Docusign Retrieves the user initials image or the user signature image for the…
-      description: 'Retrieves the specified initials image or signature image for the specified user. The image is returned in the same format as uploaded. In the request you can specify if the chrome (the added line and identifier around the initial image) is returned with the image.
+      summary: Retrieves the user initials image or the user signature image for the specified…
+      description: 'Retrieves the specified initials image or signature image for the specified user. The image is returned in the same format in which it was uploaded. In the request you can specify if the chrome (the added line and identifier around the initial image) is returned with the image.
 
 
         The userId property specified in the endpoint must match the authenticated user''s user ID and the user must be a member of the account.
 
 
-        The `signatureId` parameter accepts a signature ID or a signature name. DocuSign recommends you use signature ID (`signatureId`), since some names contain characters that do not properly encode into a URL. If you use the user name, it is likely that the name includes spaces. In that case, URL encode the name before using it in the endpoint.
+        The `signatureId` parameter accepts a signature ID or a signature name. Docusign recommends you use signature ID (`signatureId`), since some names contain characters that do not properly encode into a URL. If you use the user name, it is likely that the name includes spaces. In that case, URL encode the name before using it in the endpoint.
 
 
         For example encode "Bob Smith" as "Bob%20Smith".
 
 
-        ###### Note: Older envelopes might only have chromed images. If getting the non-chromed image fails, try getting the chromed image.'
+        **Note:** Older envelopes might only have chromed images. If getting the non-chromed image fails, try getting the chromed image.'
       operationId: UserSignatures_GetUserSignatureImage
       parameters:
       - name: accountId
         in: path
-        description: The external account number (int) or account id GUID.
+        description: The external account number (int) or account ID GUID.
         required: true
         schema:
           type: string
       - name: imageType
         in: path
-        description: One of **signature_image** or **initials_image**.
+        description: 'Specificies the type of image. Valid values:
+
+
+          - `stamp_image`
+
+          - `signature_image`
+
+          - `initials_image`'
         required: true
         schema:
           type: string
       - name: signatureId
         in: path
-        description: The ID of the signature being accessed.
+        description: The ID of the account stamp.
         required: true
         schema:
           type: string
       - name: userId
         in: path
-        description: 'The user ID of the user being accessed. Generally this is the user ID of the authenticated user, but if the authenticated user is an Admin on the account, this may be another user the Admin user is accessing. **Note**: For the [GET /v2/accounts/{accountId}/envelopes](https://developers.docusign.com/esign-rest-api/reference/Envelopes/Envelopes/listStatusChanges/#envelopesInformation) method, the `user_id` query parameter is not implemented and should not be used.'
+        description: 'The ID of the user to access.
+
+
+          **Note:** Users can only access their own information. A user, even one with Admin rights, cannot access another user''s settings.'
         required: true
         schema:
           type: string
       - name: include_chrome
         in: query
+        required: false
+        description: When **true,** the chrome (or frame containing the added line and identifier) is included with the signature image.
         schema:
           type: string
       responses:
@@ -428,14 +465,14 @@ paths:
     put:
       tags:
       - UserSignatures
-      summary: Docusign Updates the user signature image or user initials image for the…
+      summary: Updates the user signature image or user initials image for the specified user
       description: 'Updates the user signature image or user initials image for the specified user. The supported image formats for this file are: gif, png, jpeg, and bmp. The file must be less than 200K.
 
 
         The userId property specified in the endpoint must match the authenticated user''s user ID and the user must be a member of the account.
 
 
-        The `signatureId` parameter accepts a signature ID or a signature name. DocuSign recommends you use signature ID (`signatureId`), since some names contain characters that do not properly encode into a URL. If you use the user name, it is likely that the name includes spaces. In that case, URL encode the name before using it in the endpoint.
+        The `signatureId` parameter accepts a signature ID or a signature name. Docusign recommends you use signature ID (`signatureId`), since some names contain characters that do not properly encode into a URL. If you use the user name, it is likely that the name includes spaces. In that case, URL encode the name before using it in the endpoint.
 
 
         For example encode "Bob Smith" as "Bob%20Smith".'
@@ -443,39 +480,55 @@ paths:
       parameters:
       - name: accountId
         in: path
-        description: The external account number (int) or account id GUID.
+        description: The external account number (int) or account ID GUID.
         required: true
         schema:
           type: string
       - name: imageType
         in: path
-        description: One of **signature_image** or **initials_image**.
+        description: 'Specificies the type of image. Valid values:
+
+
+          - `stamp_image`
+
+          - `signature_image`
+
+          - `initials_image`'
         required: true
         schema:
           type: string
       - name: signatureId
         in: path
-        description: The ID of the signature being accessed.
+        description: The ID of the account stamp.
         required: true
         schema:
           type: string
       - name: userId
         in: path
-        description: 'The user ID of the user being accessed. Generally this is the user ID of the authenticated user, but if the authenticated user is an Admin on the account, this may be another user the Admin user is accessing. **Note**: For the [GET /v2/accounts/{accountId}/envelopes](https://developers.docusign.com/esign-rest-api/reference/Envelopes/Envelopes/listStatusChanges/#envelopesInformation) method, the `user_id` query parameter is not implemented and should not be used.'
+        description: 'The ID of the user to access.
+
+
+          **Note:** Users can only access their own information. A user, even one with Admin rights, cannot access another user''s settings.'
         required: true
+        schema:
+          type: string
+      - name: transparent_png
+        in: query
+        required: false
+        description: ''
         schema:
           type: string
       responses:
         '200':
           description: Successful response.
           content:
-            '*/*':
+            application/json:
               schema:
                 $ref: '#/components/schemas/userSignature'
         '400':
           description: Error encountered.
           content:
-            '*/*':
+            application/json:
               schema:
                 $ref: '#/components/schemas/errorDetails'
       deprecated: false
@@ -483,10 +536,18 @@ paths:
       x-ds-method: updateImage
       x-ds-service: Users
       x-ds-in-sdk: true
+      requestBody:
+        content:
+          image/gif:
+            schema:
+              format: binary
+              type: string
+        description: Updated image content.
+        required: true
     delete:
       tags:
       - UserSignatures
-      summary: Docusign Deletes the user initials image or the user signature image for the…
+      summary: Deletes the user initials image or the user signature image for the specified…
       description: 'Deletes the specified initials image or signature image for the specified user.
 
 
@@ -496,7 +557,7 @@ paths:
         The userId parameter specified in the endpoint must match the authenticated user''s user ID and the user must be a member of the account.
 
 
-        The `signatureId` parameter accepts a signature ID or a signature name. DocuSign recommends you use signature ID (`signatureId`), since some names contain characters that do not properly encode into a URL. If you use the user name, it is likely that the name includes spaces. In that case, URL encode the name before using it in the endpoint.
+        The `signatureId` parameter accepts a signature ID or a signature name. Docusign recommends you use signature ID (`signatureId`), since some names contain characters that do not properly encode into a URL. If you use the user name, it is likely that the name includes spaces. In that case, URL encode the name before using it in the endpoint.
 
 
         For example encode "Bob Smith" as "Bob%20Smith".'
@@ -504,25 +565,35 @@ paths:
       parameters:
       - name: accountId
         in: path
-        description: The external account number (int) or account id GUID.
+        description: The external account number (int) or account ID GUID.
         required: true
         schema:
           type: string
       - name: imageType
         in: path
-        description: One of **signature_image** or **initials_image**.
+        description: 'Specificies the type of image. Valid values:
+
+
+          - `stamp_image`
+
+          - `signature_image`
+
+          - `initials_image`'
         required: true
         schema:
           type: string
       - name: signatureId
         in: path
-        description: The ID of the signature being accessed.
+        description: The ID of the account stamp.
         required: true
         schema:
           type: string
       - name: userId
         in: path
-        description: 'The user ID of the user being accessed. Generally this is the user ID of the authenticated user, but if the authenticated user is an Admin on the account, this may be another user the Admin user is accessing. **Note**: For the [GET /v2/accounts/{accountId}/envelopes](https://developers.docusign.com/esign-rest-api/reference/Envelopes/Envelopes/listStatusChanges/#envelopesInformation) method, the `user_id` query parameter is not implemented and should not be used.'
+        description: 'The ID of the user to access.
+
+
+          **Note:** Users can only access their own information. A user, even one with Admin rights, cannot access another user''s settings.'
         required: true
         schema:
           type: string
@@ -530,13 +601,13 @@ paths:
         '200':
           description: Successful response.
           content:
-            '*/*':
+            application/json:
               schema:
                 $ref: '#/components/schemas/userSignature'
         '400':
           description: Error encountered.
           content:
-            '*/*':
+            application/json:
               schema:
                 $ref: '#/components/schemas/errorDetails'
       deprecated: false
@@ -550,188 +621,470 @@ components:
       type: object
       properties:
         adoptedDateTime:
-          type: string
           description: The date and time the user adopted their signature.
-        createdDateTime:
           type: string
-          description: Indicates the date and time the item was created.
+        createdDateTime:
+          description: The UTC DateTime when the item was created.
+          type: string
+        customField:
+          description: ''
+          type: string
         dateStampProperties:
           $ref: '#/components/schemas/dateStampProperties'
+          description: 'Specifies the area in which a date stamp is placed. This parameter uses pixel positioning to draw a rectangle at the center of the stamp area. The stamp is superimposed on top of this central area.
+
+
+            This property contains the following information about the central rectangle:
+
+
+            - `DateAreaX`: The X axis position of the top-left corner.
+
+            - `DateAreaY`: The Y axis position of the top-left corner.
+
+            - `DateAreaWidth`: The width of the rectangle.
+
+            - `DateAreaHeight`: The height of the rectangle.'
+        disallowUserResizeStamp:
+          description: When **true,** users may not resize the stamp.
+          type: string
         errorDetails:
           $ref: '#/components/schemas/errorDetails'
+          description: This object describes errors that occur. It is only valid for responses and ignored in requests.
         externalID:
+          description: Optionally specify an external identifier for the user's signature.
           type: string
-          description: ''
+        imageBase64:
+          description: A Base64-encoded representation of the signature image.
+          type: string
         imageType:
+          description: 'Specificies the type of image. Valid values:
+
+
+            - `stamp_image`
+
+            - `signature_image`
+
+            - `initials_image`'
           type: string
-          description: One of **signature_image** or **initials_image**.
         initials150ImageId:
+          description: The ID of the user's initials image.
           type: string
-          description: ''
         initialsImageUri:
+          description: The URI for retrieving the image of the user's initials.
           type: string
-          description: Contains the URI for an endpoint that you can use to retrieve the initials image.
         isDefault:
+          description: Boolean that specifies whether the signature is the default signature for the user.
           type: string
-          description: ''
+        lastModifiedDateTime:
+          description: The date and time that the item was last modified.
+          type: string
+        nrdsId:
+          description: The National Association of Realtors (NAR) membership ID for a user who is a realtor.
+          type: string
+        nrdsLastName:
+          description: The realtor's last name.
+          type: string
+        nrdsStatus:
+          description: 'The realtor''s NAR membership status. The value `active` verifies that the user is a current NAR member. Valid values are:
+
+
+            - `Active`
+
+            - `Inactive`
+
+            - `Terminate`
+
+            - `Provisional`
+
+            - `Deceased`
+
+            - `Suspend`
+
+            - `Unknown`'
+          type: string
         phoneticName:
+          description: The phonetic spelling of the `signatureName`.
           type: string
-          description: ''
         signature150ImageId:
+          description: The ID of the user's signature image.
           type: string
-          description: ''
         signatureFont:
+          description: 'The font type for the signature, if the signature is not drawn. The supported font types are:
+
+
+            "7_DocuSign", "1_DocuSign", "6_DocuSign", "8_DocuSign", "3_DocuSign", "Mistral", "4_DocuSign", "2_DocuSign", "5_DocuSign", "Rage Italic"
+
+            '
           type: string
-          description: ''
         signatureId:
+          description: Specifies the signature ID associated with the signature name. You can use the signature ID in the URI in place of the signature name, and the value stored in the `signatureName` property in the body is used. This allows the use of special characters (such as "&", "<", ">") in a the signature name. Note that with each update to signatures, the returned signature ID might change, so the caller will need to trigger off the signature name to get the new signature ID.
           type: string
-          description: The ID of the signature being accessed.
         signatureImageUri:
+          description: An endpoint URI that you can use to retrieve the user's signature image.
           type: string
-          description: Contains the URI for an endpoint that you can use to retrieve the signature image.
         signatureInitials:
+          description: ' The initials associated with the signature.'
           type: string
-          description: ''
         signatureName:
+          description: Specifies the user's signature name.
           type: string
-          description: Specifies the user signature name.
+        signatureRights:
+          description: 'The rights that the user has to the signature. Valid values are:
+
+
+            - `none`
+
+            - `read`
+
+            - `admin`'
+          type: string
         signatureType:
+          description: Specifies the type of signature.
           type: string
-          description: ''
         stampFormat:
+          description: 'The format of a stamp. Valid values are:
+
+
+            - `NameHanko`: The stamp represents only the signer''s name.
+
+            - `NameDateHanko`: The stamp represents the signer''s name and the date. '
           type: string
-          description: ''
         stampImageUri:
+          description: The URI for retrieving the image of the user's stamp.
           type: string
-          description: ''
         stampSizeMM:
+          description: The physical height of the stamp image (in millimeters) that the stamp vendor recommends for displaying the image in PDF documents.
           type: string
-          description: ''
         stampType:
+          description: 'The type of stamp. Valid values are:
+
+
+            - `signature`: A signature image. This is the default value.
+
+            - `stamp`: A stamp image.
+
+            - null'
           type: string
-          description: ''
-      description: ''
+        status:
+          description: "Indicates the envelope status. Valid values are:\n\n* sent - The envelope is sent to the recipients. \n* created - The envelope is saved as a draft and can be modified and sent later."
+          type: string
       x-ds-definition-name: userSignature
+      description: ''
       x-ms-summary: ''
     userSignaturesInformation:
       type: object
       properties:
         userSignatures:
+          description: An array of  `userSignature` objects.
           type: array
-          description: ''
           items:
             $ref: '#/components/schemas/userSignature'
-      description: ''
       x-ds-definition-name: userSignaturesInformation
+      description: ''
       x-ms-summary: ''
-    errorDetails:
-      type: object
-      properties:
-        errorCode:
-          type: string
-          description: An error code associated with the error.
-        message:
-          type: string
-          description: A short error message.
-      description: This object describes errors that occur. It is only valid for responses, and ignored in requests.
-      x-ds-definition-name: errorDetails
-      x-ms-summary: This object describes errors that occur. It is only valid for responses, and ignored in requests.
     userSignatureDefinition:
       type: object
       properties:
+        dateStampProperties:
+          $ref: '#/components/schemas/dateStampProperties'
+          description: 'Specifies the area in which a date stamp is placed. This parameter uses pixel positioning to draw a rectangle at the center of the stamp area. The stamp is superimposed on top of this central area.
+
+
+            This property contains the following information about the central rectangle:
+
+
+            - `DateAreaX`: The X axis position of the top-left corner.
+
+            - `DateAreaY`: The Y axis position of the top-left corner.
+
+            - `DateAreaWidth`: The width of the rectangle.
+
+            - `DateAreaHeight`: The height of the rectangle.'
+        disallowUserResizeStamp:
+          description: When **true,** users may not resize the stamp.
+          type: string
+        externalID:
+          description: Optionally specify an external identifier for the user's signature.
+          type: string
+        imageType:
+          description: 'Specificies the type of image. Valid values:
+
+
+            - `stamp_image`
+
+            - `signature_image`
+
+            - `initials_image`'
+          type: string
+        isDefault:
+          description: Boolean that specifies whether the signature is the default signature for the user.
+          type: string
+        nrdsId:
+          description: The National Association of Realtors (NAR) membership ID for a user who is a realtor.
+          type: string
+        nrdsLastName:
+          description: The realtor's last name.
+          type: string
+        phoneticName:
+          description: The phonetic spelling of the `signatureName`.
+          type: string
         signatureFont:
+          description: 'The font type to use for the signature if the signature is not drawn. The following font styles  are supported. The quotes are to indicate that these values are strings, not `enums`.
+
+
+            - `"1_DocuSign"`
+
+            - `"2_DocuSign"`
+
+            - `"3_DocuSign"`
+
+            - `"4_DocuSign"`
+
+            - `"5_DocuSign"`
+
+            - `"6_DocuSign"`
+
+            - `"7_DocuSign"`
+
+            - `"8_DocuSign"`
+
+            - `"Mistral"`
+
+            - `"Rage Italic"`
+
+            '
           type: string
-          description: ''
         signatureId:
-          type: string
           description: Specifies the signature ID associated with the signature name. You can use the signature ID in the URI in place of the signature name, and the value stored in the `signatureName` property in the body is used. This allows the use of special characters (such as "&", "<", ">") in a the signature name. Note that with each update to signatures, the returned signature ID might change, so the caller will need to trigger off the signature name to get the new signature ID.
+          type: string
         signatureInitials:
+          description: Specifies the user's signature in initials format.
           type: string
-          description: ''
         signatureName:
+          description: Specifies the user's signature name.
           type: string
-          description: Specifies the user signature name.
-      description: ''
+        signatureType:
+          description: Specifies the type of signature.
+          type: string
+        stampFormat:
+          description: 'The format of a stamp. Valid values are:
+
+
+            - `NameHanko`: The stamp represents only the signer''s name.
+
+            - `NameDateHanko`: The stamp represents the signer''s name and the date. '
+          type: string
+        stampSizeMM:
+          description: The physical height of the stamp image (in millimeters) that the stamp vendor recommends for displaying the image in PDF documents.
+          type: string
       x-ds-definition-name: userSignatureDefinition
+      description: ''
       x-ms-summary: ''
+    errorDetails:
+      description: This object describes errors that occur. It is only valid for responses and ignored in requests.
+      type: object
+      properties:
+        errorCode:
+          description: The code associated with the error condition.
+          type: string
+        message:
+          description: A brief message describing the error condition.
+          type: string
+      x-ds-definition-name: errorDetails
+      x-ms-summary: This object describes errors that occur. It is only valid for responses and ignored in requests.
     dateStampProperties:
       type: object
       properties:
         dateAreaHeight:
+          description: The height of the rectangle.
           type: string
-          description: ''
         dateAreaWidth:
+          description: The width of the rectangle.
           type: string
-          description: ''
         dateAreaX:
+          description: The X axis position of the top-left corner.
           type: string
-          description: ''
         dateAreaY:
+          description: The Y axis position of the top-left corner.
           type: string
-          description: ''
-      description: ''
+      description: 'Specifies the area in which a date stamp is placed. This parameter uses pixel positioning to draw a rectangle at the center of the stamp area. The stamp is superimposed on top of this central area.
+
+
+        This property contains the following information about the central rectangle:
+
+
+        - `DateAreaX`: The X axis position of the top-left corner.
+
+        - `DateAreaY`: The Y axis position of the top-left corner.
+
+        - `DateAreaWidth`: The width of the rectangle.
+
+        - `DateAreaHeight`: The height of the rectangle.'
       x-ds-definition-name: dateStampProperties
-      x-ms-summary: ''
+      x-ms-summary: 'Specifies the area in which a date stamp is placed. This parameter uses pixel positioning to draw a rectangle at the center of the stamp area. The stamp is superimposed on top of this central area.
+
+
+        This property contains the following information about the central rectangle:
+
+
+        - `DateAreaX`: The X axis position of the top-left corner.
+
+        - `DateAreaY`: The Y axis position of the top-left corner.
+
+        - `DateAreaWidth`: The width of the rectangle.
+
+        - `DateAreaHeight`: The height of the rectangle.'
 externalDocs:
-  description: See the DocuSign REST API Guide for more information.
+  description: See the Docusign eSignature REST API Guide for more information.
   url: https://docs.docusign.com/esign
 x-ds-allow-editing: false
 x-ds-categories:
-- name: Authentication
-  summary: Logging in and authentication
-  description: 'Use the Authentication category to manage various account login tasks including:
-
-
-    * Getting login information for a user.
-
-    * Managing linked social accounts.
-
-    * Getting and revoking OAuth tokens.'
 - name: Envelopes
-  summary: Creating and sending envelopes
-  description: 'The DocuSign API Envelope category includes the resources and methods for sending and managing envelopes and envelope data.
+  summary: This section shows you how to create and send envelopes.
+  description: 'The eSignature API Envelope category includes the resources and methods for sending and managing envelopes and envelope data.
 
 
-    Envelopes are the key objects within the DocuSign eSignature system. As a result, they are complex data structures with few required fields. See the [API Recipes](https://www.docusign.com/developer-center/recipes) for use case examples and their solutions.
+    Envelopes are the key objects in the Docusign platform. As a result, they are complex data structures with few required fields. See the [How-to guides](/docs/esign-rest-api/how-to/) for examples and solutions.
 
 
-    To create and send envelopes, see the [Envelopes resource](Envelopes).
-
+    To learn more about envelopes, see [Envelopes](/docs/esign-rest-api/esign101/concepts/envelopes/).
 
     '
 - name: Connect
-  summary: Connect configuration and logging
-  description: "The Connect category enables your application to be called via HTTPS when an event of interest occurs.\n\nUse the Connect service to \"end the polling madness.\" With Connect, there is no need for your application to poll DocuSign every 15 minutes to learn the latest about your envelopes.\n\nInstead, you register your interest in one or more types of envelope or recipient events. Then, when an interesting event occurs, the DocuSign platform will contact your application with the event's details and data. You can register interest in envelopes sent by particular users in your account, or for envelopes sent by any user.\n\n## Incoming Connect Calls\nTo use the Connect service, your application needs to provide an https url that can be called from the public internet. If your application runs on a server behind your organization's firewall, then you will need to create a \"pinhole\" in the firewall to allow the incoming Connect calls from DocuSign to reach your application. Other techniques for receiving the incoming calls including proxy servers and DMZ networking can also be used. \n\n## Per-envelope Connect Configuration\nInstead of registering a general Connect configuration and listener, an individual envelope can have its own Connect configuration. See the `eventNotification` field for envelopes.\n\n## Categories\nUse the Connect category for:\n\n* Programmatically creating Connect configurations. Connect configurations can be created manually by using the DocuSign web service, or programmatically via the API. Configurations created via the API can be seen and updated from the web service.\n* Retrieving and managing the event log for your Connect configurations. \n* Requesting that an event be re-published to the listener."
+  summary: "Docusign Connect is the Docusign platform notification service. The service uses webhooks to proactively notify your application when an event occurs that your application wants to know about. Docusign recommends that all applications use Connect instead of polling the Docusign Signature Service. This section provides information about Connect configuration and logging. \n\n**Note:** To make API calls to any of the Connect endpoints, you must be an account administrator.\n\nFor more information about Connect, see [Docusign Connect](/platform/webhooks/connect/) and [Custom Connect Configuration](https://support.docusign.com/s/document-item?bundleId=pik1583277475390&topicId=khw1583277390582.html)."
+  description: 'The Connect service enables your application to be called via
+
+    HTTPS when an event of interest occurs.
+
+
+    Use the Connect service to "end the polling madness." With
+
+    Connect, there is no need for your application to poll Docusign
+
+    every 15 minutes to learn the latest about your envelopes.
+
+
+    Instead, you register your interest in one or more types of
+
+    envelope or recipient events. Then, when an interesting event
+
+    occurs, the Docusign platform will contact your application with
+
+    the event''s details and data. You can register interest in
+
+    envelopes sent by particular users in your account, or for
+
+    envelopes sent by any user.
+
+
+    Connect can empower your organization to manage document actions
+
+    as they occur, and allows you to track their changes within your
+
+    own systems. Upon completion, envelope information, including
+
+    document content, can be stored in your own databases or CMS
+
+    systems, and these events can be triggered via webhooks
+
+    delivering messages to your application.
+
+
+    **Note:** To make API calls to any of the Connect endpoints, you must be an account administrator.
+
+
+    ## Incoming Connect Calls
+
+
+    To use the Connect service, your application needs to provide an
+
+    HTTPS URL that can be called from the public Internet. If your
+
+    application runs on a server behind your organization''s firewall,
+
+    then you will need to create a "pinhole" in the firewall to allow
+
+    the incoming Connect calls from Docusign to reach your
+
+    application. You can also use other techniques such as proxy
+
+    servers and DMZ networking for receiving the incoming calls.
+
+
+    Connect delivers events over HTTP requests in JSON or XML.
+
+    See [Docusign Connect overview](/platform/webhooks/connect/).
+
+
+    If your application is not configured to accept post messages,
+
+    Docusign will NOT return an additional post error response to
+
+    your listener application. If you''ve enabled logging on your
+
+    configuration, it will be logged in Admin under the configuration
+
+    failure log.
+
+
+    ## Per-envelope Connect Configuration
+
+
+    Instead of registering a general Connect configuration and
+
+    listener, an individual envelope can have its own Connect
+
+    configuration. See the
+
+    [`eventNotification`](/docs/esign-rest-api/reference/envelopes/envelopes/create/#schema__envelopedefinition_eventnotification)
+
+    property for envelopes.
+
+
+    ## Historical Publish Endpoint
+
+
+    To submit existing envelopes to an endpoint, use the [EnvelopePublish](/docs/esign-rest-api/reference/envelopes/envelopepublish/) resource.
+
+    '
 - name: Templates
   summary: Template creation and management
   description: 'Use the Templates category to manage your account''s templates.
 
 
-    You can:
+    This section shows you how to perform the following tasks:
 
 
     * Create, list, get, update, and delete templates.
 
-    * Manage templates'' notification and group sharing settings.
+    * Manage the notification and group sharing settings for templates.
 
     * Fetch and rotate pages from a document used by a template.
 
 
-    Templates can be created programmatically or can be created via the DocuSign web interface and then used by your application.'
+    You can create templates either programmatically or through the Docusign web interface and then used by your application.'
 - name: SigningGroups
-  summary: Send a signing request to a group of potential signers
-  description: 'Use the SigningGroup category to manage signing groups that allow you anyone in the group to sign a document.
+  summary: Send a signing request to a group of potential signers.
+  description: 'Use the Signing Group category to manage signing groups that allow anyone in the group to sign a document. When you send an envelope to a signing group, anyone in the group can open it and sign it with their own signature.
 
 
-    The category allows you create the signing group and manage the users in the group.'
+    This category shows account administrators how to create a signing group and manage the users in the group.
+
+
+    **Note:** To create and manage signing groups, you must be an account administrator.
+
+
+    For more information about this topic, see [Signing Groups](https://support.docusign.com/s/document-item?bundleId=gav1643676262430&topicId=zgn1578456447934.html).'
 - name: Folders
-  summary: Folders for completed envelopes
-  description: "Use the Folders category to manage envelopes in your folders. \n\nYou can list the folder contents and move envelopes between folders."
+  summary: Folders allow you to organize envelopes and templates.
+  description: 'Use the Folders category to organize envelopes and templates.
+
+    You can list the folder contents and move envelopes and templates between folders.'
 - name: CustomTabs
   summary: Custom tabs
   description: "Custom Tabs enable accounts to have one or more pre-configured (custom) tabs. Custom tabs save time when users are tagging documents since the users don't have to manually set the tabs' parameters.\n\nThis category enables custom tabs to be managed programmatically, including creation, deletion, etc. \n"
 - name: CloudStorage
-  summary: Cloud storage providers and user management
+  summary: This section shows you how to manage your cloud storage providers and users.
   description: 'Use the Cloud Storage category to list the user''s cloud storage document contents.
 
 
@@ -750,7 +1103,7 @@ x-ds-categories:
 
     * Add delete users.
 
-    * Add and delete the intials and signature images for a user.'
+    * Add and delete the initials and signature images for a user.'
 - name: UserGroups
   summary: Group users for common permissions and branding
   description: 'Use the User Groups category to manage your permissions groups.
@@ -764,9 +1117,28 @@ x-ds-categories:
     * Add users to, and delete users from, your groups.
 
     * Manage the brand information associated with a group.'
+- name: BulkEnvelopes
+  summary: Bulk envelopes
+  description: Use the BulkEnvelopes category to manage the sending of envelopes to multiple recipients.
 - name: Accounts
   summary: Account management
-  description: "Use the Account category for various account management tasks including:\n\n* Programmatically creating and deleting accounts.\n* Getting information about an account and its capabilities.\n* Branding the account with custom colors, message text, and more.\n* Account charges.\n\nThe Account category also includes end points for \n* Listing the recipient names associated with an email address that was used by the account. For example, a single email address is often shared by mulitple members of a family.\n\n\n"
+  description: 'Use the Account category for various account management tasks including:
+
+
+    * Programmatically creating and deleting accounts.
+
+    * Getting information about an account and its capabilities.
+
+    * Branding the account with custom colors, message text, and more.
+
+    * Account charges.
+
+
+    The Accounts category also includes end points for listing the recipient names associated with an email address that was used by the account. For example, a single email address is often shared by multiple members of a family.
+
+
+
+    '
 - name: Billing
   summary: Invoices
   description: 'Use the Billing category to manage the following billing related tasks:
@@ -788,18 +1160,42 @@ x-ds-categories:
 
     * Getting information on the API''s resources and versions.'
 - name: PowerForms
-  summary: PowerForm creation and management
-  description: The PowerForms category enables PowerForms to be created and managed.
+  summary: The PowerForms category provides methods that enable you to create and manage fillable forms.
+  description: The PowerForms category enables you to create and manage PowerForms that you can use for self service and email forms.
 - name: Workspaces
-  summary: Workspace creation and management
-  description: 'Workspaces creation and management.
-
-
-    '
+  summary: A Docusign workspace is a collaboration area for sharing files and data.
+  description: "A workspace is a collaborative space for sharing documents and managing workflows. A workspace has a single owner who must be a Docusign user. The owner can invite others to the workspace as collaborators. Individuals who are not Docusign users must create a Docusign account to join a workspace as a collaborator.\n \nYou can create an envelope directly from a workspace.\n\nWorkspaces store the following information:\n\n- **Files:** Files uploaded to a workspace for storage or reuse.\n- **Documents:** A document is a component of a transaction, template, or workspace. When a file is added to a transaction, template, or workspace, it is copied as a document. Each document in a workspace has a single owner.\n- **Templates:** A set of documents that you can use to create a transaction or a workspace.\n- **Transactions:** A transaction is a series of workflow events related to one or more documents. These events route the documents to one or more individuals for the purposes of doing business. Each transaction has a single owner (the sender).\n\n**Note:** Documents in a template are not individually listed as files."
 - name: Payments
   summary: Manage Payments
   description: This category includes resources for managing payment gateways. Payment information is added to envelopes via methods in the Envelopes category.
-- name: Signature
+- name: EmailArchive
+  summary: This section shows you how to set and manage the BCC email addresses that you want to use to archive the emails that Docusign sends.
+  description: 'Email archives enable Docusign partners and other multi-account customers to easily archive emails sent through Docusign. The `EmailArchive` resource provides methods for managing your email archive configuration, which consists of the BCC email address or addresses that you want to use to archive Docusign emails. Each account can use up to five BCC email addresses for archiving purposes.
+
+
+    For more information, see [Email Archive Configuration](https://support.docusign.com/s/document-item?bundleId=pik1583277475390&topicId=xjm1583277371373.html).
+
+
+    **Note:** This feature is only available for certain account plans and must be enabled by Docusign.'
+- name: Notary
+  summary: 'Docusign eNotary makes the notarization process fully digital
+
+    for senders, signers, and notaries.
+
+    It enables a notary public to act as an in-person witness
+
+    to electronic signing of documents.
+
+    '
+  description: 'Docusign eNotary makes the notarization process fully digital
+
+    for senders, signers, and notaries.
+
+    It enables a notary public to act as an in-person witness
+
+    to electronic signing of documents.
+
+    '
+- name: Envelope
   summary: ''
   description: ''
-x-original-swagger-version: '2.0'

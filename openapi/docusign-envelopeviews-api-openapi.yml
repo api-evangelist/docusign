@@ -1,167 +1,63 @@
 openapi: 3.2.0
 info:
-  title: Docusign Envelope Views API
+  version: v2.1
+  title: Docusign eSignature REST Envelope Views API
+  description: The Docusign eSignature REST API provides you with a powerful, convenient, and simple Web services API for interacting with Docusign.
+  termsOfService: https://www.docusign.com/company/terms-and-conditions/web
   contact:
-    name: DocuSign Developer Center
+    name: Docusign Developer Center
     url: https://developers.docusign.com/
     email: devcenter@docusign.com
-  x-refined-note:
-  - x-logo differs across the merged source definitions and was not carried
-  version: '1.0'
-  description: 'Operations tagged EnvelopeViews across 2 of this provider''s published API definitions: docusign-esignature-openapi.yml, docusign-openapi-original.yml. Each path carries the servers of the definition it was published in.'
 servers:
-- url: https://demo.docusign.net/restapi/v2.1
-  description: DocuSign Demo (Sandbox) Environment
-- url: https://www.docusign.net/restapi/v2.1
-  description: DocuSign Production - NA1
-- url: https://eu.docusign.net/restapi/v2.1
-  description: DocuSign Production - EU
-- url: https://au.docusign.net/restapi/v2.1
-  description: DocuSign Production - AU
 - url: https://www.docusign.net/restapi
 tags:
 - name: EnvelopeViews
-  description: Generate URL tokens for embedded signing, sending, and recipient views to integrate DocuSign experiences directly into your application.
-  externalDocs:
-    url: https://developers.docusign.com/docs/esign-rest-api/reference/envelopes/envelopeviews/
+  description: 'Provides a URL that you can embed in your application
+
+    to provide access to the Docusign UI.
+
+
+    ### Related topics
+
+
+    - Embedded signing and sending
+
+    - How to send an envelope via your app
+
+    - Introducing customizable embedded sending'
 paths:
-  /accounts/{accountId}/envelopes/{envelopeId}/views/recipient:
-    post:
-      operationId: EnvelopeViews_CreateRecipientView
-      summary: Docusign Create an Embedded Recipient Signing View
-      description: Generates a URL that enables an embedded recipient to sign an envelope within your application. The URL is time-limited and intended for immediate use.
-      tags:
-      - EnvelopeViews
-      parameters:
-      - $ref: '#/components/parameters/accountId'
-      - $ref: '#/components/parameters/envelopeId'
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/RecipientViewRequest'
-      responses:
-        '201':
-          description: Recipient view URL created successfully.
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ViewUrl'
-        '400':
-          $ref: '#/components/responses/BadRequest'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-        '404':
-          $ref: '#/components/responses/NotFound'
-      x-microcks-operation:
-        delay: 0
-        dispatcher: FALLBACK
-      security:
-      - OAuth2:
-        - signature
-        - impersonation
-    servers:
-    - url: https://demo.docusign.net/restapi/v2.1
-      description: DocuSign Demo (Sandbox) Environment
-    - url: https://www.docusign.net/restapi/v2.1
-      description: DocuSign Production - NA1
-    - url: https://eu.docusign.net/restapi/v2.1
-      description: DocuSign Production - EU
-    - url: https://au.docusign.net/restapi/v2.1
-      description: DocuSign Production - AU
-  /accounts/{accountId}/envelopes/{envelopeId}/views/sender:
-    post:
-      operationId: EnvelopeViews_CreateSenderView
-      summary: Docusign Create an Embedded Sender View
-      description: Generates a URL that enables an embedded sender to edit an envelope in draft status before sending it.
-      tags:
-      - EnvelopeViews
-      parameters:
-      - $ref: '#/components/parameters/accountId'
-      - $ref: '#/components/parameters/envelopeId'
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                returnUrl:
-                  type: string
-                  description: URL to redirect the sender to after the sending session ends.
-      responses:
-        '201':
-          description: Sender view URL created successfully.
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ViewUrl'
-        '400':
-          $ref: '#/components/responses/BadRequest'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-        '404':
-          $ref: '#/components/responses/NotFound'
-      x-microcks-operation:
-        delay: 0
-        dispatcher: FALLBACK
-      security:
-      - OAuth2:
-        - signature
-        - impersonation
-    servers:
-    - url: https://demo.docusign.net/restapi/v2.1
-      description: DocuSign Demo (Sandbox) Environment
-    - url: https://www.docusign.net/restapi/v2.1
-      description: DocuSign Production - NA1
-    - url: https://eu.docusign.net/restapi/v2.1
-      description: DocuSign Production - EU
-    - url: https://au.docusign.net/restapi/v2.1
-      description: DocuSign Production - AU
-  /v2/accounts/{accountId}/envelopes/{envelopeId}/views/correct:
+  /v2.1/accounts/{accountId}/envelopes/{envelopeId}/views/correct:
+    parameters: []
     post:
       tags:
       - EnvelopeViews
-      summary: Docusign Returns a URL to the envelope correction UI
-      description: 'Returns a URL that allows you to embed the envelope correction view of the DocuSign UI in your applications.
-
-
-        Important: iFrames should not be used for embedded operations on mobile devices due to screen space issues. For iOS devices DocuSign recommends using a WebView.'
+      summary: Returns a URL to the envelope correction UI. Use after an envelope has been sent
+      description: "Returns a URL that enables you to embed the envelope sender view of the Docusign UI. You can customize the appearance of the view via the settings request attribute. You can embed the view in an iframe. **API request update**\n\nThe request object for this API method was updated in June 2024. The new API request format is described below. Existing applications must update to the new version; it solves a security issue with the old version. The deprecation schedule has been announced in the Docusign Core Release Notes. While backwards compatibility will be provided for a while for existing applications, all applications must be updated to be secure. See below for migration information. **Best practices**\n\nThe returned URL expires after 10 minutes. Therefore, request the URL immediately before you redirect your user to it. Due to screen space issues, do not use an iframe for embedded operations on mobile devices. For mobile applications, use a WebView (Android) or WKWebView (iOS). ## Customizing the user experience\n\nBy default, the view includes two pages: the **Prepare** and **Tagger** pages. The settings object is used to control the user experience. For example, to limit the user to the **Tagger** page, and not allow the user to change the recipient information:\n\n* `\"startingScreen\": \"Tagger\"`\n* `\"showBackButton\": \"false\"`\n* `\"showEditRecipients\": \"false\"`\n\nUse the Embedded Views Test Too to try the different UX controls. Some UI settings attributes are not yet implemented. ### The envelope must be in the correct state for the Embedded View\n\nTo use the Correct View, the envelope **must** be in the `sent` or `delivered` state. Otherwise, a 400 error will be returned with an error message in the response body:\n```\n{\n\"errorCode\": \"ENVELOPE_INVALID_STATUS\",\n\"message\": \"Invalid envelope status. Correct view cannot be created for an envelope in a Created state.\"\n}\n```\n\n### Modifying the envelope after redirection\nIf you set `\"sendButtonAction\": \"redirect\"` or `\"backButtonAction\": \"redirect\"`, and your app will modify the envelope before or after the view completes, you must lock the envelope before the API call and provide the lock as the lockToken attribute in the API request object. Delete the lock token after the browser has been redirected to your application. ### Closing the view's iframe\n\nIf you choose to embed the view in your application via an iframe, Docusign recommends this software pattern to close the iframe after the view has completed:\n\n* (One time) create a standalone â\x80\x9Creturnâ\x80\x9D page that you will use as the `returnUrl` target for the view. The view will redirect the iframe to this URL when it has completed. Here's an example return page. In this page, use JavaScript and the postMessage method to send a message to your application with the results of the view. * In your application, use `window.addEventListener(\"message\", function_name)` to register a listener for incoming messages. * To show the view, use this API method, then set the iframe to load the URL from the API response. * In your application, receive the completion message, validate it, and then close the iframe. ### Information security\n\nThis view only has write access to the specific envelope referenced in the API call. It also has read access to templates and other secondary information that a user can access to modify the envelope. The read access corresponds to the access rights of the user associated with the access token used for the API call. >**Recommendations:**\n>* Use the access token of a service user who can access the templates appropriate for your use case. >* Do not use the access token of a user with administrator privileges. ## Migrating to the current version of the request object\n\nThis section only applies to existing applications that use the older version of the request object. Migrating from the old API request object to the new version will take under a day of developer time."
       operationId: Views_PostEnvelopeCorrectView
       parameters:
       - name: accountId
         in: path
-        description: The external account number (int) or account id GUID.
+        description: The external account number (int) or account ID GUID.
         required: true
         schema:
           type: string
       - name: envelopeId
         in: path
-        description: 'The envelope''s GUID. Eg 93be49ab-afa0-4adf-933c-f752070d71ec '
+        description: "The envelope's GUID. \n\nExample: `93be49ab-xxxx-xxxx-xxxx-f752070d71ec`\n"
         required: true
         schema:
           type: string
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/correctViewRequest'
-          application/xml:
-            schema:
-              $ref: '#/components/schemas/correctViewRequest'
-        required: false
       responses:
         '201':
           description: Successful response.
           content:
-            '*/*':
+            application/json:
               schema:
                 $ref: '#/components/schemas/EnvelopeViews'
         '400':
           description: Error encountered.
           content:
-            '*/*':
+            application/json:
               schema:
                 $ref: '#/components/schemas/errorDetails'
       deprecated: false
@@ -169,99 +65,93 @@ paths:
       x-ds-method: createCorrect
       x-ds-service: Envelopes
       x-ds-in-sdk: true
-      x-codegen-request-body-name: correctViewRequest
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/envelopeViewRequest'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/envelopeViewRequest'
     delete:
       tags:
       - EnvelopeViews
+      summary: Revokes the correction view URL to the Envelope UI
       operationId: Views_DeleteEnvelopeCorrectView
       parameters:
       - name: accountId
         in: path
-        description: The external account number (int) or account id GUID.
+        description: The external account number (int) or account ID GUID.
         required: true
         schema:
           type: string
       - name: envelopeId
         in: path
-        description: 'The envelope''s GUID. Eg 93be49ab-afa0-4adf-933c-f752070d71ec '
+        description: "The envelope's GUID. \n\nExample: `93be49ab-xxxx-xxxx-xxxx-f752070d71ec`\n"
         required: true
         schema:
           type: string
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/correctViewRequest'
-          application/xml:
-            schema:
-              $ref: '#/components/schemas/correctViewRequest'
-        required: false
       responses:
         '200':
           description: Successful response.
-          content: {}
         '400':
           description: Error encountered.
           content:
-            '*/*':
+            application/json:
               schema:
                 $ref: '#/components/schemas/errorDetails'
       deprecated: false
       x-ds-methodname: deleteEnvelopeCorrectView
+      description: This API method is obsolete. Your application should not call it. It acts as a null operation.
       x-ds-method: deleteEnvelopeCorrectView
       x-ds-service: Uncategorized
       x-ds-in-sdk: true
-      x-codegen-request-body-name: correctViewRequest
-      summary: Views delete envelope correct view
-      x-summary-source: derived
-    servers:
-    - url: https://www.docusign.net/restapi
-  /v2/accounts/{accountId}/envelopes/{envelopeId}/views/edit:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/correctViewRequest'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/correctViewRequest'
+  /v2.1/accounts/{accountId}/envelopes/{envelopeId}/views/edit:
+    parameters: []
     post:
       tags:
       - EnvelopeViews
-      summary: Docusign Returns a URL to the edit view UI
-      description: 'Returns a URL that allows you to embed the edit view of the DocuSign UI in your applications. This is a one-time use login token that allows the user to be placed into the DocuSign editing view.
+      summary: Returns a URL to the edit view UI. Use before an envelope has been sent
+      description: 'This API method has been replaced by the EnvelopeViews:createSender API method. The two API methods work exactly the same,
 
 
-        Upon sending completion, the user is returned to the return URL provided by the API application.
+        **Migration required**
 
 
-        Important: iFrames should not be used for embedded operations on mobile devices due to screen space issues. For iOS devices DocuSign recommends using a WebView.'
+        To solve an application security issue, you must migrate to the new API request format. See the EnvelopeViews:createSender API method for more information. Backwards compatibility will be provided for a limited time.'
       operationId: Views_PostEnvelopeEditView
       parameters:
       - name: accountId
         in: path
-        description: The external account number (int) or account id GUID.
+        description: The external account number (int) or account ID GUID.
         required: true
         schema:
           type: string
       - name: envelopeId
         in: path
-        description: 'The envelope''s GUID. Eg 93be49ab-afa0-4adf-933c-f752070d71ec '
+        description: "The envelope's GUID. \n\nExample: `93be49ab-xxxx-xxxx-xxxx-f752070d71ec`\n"
         required: true
         schema:
           type: string
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/returnUrlRequest'
-          application/xml:
-            schema:
-              $ref: '#/components/schemas/returnUrlRequest'
-        required: false
       responses:
         '201':
           description: Successful response.
           content:
-            '*/*':
+            application/json:
               schema:
                 $ref: '#/components/schemas/EnvelopeViews'
         '400':
           description: Error encountered.
           content:
-            '*/*':
+            application/json:
               schema:
                 $ref: '#/components/schemas/errorDetails'
       deprecated: false
@@ -283,7 +173,7 @@ paths:
 
           This is the URL
 
-          that the DocuSign platform
+          that the Docusign platform
 
           will redirect the user to
 
@@ -294,84 +184,185 @@ paths:
         direction: both
         format: json
         response:
-          url: https://demo.docusign.net/Member/StartInSession.aspx?StartConsole=1&t=c8dc7c1e-77fb-4ec8-a336-405ba1f7d38b&DocuEnvelope=4b728be4-4417-45c6-b7e8-d63e23f822b6&send=1
+          url: https://demo.docusign.net/Member/StartInSession.aspx?StartConsole=1&t=c8dc7c1e-xxxx-xxxx-xxxx-405ba1f7d38b&DocuEnvelope=4b728be4-xxxx-xxxx-xxxx-d63e23f822b6&send=1
         request:
           returnUrl: https://dsapp.example.com/return/from/edit/view
         style: custom
         title: Getting an Edit View URL and Setting a Return URL
-      x-codegen-request-body-name: returnUrlRequest
-    servers:
-    - url: https://www.docusign.net/restapi
-  /v2/accounts/{accountId}/envelopes/{envelopeId}/views/recipient:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/envelopeViewRequest'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/envelopeViewRequest'
+  /v2.1/accounts/{accountId}/envelopes/{envelopeId}/views/recipient:
+    parameters: []
     post:
       tags:
       - EnvelopeViews
-      summary: Docusign Returns a URL to the recipient view UI
-      description: 'Returns a URL that enables you to embed the recipient view of the DocuSign UI in your applications. If the recipient is a signer, then the view will provide the signing ceremony.
+      summary: Returns a URL to the recipient view UI.
+      description: 'Returns a URL that enables you to
+
+        embed the recipient view
+
+        of the
+
+        DocuSign UI in your applications. If the recipient is a signer,
+
+        then the view will provide the signing ceremony. This method is only used with envelopes in the `sent` status. Due to screen space issues,
+
+        do not use an <iframe> for embedded operations on mobile devices. For iOS devices, Docusign recommends using a WebView. ### The returned URL
 
 
-        ###### Note: Please redirect the client to the URL. iFrames should not be used, especially if the recipient is using a mobile or tablet.
+        The URL returned in this method''s response is intended to be used
+
+        immediately to redirect the signer to the recipient view. You can open the recipient view
+
+        in the current browser or in a new tab. After the signer is redirected to the
+
+        recipient view, they must interact with the Docusign system
+
+        periodically or their session will time out. The returned URL can be used only once and
+
+        expires after 5 minutes. Do not store or email the returned URL. If you want to invite someone to an embedded signing session via
+
+        email, the email invitation''s URL must be to your application. When invoked, your app should request a `recipientView` URL from
+
+        Docusign and then redirect the signer to that URL. ### How to specify the default language
 
 
-        This method is only used with envelopes in the `sent` status.
+        You can append the `locale`
+
+        query parameter
+
+        to the URL returned by this method
+
+        to specify a language. The language for the recipient view
+
+        follows this order or precedence:
 
 
-        Your application is responsible for authenticating the identity of the recipient or signer when you use this method. Use the parameters `assertionId`, `authenticationInstant`, `authenticationMethod`, `clientUserId`, and `securityDomain` to record information on how the recipient was authenticated. At a minimum, `authenticationMethod` and `clientUserId` are required. The information that you provide is included in the envelope''s certificate of completion.
+        - The language specified by the sender for the recipient. - The `locale` parameter appended to the URL. - The account language if the signer has a Docusign account. - The language used in a previous signing if the signer is return signer. - The browser language. For example, to set the default language
+
+        to Canadian French, you would add this query parameter
+
+        to the returned URL:
 
 
-        ## The event status parameter
+        ```
 
-        After the signer completes or ends the signing ceremony, DocuSign will redirect the user''s browser back to your app via the `returnUrl` that you supply. DocuSIgn appends an `event` query parameter to the URL with the outcome of the signing ceremony. Your app should use the event parameter to determine the next step for the envelope. Don''t fetch the envelope''s status via Envelopes: get or a similar method; that could break the DocuSign rule against polling.
+        ...&locale=fr_CA
 
-
-        ## The URL is time-limited
-
-        The URL returned by this method is valid for one use. It must be used/displayed within a couple of minutes after being generated. Once the recipient is redirected to the recipient view, they must interact with the DocuSign system periodically or their session will time out.
+        ```
 
 
-        Because the URL is time-limited, it should not be stored or sent via email. Immediately redirect the user''s browser to the URL after you receive it.
+        ## Authentication
 
 
-        If you want to invite someone to an embedded signing session via email, the email invitation''s URL must be to your application. When invoked, your app should request a recipientView URL from DocuSign and then redirect the signer to that URL.
+        Your application is responsible for authenticating the identity
+
+        of the recipient or signer when you use this method. Use the
+
+        following parameters to record how the recipient
+
+        was authenticated. - `assertionId`
+
+        - `authenticationInstant`
+
+        - `authenticationMethod`
+
+        - `clientUserId`
+
+        - `securityDomain`
 
 
-        ## Maintaining State
+        At a minimum, `authenticationMethod` and `clientUserId` are
 
-        After the recipient completes the recipient view (or signing ceremony), they are redirected to your application. Your application can recover state information about the transaction by storing information in a cookie, or by including query parameters in the `returnUrl` field. Eg, `https://myapp.eg.com/docusign_return?myState=12345` When the user is redirected to your app, the `event` query parameter will be appended. In this example, prevent spoofing by not using a guessable value as the state value.'
+        required. The information that you provide is included in the
+
+        envelope''s certificate of completion. ## Sending to a remote signer
+
+
+        You can request a signing session for a remote recipient
+
+        who has a Docusign account. Authenticate the request using the recipient''s
+
+        credentials, and do not specify a `clientUserId`. This differs from the typical behavior where the
+
+        request is authenticated using the sender''s credentials,
+
+        and the recipient has a `clientUserId` defined. ## Redirecting back to returnUrl
+
+        After the signer completes or ends the signing ceremony, Docusign
+
+        redirects the user''s browser back to your app via the
+
+        `returnUrl` that you supplied in the request. The signer may be redirected through various Docusign
+
+        subdomains, depending on the region of the account sending the
+
+        envelope. Please consult Allowlists for Docusign eSignature service
+
+        in **Security for Docusign eSignature**
+
+        when setting up your allowlists
+
+
+        ### The event status parameter
+
+
+        Docusign appends an `event` query parameter to the `returnUrl` with the
+
+        outcome of the signing ceremony. Your app can use this event
+
+        parameter to determine the next step for the envelope. Do not fetch the envelope status by using
+
+        Envelopes: get
+
+        or a similar method because doing so
+
+        will probably hit request and polling limits. | event query parameter | Meaning |
+
+        | :------------------- | :--------------------------------------------------------------------------------------- |
+
+        | signing_complete | The recipient has signed the document. |
+
+        | cancel | The recipient decided to finish later. |
+
+        | decline | The recipient declined to sign the document. |
+
+        | exception | An exception has occurred on the server during the signing session. |
+
+        | fax_pending | Recipient has a fax pending. |
+
+        | session_timeout | The recipient did not sign the document in time. The timeout is set to 20 minutes.'
       operationId: Views_PostEnvelopeRecipientView
       parameters:
       - name: accountId
         in: path
-        description: The external account number (int) or account id GUID.
+        description: The external account number (int) or account ID GUID.
         required: true
         schema:
           type: string
       - name: envelopeId
         in: path
-        description: 'The envelope''s GUID. Eg 93be49ab-afa0-4adf-933c-f752070d71ec '
+        description: The ID of the draft envelope or template to preview.
         required: true
         schema:
           type: string
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/recipientViewRequest'
-          application/xml:
-            schema:
-              $ref: '#/components/schemas/recipientViewRequest'
-        required: false
       responses:
         '201':
           description: Successful response.
           content:
-            '*/*':
+            application/json:
               schema:
                 $ref: '#/components/schemas/EnvelopeViews'
         '400':
           description: Error encountered.
           content:
-            '*/*':
+            application/json:
               schema:
                 $ref: '#/components/schemas/errorDetails'
       deprecated: false
@@ -379,87 +370,99 @@ paths:
       x-ds-method: createRecipient
       x-ds-service: Envelopes
       x-ds-in-sdk: true
-      x-codegen-request-body-name: recipientViewRequest
-    servers:
-    - url: https://www.docusign.net/restapi
-  /v2/accounts/{accountId}/envelopes/{envelopeId}/views/sender:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/recipientViewRequest'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/recipientViewRequest'
+  /v2.1/accounts/{accountId}/envelopes/{envelopeId}/views/sender:
+    parameters: []
     post:
       tags:
       - EnvelopeViews
-      summary: Docusign Returns a URL to the sender view UI
-      description: 'Returns a URL that enables you to embed the sender view of the DocuSign UI in your applications.
+      summary: Returns a URL to the sender view UI. Used before an envelope has been sent
+      description: 'Returns a URL that enables you to embed the envelope sender view of the Docusign UI. You can customize the appearance of the view via the settings request attribute. You can embed the view in an iframe. **API request update**
 
 
-        The returned URL can only be redirected to immediately after it is generated. It can only be used once.
-
-        Therefore, request the URL immediately before you redirect your user to it.
+        The request object for this API method was updated in June 2024. The new API request format is described below. Existing applications must update to the new version; it solves a security issue with the old version. The deprecation schedule has been announced in the Docusign Core Release Notes. While backwards compatibility will be provided for a while for existing applications, all applications must be updated to be secure. See below for migration information. **Best practices**
 
 
-        For the best user experience, don''t use an iFrame. For iOS devices DocuSign recommends using a WebView.
+        The returned URL expires after 10 minutes. Therefore, request the URL immediately before you redirect your user to it. Due to screen space issues, do not use an iframe for embedded operations on mobile devices. For mobile applications, use a WebView (Android) or WKWebView (iOS). ## Customizing the user experience
 
 
-        Multiple solutions are available for maintaining your
-
-        client state. See the **Maintaining State** section of the Embedded Signing introduction.
+        By default, the view includes two pages: the **Prepare** and **Tagger** pages. The settings object is used to control the user experience. For example, to limit the user to the **Tagger** page, and not allow the user to change the recipient information:
 
 
-        After the user has completed the sending view, the browser is redirected to the `returnUrl` supplied.
+        * `"startingScreen": "Tagger"`
+
+        * `"showBackButton": "false"`
+
+        * `"showEditRecipients": "false"`
 
 
-        By default, if the envelope already contains one or more documents, DocuSign will initially show the document tagging view when you redirect to the URL.
+        Use the Embedded Views Test Too to try the different UX controls. Some UI settings attributes are not yet implemented. ### The envelope must be in the correct state for the Embedded View
 
 
-        To start with the envelope''s recipients and documents view instead, examine the URL in the method''s response.
+        To use the Sender View, the envelope **must** be in the `created` state. Otherwise, a 400 error will be returned with an error message in the response body:
 
-        Then change the query parameter from `send=1` to `send=0` to start with the recipients/documents view.
+        ```
+
+        {
+
+        "errorCode": "ENVELOPE_INVALID_STATUS",
+
+        "message": "Invalid envelope status. Sender view cannot be created for an envelope that is not in a draft state."
+
+        }
+
+        ```
 
 
-        Information Security notice: This method provides full access to the sender''s user account.
-
-        When you use this view, the sender has full access to the user account. If the sender user account has administrative privileges, then this method also provides administrator access.
+        ### Closing the view''s iframe
 
 
-        If your use case needs to enable a sender to update a draft envelope before it is sent, then either:
+        If you choose to embed the view in your application via an iframe, Docusign recommends this software pattern to close the iframe after the view has completed:
 
 
-        Configure each sender to have their own individual user account to use this API method.
+        * (One time) create a standalone “return” page that you will use as the `returnUrl` target for the view. The view will redirect the iframe to this URL when it has completed. Here''s an example return page. In this page, use JavaScript and the postMessage method to send a message to your application with the results of the view. * In your application, use `window.addEventListener("message", function_name)` to register a listener for incoming messages. * To show the view, use this API method, then set the iframe to load the URL from the API response. * In your application, receive the completion message, validate it, and then close the iframe. ### Information security
 
 
-        Enhance your API integration so that this method is not needed. Your integration can create the tabs, recipients and other envelope settings as needed.'
+        This view only has write access to the specific envelope referenced in the API call. It also has read access to templates and other secondary information that a user can access to modify the envelope. The read access corresponds to the access rights of the user associated with the access token used for the API call. >**Recommendations:**
+
+        >* Use the access token of a service user who can access the templates appropriate for your use case. >* Do not use the access token of a user with administrator privileges. ## Migrating to the current version of the request object
+
+
+        This section only applies to existing applications that use the older version of the request object. Migrating from the old API request object to the new version will take under a day of developer time. **Step 1.** Does your application set the `returnUrl` attribute? Yes: continue with step 2. No: In this case, your users first update the envelope, and then the Docusign eSignature home screen is shown. To accomplish this UI pattern with the new API request format:
+
+        * Set the `returnUrl` to a new endpoint for your application. You can use query parameters or session data to manage state. Remember to authenticate the incoming requests.'
       operationId: Views_PostEnvelopeSenderView
       parameters:
       - name: accountId
         in: path
-        description: The external account number (int) or account id GUID.
+        description: The external account number (int) or account ID GUID.
         required: true
         schema:
           type: string
       - name: envelopeId
         in: path
-        description: 'The envelope''s GUID. Eg 93be49ab-afa0-4adf-933c-f752070d71ec '
+        description: "The envelope's GUID. \n\nExample: `93be49ab-xxxx-xxxx-xxxx-f752070d71ec`\n"
         required: true
         schema:
           type: string
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/returnUrlRequest'
-          application/xml:
-            schema:
-              $ref: '#/components/schemas/returnUrlRequest'
-        required: false
       responses:
         '201':
           description: Successful response.
           content:
-            '*/*':
+            application/json:
               schema:
                 $ref: '#/components/schemas/EnvelopeViews'
         '400':
           description: Error encountered.
           content:
-            '*/*':
+            application/json:
               schema:
                 $ref: '#/components/schemas/errorDetails'
       deprecated: false
@@ -467,93 +470,116 @@ paths:
       x-ds-method: createSender
       x-ds-service: Envelopes
       x-ds-in-sdk: true
-      x-codegen-request-body-name: returnUrlRequest
-    servers:
-    - url: https://www.docusign.net/restapi
-  /v2/accounts/{accountId}/envelopes/{envelopeId}/views/shared:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/envelopeViewRequest'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/envelopeViewRequest'
+  /v2.1/accounts/{accountId}/envelopes/{envelopeId}/views/shared:
+    parameters: []
     post:
       tags:
       - EnvelopeViews
+      summary: Returns a URL to the shared recipient view UI for an envelope
       operationId: Views_PostEnvelopeRecipientSharedView
       parameters:
       - name: accountId
         in: path
-        description: The external account number (int) or account id GUID.
+        description: The external account number (int) or account ID GUID.
         required: true
         schema:
           type: string
       - name: envelopeId
         in: path
-        description: 'The envelope''s GUID. Eg 93be49ab-afa0-4adf-933c-f752070d71ec '
+        description: "The envelope's GUID. \n\nExample: `93be49ab-xxxx-xxxx-xxxx-f752070d71ec`\n"
         required: true
         schema:
           type: string
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/recipientViewRequest'
-          application/xml:
-            schema:
-              $ref: '#/components/schemas/recipientViewRequest'
-        required: false
       responses:
         '201':
           description: Successful response.
           content:
-            '*/*':
+            application/json:
               schema:
                 $ref: '#/components/schemas/viewUrl'
         '400':
           description: Error encountered.
           content:
-            '*/*':
+            application/json:
               schema:
                 $ref: '#/components/schemas/errorDetails'
       deprecated: false
       x-ds-methodname: createEnvelopeRecipientSharedView
+      description: 'Returns a URL that enables you to embed the Docusign UI recipient view of a shared envelope in your applications. This is the view that a user sees of an envelope that a recipient on the same account has shared with them.
+
+
+        Due to screen space issues,
+
+        do not use an `` for embedded operations on mobile devices.
+
+        For iOS devices, Docusign recommends using a WebView.
+
+
+        ### Related topics
+
+
+        - Embedded signing and sending
+
+        - How to send an envelope via your app
+
+        - How to embed the Docusign UI in your app'
       x-ds-method: createSharedRecipient
       x-ds-service: Uncategorized
       x-ds-in-sdk: true
-      x-codegen-request-body-name: recipientViewRequest
-      summary: Views post envelope recipient shared view
-      x-summary-source: derived
-    servers:
-    - url: https://www.docusign.net/restapi
-  /v2/accounts/{accountId}/views/console:
-    post:
-      tags:
-      - EnvelopeViews
-      summary: Docusign Returns a URL to the authentication view UI
-      description: Returns a URL that allows you to embed the authentication view of the DocuSign UI in your applications.
-      operationId: Views_PostAccountConsoleView
-      parameters:
-      - name: accountId
-        in: path
-        description: The external account number (int) or account id GUID.
-        required: true
-        schema:
-          type: string
       requestBody:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/consoleViewRequest'
+              $ref: '#/components/schemas/recipientViewRequest'
           application/xml:
             schema:
-              $ref: '#/components/schemas/consoleViewRequest'
-        required: false
+              $ref: '#/components/schemas/recipientViewRequest'
+  /v2.1/accounts/{accountId}/views/console:
+    parameters: []
+    post:
+      tags:
+      - EnvelopeViews
+      summary: Returns a URL to the Docusign eSignature web application
+      description: 'Returns a URL that enables you to embed the Docusign UI in your applications. To view a specific envelope, set the `envelopeId` property in the request body.
+
+
+        ## Information security notice
+
+
+        This method provides full access to the sending account.
+
+
+        ### Related topics
+
+
+        - How to embed the Docusign UI in your app'
+      operationId: Views_PostAccountConsoleView
+      parameters:
+      - name: accountId
+        in: path
+        description: The external account number (int) or account ID GUID.
+        required: true
+        schema:
+          type: string
       responses:
         '201':
           description: Successful response.
           content:
-            '*/*':
+            application/json:
               schema:
                 $ref: '#/components/schemas/EnvelopeViews'
         '400':
           description: Error encountered.
           content:
-            '*/*':
+            application/json:
               schema:
                 $ref: '#/components/schemas/errorDetails'
       deprecated: false
@@ -564,7 +590,7 @@ paths:
       x-ds-examples:
       - description: 'The response contains the URL
 
-          of the the account''s cosole.
+          of the account''s console.
 
 
           The request body contains
@@ -573,7 +599,7 @@ paths:
 
           This is the URL
 
-          that the DocuSign platform
+          that the Docusign platform
 
           will redirect the user to
 
@@ -584,225 +610,242 @@ paths:
         direction: both
         format: json
         response:
-          url: https://demo.docusign.net/Member/StartInSession.aspx?StartConsole=1&t=644ea697-2541-46ea-a8a5-d95a5c23340b&accountid=624e3e00-36cb-4bcf-a4af-43918c520dab
+          url: https://demo.docusign.net/Member/StartInSession.aspx?StartConsole=1&t=644ea697-xxxx-xxxx-xxxx-d95a5c23340b&accountid=624e3e00-xxxx-xxxx-xxxx-43918c520dab
         request:
           returnUrl: https://dsapp.example.com/return/from/console/view
         style: custom
         title: Getting a Console View URL and Setting a Return URL
-      x-codegen-request-body-name: consoleViewRequest
-    servers:
-    - url: https://www.docusign.net/restapi
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/consoleViewRequest'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/consoleViewRequest'
 components:
-  parameters:
-    envelopeId:
-      name: envelopeId
-      in: path
-      required: true
-      description: The envelope ID (GUID) of the envelope.
-      schema:
-        type: string
-        format: uuid
-    accountId:
-      name: accountId
-      in: path
-      required: true
-      description: The external account number (short) or account ID GUID of the DocuSign account.
-      schema:
-        type: string
   schemas:
-    RecipientViewRequest:
+    envelopeViewTaggerSettings:
       type: object
-      description: Request body for generating an embedded recipient signing URL.
-      required:
-      - authenticationMethod
-      - email
-      - userName
-      - returnUrl
       properties:
-        authenticationMethod:
+        paletteDefault:
+          description: "When `paletteSections` is set to `custom`, this property selects the default tagger palette. \nValid values:  \n* `custom`\n* `merge`\n* `notary`\n* `seals`\n* `smartContracts`\n* `annotations`\n* `smartSections`"
           type: string
-          description: The authentication method used to verify the recipient. Must match the authentication method used when the recipient was added.
-          enum:
-          - None
-          - Phone
-          - KBA
-          - IDCheck
-          - Password
-          - HTTPBasicAuth
-          - PaperDocuments
-          - HeaderAuthentication
-          - SAML
-          - SSO
-          example: None
-        email:
+        paletteSections:
+          description: 'Valid values:
+
+
+            * `default` (default): The default tagger palette UX
+
+            * `none`: No tagger palette
+
+            * `custom`: Set by `paletteDefault`'
           type: string
-          format: email
-          description: The email address of the recipient.
-          example: user@example.com
-        userName:
-          type: string
-          description: The full name of the recipient.
-          example: example_value
-        clientUserId:
-          type: string
-          description: The client user ID of the embedded signer.
-          example: '500123'
-        recipientId:
-          type: string
-          description: The recipient ID.
-          example: '500123'
-        returnUrl:
-          type: string
-          description: The URL to redirect the signer to after the signing session ends. DocuSign appends event query parameters.
-          example: https://www.example.com
-        pingUrl:
-          type: string
-          description: A URL that DocuSign pings during the signing session to confirm the parent frame is active.
-          example: https://www.example.com
-        pingFrequency:
-          type: string
-          description: Frequency in seconds for ping requests.
-          example: example_value
-        frameAncestors:
-          type: array
-          description: URLs allowed to iframe the signing session (CSP frame-ancestors).
-          items:
-            type: string
-          example: []
-        messageOrigins:
-          type: array
-          description: Origins allowed to receive postMessage events.
-          items:
-            type: string
-          example: []
-        securityDomain:
-          type: string
-          description: The security domain for the signing session.
-          example: example_value
-    ViewUrl:
+        paletteSettings:
+          $ref: '#/components/schemas/paletteSettings'
+          description: Reserved for Docusign.
+      x-ds-definition-name: envelopeViewTaggerSettings
+      description: ''
+      x-ms-summary: ''
+    recipientTokenClientURLs:
       type: object
-      description: Contains a URL for an embedded view.
       properties:
-        url:
+        onAccessCodeFailed:
+          description: ''
           type: string
-          description: The URL for the embedded view. This URL is time-limited and should be used immediately.
-          example: https://www.example.com
-    ErrorDetails:
-      type: object
-      description: Contains error information returned by the API.
-      properties:
-        errorCode:
+        onCancel:
+          description: ''
           type: string
-          description: The error code.
-          example: example_value
-        message:
+        onDecline:
+          description: ''
           type: string
-          description: A human-readable error message.
-          example: example_value
+        onException:
+          description: ''
+          type: string
+        onFaxPending:
+          description: ''
+          type: string
+        onIdCheckFailed:
+          description: ''
+          type: string
+        onSessionTimeout:
+          description: ''
+          type: string
+        onSigningComplete:
+          description: ''
+          type: string
+        onTTLExpired:
+          description: ''
+          type: string
+        onViewingComplete:
+          description: ''
+          type: string
+      x-ds-definition-name: recipientTokenClientURLs
+      description: ''
+      x-ms-summary: ''
     correctViewRequest:
       type: object
       properties:
-        returnUrl:
-          type: string
-          description: "The url used after correct/send view session has ended. DocuSign redirects to the url and includes an event parameter that can be used by your app. The event parameters returned are: \n\n* send (user corrected and sent the envelope)\n* save (user saved the envelope)\n* cancel (user canceled the transaction.)\n* error (there was an error when performing the correct or send)\n* sessionEnd (the session ended before the user completed a different action)\n\n###### Note: Include https:// in the URL or the redirect might not succeed on some browsers. "
-        suppressNavigation:
-          type: string
-          description: Specifies whether the window is displayed with or without dressing.
-        viewUrl:
-          type: string
+        beginOnTagger:
           description: ''
-      description: ''
-      x-ds-definition-name: correctViewRequest
-      x-ms-summary: ''
-    viewUrl:
-      type: object
-      properties:
-        url:
           type: string
-          description: The endpoint to which webhook notification messages are sent via an HTTP/S POST request. For the DocuSign production platform, the url must start with https. For the demo platform, either http or https is ok.
-      description: ''
-      x-ds-definition-name: viewUrl
-      x-ms-summary: ''
-    consoleViewRequest:
-      type: object
-      properties:
-        envelopeId:
-          type: string
-          description: The envelope ID of the envelope status that failed to post.
         returnUrl:
+          description: '(Required) The URL to which the user should be redirected after
+
+            the view session has ended.
+
+
+            Maximum Length: 470 characters. If the `returnUrl` exceeds this
+
+            limit, the user is redirected to a truncated URL
+
+            Be sure to include `https://` in the URL
+
+            or redirecting might fail on some browsers.
+
+
+            When Docusign redirects to
+
+            this URL, it will include an `event` query parameter that your app can use:
+
+
+            * `send`: User corrected and sent the envelope.
+
+            * `save`: User saved the envelope.
+
+            * `cancel`: User canceled the transaction.
+
+            * `error`: There was an error when performing the correct or send.
+
+            * `sessionEnd`: The session ended before the user completed a different action.
+
+            '
           type: string
-          description: The URL to be redirected to after the console view session has ended.
-      description: ''
-      x-ds-definition-name: consoleViewRequest
-      x-ms-summary: ''
+        suppressNavigation:
+          description: Specifies whether the window is displayed with or without dressing.
+          type: string
+        viewUrl:
+          description: ''
+          type: string
+      description: 'The request body for the [EnvelopeViews: createCorrect](/docs/esign-rest-api/reference/envelopes/envelopeviews/createcorrect/) method.'
+      x-ds-definition-name: correctViewRequest
+      x-ms-summary: 'The request body for the [EnvelopeViews: createCorrect](/docs/esign-rest-api/reference/envelopes/envelopeviews/createcorrect/) method.'
     EnvelopeViews:
       type: object
       properties:
         url:
-          type: string
           description: The view URL to be navigated to.
-      description: Embedding Envelope views
+          type: string
       x-ds-definition-name: viewUrl
+      description: 'Provides a URL that you can embed in your application
+
+        to provide access to the Docusign UI.
+
+
+        ### Related topics
+
+
+        - [Embedded signing and sending](/docs/esign-rest-api/esign101/concepts/embedding/)
+
+        - [Send an envelope via your app](/docs/esign-rest-api/how-to/embedded-sending/)
+
+        - [Introducing customizable embedded sending](https://www.docusign.com/blog/developers/introducing-customizable-embedded-sending)
+
+
+        '
       x-ds-category: Envelopes
       x-ds-order: '1'
-      x-ms-summary: Embedding Envelope views
+      x-ms-summary: 'Provides a URL that you can embed in your application
+
+        to provide access to the Docusign UI.
+
+
+        ### Related topics
+
+
+        - [Embedded signing and sending](/docs/esign-rest-api/esign101/concepts/embedding/)
+
+        - [Send an envelope via your app](/docs/esign-rest-api/how-to/embedded-sending/)
+
+        - [Introducing customizable embedded sending](https://www.docusign.com/blog/developers/introducing-customizable-embedded-sending)
+
+
+        '
     recipientViewRequest:
       type: object
       properties:
         assertionId:
-          type: string
           description: A unique identifier of the authentication event executed by the client application.
+          type: string
         authenticationInstant:
+          description: A sender-generated value that indicates the date and time that the signer was authenticated.
           type: string
-          description: A sender generated value that indicates the date/time that the signer was authenticated.
         authenticationMethod:
-          type: string
           description: "Required. Choose a value that most closely matches the technique your application used to authenticate the recipient / signer. \n\nChoose a value from this list: \n* Biometric \n* Email\n* HTTPBasicAuth\n* Kerberos\n* KnowledgeBasedAuth\n* None\n* PaperDocuments\n* Password\n* RSASecureID\n* SingleSignOn_CASiteminder\n* SingleSignOn_InfoCard\n* SingleSignOn_MicrosoftActiveDirectory\n* SingleSignOn_Other\n* SingleSignOn_Passport\n* SingleSignOn_SAML\n* Smartcard\n* SSLMutualAuth\n* X509Certificate\n\nThis information is included in the Certificate of Completion."
-        clientUserId:
           type: string
-          description: 'A sender created value. If provided, the recipient is treated as an embedded (captive) recipient or signer.
+        clientURLs:
+          $ref: '#/components/schemas/recipientTokenClientURLs'
+          description: ''
+        clientUserId:
+          description: 'A sender-created value. If provided, the recipient is treated as an embedded (captive) recipient or signer.
 
 
             Use your application''s client ID (user ID) for the recipient. Doing so enables the details of your application''s authentication of the recipient to be connected to the recipient''s signature if the signature is disputed or repudiated.
 
 
             Maximum length: 100 characters.'
-        email:
           type: string
-          description: Specifies the email of the recipient. You can use either email and userName or userId to identify the recipient.
-        frameAncestors:
-          type: array
+        displayFormat:
           description: ''
+          type: string
+        email:
+          description: (Required) Specifies the email of the recipient. You can use either `email` and `userName` or `userId` to identify the recipient.
+          type: string
+        frameAncestors:
+          description: 'An array of ancestors that can embed the frame. This property is required when [using focus view](/docs/esign-rest-api/how-to/request-signature-focused-view/).
+
+
+            In the demo environment, include your site URL and `https://apps-d.docusign.com`. You can use `http://localhost` for local development and testing. Example: `["https://my.site.com", "https://apps-d.docusign.com"]`
+
+
+            In the production environment, include your site URL and `https://apps.docusign.com`. HTTPS must be enabled on your site. Example:  `["https://my.site.com", "https://apps.docusign.com"]`
+
+            '
+          type: array
           items:
             type: string
         messageOrigins:
+          description: 'The originating domain for the signature request message. This property is required when [using focus view](/docs/esign-rest-api/how-to/request-signature-focused-view/).
+
+
+            In the demo environment, the value must be `https://apps-d.docusign.com`. In production, the value must be `https://apps.docusign.com`.
+
+            '
           type: array
-          description: ''
           items:
             type: string
         pingFrequency:
+          description: Only used if `pingUrl` is specified. This is the interval, in seconds, between pings on the `pingUrl`.  The default is `300` seconds. Valid values are 60-1200 seconds.
           type: string
-          description: Only used if pingUrl is specified. This is the interval, in seconds, between pings on the pingUrl.  The default is 300 seconds. Valid values are 60-1200 seconds.
         pingUrl:
+          description: The client URL that the Docusign Signing experience should ping to indicate to the client that Signing is active. An HTTP GET call is executed against the client. The response from the client is ignored. The intent is for the client to reset its session timer when the request is received.
           type: string
-          description: A client Url to be pinged by the DocuSign Signing experience to indicate to the client that Signing is active. An HTTP Get is executed against the client. The response from the client is ignored. The intent is for the client to reset it's session timer when the request is received.
         recipientId:
-          type: string
           description: Unique for the recipient. It is used by the tab element to indicate which recipient is to sign the Document.
+          type: string
         returnUrl:
+          description: "(Required) The URL to which the user should be redirected\nafter the signing session has ended.\n\nMaximum Length: 470 characters. If the `returnUrl` exceeds this\nlimit, the user is redirected to a truncated URL\nBe sure to include `https://` in the URL\nor redirecting might fail on some browsers.\n\n\nWhen Docusign redirects to\nthis URL, it will include an `event` query parameter that your app can use:\n\n* `access_code_failed`: Recipient used incorrect access code.\n* `cancel`: Recipient canceled the signing operation,\n  possibly by using the **Finish Later** option.\n* `decline`: Recipient declined to sign.\n* `exception`: A system error occurred during the signing process.\n* `fax_pending`: Recipient has a fax pending.\n* `id_check_failed`: Recipient failed an ID check.\n* `session_timeout`: The session timed out. An account can control this timeout by using the **Signer Session Timeout** option.\n* `signing_complete`: The recipient completed the signing ceremony.\n* `ttl_expired`: The Time To Live token for the envelope has expired.\n  After being successfully invoked, these tokens expire\n  after five minutes.\n* `viewing_complete`: The recipient completed viewing an envelope\n  that is in a read-only/terminal state,\n  such as completed, declined, or voided.\n\n"
           type: string
-          description: "The URL that the recipient is redirected to\nafter the signing session has ended.\nDocuSign redirects to the URL\nand includes an `event` query parameter\nthat can be used by your application.\n\nPossible `event` parameter values include: \n\n* `access_code_failed`<br>\n  Recipient used incorrect access code.\n* `cancel`<br>\n  Recipient canceled the signing operation,\n  possibly by using the **Finish Later** option.\n* `decline`<br>\n  Recipient declined to sign.\n* `exception`<br>\n  A system error occurred during the signing process.\n* `fax_pending`<br>\n  Recipient has a fax pending.\n* `id_check_failed`<br>\n  Recipient failed an ID check.\n* `session_timeout`<br>\n  The session timed out.\n  An account can control this timeout using the **Signer Session Timeout** option.\n* `signing_complete`<br>\n  Recipient completed the signing ceremony.\n* `ttl_expired`<br>\n  The Time To Live token for the envelope has expired.\n  After being successfully invoked, these tokens expire\n  after 5 minutes or if the envelope is voided.\n* `viewing_complete`<br>\n  The recipient completed viewing an envelope\n  that is in a read-only/terminal state\n  such as completed, declined, or voided.\n\nBe sure to include `https://` in the URL or the redirect may fail on certain browsers.\n"
         securityDomain:
-          type: string
           description: The domain in which the user authenticated.
+          type: string
         userId:
+          description: "The user ID of the recipient. You can use either the user ID or email and user name to identify the recipient. \n\nIf `userId` is used and a `clientUserId` is provided, the value in the `userId` property must match a `recipientId` (which you can retrieve with a GET recipients call) for the envelope. \n\nIf a `userId` is used and a `clientUserId` is not provided, the `userId` must match the user ID of the authenticating user."
           type: string
-          description: "Specifies the user ID of the recipient. You can use with user ID or email and user name to identify the recipient. \n\nIf userId is used and a clientUserId is provided, the value in the `userId` property must match a recipientId (which can be retrieved with a GET recipients call) for the envelope. \n\nIf a userId is used and a clientUserId is not provided, the userId must match the user ID of the authenticating user."
         userName:
+          description: The username of the recipient. You can use either `email` and `userName` or `userId` to identify the recipient.
           type: string
-          description: Specifies the username of the recipient. You can use either email and userName or userId to identify the recipient.
         xFrameOptions:
-          type: string
           description: 'Specifies whether a browser should be allowed to render a page in a frame or IFrame. Setting this property ensures that your content is not embedded into unauthorized pages or frames.
 
 
@@ -814,85 +857,500 @@ components:
             - `same_origin`: The page can only be displayed in a frame on the same origin as the page itself.
 
             - `allow_from`: The page can only be displayed in a frame on the origin specified by the `xFrameOptionsAllowFromUrl` property.'
-        xFrameOptionsAllowFromUrl:
           type: string
+        xFrameOptionsAllowFromUrl:
           description: When the value of `xFrameOptions` is `allow_from`, this property specifies the origin on which the page is allowed to display in a frame. If the value of `xFrameOptions` is `allow_from`, you must include a value for this property.
-      description: ''
+          type: string
+      description: 'The request body for the [EnvelopeViews: createRecipient](/docs/esign-rest-api/reference/envelopes/envelopeviews/createrecipient/)
+
+        and
+
+        [EnvelopeViews: createSharedRecipient](/docs/esign-rest-api/reference/envelopes/envelopeviews/createsharedrecipient/) methods.'
       x-ds-definition-name: recipientViewRequest
-      x-ms-summary: ''
-    errorDetails:
+      x-ms-summary: 'The request body for the [EnvelopeViews: createRecipient](/docs/esign-rest-api/reference/envelopes/envelopeviews/createrecipient/)
+
+        and
+
+        [EnvelopeViews: createSharedRecipient](/docs/esign-rest-api/reference/envelopes/envelopeviews/createsharedrecipient/) methods.'
+    consoleViewRequest:
       type: object
       properties:
-        errorCode:
+        envelopeId:
+          description: 'The ID of an envelope. If the envelope has been sent, the endpoint returns a URL for a view of the documents. If the envelope has not yet been sent, the endpoint returns a URL for the sender view.
+
+
+            This property is optional. If no value is provided, the endpoint returns a URL for the front page of the demo UI.'
           type: string
-          description: An error code associated with the error.
-        message:
+        returnUrl:
+          description: 'The URL to which the user should be redirected. This is only used when the `envelopeId` is specified as a draft envelope. In this case, the endpoint returns a URL for the sender view. When the user exits the sender view, they will be redirected to the `returnUrl` value. If no value is provided, there is no option to leave the sender view.
+
+
+            In other cases, the user is not redirected out of the console view.'
           type: string
-          description: A short error message.
-      description: This object describes errors that occur. It is only valid for responses, and ignored in requests.
-      x-ds-definition-name: errorDetails
-      x-ms-summary: This object describes errors that occur. It is only valid for responses, and ignored in requests.
-    returnUrlRequest:
+      description: 'The request object for the [EnvelopeViews: createConsole](/docs/esign-rest-api/reference/envelopes/envelopeviews/createconsole/) method.'
+      x-ds-definition-name: consoleViewRequest
+      x-ms-summary: 'The request object for the [EnvelopeViews: createConsole](/docs/esign-rest-api/reference/envelopes/envelopeviews/createconsole/) method.'
+    paletteItemSettings:
+      type: object
+      properties:
+        show:
+          description: Reserved for Docusign.
+          type: string
+      x-ds-definition-name: paletteItemSettings
+      description: ''
+      x-ms-summary: ''
+    paletteSettings:
+      type: object
+      properties:
+        annotations:
+          $ref: '#/components/schemas/paletteItemSettings'
+          description: Reserved for Docusign.
+        custom:
+          $ref: '#/components/schemas/paletteItemSettings'
+          description: Reserved for Docusign.
+        merge:
+          $ref: '#/components/schemas/paletteItemSettings'
+          description: Reserved for Docusign.
+        notary:
+          $ref: '#/components/schemas/paletteItemSettings'
+          description: Reserved for Docusign.
+        seals:
+          $ref: '#/components/schemas/paletteItemSettings'
+          description: Reserved for Docusign.
+        smartContracts:
+          $ref: '#/components/schemas/paletteItemSettings'
+          description: Reserved for Docusign.
+        smartSections:
+          $ref: '#/components/schemas/paletteItemSettings'
+          description: Reserved for Docusign.
+      x-ds-definition-name: paletteSettings
+      description: Reserved for Docusign.
+      x-ms-summary: Reserved for Docusign.
+    envelopeViewSettings:
+      type: object
+      properties:
+        backButtonAction:
+          description: 'Sets the behavior of the back button when clicked. Valid values:
+
+            * `previousPage`: Navigate to browser''s previous page
+
+            * `redirect`: Redirect to the `returnUrl` specified in the request'
+          type: string
+        documentSettings:
+          $ref: '#/components/schemas/envelopeViewDocumentSettings'
+          description: Sets the custom document settings.
+        envelopeCustomFieldSettings:
+          $ref: '#/components/schemas/envelopeViewEnvelopeCustomFieldSettings'
+          description: Reserved for Docusign.
+        lockToken:
+          description: If your app will modify the envelope after the user finishes editing the envelope, create and use a [lock token](/docs/esign-rest-api/reference/envelopes/envelopelocks/create/) for this attribute. Remember to delete the lock token after your app has finished its envelope modifications.
+          type: string
+        recipientSettings:
+          $ref: '#/components/schemas/envelopeViewRecipientSettings'
+          description: ''
+        sendButtonAction:
+          description: 'Sets the behavior of the send button when clicked. Valid values:
+
+            * `send`: send the envelope and redirect with query parameter `event=Send` (default)
+
+            * `redirect`: Change the Tagger page''s button text to ''Continue''; when clicked, redirect to the `returnUrl` with query parameter `event=Save`. Set `showBackButton` to `false` and `startingScreen` to `Tagger`.'
+          type: string
+        showAdvancedOptions:
+          description: Reserved for Docusign.
+          type: string
+        showBackButton:
+          description: 'Determines whether the Tagger''s back button is shown. Valid values:
+
+
+            * `true`: The back button is shown. This is the default value.
+
+            * `false`: Prevents access to the Prepare screen by hiding the back button.'
+          type: string
+        showDiscardAction:
+          description: When **true,** the Discard option is shown in the Actions menu. When **false,** the Discard option is not shown. The default value is **true.**
+          type: string
+        showHeaderActions:
+          description: 'Determines whether the Actions menu displays advanced actions. Valid values:
+
+
+            * `true`: The Actions menu shows all options, including editing the message, recipients, documents, and advanced options. This is the default value.
+
+            * `false`: The Actions menu will only show Save, Close, and Discard. To limit the user to tagging only, use this value and set `startingScreen` to `Tagger` and `showBackButton` to `false`.'
+          type: string
+        showSignNow:
+          description: ''
+          type: string
+        startingScreen:
+          description: 'Determines the starting screen for the sender view. Valid values:
+
+
+            * `Prepare` (default)
+
+            * `Tagger`'
+          type: string
+        taggerSettings:
+          $ref: '#/components/schemas/envelopeViewTaggerSettings'
+          description: Sets the custom tagger settings.
+        templateSettings:
+          $ref: '#/components/schemas/envelopeViewTemplateSettings'
+          description: Reserved for Docusign.
+      x-ds-definition-name: envelopeViewSettings
+      description: ''
+      x-ms-summary: ''
+    envelopeViewRequest:
       type: object
       properties:
         returnUrl:
+          description: "**Required**\n\nIdentifies the return point after sending the envelope. Docusign returns to the URL and includes an event parameter that can be used to redirect the recipient to another location. The possible event parameters returned are: \n\n* send (user sends the envelope)\n* save (user saves the envelope)\n* cancel (user cancels the sending transaction. No envelopeId is returned in this case.)\n* error (there is an error when performing the send)\n* sessionEnd (the sending session ends before the user completes another action)."
           type: string
-          description: "Your app's return url that the user will be redirected to after sending the envelope or completing the sending/tagging view. Query parameters `envelopeId` and `event` will be added to the URL. The event parameter values: \n\n* `Send` (the user sent the envelope)\n* `Save` (the user saved the envelope, it is still a draft)\n* `Cancel` (the user canceled the sending transaction)\n* `Error` (there was an error during the send operation)\n* `SessionEnd` (the sending session ended before the user completed a different action)"
-      description: 'The request body for the EnvelopeViews: createSender method.'
-      x-ds-definition-name: returnUrlRequest
-      x-ms-summary: 'The request body for the EnvelopeViews: createSender method.'
-  responses:
-    BadRequest:
-      description: Bad request. The request body or parameters are invalid.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorDetails'
-    Unauthorized:
-      description: Unauthorized. Authentication credentials are missing or invalid.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorDetails'
-    NotFound:
-      description: The requested resource was not found.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorDetails'
-  securitySchemes:
-    OAuth2:
-      type: oauth2
-      description: DocuSign uses OAuth 2.0. Supports Authorization Code Grant for user-present applications and JWT Grant for service integrations.
-      flows:
-        authorizationCode:
-          authorizationUrl: https://account-d.docusign.com/oauth/auth
-          tokenUrl: https://account-d.docusign.com/oauth/token
-          scopes:
-            signature: Access to signing and envelope operations
-            impersonation: Impersonate users via JWT Grant
-            extended: Extended API access
-        implicit:
-          authorizationUrl: https://account-d.docusign.com/oauth/auth
-          scopes:
-            signature: Access to signing and envelope operations
-x-refined-from:
-- docusign-esignature-openapi.yml
-- docusign-openapi-original.yml
+        settings:
+          $ref: '#/components/schemas/envelopeViewSettings'
+          description: Sets the UX for the resulting embedded view.
+        viewAccess:
+          description: '**Required** . Set to `envelope`
+
+            '
+          type: string
+      x-ds-definition-name: envelopeViewRequest
+      description: ''
+      x-ms-summary: ''
+    errorDetails:
+      description: This object describes errors that occur. It is only valid for responses and ignored in requests.
+      type: object
+      properties:
+        errorCode:
+          description: The code associated with the error condition.
+          type: string
+        message:
+          description: A brief message describing the error condition.
+          type: string
+      x-ds-definition-name: errorDetails
+      x-ms-summary: This object describes errors that occur. It is only valid for responses and ignored in requests.
+    envelopeViewTemplateSettings:
+      type: object
+      properties:
+        showMatchingTemplatesPrompt:
+          description: Reserved for Docusign.
+          type: string
+      x-ds-definition-name: envelopeViewTemplateSettings
+      description: ''
+      x-ms-summary: ''
+    viewUrl:
+      type: object
+      properties:
+        url:
+          description: URL for the template edit view.
+          type: string
+      x-ds-definition-name: viewUrl
+      description: ''
+      x-ms-summary: ''
+    envelopeViewDocumentSettings:
+      type: object
+      properties:
+        showEditDocuments:
+          description: When **false,** prevents the app user from adding, replacing, or deleting documents. The default value is **true.**
+          type: string
+        showEditDocumentVisibility:
+          description: When `false`, prevents the user from modifying document visibility settings. The default value is `true`.
+          type: string
+        showEditPages:
+          description: When `false`, prevents the user from deleting or rotating individual document pages via the thumbnail images. The default value is `true`. If `true` and `showEditDocuments` is `false`, the pages can be rotated but not deleted.
+          type: string
+        showSaveAsDocumentCustomField:
+          description: Reserved for Docusign.
+          type: string
+      x-ds-definition-name: envelopeViewDocumentSettings
+      description: ''
+      x-ms-summary: ''
+    envelopeViewRecipientSettings:
+      type: object
+      properties:
+        showBulkSend:
+          description: Reserved for Docusign.
+          type: string
+        showContactsList:
+          description: Reserved for Docusign.
+          type: string
+        showEditMessage:
+          description: Reserved for Docusign.
+          type: string
+        showEditRecipients:
+          description: When `false`, prevents the user from changing the recipients from the **Tagger** page. The default value is `true`.
+          type: string
+      x-ds-definition-name: envelopeViewRecipientSettings
+      description: ''
+      x-ms-summary: ''
+    envelopeViewEnvelopeCustomFieldSettings:
+      type: object
+      properties:
+        showEnvelopeCustomFields:
+          description: Reserved for Docusign.
+          type: string
+      x-ds-definition-name: envelopeViewEnvelopeCustomFieldSettings
+      description: ''
+      x-ms-summary: ''
+externalDocs:
+  description: See the Docusign eSignature REST API Guide for more information.
+  url: https://docs.docusign.com/esign
+x-ds-allow-editing: false
 x-ds-categories:
-- name: UserManagement
-  summary: Methods to manage users in an account.
-  description: Methods to manage users in an account.
-- name: BulkOperations
-  summary: Methods to import and export users and accounts.
-  description: Methods to import and export users and accounts.
-- name: IdentityProviders
-  summary: Methods to get a list of identity providers.
-  description: Methods to get a list of identity providers.
-- name: ReservedDomains
-  summary: Methods to get a list of reserved domains.
-  description: Methods to get a list of reserved domains.
-- name: Organization
-  summary: Methods for working with organizations.
-  description: Methods for working with organizations.
-x-original-swagger-version: '2.0'
+- name: Envelopes
+  summary: This section shows you how to create and send envelopes.
+  description: 'The eSignature API Envelope category includes the resources and methods for sending and managing envelopes and envelope data.
+
+
+    Envelopes are the key objects in the Docusign platform. As a result, they are complex data structures with few required fields. See the [How-to guides](/docs/esign-rest-api/how-to/) for examples and solutions.
+
+
+    To learn more about envelopes, see [Envelopes](/docs/esign-rest-api/esign101/concepts/envelopes/).
+
+    '
+- name: Connect
+  summary: "Docusign Connect is the Docusign platform notification service. The service uses webhooks to proactively notify your application when an event occurs that your application wants to know about. Docusign recommends that all applications use Connect instead of polling the Docusign Signature Service. This section provides information about Connect configuration and logging. \n\n**Note:** To make API calls to any of the Connect endpoints, you must be an account administrator.\n\nFor more information about Connect, see [Docusign Connect](/platform/webhooks/connect/) and [Custom Connect Configuration](https://support.docusign.com/s/document-item?bundleId=pik1583277475390&topicId=khw1583277390582.html)."
+  description: 'The Connect service enables your application to be called via
+
+    HTTPS when an event of interest occurs.
+
+
+    Use the Connect service to "end the polling madness." With
+
+    Connect, there is no need for your application to poll Docusign
+
+    every 15 minutes to learn the latest about your envelopes.
+
+
+    Instead, you register your interest in one or more types of
+
+    envelope or recipient events. Then, when an interesting event
+
+    occurs, the Docusign platform will contact your application with
+
+    the event''s details and data. You can register interest in
+
+    envelopes sent by particular users in your account, or for
+
+    envelopes sent by any user.
+
+
+    Connect can empower your organization to manage document actions
+
+    as they occur, and allows you to track their changes within your
+
+    own systems. Upon completion, envelope information, including
+
+    document content, can be stored in your own databases or CMS
+
+    systems, and these events can be triggered via webhooks
+
+    delivering messages to your application.
+
+
+    **Note:** To make API calls to any of the Connect endpoints, you must be an account administrator.
+
+
+    ## Incoming Connect Calls
+
+
+    To use the Connect service, your application needs to provide an
+
+    HTTPS URL that can be called from the public Internet. If your
+
+    application runs on a server behind your organization''s firewall,
+
+    then you will need to create a "pinhole" in the firewall to allow
+
+    the incoming Connect calls from Docusign to reach your
+
+    application. You can also use other techniques such as proxy
+
+    servers and DMZ networking for receiving the incoming calls.
+
+
+    Connect delivers events over HTTP requests in JSON or XML.
+
+    See [Docusign Connect overview](/platform/webhooks/connect/).
+
+
+    If your application is not configured to accept post messages,
+
+    Docusign will NOT return an additional post error response to
+
+    your listener application. If you''ve enabled logging on your
+
+    configuration, it will be logged in Admin under the configuration
+
+    failure log.
+
+
+    ## Per-envelope Connect Configuration
+
+
+    Instead of registering a general Connect configuration and
+
+    listener, an individual envelope can have its own Connect
+
+    configuration. See the
+
+    [`eventNotification`](/docs/esign-rest-api/reference/envelopes/envelopes/create/#schema__envelopedefinition_eventnotification)
+
+    property for envelopes.
+
+
+    ## Historical Publish Endpoint
+
+
+    To submit existing envelopes to an endpoint, use the [EnvelopePublish](/docs/esign-rest-api/reference/envelopes/envelopepublish/) resource.
+
+    '
+- name: Templates
+  summary: Template creation and management
+  description: 'Use the Templates category to manage your account''s templates.
+
+
+    This section shows you how to perform the following tasks:
+
+
+    * Create, list, get, update, and delete templates.
+
+    * Manage the notification and group sharing settings for templates.
+
+    * Fetch and rotate pages from a document used by a template.
+
+
+    You can create templates either programmatically or through the Docusign web interface and then used by your application.'
+- name: SigningGroups
+  summary: Send a signing request to a group of potential signers.
+  description: 'Use the Signing Group category to manage signing groups that allow anyone in the group to sign a document. When you send an envelope to a signing group, anyone in the group can open it and sign it with their own signature.
+
+
+    This category shows account administrators how to create a signing group and manage the users in the group.
+
+
+    **Note:** To create and manage signing groups, you must be an account administrator.
+
+
+    For more information about this topic, see [Signing Groups](https://support.docusign.com/s/document-item?bundleId=gav1643676262430&topicId=zgn1578456447934.html).'
+- name: Folders
+  summary: Folders allow you to organize envelopes and templates.
+  description: 'Use the Folders category to organize envelopes and templates.
+
+    You can list the folder contents and move envelopes and templates between folders.'
+- name: CustomTabs
+  summary: Custom tabs
+  description: "Custom Tabs enable accounts to have one or more pre-configured (custom) tabs. Custom tabs save time when users are tagging documents since the users don't have to manually set the tabs' parameters.\n\nThis category enables custom tabs to be managed programmatically, including creation, deletion, etc. \n"
+- name: CloudStorage
+  summary: This section shows you how to manage your cloud storage providers and users.
+  description: 'Use the Cloud Storage category to list the user''s cloud storage document contents.
+
+
+    It is also used to manage the user''s authentication/accounts with cloud storage service providers.'
+- name: Users
+  summary: User management
+  description: 'Use the Users category to manage the users in your accounts.
+
+
+    You can:
+
+
+    * Set custom user settings.
+
+    * Manage a users profile.
+
+    * Add delete users.
+
+    * Add and delete the initials and signature images for a user.'
+- name: UserGroups
+  summary: Group users for common permissions and branding
+  description: 'Use the User Groups category to manage your permissions groups.
+
+
+    You can:
+
+
+    * Create and delete groups.
+
+    * Add users to, and delete users from, your groups.
+
+    * Manage the brand information associated with a group.'
+- name: BulkEnvelopes
+  summary: Bulk envelopes
+  description: Use the BulkEnvelopes category to manage the sending of envelopes to multiple recipients.
+- name: Accounts
+  summary: Account management
+  description: 'Use the Account category for various account management tasks including:
+
+
+    * Programmatically creating and deleting accounts.
+
+    * Getting information about an account and its capabilities.
+
+    * Branding the account with custom colors, message text, and more.
+
+    * Account charges.
+
+
+    The Accounts category also includes end points for listing the recipient names associated with an email address that was used by the account. For example, a single email address is often shared by multiple members of a family.
+
+
+
+    '
+- name: Billing
+  summary: Invoices
+  description: 'Use the Billing category to manage the following billing related tasks:
+
+
+    * Retrieve and update billing plan information.
+
+    * Retrieve invoices.
+
+    * Retrieve and update payment information.'
+- name: Diagnostics
+  summary: Diagnostics and request logging
+  description: 'The Diagnostics category provides miscellaneous end points.
+
+
+    They include:
+
+    * Requesting and managing the API call-logging feature. (Perfect for debugging your app!)
+
+    * Getting information on the API''s resources and versions.'
+- name: PowerForms
+  summary: The PowerForms category provides methods that enable you to create and manage fillable forms.
+  description: The PowerForms category enables you to create and manage PowerForms that you can use for self service and email forms.
+- name: Workspaces
+  summary: A Docusign workspace is a collaboration area for sharing files and data.
+  description: "A workspace is a collaborative space for sharing documents and managing workflows. A workspace has a single owner who must be a Docusign user. The owner can invite others to the workspace as collaborators. Individuals who are not Docusign users must create a Docusign account to join a workspace as a collaborator.\n \nYou can create an envelope directly from a workspace.\n\nWorkspaces store the following information:\n\n- **Files:** Files uploaded to a workspace for storage or reuse.\n- **Documents:** A document is a component of a transaction, template, or workspace. When a file is added to a transaction, template, or workspace, it is copied as a document. Each document in a workspace has a single owner.\n- **Templates:** A set of documents that you can use to create a transaction or a workspace.\n- **Transactions:** A transaction is a series of workflow events related to one or more documents. These events route the documents to one or more individuals for the purposes of doing business. Each transaction has a single owner (the sender).\n\n**Note:** Documents in a template are not individually listed as files."
+- name: Payments
+  summary: Manage Payments
+  description: This category includes resources for managing payment gateways. Payment information is added to envelopes via methods in the Envelopes category.
+- name: EmailArchive
+  summary: This section shows you how to set and manage the BCC email addresses that you want to use to archive the emails that Docusign sends.
+  description: 'Email archives enable Docusign partners and other multi-account customers to easily archive emails sent through Docusign. The `EmailArchive` resource provides methods for managing your email archive configuration, which consists of the BCC email address or addresses that you want to use to archive Docusign emails. Each account can use up to five BCC email addresses for archiving purposes.
+
+
+    For more information, see [Email Archive Configuration](https://support.docusign.com/s/document-item?bundleId=pik1583277475390&topicId=xjm1583277371373.html).
+
+
+    **Note:** This feature is only available for certain account plans and must be enabled by Docusign.'
+- name: Notary
+  summary: 'Docusign eNotary makes the notarization process fully digital
+
+    for senders, signers, and notaries.
+
+    It enables a notary public to act as an in-person witness
+
+    to electronic signing of documents.
+
+    '
+  description: 'Docusign eNotary makes the notarization process fully digital
+
+    for senders, signers, and notaries.
+
+    It enables a notary public to act as an in-person witness
+
+    to electronic signing of documents.
+
+    '
+- name: Envelope
+  summary: ''
+  description: ''

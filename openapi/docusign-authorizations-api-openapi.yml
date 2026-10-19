@@ -1,0 +1,1109 @@
+openapi: 3.2.0
+info:
+  version: v2.1
+  title: Docusign eSignature REST Authorizations API
+  description: The Docusign eSignature REST API provides you with a powerful, convenient, and simple Web services API for interacting with Docusign.
+  termsOfService: https://www.docusign.com/company/terms-and-conditions/web
+  contact:
+    name: Docusign Developer Center
+    url: https://developers.docusign.com/
+    email: devcenter@docusign.com
+servers:
+- url: https://www.docusign.net/restapi
+tags:
+- name: Authorizations
+  description: A user authorization is created to share access between users on the same account. One user can be given access to sign, manage, or send on behalf of another. These endpoints allow you to create, delete, and manage user authorizations.
+paths:
+  /v2.1/accounts/{accountId}/users/{userId}/authorization:
+    parameters: []
+    post:
+      tags:
+      - Authorizations
+      summary: Creates a user authorization
+      operationId: UserAuthorization_CreateUserAuthorization
+      parameters:
+      - name: accountId
+        in: path
+        description: The external account number (int) or account ID GUID.
+        required: true
+        schema:
+          type: string
+      - name: userId
+        in: path
+        description: The ID of the principal user.
+        required: true
+        schema:
+          type: string
+      responses:
+        '201':
+          description: Successful response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/userAuthorization'
+        '400':
+          description: Error encountered.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorDetails'
+      deprecated: false
+      x-ds-methodname: createUserAuthorization
+      x-ds-method: createUserAuthorization
+      x-ds-service: Uncategorized
+      description: 'Creates an authorization allowing one user to send and/or manage envelopes on behalf of another user.
+
+
+        The _agent_ user acts on behalf of the _principal_ user. The principal user is specified by the `userId` path parameter. The agent user is specified in the request body. Each principal user can only share signing permission with one agent user.
+
+
+        Specify in the request the level of access to share with the agent user. If you share signing access, the agent user will receive an email notification.
+
+
+        To call this endpoint:
+
+        * You must be an account administrator or you must be the principal user.
+
+        * The agent user and principal user must belong to the same account.
+
+        * At least one of the following account settings must be enabled: `AllowDelegatedSigning`, `AllowManagingEnvelopesOnBehalfOfOthers`, `AllowEditingEnvelopesOnBehalfOfOthers`, `AllowSendingEnvelopesOnBehalfOfOthers`. These settings correspond to the level of access you can set for the authorization.'
+      x-ds-in-sdk: true
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/userAuthorizationCreateRequest'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/userAuthorizationCreateRequest'
+  /v2.1/accounts/{accountId}/users/{userId}/authorization/{authorizationId}:
+    parameters: []
+    get:
+      tags:
+      - Authorizations
+      summary: Returns the user authorization for a given authorization ID
+      operationId: UserAuthorization_GetUserAuthorization
+      parameters:
+      - name: accountId
+        in: path
+        description: The external account number (int) or account ID GUID.
+        required: true
+        schema:
+          type: string
+      - name: authorizationId
+        in: path
+        required: true
+        description: The ID of the user authorization.
+        schema:
+          type: string
+      - name: userId
+        in: path
+        description: The ID of the principal user.
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Successful response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/userAuthorization'
+        '400':
+          description: Error encountered.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorDetails'
+      deprecated: false
+      x-ds-methodname: getUserAuthorization
+      x-ds-method: getUserAuthorization
+      x-ds-service: Uncategorized
+      description: 'Returns the details for the user authorization specified by the `authorizationId`.
+
+
+        To call this endpoint, you must be an account administrator or you must be the principal user for the specified authorization.'
+      x-ds-in-sdk: true
+    put:
+      tags:
+      - Authorizations
+      summary: Updates the start or end date for a user authorization
+      operationId: UserAuthorization_UpdateUserAuthorization
+      parameters:
+      - name: accountId
+        in: path
+        description: The external account number (int) or account ID GUID.
+        required: true
+        schema:
+          type: string
+      - name: authorizationId
+        in: path
+        required: true
+        description: The ID of the user authorization.
+        schema:
+          type: string
+      - name: userId
+        in: path
+        description: The ID of the principal user.
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Successful response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/userAuthorization'
+        '400':
+          description: Error encountered.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorDetails'
+      deprecated: false
+      x-ds-methodname: updateUserAuthorization
+      x-ds-method: updateUserAuthorization
+      x-ds-service: Uncategorized
+      description: 'Updates the start and/or end date for a given user authorization. Specify the user authorization and principal user with the path parameters.
+
+
+        To call this endpoint, you must be an account administrator or you must be the principal user for the specified authorization.'
+      x-ds-in-sdk: true
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/userAuthorizationUpdateRequest'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/userAuthorizationUpdateRequest'
+    delete:
+      tags:
+      - Authorizations
+      summary: Deletes the user authorization
+      operationId: UserAuthorization_DeleteUserAuthorization
+      parameters:
+      - name: accountId
+        in: path
+        description: The external account number (int) or account ID GUID.
+        required: true
+        schema:
+          type: string
+      - name: authorizationId
+        in: path
+        required: true
+        description: The ID of the user authorization.
+        schema:
+          type: string
+      - name: userId
+        in: path
+        description: The ID of the principal user.
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Successful response.
+        '400':
+          description: Error encountered.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorDetails'
+      deprecated: false
+      x-ds-methodname: deleteUserAuthorization
+      x-ds-method: deleteUserAuthorization
+      x-ds-service: Uncategorized
+      description: 'Deletes the user authorization specified by the `authorizationId`.
+
+
+        To call this endpoint, you must be an account administrator or you must be the principal user for the specified authorization.'
+      x-ds-in-sdk: true
+  /v2.1/accounts/{accountId}/users/{userId}/authorizations:
+    parameters: []
+    get:
+      tags:
+      - Authorizations
+      summary: Returns the authorizations for which the specified user is the principal user
+      operationId: UserAuthorizations_GetPrincipalUserAuthorizations
+      parameters:
+      - name: accountId
+        in: path
+        description: The external account number (int) or account ID GUID.
+        required: true
+        schema:
+          type: string
+      - name: userId
+        in: path
+        description: The ID of the principal user.
+        required: true
+        schema:
+          type: string
+      - name: active_only
+        in: query
+        required: false
+        description: When **true,** return only active authorizations. The default value is **true.**
+        schema:
+          type: string
+      - name: count
+        in: query
+        required: false
+        description: The maximum number of results to return.
+        schema:
+          type: string
+      - name: email_substring
+        in: query
+        required: false
+        description: Filters returned user records by full email address or a substring of email address.
+        schema:
+          type: string
+      - name: include_closed_users
+        in: query
+        required: false
+        description: When **true,** returns active and scheduled authorizations of closed users. The default value is **true.** This value is only applied when `active_only` is **false.**
+        schema:
+          type: string
+      - name: permissions
+        in: query
+        required: false
+        description: 'Filters results by authorization permission. Valid values:
+
+          * `Send`
+
+          * `Manage`
+
+          * `Sign`'
+        schema:
+          type: string
+      - name: start_position
+        in: query
+        required: false
+        description: The position within the total result set from which to start returning values. The value **thumbnail** may be used to return the page image.
+        schema:
+          type: string
+      - name: task_source
+        in: query
+        required: false
+        description: ''
+        schema:
+          type: string
+      - name: task_type
+        in: query
+        required: false
+        description: ''
+        schema:
+          type: string
+      - name: user_name_substring
+        in: query
+        required: false
+        description: 'Filters results based on a full or partial user name.
+
+
+          **Note:** When you enter a partial user name, you do not use a wildcard character.'
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Successful response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/userAuthorizations'
+        '400':
+          description: Error encountered.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorDetails'
+      deprecated: false
+      x-ds-methodname: getPrincipalUserAuthorizations
+      x-ds-method: getPrincipalUserAuthorizations
+      x-ds-service: Uncategorized
+      description: 'Returns the user authorizations for which the user specified by `userId` is the principal user.
+
+
+        To call this endpoint, you must be an account administrator or you must be the specified principal user.'
+      x-ds-in-sdk: true
+    post:
+      tags:
+      - Authorizations
+      summary: Create or update multiple user authorizations
+      operationId: UserAuthorizations_PostUserAuthorizations
+      parameters:
+      - name: accountId
+        in: path
+        description: The external account number (int) or account ID GUID.
+        required: true
+        schema:
+          type: string
+      - name: userId
+        in: path
+        description: The ID of the principal user.
+        required: true
+        schema:
+          type: string
+      responses:
+        '201':
+          description: Successful response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/userAuthorizationsResponse'
+        '400':
+          description: Error encountered.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorDetails'
+      deprecated: false
+      x-ds-methodname: createUserAuthorizations
+      x-ds-method: createUserAuthorizations
+      x-ds-service: Uncategorized
+      description: 'Create or update multiple user authorizations in a single request. The body of the request is a list of userAuthorizationSomething objects. To create a new authorization, specify the `agentUser` and `permission` fields, with the optional `startDate` and `endDate` fields. To update an existing authorization, specify the `authorizationId` field and the `startDate` and/or `endDate` fields.
+
+
+        For example, to create a new authorization and update the end date of an existing authorization, your request body might look like this:
+
+
+        ```
+
+        {
+
+        "authorizations": [
+
+        {
+
+        "agentUser": {
+
+        "userId": "1470ff66-xxxx-xxxx-xxxx-8c46f140da37",
+
+        "accountId": "230546a7-xxxx-xxxx-xxxx-af205d5494ad"
+
+        },
+
+        "permission": "manage"
+
+        },
+
+        {
+
+        "authorizationId": "b73ac983-xxxx-xxxx-xxxx-b3c0ea5b09d3",
+
+        "endDate": "2023-05-09T21:36:27.0000000+00:00"
+
+        }
+
+        ]
+
+        }
+
+        ```
+
+
+        The principal user is specified by the `userId` path parameter. To call this endpoint, you must be an account administrator or the principal user.
+
+
+        **Note:** To create an authorization with signing permission, the `AllowDelegationSigning` setting must be enabled on the account. If you share signing access, the agent user will receive an email notification. Each principal user can only share signing permission with one agent user.'
+      x-ds-in-sdk: true
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/userAuthorizationsRequest'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/userAuthorizationsRequest'
+    delete:
+      tags:
+      - Authorizations
+      summary: Delete multiple user authorizations
+      operationId: UserAuthorizations_DeleteUserAuthorizations
+      parameters:
+      - name: accountId
+        in: path
+        description: The external account number (int) or account ID GUID.
+        required: true
+        schema:
+          type: string
+      - name: userId
+        in: path
+        description: The ID of the principal user.
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Successful response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/userAuthorizationsDeleteResponse'
+        '400':
+          description: Error encountered.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorDetails'
+      deprecated: false
+      x-ds-methodname: deleteUserAuthorizations
+      x-ds-method: deleteUserAuthorizations
+      x-ds-service: Uncategorized
+      description: 'Delete one or more user authorizations for a given principal user. The principal user is specified by the `userId` path parameter.
+
+
+        To call this endpoint, you must be an account administrator or you must be the principal user for the specified authorizations.'
+      x-ds-in-sdk: true
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/userAuthorizationsDeleteRequest'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/userAuthorizationsDeleteRequest'
+  /v2.1/accounts/{accountId}/users/{userId}/authorizations/agent:
+    parameters: []
+    get:
+      tags:
+      - Authorizations
+      summary: Returns the authorizations for which the specified user is the agent user
+      operationId: UserAgentAuthorizations_GetAgentUserAuthorizations
+      parameters:
+      - name: accountId
+        in: path
+        description: The external account number (int) or account ID GUID.
+        required: true
+        schema:
+          type: string
+      - name: userId
+        in: path
+        description: The user who is acting as the agent.
+        required: true
+        schema:
+          type: string
+      - name: active_only
+        in: query
+        required: false
+        description: When **true,** only active users are returned. The default value is **false.**
+        schema:
+          type: string
+      - name: count
+        in: query
+        required: false
+        description: The maximum number of results to return.
+        schema:
+          type: string
+      - name: email_substring
+        in: query
+        required: false
+        description: Filters returned user records by full email address or a substring of email address.
+        schema:
+          type: string
+      - name: include_closed_users
+        in: query
+        required: false
+        description: When **true,** returns active and scheduled authorizations of closed users. The default value is **true.** This value is only applied when `active_only` is **false.**
+        schema:
+          type: string
+      - name: permissions
+        in: query
+        required: false
+        description: ''
+        schema:
+          type: string
+      - name: start_position
+        in: query
+        required: false
+        description: The position within the total result set from which to start returning values. The value **thumbnail** may be used to return the page image.
+        schema:
+          type: string
+      - name: task_source
+        in: query
+        required: false
+        description: ''
+        schema:
+          type: string
+      - name: task_type
+        in: query
+        required: false
+        description: ''
+        schema:
+          type: string
+      - name: user_name_substring
+        in: query
+        required: false
+        description: 'Filters results based on a full or partial user name.
+
+
+          **Note:** When you enter a partial user name, you do not use a wildcard character.'
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Successful response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/userAuthorizations'
+        '400':
+          description: Error encountered.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorDetails'
+      deprecated: false
+      x-ds-methodname: getAgentUserAuthorizations
+      x-ds-method: getAgentUserAuthorizations
+      x-ds-service: Uncategorized
+      description: 'Returns the user authorizations for which the user specified by `userId` is the agent user.
+
+
+        If the calling user is an account administrator, the full results will be returned. Otherwise, only authorizations for which the calling user is the principal user will be returned.'
+      x-ds-in-sdk: true
+components:
+  schemas:
+    userAuthorizationCreateRequestWithId:
+      type: object
+      properties:
+        agentUser:
+          $ref: '#/components/schemas/authorizationUser'
+          description: The agent user. This property is required if you are creating a new authorization.
+        authorizationId:
+          description: The ID of the user authorization. This property is required to update an existing authorization.
+          type: string
+        endDate:
+          description: 'The UTC DateTime to end the authorization. The default value is the max UTC value: `9999-12-31T23:59:59.0000000+00:00`.'
+          type: string
+        permission:
+          description: 'The [permission level](/docs/esign-rest-api/esign101/concepts/envelopes/shared-access/) to grant the agent. Valid values:
+
+            * `Send`
+
+            * `Manage`
+
+            * `Sign`
+
+            * `Edit`
+
+
+            This property is required.
+
+            '
+          type: string
+        startDate:
+          description: The UTC DateTime to initiate the authorization. The default value is the current date and time.
+          type: string
+        taskSource:
+          description: ''
+          type: string
+        taskType:
+          description: ''
+          type: string
+      x-ds-definition-name: userAuthorizationCreateRequestWithId
+      description: A user authorizations to create or update.
+      x-ms-summary: A user authorizations to create or update.
+    userAuthorizationWithStatus:
+      type: object
+      properties:
+        authorization:
+          $ref: '#/components/schemas/userAuthorization'
+          description: ''
+        errorMessage:
+          description: ''
+          type: string
+        success:
+          description: ''
+          type: string
+      x-ds-definition-name: userAuthorizationWithStatus
+      description: ''
+      x-ms-summary: ''
+    userAuthorizationUpdateRequest:
+      type: object
+      properties:
+        endDate:
+          description: 'The end date for the user authorization. The default value is the max UTC value: `9999-12-31T23:59:59.0000000+00:00`.'
+          type: string
+        startDate:
+          description: The start date for the user authorization. The default value is the current date and time.
+          type: string
+      x-ds-definition-name: userAuthorizationUpdateRequest
+      description: The request object to update a user authorization.
+      x-ms-summary: The request object to update a user authorization.
+    userAuthorizationsDeleteRequest:
+      type: object
+      properties:
+        authorizations:
+          description: ''
+          type: array
+          items:
+            type: string
+      x-ds-definition-name: userAuthorizationsDeleteRequest
+      description: ''
+      x-ms-summary: ''
+    userAuthorizationsDeleteResponse:
+      type: object
+      properties:
+        results:
+          description: ''
+          type: array
+          items:
+            $ref: '#/components/schemas/userAuthorizationIdWithStatus'
+      x-ds-definition-name: userAuthorizationsDeleteResponse
+      description: ''
+      x-ms-summary: ''
+    authorizationUser:
+      type: object
+      properties:
+        accountId:
+          description: The account ID.
+          type: string
+        email:
+          description: The email address of the authorization user.
+          type: string
+        name:
+          description: The name of the authorization user.
+          type: string
+        userId:
+          description: The ID of the authorization user.
+          type: string
+      x-ds-definition-name: authorizationUser
+      description: ''
+      x-ms-summary: ''
+    userAuthorizationIdWithStatus:
+      type: object
+      properties:
+        authorizationId:
+          description: ''
+          type: string
+        errorMessage:
+          description: ''
+          type: string
+        success:
+          description: ''
+          type: string
+      x-ds-definition-name: userAuthorizationIdWithStatus
+      description: ''
+      x-ms-summary: ''
+    userAuthorizationCreateRequest:
+      type: object
+      properties:
+        agentUser:
+          $ref: '#/components/schemas/authorizationUser'
+          description: The user who will be able to act on behalf of the principal user.
+        endDate:
+          description: The UTC DateTime to end the authorization. The default value is the max UTC value (`9999-12-31T23:59:59.0000000+00:00`).
+          type: string
+        permission:
+          description: 'The [permission level](/docs/esign-rest-api/esign101/concepts/envelopes/shared-access/) to grant the agent. Valid values:
+
+            * `Send`
+
+            * `Manage`
+
+            * `Sign`
+
+            * `Edit`
+
+
+            This property is required.
+
+            '
+          type: string
+        startDate:
+          description: The UTC DateTime to initiate the authorization. The default value is the current date and time.
+          type: string
+        taskSource:
+          description: ''
+          type: string
+        taskType:
+          description: ''
+          type: string
+      x-ds-definition-name: userAuthorizationCreateRequest
+      description: The request object to create a user authorization.
+      x-ms-summary: The request object to create a user authorization.
+    userAuthorizationsResponse:
+      type: object
+      properties:
+        results:
+          description: ''
+          type: array
+          items:
+            $ref: '#/components/schemas/userAuthorizationWithStatus'
+      x-ds-definition-name: userAuthorizationsResponse
+      description: ''
+      x-ms-summary: ''
+    userAuthorization:
+      type: object
+      properties:
+        agentUser:
+          $ref: '#/components/schemas/authorizationUser'
+          description: The user who can act on behalf of the principal user.
+        authorizationId:
+          description: The ID of the user authorization.
+          type: string
+        created:
+          description: The UTC DateTime when the workspace user authorization was created.
+          type: string
+        createdBy:
+          description: 'The name and email of the user who created the authorization, in the following format: `[Francis Beagle email@example.com]`'
+          type: string
+        endDate:
+          description: The UTC DateTime at which the authorization will expire.
+          type: string
+        modified:
+          description: The UTC DateTime when the workspace user authorization was last updated.
+          type: string
+        modifiedBy:
+          description: 'The name and email of the user who created the authorization, in the following format: `[Francis Beagle email@example.com]`'
+          type: string
+        permission:
+          description: 'The [permission level](/docs/esign-rest-api/esign101/concepts/envelopes/shared-access/) to grant the agent. Valid values:
+
+            * `Send`
+
+            * `Manage`
+
+            * `Sign`
+
+            * `Edit`
+
+
+            This property is required.'
+          type: string
+        principalUser:
+          $ref: '#/components/schemas/authorizationUser'
+          description: The user for whom the agent user acts.
+        startDate:
+          description: The UTC DateTime at which the authorization will start.
+          type: string
+        taskSource:
+          description: ''
+          type: string
+        taskType:
+          description: ''
+          type: string
+      x-ds-definition-name: userAuthorization
+      description: A complex object describing a user authorization.
+      x-ms-summary: A complex object describing a user authorization.
+    errorDetails:
+      description: This object describes errors that occur. It is only valid for responses and ignored in requests.
+      type: object
+      properties:
+        errorCode:
+          description: The code associated with the error condition.
+          type: string
+        message:
+          description: A brief message describing the error condition.
+          type: string
+      x-ds-definition-name: errorDetails
+      x-ms-summary: This object describes errors that occur. It is only valid for responses and ignored in requests.
+    userAuthorizations:
+      type: object
+      properties:
+        authorizations:
+          description: ''
+          type: array
+          items:
+            $ref: '#/components/schemas/userAuthorization'
+        endPosition:
+          description: 'The last index position in the result set. '
+          type: string
+        nextUri:
+          description: 'The URI for the next chunk of records based on the search request. It is `null` if this is the last set of results for the search. '
+          type: string
+        previousUri:
+          description: 'The URI for the prior chunk of records based on the search request. It is `null` if this is the first set of results for the search. '
+          type: string
+        resultSetSize:
+          description: The number of results in this response. Because you can filter which entries are included in the response, this value is always less than or equal to the `totalSetSize`.
+          type: string
+        startPosition:
+          description: The starting index position of the current result set.
+          type: string
+        totalSetSize:
+          description: The total number of items in the result set. This value is always greater than or equal to the value of `resultSetSize`.
+          type: string
+      x-ds-definition-name: userAuthorizations
+      description: ''
+      x-ms-summary: ''
+    userAuthorizationsRequest:
+      type: object
+      properties:
+        authorizations:
+          description: The list of user authorizations to create and/or update.
+          type: array
+          items:
+            $ref: '#/components/schemas/userAuthorizationCreateRequestWithId'
+      x-ds-definition-name: userAuthorizationsRequest
+      description: 'An object that describes the user authorizations to create or update.
+
+        '
+      x-ms-summary: 'An object that describes the user authorizations to create or update.
+
+        '
+externalDocs:
+  description: See the Docusign eSignature REST API Guide for more information.
+  url: https://docs.docusign.com/esign
+x-ds-allow-editing: false
+x-ds-categories:
+- name: Envelopes
+  summary: This section shows you how to create and send envelopes.
+  description: 'The eSignature API Envelope category includes the resources and methods for sending and managing envelopes and envelope data.
+
+
+    Envelopes are the key objects in the Docusign platform. As a result, they are complex data structures with few required fields. See the [How-to guides](/docs/esign-rest-api/how-to/) for examples and solutions.
+
+
+    To learn more about envelopes, see [Envelopes](/docs/esign-rest-api/esign101/concepts/envelopes/).
+
+    '
+- name: Connect
+  summary: "Docusign Connect is the Docusign platform notification service. The service uses webhooks to proactively notify your application when an event occurs that your application wants to know about. Docusign recommends that all applications use Connect instead of polling the Docusign Signature Service. This section provides information about Connect configuration and logging. \n\n**Note:** To make API calls to any of the Connect endpoints, you must be an account administrator.\n\nFor more information about Connect, see [Docusign Connect](/platform/webhooks/connect/) and [Custom Connect Configuration](https://support.docusign.com/s/document-item?bundleId=pik1583277475390&topicId=khw1583277390582.html)."
+  description: 'The Connect service enables your application to be called via
+
+    HTTPS when an event of interest occurs.
+
+
+    Use the Connect service to "end the polling madness." With
+
+    Connect, there is no need for your application to poll Docusign
+
+    every 15 minutes to learn the latest about your envelopes.
+
+
+    Instead, you register your interest in one or more types of
+
+    envelope or recipient events. Then, when an interesting event
+
+    occurs, the Docusign platform will contact your application with
+
+    the event''s details and data. You can register interest in
+
+    envelopes sent by particular users in your account, or for
+
+    envelopes sent by any user.
+
+
+    Connect can empower your organization to manage document actions
+
+    as they occur, and allows you to track their changes within your
+
+    own systems. Upon completion, envelope information, including
+
+    document content, can be stored in your own databases or CMS
+
+    systems, and these events can be triggered via webhooks
+
+    delivering messages to your application.
+
+
+    **Note:** To make API calls to any of the Connect endpoints, you must be an account administrator.
+
+
+    ## Incoming Connect Calls
+
+
+    To use the Connect service, your application needs to provide an
+
+    HTTPS URL that can be called from the public Internet. If your
+
+    application runs on a server behind your organization''s firewall,
+
+    then you will need to create a "pinhole" in the firewall to allow
+
+    the incoming Connect calls from Docusign to reach your
+
+    application. You can also use other techniques such as proxy
+
+    servers and DMZ networking for receiving the incoming calls.
+
+
+    Connect delivers events over HTTP requests in JSON or XML.
+
+    See [Docusign Connect overview](/platform/webhooks/connect/).
+
+
+    If your application is not configured to accept post messages,
+
+    Docusign will NOT return an additional post error response to
+
+    your listener application. If you''ve enabled logging on your
+
+    configuration, it will be logged in Admin under the configuration
+
+    failure log.
+
+
+    ## Per-envelope Connect Configuration
+
+
+    Instead of registering a general Connect configuration and
+
+    listener, an individual envelope can have its own Connect
+
+    configuration. See the
+
+    [`eventNotification`](/docs/esign-rest-api/reference/envelopes/envelopes/create/#schema__envelopedefinition_eventnotification)
+
+    property for envelopes.
+
+
+    ## Historical Publish Endpoint
+
+
+    To submit existing envelopes to an endpoint, use the [EnvelopePublish](/docs/esign-rest-api/reference/envelopes/envelopepublish/) resource.
+
+    '
+- name: Templates
+  summary: Template creation and management
+  description: 'Use the Templates category to manage your account''s templates.
+
+
+    This section shows you how to perform the following tasks:
+
+
+    * Create, list, get, update, and delete templates.
+
+    * Manage the notification and group sharing settings for templates.
+
+    * Fetch and rotate pages from a document used by a template.
+
+
+    You can create templates either programmatically or through the Docusign web interface and then used by your application.'
+- name: SigningGroups
+  summary: Send a signing request to a group of potential signers.
+  description: 'Use the Signing Group category to manage signing groups that allow anyone in the group to sign a document. When you send an envelope to a signing group, anyone in the group can open it and sign it with their own signature.
+
+
+    This category shows account administrators how to create a signing group and manage the users in the group.
+
+
+    **Note:** To create and manage signing groups, you must be an account administrator.
+
+
+    For more information about this topic, see [Signing Groups](https://support.docusign.com/s/document-item?bundleId=gav1643676262430&topicId=zgn1578456447934.html).'
+- name: Folders
+  summary: Folders allow you to organize envelopes and templates.
+  description: 'Use the Folders category to organize envelopes and templates.
+
+    You can list the folder contents and move envelopes and templates between folders.'
+- name: CustomTabs
+  summary: Custom tabs
+  description: "Custom Tabs enable accounts to have one or more pre-configured (custom) tabs. Custom tabs save time when users are tagging documents since the users don't have to manually set the tabs' parameters.\n\nThis category enables custom tabs to be managed programmatically, including creation, deletion, etc. \n"
+- name: CloudStorage
+  summary: This section shows you how to manage your cloud storage providers and users.
+  description: 'Use the Cloud Storage category to list the user''s cloud storage document contents.
+
+
+    It is also used to manage the user''s authentication/accounts with cloud storage service providers.'
+- name: Users
+  summary: User management
+  description: 'Use the Users category to manage the users in your accounts.
+
+
+    You can:
+
+
+    * Set custom user settings.
+
+    * Manage a users profile.
+
+    * Add delete users.
+
+    * Add and delete the initials and signature images for a user.'
+- name: UserGroups
+  summary: Group users for common permissions and branding
+  description: 'Use the User Groups category to manage your permissions groups.
+
+
+    You can:
+
+
+    * Create and delete groups.
+
+    * Add users to, and delete users from, your groups.
+
+    * Manage the brand information associated with a group.'
+- name: BulkEnvelopes
+  summary: Bulk envelopes
+  description: Use the BulkEnvelopes category to manage the sending of envelopes to multiple recipients.
+- name: Accounts
+  summary: Account management
+  description: 'Use the Account category for various account management tasks including:
+
+
+    * Programmatically creating and deleting accounts.
+
+    * Getting information about an account and its capabilities.
+
+    * Branding the account with custom colors, message text, and more.
+
+    * Account charges.
+
+
+    The Accounts category also includes end points for listing the recipient names associated with an email address that was used by the account. For example, a single email address is often shared by multiple members of a family.
+
+
+
+    '
+- name: Billing
+  summary: Invoices
+  description: 'Use the Billing category to manage the following billing related tasks:
+
+
+    * Retrieve and update billing plan information.
+
+    * Retrieve invoices.
+
+    * Retrieve and update payment information.'
+- name: Diagnostics
+  summary: Diagnostics and request logging
+  description: 'The Diagnostics category provides miscellaneous end points.
+
+
+    They include:
+
+    * Requesting and managing the API call-logging feature. (Perfect for debugging your app!)
+
+    * Getting information on the API''s resources and versions.'
+- name: PowerForms
+  summary: The PowerForms category provides methods that enable you to create and manage fillable forms.
+  description: The PowerForms category enables you to create and manage PowerForms that you can use for self service and email forms.
+- name: Workspaces
+  summary: A Docusign workspace is a collaboration area for sharing files and data.
+  description: "A workspace is a collaborative space for sharing documents and managing workflows. A workspace has a single owner who must be a Docusign user. The owner can invite others to the workspace as collaborators. Individuals who are not Docusign users must create a Docusign account to join a workspace as a collaborator.\n \nYou can create an envelope directly from a workspace.\n\nWorkspaces store the following information:\n\n- **Files:** Files uploaded to a workspace for storage or reuse.\n- **Documents:** A document is a component of a transaction, template, or workspace. When a file is added to a transaction, template, or workspace, it is copied as a document. Each document in a workspace has a single owner.\n- **Templates:** A set of documents that you can use to create a transaction or a workspace.\n- **Transactions:** A transaction is a series of workflow events related to one or more documents. These events route the documents to one or more individuals for the purposes of doing business. Each transaction has a single owner (the sender).\n\n**Note:** Documents in a template are not individually listed as files."
+- name: Payments
+  summary: Manage Payments
+  description: This category includes resources for managing payment gateways. Payment information is added to envelopes via methods in the Envelopes category.
+- name: EmailArchive
+  summary: This section shows you how to set and manage the BCC email addresses that you want to use to archive the emails that Docusign sends.
+  description: 'Email archives enable Docusign partners and other multi-account customers to easily archive emails sent through Docusign. The `EmailArchive` resource provides methods for managing your email archive configuration, which consists of the BCC email address or addresses that you want to use to archive Docusign emails. Each account can use up to five BCC email addresses for archiving purposes.
+
+
+    For more information, see [Email Archive Configuration](https://support.docusign.com/s/document-item?bundleId=pik1583277475390&topicId=xjm1583277371373.html).
+
+
+    **Note:** This feature is only available for certain account plans and must be enabled by Docusign.'
+- name: Notary
+  summary: 'Docusign eNotary makes the notarization process fully digital
+
+    for senders, signers, and notaries.
+
+    It enables a notary public to act as an in-person witness
+
+    to electronic signing of documents.
+
+    '
+  description: 'Docusign eNotary makes the notarization process fully digital
+
+    for senders, signers, and notaries.
+
+    It enables a notary public to act as an in-person witness
+
+    to electronic signing of documents.
+
+    '
+- name: Envelope
+  summary: ''
+  description: ''

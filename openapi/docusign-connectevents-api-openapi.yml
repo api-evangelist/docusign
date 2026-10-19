@@ -1,36 +1,45 @@
 openapi: 3.2.0
 info:
-  title: DocuSign REST Connect Events API
-  description: The DocuSign REST API provides you with a powerful, convenient, and simple Web services API for interacting with DocuSign.
+  version: v2.1
+  title: Docusign eSignature REST Connect Events API
+  description: The Docusign eSignature REST API provides you with a powerful, convenient, and simple Web services API for interacting with Docusign.
   termsOfService: https://www.docusign.com/company/terms-and-conditions/web
   contact:
-    name: DocuSign Developer Center
+    name: Docusign Developer Center
     url: https://developers.docusign.com/
     email: devcenter@docusign.com
-  version: v2
 servers:
 - url: https://www.docusign.net/restapi
 tags:
 - name: ConnectEvents
-  description: The ConnectEvents resource provides methods that allow you to read, delete, and republish the connect logs associated with an envelope.
+  description: 'The ConnectEvents resource provides methods that allow you to read, delete, and republish the connect logs associated with an envelope.
+
+
+    The most recent 100 logs are stored. Logs are deleted after 15 days.'
 paths:
-  /v2/accounts/{accountId}/connect/envelopes/{envelopeId}/retry_queue:
+  /v2.1/accounts/{accountId}/connect/envelopes/{envelopeId}/retry_queue:
+    parameters: []
     put:
       tags:
       - ConnectEvents
-      summary: Docusign Republishes Connect information for the specified envelope
-      description: Republishes Connect information for the specified envelope.
+      summary: Republishes Connect information for the specified envelope
+      description: 'Republishes Connect information for the specified envelope.
+
+
+        To use this method, you must be an account administrator
+
+        and Connect must be enabled on your account.'
       operationId: ConnectPublish_PutConnectRetryByEnvelope
       parameters:
       - name: accountId
         in: path
-        description: The external account number (int) or account id GUID.
+        description: The external account number (int) or account ID GUID.
         required: true
         schema:
           type: string
       - name: envelopeId
         in: path
-        description: 'The envelope''s GUID. Eg 93be49ab-afa0-4adf-933c-f752070d71ec '
+        description: "The envelope's GUID. \n\nExample: `93be49ab-xxxx-xxxx-xxxx-f752070d71ec`\n"
         required: true
         schema:
           type: string
@@ -38,13 +47,13 @@ paths:
         '200':
           description: Successful response.
           content:
-            '*/*':
+            application/json:
               schema:
                 $ref: '#/components/schemas/connectFailureResults'
         '400':
           description: Error encountered.
           content:
-            '*/*':
+            application/json:
               schema:
                 $ref: '#/components/schemas/errorDetails'
       deprecated: false
@@ -52,20 +61,47 @@ paths:
       x-ds-method: retryForEnvelope
       x-ds-service: Connect
       x-ds-in-sdk: true
-  /v2/accounts/{accountId}/connect/envelopes/retry_queue:
+  /v2.1/accounts/{accountId}/connect/envelopes/retry_queue:
+    parameters: []
     put:
       tags:
       - ConnectEvents
-      summary: Docusign Republishes Connect information for multiple envelopes
-      description: Republishes Connect information for the specified set of envelopes. The primary use is to republish Connect post failures by including envelope IDs for the envelopes that failed to post in the request. The list of envelope IDs that failed to post correctly can be retrieved by calling to [ML:GetConnectLog] retrieve the failure log.
+      summary: Republishes Connect information for multiple envelopes
+      description: 'Republishes Connect information for the specified set of envelopes.
+
+
+        To use this method, you must be an account administrator
+
+        and Connect must be enabled on your account.
+
+
+        The primary use is to republish Connect post failures by including envelope IDs for the envelopes that failed to post in the request. The list of envelope IDs that failed to post correctly can be retrieved by calling to Connect::listEventLogs retrieve the failure log.'
       operationId: ConnectPublish_PutConnectRetry
       parameters:
       - name: accountId
         in: path
-        description: The external account number (int) or account id GUID.
+        description: The external account number (int) or account ID GUID.
         required: true
         schema:
           type: string
+      responses:
+        '200':
+          description: Successful response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connectFailureResults'
+        '400':
+          description: Error encountered.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorDetails'
+      deprecated: false
+      x-ds-methodname: retryEventForEnvelopes
+      x-ds-method: retryForEnvelopes
+      x-ds-service: Connect
+      x-ds-in-sdk: true
       requestBody:
         content:
           application/json:
@@ -74,61 +110,67 @@ paths:
           application/xml:
             schema:
               $ref: '#/components/schemas/connectFailureFilter'
-        required: false
-      responses:
-        '200':
-          description: Successful response.
-          content:
-            '*/*':
-              schema:
-                $ref: '#/components/schemas/connectFailureResults'
-        '400':
-          description: Error encountered.
-          content:
-            '*/*':
-              schema:
-                $ref: '#/components/schemas/errorDetails'
-      deprecated: false
-      x-ds-methodname: retryEventForEnvelopes
-      x-ds-method: retryForEnvelopes
-      x-ds-service: Connect
-      x-ds-in-sdk: true
-      x-codegen-request-body-name: connectFailureFilter
-  /v2/accounts/{accountId}/connect/failures:
+  /v2.1/accounts/{accountId}/connect/failures:
+    parameters: []
     get:
       tags:
       - ConnectEvents
-      summary: Docusign Gets the Connect failure log information
-      description: Retrieves the Connect Failure Log information. It can be used to determine which envelopes failed to post, so a republish request can be created.
+      summary: Gets the Connect failure log information
+      description: 'Retrieves the Connect failure log information.
+
+
+        To use this method, you must be an account administrator
+
+        and Connect must be enabled on your account.
+
+
+        Use this method to determine which envelopes failed to post.
+
+        You can then use
+
+        [ConnectEvents: retryForEnvelopes][retry]
+
+        to create a republish request.
+
+
+        [retry]: /docs/esign-rest-api/reference/connect/connectevents/retryforenvelopes/'
       operationId: ConnectFailures_GetConnectLogs
       parameters:
       - name: accountId
         in: path
-        description: The external account number (int) or account id GUID.
+        description: The external account number (int) or account ID GUID.
         required: true
         schema:
           type: string
       - name: from_date
         in: query
-        description: Start of the search date range. Only returns templates created on or after this date/time. If no value is specified, there is no limit on the earliest date created.
+        required: false
+        description: 'The start date for a date range in UTC DateTime format.
+
+
+          **Note:** If this property is null, no date filtering is applied.'
         schema:
           type: string
       - name: to_date
         in: query
-        description: End of the search date range. Only returns templates created up to this date/time. If no value is provided, this defaults to the current date.
+        required: false
+        description: 'The end of a search date range in UTC DateTime format. When you use this parameter, only templates created up to this date and time are returned.
+
+
+          **Note:** If this property is null, the value defaults to the current date.'
         schema:
           type: string
       responses:
         '200':
           description: Successful response.
           content:
-            '*/*':
+            application/json:
               schema:
                 $ref: '#/components/schemas/connectLogs'
         '400':
           description: Error encountered.
           content:
-            '*/*':
+            application/json:
               schema:
                 $ref: '#/components/schemas/errorDetails'
       deprecated: false
@@ -136,34 +178,48 @@ paths:
       x-ds-method: listFailures
       x-ds-service: Connect
       x-ds-in-sdk: true
-  /v2/accounts/{accountId}/connect/failures/{failureId}:
+  /v2.1/accounts/{accountId}/connect/failures/{failureId}:
+    parameters: []
     delete:
       tags:
       - ConnectEvents
-      summary: Docusign Deletes a Connect failure log entry
-      description: Deletes the Connect failure log information for the specified entry.
+      summary: Deletes a Connect failure log entry
+      description: 'Deletes a Connect failure log entry.
+
+
+        To delete all the Connect failure log entries,
+
+        specify `all` for the `failureId` path parameter.
+
+
+        To use this method, you must be an account administrator
+
+        and Connect must be enabled on your account.'
       operationId: ConnectFailures_DeleteConnectFailureLog
       parameters:
       - name: accountId
         in: path
-        description: The external account number (int) or account id GUID.
+        description: The external account number (int) or account ID GUID.
         required: true
         schema:
           type: string
       - name: failureId
         in: path
-        description: The ID of the failed connect log entry.
+        description: The ID of the Connect post failure. Use `all` to delete all failures for the account.
         required: true
         schema:
           type: string
       responses:
         '200':
           description: Successful response.
-          content: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connectDeleteFailureResult'
         '400':
           description: Error encountered.
           content:
-            '*/*':
+            application/json:
               schema:
                 $ref: '#/components/schemas/errorDetails'
       deprecated: false
@@ -171,44 +227,58 @@ paths:
       x-ds-method: deleteFailure
       x-ds-service: Connect
       x-ds-in-sdk: true
-  /v2/accounts/{accountId}/connect/logs:
+  /v2.1/accounts/{accountId}/connect/logs:
+    parameters: []
     get:
       tags:
       - ConnectEvents
-      summary: Docusign Gets the Connect log
-      description: 'Retrieves a list of connect log entries for your account.
+      summary: Gets the Connect log
+      description: 'Retrieves a list of the 100 most recent Connect log entries for your account.
 
 
-        ###### Note: The `enableLog` setting in the Connect configuration must be set to true to enable logging. If logging is not enabled, then no log entries are recorded.'
+        To use this method, you must be an account administrator
+
+        and Connect must be enabled on your account.
+
+
+        The `enableLog` setting in the Connect configuration must be set to **true** to enable logging. Log entries are deleted after 15 days.'
       operationId: ConnectLog_GetConnectLogs
       parameters:
       - name: accountId
         in: path
-        description: The external account number (int) or account id GUID.
+        description: The external account number (int) or account ID GUID.
         required: true
         schema:
           type: string
       - name: from_date
         in: query
-        description: Start of the search date range. Only returns templates created on or after this date/time. If no value is specified, there is no limit on the earliest date created.
+        required: false
+        description: 'The start date for a date range in UTC DateTime format.
+
+
+          **Note:** If this property is null, no date filtering is applied.'
         schema:
           type: string
       - name: to_date
         in: query
-        description: End of the search date range. Only returns templates created up to this date/time. If no value is provided, this defaults to the current date.
+        required: false
+        description: 'The end of a search date range in UTC DateTime format. When you use this parameter, only templates created up to this date and time are returned.
+
+
+          **Note:** If this property is null, the value defaults to the current date.'
         schema:
           type: string
       responses:
         '200':
           description: Successful response.
           content:
-            '*/*':
+            application/json:
               schema:
                 $ref: '#/components/schemas/connectLogs'
         '400':
           description: Error encountered.
           content:
-            '*/*':
+            application/json:
               schema:
                 $ref: '#/components/schemas/errorDetails'
       deprecated: false
@@ -219,27 +289,28 @@ paths:
     delete:
       tags:
       - ConnectEvents
-      summary: Docusign Gets a list of Connect log entries
-      description: 'Retrieves a list of connect log entries for your account.
+      summary: Deletes a list of Connect log entries
+      description: 'Deletes a list of Connect log entries for your account.
 
 
-        ###### Note: The `enableLog` property in the Connect configuration must be set to **true** to enable logging. If logging is not enabled, then no log entries are recorded.'
+        To use this method, you must be an account administrator
+
+        and Connect must be enabled on your account.'
       operationId: ConnectLog_DeleteConnectLogs
       parameters:
       - name: accountId
         in: path
-        description: The external account number (int) or account id GUID.
+        description: The external account number (int) or account ID GUID.
         required: true
         schema:
           type: string
       responses:
         '200':
           description: Successful response.
-          content: {}
         '400':
           description: Error encountered.
           content:
-            '*/*':
+            application/json:
               schema:
                 $ref: '#/components/schemas/errorDetails'
       deprecated: false
@@ -247,45 +318,54 @@ paths:
       x-ds-method: deleteList
       x-ds-service: Connect
       x-ds-in-sdk: true
-  /v2/accounts/{accountId}/connect/logs/{logId}:
+  /v2.1/accounts/{accountId}/connect/logs/{logId}:
+    parameters: []
     get:
       tags:
       - ConnectEvents
-      summary: Docusign Get the specified Connect log entry
+      summary: Gets a Connect log entry
       description: 'Retrieves the specified Connect log entry for your account.
 
 
-        ###### Note: The `enableLog` setting in the Connect configuration must be set to true to enable logging. If logging is not enabled, then no log entries are recorded.'
+        To use this method, you must be an account administrator
+
+        and Connect must be enabled on your account.
+
+
+        The `enableLog` setting in the Connect configuration must be set to **true** to enable logging.
+
+        If logging is not enabled, then no log entries are recorded.'
       operationId: ConnectLog_GetConnectLog
       parameters:
       - name: accountId
         in: path
-        description: The external account number (int) or account id GUID.
+        description: The external account number (int) or account ID GUID.
         required: true
         schema:
           type: string
       - name: logId
         in: path
-        description: The ID of the connect log entry
+        description: The ID of the Connect log entry.
         required: true
         schema:
           type: string
       - name: additional_info
         in: query
-        description: When true, the connectDebugLog information is included in the response.
+        description: When **true,** the response includes the `connectDebugLog` information.
+        required: false
         schema:
           type: string
       responses:
         '200':
           description: Successful response.
           content:
-            '*/*':
+            application/json:
               schema:
                 $ref: '#/components/schemas/connectLog'
         '400':
           description: Error encountered.
           content:
-            '*/*':
+            application/json:
               schema:
                 $ref: '#/components/schemas/errorDetails'
       deprecated: false
@@ -296,30 +376,34 @@ paths:
     delete:
       tags:
       - ConnectEvents
-      summary: Docusign Deletes a specified Connect log entry
-      description: Deletes a specified entry from the Connect Log.
+      summary: Deletes a specified Connect log entry
+      description: 'Deletes a specified entry from the Connect Log.
+
+
+        To use this method, you must be an account administrator
+
+        and Connect must be enabled on your account.'
       operationId: ConnectLog_DeleteConnectLog
       parameters:
       - name: accountId
         in: path
-        description: The external account number (int) or account id GUID.
+        description: The external account number (int) or account ID GUID.
         required: true
         schema:
           type: string
       - name: logId
         in: path
-        description: The ID of the connect log entry
+        description: The ID of the Connect log entry. Use `all` to delete all entries for the account.
         required: true
         schema:
           type: string
       responses:
         '200':
           description: Successful response.
-          content: {}
         '400':
           description: Error encountered.
           content:
-            '*/*':
+            application/json:
               schema:
                 $ref: '#/components/schemas/errorDetails'
       deprecated: false
@@ -329,233 +413,420 @@ paths:
       x-ds-in-sdk: true
 components:
   schemas:
-    connectFailureResult:
-      type: object
-      properties:
-        configId:
-          type: string
-          description: Reserved for DocuSign.
-        configUrl:
-          type: string
-          description: 'Reserved for DocuSign.
-
-            '
-        envelopeId:
-          type: string
-          description: The envelope ID of the envelope status that failed to post.
-        status:
-          type: string
-          description: Connection status.
-        statusMessage:
-          type: string
-          description: Connection status message.
-      description: ''
-      x-ds-definition-name: connectFailureResult
-      x-ms-summary: ''
-    connectFailureResults:
-      type: object
-      properties:
-        retryQueue:
-          type: array
-          description: ''
-          items:
-            $ref: '#/components/schemas/connectFailureResult'
-      description: ''
-      x-ds-definition-name: connectFailureResults
-      x-ms-summary: ''
     connectDebugLog:
       type: object
       properties:
         connectConfig:
+          description: The name of the Connect configuration.
           type: string
-          description: ''
         errorDetails:
           $ref: '#/components/schemas/errorDetails'
+          description: This object describes errors that occur. It is only valid for responses and ignored in requests.
         eventDateTime:
+          description: The UTC date and time of the event.
           type: string
-          description: ''
         eventDescription:
+          description: A description of the event.
           type: string
-          description: ''
         payload:
+          description: Log output.
           type: string
-          description: ''
-      description: ''
       x-ds-definition-name: connectDebugLog
+      description: ''
       x-ms-summary: ''
     connectFailureFilter:
       type: object
       properties:
         envelopeIds:
+          description: 'An array of envelope GUIDs.
+
+
+            Example: `93be49ab-xxxx-xxxx-xxxx-f752070d71ec`
+
+            '
           type: array
-          description: ''
           items:
             type: string
         synchronous:
+          description: Must be **false.** Setting this property to any other value will result in errors.
           type: string
-          description: ''
-      description: ''
+      description: A list of failed envelope IDs to retry.
       x-ds-definition-name: connectFailureFilter
-      x-ms-summary: ''
+      x-ms-summary: A list of failed envelope IDs to retry.
     errorDetails:
+      description: This object describes errors that occur. It is only valid for responses and ignored in requests.
       type: object
       properties:
         errorCode:
+          description: The code associated with the error condition.
           type: string
-          description: An error code associated with the error.
         message:
+          description: A brief message describing the error condition.
           type: string
-          description: A short error message.
-      description: This object describes errors that occur. It is only valid for responses, and ignored in requests.
       x-ds-definition-name: errorDetails
-      x-ms-summary: This object describes errors that occur. It is only valid for responses, and ignored in requests.
-    connectLog:
-      type: object
-      properties:
-        accountId:
-          type: string
-          description: The account ID associated with the envelope.
-        configUrl:
-          type: string
-          description: The web address of the listener or Retrieving Service end point for Connect.
-        connectDebugLog:
-          type: array
-          description: 'A complex element containing information about the Connect configuration, error details, date/time, description and payload.
-
-
-            This is only included in the response if the query additional_info=true is used.'
-          items:
-            $ref: '#/components/schemas/connectDebugLog'
-        connectId:
-          type: string
-          description: The identifier for the Connect configuration that failed. If an account has multiple Connect configurations, this value is used to look up the Connect configuration for the failed post.
-        created:
-          type: string
-          description: The date and time the entry was created.
-        email:
-          type: string
-          description: The email that sent the envelope.
-        envelopeId:
-          type: string
-          description: The envelope ID of the envelope status that failed to post.
-        error:
-          type: string
-          description: The error that caused the Connect post to fail.
-        failureId:
-          type: string
-          description: The failure log ID for the failure.
-        failureUri:
-          type: string
-          description: The URI for the failure.
-        lastTry:
-          type: string
-          description: The date and time the last attempt to post.
-        logId:
-          type: string
-          description: The Connect log ID for the entry.
-        logUri:
-          type: string
-          description: The URI for the log item.
-        retryCount:
-          type: string
-          description: The number of times the Connect post has been retried.
-        retryUri:
-          type: string
-          description: The UEI to retry to publish the Connect failure.
-        status:
-          type: string
-          description: 'The new envelope status for the failed Connect post. The possible values are: Any, Voided, Created, Deleted, Sent, Delivered, Signed, Completed, Declined, TimedOut, Template, or Processing.'
-        subject:
-          type: string
-          description: The envelope subject.
-        userName:
-          type: string
-          description: The name of the envelope sender.
-      description: ''
-      x-ds-definition-name: connectLog
-      x-ms-summary: ''
+      x-ms-summary: This object describes errors that occur. It is only valid for responses and ignored in requests.
     connectLogs:
       type: object
       properties:
         failures:
-          type: array
           description: An array of containing failure information from the Connect failure log.
+          type: array
           items:
             $ref: '#/components/schemas/connectLog'
         logs:
+          description: A list of Connect general logs.
           type: array
-          description: 'A complex type containing Connect log information. It is divided into two sections, one for regular logs and one for Connect failures. '
           items:
             $ref: '#/components/schemas/connectLog'
         totalRecords:
+          description: The count of records in the log list.
           type: string
-          description: Record count.
         type:
+          description: 'The type of this tab. Values are:
+
+
+            - `Approve`
+
+            - `CheckBox`
+
+            - `Company`
+
+            - `Date`
+
+            - `DateSigned`
+
+            - `Decline`
+
+            - `Email`
+
+            - `EmailAddress`
+
+            - `EnvelopeId`
+
+            - `FirstName`
+
+            - `Formula`
+
+            - `FullName`
+
+            - `InitialHere`
+
+            - `InitialHereOptional`
+
+            - `LastName`
+
+            - `List`
+
+            - `Note`
+
+            - `Number`
+
+            - `Radio`
+
+            - `SignerAttachment`
+
+            - `SignHere`
+
+            - `SignHereOptional`
+
+            - `Ssn`
+
+            - `Text`
+
+            - `Title`
+
+            - `Zip5`
+
+            - `Zip5Dash4`
+
+            '
           type: string
-          description: 'Type of the user. Valid values: type_owner, type_participant.'
-      description: ''
       x-ds-definition-name: connectLogs
+      description: ''
+      x-ms-summary: ''
+    connectLog:
+      type: object
+      properties:
+        accountId:
+          description: The account ID associated with the envelope.
+          type: string
+        configUrl:
+          description: The web address of the listener or retrieving service endpoint for Connect.
+          type: string
+        connectDebugLog:
+          description: 'A complex element containing information about the Connect configuration, error details, date/time, description and payload.
+
+            This information is included in the response only when the `additional_info` query is set to **true.**
+
+            This additional information is only available when retrieving general logs with [ConnectEvents:get](/docs/esign-rest-api/reference/connect/connectevents/get/), but not when retrieving failure logs with [ConnectEvents:listFailures](/docs/esign-rest-api/reference/connect/connectevents/listfailures/).'
+          type: array
+          items:
+            $ref: '#/components/schemas/connectDebugLog'
+        connectId:
+          description: The ID of the Connect configuration that failed. If an account has multiple Connect configurations, this value is used to look up the Connect configuration for the failed post.
+          type: string
+        created:
+          description: The UTC DateTime when the Connect post was created.
+          type: string
+        email:
+          description: The email address of the envelope sender.
+          type: string
+        envelopeId:
+          description: The ID of the envelope that failed to post.
+          type: string
+        error:
+          description: The error that caused the Connect post to fail.
+          type: string
+        failureId:
+          description: The failure log ID for the failure.
+          type: string
+        failureUri:
+          description: The URI for the Connect post failure.
+          type: string
+        lastTry:
+          description: The UTC DateTime of the last attempt to post.
+          type: string
+        logId:
+          description: The Connect log ID for the entry.
+          type: string
+        logUri:
+          description: The URI for the Connect log entry.
+          type: string
+        retryCount:
+          description: The number of times the Connect post has been retried.
+          type: string
+        retryUri:
+          description: A URI that you can use to retry to publish the Connect post.
+          type: string
+        status:
+          description: 'The envelope status for the Connect post. Possible values are:
+
+            - `Any`
+
+            - `Voided`
+
+            - `Created`
+
+            - `Deleted`
+
+            - `Sent`
+
+            - `Delivered`
+
+            - `Signed`
+
+            - `Completed`
+
+            - `Declined`
+
+            - `TimedOut`
+
+            - `Template`
+
+            - `Processing`
+
+
+            For details about these statuses, see [Envelope Status Code Descriptions](/docs/esign-rest-api/esign101/rules-and-limits/responses/).'
+          type: string
+        subject:
+          description: The subject of the envelope.
+          type: string
+        userName:
+          description: The name of the sender of the envelope.
+          type: string
+      description: Contains information about a Connect log entry.
+      x-ds-definition-name: connectLog
+      x-ms-summary: Contains information about a Connect log entry.
+    connectFailureResult:
+      type: object
+      properties:
+        configId:
+          description: Reserved for Docusign.
+          type: string
+        configUrl:
+          description: 'Reserved for Docusign.
+
+            '
+          type: string
+        envelopeId:
+          description: The envelope ID of the envelope status that failed to post.
+          type: string
+        status:
+          description: The connection status.
+          type: string
+        statusMessage:
+          description: A human-readable message describing the connection status.
+          type: string
+      description: This object contains details about a Connect failure result.
+      x-ds-definition-name: connectFailureResult
+      x-ms-summary: This object contains details about a Connect failure result.
+    connectDeleteFailureResult:
+      type: object
+      x-ds-definition-name: connectDeleteFailureResult
+      description: ''
+      x-ms-summary: ''
+    connectFailureResults:
+      type: object
+      properties:
+        retryQueue:
+          description: Details about a Connect failure result.
+          type: array
+          items:
+            $ref: '#/components/schemas/connectFailureResult'
+      x-ds-definition-name: connectFailureResults
+      description: ''
       x-ms-summary: ''
 externalDocs:
-  description: See the DocuSign REST API Guide for more information.
+  description: See the Docusign eSignature REST API Guide for more information.
   url: https://docs.docusign.com/esign
 x-ds-allow-editing: false
 x-ds-categories:
-- name: Authentication
-  summary: Logging in and authentication
-  description: 'Use the Authentication category to manage various account login tasks including:
-
-
-    * Getting login information for a user.
-
-    * Managing linked social accounts.
-
-    * Getting and revoking OAuth tokens.'
 - name: Envelopes
-  summary: Creating and sending envelopes
-  description: 'The DocuSign API Envelope category includes the resources and methods for sending and managing envelopes and envelope data.
+  summary: This section shows you how to create and send envelopes.
+  description: 'The eSignature API Envelope category includes the resources and methods for sending and managing envelopes and envelope data.
 
 
-    Envelopes are the key objects within the DocuSign eSignature system. As a result, they are complex data structures with few required fields. See the [API Recipes](https://www.docusign.com/developer-center/recipes) for use case examples and their solutions.
+    Envelopes are the key objects in the Docusign platform. As a result, they are complex data structures with few required fields. See the [How-to guides](/docs/esign-rest-api/how-to/) for examples and solutions.
 
 
-    To create and send envelopes, see the [Envelopes resource](Envelopes).
-
+    To learn more about envelopes, see [Envelopes](/docs/esign-rest-api/esign101/concepts/envelopes/).
 
     '
 - name: Connect
-  summary: Connect configuration and logging
-  description: "The Connect category enables your application to be called via HTTPS when an event of interest occurs.\n\nUse the Connect service to \"end the polling madness.\" With Connect, there is no need for your application to poll DocuSign every 15 minutes to learn the latest about your envelopes.\n\nInstead, you register your interest in one or more types of envelope or recipient events. Then, when an interesting event occurs, the DocuSign platform will contact your application with the event's details and data. You can register interest in envelopes sent by particular users in your account, or for envelopes sent by any user.\n\n## Incoming Connect Calls\nTo use the Connect service, your application needs to provide an https url that can be called from the public internet. If your application runs on a server behind your organization's firewall, then you will need to create a \"pinhole\" in the firewall to allow the incoming Connect calls from DocuSign to reach your application. Other techniques for receiving the incoming calls including proxy servers and DMZ networking can also be used. \n\n## Per-envelope Connect Configuration\nInstead of registering a general Connect configuration and listener, an individual envelope can have its own Connect configuration. See the `eventNotification` field for envelopes.\n\n## Categories\nUse the Connect category for:\n\n* Programmatically creating Connect configurations. Connect configurations can be created manually by using the DocuSign web service, or programmatically via the API. Configurations created via the API can be seen and updated from the web service.\n* Retrieving and managing the event log for your Connect configurations. \n* Requesting that an event be re-published to the listener."
+  summary: "Docusign Connect is the Docusign platform notification service. The service uses webhooks to proactively notify your application when an event occurs that your application wants to know about. Docusign recommends that all applications use Connect instead of polling the Docusign Signature Service. This section provides information about Connect configuration and logging. \n\n**Note:** To make API calls to any of the Connect endpoints, you must be an account administrator.\n\nFor more information about Connect, see [Docusign Connect](/platform/webhooks/connect/) and [Custom Connect Configuration](https://support.docusign.com/s/document-item?bundleId=pik1583277475390&topicId=khw1583277390582.html)."
+  description: 'The Connect service enables your application to be called via
+
+    HTTPS when an event of interest occurs.
+
+
+    Use the Connect service to "end the polling madness." With
+
+    Connect, there is no need for your application to poll Docusign
+
+    every 15 minutes to learn the latest about your envelopes.
+
+
+    Instead, you register your interest in one or more types of
+
+    envelope or recipient events. Then, when an interesting event
+
+    occurs, the Docusign platform will contact your application with
+
+    the event''s details and data. You can register interest in
+
+    envelopes sent by particular users in your account, or for
+
+    envelopes sent by any user.
+
+
+    Connect can empower your organization to manage document actions
+
+    as they occur, and allows you to track their changes within your
+
+    own systems. Upon completion, envelope information, including
+
+    document content, can be stored in your own databases or CMS
+
+    systems, and these events can be triggered via webhooks
+
+    delivering messages to your application.
+
+
+    **Note:** To make API calls to any of the Connect endpoints, you must be an account administrator.
+
+
+    ## Incoming Connect Calls
+
+
+    To use the Connect service, your application needs to provide an
+
+    HTTPS URL that can be called from the public Internet. If your
+
+    application runs on a server behind your organization''s firewall,
+
+    then you will need to create a "pinhole" in the firewall to allow
+
+    the incoming Connect calls from Docusign to reach your
+
+    application. You can also use other techniques such as proxy
+
+    servers and DMZ networking for receiving the incoming calls.
+
+
+    Connect delivers events over HTTP requests in JSON or XML.
+
+    See [Docusign Connect overview](/platform/webhooks/connect/).
+
+
+    If your application is not configured to accept post messages,
+
+    Docusign will NOT return an additional post error response to
+
+    your listener application. If you''ve enabled logging on your
+
+    configuration, it will be logged in Admin under the configuration
+
+    failure log.
+
+
+    ## Per-envelope Connect Configuration
+
+
+    Instead of registering a general Connect configuration and
+
+    listener, an individual envelope can have its own Connect
+
+    configuration. See the
+
+    [`eventNotification`](/docs/esign-rest-api/reference/envelopes/envelopes/create/#schema__envelopedefinition_eventnotification)
+
+    property for envelopes.
+
+
+    ## Historical Publish Endpoint
+
+
+    To submit existing envelopes to an endpoint, use the [EnvelopePublish](/docs/esign-rest-api/reference/envelopes/envelopepublish/) resource.
+
+    '
 - name: Templates
   summary: Template creation and management
   description: 'Use the Templates category to manage your account''s templates.
 
 
-    You can:
+    This section shows you how to perform the following tasks:
 
 
     * Create, list, get, update, and delete templates.
 
-    * Manage templates'' notification and group sharing settings.
+    * Manage the notification and group sharing settings for templates.
 
     * Fetch and rotate pages from a document used by a template.
 
 
-    Templates can be created programmatically or can be created via the DocuSign web interface and then used by your application.'
+    You can create templates either programmatically or through the Docusign web interface and then used by your application.'
 - name: SigningGroups
-  summary: Send a signing request to a group of potential signers
-  description: 'Use the SigningGroup category to manage signing groups that allow you anyone in the group to sign a document.
+  summary: Send a signing request to a group of potential signers.
+  description: 'Use the Signing Group category to manage signing groups that allow anyone in the group to sign a document. When you send an envelope to a signing group, anyone in the group can open it and sign it with their own signature.
 
 
-    The category allows you create the signing group and manage the users in the group.'
+    This category shows account administrators how to create a signing group and manage the users in the group.
+
+
+    **Note:** To create and manage signing groups, you must be an account administrator.
+
+
+    For more information about this topic, see [Signing Groups](https://support.docusign.com/s/document-item?bundleId=gav1643676262430&topicId=zgn1578456447934.html).'
 - name: Folders
-  summary: Folders for completed envelopes
-  description: "Use the Folders category to manage envelopes in your folders. \n\nYou can list the folder contents and move envelopes between folders."
+  summary: Folders allow you to organize envelopes and templates.
+  description: 'Use the Folders category to organize envelopes and templates.
+
+    You can list the folder contents and move envelopes and templates between folders.'
 - name: CustomTabs
   summary: Custom tabs
   description: "Custom Tabs enable accounts to have one or more pre-configured (custom) tabs. Custom tabs save time when users are tagging documents since the users don't have to manually set the tabs' parameters.\n\nThis category enables custom tabs to be managed programmatically, including creation, deletion, etc. \n"
 - name: CloudStorage
-  summary: Cloud storage providers and user management
+  summary: This section shows you how to manage your cloud storage providers and users.
   description: 'Use the Cloud Storage category to list the user''s cloud storage document contents.
 
 
@@ -574,7 +845,7 @@ x-ds-categories:
 
     * Add delete users.
 
-    * Add and delete the intials and signature images for a user.'
+    * Add and delete the initials and signature images for a user.'
 - name: UserGroups
   summary: Group users for common permissions and branding
   description: 'Use the User Groups category to manage your permissions groups.
@@ -588,9 +859,28 @@ x-ds-categories:
     * Add users to, and delete users from, your groups.
 
     * Manage the brand information associated with a group.'
+- name: BulkEnvelopes
+  summary: Bulk envelopes
+  description: Use the BulkEnvelopes category to manage the sending of envelopes to multiple recipients.
 - name: Accounts
   summary: Account management
-  description: "Use the Account category for various account management tasks including:\n\n* Programmatically creating and deleting accounts.\n* Getting information about an account and its capabilities.\n* Branding the account with custom colors, message text, and more.\n* Account charges.\n\nThe Account category also includes end points for \n* Listing the recipient names associated with an email address that was used by the account. For example, a single email address is often shared by mulitple members of a family.\n\n\n"
+  description: 'Use the Account category for various account management tasks including:
+
+
+    * Programmatically creating and deleting accounts.
+
+    * Getting information about an account and its capabilities.
+
+    * Branding the account with custom colors, message text, and more.
+
+    * Account charges.
+
+
+    The Accounts category also includes end points for listing the recipient names associated with an email address that was used by the account. For example, a single email address is often shared by multiple members of a family.
+
+
+
+    '
 - name: Billing
   summary: Invoices
   description: 'Use the Billing category to manage the following billing related tasks:
@@ -612,18 +902,42 @@ x-ds-categories:
 
     * Getting information on the API''s resources and versions.'
 - name: PowerForms
-  summary: PowerForm creation and management
-  description: The PowerForms category enables PowerForms to be created and managed.
+  summary: The PowerForms category provides methods that enable you to create and manage fillable forms.
+  description: The PowerForms category enables you to create and manage PowerForms that you can use for self service and email forms.
 - name: Workspaces
-  summary: Workspace creation and management
-  description: 'Workspaces creation and management.
-
-
-    '
+  summary: A Docusign workspace is a collaboration area for sharing files and data.
+  description: "A workspace is a collaborative space for sharing documents and managing workflows. A workspace has a single owner who must be a Docusign user. The owner can invite others to the workspace as collaborators. Individuals who are not Docusign users must create a Docusign account to join a workspace as a collaborator.\n \nYou can create an envelope directly from a workspace.\n\nWorkspaces store the following information:\n\n- **Files:** Files uploaded to a workspace for storage or reuse.\n- **Documents:** A document is a component of a transaction, template, or workspace. When a file is added to a transaction, template, or workspace, it is copied as a document. Each document in a workspace has a single owner.\n- **Templates:** A set of documents that you can use to create a transaction or a workspace.\n- **Transactions:** A transaction is a series of workflow events related to one or more documents. These events route the documents to one or more individuals for the purposes of doing business. Each transaction has a single owner (the sender).\n\n**Note:** Documents in a template are not individually listed as files."
 - name: Payments
   summary: Manage Payments
   description: This category includes resources for managing payment gateways. Payment information is added to envelopes via methods in the Envelopes category.
-- name: Signature
+- name: EmailArchive
+  summary: This section shows you how to set and manage the BCC email addresses that you want to use to archive the emails that Docusign sends.
+  description: 'Email archives enable Docusign partners and other multi-account customers to easily archive emails sent through Docusign. The `EmailArchive` resource provides methods for managing your email archive configuration, which consists of the BCC email address or addresses that you want to use to archive Docusign emails. Each account can use up to five BCC email addresses for archiving purposes.
+
+
+    For more information, see [Email Archive Configuration](https://support.docusign.com/s/document-item?bundleId=pik1583277475390&topicId=xjm1583277371373.html).
+
+
+    **Note:** This feature is only available for certain account plans and must be enabled by Docusign.'
+- name: Notary
+  summary: 'Docusign eNotary makes the notarization process fully digital
+
+    for senders, signers, and notaries.
+
+    It enables a notary public to act as an in-person witness
+
+    to electronic signing of documents.
+
+    '
+  description: 'Docusign eNotary makes the notarization process fully digital
+
+    for senders, signers, and notaries.
+
+    It enables a notary public to act as an in-person witness
+
+    to electronic signing of documents.
+
+    '
+- name: Envelope
   summary: ''
   description: ''
-x-original-swagger-version: '2.0'

@@ -1,54 +1,91 @@
 openapi: 3.2.0
 info:
-  title: DocuSign REST Account Brands API
-  description: The DocuSign REST API provides you with a powerful, convenient, and simple Web services API for interacting with DocuSign.
+  version: v2.1
+  title: Docusign eSignature REST Account Brands API
+  description: The Docusign eSignature REST API provides you with a powerful, convenient, and simple Web services API for interacting with Docusign.
   termsOfService: https://www.docusign.com/company/terms-and-conditions/web
   contact:
-    name: DocuSign Developer Center
+    name: Docusign Developer Center
     url: https://developers.docusign.com/
     email: devcenter@docusign.com
-  version: v2
 servers:
 - url: https://www.docusign.net/restapi
 tags:
 - name: AccountBrands
-  description: The AcccountBrands resource provides methods that allow you to create and delete the account brand associated with an account.
+  description: 'The AcccountBrands resource provides methods that enable you to create and manage brands for an account.
+
+
+    Branding enables you to add the look and feel of your organization''s brand to the sending, signing, and email processes, making it easier for recipients to identify envelopes coming from your organization.
+
+
+    The Docusign Account Custom Branding feature enables you to set the colors, logo, and text that recipients see at the account level. The settings associated with a brand are applied to all of the envelopes that use the brand. You can create multiple brand profiles for different corporate brands or internal departments.
+
+
+    **Note:** To use this resource, branding for either signing or sending must be enabled for the account (either `canSelfBrandSend`, `canSelfBrandSign`, or both of these account settings must be set to **true**).
+
+
+    ### Next steps
+
+    * See how to create a brand via the API.
+
+    * Learn how to apply a brand to an envelope.'
 paths:
-  /v2/accounts/{accountId}/brands:
+  /v2.1/accounts/{accountId}/brands:
+    parameters: []
     get:
       tags:
       - AccountBrands
-      summary: Docusign Gets a list of brand profiles
-      description: Retrieves the list of brand profiles associated with the account and the default brand profiles. The Account Branding feature (accountSettings properties `canSelfBrandSend` and `canSelfBrandSend`) must be set to **true** for the account to use this call.
+      summary: Gets a list of brands
+      description: 'This method returns details about all of the brands associated with an account,
+
+        including the default brand profiles.
+
+
+        Either or both of the following settings must be enabled for the account to use this method:
+
+
+        - `canSelfBrandSign`
+
+        - `canSelfBrandSend`
+
+
+        ### Related topics
+
+
+        - How to create a brand
+
+        - How to apply a brand to an envelope'
       operationId: Brands_GetBrands
       parameters:
       - name: accountId
         in: path
-        description: The external account number (int) or account id GUID.
+        description: The external account number (int) or account ID GUID.
         required: true
         schema:
           type: string
       - name: exclude_distributor_brand
         in: query
-        description: When set to **true**, excludes distributor brand information from the response set.
+        description: When **true,** excludes distributor brand information from the response set.
+        required: false
         schema:
           type: string
       - name: include_logos
         in: query
-        description: When set to **true**, returns the logos associated with the brand.
+        description: When **true,** returns the logos associated with the brand.
+        required: false
         schema:
           type: string
       responses:
         '200':
           description: Successful response.
           content:
-            '*/*':
+            application/json:
               schema:
                 $ref: '#/components/schemas/AccountBrands'
         '400':
           description: Error encountered.
           content:
-            '*/*':
+            application/json:
               schema:
                 $ref: '#/components/schemas/errorDetails'
       deprecated: false
@@ -59,42 +96,52 @@ paths:
     post:
       tags:
       - AccountBrands
-      summary: Docusign Creates one or more brand profile files for the account
-      description: 'Creates one or more brand profile files for the account. The Account Branding feature (accountSettings properties `canSelfBrandSend` and `canSelfBrandSig`) must be set to **true** for the account to use this call.
+      summary: Creates one or more brand profiles for an account
+      description: 'This method creates one or more brand profile files for an account.
 
 
-        An error is returned if `brandId` property for a brand profile is already set for the account. To upload a new version of an existing brand profile, you must delete the profile and then upload the newer version.
+        To specify logos for the brand,
+
+        use the
+
+        AccountBrands: updateLogo
+
+        method
+
+        after you create the brand.
 
 
-        When brand profile files are being uploaded, they must be combined into one zip file and the `Content-Type` must be `application/zip`.'
+        Either or both of the following settings must be enabled for the account to use this method:
+
+
+        - `canSelfBrandSign`
+
+        - `canSelfBrandSend`
+
+
+        ### Related topics
+
+
+        - How to create a brand'
       operationId: Brands_PostBrands
       parameters:
       - name: accountId
         in: path
-        description: The external account number (int) or account id GUID.
+        description: The external account number (int) or account ID GUID.
         required: true
         schema:
           type: string
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/brand'
-          application/xml:
-            schema:
-              $ref: '#/components/schemas/brand'
-        required: false
       responses:
         '201':
           description: Successful response.
           content:
-            '*/*':
+            application/json:
               schema:
                 $ref: '#/components/schemas/AccountBrands'
         '400':
           description: Error encountered.
           content:
-            '*/*':
+            application/json:
               schema:
                 $ref: '#/components/schemas/errorDetails'
       deprecated: false
@@ -102,40 +149,52 @@ paths:
       x-ds-method: create
       x-ds-service: Accounts
       x-ds-in-sdk: true
-      x-codegen-request-body-name: brand
-    delete:
-      tags:
-      - AccountBrands
-      summary: Docusign Deletes one or more brand profiles
-      description: Deletes one or more brand profiles from an account. The Account Branding feature (accountSettings properties `canSelfBrandSend` and `canSelfBrandSend`) must be set to **true** to use this call.
-      operationId: Brands_DeleteBrands
-      parameters:
-      - name: accountId
-        in: path
-        description: The external account number (int) or account id GUID.
-        required: true
-        schema:
-          type: string
       requestBody:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/brandsRequest'
+              $ref: '#/components/schemas/brand'
           application/xml:
             schema:
-              $ref: '#/components/schemas/brandsRequest'
-        required: false
+              $ref: '#/components/schemas/brand'
+    delete:
+      tags:
+      - AccountBrands
+      summary: Deletes one or more brand profiles
+      description: 'This method deletes one or more brand profiles from an account, based on the brand IDs that you include in the `brandsRequest`.
+
+
+        Either or both of the following settings must be enabled for the account to use this method:
+
+
+        - `canSelfBrandSign`
+
+        - `canSelfBrandSend`
+
+
+        ### Related topics
+
+
+        - How to create a brand'
+      operationId: Brands_DeleteBrands
+      parameters:
+      - name: accountId
+        in: path
+        description: The external account number (int) or account ID GUID.
+        required: true
+        schema:
+          type: string
       responses:
         '200':
           description: Successful response.
           content:
-            '*/*':
+            application/json:
               schema:
                 $ref: '#/components/schemas/AccountBrands'
         '400':
           description: Error encountered.
           content:
-            '*/*':
+            application/json:
               schema:
                 $ref: '#/components/schemas/errorDetails'
       deprecated: false
@@ -143,70 +202,114 @@ paths:
       x-ds-method: deleteList
       x-ds-service: Accounts
       x-ds-in-sdk: true
-      x-codegen-request-body-name: brandsRequest
-  /v2/accounts/{accountId}/brands/{brandId}:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/brandsRequest'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/brandsRequest'
+  /v2.1/accounts/{accountId}/brands/{brandId}:
+    parameters: []
     get:
       tags:
       - AccountBrands
-      summary: Docusign Get information for a specific brand
+      summary: Gets information about a brand
       operationId: Brand_GetBrand
       parameters:
       - name: accountId
         in: path
-        description: The external account number (int) or account id GUID.
+        description: The external account number (int) or account ID GUID.
         required: true
         schema:
           type: string
       - name: brandId
         in: path
-        description: The unique identifier of a brand.
+        description: The ID of the brand.
         required: true
         schema:
           type: string
       - name: include_external_references
         in: query
+        required: false
+        description: When **true,** the landing pages and links associated with the brand are included in the response.
         schema:
           type: string
       - name: include_logos
         in: query
+        required: false
+        description: When **true,** the URIs for the logos associated with the brand are included in the response.
         schema:
           type: string
       responses:
         '200':
           description: Successful response.
           content:
-            '*/*':
+            application/json:
               schema:
                 $ref: '#/components/schemas/brand'
         '400':
           description: Error encountered.
           content:
-            '*/*':
+            application/json:
               schema:
                 $ref: '#/components/schemas/errorDetails'
       deprecated: false
       x-ds-methodname: getBrand
+      description: 'This method returns details about an account brand.
+
+
+        **Note:** Branding for either signing or sending must be enabled for the account (`canSelfBrandSend` , `canSelfBrandSign`, or both of these account settings must be **true**).'
       x-ds-method: get
       x-ds-service: Accounts
       x-ds-in-sdk: true
     put:
       tags:
       - AccountBrands
-      summary: Docusign Updates an existing brand
+      summary: Updates an existing brand
       operationId: Brand_PutBrand
       parameters:
       - name: accountId
         in: path
-        description: The external account number (int) or account id GUID.
+        description: The external account number (int) or account ID GUID.
         required: true
         schema:
           type: string
       - name: brandId
         in: path
-        description: The unique identifier of a brand.
+        description: The ID of the brand.
         required: true
         schema:
           type: string
+      - name: replace_brand
+        in: query
+        required: false
+        description: When **true,** replaces the brand instead of updating it. The only unchanged value is the brand ID. The request body must be XML. The default value is **false.**
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Successful response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/brand'
+        '400':
+          description: Error encountered.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorDetails'
+      deprecated: false
+      x-ds-methodname: updateBrand
+      description: 'This method updates an account brand.
+
+
+        **Note:** Branding for either signing or sending must be enabled for the account (`canSelfBrandSend` , `canSelfBrandSign`, or both of these account settings must be **true**).'
+      x-ds-method: update
+      x-ds-service: Accounts
+      x-ds-in-sdk: true
       requestBody:
         content:
           application/json:
@@ -215,115 +318,103 @@ paths:
           application/xml:
             schema:
               $ref: '#/components/schemas/brand'
-        required: false
-      responses:
-        '200':
-          description: Successful response.
-          content:
-            '*/*':
-              schema:
-                $ref: '#/components/schemas/brand'
-        '400':
-          description: Error encountered.
-          content:
-            '*/*':
-              schema:
-                $ref: '#/components/schemas/errorDetails'
-      deprecated: false
-      x-ds-methodname: updateBrand
-      x-ds-method: update
-      x-ds-service: Accounts
-      x-ds-in-sdk: true
-      x-codegen-request-body-name: brand
     delete:
       tags:
       - AccountBrands
-      summary: Docusign Removes a brand
+      summary: Deletes a brand
       operationId: Brand_DeleteBrand
       parameters:
       - name: accountId
         in: path
-        description: The external account number (int) or account id GUID.
+        description: The external account number (int) or account ID GUID.
         required: true
         schema:
           type: string
       - name: brandId
         in: path
-        description: The unique identifier of a brand.
+        description: The ID of the brand.
         required: true
         schema:
           type: string
       responses:
         '200':
           description: Successful response.
-          content: {}
         '400':
           description: Error encountered.
           content:
-            '*/*':
+            application/json:
               schema:
                 $ref: '#/components/schemas/errorDetails'
       deprecated: false
       x-ds-methodname: deleteBrand
+      description: 'This method deletes a brand from an account.
+
+
+        **Note:** Branding for either signing or sending must be enabled for the account (`canSelfBrandSend` , `canSelfBrandSign`, or both of these account settings must be **true**).'
       x-ds-method: delete
       x-ds-service: Accounts
       x-ds-in-sdk: true
-  /v2/accounts/{accountId}/brands/{brandId}/file:
+  /v2.1/accounts/{accountId}/brands/{brandId}/file:
+    parameters: []
     get:
       tags:
       - AccountBrands
-      summary: Docusign Export a specific brand
+      summary: Exports a brand
       operationId: BrandExport_GetBrandExportFile
       parameters:
       - name: accountId
         in: path
-        description: The external account number (int) or account id GUID.
+        description: The external account number (int) or account ID GUID.
         required: true
         schema:
           type: string
       - name: brandId
         in: path
-        description: The unique identifier of a brand.
+        description: The ID of the brand.
         required: true
         schema:
           type: string
       responses:
         '200':
           description: Successful response.
-          content: {}
         '400':
           description: Error encountered.
           content:
-            '*/*':
+            application/json:
               schema:
                 $ref: '#/components/schemas/errorDetails'
       deprecated: false
       x-ds-methodname: getBrandExportFile
+      description: 'This method exports information about a brand to an XML file.
+
+
+        **Note:** Branding for either signing or sending must be enabled for the account (`canSelfBrandSend` , `canSelfBrandSign`, or both of these account settings must be **true**).'
       x-ds-method: getExportFile
       x-ds-service: Accounts
       x-ds-in-sdk: true
-  /v2/accounts/{accountId}/brands/{brandId}/logos/{logoType}:
+  /v2.1/accounts/{accountId}/brands/{brandId}/logos/{logoType}:
+    parameters: []
     get:
       tags:
       - AccountBrands
-      summary: Docusign Obtains the specified image for a brand
+      summary: Gets a brand logo
       operationId: BrandLogo_GetBrandLogo
       parameters:
       - name: accountId
         in: path
-        description: The external account number (int) or account id GUID.
+        description: The external account number (int) or account ID GUID.
         required: true
         schema:
           type: string
       - name: brandId
         in: path
-        description: The unique identifier of a brand.
+        description: The ID of the brand.
         required: true
         schema:
           type: string
       - name: logoType
         in: path
-        description: One of **Primary**, **Secondary** or **Email**.
+        description: "The type of logo. Valid values are:\n\n- `primary` \n- `secondary` \n- `email`"
         required: true
         schema:
           type: string
@@ -343,112 +434,128 @@ paths:
                 $ref: '#/components/schemas/errorDetails'
       deprecated: false
       x-ds-methodname: getBrandLogoByType
+      description: 'This method returns a specific logo that is used in a brand.
+
+
+        **Note:** Branding for either signing or sending must be enabled for the account (`canSelfBrandSend` , `canSelfBrandSign`, or both of these account settings must be **true**).'
       x-ds-method: getLogo
       x-ds-service: Accounts
       x-ds-in-sdk: true
     put:
       tags:
       - AccountBrands
-      summary: Docusign Put one branding logo
+      summary: Updates a brand logo
       operationId: BrandLogo_PutBrandLogo
       parameters:
       - name: accountId
         in: path
-        description: The external account number (int) or account id GUID.
+        description: The external account number (int) or account ID GUID.
         required: true
         schema:
           type: string
       - name: brandId
         in: path
-        description: The unique identifier of a brand.
+        description: The ID of the brand.
         required: true
         schema:
           type: string
       - name: logoType
         in: path
-        description: One of **Primary**, **Secondary** or **Email**.
+        description: "The type of logo. Valid values are:\n\n- `primary` \n- `secondary` \n- `email`"
         required: true
         schema:
           type: string
+      responses:
+        '200':
+          description: Successful response.
+        '400':
+          description: Error encountered.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorDetails'
+      deprecated: false
+      x-ds-methodname: updateBrandLogoByType
+      description: 'This method updates a single brand logo.
+
+
+        You pass in the new version of the resource in the `Content-Disposition` header. Example:
+
+
+        `Content-Disposition: form-data; name="file"; filename="logo.jpg"`
+
+
+        **Note:** Branding for either signing or sending must be enabled for the account (`canSelfBrandSend` , `canSelfBrandSign`, or both of these account settings must be **true**).'
+      x-ds-method: updateLogo
+      x-ds-service: Accounts
+      x-ds-in-sdk: true
       requestBody:
-        description: 'Brand logo binary Stream. Supported formats: JPG, GIF, PNG. Maximum file size: 300 KB. Recommended dimensions: 296 x 76 pixels (larger images will be resized). Changes may take up to one hour to display in all places'
         content:
           image/png:
             schema:
               type: string
               format: binary
+        description: 'Brand logo binary Stream. Supported formats: JPG, GIF, PNG. Maximum file size: 300 KB. Recommended dimensions: 296 x 76 pixels (larger images will be resized). Changes may take up to one hour to display in all places'
         required: true
-      responses:
-        '200':
-          description: Successful response.
-          content: {}
-        '400':
-          description: Error encountered.
-          content:
-            '*/*':
-              schema:
-                $ref: '#/components/schemas/errorDetails'
-      deprecated: false
-      x-ds-methodname: updateBrandLogoByType
-      x-ds-method: updateLogo
-      x-ds-service: Accounts
-      x-ds-in-sdk: true
-      x-codegen-request-body-name: logoFileBytes
     delete:
       tags:
       - AccountBrands
-      summary: Docusign Delete one branding logo
+      summary: Deletes a brand logo
       operationId: BrandLogo_DeleteBrandLogo
       parameters:
       - name: accountId
         in: path
-        description: The external account number (int) or account id GUID.
+        description: The external account number (int) or account ID GUID.
         required: true
         schema:
           type: string
       - name: brandId
         in: path
-        description: The unique identifier of a brand.
+        description: The ID of the brand.
         required: true
         schema:
           type: string
       - name: logoType
         in: path
-        description: One of **Primary**, **Secondary** or **Email**.
+        description: "The type of logo. Valid values are:\n\n- `primary` \n- `secondary` \n- `email`"
         required: true
         schema:
           type: string
       responses:
         '200':
           description: Successful response.
-          content: {}
         '400':
           description: Error encountered.
           content:
-            '*/*':
+            application/json:
               schema:
                 $ref: '#/components/schemas/errorDetails'
       deprecated: false
       x-ds-methodname: deleteBrandLogoByType
+      description: 'This method deletes a single logo from an account brand.
+
+
+        **Note:** Branding for either signing or sending must be enabled for the account (`canSelfBrandSend` , `canSelfBrandSign`, or both of these account settings must be **true**).'
       x-ds-method: deleteLogo
       x-ds-service: Accounts
       x-ds-in-sdk: true
-  /v2/accounts/{accountId}/brands/{brandId}/resources:
+  /v2.1/accounts/{accountId}/brands/{brandId}/resources:
+    parameters: []
     get:
       tags:
       - AccountBrands
-      summary: Docusign Returns the specified account's list of branding resources (metadata)
+      summary: Returns metadata about the branding resources for an account
       operationId: BrandResources_GetBrandResourcesList
       parameters:
       - name: accountId
         in: path
-        description: The external account number (int) or account id GUID.
+        description: The external account number (int) or account ID GUID.
         required: true
         schema:
           type: string
       - name: brandId
         in: path
-        description: The unique identifier of a brand.
+        description: The ID of the brand.
         required: true
         schema:
           type: string
@@ -456,456 +563,927 @@ paths:
         '200':
           description: Successful response.
           content:
-            '*/*':
+            application/json:
               schema:
                 $ref: '#/components/schemas/brandResourcesList'
         '400':
           description: Error encountered.
           content:
-            '*/*':
+            application/json:
               schema:
                 $ref: '#/components/schemas/errorDetails'
       deprecated: false
       x-ds-methodname: getBrandResources
+      description: 'This method returns metadata about the branding resources that are associated with an account.
+
+
+        **Note:** Branding for either signing or sending must be enabled for the account (`canSelfBrandSend` , `canSelfBrandSign`, or both of these account settings must be **true**).'
       x-ds-method: listResources
       x-ds-service: Accounts
       x-ds-in-sdk: true
-  /v2/accounts/{accountId}/brands/{brandId}/resources/{resourceContentType}:
+  /v2.1/accounts/{accountId}/brands/{brandId}/resources/{resourceContentType}:
+    parameters: []
     get:
       tags:
       - AccountBrands
-      summary: Docusign Returns the specified branding resource file
+      summary: Returns a branding resource file
       operationId: BrandResources_GetBrandResources
       parameters:
       - name: accountId
         in: path
-        description: The external account number (int) or account id GUID.
+        description: The external account number (int) or account ID GUID.
         required: true
         schema:
           type: string
       - name: brandId
         in: path
-        description: The unique identifier of a brand.
+        description: The ID of the brand.
         required: true
         schema:
           type: string
       - name: resourceContentType
         in: path
         required: true
+        description: 'The type of brand resource file to return. Valid values are:
+
+
+          - `sending`
+
+          - `signing`
+
+          - `email`
+
+          - `signing_captive`'
         schema:
           type: string
       - name: langcode
         in: query
+        required: false
+        description: The ISO 3166-1 alpha-2 codes for the languages that the brand supports.
         schema:
           type: string
       - name: return_master
         in: query
+        required: false
+        description: Specifies which resource file data to return. When **true,** only the master resource file is returned. When **false,** only the elements that you modified are returned.
         schema:
           type: string
       responses:
         '200':
           description: Successful response.
-          content: {}
         '400':
           description: Error encountered.
           content:
-            '*/*':
+            application/json:
               schema:
                 $ref: '#/components/schemas/errorDetails'
       deprecated: false
       x-ds-methodname: getBrandResourcesByContentType
+      description: 'This method returns a specific branding resource file.
+
+
+        A brand uses a set of brand resource files to control the sending, signing, email message, and captive (embedded) signing experiences. You can modify the default email messages and formats in these files and upload them to your brand to customize the user experience.
+
+
+        **Important:** When you upload a modified resource file, only the elements that differ from the master resource file are saved as your resource file. Similarly, when you download your resource files, only the modified elements are included in the file.
+
+
+        **Note:** Branding for either signing or sending must be enabled for the account (`canSelfBrandSend` , `canSelfBrandSign`, or both of these account settings must be **true**).'
       x-ds-method: getResource
       x-ds-service: Accounts
       x-ds-in-sdk: true
     put:
       tags:
       - AccountBrands
-      summary: Docusign Uploads a branding resource file
+      summary: Updates a branding resource file
       operationId: BrandResources_PutBrandResources
       parameters:
       - name: accountId
         in: path
-        description: The external account number (int) or account id GUID.
+        description: The external account number (int) or account ID GUID.
         required: true
         schema:
           type: string
       - name: brandId
         in: path
-        description: The unique identifier of a brand.
+        description: The ID of the brand.
         required: true
         schema:
           type: string
       - name: resourceContentType
         in: path
         required: true
+        description: 'The type of brand resource file that you are updating. Valid values are:
+
+
+          - `sending`
+
+          - `signing`
+
+          - `email`
+
+          - `signing_captive`'
         schema:
           type: string
+      responses:
+        '200':
+          description: Successful response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/brandResources'
+        '400':
+          description: Error encountered.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorDetails'
+      deprecated: false
+      x-ds-methodname: updateBrandResourcesByContentType
+      description: 'This method updates a branding resource file.
+
+
+        You pass in the new version of the resource file in the `Content-Disposition` header. Example:
+
+
+        `Content-Disposition: form-data; name="file"; filename="DocuSign_SigningResource_4328673.xml"`
+
+
+        **Note:** Branding for either signing or sending must be enabled for the account (`canSelfBrandSend` , `canSelfBrandSign`, or both of these account settings must be **true**).
+
+
+        **Important:** Customizing resource files is an advanced branding configuration option which can significantly impact your account, and should be done only by someone with expertise in XML and HTML. The master resource files are subject to change without notice. If you customize your resource files, after each release, Docusign recommends you review any changes and update your custom files as needed.
+
+
+        When you upload a modified resource file, only the elements that differ from the master resource file are saved as your resource file. Similarly, when you download your resource files, only the modified elements are included in the file.'
+      x-ds-method: updateResource
+      x-ds-service: Accounts
+      x-ds-in-sdk: true
       requestBody:
         content:
           multipart/form-data:
             schema:
-              required:
-              - file.xml
               type: object
               properties:
                 file.xml:
                   type: string
                   description: Brand resource XML file.
                   format: binary
-        required: true
-      responses:
-        '200':
-          description: Successful response.
-          content:
-            '*/*':
-              schema:
-                $ref: '#/components/schemas/brandResources'
-        '400':
-          description: Error encountered.
-          content:
-            '*/*':
-              schema:
-                $ref: '#/components/schemas/errorDetails'
-      deprecated: false
-      x-ds-methodname: updateBrandResourcesByContentType
-      x-ds-method: updateResource
-      x-ds-service: Accounts
-      x-ds-in-sdk: true
+              required:
+              - file.xml
 components:
   schemas:
-    brandResources:
+    AccountBrands:
       type: object
       properties:
-        createdByUserInfo:
-          $ref: '#/components/schemas/userInfo'
-        createdDate:
-          type: string
-          description: ''
-        modifiedByUserInfo:
-          $ref: '#/components/schemas/userInfo'
-        modifiedDate:
-          type: string
-          description: ''
-        modifiedTemplates:
+        brands:
+          description: A list of brands.
           type: array
-          description: ''
           items:
-            type: string
-        resourcesContentType:
+            $ref: '#/components/schemas/brand'
+        recipientBrandIdDefault:
+          description: The brand that envelope recipients see when a brand is not explicitly set.
           type: string
-          description: ''
-        resourcesContentUri:
+        senderBrandIdDefault:
+          description: The brand that envelope senders see when a brand is not explicitly set.
           type: string
-          description: ''
-      description: ''
-      x-ds-definition-name: brandResources
-      x-ms-summary: ''
-    brandLink:
+      x-ds-definition-name: brandsResponse
+      description: The AccountBrands resource enables you to use account-level brands to customize the styles and text that recipients see.
+      x-ds-category: Accounts
+      x-ds-order: '10'
+      x-ms-summary: The AccountBrands resource enables you to use account-level brands to customize the styles and text that recipients see.
+    brandLogoIds:
       type: object
       properties:
-        linkText:
-          type: string
+        emailLogoId:
           description: ''
-        linkType:
           type: string
+        primaryLogoId:
           description: ''
-        showLink:
           type: string
+        secondaryLogoId:
           description: ''
-        urlOrMailTo:
           type: string
-          description: ''
+      x-ds-definition-name: brandLogoIds
       description: ''
-      x-ds-definition-name: brandLink
       x-ms-summary: ''
     brandResourcesList:
       type: object
       properties:
         resourcesContentTypes:
+          description: A list of resources that the brand uses.
           type: array
-          description: ''
           items:
             $ref: '#/components/schemas/brandResources'
-      description: ''
       x-ds-definition-name: brandResourcesList
-      x-ms-summary: ''
-    userInfo:
-      type: object
-      properties:
-        activationAccessCode:
-          type: string
-          description: ''
-        email:
-          type: string
-          description: ''
-        errorDetails:
-          $ref: '#/components/schemas/errorDetails'
-        loginStatus:
-          type: string
-          description: ''
-        sendActivationEmail:
-          type: string
-          description: ''
-        uri:
-          type: string
-          description: ''
-        userId:
-          type: string
-          description: 'The user ID of the user being accessed. Generally this is the user ID of the authenticated user, but if the authenticated user is an Admin on the account, this may be another user the Admin user is accessing. **Note**: For the [GET /v2/accounts/{accountId}/envelopes](https://developers.docusign.com/esign-rest-api/reference/Envelopes/Envelopes/listStatusChanges/#envelopesInformation) method, the `user_id` query parameter is not implemented and should not be used.'
-        userName:
-          type: string
-          description: ''
-        userStatus:
-          type: string
-          description: 'Status of the user''s account. One of:
-
-
-            * ActivationRequired
-
-            * ActivationSent
-
-            * Active
-
-            * Closed
-
-            * Disabled
-
-            '
-        userType:
-          type: string
-          description: ''
       description: ''
-      x-ds-definition-name: userInfo
-      x-ms-summary: ''
-    nameValue:
-      type: object
-      properties:
-        errorDetails:
-          $ref: '#/components/schemas/errorDetails'
-        name:
-          type: string
-          description: The name or key of a name/value pair.
-        originalValue:
-          type: string
-          description: 'The initial value of the tab when it was sent to the recipient. '
-        value:
-          type: string
-          description: The value field of a name/value pair.
-      description: ''
-      x-ds-definition-name: nameValue
-      x-ms-summary: ''
-    brandResourceUrls:
-      type: object
-      properties:
-        email:
-          type: string
-          description: ''
-        sending:
-          type: string
-          description: ''
-        signing:
-          type: string
-          description: ''
-        signingCaptive:
-          type: string
-          description: ''
-      description: ''
-      x-ds-definition-name: brandResourceUrls
-      x-ms-summary: ''
-    AccountBrands:
-      type: object
-      properties:
-        brands:
-          type: array
-          description: The list of brands.
-          items:
-            $ref: '#/components/schemas/brand'
-        recipientBrandIdDefault:
-          type: string
-          description: The brand seen by envelope recipients when a brand is not explicitly set.
-        senderBrandIdDefault:
-          type: string
-          description: The brand seen by envelope senders when a brand is not explicitly set.
-      description: Brand management for accounts
-      x-ds-definition-name: brandsResponse
-      x-ds-category: Accounts
-      x-ds-order: '10'
-      x-ms-summary: Brand management for accounts
-    errorDetails:
-      type: object
-      properties:
-        errorCode:
-          type: string
-          description: An error code associated with the error.
-        message:
-          type: string
-          description: A short error message.
-      description: This object describes errors that occur. It is only valid for responses, and ignored in requests.
-      x-ds-definition-name: errorDetails
-      x-ms-summary: This object describes errors that occur. It is only valid for responses, and ignored in requests.
-    brandLogos:
-      type: object
-      properties:
-        email:
-          type: string
-          description: ''
-        primary:
-          type: string
-          description: ''
-        secondary:
-          type: string
-          description: ''
-      description: ''
-      x-ds-definition-name: brandLogos
       x-ms-summary: ''
     brand:
       type: object
       properties:
         brandCompany:
+          description: The name of the company associated with the brand.
           type: string
-          description: The name of the company associated with this brand.
         brandId:
-          type: string
           description: The ID used to identify a specific brand in API calls.
-        brandName:
           type: string
-          description: The name of the brand.
-        colors:
+        brandLanguages:
+          description: 'An array of two-letter codes for the languages that you want to use with the brand. The supported languages are:
+
+
+            - Arabic (`ar`)
+
+            - Armenian (`hy`)
+
+            - Bahasa Indonesia (`id`)
+
+            - Bahasa Malay (`ms`)
+
+            - Bulgarian (`bg`)
+
+            - Chinese Simplified (`zh_CN`)
+
+            - Chinese Traditional (`zh_TW`)
+
+            - Croatian (`hr`)
+
+            - Czech (`cs`)
+
+            - Danish (`da`)
+
+            - Dutch (`nl`)
+
+            - English UK (`en_GB`)
+
+            - English US (`en`)
+
+            - Estonian (`et`)
+
+            - Farsi (`fa`)
+
+            - Finnish (`fi`)
+
+            - French (`fr`)
+
+            - French Canada (`fr_CA`)
+
+            - German (`de`)
+
+            - Greek (`el`)
+
+            - Hebrew (`he`)
+
+            - Hindi (`hi`)
+
+            - Hungarian (`hu`)
+
+            - Italian (`it`)
+
+            - Japanese (`ja`)
+
+            - Korean (`ko`)
+
+            - Latvian (`lv`)
+
+            - Lithuanian (`lt`)
+
+            - Norwegian (`no`)
+
+            - Polish (`pl`)
+
+            - Portuguese (`pt`)
+
+            - Portuguese Brasil (`pt_BR`)
+
+            - Romanian (`ro`)
+
+            - Russian (`ru`)
+
+            - Serbian (`sr`)
+
+            - Slovak (`sk`)
+
+            - Slovenian (`sl`)
+
+            - Spanish (`es`)
+
+            - Spanish Latin America (`es_MX`)
+
+            - Swedish (`sv`)
+
+            - Thai (`th`)
+
+            - Turkish (`tr`)
+
+            - Ukranian (`uk`)
+
+            - Vietnamese (`vi`)'
           type: array
-          description: ''
+          items:
+            type: string
+        brandName:
+          description: The name of the brand.
+          type: string
+        colors:
+          description: 'An array of name-value pairs specifying the colors that the brand uses for the following elements:
+
+
+            - Button background
+
+            - Button text
+
+            - Header background
+
+            - Header text'
+          type: array
           items:
             $ref: '#/components/schemas/nameValue'
+        defaultBrandLanguage:
+          description: 'The two-letter code for the language that you want to use as the brand default. The supported languages are:
+
+
+            - Arabic (`ar`)
+
+            - Armenian (`hy`)
+
+            - Bahasa Indonesia (`id`)
+
+            - Bahasa Malay (`ms`)
+
+            - Bulgarian (`bg`)
+
+            - Chinese Simplified (`zh_CN`)
+
+            - Chinese Traditional (`zh_TW`)
+
+            - Croatian (`hr`)
+
+            - Czech (`cs`)
+
+            - Danish (`da`)
+
+            - Dutch (`nl`)
+
+            - English UK (`en_GB`)
+
+            - English US (`en`)
+
+            - Estonian (`et`)
+
+            - Farsi (`fa`)
+
+            - Finnish (`fi`)
+
+            - French (`fr`)
+
+            - French Canada (`fr_CA`)
+
+            - German (`de`)
+
+            - Greek (`el`)
+
+            - Hebrew (`he`)
+
+            - Hindi (`hi`)
+
+            - Hungarian (`hu`)
+
+            - Italian (`it`)
+
+            - Japanese (`ja`)
+
+            - Korean (`ko`)
+
+            - Latvian (`lv`)
+
+            - Lithuanian (`lt`)
+
+            - Norwegian (`no`)
+
+            - Polish (`pl`)
+
+            - Portuguese (`pt`)
+
+            - Portuguese Brasil (`pt_BR`)
+
+            - Romanian (`ro`)
+
+            - Russian (`ru`)
+
+            - Serbian (`sr`)
+
+            - Slovak (`sk`)
+
+            - Slovenian (`sl`)
+
+            - Spanish (`es`)
+
+            - Spanish Latin America (`es_MX`)
+
+            - Swedish (`sv`)
+
+            - Thai (`th`)
+
+            - Turkish (`tr`)
+
+            - Ukranian (`uk`)
+
+            - Vietnamese (`vi`)'
+          type: string
         emailContent:
+          description: Deprecated.
           type: array
-          description: ''
           items:
             $ref: '#/components/schemas/brandEmailContent'
         errorDetails:
           $ref: '#/components/schemas/errorDetails'
+          description: This object describes errors that occur. It is only valid for responses and ignored in requests.
+        isOrganizationBrand:
+          description: ''
+          type: string
         isOverridingCompanyName:
-          type: string
-          description: ''
+          description: When **true,** the `brandCompany` property is overriding the name of the company in the account settings.
+          type: boolean
         isSendingDefault:
-          type: string
-          description: ''
+          description: When **true,** the sending brand is the default brand for sending new envelopes.
+          type: boolean
         isSigningDefault:
-          type: string
-          description: ''
+          description: When **true,** the siging brand is the default brand for the signing experience.
+          type: boolean
         landingPages:
+          description: 'An array of name/value pairs specifying the pages to which the user is redirected after the following events occur:
+
+
+            - Signing Completed
+
+            - Viewed Exit
+
+            - Finish Later
+
+            - Decline
+
+            - Session Timeout
+
+            - Authentication Failure
+
+
+            If you do not specify landing pages, the Docusign default pages are used.'
           type: array
-          description: ''
           items:
             $ref: '#/components/schemas/nameValue'
         links:
+          description: An array of `brandLink` objects that contain information about the links that the brand uses.
           type: array
-          description: ''
           items:
             $ref: '#/components/schemas/brandLink'
+        logoIds:
+          $ref: '#/components/schemas/brandLogoIds'
+          description: ''
         logos:
           $ref: '#/components/schemas/brandLogos'
+          description: The URIs for retrieving the logos that are associated with the brand.
+        organizationBrandLogo:
+          description: ''
+          type: string
         resources:
           $ref: '#/components/schemas/brandResourceUrls'
-      description: ''
+          description: 'An object containing the URLs for the four Docusign master resource files that the brand uses for sending, signing, email messages, and captive (embedded) signing. You can modify the default email messages and formats in these file to customize the user experience.
+
+
+            **Note:** This object is returned only when the `resourceContentType` is `sending`, `signing`, `email`, or `signing_captive`.'
+      description: Information about a brand that is associated with an account. A brand applies custom styles and text to an envelope.
       x-ds-definition-name: brand
-      x-ms-summary: ''
-    brandsRequest:
-      type: object
-      properties:
-        brands:
-          type: array
-          description: The list of brands.
-          items:
-            $ref: '#/components/schemas/brandRequest'
-      description: ''
-      x-ds-definition-name: brandsRequest
-      x-ms-summary: ''
+      x-ms-summary: Information about a brand that is associated with an account. A brand applies custom styles and text to an envelope.
     brandEmailContent:
       type: object
       properties:
         content:
+          description: Deprecated.
           type: string
-          description: ''
         emailContentType:
+          description: Deprecated.
           type: string
-          description: ''
         emailToLink:
+          description: Deprecated.
           type: string
-          description: ''
         linkText:
+          description: Deprecated.
           type: string
-          description: ''
-      description: ''
+      description: Deprecated.
       x-ds-definition-name: brandEmailContent
-      x-ms-summary: ''
+      x-ms-summary: Deprecated.
+    brandLink:
+      type: object
+      properties:
+        linkText:
+          description: The text used for the link.
+          type: string
+        linkType:
+          description: 'The type of link. Valid values include:
+
+
+            - `aboutDocusign`
+
+            - `closeButton`'
+          type: string
+        showLink:
+          description: When **true,** the link displays to the recipient.
+          type: string
+        urlOrMailTo:
+          description: The URL or mailto address of the link.
+          type: string
+      description: Information about a link that a brand uses.
+      x-ds-definition-name: brandLink
+      x-ms-summary: Information about a link that a brand uses.
+    nameValue:
+      type: object
+      properties:
+        errorDetails:
+          $ref: '#/components/schemas/errorDetails'
+          description: This object describes errors that occur. It is only valid for responses and ignored in requests.
+        name:
+          description: The name of the item.
+          type: string
+        originalValue:
+          description: The initial value of the item.
+          type: string
+        value:
+          description: The current value of the item.
+          type: string
+      description: A name-value pair that describes an item and provides a value for the item.
+      x-ds-definition-name: nameValue
+      x-ms-summary: A name-value pair that describes an item and provides a value for the item.
+    brandsRequest:
+      type: object
+      properties:
+        brands:
+          description: A list of brands.
+          type: array
+          items:
+            $ref: '#/components/schemas/brandRequest'
+      description: Details about one or more brands.
+      x-ds-definition-name: brandsRequest
+      x-ms-summary: Details about one or more brands.
+    brandResourceUrls:
+      type: object
+      properties:
+        email:
+          description: The URI for the email resource file that the brand uses.
+          type: string
+        sending:
+          description: The URI for the sending resource file that the brand uses.
+          type: string
+        signing:
+          description: The URI for the signing resource file that the brand uses.
+          type: string
+        signingCaptive:
+          description: The URI for the captive (embedded) signing resource file that the brand uses.
+          type: string
+      description: "Brands use resource files to style the following experiences: \n\n- Email\n- Sending\n- Signing\n- Captive (embedded) signing \n\nYou can modify these resource files to customize these experiences."
+      x-ds-definition-name: brandResourceUrls
+      x-ms-summary: "Brands use resource files to style the following experiences: \n\n- Email\n- Sending\n- Signing\n- Captive (embedded) signing \n\nYou can modify these resource files to customize these experiences."
+    brandLogos:
+      type: object
+      properties:
+        email:
+          description: 'The URI for the brand''s secondary logo.
+
+
+            This is a read-only property that provides a URI to the logo in use.
+
+            To update a logo use
+
+            [AccountBrands: updateLogo](/docs/esign-rest-api/reference/accounts/accountbrands/updatelogo/).
+
+            '
+          type: string
+        primary:
+          description: 'The URI for the brand''s secondary logo.
+
+
+            This is a read-only property that provides a URI to the logo in use.
+
+            To update a logo use
+
+            [AccountBrands: updateLogo](/docs/esign-rest-api/reference/accounts/accountbrands/updatelogo/).
+
+            '
+          type: string
+        secondary:
+          description: 'The URI for the brand''s secondary logo.
+
+
+            This is a read-only property that provides a URI to the logo in use.
+
+            To update a logo use
+
+            [AccountBrands: updateLogo](/docs/esign-rest-api/reference/accounts/accountbrands/updatelogo/).
+
+            '
+          type: string
+      description: 'The URIs for retrieving the logos that are associated with the brand.
+
+
+        These are read-only properties that provide a URI to logos in use.
+
+        To update a logo use
+
+        [AccountBrands: updateLogo](/docs/esign-rest-api/reference/accounts/accountbrands/updatelogo/).
+
+        '
+      x-ds-definition-name: brandLogos
+      x-ms-summary: 'The URIs for retrieving the logos that are associated with the brand.
+
+
+        These are read-only properties that provide a URI to logos in use.
+
+        To update a logo use
+
+        [AccountBrands: updateLogo](/docs/esign-rest-api/reference/accounts/accountbrands/updatelogo/).
+
+        '
+    errorDetails:
+      description: This object describes errors that occur. It is only valid for responses and ignored in requests.
+      type: object
+      properties:
+        errorCode:
+          description: The code associated with the error condition.
+          type: string
+        message:
+          description: A brief message describing the error condition.
+          type: string
+      x-ds-definition-name: errorDetails
+      x-ms-summary: This object describes errors that occur. It is only valid for responses and ignored in requests.
     brandRequest:
       type: object
       properties:
         brandId:
-          type: string
           description: The ID of the brand used in API calls
-      description: ''
+          type: string
+      description: This request object contains information about a specific brand.
       x-ds-definition-name: brandRequest
+      x-ms-summary: This request object contains information about a specific brand.
+    userInfo:
+      type: object
+      properties:
+        accountId:
+          description: The account ID associated with the envelope.
+          type: string
+        accountName:
+          description: The name on the account.
+          type: string
+        activationAccessCode:
+          description: Access code provided to the user to activate the account.
+          type: string
+        email:
+          description: The user's email address.
+          type: string
+        errorDetails:
+          $ref: '#/components/schemas/errorDetails'
+          description: This object describes errors that occur. It is only valid for responses and ignored in requests.
+        ipAddress:
+          description: ''
+          type: string
+        loginStatus:
+          description: When **true,** indicates that the user is logged in. This is a read-only property.
+          type: string
+        membershipId:
+          description: The user's membership ID.
+          type: string
+        sendActivationEmail:
+          description: This field is no longer supported for most accounts. To create an eSignature user without sending an activation email, use the Admin API by following [these steps](/docs/admin-api/how-to/create-active-user/).
+          type: string
+        uri:
+          description: A URI containing the user ID.
+          type: string
+        userId:
+          description: The ID of the user to access.
+          type: string
+        userName:
+          description: The name of the user.
+          type: string
+        userStatus:
+          description: 'Status of the user''s account. One of:
+
+
+            - `ActivationRequired`
+
+            - `ActivationSent`
+
+            - `Active`
+
+            - `Closed`
+
+            - `Disabled`
+
+            '
+          type: string
+        userType:
+          description: The type of user, for example `CompanyUser`.
+          type: string
+      x-ds-definition-name: userInfo
+      description: ''
       x-ms-summary: ''
+    brandResources:
+      type: object
+      properties:
+        createdByUserInfo:
+          $ref: '#/components/schemas/userInfo'
+          description: The user ID of the user who created the brand resource.
+        createdDate:
+          description: The date and time that the brand resource was created.
+          type: string
+        dataNotSavedNotInMaster:
+          description: Deprecated.
+          type: array
+          items:
+            type: string
+        modifiedByUserInfo:
+          $ref: '#/components/schemas/userInfo'
+          description: Information about the user who last modified the brand resource.
+        modifiedDate:
+          description: The date on which this user record was last modified.
+          type: string
+        modifiedTemplates:
+          description: 'This property is returned in the response to the [AccountBrands::listResources][listResources] request. It contains a list of any email templates that have been modified to differ from the master resource files.
+
+
+            [listResources]: /docs/esign-rest-api/reference/accounts/accountbrands/listresources/'
+          type: array
+          items:
+            type: string
+        resourcesContentType:
+          description: 'The type of brand resource file. A brand uses a different resource file to control each of the following experiences:
+
+
+            - Sending (`sending`)
+
+            - Signing (`signing`)
+
+            - Email messages (`email`)
+
+            - Captive (embedded) signing (`signing_captive`)
+
+
+            You can modify the default email messages and formats in these files and upload them to your brand to customize the user experience.'
+          type: string
+        resourcesContentUri:
+          description: The URI for the brand resource file.
+          type: string
+      description: Information about the resource files that the brand uses for the email, signing, sending, and captive (embedded) signing experiences.
+      x-ds-definition-name: brandResources
+      x-ms-summary: Information about the resource files that the brand uses for the email, signing, sending, and captive (embedded) signing experiences.
 externalDocs:
-  description: See the DocuSign REST API Guide for more information.
+  description: See the Docusign eSignature REST API Guide for more information.
   url: https://docs.docusign.com/esign
 x-ds-allow-editing: false
 x-ds-categories:
-- name: Authentication
-  summary: Logging in and authentication
-  description: 'Use the Authentication category to manage various account login tasks including:
-
-
-    * Getting login information for a user.
-
-    * Managing linked social accounts.
-
-    * Getting and revoking OAuth tokens.'
 - name: Envelopes
-  summary: Creating and sending envelopes
-  description: 'The DocuSign API Envelope category includes the resources and methods for sending and managing envelopes and envelope data.
+  summary: This section shows you how to create and send envelopes.
+  description: 'The eSignature API Envelope category includes the resources and methods for sending and managing envelopes and envelope data.
 
 
-    Envelopes are the key objects within the DocuSign eSignature system. As a result, they are complex data structures with few required fields. See the [API Recipes](https://www.docusign.com/developer-center/recipes) for use case examples and their solutions.
+    Envelopes are the key objects in the Docusign platform. As a result, they are complex data structures with few required fields. See the [How-to guides](/docs/esign-rest-api/how-to/) for examples and solutions.
 
 
-    To create and send envelopes, see the [Envelopes resource](Envelopes).
-
+    To learn more about envelopes, see [Envelopes](/docs/esign-rest-api/esign101/concepts/envelopes/).
 
     '
 - name: Connect
-  summary: Connect configuration and logging
-  description: "The Connect category enables your application to be called via HTTPS when an event of interest occurs.\n\nUse the Connect service to \"end the polling madness.\" With Connect, there is no need for your application to poll DocuSign every 15 minutes to learn the latest about your envelopes.\n\nInstead, you register your interest in one or more types of envelope or recipient events. Then, when an interesting event occurs, the DocuSign platform will contact your application with the event's details and data. You can register interest in envelopes sent by particular users in your account, or for envelopes sent by any user.\n\n## Incoming Connect Calls\nTo use the Connect service, your application needs to provide an https url that can be called from the public internet. If your application runs on a server behind your organization's firewall, then you will need to create a \"pinhole\" in the firewall to allow the incoming Connect calls from DocuSign to reach your application. Other techniques for receiving the incoming calls including proxy servers and DMZ networking can also be used. \n\n## Per-envelope Connect Configuration\nInstead of registering a general Connect configuration and listener, an individual envelope can have its own Connect configuration. See the `eventNotification` field for envelopes.\n\n## Categories\nUse the Connect category for:\n\n* Programmatically creating Connect configurations. Connect configurations can be created manually by using the DocuSign web service, or programmatically via the API. Configurations created via the API can be seen and updated from the web service.\n* Retrieving and managing the event log for your Connect configurations. \n* Requesting that an event be re-published to the listener."
+  summary: "Docusign Connect is the Docusign platform notification service. The service uses webhooks to proactively notify your application when an event occurs that your application wants to know about. Docusign recommends that all applications use Connect instead of polling the Docusign Signature Service. This section provides information about Connect configuration and logging. \n\n**Note:** To make API calls to any of the Connect endpoints, you must be an account administrator.\n\nFor more information about Connect, see [Docusign Connect](/platform/webhooks/connect/) and [Custom Connect Configuration](https://support.docusign.com/s/document-item?bundleId=pik1583277475390&topicId=khw1583277390582.html)."
+  description: 'The Connect service enables your application to be called via
+
+    HTTPS when an event of interest occurs.
+
+
+    Use the Connect service to "end the polling madness." With
+
+    Connect, there is no need for your application to poll Docusign
+
+    every 15 minutes to learn the latest about your envelopes.
+
+
+    Instead, you register your interest in one or more types of
+
+    envelope or recipient events. Then, when an interesting event
+
+    occurs, the Docusign platform will contact your application with
+
+    the event''s details and data. You can register interest in
+
+    envelopes sent by particular users in your account, or for
+
+    envelopes sent by any user.
+
+
+    Connect can empower your organization to manage document actions
+
+    as they occur, and allows you to track their changes within your
+
+    own systems. Upon completion, envelope information, including
+
+    document content, can be stored in your own databases or CMS
+
+    systems, and these events can be triggered via webhooks
+
+    delivering messages to your application.
+
+
+    **Note:** To make API calls to any of the Connect endpoints, you must be an account administrator.
+
+
+    ## Incoming Connect Calls
+
+
+    To use the Connect service, your application needs to provide an
+
+    HTTPS URL that can be called from the public Internet. If your
+
+    application runs on a server behind your organization''s firewall,
+
+    then you will need to create a "pinhole" in the firewall to allow
+
+    the incoming Connect calls from Docusign to reach your
+
+    application. You can also use other techniques such as proxy
+
+    servers and DMZ networking for receiving the incoming calls.
+
+
+    Connect delivers events over HTTP requests in JSON or XML.
+
+    See [Docusign Connect overview](/platform/webhooks/connect/).
+
+
+    If your application is not configured to accept post messages,
+
+    Docusign will NOT return an additional post error response to
+
+    your listener application. If you''ve enabled logging on your
+
+    configuration, it will be logged in Admin under the configuration
+
+    failure log.
+
+
+    ## Per-envelope Connect Configuration
+
+
+    Instead of registering a general Connect configuration and
+
+    listener, an individual envelope can have its own Connect
+
+    configuration. See the
+
+    [`eventNotification`](/docs/esign-rest-api/reference/envelopes/envelopes/create/#schema__envelopedefinition_eventnotification)
+
+    property for envelopes.
+
+
+    ## Historical Publish Endpoint
+
+
+    To submit existing envelopes to an endpoint, use the [EnvelopePublish](/docs/esign-rest-api/reference/envelopes/envelopepublish/) resource.
+
+    '
 - name: Templates
   summary: Template creation and management
   description: 'Use the Templates category to manage your account''s templates.
 
 
-    You can:
+    This section shows you how to perform the following tasks:
 
 
     * Create, list, get, update, and delete templates.
 
-    * Manage templates'' notification and group sharing settings.
+    * Manage the notification and group sharing settings for templates.
 
     * Fetch and rotate pages from a document used by a template.
 
 
-    Templates can be created programmatically or can be created via the DocuSign web interface and then used by your application.'
+    You can create templates either programmatically or through the Docusign web interface and then used by your application.'
 - name: SigningGroups
-  summary: Send a signing request to a group of potential signers
-  description: 'Use the SigningGroup category to manage signing groups that allow you anyone in the group to sign a document.
+  summary: Send a signing request to a group of potential signers.
+  description: 'Use the Signing Group category to manage signing groups that allow anyone in the group to sign a document. When you send an envelope to a signing group, anyone in the group can open it and sign it with their own signature.
 
 
-    The category allows you create the signing group and manage the users in the group.'
+    This category shows account administrators how to create a signing group and manage the users in the group.
+
+
+    **Note:** To create and manage signing groups, you must be an account administrator.
+
+
+    For more information about this topic, see [Signing Groups](https://support.docusign.com/s/document-item?bundleId=gav1643676262430&topicId=zgn1578456447934.html).'
 - name: Folders
-  summary: Folders for completed envelopes
-  description: "Use the Folders category to manage envelopes in your folders. \n\nYou can list the folder contents and move envelopes between folders."
+  summary: Folders allow you to organize envelopes and templates.
+  description: 'Use the Folders category to organize envelopes and templates.
+
+    You can list the folder contents and move envelopes and templates between folders.'
 - name: CustomTabs
   summary: Custom tabs
   description: "Custom Tabs enable accounts to have one or more pre-configured (custom) tabs. Custom tabs save time when users are tagging documents since the users don't have to manually set the tabs' parameters.\n\nThis category enables custom tabs to be managed programmatically, including creation, deletion, etc. \n"
 - name: CloudStorage
-  summary: Cloud storage providers and user management
+  summary: This section shows you how to manage your cloud storage providers and users.
   description: 'Use the Cloud Storage category to list the user''s cloud storage document contents.
 
 
@@ -924,7 +1502,7 @@ x-ds-categories:
 
     * Add delete users.
 
-    * Add and delete the intials and signature images for a user.'
+    * Add and delete the initials and signature images for a user.'
 - name: UserGroups
   summary: Group users for common permissions and branding
   description: 'Use the User Groups category to manage your permissions groups.
@@ -938,9 +1516,28 @@ x-ds-categories:
     * Add users to, and delete users from, your groups.
 
     * Manage the brand information associated with a group.'
+- name: BulkEnvelopes
+  summary: Bulk envelopes
+  description: Use the BulkEnvelopes category to manage the sending of envelopes to multiple recipients.
 - name: Accounts
   summary: Account management
-  description: "Use the Account category for various account management tasks including:\n\n* Programmatically creating and deleting accounts.\n* Getting information about an account and its capabilities.\n* Branding the account with custom colors, message text, and more.\n* Account charges.\n\nThe Account category also includes end points for \n* Listing the recipient names associated with an email address that was used by the account. For example, a single email address is often shared by mulitple members of a family.\n\n\n"
+  description: 'Use the Account category for various account management tasks including:
+
+
+    * Programmatically creating and deleting accounts.
+
+    * Getting information about an account and its capabilities.
+
+    * Branding the account with custom colors, message text, and more.
+
+    * Account charges.
+
+
+    The Accounts category also includes end points for listing the recipient names associated with an email address that was used by the account. For example, a single email address is often shared by multiple members of a family.
+
+
+
+    '
 - name: Billing
   summary: Invoices
   description: 'Use the Billing category to manage the following billing related tasks:
@@ -962,18 +1559,42 @@ x-ds-categories:
 
     * Getting information on the API''s resources and versions.'
 - name: PowerForms
-  summary: PowerForm creation and management
-  description: The PowerForms category enables PowerForms to be created and managed.
+  summary: The PowerForms category provides methods that enable you to create and manage fillable forms.
+  description: The PowerForms category enables you to create and manage PowerForms that you can use for self service and email forms.
 - name: Workspaces
-  summary: Workspace creation and management
-  description: 'Workspaces creation and management.
-
-
-    '
+  summary: A Docusign workspace is a collaboration area for sharing files and data.
+  description: "A workspace is a collaborative space for sharing documents and managing workflows. A workspace has a single owner who must be a Docusign user. The owner can invite others to the workspace as collaborators. Individuals who are not Docusign users must create a Docusign account to join a workspace as a collaborator.\n \nYou can create an envelope directly from a workspace.\n\nWorkspaces store the following information:\n\n- **Files:** Files uploaded to a workspace for storage or reuse.\n- **Documents:** A document is a component of a transaction, template, or workspace. When a file is added to a transaction, template, or workspace, it is copied as a document. Each document in a workspace has a single owner.\n- **Templates:** A set of documents that you can use to create a transaction or a workspace.\n- **Transactions:** A transaction is a series of workflow events related to one or more documents. These events route the documents to one or more individuals for the purposes of doing business. Each transaction has a single owner (the sender).\n\n**Note:** Documents in a template are not individually listed as files."
 - name: Payments
   summary: Manage Payments
   description: This category includes resources for managing payment gateways. Payment information is added to envelopes via methods in the Envelopes category.
-- name: Signature
+- name: EmailArchive
+  summary: This section shows you how to set and manage the BCC email addresses that you want to use to archive the emails that Docusign sends.
+  description: 'Email archives enable Docusign partners and other multi-account customers to easily archive emails sent through Docusign. The `EmailArchive` resource provides methods for managing your email archive configuration, which consists of the BCC email address or addresses that you want to use to archive Docusign emails. Each account can use up to five BCC email addresses for archiving purposes.
+
+
+    For more information, see [Email Archive Configuration](https://support.docusign.com/s/document-item?bundleId=pik1583277475390&topicId=xjm1583277371373.html).
+
+
+    **Note:** This feature is only available for certain account plans and must be enabled by Docusign.'
+- name: Notary
+  summary: 'Docusign eNotary makes the notarization process fully digital
+
+    for senders, signers, and notaries.
+
+    It enables a notary public to act as an in-person witness
+
+    to electronic signing of documents.
+
+    '
+  description: 'Docusign eNotary makes the notarization process fully digital
+
+    for senders, signers, and notaries.
+
+    It enables a notary public to act as an in-person witness
+
+    to electronic signing of documents.
+
+    '
+- name: Envelope
   summary: ''
   description: ''
-x-original-swagger-version: '2.0'
