@@ -1,0 +1,404 @@
+# Docusign (docusign)
+
+<!-- API-EVANGELIST-PROVENANCE:BEGIN -->
+> ### About this repository
+>
+> **This is not our API.** This repository is an independent, third-party profile of a company's
+> **publicly available** API surface, maintained by [API Evangelist](https://apievangelist.com).
+> API Evangelist does not operate, host, resell, or support this company's APIs, and is not
+> affiliated with or endorsed by the company unless stated on the profile.
+>
+> **Where the information came from.** Everything here is assembled from material a member of the
+> public can reach with a browser and no credentials — the company's own website, developer portal
+> and documentation, the specifications it publishes for public use (OpenAPI, AsyncAPI, JSON Schema,
+> `apis.json`, `llms.txt` and similar), its public repositories, and its public status, pricing and
+> changelog pages. **Nothing here is obtained by breaching a system, defeating an access control, or
+> using credentials of any kind.**
+>
+> **The rating is an independent assessment.** The Kin Score and Agent Readiness rating are
+> independently calculated scores of a company's *public* API artifacts, produced by API Evangelist
+> against a published rubric. They are not certifications, endorsements, security assessments, or
+> audits, and they score published artifacts — not the quality, safety, or security of the software.
+>
+> **Corrections, re-scores, and removal are free.** No partnership, contract, or purchase is
+> required, and you do not need to justify the request.
+>
+> - **Something wrong?** Open an issue on this repository, or email
+>   [info@apievangelist.com](mailto:info@apievangelist.com).
+> - **Published something new?** Ask for a re-score and we will re-run the rating.
+> - **Want the listing taken down?** Say so and we will honor it. The profile is reduced to your
+>   company name, a factual description, and a link to your own site, and the company is recorded as
+>   **unrated** — never scored zero for having asked.
+>
+> **Response times.** Acknowledgement within **one business day**; removal or restriction within
+> **two business days**; corrections and re-scores within **five business days**.
+>
+> **Not from the company, and here with a question?** You are welcome here — we would rather be the
+> front line and point you the right way than have a good report go nowhere. What this repository
+> can answer is narrow, though, so it is worth knowing who you are actually looking for:
+>
+> - **A question about how the API works, an account, billing, or a bug in the service** — that is
+>   the company's own support, not us. We profile this API; we do not operate it and cannot see
+>   your account.
+> - **A bug in an open-source project we only catalog** — file it on that project's own repository.
+>   This has happened with a real and correct bug report that reached us instead of the people who
+>   could fix it, which helped nobody.
+> - **Anything about this listing itself** — the description, the tags, the rating, a missing or
+>   wrong artifact — is ours. Open an issue here.
+> - **Not sure, or something general about API Evangelist or APIs.io** — open an issue on the
+>   [APIs.io Inbox](https://github.com/api-search/inbox) and we will route it.
+>
+> **This repository contains no software, and we will never ask you to download anything.** There is
+> no build, release, installer, or binary here — only text and machine-readable API descriptions, so
+> there is nothing here that can be "corrupt" or need "repairing". Any issue, comment, or email
+> claiming otherwise and offering a download link is not from us and is hostile. Do not follow the
+> link; it is a lure. Report it to GitHub and, if you like, tell us at
+> [info@apievangelist.com](mailto:info@apievangelist.com) so we can take it down.
+>
+> **On a security or compliance team?** Email
+> [info@apievangelist.com](mailto:info@apievangelist.com) with *security* in the subject line and
+> you will get a person, not a form. We will tell you exactly which public URLs this profile was
+> built from so your team can see the same surface we did, and we will take the listing down on
+> request while you work through it.
+>
+> Full detail: **[Where this data comes from](https://apievangelist.com/about/where-our-data-comes-from)**
+<!-- API-EVANGELIST-PROVENANCE:END -->
+
+DocuSign helps organizations connect and automate how they prepare, sign, act on, and manage agreements. As part of the DocuSign Agreement Cloud, DocuSign offers eSignature, the world's.
+
+**APIs.json:** [
+https://raw.githubusercontent.com/api-search/documents/main/_apis/docusign/apis.md](
+https://raw.githubusercontent.com/api-search/documents/main/_apis/docusign/apis.md)
+
+## Scope
+
+- **Position:** Consuming
+- **Access:** 3rd-Party
+
+## Tags
+
+- Agreements
+- Contracts
+- Digital Transaction Management
+- Documents
+- Electronic Signatures
+- eSignature
+
+## Timestamps
+
+- **Created:** 2024-06-07T00:00:00.000Z
+- **Modified:** 2026-05-19
+
+## APIs
+
+### Docusign eSignature REST API
+
+The Docusign eSignature REST API provides a powerful, convenient, and simple web services API for interacting with Docusign. It enables developers to integrate electronic signing capabilities directly into applications and websites, allowing businesses to send, sign, and manage documents securely and efficiently with support for sequential and parallel signing workflows, document management, templates, and real-time status tracking.
+
+- **Human URL:** [https://developers.docusign.com/docs/esign-rest-api/](https://developers.docusign.com/docs/esign-rest-api/)
+- **Base URL:** `https://demo.docusign.net/restapi`
+
+#### Tags
+
+- Documents
+- Envelopes
+- Signatures
+- Templates
+
+#### Properties
+
+- [Documentation](https://developers.docusign.com/docs/esign-rest-api/reference/)
+- [OpenAPI](openapi/docusign-openapi-original.yml) — [OpenAPI Specification](https://spec.openapis.org/oas/latest.html)
+- [OpenAPI](openapi/docusign-esignature-openapi.yml) — [OpenAPI Specification](https://spec.openapis.org/oas/latest.html)
+- [Postman Collection](collections/docusign-esignature.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
+- [Open Collection](collections/docusign-esignature.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
+- [AsyncAPI](asyncapi/docusign-connect-asyncapi.yml) — [AsyncAPI Specification](https://www.asyncapi.com/docs/reference/specification/latest)
+- [JSON Schema](json-schema/docusign-envelope-schema.json) — [JSON Schema](https://json-schema.org/specification)
+- [JSON-LD](json-ld/docusign-context.jsonld) — [JSON-LD](https://www.w3.org/TR/json-ld11/)
+- [Getting Started](https://developers.docusign.com/docs/esign-rest-api/esign101/)
+- [Tutorials](https://developers.docusign.com/docs/esign-rest-api/how-to/)
+- [Rate Limits](https://developers.docusign.com/docs/esign-rest-api/esign101/rules-and-limits/)
+- [SDK](https://developers.docusign.com/docs/esign-rest-api/sdks/)
+
+### Docusign Admin API
+
+The Docusign Admin API enables organizations to automate and programmatically execute administrative tasks for their Docusign accounts. It provides capabilities for managing organizations, accounts, and users, including user provisioning, permission management, and account configuration at scale.
+
+- **Human URL:** [https://developers.docusign.com/docs/admin-api/](https://developers.docusign.com/docs/admin-api/)
+- **Base URL:** `https://api-d.docusign.net/management`
+
+#### Tags
+
+- Accounts
+- Administration
+- Organizations
+- Users
+
+#### Properties
+
+- [Documentation](https://developers.docusign.com/docs/admin-api/reference/)
+- [OpenAPI](openapi/docusign-admin-openapi-original.yml) — [OpenAPI Specification](https://spec.openapis.org/oas/latest.html)
+- [Getting Started](https://developers.docusign.com/docs/admin-api/admin101/)
+- [Tutorials](https://developers.docusign.com/docs/admin-api/how-to/)
+- [Rate Limits](https://developers.docusign.com/docs/admin-api/admin101/rules-and-limits/)
+- [SDK](https://developers.docusign.com/docs/admin-api/sdks/)
+
+### Docusign Click API
+
+The Docusign Click API enables developers to implement and manage elastic templates (clickwraps) to capture customer consent to standard agreement terms with a single click. It supports terms and conditions, terms of service, terms of use, privacy policies, and more, with Docusign handling the rendering and acceptance tracking.
+
+- **Human URL:** [https://developers.docusign.com/docs/click-api/](https://developers.docusign.com/docs/click-api/)
+- **Base URL:** `https://demo.docusign.net/clickapi`
+
+#### Tags
+
+- Clickwrap
+- Compliance
+- Consent
+- Terms of Service
+
+#### Properties
+
+- [Documentation](https://developers.docusign.com/docs/click-api/reference/)
+- [OpenAPI](openapi/docusign-click-openapi-original.yml) — [OpenAPI Specification](https://spec.openapis.org/oas/latest.html)
+- [Getting Started](https://developers.docusign.com/docs/click-api/click101/)
+- [Tutorials](https://developers.docusign.com/docs/click-api/how-to/)
+- [Rate Limits](https://developers.docusign.com/docs/click-api/click101/rules-and-limits/)
+- [SDK](https://developers.docusign.com/docs/click-api/sdks/)
+
+### Docusign Maestro API
+
+The Docusign Maestro API allows developers to create, control, and integrate agreement workflows with their systems. It connects tools and data across workflows to automatically generate documents and agreements for review, approval, and signature, providing greater flexibility to manage agreements programmatically.
+
+- **Human URL:** [https://developers.docusign.com/docs/maestro-api/](https://developers.docusign.com/docs/maestro-api/)
+- **Base URL:** `https://demo.docusign.net/aow-manage`
+
+#### Tags
+
+- Automation
+- Orchestration
+- Workflows
+
+#### Properties
+
+- [Documentation](https://developers.docusign.com/docs/maestro-api/reference/)
+- [OpenAPI](openapi/docusign-maestro-openapi-original.yml) — [OpenAPI Specification](https://spec.openapis.org/oas/latest.html)
+- [Getting Started](https://developers.docusign.com/docs/maestro-api/maestro101/)
+- [Tutorials](https://developers.docusign.com/docs/maestro-api/how-to/)
+
+### Docusign Monitor API
+
+The Docusign Monitor API helps organizations protect their agreements with round-the-clock activity tracking. It receives a data feed containing security events for Docusign accounts, enabling integration with security information and event management (SIEM) systems and other monitoring applications.
+
+- **Human URL:** [https://developers.docusign.com/docs/monitor-api/](https://developers.docusign.com/docs/monitor-api/)
+- **Base URL:** `https://lens-d.docusign.net`
+
+#### Tags
+
+- Audit
+- Events
+- Monitoring
+- Security
+
+#### Properties
+
+- [Documentation](https://developers.docusign.com/docs/monitor-api/reference/)
+- [OpenAPI](openapi/docusign-monitor-openapi-original.yml) — [OpenAPI Specification](https://spec.openapis.org/oas/latest.html)
+- [Getting Started](https://developers.docusign.com/docs/monitor-api/monitor101/)
+- [Tutorials](https://developers.docusign.com/docs/monitor-api/how-to/)
+
+### Docusign Rooms API
+
+The Docusign Rooms API enables developers to streamline complex agreements with multiple parties, tasks, documents, and stages through secure digital workspaces. It supports real estate and mortgage transactions by bringing each party together in a central location where you can manage transactions, integrate with other Docusign functionality, and track each step of the process.
+
+- **Human URL:** [https://developers.docusign.com/docs/rooms-api/](https://developers.docusign.com/docs/rooms-api/)
+- **Base URL:** `https://demo.rooms.docusign.com/restapi`
+
+#### Tags
+
+- Collaboration
+- Mortgages
+- Real Estate
+- Transactions
+
+#### Properties
+
+- [Documentation](https://developers.docusign.com/docs/rooms-api/reference/)
+- [OpenAPI](openapi/docusign-rooms-openapi-original.yml) — [OpenAPI Specification](https://spec.openapis.org/oas/latest.html)
+- [Getting Started](https://developers.docusign.com/docs/rooms-api/rooms101/)
+- [Tutorials](https://developers.docusign.com/docs/rooms-api/how-to/)
+- [Rate Limits](https://developers.docusign.com/docs/rooms-api/rooms101/rules-and-limits/)
+- [SDK](https://developers.docusign.com/docs/rooms-api/sdks/)
+
+### Docusign Web Forms API
+
+The Docusign Web Forms API facilitates generating semantic HTML forms around everyday contracts. It enables developers to embed and prefill forms from the systems they control, creating web form configurations and instances that streamline data collection and agreement workflows.
+
+- **Human URL:** [https://developers.docusign.com/docs/web-forms-api/](https://developers.docusign.com/docs/web-forms-api/)
+- **Base URL:** `https://demo.docusign.net/webforms`
+
+#### Tags
+
+- Data Collection
+- Documents
+- Forms
+
+#### Properties
+
+- [Documentation](https://developers.docusign.com/docs/web-forms-api/reference/)
+- [Getting Started](https://developers.docusign.com/docs/web-forms-api/web-forms-101/)
+- [Tutorials](https://developers.docusign.com/docs/web-forms-api/how-to/)
+- [Postman Collection](collections/docusign-esignature.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
+- [Open Collection](collections/docusign-esignature.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
+
+### Docusign Notary API
+
+The Docusign Notary API enables developers to manage remote online notary tasks programmatically. It provides capabilities for sending signature requests to notary groups, managing notary on-demand sessions, and integrating remote online notarization functionality into applications.
+
+- **Human URL:** [https://developers.docusign.com/docs/notary-api/](https://developers.docusign.com/docs/notary-api/)
+- **Base URL:** `https://demo.docusign.net/restapi`
+
+#### Tags
+
+- Legal
+- Notarization
+- Remote Online Notary
+
+#### Properties
+
+- [Documentation](https://developers.docusign.com/docs/notary-api/)
+- [Getting Started](https://developers.docusign.com/docs/notary-api/notary101/)
+- [Tutorials](https://developers.docusign.com/docs/notary-api/how-to/)
+- [Rate Limits](https://developers.docusign.com/docs/notary-api/notary101/rules-and-limits/)
+- [Postman Collection](collections/docusign-esignature.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
+- [Open Collection](collections/docusign-esignature.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
+
+### Docusign Navigator API
+
+The Docusign Navigator API offers developers access to AI-extracted data from the Navigator smart agreement repository. It provides capabilities to analyze existing agreements, extract insights, and connect agreement data to business systems, enabling bulk ingestion of documents and retrieval of AI-analyzed agreement information.
+
+- **Human URL:** [https://developers.docusign.com/docs/navigator-api/](https://developers.docusign.com/docs/navigator-api/)
+- **Base URL:** `https://demo.docusign.net/navigator`
+
+#### Tags
+
+- Agreements
+- AI
+- Analytics
+- Insights
+
+#### Properties
+
+- [Documentation](https://developers.docusign.com/docs/navigator-api/reference/)
+- [Getting Started](https://developers.docusign.com/docs/navigator-api/concepts/)
+- [Tutorials](https://developers.docusign.com/docs/navigator-api/how-to/)
+- [Postman Collection](collections/docusign-esignature.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
+- [Open Collection](collections/docusign-esignature.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
+
+### Docusign Workspaces API
+
+The Docusign Workspaces API allows developers to create, manage, and integrate Docusign Workspaces into their own applications, enabling structured, secure, and scalable agreement workflows. It provides capabilities for managing complex agreements with multiple parties and stages in a centralized digital environment.
+
+- **Human URL:** [https://developers.docusign.com/docs/workspaces-api/](https://developers.docusign.com/docs/workspaces-api/)
+- **Base URL:** `https://demo.docusign.net/restapi`
+
+#### Tags
+
+- Agreements
+- Collaboration
+- Workspaces
+
+#### Properties
+
+- [Documentation](https://developers.docusign.com/docs/workspaces-api/reference/accounts/workspaces/)
+- [Getting Started](https://developers.docusign.com/docs/workspaces-api/workspaces101/)
+- [Tutorials](https://developers.docusign.com/docs/workspaces-api/how-to/create-workspace/)
+- [Getting Started](https://developers.docusign.com/docs/workspaces-api/go-live/)
+- [Postman Collection](collections/docusign-esignature.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
+- [Open Collection](collections/docusign-esignature.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
+
+### Docusign CLM API
+
+The Docusign CLM API enables developers to integrate contract lifecycle management workflow, document generation, and document management into Salesforce and custom applications. It provides access to Docusign CLM object, task, and content APIs for managing the full contract lifecycle programmatically.
+
+- **Human URL:** [https://developers.docusign.com/docs/clm-api/](https://developers.docusign.com/docs/clm-api/)
+- **Base URL:** `https://api.example.com`
+
+#### Tags
+
+- Contract Lifecycle Management
+- Documents
+- Workflows
+
+#### Properties
+
+- [Documentation](https://developers.docusign.com/docs/clm-api/reference/)
+- [Getting Started](https://developers.docusign.com/docs/clm-api/clm101/)
+- [Rate Limits](https://developers.docusign.com/docs/clm-api/clm101/rules-and-limits/)
+- [Authentication](https://developers.docusign.com/docs/clm-api/clm101/auth/)
+- [Postman Collection](collections/docusign-esignature.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
+- [Open Collection](collections/docusign-esignature.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
+
+### Docusign Connected Fields API
+
+The Docusign Connected Fields API enables developers to validate envelope field data programmatically. It allows integration with extension apps to verify custom data in real-time within eSignature agreements, supporting data verification workflows that connect to external systems of record.
+
+- **Human URL:** [https://developers.docusign.com/docs/connected-fields-api/](https://developers.docusign.com/docs/connected-fields-api/)
+- **Base URL:** `https://demo.docusign.net/restapi`
+
+#### Tags
+
+- Data Verification
+- Extensions
+- Fields
+- Validation
+
+#### Properties
+
+- [Documentation](https://developers.docusign.com/docs/connected-fields-api/reference/)
+- [Getting Started](https://developers.docusign.com/docs/connected-fields-api/concepts/)
+- [Tutorials](https://developers.docusign.com/docs/connected-fields-api/send-envelope-with-data-verification-fields/)
+- [Postman Collection](collections/docusign-esignature.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
+- [Open Collection](collections/docusign-esignature.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
+
+## Common Properties
+
+- [Arazzo Workflows](arazzo/) — [Arazzo Specification](https://spec.openapis.org/arazzo/latest.html)
+- [LinkedIn](https://www.linkedin.com/company/docusign)
+- [Portal](https://developers.docusign.com/)
+- [SDK](https://developers.docusign.com/docs/esign-rest-api/sdks/)
+- [Authentication](https://developers.docusign.com/platform/auth/)
+- [OpenAPI](https://developers.docusign.com/tools/openapi-files/) — [OpenAPI Specification](https://spec.openapis.org/oas/latest.html)
+- [Support](https://developers.docusign.com/support/)
+- [Stack Overflow](https://stackoverflow.com/questions/tagged/docusignapi)
+- [F A Q](https://support.docusign.com/s/articles/DocuSign-Developer-Support-FAQs)
+- [YouTube](https://www.youtube.com/channel/UCJSJ2kMs_qeQotmw4-lX2NQ)
+- [Changelog](https://developers.docusign.com/changelog?filter=)
+- [GitHub Organization](https://github.com/docusign)
+- [Quickstart](https://developers.docusign.com/docs/esign-rest-api/quickstart/)
+- [Resources](https://www.docusign.com/resources)
+- [Terms of Service](https://www.docusign.com/company/terms-and-conditions/developers)
+- [Getting Started](https://developers.docusign.com/docs/esign-rest-api/quickstart/)
+- [Code Examples](https://developers.docusign.com/docs/esign-rest-api/code-examples/)
+- [Status Page](https://status.docusign.com/)
+- [Blog](https://www.docusign.com/blog/developers)
+- [Privacy Policy](https://www.docusign.com/company/privacy-policy)
+- [Sandbox](https://go.docusign.com/sandbox/productshot/)
+- [Sign Up](https://developers.docusign.com/platform/account/)
+- [Pricing](https://ecom.docusign.com/plans-and-pricing/developer)
+- [Rate Limits](https://developers.docusign.com/platform/resource-limits/)
+- [Security](https://www.docusign.com/trust/security)
+- [Training](https://developers.docusign.com/training/)
+- [SDK](https://developers.docusign.com/docs/sdks/)
+- [Features](https://www.docusign.com/features)
+- [Use Cases](https://www.docusign.com/use-cases)
+- [Integrations](https://www.docusign.com/integrations)
+- [M C P Server](https://github.com/docusign/mcp-agent-foundry-procurement-python)
+
+## Maintainers
+
+**FN:** Kin Lane
+**Email:** kin@apievangelist.com
+**URL:** http://apievangelist.com
+**Email:** devcenter@docusign.com
+**URL:** https://developers.docusign.com/
